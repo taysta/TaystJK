@@ -28,7 +28,7 @@ Score counter on HUD
 | In-game xdocs | Yes — [codemp/ui/ui_xdocs.h:265](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/ui/ui_xdocs.h#L265) |
 | In-game menu | Yes — [ingame_setup.menu:4289](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/assets/japro/ui/jamp/ingame_setup.menu#L4289) |
 | Default | `2` |
-| Value type | `bitmask` |
+| Value type | `enum` |
 | Restart | No latch flag is registered. |
 | Cheat protected | No |
 

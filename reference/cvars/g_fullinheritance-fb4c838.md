@@ -28,7 +28,7 @@ Scale of all player momentum gained by projectiles.
 | In-game xdocs | No |
 | In-game menu | No |
 | Default | `0` |
-| Value type | `bitmask` |
+| Value type | `float` |
 | Restart | No latch flag is registered. |
 | Cheat protected | No |
 

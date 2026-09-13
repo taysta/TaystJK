@@ -28,13 +28,15 @@ Controls `bot_camp` in the game module. Consult the cited behavior reads before 
 | In-game xdocs | No |
 | In-game menu | No |
 | Default | `1` |
-| Value type | `bitmask` |
+| Value type | `enum` |
 | Restart | No latch flag is registered. |
 | Cheat protected | No |
 
 ## Values
 
-No discrete value list is enforced or documented in the inspected source.
+| Value | Meaning | Evidence |
+|:--|:--|:--|
+| `2` | Selects the code path tested for value 2. | [codemp/game/ai_main.c:1512](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/ai_main.c#L1512) |
 
 ## Flags
 

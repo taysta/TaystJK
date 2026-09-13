@@ -28,13 +28,20 @@ search_exclude: false
 | In-game xdocs | No |
 | In-game menu | No |
 | Default | `0` |
-| Value type | `bitmask` |
+| Value type | `enum` |
 | Restart | No latch flag is registered. |
 | Cheat protected | No |
 
 ## Values
 
-No discrete value list is enforced or documented in the inspected source.
+| Value | Meaning | Evidence |
+|:--|:--|:--|
+| `1` | Selects the code path tested for value 1. | [codemp/game/g_combat.c:5805](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_combat.c#L5805) |
+| `2` | Selects the code path tested for value 2. | [codemp/game/g_combat.c:5796](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_combat.c#L5796) |
+| `5` | Selects the code path tested for value 5. | [codemp/game/g_combat.c:5796](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_combat.c#L5796) |
+| `6` | Selects the code path tested for value 6. | [codemp/game/g_combat.c:5805](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_combat.c#L5805) |
+| `7` | Selects the code path tested for value 7. | [codemp/game/g_combat.c:5796](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_combat.c#L5796) |
+| `8` | Selects the code path tested for value 8. | [codemp/game/g_combat.c:5811](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_combat.c#L5811) |
 
 ## Flags
 

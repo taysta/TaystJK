@@ -28,13 +28,16 @@ Controls `cg_saberIgnitionFlare` in the cgame module. Consult the cited behavior
 | In-game xdocs | No |
 | In-game menu | No |
 | Default | `1` |
-| Value type | `bitmask` |
+| Value type | `bool` |
 | Restart | No latch flag is registered. |
 | Cheat protected | No |
 
 ## Values
 
-No discrete value list is enforced or documented in the inspected source.
+| Value | Meaning | Evidence |
+|:--|:--|:--|
+| `0` | Disabled. | [codemp/cgame/cg_players.c:6386](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_players.c#L6386) |
+| `1` | Enabled. | [codemp/cgame/cg_players.c:6386](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_players.c#L6386) |
 
 ## Flags
 

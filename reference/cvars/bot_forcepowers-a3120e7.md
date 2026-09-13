@@ -28,13 +28,16 @@ Controls `bot_forcepowers` in the game module. Consult the cited behavior reads 
 | In-game xdocs | No |
 | In-game menu | No |
 | Default | `1` |
-| Value type | `bitmask` |
+| Value type | `bool` |
 | Restart | No latch flag is registered. |
 | Cheat protected | Yes |
 
 ## Values
 
-No discrete value list is enforced or documented in the inspected source.
+| Value | Meaning | Evidence |
+|:--|:--|:--|
+| `0` | Disabled. | [codemp/game/ai_main.c:10584](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/ai_main.c#L10584) |
+| `1` | Enabled. | [codemp/game/ai_main.c:10584](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/ai_main.c#L10584) |
 
 ## Flags
 

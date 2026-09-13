@@ -28,13 +28,16 @@ Controls `cg_fpls` in the cgame module. Consult the cited behavior reads before 
 | In-game xdocs | No |
 | In-game menu | Yes — [ingame_camera.menu:59](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/assets/japro/ui/jamp/ingame_camera.menu#L59) |
 | Default | `0` |
-| Value type | `bitmask` |
+| Value type | `enum` |
 | Restart | No latch flag is registered. |
 | Cheat protected | No |
 
 ## Values
 
-No discrete value list is enforced or documented in the inspected source.
+| Value | Meaning | Evidence |
+|:--|:--|:--|
+| `2` | Selects the code path tested for value 2. | [codemp/cgame/cg_players.c:9402](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_players.c#L9402) |
+| `3` | Selects the code path tested for value 3. | [codemp/cgame/cg_players.c:9402](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_players.c#L9402) |
 
 ## Flags
 

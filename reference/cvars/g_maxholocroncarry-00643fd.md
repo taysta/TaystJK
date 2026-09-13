@@ -28,7 +28,7 @@ Controls `g_maxHolocronCarry` in the game module. Consult the cited behavior rea
 | In-game xdocs | No |
 | In-game menu | No |
 | Default | `3` |
-| Value type | `bitmask` |
+| Value type | `float` |
 | Restart | Yes; the value is latched. |
 | Cheat protected | No |
 

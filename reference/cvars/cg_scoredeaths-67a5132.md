@@ -28,7 +28,7 @@ Display score AND deaths on the scoreboard
 | In-game xdocs | Yes — [codemp/ui/ui_xdocs.h:198](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/ui/ui_xdocs.h#L198) |
 | In-game menu | No |
 | Default | `1` |
-| Value type | `bitmask` |
+| Value type | `enum` |
 | Restart | No latch flag is registered. |
 | Cheat protected | No |
 

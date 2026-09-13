@@ -53,15 +53,19 @@ Rationale, one line each:
 
 ## 2. `added_on`
 
-TaystJK has no version tags. Releases are rolling under a single `latest` tag and builds
-identify themselves as `latest-<shorthash>` with a build date. Feature availability is
-therefore a date plus a commit, never "added in vX.Y".
+TaystJK has no release versioning, so feature availability is a date, never "added in
+vX.Y". Format: `YYYY-MM-DD (shorthash)` — for example `2025-03-14 (a1b2c3d)`.
 
-Format: `YYYY-MM-DD (shorthash)` — for example `2025-03-14 (a1b2c3d)`.
+The date is the only part a reader can act on. `version` ends with the engine's compile
+date (`SOURCE_DATE`, `codemp/qcommon/common.cpp`), and `modversion` prints the game
+module's compile date and time followed by a `tag-hash` pair (`CG_ModVersion_f`). Tell
+readers to compare that date; an older build does not have the entry.
 
-The date is what a reader compares against. Tell readers to compare the build date printed
-by `version` / `modversion` against the date shown: an older build date means the feature
-is absent. Comparing short hashes alone tells them nothing about ordering.
+Neither half of the identifier orders builds. The hash is unordered. The tag is only
+whatever `git describe --tags --abbrev=0` found — `CMakeLists.txt` fills `GIT_TAG` that
+way — and the repository carries 38 tags inherited from the fork's ancestry, so it
+currently resolves to `latest-actions-autorelease-update` even though the release itself
+is published under `latest`. Do not describe builds as `latest-<shorthash>`.
 
 State that comparison rule once and link to it from wherever `added_on` renders, rather
 than repeating it per page. For generated entries that explanation lives on
@@ -287,24 +291,25 @@ same stub file we would write by hand. That left a new build-time dependency, on
 with no local Jekyll build to catch a misconfiguration, in exchange for nothing. If the
 Features section later makes `redirect_from` natural, revisit this.
 
-> **TODO — destinations are placeholders.** Every retired URL currently points at
-> `/TaystJK/features/`, which **does not exist yet**. Revisit this table once the Features
-> section is built, and point each URL at the most specific page: shader-override and
-> keybind content to `features/client-behaviour.md`, the Vulkan stub to
-> `features/renderers.md`, and the `cvars/` and `commands/` URLs to the feature page that
-> covers each topic. Until then these stubs redirect to a 404.
+> **TODO — destinations are provisional.** Each retired URL points at the closest page
+> that exists today, not at its eventual home. The `cvars/` and `commands/` listings go to
+> the generated console reference, which is what replaced them; `hardcoded-changes` goes to
+> the what's-new page, which is what it was describing. Revisit once the Features section is
+> built and point each at the specific page: shader-override and keybind content to
+> `features/client-behaviour.md`, the Vulkan stub to `features/renderers.md`, and each
+> `cvars/`/`commands/` URL to the feature page covering that topic.
 
 | Retired URL | Destination |
 |:--|:--|
-| `/TaystJK/hardcoded-changes/` | `/TaystJK/features/` |
-| `/TaystJK/cvars/crosshair/` | `/TaystJK/features/` |
-| `/TaystJK/cvars/demos/` | `/TaystJK/features/` |
-| `/TaystJK/cvars/hud/` | `/TaystJK/features/` |
-| `/TaystJK/cvars/miscellanous/` | `/TaystJK/features/` |
-| `/TaystJK/cvars/sound/` | `/TaystJK/features/` |
-| `/TaystJK/cvars/strafe/` | `/TaystJK/features/` |
-| `/TaystJK/commands/miscellaneous/` | `/TaystJK/features/` |
-| `/TaystJK/commands/strafe/` | `/TaystJK/features/` |
+| `/TaystJK/hardcoded-changes/` | `/TaystJK/whats-new/` |
+| `/TaystJK/cvars/crosshair/` | `/TaystJK/reference/` |
+| `/TaystJK/cvars/demos/` | `/TaystJK/reference/` |
+| `/TaystJK/cvars/hud/` | `/TaystJK/reference/` |
+| `/TaystJK/cvars/miscellanous/` | `/TaystJK/reference/` |
+| `/TaystJK/cvars/sound/` | `/TaystJK/reference/` |
+| `/TaystJK/cvars/strafe/` | `/TaystJK/reference/` |
+| `/TaystJK/commands/miscellaneous/` | `/TaystJK/reference/` |
+| `/TaystJK/commands/strafe/` | `/TaystJK/reference/` |
 
 `/TaystJK/cvars/miscellanous/` keeps the original misspelling, because that is the URL
 that was published.

@@ -28,7 +28,7 @@ Changes the color of the HUD based on team color
 | In-game xdocs | Yes — [codemp/ui/ui_xdocs.h:259](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/ui/ui_xdocs.h#L259) |
 | In-game menu | Yes — [ingame_setup.menu:4317](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/assets/japro/ui/jamp/ingame_setup.menu#L4317) |
 | Default | `1` |
-| Value type | `bitmask` |
+| Value type | `enum` |
 | Restart | No latch flag is registered. |
 | Cheat protected | No |
 

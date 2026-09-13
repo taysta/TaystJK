@@ -28,7 +28,7 @@ Controls `cl_aviFrameRate` in the engine-client module. Consult the cited behavi
 | In-game xdocs | No |
 | In-game menu | No |
 | Default | `25` |
-| Value type | `bitmask` |
+| Value type | `float` |
 | Restart | No latch flag is registered. |
 | Cheat protected | No |
 

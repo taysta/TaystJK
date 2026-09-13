@@ -28,7 +28,7 @@ Controls `g_forceClientUpdateRate` in the game module. Consult the cited behavio
 | In-game xdocs | No |
 | In-game menu | No |
 | Default | `250` |
-| Value type | `bitmask` |
+| Value type | `int` |
 | Restart | No latch flag is registered. |
 | Cheat protected | No |
 

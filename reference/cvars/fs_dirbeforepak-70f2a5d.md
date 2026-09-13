@@ -26,13 +26,16 @@ Prioritize directories before paks if not pure
 | In-game xdocs | No |
 | In-game menu | No |
 | Default | `0` |
-| Value type | `bitmask` |
+| Value type | `bool` |
 | Restart | No latch flag is registered. |
 | Cheat protected | No |
 
 ## Values
 
-No discrete value list is enforced or documented in the inspected source.
+| Value | Meaning | Evidence |
+|:--|:--|:--|
+| `0` | Disabled. | [codemp/qcommon/files.cpp:3468](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/qcommon/files.cpp#L3468) |
+| `1` | Enabled. | [codemp/qcommon/files.cpp:3468](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/qcommon/files.cpp#L3468) |
 
 ## Flags
 

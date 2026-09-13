@@ -28,7 +28,7 @@ Draw each player's current weapon on the team overlay
 | In-game xdocs | Yes — [codemp/ui/ui_xdocs.h:149](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/ui/ui_xdocs.h#L149) |
 | In-game menu | No |
 | Default | `0` |
-| Value type | `bitmask` |
+| Value type | `bool` |
 | Restart | No latch flag is registered. |
 | Cheat protected | No |
 

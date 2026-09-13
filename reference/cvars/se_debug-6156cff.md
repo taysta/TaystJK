@@ -28,13 +28,16 @@ Controls `se_debug` in the engine-shared module. Consult the cited behavior read
 | In-game xdocs | No |
 | In-game menu | No |
 | Default | `0` |
-| Value type | `bitmask` |
+| Value type | `bool` |
 | Restart | No latch flag is registered. |
 | Cheat protected | No |
 
 ## Values
 
-No discrete value list is enforced or documented in the inspected source.
+| Value | Meaning | Evidence |
+|:--|:--|:--|
+| `0` | Disabled. | [codemp/qcommon/stringed_ingame.cpp:1007](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/qcommon/stringed_ingame.cpp#L1007) |
+| `1` | Enabled. | [codemp/qcommon/stringed_ingame.cpp:1007](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/qcommon/stringed_ingame.cpp#L1007) |
 
 ## Flags
 

@@ -28,13 +28,15 @@ Controls `in_mouserepeat` in the engine-shared module. Consult the cited behavio
 | In-game xdocs | No |
 | In-game menu | No |
 | Default | `0` |
-| Value type | `bitmask` |
+| Value type | `enum` |
 | Restart | No latch flag is registered. |
 | Cheat protected | No |
 
 ## Values
 
-No discrete value list is enforced or documented in the inspected source.
+| Value | Meaning | Evidence |
+|:--|:--|:--|
+| `2` | Selects the code path tested for value 2. | [shared/sdl/sdl_input.cpp:988](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/shared/sdl/sdl_input.cpp#L988) |
 
 ## Flags
 

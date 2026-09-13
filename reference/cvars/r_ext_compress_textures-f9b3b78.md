@@ -27,7 +27,7 @@ Disable/enable texture compression
 | In-game xdocs | No |
 | In-game menu | No |
 | Default | `0` |
-| Value type | `int` |
+| Value type | `float` |
 | Restart | Yes; the value is latched. |
 | Cheat protected | No |
 
@@ -88,7 +88,10 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 - registration: [codemp/rd-rend2/tr_init.cpp:1486](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-rend2/tr_init.cpp#L1486) (Cvar_Get)
 - registration: [codemp/rd-vanilla/tr_init.cpp:1631](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-vanilla/tr_init.cpp#L1631) (Cvar_Get)
 - registration: [codemp/rd-vulkan/tr_init.cpp:784](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-vulkan/tr_init.cpp#L784) (Cvar_Get)
-- behavior: [codemp/ui/ui_main.c:6229](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/ui/ui_main.c#L6229)
-- behavior: [codemp/ui/ui_main.c:6401](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/ui/ui_main.c#L6401)
+- behavior: [codemp/rd-rend2/tr_init.cpp:352](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-rend2/tr_init.cpp#L352)
+- behavior: [codemp/rd-vanilla/tr_init.cpp:355](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-vanilla/tr_init.cpp#L355)
+- behavior: [codemp/rd-vulkan/vk_init.cpp:381](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-vulkan/vk_init.cpp#L381)
+- behavior: [shared/rd-rend2/tr_extensions.cpp:589](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/shared/rd-rend2/tr_extensions.cpp#L589)
+- behavior: [shared/rd-rend2/tr_extensions.cpp:603](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/shared/rd-rend2/tr_extensions.cpp#L603)
 
 <p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/6ff04c0baf588a89e5ec9361ad7a0992941d7655"><code>6ff04c0baf58</code></a> on 2026-09-09. Anything merged after that is not reflected here.</p>

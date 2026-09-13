@@ -28,7 +28,7 @@ Play ambient sounds
 | In-game xdocs | Yes — [codemp/ui/ui_xdocs.h:362](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/ui/ui_xdocs.h#L362) |
 | In-game menu | Yes — [ingame_setup.menu:4622](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/assets/japro/ui/jamp/ingame_setup.menu#L4622) |
 | Default | `1` |
-| Value type | `bitmask` |
+| Value type | `bool` |
 | Restart | No latch flag is registered. |
 | Cheat protected | No |
 

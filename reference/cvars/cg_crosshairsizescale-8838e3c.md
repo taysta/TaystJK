@@ -29,13 +29,15 @@ Controls `cg_crosshairSizeScale` in the cgame module. Consult the cited behavior
 | In-game xdocs | No |
 | In-game menu | No |
 | Default | `1` |
-| Value type | `bitmask` |
+| Value type | `enum` |
 | Restart | No latch flag is registered. |
 | Cheat protected | No |
 
 ## Values
 
-No discrete value list is enforced or documented in the inspected source.
+| Value | Meaning | Evidence |
+|:--|:--|:--|
+| `10` | Selects the code path tested for value 10. | [codemp/cgame/cg_draw.c:8206](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_draw.c#L8206) |
 
 ## Flags
 

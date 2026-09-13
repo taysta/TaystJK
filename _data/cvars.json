@@ -1607,8 +1607,19 @@
     "source_commit": "6ff04c0baf588a89e5ec9361ad7a0992941d7655",
     "status": "needs-review",
     "summary": "Controls `bot_camp` in the game module.",
-    "value_type": "bitmask",
-    "values": [],
+    "value_type": "enum",
+    "values": [
+      {
+        "evidence": {
+          "line": 1512,
+          "path": "codemp/game/ai_main.c",
+          "score": 7,
+          "text": "if (bs->isCamper && bot_camp.integer && (BotIsAChickenWuss(bs) || BotCTFGuardDuty(bs) || bs->isCamper == 2) && ((bs->wpCurrent->flags & WPFLAG_SNIPEORCAMP) || (bs->wpCurrent->flags & WPFLAG_SNIPEORCAMPSTAND)) &&"
+        },
+        "meaning": "Selects the code path tested for value 2.",
+        "value": "2"
+      }
+    ],
     "variables": [
       "bot_camp"
     ],
@@ -2560,8 +2571,29 @@
     "source_commit": "6ff04c0baf588a89e5ec9361ad7a0992941d7655",
     "status": "needs-review",
     "summary": "Controls `bot_forcepowers` in the game module.",
-    "value_type": "bitmask",
-    "values": [],
+    "value_type": "bool",
+    "values": [
+      {
+        "evidence": {
+          "line": 10584,
+          "path": "codemp/game/ai_main.c",
+          "score": 7,
+          "text": "if (bot_forcepowers.integer && !g_forcePowerDisable.integer)"
+        },
+        "meaning": "Disabled.",
+        "value": "0"
+      },
+      {
+        "evidence": {
+          "line": 10584,
+          "path": "codemp/game/ai_main.c",
+          "score": 7,
+          "text": "if (bot_forcepowers.integer && !g_forcePowerDisable.integer)"
+        },
+        "meaning": "Enabled.",
+        "value": "1"
+      }
+    ],
     "variables": [
       "bot_forcepowers"
     ],
@@ -4232,8 +4264,29 @@
     "source_commit": "6ff04c0baf588a89e5ec9361ad7a0992941d7655",
     "status": "needs-review",
     "summary": "Controls `bot_maxbots` in the game module.",
-    "value_type": "bitmask",
-    "values": [],
+    "value_type": "bool",
+    "values": [
+      {
+        "evidence": {
+          "line": 665,
+          "path": "codemp/game/g_bot.c",
+          "score": 7,
+          "text": "if ( (humanplayers + botplayers) < bot_minplayers.integer //bot_maxbots from raz0r"
+        },
+        "meaning": "Disabled.",
+        "value": "0"
+      },
+      {
+        "evidence": {
+          "line": 665,
+          "path": "codemp/game/g_bot.c",
+          "score": 7,
+          "text": "if ( (humanplayers + botplayers) < bot_minplayers.integer //bot_maxbots from raz0r"
+        },
+        "meaning": "Enabled.",
+        "value": "1"
+      }
+    ],
     "variables": [
       "bot_maxbots"
     ],
@@ -4540,8 +4593,29 @@
     "source_commit": "6ff04c0baf588a89e5ec9361ad7a0992941d7655",
     "status": "documented",
     "summary": "Minimum players in a team or the game",
-    "value_type": "bitmask",
-    "values": [],
+    "value_type": "bool",
+    "values": [
+      {
+        "evidence": {
+          "line": 665,
+          "path": "codemp/game/g_bot.c",
+          "score": 7,
+          "text": "if ( (humanplayers + botplayers) < bot_minplayers.integer //bot_maxbots from raz0r"
+        },
+        "meaning": "Disabled.",
+        "value": "0"
+      },
+      {
+        "evidence": {
+          "line": 665,
+          "path": "codemp/game/g_bot.c",
+          "score": 7,
+          "text": "if ( (humanplayers + botplayers) < bot_minplayers.integer //bot_maxbots from raz0r"
+        },
+        "meaning": "Enabled.",
+        "value": "1"
+      }
+    ],
     "variables": [
       "bot_minplayers"
     ],
@@ -9927,7 +10001,9 @@
     "summary": "Controls `broadsword_dircap` in the renderer module.",
     "value_type": "float",
     "values": [],
-    "variables": [],
+    "variables": [
+      "broadsword_dircap"
+    ],
     "xdocs": null
   },
   {
@@ -10299,7 +10375,9 @@
         "value": "1"
       }
     ],
-    "variables": [],
+    "variables": [
+      "broadsword_dontstopanim"
+    ],
     "xdocs": null
   },
   {
@@ -10620,7 +10698,9 @@
     "summary": "Registered by the current source, but no user-facing behavior description has been verified.",
     "value_type": "int",
     "values": [],
-    "variables": [],
+    "variables": [
+      "broadsword_effcorr"
+    ],
     "xdocs": null
   },
   {
@@ -10959,7 +11039,9 @@
     "summary": "Registered by the current source, but no user-facing behavior description has been verified.",
     "value_type": "int",
     "values": [],
-    "variables": [],
+    "variables": [
+      "broadsword_extra1"
+    ],
     "xdocs": null
   },
   {
@@ -11298,7 +11380,9 @@
     "summary": "Registered by the current source, but no user-facing behavior description has been verified.",
     "value_type": "int",
     "values": [],
-    "variables": [],
+    "variables": [
+      "broadsword_extra2"
+    ],
     "xdocs": null
   },
   {
@@ -11664,7 +11748,9 @@
         "value": "1"
       }
     ],
-    "variables": [],
+    "variables": [
+      "broadsword_kickbones"
+    ],
     "xdocs": null
   },
   {
@@ -12054,7 +12140,9 @@
         "value": "1"
       }
     ],
-    "variables": [],
+    "variables": [
+      "broadsword_kickorigin"
+    ],
     "xdocs": null
   },
   {
@@ -12375,7 +12463,9 @@
     "summary": "Registered by the current source, but no user-facing behavior description has been verified.",
     "value_type": "int",
     "values": [],
-    "variables": [],
+    "variables": [
+      "broadsword_playflop"
+    ],
     "xdocs": null
   },
   {
@@ -12726,7 +12816,9 @@
     "summary": "Controls `broadsword_ragtobase` in the renderer module.",
     "value_type": "int",
     "values": [],
-    "variables": [],
+    "variables": [
+      "broadsword_ragtobase"
+    ],
     "xdocs": null
   },
   {
@@ -13043,7 +13135,9 @@
     "summary": "Registered by the current source, but no user-facing behavior description has been verified.",
     "value_type": "int",
     "values": [],
-    "variables": [],
+    "variables": [
+      "broadsword_smallbbox"
+    ],
     "xdocs": null
   },
   {
@@ -13405,7 +13499,9 @@
         "value": "2"
       }
     ],
-    "variables": [],
+    "variables": [
+      "broadsword_waitforshot"
+    ],
     "xdocs": null
   },
   {
@@ -14083,7 +14179,7 @@
     "source_commit": "6ff04c0baf588a89e5ec9361ad7a0992941d7655",
     "status": "needs-review",
     "summary": "Show absorb when it's in use",
-    "value_type": "bitmask",
+    "value_type": "bool",
     "values": [
       {
         "evidence": {
@@ -14322,7 +14418,7 @@
     "source_commit": "6ff04c0baf588a89e5ec9361ad7a0992941d7655",
     "status": "needs-review",
     "summary": "Play ambient sounds",
-    "value_type": "bitmask",
+    "value_type": "bool",
     "values": [
       {
         "evidence": {
@@ -14861,8 +14957,29 @@
     "source_commit": "6ff04c0baf588a89e5ec9361ad7a0992941d7655",
     "status": "needs-review",
     "summary": "Controls `cg_antiAmKiss` in the cgame module.",
-    "value_type": "bitmask",
-    "values": [],
+    "value_type": "bool",
+    "values": [
+      {
+        "evidence": {
+          "line": 2575,
+          "path": "codemp/cgame/cg_view.c",
+          "score": 7,
+          "text": "if (cg_antiAmKiss.integer &&"
+        },
+        "meaning": "Disabled.",
+        "value": "0"
+      },
+      {
+        "evidence": {
+          "line": 2575,
+          "path": "codemp/cgame/cg_view.c",
+          "score": 7,
+          "text": "if (cg_antiAmKiss.integer &&"
+        },
+        "meaning": "Enabled.",
+        "value": "1"
+      }
+    ],
     "variables": [
       "cg_antiAmKiss"
     ],
@@ -15287,8 +15404,29 @@
     "source_commit": "6ff04c0baf588a89e5ec9361ad7a0992941d7655",
     "status": "needs-review",
     "summary": "Controls `cg_autoKillWhenFalling` in the cgame module.",
-    "value_type": "bitmask",
-    "values": [],
+    "value_type": "bool",
+    "values": [
+      {
+        "evidence": {
+          "line": 11686,
+          "path": "codemp/cgame/cg_draw.c",
+          "score": 7,
+          "text": "if (cg_autoKillWhenFalling.integer && cgs.clientinfo[cg.clientNum].team != TEAM_SPECTATOR) {"
+        },
+        "meaning": "Disabled.",
+        "value": "0"
+      },
+      {
+        "evidence": {
+          "line": 11686,
+          "path": "codemp/cgame/cg_draw.c",
+          "score": 7,
+          "text": "if (cg_autoKillWhenFalling.integer && cgs.clientinfo[cg.clientNum].team != TEAM_SPECTATOR) {"
+        },
+        "meaning": "Enabled.",
+        "value": "1"
+      }
+    ],
     "variables": [
       "cg_autoKillWhenFalling"
     ],
@@ -17160,8 +17298,29 @@
     "source_commit": "6ff04c0baf588a89e5ec9361ad7a0992941d7655",
     "status": "needs-review",
     "summary": "Controls `cg_autoRecordDemo` in the cgame module.",
-    "value_type": "bitmask",
-    "values": [],
+    "value_type": "bool",
+    "values": [
+      {
+        "evidence": {
+          "line": 1233,
+          "path": "codemp/cgame/cg_servercmds.c",
+          "score": 7,
+          "text": "if (cg_autoRecordDemo.integer && cg.recording && (1 < cgs.gametype) && cg.warmup <= 0 && !cg.demoPlayback) {"
+        },
+        "meaning": "Disabled.",
+        "value": "0"
+      },
+      {
+        "evidence": {
+          "line": 1233,
+          "path": "codemp/cgame/cg_servercmds.c",
+          "score": 7,
+          "text": "if (cg_autoRecordDemo.integer && cg.recording && (1 < cgs.gametype) && cg.warmup <= 0 && !cg.demoPlayback) {"
+        },
+        "meaning": "Enabled.",
+        "value": "1"
+      }
+    ],
     "variables": [
       "cg_autoRecordDemo"
     ],
@@ -17715,8 +17874,29 @@
     "source_commit": "6ff04c0baf588a89e5ec9361ad7a0992941d7655",
     "status": "needs-review",
     "summary": "Automatically take a screenshot at end of round.",
-    "value_type": "bitmask",
-    "values": [],
+    "value_type": "bool",
+    "values": [
+      {
+        "evidence": {
+          "line": 9865,
+          "path": "codemp/cgame/cg_draw.c",
+          "score": 7,
+          "text": "if (cg_autoScreenshot.integer && !cgs.takenscreenshot) {"
+        },
+        "meaning": "Disabled.",
+        "value": "0"
+      },
+      {
+        "evidence": {
+          "line": 9865,
+          "path": "codemp/cgame/cg_draw.c",
+          "score": 7,
+          "text": "if (cg_autoScreenshot.integer && !cgs.takenscreenshot) {"
+        },
+        "meaning": "Enabled.",
+        "value": "1"
+      }
+    ],
     "variables": [
       "cg_autoScreenshot"
     ],
@@ -22719,7 +22899,7 @@
     "source_commit": "6ff04c0baf588a89e5ec9361ad7a0992941d7655",
     "status": "needs-review",
     "summary": "Shows past messages when console is open",
-    "value_type": "bitmask",
+    "value_type": "bool",
     "values": [
       {
         "evidence": {
@@ -23833,7 +24013,7 @@
     "source_commit": "6ff04c0baf588a89e5ec9361ad7a0992941d7655",
     "status": "needs-review",
     "summary": "1=Remove all colors from chat msgs, 2=Only remove color at begining of message",
-    "value_type": "bitmask",
+    "value_type": "enum",
     "values": [
       {
         "evidence": {
@@ -24843,8 +25023,29 @@
     "source_commit": "6ff04c0baf588a89e5ec9361ad7a0992941d7655",
     "status": "needs-review",
     "summary": "Controls `cg_crosshairSaberStyleColor` in the cgame module.",
-    "value_type": "bitmask",
-    "values": [],
+    "value_type": "bool",
+    "values": [
+      {
+        "evidence": {
+          "line": 7897,
+          "path": "codemp/cgame/cg_draw.c",
+          "score": 7,
+          "text": "else if (cg_crosshairSaberStyleColor.integer && cg.predictedPlayerState.weapon == WP_SABER) {"
+        },
+        "meaning": "Disabled.",
+        "value": "0"
+      },
+      {
+        "evidence": {
+          "line": 7897,
+          "path": "codemp/cgame/cg_draw.c",
+          "score": 7,
+          "text": "else if (cg_crosshairSaberStyleColor.integer && cg.predictedPlayerState.weapon == WP_SABER) {"
+        },
+        "meaning": "Enabled.",
+        "value": "1"
+      }
+    ],
     "variables": [
       "cg_crosshairSaberStyleColor"
     ],
@@ -25605,8 +25806,19 @@
     "source_commit": "6ff04c0baf588a89e5ec9361ad7a0992941d7655",
     "status": "needs-review",
     "summary": "Controls `cg_crosshairSizeScale` in the cgame module.",
-    "value_type": "bitmask",
-    "values": [],
+    "value_type": "enum",
+    "values": [
+      {
+        "evidence": {
+          "line": 8206,
+          "path": "codemp/cgame/cg_draw.c",
+          "score": 7,
+          "text": "if (!cg_crosshairSizeScale.integer || cg_drawCrosshair.integer == 10) {"
+        },
+        "meaning": "Selects the code path tested for value 10.",
+        "value": "10"
+      }
+    ],
     "variables": [
       "cg_crosshairSizeScale"
     ],
@@ -26327,8 +26539,29 @@
     "source_commit": "6ff04c0baf588a89e5ec9361ad7a0992941d7655",
     "status": "needs-review",
     "summary": "Controls `cg_debugAnim` in the cgame module.",
-    "value_type": "bitmask",
-    "values": [],
+    "value_type": "bool",
+    "values": [
+      {
+        "evidence": {
+          "line": 3509,
+          "path": "codemp/cgame/cg_players.c",
+          "score": 7,
+          "text": "if ( cg_debugAnim.integer && (cg_debugAnim.integer < 0 || cg_debugAnim.integer == cent->currentState.clientNum) ) {"
+        },
+        "meaning": "Disabled.",
+        "value": "0"
+      },
+      {
+        "evidence": {
+          "line": 3509,
+          "path": "codemp/cgame/cg_players.c",
+          "score": 7,
+          "text": "if ( cg_debugAnim.integer && (cg_debugAnim.integer < 0 || cg_debugAnim.integer == cent->currentState.clientNum) ) {"
+        },
+        "meaning": "Enabled.",
+        "value": "1"
+      }
+    ],
     "variables": [
       "cg_debugAnim"
     ],
@@ -28328,8 +28561,29 @@
     "source_commit": "6ff04c0baf588a89e5ec9361ad7a0992941d7655",
     "status": "needs-review",
     "summary": "Controls `cg_deferPlayers` in the cgame module.",
-    "value_type": "bitmask",
-    "values": [],
+    "value_type": "bool",
+    "values": [
+      {
+        "evidence": {
+          "line": 2511,
+          "path": "codemp/cgame/cg_players.c",
+          "score": 7,
+          "text": "else if (  cg_deferPlayers.integer && cgs.gametype != GT_SIEGE && !com_buildScript.integer && !cg.loading ) {"
+        },
+        "meaning": "Disabled.",
+        "value": "0"
+      },
+      {
+        "evidence": {
+          "line": 2511,
+          "path": "codemp/cgame/cg_players.c",
+          "score": 7,
+          "text": "else if (  cg_deferPlayers.integer && cgs.gametype != GT_SIEGE && !com_buildScript.integer && !cg.loading ) {"
+        },
+        "meaning": "Enabled.",
+        "value": "1"
+      }
+    ],
     "variables": [
       "cg_deferPlayers"
     ],
@@ -30125,8 +30379,29 @@
     "source_commit": "6ff04c0baf588a89e5ec9361ad7a0992941d7655",
     "status": "needs-review",
     "summary": "Enable disruptor spiral effect",
-    "value_type": "bitmask",
-    "values": [],
+    "value_type": "bool",
+    "values": [
+      {
+        "evidence": {
+          "line": 2858,
+          "path": "codemp/cgame/cg_event.c",
+          "score": 7,
+          "text": "if (cg_disruptorSpiral.integer && cg_disruptorNew.integer)"
+        },
+        "meaning": "Disabled.",
+        "value": "0"
+      },
+      {
+        "evidence": {
+          "line": 2858,
+          "path": "codemp/cgame/cg_event.c",
+          "score": 7,
+          "text": "if (cg_disruptorSpiral.integer && cg_disruptorNew.integer)"
+        },
+        "meaning": "Enabled.",
+        "value": "1"
+      }
+    ],
     "variables": [
       "cg_disruptorSpiral"
     ],
@@ -32801,8 +33076,19 @@
     "source_commit": "6ff04c0baf588a89e5ec9361ad7a0992941d7655",
     "status": "needs-review",
     "summary": "Controls `cg_drawEnemyInfo` in the cgame module.",
-    "value_type": "bitmask",
-    "values": [],
+    "value_type": "enum",
+    "values": [
+      {
+        "evidence": {
+          "line": 9693,
+          "path": "codemp/cgame/cg_draw.c",
+          "score": 7,
+          "text": "if ( cg_drawEnemyInfo.integer && cgs.gametype == GT_POWERDUEL && cgs.duelist3 != -1 )"
+        },
+        "meaning": "Selects the code path tested for value -1.",
+        "value": "-1"
+      }
+    ],
     "variables": [
       "cg_drawEnemyInfo"
     ],
@@ -33298,8 +33584,29 @@
     "source_commit": "6ff04c0baf588a89e5ec9361ad7a0992941d7655",
     "status": "needs-review",
     "summary": "Controls `cg_drawFriend` in the cgame module.",
-    "value_type": "bitmask",
-    "values": [],
+    "value_type": "bool",
+    "values": [
+      {
+        "evidence": {
+          "line": 11074,
+          "path": "codemp/cgame/cg_players.c",
+          "score": 7,
+          "text": "else if (cgs.gametype >= GT_TEAM && cg_drawFriend.integer &&"
+        },
+        "meaning": "Disabled.",
+        "value": "0"
+      },
+      {
+        "evidence": {
+          "line": 11074,
+          "path": "codemp/cgame/cg_players.c",
+          "score": 7,
+          "text": "else if (cgs.gametype >= GT_TEAM && cg_drawFriend.integer &&"
+        },
+        "meaning": "Enabled.",
+        "value": "1"
+      }
+    ],
     "variables": [
       "cg_drawFriend"
     ],
@@ -35623,8 +35930,29 @@
     "source_commit": "6ff04c0baf588a89e5ec9361ad7a0992941d7655",
     "status": "needs-review",
     "summary": "Controls `cg_drawRadar` in the cgame module.",
-    "value_type": "bitmask",
-    "values": [],
+    "value_type": "bool",
+    "values": [
+      {
+        "evidence": {
+          "line": 4314,
+          "path": "codemp/cgame/cg_draw.c",
+          "score": 7,
+          "text": "if ( !cg_drawEnemyInfo.integer || (cg_drawRadar.integer && cg.predictedPlayerState.m_iVehicleNum) || (cg_specHud.integer && (cgs.clientinfo[cg.snap->ps.clientNum].team == TEAM_SPECTATOR || cg.predictedPlayerState.pm_flags & PMF_FOLLOW)))"
+        },
+        "meaning": "Disabled.",
+        "value": "0"
+      },
+      {
+        "evidence": {
+          "line": 4314,
+          "path": "codemp/cgame/cg_draw.c",
+          "score": 7,
+          "text": "if ( !cg_drawEnemyInfo.integer || (cg_drawRadar.integer && cg.predictedPlayerState.m_iVehicleNum) || (cg_specHud.integer && (cgs.clientinfo[cg.snap->ps.clientNum].team == TEAM_SPECTATOR || cg.predictedPlayerState.pm_flags & PMF_FOLLOW)))"
+        },
+        "meaning": "Enabled.",
+        "value": "1"
+      }
+    ],
     "variables": [
       "cg_drawRadar"
     ],
@@ -36248,7 +36576,7 @@
     "source_commit": "6ff04c0baf588a89e5ec9361ad7a0992941d7655",
     "status": "needs-review",
     "summary": "Score counter on HUD",
-    "value_type": "bitmask",
+    "value_type": "enum",
     "values": [
       {
         "evidence": {
@@ -38988,7 +39316,7 @@
     "source_commit": "6ff04c0baf588a89e5ec9361ad7a0992941d7655",
     "status": "needs-review",
     "summary": "Draw each player's current weapon on the team overlay",
-    "value_type": "bitmask",
+    "value_type": "bool",
     "values": [
       {
         "evidence": {
@@ -42570,7 +42898,7 @@
     "source_commit": "6ff04c0baf588a89e5ec9361ad7a0992941d7655",
     "status": "needs-review",
     "summary": "Enables/disables announcer/center print at the start of private duels",
-    "value_type": "bitmask",
+    "value_type": "enum",
     "values": [
       {
         "evidence": {
@@ -42848,8 +43176,19 @@
     "source_commit": "6ff04c0baf588a89e5ec9361ad7a0992941d7655",
     "status": "needs-review",
     "summary": "Controls `cg_dynamicCrosshair` in the cgame module.",
-    "value_type": "bitmask",
-    "values": [],
+    "value_type": "enum",
+    "values": [
+      {
+        "evidence": {
+          "line": 9185,
+          "path": "codemp/cgame/cg_draw.c",
+          "score": 7,
+          "text": "if (cg_dynamicCrosshair.integer && cg_dynamicCrosshair.integer != 2)"
+        },
+        "meaning": "Selects the code path tested for value 2.",
+        "value": "2"
+      }
+    ],
     "variables": [
       "cg_dynamicCrosshair"
     ],
@@ -48018,8 +48357,29 @@
     "source_commit": "6ff04c0baf588a89e5ec9361ad7a0992941d7655",
     "status": "needs-review",
     "summary": "Shifts viewmodels down above cg_fov 90",
-    "value_type": "bitmask",
-    "values": [],
+    "value_type": "bool",
+    "values": [
+      {
+        "evidence": {
+          "line": 865,
+          "path": "codemp/cgame/cg_weapons.c",
+          "score": 7,
+          "text": "if ( cg_fovViewmodelAdjust.integer && cgFov > 90 )"
+        },
+        "meaning": "Disabled.",
+        "value": "0"
+      },
+      {
+        "evidence": {
+          "line": 865,
+          "path": "codemp/cgame/cg_weapons.c",
+          "score": 7,
+          "text": "if ( cg_fovViewmodelAdjust.integer && cgFov > 90 )"
+        },
+        "meaning": "Enabled.",
+        "value": "1"
+      }
+    ],
     "variables": [
       "cg_fovViewmodelAdjust"
     ],
@@ -48203,8 +48563,29 @@
     "source_commit": "6ff04c0baf588a89e5ec9361ad7a0992941d7655",
     "status": "needs-review",
     "summary": "Controls `cg_fpls` in the cgame module.",
-    "value_type": "bitmask",
-    "values": [],
+    "value_type": "enum",
+    "values": [
+      {
+        "evidence": {
+          "line": 9402,
+          "path": "codemp/cgame/cg_players.c",
+          "score": 7,
+          "text": "if (cg_fpls.integer == 2 || cg_fpls.integer == 3) { //removes everything but the saber hilt"
+        },
+        "meaning": "Selects the code path tested for value 2.",
+        "value": "2"
+      },
+      {
+        "evidence": {
+          "line": 9402,
+          "path": "codemp/cgame/cg_players.c",
+          "score": 7,
+          "text": "if (cg_fpls.integer == 2 || cg_fpls.integer == 3) { //removes everything but the saber hilt"
+        },
+        "meaning": "Selects the code path tested for value 3.",
+        "value": "3"
+      }
+    ],
     "variables": [
       "cg_fpls"
     ],
@@ -48637,7 +49018,9 @@
         "value": "1"
       }
     ],
-    "variables": [],
+    "variables": [
+      "cg_g2MarksAllModels"
+    ],
     "xdocs": null
   },
   {
@@ -48943,7 +49326,7 @@
     "source_commit": "6ff04c0baf588a89e5ec9361ad7a0992941d7655",
     "status": "needs-review",
     "summary": "Controls `cg_ghoul2Marks` in the cgame module.",
-    "value_type": "bitmask",
+    "value_type": "int",
     "values": [],
     "variables": [
       "cg_ghoul2Marks"
@@ -50134,8 +50517,29 @@
     "source_commit": "6ff04c0baf588a89e5ec9361ad7a0992941d7655",
     "status": "needs-review",
     "summary": "Controls `cg_headTurn` in the cgame module.",
-    "value_type": "bitmask",
-    "values": [],
+    "value_type": "bool",
+    "values": [
+      {
+        "evidence": {
+          "line": 5054,
+          "path": "codemp/cgame/cg_players.c",
+          "score": 7,
+          "text": "if (cent->currentState.hasLookTarget && cg_headTurn.integer &&"
+        },
+        "meaning": "Disabled.",
+        "value": "0"
+      },
+      {
+        "evidence": {
+          "line": 5054,
+          "path": "codemp/cgame/cg_players.c",
+          "score": 7,
+          "text": "if (cent->currentState.hasLookTarget && cg_headTurn.integer &&"
+        },
+        "meaning": "Enabled.",
+        "value": "1"
+      }
+    ],
     "variables": [
       "cg_headTurn"
     ],
@@ -50817,7 +51221,7 @@
     "source_commit": "6ff04c0baf588a89e5ec9361ad7a0992941d7655",
     "status": "needs-review",
     "summary": "Changes the colors of the HUD based on saber style and force",
-    "value_type": "bitmask",
+    "value_type": "bool",
     "values": [
       {
         "evidence": {
@@ -52274,8 +52678,29 @@
     "source_commit": "6ff04c0baf588a89e5ec9361ad7a0992941d7655",
     "status": "needs-review",
     "summary": "Specify jumpheight before jump is automaticaly canceled.",
-    "value_type": "bitmask",
-    "values": [],
+    "value_type": "bool",
+    "values": [
+      {
+        "evidence": {
+          "line": 3535,
+          "path": "codemp/game/bg_pmove.c",
+          "score": 7,
+          "text": "if (cg_jumpHeight.integer && curHeight + (pm->ps->velocity[2] * (float)cg.frametime / 1000.0f) > cg_jumpHeight.integer) //idk"
+        },
+        "meaning": "Disabled.",
+        "value": "0"
+      },
+      {
+        "evidence": {
+          "line": 3535,
+          "path": "codemp/game/bg_pmove.c",
+          "score": 7,
+          "text": "if (cg_jumpHeight.integer && curHeight + (pm->ps->velocity[2] * (float)cg.frametime / 1000.0f) > cg_jumpHeight.integer) //idk"
+        },
+        "meaning": "Enabled.",
+        "value": "1"
+      }
+    ],
     "variables": [
       "cg_jumpHeight"
     ],
@@ -64843,7 +65268,7 @@
     "source_commit": "6ff04c0baf588a89e5ec9361ad7a0992941d7655",
     "status": "needs-review",
     "summary": "Predict self-inflicted rocket-jump knockback clientside (racemode only). Use with cg_simulatedProjectiles 1.",
-    "value_type": "bitmask",
+    "value_type": "enum",
     "values": [
       {
         "evidence": {
@@ -67697,7 +68122,7 @@
     "source_commit": "6ff04c0baf588a89e5ec9361ad7a0992941d7655",
     "status": "needs-review",
     "summary": "Show or hide serverside remaps",
-    "value_type": "bitmask",
+    "value_type": "bool",
     "values": [
       {
         "evidence": {
@@ -69782,8 +70207,29 @@
     "source_commit": "6ff04c0baf588a89e5ec9361ad7a0992941d7655",
     "status": "needs-review",
     "summary": "Controls `cg_saberIgnitionFlare` in the cgame module.",
-    "value_type": "bitmask",
-    "values": [],
+    "value_type": "bool",
+    "values": [
+      {
+        "evidence": {
+          "line": 6386,
+          "path": "codemp/cgame/cg_players.c",
+          "score": 7,
+          "text": "if (cg_saberIgnitionFlare.integer && length <= (lengthMax * 0.25f)) {"
+        },
+        "meaning": "Disabled.",
+        "value": "0"
+      },
+      {
+        "evidence": {
+          "line": 6386,
+          "path": "codemp/cgame/cg_players.c",
+          "score": 7,
+          "text": "if (cg_saberIgnitionFlare.integer && length <= (lengthMax * 0.25f)) {"
+        },
+        "meaning": "Enabled.",
+        "value": "1"
+      }
+    ],
     "variables": [
       "cg_saberIgnitionFlare"
     ],
@@ -70098,8 +70544,29 @@
     "source_commit": "6ff04c0baf588a89e5ec9361ad7a0992941d7655",
     "status": "needs-review",
     "summary": "Controls `cg_saberStaffMultiColor` in the cgame module.",
-    "value_type": "bitmask",
-    "values": [],
+    "value_type": "bool",
+    "values": [
+      {
+        "evidence": {
+          "line": 7541,
+          "path": "codemp/cgame/cg_players.c",
+          "score": 7,
+          "text": "if (cg_saberStaffMultiColor.integer && bladeNum >= 1)"
+        },
+        "meaning": "Disabled.",
+        "value": "0"
+      },
+      {
+        "evidence": {
+          "line": 7541,
+          "path": "codemp/cgame/cg_players.c",
+          "score": 7,
+          "text": "if (cg_saberStaffMultiColor.integer && bladeNum >= 1)"
+        },
+        "meaning": "Enabled.",
+        "value": "1"
+      }
+    ],
     "variables": [
       "cg_saberStaffMultiColor"
     ],
@@ -70589,8 +71056,19 @@
     "source_commit": "6ff04c0baf588a89e5ec9361ad7a0992941d7655",
     "status": "needs-review",
     "summary": "Controls `cg_saberTrail` in the cgame module.",
-    "value_type": "bitmask",
-    "values": [],
+    "value_type": "enum",
+    "values": [
+      {
+        "evidence": {
+          "line": 6373,
+          "path": "codemp/cgame/cg_players.c",
+          "score": 7,
+          "text": "if (cg_saberTrail.integer == 2 && cg_shadows.integer != 2 && cgs.glconfig.stencilBits >= 4)"
+        },
+        "meaning": "Selects the code path tested for value 2.",
+        "value": "2"
+      }
+    ],
     "variables": [
       "cg_saberTrail"
     ],
@@ -71391,7 +71869,7 @@
     "source_commit": "6ff04c0baf588a89e5ec9361ad7a0992941d7655",
     "status": "needs-review",
     "summary": "Display score AND deaths on the scoreboard",
-    "value_type": "bitmask",
+    "value_type": "enum",
     "values": [
       {
         "evidence": {
@@ -73694,7 +74172,8 @@
       }
     ],
     "variables": [
-      "cg_shadows"
+      "cg_shadows",
+      "r_shadows"
     ],
     "xdocs": null
   },
@@ -75259,8 +75738,29 @@
     "source_commit": "6ff04c0baf588a89e5ec9361ad7a0992941d7655",
     "status": "needs-review",
     "summary": "Controls `cg_simpleItems` in the cgame module.",
-    "value_type": "bitmask",
-    "values": [],
+    "value_type": "bool",
+    "values": [
+      {
+        "evidence": {
+          "line": 2098,
+          "path": "codemp/cgame/cg_ents.c",
+          "score": 7,
+          "text": "if ( cg_simpleItems.integer && item->giType != IT_TEAM ) {"
+        },
+        "meaning": "Disabled.",
+        "value": "0"
+      },
+      {
+        "evidence": {
+          "line": 2098,
+          "path": "codemp/cgame/cg_ents.c",
+          "score": 7,
+          "text": "if ( cg_simpleItems.integer && item->giType != IT_TEAM ) {"
+        },
+        "meaning": "Enabled.",
+        "value": "1"
+      }
+    ],
     "variables": [
       "cg_simpleItems"
     ],
@@ -75621,8 +76121,29 @@
     "source_commit": "6ff04c0baf588a89e5ec9361ad7a0992941d7655",
     "status": "needs-review",
     "summary": "Toggle predicted hitscan weapon effects.",
-    "value_type": "bitmask",
-    "values": [],
+    "value_type": "bool",
+    "values": [
+      {
+        "evidence": {
+          "line": 2837,
+          "path": "codemp/cgame/cg_event.c",
+          "score": 7,
+          "text": "if (cgs.serverMod == SVMOD_JAPRO && cg_simulatedHitscan.integer && (cgs.jcinfo & JAPRO_CINFO_UNLAGGEDHITSCAN)) {"
+        },
+        "meaning": "Disabled.",
+        "value": "0"
+      },
+      {
+        "evidence": {
+          "line": 2837,
+          "path": "codemp/cgame/cg_event.c",
+          "score": 7,
+          "text": "if (cgs.serverMod == SVMOD_JAPRO && cg_simulatedHitscan.integer && (cgs.jcinfo & JAPRO_CINFO_UNLAGGEDHITSCAN)) {"
+        },
+        "meaning": "Enabled.",
+        "value": "1"
+      }
+    ],
     "variables": [
       "cg_simulatedHitscan"
     ],
@@ -75964,8 +76485,29 @@
     "source_commit": "6ff04c0baf588a89e5ec9361ad7a0992941d7655",
     "status": "needs-review",
     "summary": "Wether to use simulated projectiles so bullets appear instantly. Values > 1 don't draw the projectile right away.",
-    "value_type": "bitmask",
-    "values": [],
+    "value_type": "bool",
+    "values": [
+      {
+        "evidence": {
+          "line": 2758,
+          "path": "codemp/cgame/cg_weapons.c",
+          "score": 7,
+          "text": "if (cg_simulatedProjectiles.integer && (cent->currentState.number == cg.predictedPlayerState.clientNum) && cgs.serverMod == SVMOD_JAPRO && (cgs.jcinfo & JAPRO_CINFO_UNLAGGEDPROJ)) {//sad hack for 1st person only for now.."
+        },
+        "meaning": "Disabled.",
+        "value": "0"
+      },
+      {
+        "evidence": {
+          "line": 2758,
+          "path": "codemp/cgame/cg_weapons.c",
+          "score": 7,
+          "text": "if (cg_simulatedProjectiles.integer && (cent->currentState.number == cg.predictedPlayerState.clientNum) && cgs.serverMod == SVMOD_JAPRO && (cgs.jcinfo & JAPRO_CINFO_UNLAGGEDPROJ)) {//sad hack for 1st person only for now.."
+        },
+        "meaning": "Enabled.",
+        "value": "1"
+      }
+    ],
     "variables": [
       "cg_simulatedProjectiles"
     ],
@@ -76258,7 +76800,7 @@
     "source_commit": "6ff04c0baf588a89e5ec9361ad7a0992941d7655",
     "status": "needs-review",
     "summary": "Always use the small version of the scoreboard",
-    "value_type": "bitmask",
+    "value_type": "bool",
     "values": [
       {
         "evidence": {
@@ -79243,8 +79785,29 @@
     "source_commit": "6ff04c0baf588a89e5ec9361ad7a0992941d7655",
     "status": "needs-review",
     "summary": "Controls `cg_specHud` in the cgame module.",
-    "value_type": "bitmask",
-    "values": [],
+    "value_type": "bool",
+    "values": [
+      {
+        "evidence": {
+          "line": 4314,
+          "path": "codemp/cgame/cg_draw.c",
+          "score": 7,
+          "text": "if ( !cg_drawEnemyInfo.integer || (cg_drawRadar.integer && cg.predictedPlayerState.m_iVehicleNum) || (cg_specHud.integer && (cgs.clientinfo[cg.snap->ps.clientNum].team == TEAM_SPECTATOR || cg.predictedPlayerState.pm_flags & PMF_FOLLOW)))"
+        },
+        "meaning": "Disabled.",
+        "value": "0"
+      },
+      {
+        "evidence": {
+          "line": 4314,
+          "path": "codemp/cgame/cg_draw.c",
+          "score": 7,
+          "text": "if ( !cg_drawEnemyInfo.integer || (cg_drawRadar.integer && cg.predictedPlayerState.m_iVehicleNum) || (cg_specHud.integer && (cgs.clientinfo[cg.snap->ps.clientNum].team == TEAM_SPECTATOR || cg.predictedPlayerState.pm_flags & PMF_FOLLOW)))"
+        },
+        "meaning": "Enabled.",
+        "value": "1"
+      }
+    ],
     "variables": [
       "cg_specHud"
     ],
@@ -87269,8 +87832,29 @@
     "source_commit": "6ff04c0baf588a89e5ec9361ad7a0992941d7655",
     "status": "needs-review",
     "summary": "Controls `cg_strafeTrailPlums` in the cgame module.",
-    "value_type": "bitmask",
-    "values": [],
+    "value_type": "bool",
+    "values": [
+      {
+        "evidence": {
+          "line": 647,
+          "path": "codemp/cgame/cg_snapshot.c",
+          "score": 7,
+          "text": "if (cg_strafeTrailPlums.integer && (number > 0) && (number % SVFPS == 0)) {//oh this is stupid, assume sv_fps is 30 on servers that create it i guess."
+        },
+        "meaning": "Disabled.",
+        "value": "0"
+      },
+      {
+        "evidence": {
+          "line": 647,
+          "path": "codemp/cgame/cg_snapshot.c",
+          "score": 7,
+          "text": "if (cg_strafeTrailPlums.integer && (number > 0) && (number % SVFPS == 0)) {//oh this is stupid, assume sv_fps is 30 on servers that create it i guess."
+        },
+        "meaning": "Enabled.",
+        "value": "1"
+      }
+    ],
     "variables": [
       "cg_strafeTrailPlums"
     ],
@@ -87547,8 +88131,29 @@
     "source_commit": "6ff04c0baf588a89e5ec9361ad7a0992941d7655",
     "status": "needs-review",
     "summary": "Controls `cg_strafeTrailRacersOnly` in the cgame module.",
-    "value_type": "bitmask",
-    "values": [],
+    "value_type": "bool",
+    "values": [
+      {
+        "evidence": {
+          "line": 762,
+          "path": "codemp/cgame/cg_snapshot.c",
+          "score": 7,
+          "text": "if (cg_strafeTrailRacersOnly.integer && (!IsRacemode(player->playerState) || !player->playerState->duelTime))"
+        },
+        "meaning": "Disabled.",
+        "value": "0"
+      },
+      {
+        "evidence": {
+          "line": 762,
+          "path": "codemp/cgame/cg_snapshot.c",
+          "score": 7,
+          "text": "if (cg_strafeTrailRacersOnly.integer && (!IsRacemode(player->playerState) || !player->playerState->duelTime))"
+        },
+        "meaning": "Enabled.",
+        "value": "1"
+      }
+    ],
     "variables": [
       "cg_strafeTrailRacersOnly"
     ],
@@ -89331,8 +89936,29 @@
     "source_commit": "6ff04c0baf588a89e5ec9361ad7a0992941d7655",
     "status": "needs-review",
     "summary": "Controls `cg_thirdPerson` in the cgame module.",
-    "value_type": "bitmask",
-    "values": [],
+    "value_type": "bool",
+    "values": [
+      {
+        "evidence": {
+          "line": 2987,
+          "path": "codemp/cgame/cg_view.c",
+          "score": 7,
+          "text": "if (!cg_thirdPerson.integer && cg_fpls.integer && (cg.predictedPlayerState.weapon == WP_SABER || cg.predictedPlayerState.weapon == WP_MELEE))"
+        },
+        "meaning": "Disabled.",
+        "value": "0"
+      },
+      {
+        "evidence": {
+          "line": 2987,
+          "path": "codemp/cgame/cg_view.c",
+          "score": 7,
+          "text": "if (!cg_thirdPerson.integer && cg_fpls.integer && (cg.predictedPlayerState.weapon == WP_SABER || cg.predictedPlayerState.weapon == WP_MELEE))"
+        },
+        "meaning": "Enabled.",
+        "value": "1"
+      }
+    ],
     "variables": [
       "cg_thirdPerson"
     ],
@@ -91519,8 +92145,29 @@
     "source_commit": "6ff04c0baf588a89e5ec9361ad7a0992941d7655",
     "status": "needs-review",
     "summary": "Controls `cg_thirdPersonSpecialCam` in the cgame module.",
-    "value_type": "bitmask",
-    "values": [],
+    "value_type": "bool",
+    "values": [
+      {
+        "evidence": {
+          "line": 1818,
+          "path": "codemp/cgame/cg_view.c",
+          "score": 7,
+          "text": "if (cg_thirdPersonSpecialCam.integer &&"
+        },
+        "meaning": "Disabled.",
+        "value": "0"
+      },
+      {
+        "evidence": {
+          "line": 1818,
+          "path": "codemp/cgame/cg_view.c",
+          "score": 7,
+          "text": "if (cg_thirdPersonSpecialCam.integer &&"
+        },
+        "meaning": "Enabled.",
+        "value": "1"
+      }
+    ],
     "variables": [
       "cg_thirdPersonSpecialCam"
     ],
@@ -92617,7 +93264,7 @@
     "source_commit": "6ff04c0baf588a89e5ec9361ad7a0992941d7655",
     "status": "needs-review",
     "summary": "Changes the color of the HUD based on team color",
-    "value_type": "bitmask",
+    "value_type": "enum",
     "values": [
       {
         "evidence": {
@@ -95863,8 +96510,29 @@
     "source_commit": "6ff04c0baf588a89e5ec9361ad7a0992941d7655",
     "status": "documented",
     "summary": "Enables use of ALT+ENTER keyboard combo to toggle fullscreen",
-    "value_type": "bitmask",
-    "values": [],
+    "value_type": "bool",
+    "values": [
+      {
+        "evidence": {
+          "line": 1738,
+          "path": "codemp/client/cl_keys.cpp",
+          "score": 7,
+          "text": "if ( cl_allowAltEnter->integer && kg.keys[A_ALT].down && key == A_ENTER )"
+        },
+        "meaning": "Disabled.",
+        "value": "0"
+      },
+      {
+        "evidence": {
+          "line": 1738,
+          "path": "codemp/client/cl_keys.cpp",
+          "score": 7,
+          "text": "if ( cl_allowAltEnter->integer && kg.keys[A_ALT].down && key == A_ENTER )"
+        },
+        "meaning": "Enabled.",
+        "value": "1"
+      }
+    ],
     "variables": [
       "cl_allowAltEnter"
     ],
@@ -97705,7 +98373,7 @@
     "source_commit": "6ff04c0baf588a89e5ec9361ad7a0992941d7655",
     "status": "needs-review",
     "summary": "Controls `cl_aviFrameRate` in the engine-client module.",
-    "value_type": "bitmask",
+    "value_type": "float",
     "values": [],
     "variables": [
       "cl_aviFrameRate"
@@ -99388,7 +100056,9 @@
         "value": "1"
       }
     ],
-    "variables": [],
+    "variables": [
+      "cl_coloredTextShadows"
+    ],
     "xdocs": null
   },
   {
@@ -103644,8 +104314,29 @@
     "source_commit": "6ff04c0baf588a89e5ec9361ad7a0992941d7655",
     "status": "needs-review",
     "summary": "If set, sends password to Discord friends who request to join your game",
-    "value_type": "bitmask",
-    "values": [],
+    "value_type": "bool",
+    "values": [
+      {
+        "evidence": {
+          "line": 193,
+          "path": "codemp/client/cl_discordrpc.cpp",
+          "score": 7,
+          "text": "if (cl_discordRichPresenceSharePassword->integer && cl.discord.needPassword && strlen(password)) {"
+        },
+        "meaning": "Disabled.",
+        "value": "0"
+      },
+      {
+        "evidence": {
+          "line": 193,
+          "path": "codemp/client/cl_discordrpc.cpp",
+          "score": 7,
+          "text": "if (cl_discordRichPresenceSharePassword->integer && cl.discord.needPassword && strlen(password)) {"
+        },
+        "meaning": "Enabled.",
+        "value": "1"
+      }
+    ],
     "variables": [
       "cl_discordRichPresenceSharePassword"
     ],
@@ -108057,8 +108748,19 @@
     "source_commit": "6ff04c0baf588a89e5ec9361ad7a0992941d7655",
     "status": "needs-review",
     "summary": "Controls `cl_idrive` in the engine-client module.",
-    "value_type": "bitmask",
-    "values": [],
+    "value_type": "enum",
+    "values": [
+      {
+        "evidence": {
+          "line": 904,
+          "path": "codemp/client/cl_input.cpp",
+          "score": 7,
+          "text": "if (cl_idrive->integer && cl_idrive->integer != 2) {"
+        },
+        "meaning": "Selects the code path tested for value 2.",
+        "value": "2"
+      }
+    ],
     "variables": [
       "cl_idrive"
     ],
@@ -108476,8 +109178,29 @@
     "source_commit": "6ff04c0baf588a89e5ec9361ad7a0992941d7655",
     "status": "needs-review",
     "summary": "Controls `cl_lanForcePackets` in the engine-client module.",
-    "value_type": "bitmask",
-    "values": [],
+    "value_type": "bool",
+    "values": [
+      {
+        "evidence": {
+          "line": 1515,
+          "path": "codemp/client/cl_input.cpp",
+          "score": 7,
+          "text": "if ( cl_lanForcePackets->integer && Sys_IsLANAddress( &clc.netchan.remoteAddress ) ) {"
+        },
+        "meaning": "Disabled.",
+        "value": "0"
+      },
+      {
+        "evidence": {
+          "line": 1515,
+          "path": "codemp/client/cl_input.cpp",
+          "score": 7,
+          "text": "if ( cl_lanForcePackets->integer && Sys_IsLANAddress( &clc.netchan.remoteAddress ) ) {"
+        },
+        "meaning": "Enabled.",
+        "value": "1"
+      }
+    ],
     "variables": [
       "cl_lanForcePackets"
     ],
@@ -123435,8 +124158,29 @@
     "source_commit": "6ff04c0baf588a89e5ec9361ad7a0992941d7655",
     "status": "needs-review",
     "summary": "Controls `com_minimized` in the engine-shared module.",
-    "value_type": "bitmask",
-    "values": [],
+    "value_type": "bool",
+    "values": [
+      {
+        "evidence": {
+          "line": 1264,
+          "path": "codemp/client/cl_input.cpp",
+          "score": 7,
+          "text": "if ( Key_GetCatcher() || ((com_unfocused->integer || com_minimized->integer) && cl_chatBubbleUnfocused->integer) ) {"
+        },
+        "meaning": "Disabled.",
+        "value": "0"
+      },
+      {
+        "evidence": {
+          "line": 1264,
+          "path": "codemp/client/cl_input.cpp",
+          "score": 7,
+          "text": "if ( Key_GetCatcher() || ((com_unfocused->integer || com_minimized->integer) && cl_chatBubbleUnfocused->integer) ) {"
+        },
+        "meaning": "Enabled.",
+        "value": "1"
+      }
+    ],
     "variables": [
       "com_minimized"
     ],
@@ -123614,8 +124358,29 @@
     "source_commit": "6ff04c0baf588a89e5ec9361ad7a0992941d7655",
     "status": "needs-review",
     "summary": "Controls `com_optvehtrace` in the cgame module.",
-    "value_type": "bitmask",
-    "values": [],
+    "value_type": "bool",
+    "values": [
+      {
+        "evidence": {
+          "line": 7098,
+          "path": "codemp/cgame/cg_players.c",
+          "score": 7,
+          "text": "if (com_optvehtrace.integer &&"
+        },
+        "meaning": "Disabled.",
+        "value": "0"
+      },
+      {
+        "evidence": {
+          "line": 7098,
+          "path": "codemp/cgame/cg_players.c",
+          "score": 7,
+          "text": "if (com_optvehtrace.integer &&"
+        },
+        "meaning": "Enabled.",
+        "value": "1"
+      }
+    ],
     "variables": [
       "com_optvehtrace"
     ],
@@ -126244,8 +127009,29 @@
     "source_commit": "6ff04c0baf588a89e5ec9361ad7a0992941d7655",
     "status": "needs-review",
     "summary": "Controls `com_unfocused` in the engine-shared module.",
-    "value_type": "bitmask",
-    "values": [],
+    "value_type": "bool",
+    "values": [
+      {
+        "evidence": {
+          "line": 1264,
+          "path": "codemp/client/cl_input.cpp",
+          "score": 7,
+          "text": "if ( Key_GetCatcher() || ((com_unfocused->integer || com_minimized->integer) && cl_chatBubbleUnfocused->integer) ) {"
+        },
+        "meaning": "Disabled.",
+        "value": "0"
+      },
+      {
+        "evidence": {
+          "line": 1264,
+          "path": "codemp/client/cl_input.cpp",
+          "score": 7,
+          "text": "if ( Key_GetCatcher() || ((com_unfocused->integer || com_minimized->integer) && cl_chatBubbleUnfocused->integer) ) {"
+        },
+        "meaning": "Enabled.",
+        "value": "1"
+      }
+    ],
     "variables": [
       "com_unfocused"
     ],
@@ -130119,8 +130905,29 @@
     "source_commit": "6ff04c0baf588a89e5ec9361ad7a0992941d7655",
     "status": "needs-review",
     "summary": "Correct console background height, should probably disable for custom console backgrounds.",
-    "value_type": "bitmask",
-    "values": [],
+    "value_type": "bool",
+    "values": [
+      {
+        "evidence": {
+          "line": 1069,
+          "path": "codemp/client/cl_console.cpp",
+          "score": 7,
+          "text": "if (con_ratioFix->integer && frac <= 0.5f && cls.widthRatioCoef < 1.0f) // && cls.widthRatioCoef < 1.0f)"
+        },
+        "meaning": "Disabled.",
+        "value": "0"
+      },
+      {
+        "evidence": {
+          "line": 1069,
+          "path": "codemp/client/cl_console.cpp",
+          "score": 7,
+          "text": "if (con_ratioFix->integer && frac <= 0.5f && cls.widthRatioCoef < 1.0f) // && cls.widthRatioCoef < 1.0f)"
+        },
+        "meaning": "Enabled.",
+        "value": "1"
+      }
+    ],
     "variables": [
       "con_ratioFix"
     ],
@@ -135140,8 +135947,29 @@
     "source_commit": "6ff04c0baf588a89e5ec9361ad7a0992941d7655",
     "status": "needs-review",
     "summary": "Controls `d_patched` in the game module.",
-    "value_type": "bitmask",
-    "values": [],
+    "value_type": "bool",
+    "values": [
+      {
+        "evidence": {
+          "line": 786,
+          "path": "codemp/game/g_navnew.c",
+          "score": 7,
+          "text": "if ( d_patched.integer &&//use patch-style navigation"
+        },
+        "meaning": "Disabled.",
+        "value": "0"
+      },
+      {
+        "evidence": {
+          "line": 786,
+          "path": "codemp/game/g_navnew.c",
+          "score": 7,
+          "text": "if ( d_patched.integer &&//use patch-style navigation"
+        },
+        "meaning": "Enabled.",
+        "value": "1"
+      }
+    ],
     "variables": [
       "d_patched"
     ],
@@ -135294,8 +136122,29 @@
     "source_commit": "6ff04c0baf588a89e5ec9361ad7a0992941d7655",
     "status": "needs-review",
     "summary": "Controls `d_perPlayerGhoul2` in the game module.",
-    "value_type": "bitmask",
-    "values": [],
+    "value_type": "bool",
+    "values": [
+      {
+        "evidence": {
+          "line": 1641,
+          "path": "codemp/game/g_client.c",
+          "score": 7,
+          "text": "if (d_perPlayerGhoul2.integer || ent->s.number >= MAX_CLIENTS ||"
+        },
+        "meaning": "Disabled.",
+        "value": "0"
+      },
+      {
+        "evidence": {
+          "line": 1641,
+          "path": "codemp/game/g_client.c",
+          "score": 7,
+          "text": "if (d_perPlayerGhoul2.integer || ent->s.number >= MAX_CLIENTS ||"
+        },
+        "meaning": "Enabled.",
+        "value": "1"
+      }
+    ],
     "variables": [
       "d_perPlayerGhoul2"
     ],
@@ -136321,8 +137170,29 @@
     "source_commit": "6ff04c0baf588a89e5ec9361ad7a0992941d7655",
     "status": "needs-review",
     "summary": "Controls `d_saberGhoul2Collision` in the game module.",
-    "value_type": "bitmask",
-    "values": [],
+    "value_type": "bool",
+    "values": [
+      {
+        "evidence": {
+          "line": 4439,
+          "path": "codemp/game/g_combat.c",
+          "score": 7,
+          "text": "if (d_saberGhoul2Collision.integer && ent->client && ent->client->g2LastSurfaceTime == level.time)"
+        },
+        "meaning": "Disabled.",
+        "value": "0"
+      },
+      {
+        "evidence": {
+          "line": 4439,
+          "path": "codemp/game/g_combat.c",
+          "score": 7,
+          "text": "if (d_saberGhoul2Collision.integer && ent->client && ent->client->g2LastSurfaceTime == level.time)"
+        },
+        "meaning": "Enabled.",
+        "value": "1"
+      }
+    ],
     "variables": [
       "d_saberGhoul2Collision"
     ],
@@ -136863,7 +137733,7 @@
     "source_commit": "6ff04c0baf588a89e5ec9361ad7a0992941d7655",
     "status": "documented",
     "summary": "Toggle use of SP style damage in normal game.",
-    "value_type": "bitmask",
+    "value_type": "float",
     "values": [],
     "variables": [
       "d_saberSPStyleDamage"
@@ -140148,7 +141018,7 @@
     "source_commit": "6ff04c0baf588a89e5ec9361ad7a0992941d7655",
     "status": "needs-review",
     "summary": "Controls `duel_fraglimit` in the game module.",
-    "value_type": "bitmask",
+    "value_type": "int",
     "values": [],
     "variables": [
       "duel_fraglimit"
@@ -143167,7 +144037,7 @@
     "source_commit": "6ff04c0baf588a89e5ec9361ad7a0992941d7655",
     "status": "needs-review",
     "summary": "Controls `fs_copyfiles` in the engine-shared module.",
-    "value_type": "bitmask",
+    "value_type": "string",
     "values": [],
     "variables": [
       "fs_copyfiles"
@@ -143751,8 +144621,29 @@
     "source_commit": "6ff04c0baf588a89e5ec9361ad7a0992941d7655",
     "status": "documented",
     "summary": "Prioritize directories before paks if not pure",
-    "value_type": "bitmask",
-    "values": [],
+    "value_type": "bool",
+    "values": [
+      {
+        "evidence": {
+          "line": 3468,
+          "path": "codemp/qcommon/files.cpp",
+          "score": 7,
+          "text": "if (fs_dirbeforepak && fs_dirbeforepak->integer && thedir)"
+        },
+        "meaning": "Disabled.",
+        "value": "0"
+      },
+      {
+        "evidence": {
+          "line": 3468,
+          "path": "codemp/qcommon/files.cpp",
+          "score": 7,
+          "text": "if (fs_dirbeforepak && fs_dirbeforepak->integer && thedir)"
+        },
+        "meaning": "Enabled.",
+        "value": "1"
+      }
+    ],
     "variables": [
       "fs_dirbeforepak"
     ],
@@ -145519,8 +146410,19 @@
     "source_commit": "6ff04c0baf588a89e5ec9361ad7a0992941d7655",
     "status": "needs-review",
     "summary": "Controls `fx_debug` in the engine-client module.",
-    "value_type": "bitmask",
-    "values": [],
+    "value_type": "enum",
+    "values": [
+      {
+        "evidence": {
+          "line": 860,
+          "path": "codemp/client/FxScheduler.cpp",
+          "score": 7,
+          "text": "if ( fx_debug->integer == 2 )"
+        },
+        "meaning": "Selects the code path tested for value 2.",
+        "value": "2"
+      }
+    ],
     "variables": [
       "fx_debug"
     ],
@@ -146360,7 +147262,7 @@
     "source_commit": "6ff04c0baf588a89e5ec9361ad7a0992941d7655",
     "status": "needs-review",
     "summary": "Controls physics applied to FX system particles - 0: Disable all FX physics - 1: use non-expensive physics only - 2: Use flags in the fx file (Default behavior) - 3: Force expensive physics on all particles",
-    "value_type": "bitmask",
+    "value_type": "enum",
     "values": [
       {
         "evidence": {
@@ -147026,8 +147928,29 @@
     "source_commit": "6ff04c0baf588a89e5ec9361ad7a0992941d7655",
     "status": "needs-review",
     "summary": "Allow use of /throwflag command.",
-    "value_type": "bitmask",
-    "values": [],
+    "value_type": "bool",
+    "values": [
+      {
+        "evidence": {
+          "line": 5750,
+          "path": "codemp/game/g_cmds.c",
+          "score": 7,
+          "text": "if (g_allowFlagThrow.integer && ((level.gametype == GT_CTF) || g_neutralFlag.integer))"
+        },
+        "meaning": "Disabled.",
+        "value": "0"
+      },
+      {
+        "evidence": {
+          "line": 5750,
+          "path": "codemp/game/g_cmds.c",
+          "score": 7,
+          "text": "if (g_allowFlagThrow.integer && ((level.gametype == GT_CTF) || g_neutralFlag.integer))"
+        },
+        "meaning": "Enabled.",
+        "value": "1"
+      }
+    ],
     "variables": [
       "g_allowFlagThrow"
     ],
@@ -147389,7 +148312,7 @@
     "source_commit": "6ff04c0baf588a89e5ec9361ad7a0992941d7655",
     "status": "needs-review",
     "summary": "1=Tarzan style. 2=JA+ Style.",
-    "value_type": "bitmask",
+    "value_type": "enum",
     "values": [
       {
         "evidence": {
@@ -147809,8 +148732,29 @@
     "source_commit": "6ff04c0baf588a89e5ec9361ad7a0992941d7655",
     "status": "needs-review",
     "summary": "Controls `g_allowHighPingDuelist` in the game module.",
-    "value_type": "bitmask",
-    "values": [],
+    "value_type": "bool",
+    "values": [
+      {
+        "evidence": {
+          "line": 713,
+          "path": "codemp/game/g_main.c",
+          "score": 7,
+          "text": "if (!g_allowHighPingDuelist.integer && client->ps.ping >= 999)"
+        },
+        "meaning": "Disabled.",
+        "value": "0"
+      },
+      {
+        "evidence": {
+          "line": 713,
+          "path": "codemp/game/g_main.c",
+          "score": 7,
+          "text": "if (!g_allowHighPingDuelist.integer && client->ps.ping >= 999)"
+        },
+        "meaning": "Enabled.",
+        "value": "1"
+      }
+    ],
     "variables": [
       "g_allowHighPingDuelist"
     ],
@@ -148136,8 +149080,29 @@
     "source_commit": "6ff04c0baf588a89e5ec9361ad7a0992941d7655",
     "status": "needs-review",
     "summary": "Allow players to hide themselves and not be spectated/seen in racemode.",
-    "value_type": "bitmask",
-    "values": [],
+    "value_type": "bool",
+    "values": [
+      {
+        "evidence": {
+          "line": 1700,
+          "path": "codemp/game/g_active.c",
+          "score": 7,
+          "text": "if (g_allowNoFollow.integer && other->client->pers.noFollow) {"
+        },
+        "meaning": "Disabled.",
+        "value": "0"
+      },
+      {
+        "evidence": {
+          "line": 1700,
+          "path": "codemp/game/g_active.c",
+          "score": 7,
+          "text": "if (g_allowNoFollow.integer && other->client->pers.noFollow) {"
+        },
+        "meaning": "Enabled.",
+        "value": "1"
+      }
+    ],
     "variables": [
       "g_allowNoFollow"
     ],
@@ -149419,8 +150384,29 @@
     "source_commit": "6ff04c0baf588a89e5ec9361ad7a0992941d7655",
     "status": "needs-review",
     "summary": "Controls `g_allowSaberSwitch` in the game module.",
-    "value_type": "bitmask",
-    "values": [],
+    "value_type": "bool",
+    "values": [
+      {
+        "evidence": {
+          "line": 4758,
+          "path": "codemp/game/g_cmds.c",
+          "score": 7,
+          "text": "if (!g_allowSaberSwitch.integer && !ent->client->sess.raceMode) {"
+        },
+        "meaning": "Disabled.",
+        "value": "0"
+      },
+      {
+        "evidence": {
+          "line": 4758,
+          "path": "codemp/game/g_cmds.c",
+          "score": 7,
+          "text": "if (!g_allowSaberSwitch.integer && !ent->client->sess.raceMode) {"
+        },
+        "meaning": "Enabled.",
+        "value": "1"
+      }
+    ],
     "variables": [
       "g_allowSaberSwitch"
     ],
@@ -150290,8 +151276,29 @@
     "source_commit": "6ff04c0baf588a89e5ec9361ad7a0992941d7655",
     "status": "needs-review",
     "summary": "Target laser used with +button14",
-    "value_type": "bitmask",
-    "values": [],
+    "value_type": "bool",
+    "values": [
+      {
+        "evidence": {
+          "line": 5553,
+          "path": "codemp/game/g_active.c",
+          "score": 7,
+          "text": "if (g_allowTargetLaser.integer && ent->client->pers.cmd.buttons & BUTTON_TARGET) { //Add cvar to enable/disable"
+        },
+        "meaning": "Disabled.",
+        "value": "0"
+      },
+      {
+        "evidence": {
+          "line": 5553,
+          "path": "codemp/game/g_active.c",
+          "score": 7,
+          "text": "if (g_allowTargetLaser.integer && ent->client->pers.cmd.buttons & BUTTON_TARGET) { //Add cvar to enable/disable"
+        },
+        "meaning": "Enabled.",
+        "value": "1"
+      }
+    ],
     "variables": [
       "g_allowTargetLaser"
     ],
@@ -152288,8 +153295,29 @@
     "source_commit": "6ff04c0baf588a89e5ec9361ad7a0992941d7655",
     "status": "needs-review",
     "summary": "Experimental anti wallhack code. Use the client plugin so it can tell the server where your camera position is, and if you use 3rd person.",
-    "value_type": "bitmask",
-    "values": [],
+    "value_type": "bool",
+    "values": [
+      {
+        "evidence": {
+          "line": 2415,
+          "path": "codemp/game/g_active.c",
+          "score": 7,
+          "text": "if (g_antiWallhack.integer > 1) {"
+        },
+        "meaning": "Disabled.",
+        "value": "0"
+      },
+      {
+        "evidence": {
+          "line": 2415,
+          "path": "codemp/game/g_active.c",
+          "score": 7,
+          "text": "if (g_antiWallhack.integer > 1) {"
+        },
+        "meaning": "Enabled.",
+        "value": "1"
+      }
+    ],
     "variables": [
       "g_antiWallhack"
     ],
@@ -152410,8 +153438,29 @@
     "source_commit": "6ff04c0baf588a89e5ec9361ad7a0992941d7655",
     "status": "needs-review",
     "summary": "Controls `g_armBreakage` in the game module.",
-    "value_type": "bitmask",
-    "values": [],
+    "value_type": "bool",
+    "values": [
+      {
+        "evidence": {
+          "line": 6120,
+          "path": "codemp/game/g_combat.c",
+          "score": 7,
+          "text": "if (g_armBreakage.integer && !targ->client->ps.brokenLimbs &&"
+        },
+        "meaning": "Disabled.",
+        "value": "0"
+      },
+      {
+        "evidence": {
+          "line": 6120,
+          "path": "codemp/game/g_combat.c",
+          "score": 7,
+          "text": "if (g_armBreakage.integer && !targ->client->ps.brokenLimbs &&"
+        },
+        "meaning": "Enabled.",
+        "value": "1"
+      }
+    ],
     "variables": [
       "g_armBreakage"
     ],
@@ -152593,8 +153642,29 @@
     "source_commit": "6ff04c0baf588a89e5ec9361ad7a0992941d7655",
     "status": "needs-review",
     "summary": "Controls `g_austrian` in the game module.",
-    "value_type": "bitmask",
-    "values": [],
+    "value_type": "bool",
+    "values": [
+      {
+        "evidence": {
+          "line": 1839,
+          "path": "codemp/game/g_main.c",
+          "score": 7,
+          "text": "if ( g_austrian.integer && level.gametype != GT_POWERDUEL )"
+        },
+        "meaning": "Disabled.",
+        "value": "0"
+      },
+      {
+        "evidence": {
+          "line": 1839,
+          "path": "codemp/game/g_main.c",
+          "score": 7,
+          "text": "if ( g_austrian.integer && level.gametype != GT_POWERDUEL )"
+        },
+        "meaning": "Enabled.",
+        "value": "1"
+      }
+    ],
     "variables": [
       "g_austrian"
     ],
@@ -152716,8 +153786,29 @@
     "source_commit": "6ff04c0baf588a89e5ec9361ad7a0992941d7655",
     "status": "needs-review",
     "summary": "Controls `g_autoMapCycle` in the game module.",
-    "value_type": "bitmask",
-    "values": [],
+    "value_type": "bool",
+    "values": [
+      {
+        "evidence": {
+          "line": 232,
+          "path": "codemp/game/g_bot.c",
+          "score": 7,
+          "text": "if (!g_autoMapCycle.integer && !forced)"
+        },
+        "meaning": "Disabled.",
+        "value": "0"
+      },
+      {
+        "evidence": {
+          "line": 232,
+          "path": "codemp/game/g_bot.c",
+          "score": 7,
+          "text": "if (!g_autoMapCycle.integer && !forced)"
+        },
+        "meaning": "Enabled.",
+        "value": "1"
+      }
+    ],
     "variables": [
       "g_autoMapCycle"
     ],
@@ -153765,8 +154856,29 @@
     "source_commit": "6ff04c0baf588a89e5ec9361ad7a0992941d7655",
     "status": "needs-review",
     "summary": "Don't show duelers health to people in spectate.",
-    "value_type": "bitmask",
-    "values": [],
+    "value_type": "bool",
+    "values": [
+      {
+        "evidence": {
+          "line": 6133,
+          "path": "codemp/game/g_active.c",
+          "score": 7,
+          "text": "if (g_blockDuelHealthSpec.integer && ent->client->ps.duelInProgress) {"
+        },
+        "meaning": "Disabled.",
+        "value": "0"
+      },
+      {
+        "evidence": {
+          "line": 6133,
+          "path": "codemp/game/g_active.c",
+          "score": 7,
+          "text": "if (g_blockDuelHealthSpec.integer && ent->client->ps.duelInProgress) {"
+        },
+        "meaning": "Enabled.",
+        "value": "1"
+      }
+    ],
     "variables": [
       "g_blockDuelHealthSpec"
     ],
@@ -155225,8 +156337,29 @@
     "source_commit": "6ff04c0baf588a89e5ec9361ad7a0992941d7655",
     "status": "needs-review",
     "summary": "Controls `g_charRestrictRGB` in the game module.",
-    "value_type": "bitmask",
-    "values": [],
+    "value_type": "bool",
+    "values": [
+      {
+        "evidence": {
+          "line": 2554,
+          "path": "codemp/game/g_client.c",
+          "score": 7,
+          "text": "if ( g_charRestrictRGB.integer && ((client->ps.customRGBA[0]+client->ps.customRGBA[1]+client->ps.customRGBA[2]) < 100) )"
+        },
+        "meaning": "Disabled.",
+        "value": "0"
+      },
+      {
+        "evidence": {
+          "line": 2554,
+          "path": "codemp/game/g_client.c",
+          "score": 7,
+          "text": "if ( g_charRestrictRGB.integer && ((client->ps.customRGBA[0]+client->ps.customRGBA[1]+client->ps.customRGBA[2]) < 100) )"
+        },
+        "meaning": "Enabled.",
+        "value": "1"
+      }
+    ],
     "variables": [
       "g_charRestrictRGB"
     ],
@@ -156113,8 +157246,69 @@
     "source_commit": "6ff04c0baf588a89e5ec9361ad7a0992941d7655",
     "status": "needs-review",
     "summary": "1-7. Controls different types of damagenumber printouts.",
-    "value_type": "bitmask",
-    "values": [],
+    "value_type": "enum",
+    "values": [
+      {
+        "evidence": {
+          "line": 5805,
+          "path": "codemp/game/g_combat.c",
+          "score": 7,
+          "text": "if (g_damageNumbers.integer == 1 || g_damageNumbers.integer == 5 || g_damageNumbers.integer == 6) {"
+        },
+        "meaning": "Selects the code path tested for value 1.",
+        "value": "1"
+      },
+      {
+        "evidence": {
+          "line": 5796,
+          "path": "codemp/game/g_combat.c",
+          "score": 7,
+          "text": "if (g_damageNumbers.integer == 2 || g_damageNumbers.integer == 5 || g_damageNumbers.integer == 7) {"
+        },
+        "meaning": "Selects the code path tested for value 2.",
+        "value": "2"
+      },
+      {
+        "evidence": {
+          "line": 5796,
+          "path": "codemp/game/g_combat.c",
+          "score": 7,
+          "text": "if (g_damageNumbers.integer == 2 || g_damageNumbers.integer == 5 || g_damageNumbers.integer == 7) {"
+        },
+        "meaning": "Selects the code path tested for value 5.",
+        "value": "5"
+      },
+      {
+        "evidence": {
+          "line": 5805,
+          "path": "codemp/game/g_combat.c",
+          "score": 7,
+          "text": "if (g_damageNumbers.integer == 1 || g_damageNumbers.integer == 5 || g_damageNumbers.integer == 6) {"
+        },
+        "meaning": "Selects the code path tested for value 6.",
+        "value": "6"
+      },
+      {
+        "evidence": {
+          "line": 5796,
+          "path": "codemp/game/g_combat.c",
+          "score": 7,
+          "text": "if (g_damageNumbers.integer == 2 || g_damageNumbers.integer == 5 || g_damageNumbers.integer == 7) {"
+        },
+        "meaning": "Selects the code path tested for value 7.",
+        "value": "7"
+      },
+      {
+        "evidence": {
+          "line": 5811,
+          "path": "codemp/game/g_combat.c",
+          "score": 7,
+          "text": "if (g_damageNumbers.integer == 8) {"
+        },
+        "meaning": "Selects the code path tested for value 8.",
+        "value": "8"
+      }
+    ],
     "variables": [
       "g_damageNumbers"
     ],
@@ -157793,8 +158987,29 @@
     "source_commit": "6ff04c0baf588a89e5ec9361ad7a0992941d7655",
     "status": "needs-review",
     "summary": "Controls `g_doWarmup` in the game module.",
-    "value_type": "bitmask",
-    "values": [],
+    "value_type": "bool",
+    "values": [
+      {
+        "evidence": {
+          "line": 1565,
+          "path": "codemp/game/g_spawn.c",
+          "score": 7,
+          "text": "else if ( g_doWarmup.integer && level.gametype != GT_DUEL && level.gametype != GT_POWERDUEL && level.gametype != GT_SIEGE ) { // Turn it on"
+        },
+        "meaning": "Disabled.",
+        "value": "0"
+      },
+      {
+        "evidence": {
+          "line": 1565,
+          "path": "codemp/game/g_spawn.c",
+          "score": 7,
+          "text": "else if ( g_doWarmup.integer && level.gametype != GT_DUEL && level.gametype != GT_POWERDUEL && level.gametype != GT_SIEGE ) { // Turn it on"
+        },
+        "meaning": "Enabled.",
+        "value": "1"
+      }
+    ],
     "variables": [
       "g_doWarmup"
     ],
@@ -158661,8 +159876,29 @@
     "source_commit": "6ff04c0baf588a89e5ec9361ad7a0992941d7655",
     "status": "needs-review",
     "summary": "Automatically respawn players to where they died after losing a duel.",
-    "value_type": "bitmask",
-    "values": [],
+    "value_type": "bool",
+    "values": [
+      {
+        "evidence": {
+          "line": 4069,
+          "path": "codemp/game/g_client.c",
+          "score": 7,
+          "text": "if (g_duelRespawn.integer && level.gametype == GT_FFA && VectorLength(client->pers.respawnLocation) && !SpotWouldTelefrag3(client->pers.respawnLocation)) {"
+        },
+        "meaning": "Disabled.",
+        "value": "0"
+      },
+      {
+        "evidence": {
+          "line": 4069,
+          "path": "codemp/game/g_client.c",
+          "score": 7,
+          "text": "if (g_duelRespawn.integer && level.gametype == GT_FFA && VectorLength(client->pers.respawnLocation) && !SpotWouldTelefrag3(client->pers.respawnLocation)) {"
+        },
+        "meaning": "Enabled.",
+        "value": "1"
+      }
+    ],
     "variables": [
       "g_duelRespawn"
     ],
@@ -159304,8 +160540,19 @@
     "source_commit": "6ff04c0baf588a89e5ec9361ad7a0992941d7655",
     "status": "needs-review",
     "summary": "Controls `g_duelStartHealth` in the game module.",
-    "value_type": "bitmask",
-    "values": [],
+    "value_type": "enum",
+    "values": [
+      {
+        "evidence": {
+          "line": 8317,
+          "path": "codemp/game/g_cmds.c",
+          "score": 7,
+          "text": "if (g_duelStartHealth.integer && g_duelStartHealth.integer != 100)"
+        },
+        "meaning": "Selects the code path tested for value 100.",
+        "value": "100"
+      }
+    ],
     "variables": [
       "g_duelStartHealth"
     ],
@@ -161992,8 +163239,29 @@
     "source_commit": "6ff04c0baf588a89e5ec9361ad7a0992941d7655",
     "status": "needs-review",
     "summary": "Enables the built in elo ranking for duels.",
-    "value_type": "bitmask",
-    "values": [],
+    "value_type": "bool",
+    "values": [
+      {
+        "evidence": {
+          "line": 4330,
+          "path": "codemp/game/g_cmds.c",
+          "score": 7,
+          "text": "if (g_eloRanking.integer && ent->client->pers.userName[0] && challenged->client->pers.userName[0])"
+        },
+        "meaning": "Disabled.",
+        "value": "0"
+      },
+      {
+        "evidence": {
+          "line": 4330,
+          "path": "codemp/game/g_cmds.c",
+          "score": 7,
+          "text": "if (g_eloRanking.integer && ent->client->pers.userName[0] && challenged->client->pers.userName[0])"
+        },
+        "meaning": "Enabled.",
+        "value": "1"
+      }
+    ],
     "variables": [
       "g_eloRanking"
     ],
@@ -162595,8 +163863,29 @@
     "source_commit": "6ff04c0baf588a89e5ec9361ad7a0992941d7655",
     "status": "needs-review",
     "summary": "Controls `g_fakeClients` in the game module.",
-    "value_type": "bitmask",
-    "values": [],
+    "value_type": "bool",
+    "values": [
+      {
+        "evidence": {
+          "line": 85,
+          "path": "codemp/game/g_cmds.c",
+          "score": 7,
+          "text": "if (g_fakeClients.integer && (g_entities[cl - level.clients].r.svFlags & SVF_BOT))"
+        },
+        "meaning": "Disabled.",
+        "value": "0"
+      },
+      {
+        "evidence": {
+          "line": 85,
+          "path": "codemp/game/g_cmds.c",
+          "score": 7,
+          "text": "if (g_fakeClients.integer && (g_entities[cl - level.clients].r.svFlags & SVF_BOT))"
+        },
+        "meaning": "Enabled.",
+        "value": "1"
+      }
+    ],
     "variables": [
       "g_fakeClients"
     ],
@@ -163903,8 +165192,29 @@
     "source_commit": "6ff04c0baf588a89e5ec9361ad7a0992941d7655",
     "status": "needs-review",
     "summary": "Don't auto return flag when flag carrier suicides.",
-    "value_type": "bitmask",
-    "values": [],
+    "value_type": "bool",
+    "values": [
+      {
+        "evidence": {
+          "line": 694,
+          "path": "codemp/game/g_combat.c",
+          "score": 7,
+          "text": "if (g_fixFlagSuicide.integer && g_allowFlagThrow.integer && item->giType == IT_TEAM) {"
+        },
+        "meaning": "Disabled.",
+        "value": "0"
+      },
+      {
+        "evidence": {
+          "line": 694,
+          "path": "codemp/game/g_combat.c",
+          "score": 7,
+          "text": "if (g_fixFlagSuicide.integer && g_allowFlagThrow.integer && item->giType == IT_TEAM) {"
+        },
+        "meaning": "Enabled.",
+        "value": "1"
+      }
+    ],
     "variables": [
       "g_fixFlagSuicide"
     ],
@@ -164186,7 +165496,7 @@
     "source_commit": "6ff04c0baf588a89e5ec9361ad7a0992941d7655",
     "status": "needs-review",
     "summary": "1=Allow grip during knockdown recovery. 2=Allow grip/push/pull during knockdown recovery.",
-    "value_type": "bitmask",
+    "value_type": "enum",
     "values": [
       {
         "evidence": {
@@ -164792,8 +166102,29 @@
     "source_commit": "6ff04c0baf588a89e5ec9361ad7a0992941d7655",
     "status": "needs-review",
     "summary": "Make players who have more than 250fps behave at 250fps physics.",
-    "value_type": "bitmask",
-    "values": [],
+    "value_type": "bool",
+    "values": [
+      {
+        "evidence": {
+          "line": 15508,
+          "path": "codemp/game/bg_pmove.c",
+          "score": 7,
+          "text": "else if (g_fixHighFPSAbuse.integer && ((pml.msec < 4) || (pml.msec > 25))) { //More than 333fps, or less than 40fps."
+        },
+        "meaning": "Disabled.",
+        "value": "0"
+      },
+      {
+        "evidence": {
+          "line": 15508,
+          "path": "codemp/game/bg_pmove.c",
+          "score": 7,
+          "text": "else if (g_fixHighFPSAbuse.integer && ((pml.msec < 4) || (pml.msec > 25))) { //More than 333fps, or less than 40fps."
+        },
+        "meaning": "Enabled.",
+        "value": "1"
+      }
+    ],
     "variables": [
       "g_fixHighFPSAbuse"
     ],
@@ -165118,7 +166449,7 @@
     "source_commit": "6ff04c0baf588a89e5ec9361ad7a0992941d7655",
     "status": "needs-review",
     "summary": "1=Award kill credit after target suicides/spectates. 2=Also for disconnects/reconnects.",
-    "value_type": "bitmask",
+    "value_type": "enum",
     "values": [
       {
         "evidence": {
@@ -165424,7 +166755,7 @@
     "source_commit": "6ff04c0baf588a89e5ec9361ad7a0992941d7655",
     "status": "needs-review",
     "summary": "1=Lightning gives forcepoints to target. 2=Same as 1 with reduced damage. 3=Same as 2 with no melee bonus.",
-    "value_type": "bitmask",
+    "value_type": "enum",
     "values": [
       {
         "evidence": {
@@ -167006,7 +168337,7 @@
     "source_commit": "6ff04c0baf588a89e5ec9361ad7a0992941d7655",
     "status": "needs-review",
     "summary": "1=Grip does not turn off lightsaber. 2=Same as 1 and also target can toggle lightsaber in grip. 3=Same as 2 and also target can switch saberstyle in grip.",
-    "value_type": "bitmask",
+    "value_type": "enum",
     "values": [
       {
         "evidence": {
@@ -167652,7 +168983,7 @@
     "source_commit": "6ff04c0baf588a89e5ec9361ad7a0992941d7655",
     "status": "needs-review",
     "summary": "1=Fixed slide physics for NPCS. 2=Fixed slide physics for NPCs and players.",
-    "value_type": "bitmask",
+    "value_type": "enum",
     "values": [
       {
         "evidence": {
@@ -167934,8 +169265,29 @@
     "source_commit": "6ff04c0baf588a89e5ec9361ad7a0992941d7655",
     "status": "needs-review",
     "summary": "Controls `g_fixTimerOOB` in the game module.",
-    "value_type": "bitmask",
-    "values": [],
+    "value_type": "bool",
+    "values": [
+      {
+        "evidence": {
+          "line": 1467,
+          "path": "codemp/game/g_trigger.c",
+          "score": 7,
+          "text": "if (player->client->sess.raceMode && g_fixTimerOOB.integer && !trap->InPVS(player->client->ps.origin, player->client->ps.origin)) { //Check if they are OOB (not in a PVS?)"
+        },
+        "meaning": "Disabled.",
+        "value": "0"
+      },
+      {
+        "evidence": {
+          "line": 1467,
+          "path": "codemp/game/g_trigger.c",
+          "score": 7,
+          "text": "if (player->client->sess.raceMode && g_fixTimerOOB.integer && !trap->InPVS(player->client->ps.origin, player->client->ps.origin)) { //Check if they are OOB (not in a PVS?)"
+        },
+        "meaning": "Enabled.",
+        "value": "1"
+      }
+    ],
     "variables": [
       "g_fixTimerOOB"
     ],
@@ -169328,8 +170680,29 @@
     "source_commit": "6ff04c0baf588a89e5ec9361ad7a0992941d7655",
     "status": "needs-review",
     "summary": "Controls `g_forceBasedTeams` in the game module.",
-    "value_type": "bitmask",
-    "values": [],
+    "value_type": "bool",
+    "values": [
+      {
+        "evidence": {
+          "line": 1309,
+          "path": "codemp/game/g_cmds.c",
+          "score": 7,
+          "text": "if (g_forceBasedTeams.integer && ent->client->ps.fd.forceSide == FORCE_DARKSIDE)"
+        },
+        "meaning": "Disabled.",
+        "value": "0"
+      },
+      {
+        "evidence": {
+          "line": 1309,
+          "path": "codemp/game/g_cmds.c",
+          "score": 7,
+          "text": "if (g_forceBasedTeams.integer && ent->client->ps.fd.forceSide == FORCE_DARKSIDE)"
+        },
+        "meaning": "Enabled.",
+        "value": "1"
+      }
+    ],
     "variables": [
       "g_forceBasedTeams"
     ],
@@ -169729,7 +171102,7 @@
     "source_commit": "6ff04c0baf588a89e5ec9361ad7a0992941d7655",
     "status": "needs-review",
     "summary": "Controls `g_forceClientUpdateRate` in the game module.",
-    "value_type": "bitmask",
+    "value_type": "int",
     "values": [],
     "variables": [
       "g_forceClientUpdateRate"
@@ -171831,7 +173204,7 @@
     "source_commit": "6ff04c0baf588a89e5ec9361ad7a0992941d7655",
     "status": "needs-review",
     "summary": "1=Force players to login in order to be ingame. 2=also block them from chatting until logging in. 3=also block them from renaming until logging in.",
-    "value_type": "bitmask",
+    "value_type": "enum",
     "values": [
       {
         "evidence": {
@@ -174858,7 +176231,7 @@
     "source_commit": "6ff04c0baf588a89e5ec9361ad7a0992941d7655",
     "status": "needs-review",
     "summary": "Scale of all player momentum gained by projectiles.",
-    "value_type": "bitmask",
+    "value_type": "float",
     "values": [],
     "variables": [
       "g_fullInheritance"
@@ -176578,8 +177951,29 @@
     "source_commit": "6ff04c0baf588a89e5ec9361ad7a0992941d7655",
     "status": "needs-review",
     "summary": "Controls `g_godChat` in the game module.",
-    "value_type": "bitmask",
-    "values": [],
+    "value_type": "bool",
+    "values": [
+      {
+        "evidence": {
+          "line": 3845,
+          "path": "codemp/game/g_active.c",
+          "score": 7,
+          "text": "else if (g_godChat.integer && level.gametype == GT_FFA && (ent->client->ps.eFlags & EF_TALK) && (ent->client->pers.lastChatTime + 3000) < level.time) { //Only god chat them 3 seconds after their chatbox goes up to prevent some abuse :/"
+        },
+        "meaning": "Disabled.",
+        "value": "0"
+      },
+      {
+        "evidence": {
+          "line": 3845,
+          "path": "codemp/game/g_active.c",
+          "score": 7,
+          "text": "else if (g_godChat.integer && level.gametype == GT_FFA && (ent->client->ps.eFlags & EF_TALK) && (ent->client->pers.lastChatTime + 3000) < level.time) { //Only god chat them 3 seconds after their chatbox goes up to prevent some abuse :/"
+        },
+        "meaning": "Enabled.",
+        "value": "1"
+      }
+    ],
     "variables": [
       "g_godChat"
     ],
@@ -177079,8 +178473,19 @@
     "source_commit": "6ff04c0baf588a89e5ec9361ad7a0992941d7655",
     "status": "needs-review",
     "summary": "Controls `g_gunGame` in the game module.",
-    "value_type": "bitmask",
-    "values": [],
+    "value_type": "enum",
+    "values": [
+      {
+        "evidence": {
+          "line": 7380,
+          "path": "codemp/game/ai_main.c",
+          "score": 7,
+          "text": "if (g_gunGame.integer && g_entities[bs->client].client->forcedFireMode == 2) {"
+        },
+        "meaning": "Selects the code path tested for value 2.",
+        "value": "2"
+      }
+    ],
     "variables": [
       "g_gunGame"
     ],
@@ -182992,7 +184397,7 @@
     "source_commit": "6ff04c0baf588a89e5ec9361ad7a0992941d7655",
     "status": "needs-review",
     "summary": "Controls `g_maxFallDmg` in the game module.",
-    "value_type": "bitmask",
+    "value_type": "float",
     "values": [],
     "variables": [
       "g_maxFallDmg"
@@ -183696,7 +185101,7 @@
     "source_commit": "6ff04c0baf588a89e5ec9361ad7a0992941d7655",
     "status": "needs-review",
     "summary": "Controls `g_maxHolocronCarry` in the game module.",
-    "value_type": "bitmask",
+    "value_type": "float",
     "values": [],
     "variables": [
       "g_maxHolocronCarry"
@@ -186028,8 +187433,29 @@
     "source_commit": "6ff04c0baf588a89e5ec9361ad7a0992941d7655",
     "status": "needs-review",
     "summary": "Controls `g_newBotAI` in the game module.",
-    "value_type": "bitmask",
-    "values": [],
+    "value_type": "bool",
+    "values": [
+      {
+        "evidence": {
+          "line": 5378,
+          "path": "codemp/game/ai_main.c",
+          "score": 7,
+          "text": "if (g_newBotAI.integer && (bs->cur_ps.stats[STAT_WEAPONS] & (1 << WP_SABER))) { //always use saber for new bot.. sad hack"
+        },
+        "meaning": "Disabled.",
+        "value": "0"
+      },
+      {
+        "evidence": {
+          "line": 5378,
+          "path": "codemp/game/ai_main.c",
+          "score": 7,
+          "text": "if (g_newBotAI.integer && (bs->cur_ps.stats[STAT_WEAPONS] & (1 << WP_SABER))) { //always use saber for new bot.. sad hack"
+        },
+        "meaning": "Enabled.",
+        "value": "1"
+      }
+    ],
     "variables": [
       "g_newBotAI"
     ],
@@ -188442,8 +189868,29 @@
     "source_commit": "6ff04c0baf588a89e5ec9361ad7a0992941d7655",
     "status": "needs-review",
     "summary": "Used by /amlookup",
-    "value_type": "bitmask",
-    "values": [],
+    "value_type": "bool",
+    "values": [
+      {
+        "evidence": {
+          "line": 2527,
+          "path": "codemp/game/g_client.c",
+          "score": 7,
+          "text": "if (g_playerLog.integer && ent && ent->client && !(ent->r.svFlags & SVF_BOT))"
+        },
+        "meaning": "Disabled.",
+        "value": "0"
+      },
+      {
+        "evidence": {
+          "line": 2527,
+          "path": "codemp/game/g_client.c",
+          "score": 7,
+          "text": "if (g_playerLog.integer && ent && ent->client && !(ent->r.svFlags & SVF_BOT))"
+        },
+        "meaning": "Enabled.",
+        "value": "1"
+      }
+    ],
     "variables": [
       "g_playerLog"
     ],
@@ -188861,8 +190308,29 @@
     "source_commit": "6ff04c0baf588a89e5ec9361ad7a0992941d7655",
     "status": "needs-review",
     "summary": "Controls `g_privateDuel` in the game module.",
-    "value_type": "bitmask",
-    "values": [],
+    "value_type": "bool",
+    "values": [
+      {
+        "evidence": {
+          "line": 4232,
+          "path": "codemp/game/g_cmds.c",
+          "score": 6,
+          "text": "if (!g_privateDuel.integer)"
+        },
+        "meaning": "Disabled.",
+        "value": "0"
+      },
+      {
+        "evidence": {
+          "line": 4232,
+          "path": "codemp/game/g_cmds.c",
+          "score": 6,
+          "text": "if (!g_privateDuel.integer)"
+        },
+        "meaning": "Enabled.",
+        "value": "1"
+      }
+    ],
     "variables": [
       "g_privateDuel"
     ],
@@ -190482,7 +191950,7 @@
     "source_commit": "6ff04c0baf588a89e5ec9361ad7a0992941d7655",
     "status": "needs-review",
     "summary": "0=Noracemode, 1=forcedracemode, 2=player can toggle race mode with /racecommand.",
-    "value_type": "bitmask",
+    "value_type": "enum",
     "values": [
       {
         "evidence": {
@@ -192027,8 +193495,29 @@
     "source_commit": "6ff04c0baf588a89e5ec9361ad7a0992941d7655",
     "status": "needs-review",
     "summary": "Network all entity data to spectators, useful if you have a recorder in spectate so you can record all POV's.",
-    "value_type": "bitmask",
-    "values": [],
+    "value_type": "bool",
+    "values": [
+      {
+        "evidence": {
+          "line": 2104,
+          "path": "codemp/game/g_active.c",
+          "score": 7,
+          "text": "if (!g_removeSpectatorPortals.integer || ent->client->sess.sessionTeam != TEAM_SPECTATOR) // Setting is off, or they are not in spec. (this is only skipped if setting is on and they are in spec)"
+        },
+        "meaning": "Disabled.",
+        "value": "0"
+      },
+      {
+        "evidence": {
+          "line": 2104,
+          "path": "codemp/game/g_active.c",
+          "score": 7,
+          "text": "if (!g_removeSpectatorPortals.integer || ent->client->sess.sessionTeam != TEAM_SPECTATOR) // Setting is off, or they are not in spec. (this is only skipped if setting is on and they are in spec)"
+        },
+        "meaning": "Enabled.",
+        "value": "1"
+      }
+    ],
     "variables": [
       "g_removeSpectatorPortals"
     ],
@@ -198240,8 +199729,29 @@
     "source_commit": "6ff04c0baf588a89e5ec9361ad7a0992941d7655",
     "status": "needs-review",
     "summary": "Show healthbars above players heads when aimed at. Requires map restart.",
-    "value_type": "bitmask",
-    "values": [],
+    "value_type": "bool",
+    "values": [
+      {
+        "evidence": {
+          "line": 4215,
+          "path": "codemp/game/g_client.c",
+          "score": 7,
+          "text": "if (g_showHealth.integer && !client->sess.raceMode)"
+        },
+        "meaning": "Disabled.",
+        "value": "0"
+      },
+      {
+        "evidence": {
+          "line": 4215,
+          "path": "codemp/game/g_client.c",
+          "score": 7,
+          "text": "if (g_showHealth.integer && !client->sess.raceMode)"
+        },
+        "meaning": "Enabled.",
+        "value": "1"
+      }
+    ],
     "variables": [
       "g_showHealth"
     ],
@@ -198724,7 +200234,7 @@
     "source_commit": "6ff04c0baf588a89e5ec9361ad7a0992941d7655",
     "status": "needs-review",
     "summary": "Controls `g_siegeRespawn` in the game module.",
-    "value_type": "bitmask",
+    "value_type": "int",
     "values": [],
     "variables": [
       "g_siegeRespawn"
@@ -199233,8 +200743,29 @@
     "source_commit": "6ff04c0baf588a89e5ec9361ad7a0992941d7655",
     "status": "needs-review",
     "summary": "Controls `g_siegeTeamSwitch` in the game module.",
-    "value_type": "bitmask",
-    "values": [],
+    "value_type": "bool",
+    "values": [
+      {
+        "evidence": {
+          "line": 236,
+          "path": "codemp/game/g_saga.c",
+          "score": 7,
+          "text": "if (g_siegeTeamSwitch.integer &&"
+        },
+        "meaning": "Disabled.",
+        "value": "0"
+      },
+      {
+        "evidence": {
+          "line": 236,
+          "path": "codemp/game/g_saga.c",
+          "score": 7,
+          "text": "if (g_siegeTeamSwitch.integer &&"
+        },
+        "meaning": "Enabled.",
+        "value": "1"
+      }
+    ],
     "variables": [
       "g_siegeTeamSwitch"
     ],
@@ -199684,8 +201215,29 @@
     "source_commit": "6ff04c0baf588a89e5ec9361ad7a0992941d7655",
     "status": "needs-review",
     "summary": "Controls `g_slowmoDuelEnd` in the game module.",
-    "value_type": "bitmask",
-    "values": [],
+    "value_type": "bool",
+    "values": [
+      {
+        "evidence": {
+          "line": 2485,
+          "path": "codemp/game/g_combat.c",
+          "score": 7,
+          "text": "if (g_slowmoDuelEnd.integer && (level.gametype == GT_DUEL || level.gametype == GT_POWERDUEL) && attacker && attacker->inuse && attacker->client)"
+        },
+        "meaning": "Disabled.",
+        "value": "0"
+      },
+      {
+        "evidence": {
+          "line": 2485,
+          "path": "codemp/game/g_combat.c",
+          "score": 7,
+          "text": "if (g_slowmoDuelEnd.integer && (level.gametype == GT_DUEL || level.gametype == GT_POWERDUEL) && attacker && attacker->inuse && attacker->client)"
+        },
+        "meaning": "Enabled.",
+        "value": "1"
+      }
+    ],
     "variables": [
       "g_slowmoDuelEnd"
     ],
@@ -199845,8 +201397,29 @@
     "source_commit": "6ff04c0baf588a89e5ec9361ad7a0992941d7655",
     "status": "needs-review",
     "summary": "Controls `g_smoothClients` in the game module.",
-    "value_type": "bitmask",
-    "values": [],
+    "value_type": "bool",
+    "values": [
+      {
+        "evidence": {
+          "line": 6292,
+          "path": "codemp/game/g_active.c",
+          "score": 7,
+          "text": "if ( frames > 0 && g_smoothClients.integer && VectorLength(ent->client->ps.velocity) >= 90 && !(ent->r.svFlags & SVF_BOT)) { // loda - sad hack fix this"
+        },
+        "meaning": "Disabled.",
+        "value": "0"
+      },
+      {
+        "evidence": {
+          "line": 6292,
+          "path": "codemp/game/g_active.c",
+          "score": 7,
+          "text": "if ( frames > 0 && g_smoothClients.integer && VectorLength(ent->client->ps.velocity) >= 90 && !(ent->r.svFlags & SVF_BOT)) { // loda - sad hack fix this"
+        },
+        "meaning": "Enabled.",
+        "value": "1"
+      }
+    ],
     "variables": [
       "g_smoothClients"
     ],
@@ -200063,7 +201636,7 @@
     "source_commit": "6ff04c0baf588a89e5ec9361ad7a0992941d7655",
     "status": "needs-review",
     "summary": "Controls `g_spawnInvulnerability` in the game module.",
-    "value_type": "bitmask",
+    "value_type": "int",
     "values": [],
     "variables": [
       "g_spawnInvulnerability"
@@ -203082,8 +204655,29 @@
     "source_commit": "6ff04c0baf588a89e5ec9361ad7a0992941d7655",
     "status": "needs-review",
     "summary": "Controls `g_teamAutoJoin` in the game module.",
-    "value_type": "bitmask",
-    "values": [],
+    "value_type": "bool",
+    "values": [
+      {
+        "evidence": {
+          "line": 192,
+          "path": "codemp/game/g_session.c",
+          "score": 7,
+          "text": "if ( g_teamAutoJoin.integer && !(g_entities[client-level.clients].r.svFlags & SVF_BOT) ) {"
+        },
+        "meaning": "Disabled.",
+        "value": "0"
+      },
+      {
+        "evidence": {
+          "line": 192,
+          "path": "codemp/game/g_session.c",
+          "score": 7,
+          "text": "if ( g_teamAutoJoin.integer && !(g_entities[client-level.clients].r.svFlags & SVF_BOT) ) {"
+        },
+        "meaning": "Enabled.",
+        "value": "1"
+      }
+    ],
     "variables": [
       "g_teamAutoJoin"
     ],
@@ -203495,8 +205089,29 @@
     "source_commit": "6ff04c0baf588a89e5ec9361ad7a0992941d7655",
     "status": "needs-review",
     "summary": "Controls `g_teamForceBalance` in the game module.",
-    "value_type": "bitmask",
-    "values": [],
+    "value_type": "bool",
+    "values": [
+      {
+        "evidence": {
+          "line": 1298,
+          "path": "codemp/game/g_cmds.c",
+          "score": 7,
+          "text": "if ( g_teamForceBalance.integer && !g_jediVmerc.integer ) {"
+        },
+        "meaning": "Disabled.",
+        "value": "0"
+      },
+      {
+        "evidence": {
+          "line": 1298,
+          "path": "codemp/game/g_cmds.c",
+          "score": 7,
+          "text": "if ( g_teamForceBalance.integer && !g_jediVmerc.integer ) {"
+        },
+        "meaning": "Enabled.",
+        "value": "1"
+      }
+    ],
     "variables": [
       "g_teamForceBalance"
     ],
@@ -204192,8 +205807,29 @@
     "source_commit": "6ff04c0baf588a89e5ec9361ad7a0992941d7655",
     "status": "needs-review",
     "summary": "Controls `g_tribesMode` in the game module.",
-    "value_type": "bitmask",
-    "values": [],
+    "value_type": "enum",
+    "values": [
+      {
+        "evidence": {
+          "line": 2269,
+          "path": "codemp/game/g_client.c",
+          "score": 7,
+          "text": "if (g_tribesMode.integer == 1) {"
+        },
+        "meaning": "Selects the code path tested for value 1.",
+        "value": "1"
+      },
+      {
+        "evidence": {
+          "line": 4201,
+          "path": "codemp/game/g_client.c",
+          "score": 7,
+          "text": "else if (client->pers.tribesClass == 2 || (g_tribesMode.integer == 2)) {"
+        },
+        "meaning": "Selects the code path tested for value 2.",
+        "value": "2"
+      }
+    ],
     "variables": [
       "g_tribesMode"
     ],
@@ -205103,8 +206739,29 @@
     "source_commit": "6ff04c0baf588a89e5ec9361ad7a0992941d7655",
     "status": "needs-review",
     "summary": "Controls `g_tweakJetpack` in the game module.",
-    "value_type": "bitmask",
-    "values": [],
+    "value_type": "bool",
+    "values": [
+      {
+        "evidence": {
+          "line": 14606,
+          "path": "codemp/game/bg_pmove.c",
+          "score": 7,
+          "text": "if (!pm_entSelf->m_pVehicle && (g_tweakJetpack.integer || pm->ps->stats[STAT_RACEMODE])) {"
+        },
+        "meaning": "Disabled.",
+        "value": "0"
+      },
+      {
+        "evidence": {
+          "line": 14606,
+          "path": "codemp/game/bg_pmove.c",
+          "score": 7,
+          "text": "if (!pm_entSelf->m_pVehicle && (g_tweakJetpack.integer || pm->ps->stats[STAT_RACEMODE])) {"
+        },
+        "meaning": "Enabled.",
+        "value": "1"
+      }
+    ],
     "variables": [
       "g_tweakJetpack"
     ],
@@ -208945,8 +210602,29 @@
     "source_commit": "6ff04c0baf588a89e5ec9361ad7a0992941d7655",
     "status": "needs-review",
     "summary": "Controls `g_useWhileThrowing` in the game module.",
-    "value_type": "bitmask",
-    "values": [],
+    "value_type": "bool",
+    "values": [
+      {
+        "evidence": {
+          "line": 3301,
+          "path": "codemp/game/w_force.c",
+          "score": 7,
+          "text": "if (!g_useWhileThrowing.integer && self->client->ps.saberInFlight)"
+        },
+        "meaning": "Disabled.",
+        "value": "0"
+      },
+      {
+        "evidence": {
+          "line": 3301,
+          "path": "codemp/game/w_force.c",
+          "score": 7,
+          "text": "if (!g_useWhileThrowing.integer && self->client->ps.saberInFlight)"
+        },
+        "meaning": "Enabled.",
+        "value": "1"
+      }
+    ],
     "variables": [
       "g_useWhileThrowing"
     ],
@@ -233509,8 +235187,19 @@
     "source_commit": "6ff04c0baf588a89e5ec9361ad7a0992941d7655",
     "status": "needs-review",
     "summary": "Controls `in_mouserepeat` in the engine-shared module.",
-    "value_type": "bitmask",
-    "values": [],
+    "value_type": "enum",
+    "values": [
+      {
+        "evidence": {
+          "line": 988,
+          "path": "shared/sdl/sdl_input.cpp",
+          "score": 7,
+          "text": "if (in_mouserepeat->integer != 2) { //don't spam mouse5"
+        },
+        "meaning": "Selects the code path tested for value 2.",
+        "value": "2"
+      }
+    ],
     "variables": [
       "in_mouserepeat"
     ],
@@ -245398,7 +247087,9 @@
         "value": "1"
       }
     ],
-    "variables": [],
+    "variables": [
+      "r_allowExtensions"
+    ],
     "xdocs": null
   },
   {
@@ -246433,7 +248124,9 @@
     "summary": "Controls `r_ambientScale` in the renderer module.",
     "value_type": "float",
     "values": [],
-    "variables": [],
+    "variables": [
+      "r_ambientScale"
+    ],
     "xdocs": null
   },
   {
@@ -246784,7 +248477,9 @@
         "value": "1"
       }
     ],
-    "variables": [],
+    "variables": [
+      "r_anaglyphMode"
+    ],
     "xdocs": null
   },
   {
@@ -247112,7 +248807,9 @@
         "value": "1"
       }
     ],
-    "variables": [],
+    "variables": [
+      "r_arb_buffer_storage"
+    ],
     "xdocs": null
   },
   {
@@ -247413,7 +249110,9 @@
     "summary": "Disable/enable ARB_half_float GL extension",
     "value_type": "int",
     "values": [],
-    "variables": [],
+    "variables": [
+      "r_arb_half_float_pixel"
+    ],
     "xdocs": null
   },
   {
@@ -247714,7 +249413,9 @@
     "summary": "Disable/enable seamless cube map filtering GL extension",
     "value_type": "int",
     "values": [],
-    "variables": [],
+    "variables": [
+      "r_arb_seamless_cube_map"
+    ],
     "xdocs": null
   },
   {
@@ -248015,7 +249716,9 @@
     "summary": "Disable/enable 1010102 UI data type",
     "value_type": "int",
     "values": [],
-    "variables": [],
+    "variables": [
+      "r_arb_vertex_type_2_10_10_10_rev"
+    ],
     "xdocs": null
   },
   {
@@ -248567,7 +250270,9 @@
         "value": "2"
       }
     ],
-    "variables": [],
+    "variables": [
+      "r_aspectCorrectFonts"
+    ],
     "xdocs": null
   },
   {
@@ -248912,7 +250617,9 @@
         "value": "1"
       }
     ],
-    "variables": [],
+    "variables": [
+      "r_autoExposure"
+    ],
     "xdocs": null
   },
   {
@@ -249269,7 +250976,9 @@
     "summary": "Controls `r_autolodscalevalue` in the renderer module.",
     "value_type": "float",
     "values": [],
-    "variables": [],
+    "variables": [
+      "r_autolodscalevalue"
+    ],
     "xdocs": null
   },
   {
@@ -249884,7 +251593,9 @@
     "summary": "Controls `r_autoMapBackAlpha` in the renderer module.",
     "value_type": "float",
     "values": [],
-    "variables": [],
+    "variables": [
+      "r_autoMapBackAlpha"
+    ],
     "xdocs": null
   },
   {
@@ -250149,7 +251860,9 @@
         "value": "1"
       }
     ],
-    "variables": [],
+    "variables": [
+      "r_autoMapDisable"
+    ],
     "xdocs": null
   },
   {
@@ -251676,7 +253389,9 @@
     "summary": "Controls `r_aviMotionJpegQuality` in the renderer module.",
     "value_type": "int",
     "values": [],
-    "variables": [],
+    "variables": [
+      "r_aviMotionJpegQuality"
+    ],
     "xdocs": null
   },
   {
@@ -251989,7 +253704,9 @@
     "summary": "Controls `r_baseNormalX` in the renderer module.",
     "value_type": "float",
     "values": [],
-    "variables": [],
+    "variables": [
+      "r_baseNormalX"
+    ],
     "xdocs": null
   },
   {
@@ -252302,7 +254019,9 @@
     "summary": "Controls `r_baseNormalY` in the renderer module.",
     "value_type": "float",
     "values": [],
-    "variables": [],
+    "variables": [
+      "r_baseNormalY"
+    ],
     "xdocs": null
   },
   {
@@ -252615,7 +254334,9 @@
     "summary": "Controls `r_baseParallax` in the renderer module.",
     "value_type": "float",
     "values": [],
-    "variables": [],
+    "variables": [
+      "r_baseParallax"
+    ],
     "xdocs": null
   },
   {
@@ -252941,7 +254662,9 @@
     "summary": "Controls `r_baseSpecular` in the renderer module.",
     "value_type": "float",
     "values": [],
-    "variables": [],
+    "variables": [
+      "r_baseSpecular"
+    ],
     "xdocs": null
   },
   {
@@ -253259,7 +254982,9 @@
         "value": "1"
       }
     ],
-    "variables": [],
+    "variables": [
+      "r_bloom"
+    ],
     "xdocs": null
   },
   {
@@ -253556,7 +255281,9 @@
     "summary": "Final bloom blend factor, default is 0.15",
     "value_type": "float",
     "values": [],
-    "variables": [],
+    "variables": [
+      "r_bloom_intensity"
+    ],
     "xdocs": null
   },
   {
@@ -253840,7 +255567,9 @@
         "value": "2"
       }
     ],
-    "variables": [],
+    "variables": [
+      "r_bloom_modulate"
+    ],
     "xdocs": null
   },
   {
@@ -254137,7 +255866,9 @@
     "summary": "Color level to extract to bloom texture, default is 0.05",
     "value_type": "float",
     "values": [],
-    "variables": [],
+    "variables": [
+      "r_bloom_threshold"
+    ],
     "xdocs": null
   },
   {
@@ -254421,7 +256152,9 @@
         "value": "2"
       }
     ],
-    "variables": [],
+    "variables": [
+      "r_bloom_threshold_mode"
+    ],
     "xdocs": null
   },
   {
@@ -254739,7 +256472,9 @@
     "summary": "Controls `r_cameraExposure` in the renderer module.",
     "value_type": "float",
     "values": [],
-    "variables": [],
+    "variables": [
+      "r_cameraExposure"
+    ],
     "xdocs": null
   },
   {
@@ -255290,8 +257025,29 @@
     "source_commit": "6ff04c0baf588a89e5ec9361ad7a0992941d7655",
     "status": "needs-review",
     "summary": "Controls `r_centerWindow` in the renderer module.",
-    "value_type": "bitmask",
-    "values": [],
+    "value_type": "bool",
+    "values": [
+      {
+        "evidence": {
+          "line": 423,
+          "path": "shared/sdl/sdl_window.cpp",
+          "score": 7,
+          "text": "if( r_centerWindow->integer && !fullscreen )"
+        },
+        "meaning": "Disabled.",
+        "value": "0"
+      },
+      {
+        "evidence": {
+          "line": 423,
+          "path": "shared/sdl/sdl_window.cpp",
+          "score": 7,
+          "text": "if( r_centerWindow->integer && !fullscreen )"
+        },
+        "meaning": "Enabled.",
+        "value": "1"
+      }
+    ],
     "variables": [
       "r_centerWindow"
     ],
@@ -255743,7 +257499,9 @@
         "value": "1"
       }
     ],
-    "variables": [],
+    "variables": [
+      "r_clear"
+    ],
     "xdocs": null
   },
   {
@@ -256502,7 +258260,9 @@
         "value": "1"
       }
     ],
-    "variables": [],
+    "variables": [
+      "r_colorMipLevels"
+    ],
     "xdocs": null
   },
   {
@@ -256863,7 +258623,9 @@
         "value": "1"
       }
     ],
-    "variables": [],
+    "variables": [
+      "r_cubeMapping"
+    ],
     "xdocs": null
   },
   {
@@ -257200,7 +258962,9 @@
     "summary": "Renders cubemaps multiple times to get reflections in reflections",
     "value_type": "int",
     "values": [],
-    "variables": [],
+    "variables": [
+      "r_cubeMappingBounces"
+    ],
     "xdocs": null
   },
   {
@@ -257519,7 +259283,9 @@
         "value": "1"
       }
     ],
-    "variables": [],
+    "variables": [
+      "r_cullRoofFaces"
+    ],
     "xdocs": null
   },
   {
@@ -258422,7 +260188,9 @@
         "value": "1"
       }
     ],
-    "variables": [],
+    "variables": [
+      "r_debugContext"
+    ],
     "xdocs": null
   },
   {
@@ -258475,7 +260243,7 @@
       }
     ],
     "derivation": "code-trace",
-    "description": "Controls `r_debuglight` in the renderer module. Consult the cited behavior reads before relying on values not listed here.",
+    "description": "Controls `r_debugLight` in the renderer module. Consult the cited behavior reads before relying on values not listed here.",
     "evidence": [
       {
         "condition": null,
@@ -258758,7 +260526,7 @@
     "requires_restart": false,
     "source_commit": "6ff04c0baf588a89e5ec9361ad7a0992941d7655",
     "status": "needs-review",
-    "summary": "Controls `r_debuglight` in the renderer module.",
+    "summary": "Controls `r_debugLight` in the renderer module.",
     "value_type": "bool",
     "values": [
       {
@@ -258782,7 +260550,9 @@
         "value": "1"
       }
     ],
-    "variables": [],
+    "variables": [
+      "r_debugLight"
+    ],
     "xdocs": null
   },
   {
@@ -259199,7 +260969,9 @@
         "value": "1"
       }
     ],
-    "variables": [],
+    "variables": [
+      "r_debugSort"
+    ],
     "xdocs": null
   },
   {
@@ -259310,15 +261082,27 @@
       },
       {
         "kind": "behavior",
-        "line": 1673,
-        "path": "codemp/qcommon/cm_patch.cpp",
-        "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/qcommon/cm_patch.cpp#L1673"
+        "line": 1368,
+        "path": "codemp/rd-vanilla/tr_main.cpp",
+        "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-vanilla/tr_main.cpp#L1368"
       },
       {
         "kind": "behavior",
-        "line": 1666,
+        "line": 462,
+        "path": "codemp/rd-vulkan/vk_debug.cpp",
+        "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-vulkan/vk_debug.cpp#L462"
+      },
+      {
+        "kind": "behavior",
+        "line": 2127,
+        "path": "shared/rd-rend2/tr_main.cpp",
+        "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/shared/rd-rend2/tr_main.cpp#L2127"
+      },
+      {
+        "kind": "behavior",
+        "line": 1673,
         "path": "codemp/qcommon/cm_patch.cpp",
-        "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/qcommon/cm_patch.cpp#L1666"
+        "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/qcommon/cm_patch.cpp#L1673"
       }
     ],
     "feature": null,
@@ -259633,7 +261417,8 @@
       }
     ],
     "variables": [
-      "cv2"
+      "cv2",
+      "r_debugSurface"
     ],
     "xdocs": null
   },
@@ -260163,7 +261948,9 @@
         "value": "2"
       }
     ],
-    "variables": [],
+    "variables": [
+      "r_debugWeather"
+    ],
     "xdocs": null
   },
   {
@@ -260435,7 +262222,9 @@
     "summary": "Controls `r_defaultImage` in the renderer module.",
     "value_type": "string",
     "values": [],
-    "variables": [],
+    "variables": [
+      "r_defaultImage"
+    ],
     "xdocs": null
   },
   {
@@ -260792,7 +262581,9 @@
         "value": "1"
       }
     ],
-    "variables": [],
+    "variables": [
+      "r_deluxeMapping"
+    ],
     "xdocs": null
   },
   {
@@ -261114,7 +262905,9 @@
     "summary": "Disable/enable/scale the specular response from deluxemaps",
     "value_type": "float",
     "values": [],
-    "variables": [],
+    "variables": [
+      "r_deluxeSpecular"
+    ],
     "xdocs": null
   },
   {
@@ -261780,7 +263573,9 @@
     "summary": "Controls `r_depthPrepass` in the renderer module.",
     "value_type": "float",
     "values": [],
-    "variables": [],
+    "variables": [
+      "r_depthPrepass"
+    ],
     "xdocs": null
   },
   {
@@ -261833,7 +263628,7 @@
       }
     ],
     "derivation": "code-trace",
-    "description": "Controls `r_detailtextures` in the renderer module. Consult the cited behavior reads before relying on values not listed here.",
+    "description": "Controls `r_detailTextures` in the renderer module. Consult the cited behavior reads before relying on values not listed here.",
     "evidence": [
       {
         "condition": null,
@@ -262171,7 +263966,7 @@
     "requires_restart": true,
     "source_commit": "6ff04c0baf588a89e5ec9361ad7a0992941d7655",
     "status": "needs-review",
-    "summary": "Controls `r_detailtextures` in the renderer module.",
+    "summary": "Controls `r_detailTextures` in the renderer module.",
     "value_type": "bool",
     "values": [
       {
@@ -262195,7 +263990,9 @@
         "value": "1"
       }
     ],
-    "variables": [],
+    "variables": [
+      "r_detailTextures"
+    ],
     "xdocs": null
   },
   {
@@ -262381,7 +264178,9 @@
         "value": "-2"
       }
     ],
-    "variables": [],
+    "variables": [
+      "r_device"
+    ],
     "xdocs": null
   },
   {
@@ -262817,7 +264616,9 @@
     "summary": "Controls `r_directedScale` in the renderer module.",
     "value_type": "float",
     "values": [],
-    "variables": [],
+    "variables": [
+      "r_directedScale"
+    ],
     "xdocs": null
   },
   {
@@ -263609,7 +265410,9 @@
     "summary": "Controls `r_distanceCull` in the renderer module.",
     "value_type": "float",
     "values": [],
-    "variables": [],
+    "variables": [
+      "r_distanceCull"
+    ],
     "xdocs": null
   },
   {
@@ -263915,7 +265718,9 @@
         "value": "1"
       }
     ],
-    "variables": [],
+    "variables": [
+      "r_dither"
+    ],
     "xdocs": null
   },
   {
@@ -264233,7 +266038,9 @@
         "value": "1"
       }
     ],
-    "variables": [],
+    "variables": [
+      "r_dlightBacks"
+    ],
     "xdocs": null
   },
   {
@@ -264528,7 +266335,9 @@
     "summary": "Controls `r_dlightIntensity` in the renderer module.",
     "value_type": "float",
     "values": [],
-    "variables": [],
+    "variables": [
+      "r_dlightIntensity"
+    ],
     "xdocs": null
   },
   {
@@ -264973,7 +266782,9 @@
         "value": "2"
       }
     ],
-    "variables": [],
+    "variables": [
+      "r_dlightMode"
+    ],
     "xdocs": null
   },
   {
@@ -265268,7 +267079,9 @@
     "summary": "Controls `r_dlightSaturation` in the renderer module.",
     "value_type": "float",
     "values": [],
-    "variables": [],
+    "variables": [
+      "r_dlightSaturation"
+    ],
     "xdocs": null
   },
   {
@@ -265551,7 +267364,9 @@
     "summary": "Controls `r_dlightScale` in the renderer module.",
     "value_type": "float",
     "values": [],
-    "variables": [],
+    "variables": [
+      "r_dlightScale"
+    ],
     "xdocs": null
   },
   {
@@ -265881,7 +267696,9 @@
         "value": "1"
       }
     ],
-    "variables": [],
+    "variables": [
+      "r_dlightStyle"
+    ],
     "xdocs": null
   },
   {
@@ -266234,7 +268051,9 @@
     "summary": "Controls `r_drawBuffer` in the renderer module.",
     "value_type": "string",
     "values": [],
-    "variables": [],
+    "variables": [
+      "r_drawBuffer"
+    ],
     "xdocs": null
   },
   {
@@ -266651,7 +268470,9 @@
         "value": "1"
       }
     ],
-    "variables": [],
+    "variables": [
+      "r_drawentities"
+    ],
     "xdocs": null
   },
   {
@@ -267261,7 +269082,9 @@
         "value": "2"
       }
     ],
-    "variables": [],
+    "variables": [
+      "r_drawfog"
+    ],
     "xdocs": null
   },
   {
@@ -267697,7 +269520,9 @@
         "value": "1"
       }
     ],
-    "variables": [],
+    "variables": [
+      "r_drawSun"
+    ],
     "xdocs": null
   },
   {
@@ -268049,7 +269874,9 @@
         "value": "1"
       }
     ],
-    "variables": [],
+    "variables": [
+      "r_drawSunRays"
+    ],
     "xdocs": null
   },
   {
@@ -268287,7 +270114,9 @@
         "value": "1"
       }
     ],
-    "variables": [],
+    "variables": [
+      "r_drawTerrain"
+    ],
     "xdocs": null
   },
   {
@@ -268686,7 +270515,9 @@
         "value": "1"
       }
     ],
-    "variables": [],
+    "variables": [
+      "r_drawworld"
+    ],
     "xdocs": null
   },
   {
@@ -269191,7 +271022,10 @@
         "value": "2"
       }
     ],
-    "variables": [],
+    "variables": [
+      "r_DynamicGlow",
+      "r_dynamicGlow"
+    ],
     "xdocs": null
   },
   {
@@ -269472,7 +271306,9 @@
         "value": "1"
       }
     ],
-    "variables": [],
+    "variables": [
+      "r_DynamicGlowAllStages"
+    ],
     "xdocs": null
   },
   {
@@ -269778,7 +271614,9 @@
         "value": ">0"
       }
     ],
-    "variables": [],
+    "variables": [
+      "r_dynamicGlowBloom"
+    ],
     "xdocs": null
   },
   {
@@ -270185,7 +272023,10 @@
     "summary": "Controls `r_DynamicGlowDelta` in the renderer module.",
     "value_type": "float",
     "values": [],
-    "variables": [],
+    "variables": [
+      "r_DynamicGlowDelta",
+      "r_dynamicGlowDelta"
+    ],
     "xdocs": null
   },
   {
@@ -270651,7 +272492,10 @@
     "summary": "Controls `r_DynamicGlowHeight` in the renderer module.",
     "value_type": "int",
     "values": [],
-    "variables": [],
+    "variables": [
+      "r_DynamicGlowHeight",
+      "r_dynamicGlowHeight"
+    ],
     "xdocs": null
   },
   {
@@ -271076,7 +272920,10 @@
     "summary": "Controls `r_DynamicGlowIntensity` in the renderer module.",
     "value_type": "float",
     "values": [],
-    "variables": [],
+    "variables": [
+      "r_DynamicGlowIntensity",
+      "r_dynamicGlowIntensity"
+    ],
     "xdocs": null
   },
   {
@@ -271483,7 +273330,10 @@
     "summary": "Controls `r_DynamicGlowPasses` in the renderer module.",
     "value_type": "int",
     "values": [],
-    "variables": [],
+    "variables": [
+      "r_DynamicGlowPasses",
+      "r_dynamicGlowPasses"
+    ],
     "xdocs": null
   },
   {
@@ -271844,7 +273694,9 @@
     "summary": "Controls `r_DynamicGlowScale` in the renderer module.",
     "value_type": "float",
     "values": [],
-    "variables": [],
+    "variables": [
+      "r_DynamicGlowScale"
+    ],
     "xdocs": null
   },
   {
@@ -272290,7 +274142,10 @@
         "value": "1"
       }
     ],
-    "variables": [],
+    "variables": [
+      "r_DynamicGlowSoft",
+      "r_dynamicGlowSoft"
+    ],
     "xdocs": null
   },
   {
@@ -272756,7 +274611,10 @@
     "summary": "Controls `r_DynamicGlowWidth` in the renderer module.",
     "value_type": "int",
     "values": [],
-    "variables": [],
+    "variables": [
+      "r_DynamicGlowWidth",
+      "r_dynamicGlowWidth"
+    ],
     "xdocs": null
   },
   {
@@ -273146,7 +275004,9 @@
         "value": "1"
       }
     ],
-    "variables": [],
+    "variables": [
+      "r_dynamiclight"
+    ],
     "xdocs": null
   },
   {
@@ -273734,7 +275594,9 @@
         "value": "1"
       }
     ],
-    "variables": [],
+    "variables": [
+      "r_environmentMapping"
+    ],
     "xdocs": null
   },
   {
@@ -274033,7 +275895,9 @@
         "value": "1"
       }
     ],
-    "variables": [],
+    "variables": [
+      "r_ext_alpha_to_coverage"
+    ],
     "xdocs": null
   },
   {
@@ -274438,7 +276302,9 @@
         "value": "1"
       }
     ],
-    "variables": [],
+    "variables": [
+      "r_ext_compiled_vertex_array"
+    ],
     "xdocs": null
   },
   {
@@ -274483,7 +276349,7 @@
       }
     ],
     "derivation": "code-trace",
-    "description": "Registered by the current source, but no user-facing behavior description has been verified. Consult the cited behavior reads before relying on values not listed here.",
+    "description": "Controls `r_ext_compressed_lightmaps` in the renderer module. Consult the cited behavior reads before relying on values not listed here.",
     "evidence": [
       {
         "condition": null,
@@ -274508,6 +276374,24 @@
         "path": "codemp/rd-vulkan/tr_init.cpp",
         "registration_kind": "Cvar_Get",
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-vulkan/tr_init.cpp#L785"
+      },
+      {
+        "kind": "behavior",
+        "line": 247,
+        "path": "codemp/rd-vanilla/tr_bsp.cpp",
+        "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-vanilla/tr_bsp.cpp#L247"
+      },
+      {
+        "kind": "behavior",
+        "line": 1524,
+        "path": "codemp/rd-vanilla/tr_init.cpp",
+        "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-vanilla/tr_init.cpp#L1524"
+      },
+      {
+        "kind": "behavior",
+        "line": 3361,
+        "path": "codemp/rd-vanilla/tr_shader.cpp",
+        "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-vanilla/tr_shader.cpp#L3361"
       }
     ],
     "feature": "Renderer extensions",
@@ -274778,10 +276662,33 @@
     "requires_restart": true,
     "source_commit": "6ff04c0baf588a89e5ec9361ad7a0992941d7655",
     "status": "needs-review",
-    "summary": "Registered by the current source, but no user-facing behavior description has been verified.",
-    "value_type": "int",
-    "values": [],
-    "variables": [],
+    "summary": "Controls `r_ext_compressed_lightmaps` in the renderer module.",
+    "value_type": "bool",
+    "values": [
+      {
+        "evidence": {
+          "line": 247,
+          "path": "codemp/rd-vanilla/tr_bsp.cpp",
+          "score": 5,
+          "text": "LIGHTMAP_SIZE, LIGHTMAP_SIZE, GL_RGBA, qfalse, qfalse, (qboolean)r_ext_compressed_lightmaps->integer, GL_CLAMP );"
+        },
+        "meaning": "Disabled.",
+        "value": "0"
+      },
+      {
+        "evidence": {
+          "line": 247,
+          "path": "codemp/rd-vanilla/tr_bsp.cpp",
+          "score": 5,
+          "text": "LIGHTMAP_SIZE, LIGHTMAP_SIZE, GL_RGBA, qfalse, qfalse, (qboolean)r_ext_compressed_lightmaps->integer, GL_CLAMP );"
+        },
+        "meaning": "Enabled.",
+        "value": "1"
+      }
+    ],
+    "variables": [
+      "r_ext_compressed_lightmaps"
+    ],
     "xdocs": null
   },
   {
@@ -274870,15 +276777,33 @@
       },
       {
         "kind": "behavior",
-        "line": 6229,
-        "path": "codemp/ui/ui_main.c",
-        "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/ui/ui_main.c#L6229"
+        "line": 352,
+        "path": "codemp/rd-rend2/tr_init.cpp",
+        "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-rend2/tr_init.cpp#L352"
       },
       {
         "kind": "behavior",
-        "line": 6401,
-        "path": "codemp/ui/ui_main.c",
-        "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/ui/ui_main.c#L6401"
+        "line": 355,
+        "path": "codemp/rd-vanilla/tr_init.cpp",
+        "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-vanilla/tr_init.cpp#L355"
+      },
+      {
+        "kind": "behavior",
+        "line": 381,
+        "path": "codemp/rd-vulkan/vk_init.cpp",
+        "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-vulkan/vk_init.cpp#L381"
+      },
+      {
+        "kind": "behavior",
+        "line": 589,
+        "path": "shared/rd-rend2/tr_extensions.cpp",
+        "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/shared/rd-rend2/tr_extensions.cpp#L589"
+      },
+      {
+        "kind": "behavior",
+        "line": 603,
+        "path": "shared/rd-rend2/tr_extensions.cpp",
+        "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/shared/rd-rend2/tr_extensions.cpp#L603"
       }
     ],
     "feature": "Renderer extensions",
@@ -275223,9 +277148,11 @@
     "source_commit": "6ff04c0baf588a89e5ec9361ad7a0992941d7655",
     "status": "documented",
     "summary": "Disable/enable texture compression",
-    "value_type": "int",
+    "value_type": "float",
     "values": [],
-    "variables": [],
+    "variables": [
+      "r_ext_compressed_textures"
+    ],
     "xdocs": null
   },
   {
@@ -275526,7 +277453,9 @@
     "summary": "Unused",
     "value_type": "int",
     "values": [],
-    "variables": [],
+    "variables": [
+      "r_ext_draw_range_elements"
+    ],
     "xdocs": null
   },
   {
@@ -275922,7 +277851,9 @@
     "summary": "Registered by the current source, but no user-facing behavior description has been verified.",
     "value_type": "int",
     "values": [],
-    "variables": [],
+    "variables": [
+      "r_ext_gamma_control"
+    ],
     "xdocs": null
   },
   {
@@ -276206,7 +278137,9 @@
     "summary": "Controls `r_ext_max_anisotropy` in the renderer module.",
     "value_type": "int",
     "values": [],
-    "variables": [],
+    "variables": [
+      "r_ext_max_anisotropy"
+    ],
     "xdocs": null
   },
   {
@@ -276507,7 +278440,9 @@
     "summary": "Unused",
     "value_type": "int",
     "values": [],
-    "variables": [],
+    "variables": [
+      "r_ext_multi_draw_arrays"
+    ],
     "xdocs": null
   },
   {
@@ -276592,21 +278527,21 @@
       },
       {
         "kind": "behavior",
+        "line": 412,
+        "path": "shared/rd-rend2/tr_fbo.cpp",
+        "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/shared/rd-rend2/tr_fbo.cpp#L412"
+      },
+      {
+        "kind": "behavior",
+        "line": 420,
+        "path": "shared/rd-rend2/tr_fbo.cpp",
+        "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/shared/rd-rend2/tr_fbo.cpp#L420"
+      },
+      {
+        "kind": "behavior",
         "line": 527,
         "path": "codemp/rd-vulkan/vk_init.cpp",
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-vulkan/vk_init.cpp#L527"
-      },
-      {
-        "kind": "behavior",
-        "line": 474,
-        "path": "shared/sdl/sdl_window.cpp",
-        "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/shared/sdl/sdl_window.cpp#L474"
-      },
-      {
-        "kind": "behavior",
-        "line": 921,
-        "path": "codemp/rd-vulkan/tr_init.cpp",
-        "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-vulkan/tr_init.cpp#L921"
       }
     ],
     "feature": "Renderer extensions",
@@ -277121,9 +279056,10 @@
     "source_commit": "6ff04c0baf588a89e5ec9361ad7a0992941d7655",
     "status": "needs-review",
     "summary": "Disable/enable framebuffer MSAA",
-    "value_type": "bitmask",
+    "value_type": "int",
     "values": [],
     "variables": [
+      "r_ext_framebuffer_multisample",
       "r_ext_multisample"
     ],
     "xdocs": null
@@ -277835,7 +279771,9 @@
         "value": "1"
       }
     ],
-    "variables": [],
+    "variables": [
+      "r_ext_multitexture"
+    ],
     "xdocs": null
   },
   {
@@ -278265,7 +280203,9 @@
         "value": "1"
       }
     ],
-    "variables": [],
+    "variables": [
+      "r_ext_preferred_tc_method"
+    ],
     "xdocs": null
   },
   {
@@ -278582,7 +280522,9 @@
         "value": "1"
       }
     ],
-    "variables": [],
+    "variables": [
+      "r_ext_supersample"
+    ],
     "xdocs": null
   },
   {
@@ -279031,7 +280973,9 @@
         "value": "1"
       }
     ],
-    "variables": [],
+    "variables": [
+      "r_ext_texture_env_add"
+    ],
     "xdocs": null
   },
   {
@@ -279568,7 +281512,9 @@
     "summary": "Disable/enable anisotropic texture filtering",
     "value_type": "float",
     "values": [],
-    "variables": [],
+    "variables": [
+      "r_ext_texture_filter_anisotropic"
+    ],
     "xdocs": null
   },
   {
@@ -280054,7 +282000,9 @@
     "summary": "Disable/enable floating-point textures",
     "value_type": "int",
     "values": [],
-    "variables": [],
+    "variables": [
+      "r_ext_texture_float"
+    ],
     "xdocs": null
   },
   {
@@ -280387,7 +282335,9 @@
         "value": "1"
       }
     ],
-    "variables": [],
+    "variables": [
+      "r_externalGLSL"
+    ],
     "xdocs": null
   },
   {
@@ -280770,7 +282720,9 @@
         "value": "1"
       }
     ],
-    "variables": [],
+    "variables": [
+      "r_facePlaneCull"
+    ],
     "xdocs": null
   },
   {
@@ -281356,7 +283308,9 @@
         "value": "10"
       }
     ],
-    "variables": [],
+    "variables": [
+      "r_fastsky"
+    ],
     "xdocs": null
   },
   {
@@ -281661,7 +283615,9 @@
         "value": "1"
       }
     ],
-    "variables": [],
+    "variables": [
+      "r_fbo"
+    ],
     "xdocs": null
   },
   {
@@ -282093,7 +284049,9 @@
         "value": "1"
       }
     ],
-    "variables": [],
+    "variables": [
+      "r_finish"
+    ],
     "xdocs": null
   },
   {
@@ -282572,7 +284530,9 @@
         "value": "1"
       }
     ],
-    "variables": [],
+    "variables": [
+      "r_flares"
+    ],
     "xdocs": null
   },
   {
@@ -282912,7 +284872,9 @@
         "value": "1"
       }
     ],
-    "variables": [],
+    "variables": [
+      "r_floatLightmap"
+    ],
     "xdocs": null
   },
   {
@@ -283254,7 +285216,9 @@
         "value": "1"
       }
     ],
-    "variables": [],
+    "variables": [
+      "r_fontSharpness"
+    ],
     "xdocs": null
   },
   {
@@ -283593,7 +285557,9 @@
         "value": "1"
       }
     ],
-    "variables": [],
+    "variables": [
+      "r_forceAutoExposure"
+    ],
     "xdocs": null
   },
   {
@@ -283918,7 +285884,9 @@
     "summary": "Controls `r_forceAutoExposureMax` in the renderer module.",
     "value_type": "float",
     "values": [],
-    "variables": [],
+    "variables": [
+      "r_forceAutoExposureMax"
+    ],
     "xdocs": null
   },
   {
@@ -284243,7 +286211,9 @@
     "summary": "Controls `r_forceAutoExposureMin` in the renderer module.",
     "value_type": "float",
     "values": [],
-    "variables": [],
+    "variables": [
+      "r_forceAutoExposureMin"
+    ],
     "xdocs": null
   },
   {
@@ -284567,7 +286537,9 @@
     "summary": "Controls `r_forceParallaxBias` in the renderer module.",
     "value_type": "float",
     "values": [],
-    "variables": [],
+    "variables": [
+      "r_forceParallaxBias"
+    ],
     "xdocs": null
   },
   {
@@ -284897,7 +286869,9 @@
     "summary": "Controls `r_forceSun` in the renderer module.",
     "value_type": "float",
     "values": [],
-    "variables": [],
+    "variables": [
+      "r_forceSun"
+    ],
     "xdocs": null
   },
   {
@@ -285209,7 +287183,9 @@
     "summary": "Controls `r_forceSunAmbientScale` in the renderer module.",
     "value_type": "float",
     "values": [],
-    "variables": [],
+    "variables": [
+      "r_forceSunAmbientScale"
+    ],
     "xdocs": null
   },
   {
@@ -285515,7 +287491,9 @@
     "summary": "Controls `r_forceSunLightScale` in the renderer module.",
     "value_type": "float",
     "values": [],
-    "variables": [],
+    "variables": [
+      "r_forceSunLightScale"
+    ],
     "xdocs": null
   },
   {
@@ -285821,7 +287799,9 @@
     "summary": "Controls `r_forceSunMapLightScale` in the renderer module.",
     "value_type": "float",
     "values": [],
-    "variables": [],
+    "variables": [
+      "r_forceSunMapLightScale"
+    ],
     "xdocs": null
   },
   {
@@ -286160,7 +288140,9 @@
         "value": "1"
       }
     ],
-    "variables": [],
+    "variables": [
+      "r_forceToneMap"
+    ],
     "xdocs": null
   },
   {
@@ -286485,7 +288467,9 @@
     "summary": "Controls `r_forceToneMapAvg` in the renderer module.",
     "value_type": "float",
     "values": [],
-    "variables": [],
+    "variables": [
+      "r_forceToneMapAvg"
+    ],
     "xdocs": null
   },
   {
@@ -286791,7 +288775,9 @@
     "summary": "Controls `r_forceToneMapMax` in the renderer module.",
     "value_type": "float",
     "values": [],
-    "variables": [],
+    "variables": [
+      "r_forceToneMapMax"
+    ],
     "xdocs": null
   },
   {
@@ -287097,7 +289083,9 @@
     "summary": "Controls `r_forceToneMapMin` in the renderer module.",
     "value_type": "float",
     "values": [],
-    "variables": [],
+    "variables": [
+      "r_forceToneMapMin"
+    ],
     "xdocs": null
   },
   {
@@ -287733,7 +289721,9 @@
     "summary": "Controls `r_fullbright` in the renderer module.",
     "value_type": "float",
     "values": [],
-    "variables": [],
+    "variables": [
+      "r_fullbright"
+    ],
     "xdocs": null
   },
   {
@@ -288234,8 +290224,29 @@
     "source_commit": "6ff04c0baf588a89e5ec9361ad7a0992941d7655",
     "status": "needs-review",
     "summary": "Controls `r_fullscreen` in the renderer module.",
-    "value_type": "bitmask",
-    "values": [],
+    "value_type": "bool",
+    "values": [
+      {
+        "evidence": {
+          "line": 185,
+          "path": "shared/sdl/sdl_window.cpp",
+          "score": 7,
+          "text": "if ( r_fullscreen->integer && Cvar_VariableIntegerValue( \"in_nograb\" ) )"
+        },
+        "meaning": "Disabled.",
+        "value": "0"
+      },
+      {
+        "evidence": {
+          "line": 185,
+          "path": "shared/sdl/sdl_window.cpp",
+          "score": 7,
+          "text": "if ( r_fullscreen->integer && Cvar_VariableIntegerValue( \"in_nograb\" ) )"
+        },
+        "meaning": "Enabled.",
+        "value": "1"
+      }
+    ],
     "variables": [
       "r_fullscreen"
     ],
@@ -288705,7 +290716,9 @@
     "summary": "Controls `r_gamma` in the renderer module.",
     "value_type": "float",
     "values": [],
-    "variables": [],
+    "variables": [
+      "r_gamma"
+    ],
     "xdocs": null
   },
   {
@@ -289253,7 +291266,9 @@
         "value": "1"
       }
     ],
-    "variables": [],
+    "variables": [
+      "r_gammaShaders"
+    ],
     "xdocs": null
   },
   {
@@ -289605,7 +291620,9 @@
         "value": "1"
       }
     ],
-    "variables": [],
+    "variables": [
+      "r_genNormalMaps"
+    ],
     "xdocs": null
   },
   {
@@ -289658,7 +291675,7 @@
       }
     ],
     "derivation": "code-trace",
-    "description": "Controls `r_ghoul2animsmooth` in the renderer module. Consult the cited behavior reads before relying on values not listed here.",
+    "description": "Controls `r_Ghoul2AnimSmooth` in the renderer module. Consult the cited behavior reads before relying on values not listed here.",
     "evidence": [
       {
         "condition": null,
@@ -289954,10 +291971,12 @@
     "requires_restart": false,
     "source_commit": "6ff04c0baf588a89e5ec9361ad7a0992941d7655",
     "status": "needs-review",
-    "summary": "Controls `r_ghoul2animsmooth` in the renderer module.",
+    "summary": "Controls `r_Ghoul2AnimSmooth` in the renderer module.",
     "value_type": "float",
     "values": [],
-    "variables": [],
+    "variables": [
+      "r_Ghoul2AnimSmooth"
+    ],
     "xdocs": null
   },
   {
@@ -290010,7 +292029,7 @@
       }
     ],
     "derivation": "code-trace",
-    "description": "Controls `r_ghoul2unsqashaftersmooth` in the renderer module. Consult the cited behavior reads before relying on values not listed here.",
+    "description": "Controls `r_Ghoul2UnSqashAfterSmooth` in the renderer module. Consult the cited behavior reads before relying on values not listed here.",
     "evidence": [
       {
         "condition": null,
@@ -290270,7 +292289,7 @@
     "requires_restart": false,
     "source_commit": "6ff04c0baf588a89e5ec9361ad7a0992941d7655",
     "status": "needs-review",
-    "summary": "Controls `r_ghoul2unsqashaftersmooth` in the renderer module.",
+    "summary": "Controls `r_Ghoul2UnSqashAfterSmooth` in the renderer module.",
     "value_type": "bool",
     "values": [
       {
@@ -290294,7 +292313,9 @@
         "value": "1"
       }
     ],
-    "variables": [],
+    "variables": [
+      "r_Ghoul2UnSqashAfterSmooth"
+    ],
     "xdocs": null
   },
   {
@@ -290740,7 +292761,9 @@
     "summary": "Controls `r_greyscale` in the renderer module.",
     "value_type": "float",
     "values": [],
-    "variables": [],
+    "variables": [
+      "r_greyscale"
+    ],
     "xdocs": null
   },
   {
@@ -291192,7 +293215,9 @@
         "value": "1"
       }
     ],
-    "variables": [],
+    "variables": [
+      "r_hdr"
+    ],
     "xdocs": null
   },
   {
@@ -291549,7 +293574,9 @@
     "summary": "Registered by the current source, but no user-facing behavior description has been verified.",
     "value_type": "int",
     "values": [],
-    "variables": [],
+    "variables": [
+      "r_ignore"
+    ],
     "xdocs": null
   },
   {
@@ -291895,7 +293922,9 @@
         "value": "1"
       }
     ],
-    "variables": [],
+    "variables": [
+      "r_ignoreDstAlpha"
+    ],
     "xdocs": null
   },
   {
@@ -292319,7 +294348,9 @@
         "value": "1"
       }
     ],
-    "variables": [],
+    "variables": [
+      "r_ignoreGLErrors"
+    ],
     "xdocs": null
   },
   {
@@ -292702,8 +294733,29 @@
     "source_commit": "6ff04c0baf588a89e5ec9361ad7a0992941d7655",
     "status": "documented",
     "summary": "Overrides hardware gamma capabilities",
-    "value_type": "bitmask",
-    "values": [],
+    "value_type": "bool",
+    "values": [
+      {
+        "evidence": {
+          "line": 326,
+          "path": "codemp/rd-vulkan/vk_init.cpp",
+          "score": 7,
+          "text": "if (r_ignorehwgamma->integer)"
+        },
+        "meaning": "Disabled.",
+        "value": "0"
+      },
+      {
+        "evidence": {
+          "line": 326,
+          "path": "codemp/rd-vulkan/vk_init.cpp",
+          "score": 7,
+          "text": "if (r_ignorehwgamma->integer)"
+        },
+        "meaning": "Enabled.",
+        "value": "1"
+      }
+    ],
     "variables": [
       "r_ignorehwgamma"
     ],
@@ -293046,7 +295098,9 @@
         "value": "1"
       }
     ],
-    "variables": [],
+    "variables": [
+      "r_imageUpsample"
+    ],
     "xdocs": null
   },
   {
@@ -293365,7 +295419,9 @@
     "summary": "Controls `r_imageUpsampleMaxSize` in the renderer module.",
     "value_type": "int",
     "values": [],
-    "variables": [],
+    "variables": [
+      "r_imageUpsampleMaxSize"
+    ],
     "xdocs": null
   },
   {
@@ -293699,7 +295755,9 @@
         "value": "1"
       }
     ],
-    "variables": [],
+    "variables": [
+      "r_imageUpsampleType"
+    ],
     "xdocs": null
   },
   {
@@ -293819,6 +295877,18 @@
         "line": 1494,
         "path": "codemp/client/cl_cin.cpp",
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/cl_cin.cpp#L1494"
+      },
+      {
+        "kind": "behavior",
+        "line": 6237,
+        "path": "codemp/ui/ui_main.c",
+        "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/ui/ui_main.c#L6237"
+      },
+      {
+        "kind": "behavior",
+        "line": 6409,
+        "path": "codemp/ui/ui_main.c",
+        "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/ui/ui_main.c#L6409"
       }
     ],
     "feature": null,
@@ -294134,7 +296204,8 @@
       }
     ],
     "variables": [
-      "cl_inGameVideo"
+      "cl_inGameVideo",
+      "r_inGameVideo"
     ],
     "xdocs": null
   },
@@ -294529,7 +296600,9 @@
     "summary": "Controls `r_intensity` in the renderer module.",
     "value_type": "float",
     "values": [],
-    "variables": [],
+    "variables": [
+      "r_intensity"
+    ],
     "xdocs": null
   },
   {
@@ -295131,7 +297204,9 @@
         "value": "2"
       }
     ],
-    "variables": [],
+    "variables": [
+      "r_lightmap"
+    ],
     "xdocs": null
   },
   {
@@ -295548,7 +297623,9 @@
         "value": "1"
       }
     ],
-    "variables": [],
+    "variables": [
+      "r_lockpvs"
+    ],
     "xdocs": null
   },
   {
@@ -296085,7 +298162,9 @@
         "value": "1"
       }
     ],
-    "variables": [],
+    "variables": [
+      "r_lodbias"
+    ],
     "xdocs": null
   },
   {
@@ -296494,7 +298573,9 @@
     "summary": "Controls `r_lodCurveError` in the renderer module.",
     "value_type": "float",
     "values": [],
-    "variables": [],
+    "variables": [
+      "r_lodCurveError"
+    ],
     "xdocs": null
   },
   {
@@ -296942,7 +299023,9 @@
     "summary": "Controls `r_lodscale` in the renderer module.",
     "value_type": "float",
     "values": [],
-    "variables": [],
+    "variables": [
+      "r_lodscale"
+    ],
     "xdocs": null
   },
   {
@@ -297410,7 +299493,9 @@
         "value": "1"
       }
     ],
-    "variables": [],
+    "variables": [
+      "r_logFile"
+    ],
     "xdocs": null
   },
   {
@@ -297706,7 +299791,9 @@
     "summary": "Controls `r_mapGreyScale` in the renderer module.",
     "value_type": "float",
     "values": [],
-    "variables": [],
+    "variables": [
+      "r_mapGreyScale"
+    ],
     "xdocs": null
   },
   {
@@ -298331,7 +300418,9 @@
         "value": "1"
       }
     ],
-    "variables": [],
+    "variables": [
+      "r_mapOverBrightBits"
+    ],
     "xdocs": null
   },
   {
@@ -298685,7 +300774,9 @@
     "summary": "Controls `r_markcount` in the renderer module.",
     "value_type": "int",
     "values": [],
-    "variables": [],
+    "variables": [
+      "r_markcount"
+    ],
     "xdocs": null
   },
   {
@@ -299226,7 +301317,9 @@
         "value": "1"
       }
     ],
-    "variables": [],
+    "variables": [
+      "r_marksOnTriangleMeshes"
+    ],
     "xdocs": null
   },
   {
@@ -299608,7 +301701,9 @@
     "summary": "Controls `r_maxpolys` in the renderer module.",
     "value_type": "int",
     "values": [],
-    "variables": [],
+    "variables": [
+      "r_maxpolys"
+    ],
     "xdocs": null
   },
   {
@@ -299990,7 +302085,9 @@
     "summary": "Controls `r_maxpolyverts` in the renderer module.",
     "value_type": "int",
     "values": [],
-    "variables": [],
+    "variables": [
+      "r_maxpolyverts"
+    ],
     "xdocs": null
   },
   {
@@ -300451,7 +302548,9 @@
         "value": "2"
       }
     ],
-    "variables": [],
+    "variables": [
+      "r_measureOverdraw"
+    ],
     "xdocs": null
   },
   {
@@ -300796,7 +302895,9 @@
         "value": "1"
       }
     ],
-    "variables": [],
+    "variables": [
+      "r_mergeLeafSurfaces"
+    ],
     "xdocs": null
   },
   {
@@ -301147,7 +303248,9 @@
         "value": "1"
       }
     ],
-    "variables": [],
+    "variables": [
+      "r_mergeMultidraws"
+    ],
     "xdocs": null
   },
   {
@@ -301910,7 +304013,9 @@
     "summary": "Controls `r_modelpoolmegs` in the renderer module.",
     "value_type": "int",
     "values": [],
-    "variables": [],
+    "variables": [
+      "r_modelpoolmegs"
+    ],
     "xdocs": null
   },
   {
@@ -302338,7 +304443,9 @@
         "value": "1"
       }
     ],
-    "variables": [],
+    "variables": [
+      "r_nobind"
+    ],
     "xdocs": null
   },
   {
@@ -303423,7 +305530,9 @@
         "value": "1"
       }
     ],
-    "variables": [],
+    "variables": [
+      "r_nocull"
+    ],
     "xdocs": null
   },
   {
@@ -303828,7 +305937,9 @@
         "value": "1"
       }
     ],
-    "variables": [],
+    "variables": [
+      "r_nocurves"
+    ],
     "xdocs": null
   },
   {
@@ -303857,7 +305968,7 @@
       }
     ],
     "derivation": "code-trace",
-    "description": "Registered by the current source, but no user-facing behavior description has been verified. Consult the cited behavior reads before relying on values not listed here.",
+    "description": "Controls `r_noServerGhoul2` in the renderer module. Consult the cited behavior reads before relying on values not listed here.",
     "evidence": [
       {
         "condition": "else(!defined(REND2_SP))",
@@ -303866,6 +305977,36 @@
         "path": "shared/rd-rend2/tr_model.cpp",
         "registration_kind": "Cvar_Get",
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/shared/rd-rend2/tr_model.cpp#L776"
+      },
+      {
+        "kind": "behavior",
+        "line": 3237,
+        "path": "codemp/rd-vanilla/tr_ghoul2.cpp",
+        "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-vanilla/tr_ghoul2.cpp#L3237"
+      },
+      {
+        "kind": "behavior",
+        "line": 3332,
+        "path": "codemp/rd-vulkan/tr_ghoul2.cpp",
+        "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-vulkan/tr_ghoul2.cpp#L3332"
+      },
+      {
+        "kind": "behavior",
+        "line": 3572,
+        "path": "codemp/rd-vulkan/tr_ghoul2.cpp",
+        "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-vulkan/tr_ghoul2.cpp#L3572"
+      },
+      {
+        "kind": "behavior",
+        "line": 3221,
+        "path": "shared/rd-rend2/tr_ghoul2.cpp",
+        "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/shared/rd-rend2/tr_ghoul2.cpp#L3221"
+      },
+      {
+        "kind": "behavior",
+        "line": 3492,
+        "path": "shared/rd-rend2/tr_ghoul2.cpp",
+        "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/shared/rd-rend2/tr_ghoul2.cpp#L3492"
       }
     ],
     "feature": null,
@@ -303972,10 +306113,33 @@
     "requires_restart": false,
     "source_commit": "6ff04c0baf588a89e5ec9361ad7a0992941d7655",
     "status": "needs-review",
-    "summary": "Registered by the current source, but no user-facing behavior description has been verified.",
-    "value_type": "int",
-    "values": [],
-    "variables": [],
+    "summary": "Controls `r_noServerGhoul2` in the renderer module.",
+    "value_type": "bool",
+    "values": [
+      {
+        "evidence": {
+          "line": 3237,
+          "path": "codemp/rd-vanilla/tr_ghoul2.cpp",
+          "score": 7,
+          "text": "if (r_noServerGhoul2->integer)"
+        },
+        "meaning": "Disabled.",
+        "value": "0"
+      },
+      {
+        "evidence": {
+          "line": 3237,
+          "path": "codemp/rd-vanilla/tr_ghoul2.cpp",
+          "score": 7,
+          "text": "if (r_noServerGhoul2->integer)"
+        },
+        "meaning": "Enabled.",
+        "value": "1"
+      }
+    ],
+    "variables": [
+      "r_noServerGhoul2"
+    ],
     "xdocs": null
   },
   {
@@ -304280,7 +306444,9 @@
         "value": "1"
       }
     ],
-    "variables": [],
+    "variables": [
+      "r_nomip"
+    ],
     "xdocs": null
   },
   {
@@ -304752,7 +306918,9 @@
         "value": "1"
       }
     ],
-    "variables": [],
+    "variables": [
+      "r_noportals"
+    ],
     "xdocs": null
   },
   {
@@ -305106,7 +307274,9 @@
         "value": "1"
       }
     ],
-    "variables": [],
+    "variables": [
+      "r_noPrecacheGLA"
+    ],
     "xdocs": null
   },
   {
@@ -305523,7 +307693,9 @@
         "value": "1"
       }
     ],
-    "variables": [],
+    "variables": [
+      "r_norefresh"
+    ],
     "xdocs": null
   },
   {
@@ -305875,7 +308047,9 @@
         "value": "1"
       }
     ],
-    "variables": [],
+    "variables": [
+      "r_normalMapping"
+    ],
     "xdocs": null
   },
   {
@@ -305960,7 +308134,7 @@
       }
     ],
     "derivation": "code-trace",
-    "description": "Controls `r_noserverghoul2` in the renderer module. Consult the cited behavior reads before relying on values not listed here.",
+    "description": "Controls `r_noServerGhoul2` in the renderer module. Consult the cited behavior reads before relying on values not listed here.",
     "evidence": [
       {
         "condition": null,
@@ -306319,7 +308493,7 @@
     "requires_restart": false,
     "source_commit": "6ff04c0baf588a89e5ec9361ad7a0992941d7655",
     "status": "needs-review",
-    "summary": "Controls `r_noserverghoul2` in the renderer module.",
+    "summary": "Controls `r_noServerGhoul2` in the renderer module.",
     "value_type": "bool",
     "values": [
       {
@@ -306343,7 +308517,9 @@
         "value": "1"
       }
     ],
-    "variables": [],
+    "variables": [
+      "r_noServerGhoul2"
+    ],
     "xdocs": null
   },
   {
@@ -306725,7 +308901,9 @@
         "value": "-1"
       }
     ],
-    "variables": [],
+    "variables": [
+      "r_novis"
+    ],
     "xdocs": null
   },
   {
@@ -306778,7 +308956,7 @@
       }
     ],
     "derivation": "code-trace",
-    "description": "Controls `r_offsetfactor` in the renderer module. Consult the cited behavior reads before relying on values not listed here.",
+    "description": "Controls `r_offsetFactor` in the renderer module. Consult the cited behavior reads before relying on values not listed here.",
     "evidence": [
       {
         "condition": null,
@@ -307148,10 +309326,12 @@
     "requires_restart": false,
     "source_commit": "6ff04c0baf588a89e5ec9361ad7a0992941d7655",
     "status": "needs-review",
-    "summary": "Controls `r_offsetfactor` in the renderer module.",
+    "summary": "Controls `r_offsetFactor` in the renderer module.",
     "value_type": "float",
     "values": [],
-    "variables": [],
+    "variables": [
+      "r_offsetFactor"
+    ],
     "xdocs": null
   },
   {
@@ -307204,7 +309384,7 @@
       }
     ],
     "derivation": "code-trace",
-    "description": "Controls `r_offsetunits` in the renderer module. Consult the cited behavior reads before relying on values not listed here.",
+    "description": "Controls `r_offsetUnits` in the renderer module. Consult the cited behavior reads before relying on values not listed here.",
     "evidence": [
       {
         "condition": null,
@@ -307576,10 +309756,12 @@
     "requires_restart": false,
     "source_commit": "6ff04c0baf588a89e5ec9361ad7a0992941d7655",
     "status": "needs-review",
-    "summary": "Controls `r_offsetunits` in the renderer module.",
+    "summary": "Controls `r_offsetUnits` in the renderer module.",
     "value_type": "float",
     "values": [],
-    "variables": [],
+    "variables": [
+      "r_offsetUnits"
+    ],
     "xdocs": null
   },
   {
@@ -308010,7 +310192,9 @@
         "value": "1"
       }
     ],
-    "variables": [],
+    "variables": [
+      "r_overBrightBits"
+    ],
     "xdocs": null
   },
   {
@@ -308380,7 +310564,9 @@
         "value": "1"
       }
     ],
-    "variables": [],
+    "variables": [
+      "r_parallaxMapping"
+    ],
     "xdocs": null
   },
   {
@@ -308879,7 +311065,9 @@
         "value": "1"
       }
     ],
-    "variables": [],
+    "variables": [
+      "r_patchStitching"
+    ],
     "xdocs": null
   },
   {
@@ -309517,7 +311705,9 @@
     "summary": "Controls `r_picmip` in the renderer module.",
     "value_type": "int",
     "values": [],
-    "variables": [],
+    "variables": [
+      "r_picmip"
+    ],
     "xdocs": null
   },
   {
@@ -309934,7 +312124,9 @@
         "value": "1"
       }
     ],
-    "variables": [],
+    "variables": [
+      "r_portalOnly"
+    ],
     "xdocs": null
   },
   {
@@ -310212,7 +312404,9 @@
     "summary": "Select color bits used for presentation surfaces Requires \\\\r_fbo 1",
     "value_type": "int",
     "values": [],
-    "variables": [],
+    "variables": [
+      "r_presentBits"
+    ],
     "xdocs": null
   },
   {
@@ -310639,7 +312833,9 @@
     "summary": "Controls `r_primitives` in the renderer module.",
     "value_type": "int",
     "values": [],
-    "variables": [],
+    "variables": [
+      "r_primitives"
+    ],
     "xdocs": null
   },
   {
@@ -311005,7 +313201,9 @@
         "value": "1"
       }
     ],
-    "variables": [],
+    "variables": [
+      "r_printShaders"
+    ],
     "xdocs": null
   },
   {
@@ -311317,7 +313515,9 @@
     "summary": "Controls `r_pshadowDist` in the renderer module.",
     "value_type": "float",
     "values": [],
-    "variables": [],
+    "variables": [
+      "r_pshadowDist"
+    ],
     "xdocs": null
   },
   {
@@ -311559,7 +313759,9 @@
     "summary": "Controls `r_refractionChromaticAberration` in the renderer module.",
     "value_type": "float",
     "values": [],
-    "variables": [],
+    "variables": [
+      "r_refractionChromaticAberration"
+    ],
     "xdocs": null
   },
   {
@@ -312213,7 +314415,9 @@
     "summary": "Controls `r_renderHeight` in the renderer module.",
     "value_type": "int",
     "values": [],
-    "variables": [],
+    "variables": [
+      "r_renderHeight"
+    ],
     "xdocs": null
   },
   {
@@ -312550,7 +314754,9 @@
         "value": "4"
       }
     ],
-    "variables": [],
+    "variables": [
+      "r_renderScale"
+    ],
     "xdocs": null
   },
   {
@@ -313598,7 +315804,9 @@
     "summary": "Controls `r_renderWidth` in the renderer module.",
     "value_type": "int",
     "values": [],
-    "variables": [],
+    "variables": [
+      "r_renderWidth"
+    ],
     "xdocs": null
   },
   {
@@ -313882,7 +316090,9 @@
     "summary": "Registered by the current source, but no user-facing behavior description has been verified.",
     "value_type": "int",
     "values": [],
-    "variables": [],
+    "variables": [
+      "r_roofCullFloorDist"
+    ],
     "xdocs": null
   },
   {
@@ -314192,7 +316402,9 @@
     "summary": "Controls `r_roofCullCeilDist` in the renderer module.",
     "value_type": "float",
     "values": [],
-    "variables": [],
+    "variables": [
+      "r_roofCullCeilDist"
+    ],
     "xdocs": null
   },
   {
@@ -314630,7 +316842,9 @@
         "value": "1"
       }
     ],
-    "variables": [],
+    "variables": [
+      "r_roundImagesDown"
+    ],
     "xdocs": null
   },
   {
@@ -314928,7 +317142,9 @@
     "summary": "Registered by the current source, but no user-facing behavior description has been verified.",
     "value_type": "int",
     "values": [],
-    "variables": [],
+    "variables": [
+      "r_saveFontData"
+    ],
     "xdocs": null
   },
   {
@@ -315596,7 +317812,9 @@
     "summary": "Controls `r_screenshotJpegQuality` in the renderer module.",
     "value_type": "int",
     "values": [],
-    "variables": [],
+    "variables": [
+      "r_screenshotJpegQuality"
+    ],
     "xdocs": null
   },
   {
@@ -316353,7 +318571,9 @@
     "summary": "Controls `r_shadowCascadeZBias` in the renderer module.",
     "value_type": "float",
     "values": [],
-    "variables": [],
+    "variables": [
+      "r_shadowCascadeZBias"
+    ],
     "xdocs": null
   },
   {
@@ -316666,7 +318886,9 @@
     "summary": "Controls `r_shadowCascadeZFar` in the renderer module.",
     "value_type": "float",
     "values": [],
-    "variables": [],
+    "variables": [
+      "r_shadowCascadeZFar"
+    ],
     "xdocs": null
   },
   {
@@ -316973,7 +319195,9 @@
     "summary": "Controls `r_shadowCascadeZNear` in the renderer module.",
     "value_type": "float",
     "values": [],
-    "variables": [],
+    "variables": [
+      "r_shadowCascadeZNear"
+    ],
     "xdocs": null
   },
   {
@@ -317307,7 +319531,9 @@
         "value": "1"
       }
     ],
-    "variables": [],
+    "variables": [
+      "r_shadowFilter"
+    ],
     "xdocs": null
   },
   {
@@ -317626,7 +319852,9 @@
     "summary": "Controls `r_shadowMapSize` in the renderer module.",
     "value_type": "int",
     "values": [],
-    "variables": [],
+    "variables": [
+      "r_shadowMapSize"
+    ],
     "xdocs": null
   },
   {
@@ -317932,7 +320160,9 @@
     "summary": "Controls `r_shadowOffsetFactor` in the renderer module.",
     "value_type": "float",
     "values": [],
-    "variables": [],
+    "variables": [
+      "r_shadowOffsetFactor"
+    ],
     "xdocs": null
   },
   {
@@ -318238,7 +320468,9 @@
     "summary": "Controls `r_shadowOffsetUnits` in the renderer module.",
     "value_type": "float",
     "values": [],
-    "variables": [],
+    "variables": [
+      "r_shadowOffsetUnits"
+    ],
     "xdocs": null
   },
   {
@@ -318541,7 +320773,9 @@
     "summary": "Controls `r_shadowRange` in the renderer module.",
     "value_type": "float",
     "values": [],
-    "variables": [],
+    "variables": [
+      "r_shadowRange"
+    ],
     "xdocs": null
   },
   {
@@ -318988,7 +321222,9 @@
         "value": "1"
       }
     ],
-    "variables": [],
+    "variables": [
+      "r_showcluster"
+    ],
     "xdocs": null
   },
   {
@@ -319173,7 +321409,9 @@
     "summary": "Registered by the current source, but no user-facing behavior description has been verified.",
     "value_type": "int",
     "values": [],
-    "variables": [],
+    "variables": [
+      "r_showFrameVariance"
+    ],
     "xdocs": null
   },
   {
@@ -319594,7 +321832,9 @@
         "value": "2"
       }
     ],
-    "variables": [],
+    "variables": [
+      "r_showImages"
+    ],
     "xdocs": null
   },
   {
@@ -320033,7 +322273,9 @@
         "value": "1"
       }
     ],
-    "variables": [],
+    "variables": [
+      "r_shownormals"
+    ],
     "xdocs": null
   },
   {
@@ -320483,7 +322725,9 @@
         "value": "1"
       }
     ],
-    "variables": [],
+    "variables": [
+      "r_showsky"
+    ],
     "xdocs": null
   },
   {
@@ -320957,7 +323201,9 @@
         "value": "1"
       }
     ],
-    "variables": [],
+    "variables": [
+      "r_showtris"
+    ],
     "xdocs": null
   },
   {
@@ -321382,7 +323628,9 @@
         "value": "1"
       }
     ],
-    "variables": [],
+    "variables": [
+      "r_simpleMipMaps"
+    ],
     "xdocs": null
   },
   {
@@ -321812,7 +324060,9 @@
         "value": "1"
       }
     ],
-    "variables": [],
+    "variables": [
+      "r_singleShader"
+    ],
     "xdocs": null
   },
   {
@@ -322229,7 +324479,9 @@
         "value": "1"
       }
     ],
-    "variables": [],
+    "variables": [
+      "r_skipBackEnd"
+    ],
     "xdocs": null
   },
   {
@@ -322550,7 +324802,9 @@
         "value": "3"
       }
     ],
-    "variables": [],
+    "variables": [
+      "r_smaa"
+    ],
     "xdocs": null
   },
   {
@@ -322861,7 +325115,9 @@
         "value": "3"
       }
     ],
-    "variables": [],
+    "variables": [
+      "r_smaa_quality"
+    ],
     "xdocs": null
   },
   {
@@ -323338,7 +325594,9 @@
         "value": "1"
       }
     ],
-    "variables": [],
+    "variables": [
+      "r_smartpicmip"
+    ],
     "xdocs": null
   },
   {
@@ -323690,7 +325948,9 @@
         "value": "1"
       }
     ],
-    "variables": [],
+    "variables": [
+      "r_specularMapping"
+    ],
     "xdocs": null
   },
   {
@@ -324140,7 +326400,9 @@
         "value": "2"
       }
     ],
-    "variables": [],
+    "variables": [
+      "r_speeds"
+    ],
     "xdocs": null
   },
   {
@@ -324482,7 +326744,9 @@
         "value": "2"
       }
     ],
-    "variables": [],
+    "variables": [
+      "r_ssao"
+    ],
     "xdocs": null
   },
   {
@@ -325464,7 +327728,9 @@
     "summary": "Controls `r_stereoSeparation` in the renderer module.",
     "value_type": "float",
     "values": [],
-    "variables": [],
+    "variables": [
+      "r_stereoSeparation"
+    ],
     "xdocs": null
   },
   {
@@ -325929,7 +328195,9 @@
     "summary": "Controls `r_subdivisions` in the renderer module.",
     "value_type": "float",
     "values": [],
-    "variables": [],
+    "variables": [
+      "r_subdivisions"
+    ],
     "xdocs": null
   },
   {
@@ -326260,7 +328528,9 @@
     "summary": "Controls `r_sunlightMode` in the renderer module.",
     "value_type": "float",
     "values": [],
-    "variables": [],
+    "variables": [
+      "r_sunlightMode"
+    ],
     "xdocs": null
   },
   {
@@ -326588,7 +328858,9 @@
         "value": "1"
       }
     ],
-    "variables": [],
+    "variables": [
+      "r_sunShadows"
+    ],
     "xdocs": null
   },
   {
@@ -327080,7 +329352,9 @@
         "value": "1"
       }
     ],
-    "variables": [],
+    "variables": [
+      "r_surfaceSprites"
+    ],
     "xdocs": null
   },
   {
@@ -327391,7 +329665,9 @@
     "summary": "Controls `r_surfaceWeather` in the renderer module.",
     "value_type": "float",
     "values": [],
-    "variables": [],
+    "variables": [
+      "r_surfaceWeather"
+    ],
     "xdocs": null
   },
   {
@@ -328040,7 +330316,9 @@
     "summary": "Controls `r_terrainTessellate` in the renderer module.",
     "value_type": "int",
     "values": [],
-    "variables": [],
+    "variables": [
+      "r_terrainTessellate"
+    ],
     "xdocs": null
   },
   {
@@ -328276,7 +330554,9 @@
         "value": "1"
       }
     ],
-    "variables": [],
+    "variables": [
+      "r_terrainWaterOffset"
+    ],
     "xdocs": null
   },
   {
@@ -328802,7 +331082,9 @@
         "value": "32"
       }
     ],
-    "variables": [],
+    "variables": [
+      "r_texturebits"
+    ],
     "xdocs": null
   },
   {
@@ -329186,30 +331468,11 @@
     "source_commit": "6ff04c0baf588a89e5ec9361ad7a0992941d7655",
     "status": "needs-review",
     "summary": "Controls `r_texturebitslm` in the renderer module.",
-    "value_type": "bool",
-    "values": [
-      {
-        "evidence": {
-          "line": 669,
-          "path": "codemp/rd-vanilla/tr_image.cpp",
-          "score": 7,
-          "text": "else if ( isLightmap && r_texturebitslm->integer > 0 )"
-        },
-        "meaning": "Disabled.",
-        "value": "0"
-      },
-      {
-        "evidence": {
-          "line": 669,
-          "path": "codemp/rd-vanilla/tr_image.cpp",
-          "score": 7,
-          "text": "else if ( isLightmap && r_texturebitslm->integer > 0 )"
-        },
-        "meaning": "Enabled.",
-        "value": "1"
-      }
+    "value_type": "bitmask",
+    "values": [],
+    "variables": [
+      "r_texturebitslm"
     ],
-    "variables": [],
     "xdocs": null
   },
   {
@@ -329765,7 +332028,9 @@
     "summary": "Controls `r_textureMode` in the renderer module.",
     "value_type": "string",
     "values": [],
-    "variables": [],
+    "variables": [
+      "r_textureMode"
+    ],
     "xdocs": null
   },
   {
@@ -330111,7 +332376,9 @@
         "value": "1"
       }
     ],
-    "variables": [],
+    "variables": [
+      "r_toneMap"
+    ],
     "xdocs": null
   },
   {
@@ -330164,7 +332431,7 @@
       }
     ],
     "derivation": "code-trace",
-    "description": "Controls `r_uifullscreen` in the renderer module. Consult the cited behavior reads before relying on values not listed here.",
+    "description": "Controls `r_uiFullScreen` in the renderer module. Consult the cited behavior reads before relying on values not listed here.",
     "evidence": [
       {
         "condition": null,
@@ -330447,7 +332714,7 @@
     "requires_restart": false,
     "source_commit": "6ff04c0baf588a89e5ec9361ad7a0992941d7655",
     "status": "needs-review",
-    "summary": "Controls `r_uifullscreen` in the renderer module.",
+    "summary": "Controls `r_uiFullScreen` in the renderer module.",
     "value_type": "bool",
     "values": [
       {
@@ -330471,7 +332738,9 @@
         "value": "1"
       }
     ],
-    "variables": [],
+    "variables": [
+      "r_uiFullScreen"
+    ],
     "xdocs": null
   },
   {
@@ -330777,7 +333046,9 @@
         "value": "1"
       }
     ],
-    "variables": [],
+    "variables": [
+      "r_vbo"
+    ],
     "xdocs": null
   },
   {
@@ -331089,7 +333360,9 @@
         "value": "1"
       }
     ],
-    "variables": [],
+    "variables": [
+      "r_vbo_models"
+    ],
     "xdocs": null
   },
   {
@@ -331556,7 +333829,9 @@
         "value": "1"
       }
     ],
-    "variables": [],
+    "variables": [
+      "r_verbose"
+    ],
     "xdocs": null
   },
   {
@@ -332071,7 +334346,9 @@
         "value": "1"
       }
     ],
-    "variables": [],
+    "variables": [
+      "r_vertexLight"
+    ],
     "xdocs": null
   },
   {
@@ -332382,7 +334659,9 @@
         "value": "1"
       }
     ],
-    "variables": [],
+    "variables": [
+      "r_volumetricFog"
+    ],
     "xdocs": null
   },
   {
@@ -332648,7 +334927,9 @@
     "summary": "Scales volumetric fog density unless scale has been explicitly defined",
     "value_type": "float",
     "values": [],
-    "variables": [],
+    "variables": [
+      "r_volumetricFogDefaultScale"
+    ],
     "xdocs": null
   },
   {
@@ -332932,7 +335213,9 @@
     "summary": "How many ray samples to take",
     "value_type": "int",
     "values": [],
-    "variables": [],
+    "variables": [
+      "r_volumetricFogSamples"
+    ],
     "xdocs": null
   },
   {
@@ -333197,7 +335480,9 @@
     "summary": "Temporarily scales volumetric fog density",
     "value_type": "float",
     "values": [],
-    "variables": [],
+    "variables": [
+      "r_volumetricFogScale"
+    ],
     "xdocs": null
   },
   {
@@ -333478,7 +335763,9 @@
     "summary": "Controls `r_windAngle` in the renderer module.",
     "value_type": "float",
     "values": [],
-    "variables": [],
+    "variables": [
+      "r_windAngle"
+    ],
     "xdocs": null
   },
   {
@@ -333777,7 +336064,9 @@
     "summary": "Controls `r_windDampFactor` in the renderer module.",
     "value_type": "float",
     "values": [],
-    "variables": [],
+    "variables": [
+      "r_windDampFactor"
+    ],
     "xdocs": null
   },
   {
@@ -334058,7 +336347,9 @@
     "summary": "Controls `r_windGust` in the renderer module.",
     "value_type": "float",
     "values": [],
-    "variables": [],
+    "variables": [
+      "r_windGust"
+    ],
     "xdocs": null
   },
   {
@@ -334339,7 +336630,9 @@
     "summary": "Controls `r_windPointForce` in the renderer module.",
     "value_type": "float",
     "values": [],
-    "variables": [],
+    "variables": [
+      "r_windPointForce"
+    ],
     "xdocs": null
   },
   {
@@ -334620,7 +336913,9 @@
     "summary": "Controls `r_windPointX` in the renderer module.",
     "value_type": "float",
     "values": [],
-    "variables": [],
+    "variables": [
+      "r_windPointX"
+    ],
     "xdocs": null
   },
   {
@@ -334901,7 +337196,9 @@
     "summary": "Controls `r_windPointY` in the renderer module.",
     "value_type": "float",
     "values": [],
-    "variables": [],
+    "variables": [
+      "r_windPointY"
+    ],
     "xdocs": null
   },
   {
@@ -335194,7 +337491,9 @@
     "summary": "Controls `r_windSpeed` in the renderer module.",
     "value_type": "float",
     "values": [],
-    "variables": [],
+    "variables": [
+      "r_windSpeed"
+    ],
     "xdocs": null
   },
   {
@@ -335782,7 +338081,9 @@
     "summary": "Controls `r_znear` in the renderer module.",
     "value_type": "float",
     "values": [],
-    "variables": [],
+    "variables": [
+      "r_znear"
+    ],
     "xdocs": null
   },
   {
@@ -336180,7 +338481,9 @@
     "summary": "Controls `r_zproj` in the renderer module.",
     "value_type": "float",
     "values": [],
-    "variables": [],
+    "variables": [
+      "r_zproj"
+    ],
     "xdocs": null
   },
   {
@@ -337372,8 +339675,29 @@
     "source_commit": "6ff04c0baf588a89e5ec9361ad7a0992941d7655",
     "status": "needs-review",
     "summary": "Controls `RMG` in the game module.",
-    "value_type": "bitmask",
-    "values": [],
+    "value_type": "bool",
+    "values": [
+      {
+        "evidence": {
+          "line": 1125,
+          "path": "codemp/game/ai_main.c",
+          "score": 7,
+          "text": "if (RMG.integer && bot_pvstype.integer)"
+        },
+        "meaning": "Disabled.",
+        "value": "0"
+      },
+      {
+        "evidence": {
+          "line": 1125,
+          "path": "codemp/game/ai_main.c",
+          "score": 7,
+          "text": "if (RMG.integer && bot_pvstype.integer)"
+        },
+        "meaning": "Enabled.",
+        "value": "1"
+      }
+    ],
     "variables": [
       "RMG"
     ],
@@ -337542,8 +339866,29 @@
     "source_commit": "6ff04c0baf588a89e5ec9361ad7a0992941d7655",
     "status": "needs-review",
     "summary": "Controls `s_allowDynamicMusic` in the engine-client module.",
-    "value_type": "bitmask",
-    "values": [],
+    "value_type": "bool",
+    "values": [
+      {
+        "evidence": {
+          "line": 425,
+          "path": "codemp/client/snd_dma.cpp",
+          "score": 7,
+          "text": "if (!s_allowDynamicMusic->integer)"
+        },
+        "meaning": "Disabled.",
+        "value": "0"
+      },
+      {
+        "evidence": {
+          "line": 425,
+          "path": "codemp/client/snd_dma.cpp",
+          "score": 7,
+          "text": "if (!s_allowDynamicMusic->integer)"
+        },
+        "meaning": "Enabled.",
+        "value": "1"
+      }
+    ],
     "variables": [
       "s_allowDynamicMusic"
     ],
@@ -338159,8 +340504,29 @@
     "source_commit": "6ff04c0baf588a89e5ec9361ad7a0992941d7655",
     "status": "needs-review",
     "summary": "Controls `s_doppler` in the engine-client module.",
-    "value_type": "bitmask",
-    "values": [],
+    "value_type": "bool",
+    "values": [
+      {
+        "evidence": {
+          "line": 2012,
+          "path": "codemp/client/snd_dma.cpp",
+          "score": 7,
+          "text": "if ( s_doppler->integer && VectorLengthSquared(velocity) > 0.0 ) {"
+        },
+        "meaning": "Disabled.",
+        "value": "0"
+      },
+      {
+        "evidence": {
+          "line": 2012,
+          "path": "codemp/client/snd_dma.cpp",
+          "score": 7,
+          "text": "if ( s_doppler->integer && VectorLengthSquared(velocity) > 0.0 ) {"
+        },
+        "meaning": "Enabled.",
+        "value": "1"
+      }
+    ],
     "variables": [
       "s_doppler"
     ],
@@ -344113,8 +346479,29 @@
     "source_commit": "6ff04c0baf588a89e5ec9361ad7a0992941d7655",
     "status": "needs-review",
     "summary": "Controls `se_debug` in the engine-shared module.",
-    "value_type": "bitmask",
-    "values": [],
+    "value_type": "bool",
+    "values": [
+      {
+        "evidence": {
+          "line": 1007,
+          "path": "codemp/qcommon/stringed_ingame.cpp",
+          "score": 7,
+          "text": "if ( se_debug->integer && TheStringPackage.m_bLoadDebug )"
+        },
+        "meaning": "Disabled.",
+        "value": "0"
+      },
+      {
+        "evidence": {
+          "line": 1007,
+          "path": "codemp/qcommon/stringed_ingame.cpp",
+          "score": 7,
+          "text": "if ( se_debug->integer && TheStringPackage.m_bLoadDebug )"
+        },
+        "meaning": "Enabled.",
+        "value": "1"
+      }
+    ],
     "variables": [
       "se_debug"
     ],
@@ -350064,8 +352451,29 @@
     "source_commit": "6ff04c0baf588a89e5ec9361ad7a0992941d7655",
     "status": "documented",
     "summary": "Allow cheats on server if set to 1",
-    "value_type": "bitmask",
-    "values": [],
+    "value_type": "bool",
+    "values": [
+      {
+        "evidence": {
+          "line": 6014,
+          "path": "codemp/game/g_active.c",
+          "score": 7,
+          "text": "if ((ent->client->pers.noFollow && (ent->client->sess.movementStyle != MV_SIEGE) && (g_allowNoFollow.integer < 3)) || ent->client->pers.practice || sv_cheats.integer || !ent->client->pers.userName[0] || !ent->client->sess.raceMode || !ent->client->pers.stats.startTime || (ent->client->sess.sessionTeam == TEAM_SPECTATOR) ||"
+        },
+        "meaning": "Disabled.",
+        "value": "0"
+      },
+      {
+        "evidence": {
+          "line": 6014,
+          "path": "codemp/game/g_active.c",
+          "score": 7,
+          "text": "if ((ent->client->pers.noFollow && (ent->client->sess.movementStyle != MV_SIEGE) && (g_allowNoFollow.integer < 3)) || ent->client->pers.practice || sv_cheats.integer || !ent->client->pers.userName[0] || !ent->client->sess.raceMode || !ent->client->pers.stats.startTime || (ent->client->sess.sessionTeam == TEAM_SPECTATOR) ||"
+        },
+        "meaning": "Enabled.",
+        "value": "1"
+      }
+    ],
     "variables": [
       "sv_cheats",
       "cvar_cheats"
@@ -350654,8 +353062,29 @@
     "source_commit": "6ff04c0baf588a89e5ec9361ad7a0992941d7655",
     "status": "documented",
     "summary": "Activate server demo pre-recording so demos can be retroactively recorded for duration sv_demoPreRecordTime (seconds)",
-    "value_type": "bitmask",
-    "values": [],
+    "value_type": "bool",
+    "values": [
+      {
+        "evidence": {
+          "line": 1827,
+          "path": "codemp/server/sv_ccmds.cpp",
+          "score": 7,
+          "text": "if (sv_demoPreRecord->integer) {"
+        },
+        "meaning": "Disabled.",
+        "value": "0"
+      },
+      {
+        "evidence": {
+          "line": 1827,
+          "path": "codemp/server/sv_ccmds.cpp",
+          "score": 7,
+          "text": "if (sv_demoPreRecord->integer) {"
+        },
+        "meaning": "Enabled.",
+        "value": "1"
+      }
+    ],
     "variables": [
       "sv_demoPreRecord"
     ],
@@ -353479,8 +355908,29 @@
     "source_commit": "6ff04c0baf588a89e5ec9361ad7a0992941d7655",
     "status": "needs-review",
     "summary": "Time after which server will enter hibernation mode",
-    "value_type": "bitmask",
-    "values": [],
+    "value_type": "bool",
+    "values": [
+      {
+        "evidence": {
+          "line": 1208,
+          "path": "codemp/server/sv_main.cpp",
+          "score": 7,
+          "text": "if (sv_hibernateTime->integer && !svs.hibernation.enabled && !humans) {"
+        },
+        "meaning": "Disabled.",
+        "value": "0"
+      },
+      {
+        "evidence": {
+          "line": 1208,
+          "path": "codemp/server/sv_main.cpp",
+          "score": 7,
+          "text": "if (sv_hibernateTime->integer && !svs.hibernation.enabled && !humans) {"
+        },
+        "meaning": "Enabled.",
+        "value": "1"
+      }
+    ],
     "variables": [
       "sv_hibernateTime"
     ],
@@ -354998,8 +357448,29 @@
     "source_commit": "6ff04c0baf588a89e5ec9361ad7a0992941d7655",
     "status": "needs-review",
     "summary": "Controls `sv_lanForceRate` in the engine-server module.",
-    "value_type": "bitmask",
-    "values": [],
+    "value_type": "enum",
+    "values": [
+      {
+        "evidence": {
+          "line": 1202,
+          "path": "codemp/server/sv_client.cpp",
+          "score": 7,
+          "text": "if ( Sys_IsLANAddress( &cl->netchan.remoteAddress ) && com_dedicated->integer != 2 && sv_lanForceRate->integer == 1 ) {"
+        },
+        "meaning": "Selects the code path tested for value 1.",
+        "value": "1"
+      },
+      {
+        "evidence": {
+          "line": 1202,
+          "path": "codemp/server/sv_client.cpp",
+          "score": 7,
+          "text": "if ( Sys_IsLANAddress( &cl->netchan.remoteAddress ) && com_dedicated->integer != 2 && sv_lanForceRate->integer == 1 ) {"
+        },
+        "meaning": "Selects the code path tested for value 2.",
+        "value": "2"
+      }
+    ],
     "variables": [
       "sv_lanForceRate"
     ],
@@ -358742,8 +361213,29 @@
     "source_commit": "6ff04c0baf588a89e5ec9361ad7a0992941d7655",
     "status": "needs-review",
     "summary": "Controls `sv_maxTeamSize` in the game module.",
-    "value_type": "bitmask",
-    "values": [],
+    "value_type": "bool",
+    "values": [
+      {
+        "evidence": {
+          "line": 1227,
+          "path": "codemp/game/g_cmds.c",
+          "score": 7,
+          "text": "if (sv_maxTeamSize.integer && !forcedToJoin && GetTeamPlayers(TEAM_RED) >= sv_maxTeamSize.integer) {"
+        },
+        "meaning": "Disabled.",
+        "value": "0"
+      },
+      {
+        "evidence": {
+          "line": 1227,
+          "path": "codemp/game/g_cmds.c",
+          "score": 7,
+          "text": "if (sv_maxTeamSize.integer && !forcedToJoin && GetTeamPlayers(TEAM_RED) >= sv_maxTeamSize.integer) {"
+        },
+        "meaning": "Enabled.",
+        "value": "1"
+      }
+    ],
     "variables": [
       "sv_maxTeamSize"
     ],
@@ -360201,8 +362693,29 @@
     "source_commit": "6ff04c0baf588a89e5ec9361ad7a0992941d7655",
     "status": "needs-review",
     "summary": "Controls `sv_paused` in the engine-shared module.",
-    "value_type": "bitmask",
-    "values": [],
+    "value_type": "bool",
+    "values": [
+      {
+        "evidence": {
+          "line": 963,
+          "path": "codemp/client/cl_cgame.cpp",
+          "score": 7,
+          "text": "if ( sv_paused->integer && CL_CheckPaused() && com_sv_running->integer ) {"
+        },
+        "meaning": "Disabled.",
+        "value": "0"
+      },
+      {
+        "evidence": {
+          "line": 963,
+          "path": "codemp/client/cl_cgame.cpp",
+          "score": 7,
+          "text": "if ( sv_paused->integer && CL_CheckPaused() && com_sv_running->integer ) {"
+        },
+        "meaning": "Enabled.",
+        "value": "1"
+      }
+    ],
     "variables": [
       "sv_paused"
     ],
@@ -360544,8 +363057,19 @@
     "source_commit": "6ff04c0baf588a89e5ec9361ad7a0992941d7655",
     "status": "needs-review",
     "summary": "Improved scoreboard client ping calculation",
-    "value_type": "bitmask",
-    "values": [],
+    "value_type": "enum",
+    "values": [
+      {
+        "evidence": {
+          "line": 1743,
+          "path": "codemp/server/sv_client.cpp",
+          "score": 7,
+          "text": "if (!sv_pingFix->integer || cl->frames[cl->messageAcknowledge & PACKET_MASK].messageAcked == -1)"
+        },
+        "meaning": "Selects the code path tested for value -1.",
+        "value": "-1"
+      }
+    ],
     "variables": [
       "sv_pingFix"
     ],
@@ -383297,8 +385821,29 @@
     "source_commit": "6ff04c0baf588a89e5ec9361ad7a0992941d7655",
     "status": "needs-review",
     "summary": "Controls `ui_isJAPro` in the ui module.",
-    "value_type": "bitmask",
-    "values": [],
+    "value_type": "bool",
+    "values": [
+      {
+        "evidence": {
+          "line": 1061,
+          "path": "codemp/ui/ui_main.c",
+          "score": 7,
+          "text": "if (ui_isJAPro.integer && ui_vgs.integer) {"
+        },
+        "meaning": "Disabled.",
+        "value": "0"
+      },
+      {
+        "evidence": {
+          "line": 1061,
+          "path": "codemp/ui/ui_main.c",
+          "score": 7,
+          "text": "if (ui_isJAPro.integer && ui_vgs.integer) {"
+        },
+        "meaning": "Enabled.",
+        "value": "1"
+      }
+    ],
     "variables": [
       "ui_isJAPro"
     ],
@@ -408140,8 +410685,29 @@
     "source_commit": "6ff04c0baf588a89e5ec9361ad7a0992941d7655",
     "status": "needs-review",
     "summary": "Controls `ui_showAllSkins` in the ui module.",
-    "value_type": "bitmask",
-    "values": [],
+    "value_type": "bool",
+    "values": [
+      {
+        "evidence": {
+          "line": 8938,
+          "path": "codemp/ui/ui_main.c",
+          "score": 7,
+          "text": "else if (!ui_sv_pure.integer &&  ui_showAllSkins.integer && Q_stricmpn(uiInfo.q3HeadNames[i], \"default\", 7) && Q_stricmp(skinName, \"/red\") && Q_stricmp(skinName, \"/blue\") && Q_stricmp(skinName, \"/sp\") && Q_stricmpn(skinName, \"/rgb\", 4))"
+        },
+        "meaning": "Disabled.",
+        "value": "0"
+      },
+      {
+        "evidence": {
+          "line": 8938,
+          "path": "codemp/ui/ui_main.c",
+          "score": 7,
+          "text": "else if (!ui_sv_pure.integer &&  ui_showAllSkins.integer && Q_stricmpn(uiInfo.q3HeadNames[i], \"default\", 7) && Q_stricmp(skinName, \"/red\") && Q_stricmp(skinName, \"/blue\") && Q_stricmp(skinName, \"/sp\") && Q_stricmpn(skinName, \"/rgb\", 4))"
+        },
+        "meaning": "Enabled.",
+        "value": "1"
+      }
+    ],
     "variables": [
       "ui_showAllSkins"
     ],
@@ -409130,8 +411696,29 @@
     "source_commit": "6ff04c0baf588a89e5ec9361ad7a0992941d7655",
     "status": "needs-review",
     "summary": "Controls `ui_sv_pure` in the ui module.",
-    "value_type": "bitmask",
-    "values": [],
+    "value_type": "bool",
+    "values": [
+      {
+        "evidence": {
+          "line": 103,
+          "path": "codemp/ui/ui_cvar.c",
+          "score": 7,
+          "text": "if (ui_sv_pure.integer && (cstate.connState < CA_LOADING || ui_singlePlayerActive.integer)) {"
+        },
+        "meaning": "Disabled.",
+        "value": "0"
+      },
+      {
+        "evidence": {
+          "line": 103,
+          "path": "codemp/ui/ui_cvar.c",
+          "score": 7,
+          "text": "if (ui_sv_pure.integer && (cstate.connState < CA_LOADING || ui_singlePlayerActive.integer)) {"
+        },
+        "meaning": "Enabled.",
+        "value": "1"
+      }
+    ],
     "variables": [
       "ui_sv_pure"
     ],

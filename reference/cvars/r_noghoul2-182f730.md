@@ -11,7 +11,7 @@ search_exclude: false
 
 <p class="ref-warning"><strong>Needs review.</strong> The inventory/provenance evidence is recorded, but some behavior, options, or attribution still lacks a direct user-facing source.</p>
 
-Registered by the current source, but no user-facing behavior description has been verified. Consult the cited behavior reads before relying on values not listed here.
+Controls `r_noServerGhoul2` in the renderer module. Consult the cited behavior reads before relying on values not listed here.
 
 ## At a glance
 
@@ -28,13 +28,16 @@ Registered by the current source, but no user-facing behavior description has be
 | In-game xdocs | No |
 | In-game menu | No |
 | Default | `0` |
-| Value type | `int` |
+| Value type | `bool` |
 | Restart | No latch flag is registered. |
 | Cheat protected | No |
 
 ## Values
 
-No discrete value list is enforced or documented in the inspected source.
+| Value | Meaning | Evidence |
+|:--|:--|:--|
+| `0` | Disabled. | [codemp/rd-vanilla/tr_ghoul2.cpp:3237](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-vanilla/tr_ghoul2.cpp#L3237) |
+| `1` | Enabled. | [codemp/rd-vanilla/tr_ghoul2.cpp:3237](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-vanilla/tr_ghoul2.cpp#L3237) |
 
 ## Flags
 
@@ -63,5 +66,10 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 ## Evidence
 
 - registration: [shared/rd-rend2/tr_model.cpp:776](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/shared/rd-rend2/tr_model.cpp#L776) (Cvar_Get); condition `else(!defined(REND2_SP))`
+- behavior: [codemp/rd-vanilla/tr_ghoul2.cpp:3237](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-vanilla/tr_ghoul2.cpp#L3237)
+- behavior: [codemp/rd-vulkan/tr_ghoul2.cpp:3332](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-vulkan/tr_ghoul2.cpp#L3332)
+- behavior: [codemp/rd-vulkan/tr_ghoul2.cpp:3572](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-vulkan/tr_ghoul2.cpp#L3572)
+- behavior: [shared/rd-rend2/tr_ghoul2.cpp:3221](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/shared/rd-rend2/tr_ghoul2.cpp#L3221)
+- behavior: [shared/rd-rend2/tr_ghoul2.cpp:3492](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/shared/rd-rend2/tr_ghoul2.cpp#L3492)
 
 <p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/6ff04c0baf588a89e5ec9361ad7a0992941d7655"><code>6ff04c0baf58</code></a> on 2026-09-09. Anything merged after that is not reflected here.</p>

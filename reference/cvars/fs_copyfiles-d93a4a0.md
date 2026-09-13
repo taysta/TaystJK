@@ -28,7 +28,7 @@ Controls `fs_copyfiles` in the engine-shared module. Consult the cited behavior 
 | In-game xdocs | No |
 | In-game menu | No |
 | Default | `0` |
-| Value type | `bitmask` |
+| Value type | `string` |
 | Restart | No latch flag is registered. |
 | Cheat protected | No |
 

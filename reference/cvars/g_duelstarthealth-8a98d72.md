@@ -29,13 +29,15 @@ Controls `g_duelStartHealth` in the game module. Consult the cited behavior read
 | In-game xdocs | No |
 | In-game menu | No |
 | Default | `0` |
-| Value type | `bitmask` |
+| Value type | `enum` |
 | Restart | No latch flag is registered. |
 | Cheat protected | No |
 
 ## Values
 
-No discrete value list is enforced or documented in the inspected source.
+| Value | Meaning | Evidence |
+|:--|:--|:--|
+| `100` | Selects the code path tested for value 100. | [codemp/game/g_cmds.c:8317](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_cmds.c#L8317) |
 
 ## Flags
 

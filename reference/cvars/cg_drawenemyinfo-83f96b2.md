@@ -28,13 +28,15 @@ Controls `cg_drawEnemyInfo` in the cgame module. Consult the cited behavior read
 | In-game xdocs | No |
 | In-game menu | Yes — [ingame_setup.menu:4126](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/assets/japro/ui/jamp/ingame_setup.menu#L4126) |
 | Default | `1` |
-| Value type | `bitmask` |
+| Value type | `enum` |
 | Restart | No latch flag is registered. |
 | Cheat protected | No |
 
 ## Values
 
-No discrete value list is enforced or documented in the inspected source.
+| Value | Meaning | Evidence |
+|:--|:--|:--|
+| `-1` | Selects the code path tested for value -1. | [codemp/cgame/cg_draw.c:9693](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_draw.c#L9693) |
 
 ## Flags
 

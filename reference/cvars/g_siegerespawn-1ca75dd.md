@@ -28,7 +28,7 @@ Controls `g_siegeRespawn` in the game module. Consult the cited behavior reads b
 | In-game xdocs | No |
 | In-game menu | No |
 | Default | `20` |
-| Value type | `bitmask` |
+| Value type | `int` |
 | Restart | No latch flag is registered. |
 | Cheat protected | No |
 
