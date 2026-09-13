@@ -920,6 +920,39 @@ kbd { padding: .15rem .42rem; color: var(--text-soft); background: var(--surface
 .renderer-chip { color: #a9d4f3; background: rgba(79, 156, 209, .10); border-color: rgba(79, 156, 209, .23); }
 .status-chip { color: var(--warning); background: rgba(239, 176, 94, .08); border-color: rgba(239, 176, 94, .23); }
 
+.emoji-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(112px, 1fr));
+  gap: .5rem;
+  margin: 1.6rem 0;
+}
+
+.emoji-tile {
+  display: grid;
+  justify-items: center;
+  gap: .45rem;
+  margin: 0;
+  padding: .75rem .4rem;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--control-radius);
+}
+
+.emoji-tile img {
+  display: block;
+  width: 32px;
+  height: 32px;
+  image-rendering: pixelated;
+}
+
+.emoji-tile figcaption {
+  color: var(--text-soft);
+  font-family: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+  font-size: .78rem;
+  overflow-wrap: anywhere;
+  text-align: center;
+}
+
 .page-provenance {
   margin: 1.1rem 0 0;
   color: var(--muted);

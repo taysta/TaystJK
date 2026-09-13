@@ -16,6 +16,7 @@ from pathlib import Path
 from typing import Any, Iterable
 
 from build_reference import baseline_for
+from provenance import CURRENT_REF
 
 
 ORIGIN_LABELS = {
@@ -318,6 +319,134 @@ def declared_features(root: Path = Path(".")) -> list[dict[str, Any]]:
             "source": str(path),
         })
     return features
+
+
+EMOJI_SOURCE_DIR = "assets/japro/gfx/emoji"
+EMOJI_ASSET_DIR = Path("assets/emoji")
+# cg_local.h: MAX_EMOJI_LENGTH 24, MAX_LOADABLE_EMOJIS 256.
+MAX_LOADABLE_EMOJIS = 256
+
+
+def q_strstrip(value: str, strip: str, repl: str) -> str:
+    """Port of Q_strstrip in shared/qcommon/q_string.c.
+
+    A stripped character is replaced by the character at the same index in
+    `repl`, or dropped when `repl` is shorter than that index.
+    """
+    out = []
+    for char in value:
+        index = strip.find(char)
+        if index == -1:
+            out.append(char)
+        elif index < len(repl):
+            out.append(repl[index])
+    return "".join(out)
+
+
+def emoji_token(filename: str) -> str:
+    """The chat token a shipped emoji file produces.
+
+    Mirrors CG_LoadEmojis in codemp/cgame/cg_main.c: drop the extension, treat
+    `!` as "uppercase the next character" (it exists because a pk3 lowercases
+    filenames), then substitute the characters a filename cannot contain --
+    backtick becomes a colon and tilde becomes `>`.  The filename is not the
+    token: 181 of the 186 shipped files differ from it.
+    """
+    name = filename[:-4] if filename.lower().endswith(".png") else filename
+    chars = list(name)
+    index = 0
+    while index < len(chars):
+        if chars[index] == "!" and index + 1 < len(chars):
+            chars[index + 1] = chars[index + 1].upper()
+            index += 2
+        else:
+            index += 1
+    return q_strstrip("".join(chars), "`~!", ":>")
+
+
+def emoji_files(ref: str) -> list[str]:
+    listing = git("ls-tree", "-r", "--name-only", ref, "--", EMOJI_SOURCE_DIR + "/")
+    return sorted(
+        line.rsplit("/", 1)[-1] for line in listing.splitlines() if line.lower().endswith(".png")
+    )
+
+
+def export_emoji_assets(ref: str, filenames: list[str]) -> dict[str, str]:
+    """Copy the shipped emoji into the site, keyed by a URL-safe name.
+
+    The originals contain `#`, backticks and brackets, which are painful to
+    reference in a URL, so each is published under a stable digest of its
+    source filename.  Re-exported on every run, so the set cannot drift from
+    the source branch without the page changing too.
+    """
+    EMOJI_ASSET_DIR.mkdir(parents=True, exist_ok=True)
+    published: dict[str, str] = {}
+    for filename in filenames:
+        digest = hashlib.sha1(filename.encode()).hexdigest()[:12]
+        target = EMOJI_ASSET_DIR / f"{digest}.png"
+        blob = subprocess.run(
+            ["git", "show", f"{ref}:{EMOJI_SOURCE_DIR}/{filename}"],
+            check=True, stdout=subprocess.PIPE,
+        ).stdout
+        if not target.exists() or target.read_bytes() != blob:
+            target.write_bytes(blob)
+        published[filename] = target.name
+    for stale in EMOJI_ASSET_DIR.glob("*.png"):
+        if stale.name not in published.values():
+            stale.unlink()
+    return published
+
+
+def emoji_page(ref: str, sha: str) -> tuple[str, list[str]]:
+    """The shipped chat emoji, with the token that produces each one."""
+    filenames = emoji_files(ref)
+    published = export_emoji_assets(ref, filenames)
+    warnings: list[str] = []
+    if len(filenames) > MAX_LOADABLE_EMOJIS:
+        warnings.append(
+            f"{len(filenames)} emoji files ship, but the client loads at most "
+            f"{MAX_LOADABLE_EMOJIS}; the page lists files the client will not load"
+        )
+    seen: dict[str, str] = {}
+    rows = []
+    for filename in filenames:
+        token = emoji_token(filename)
+        if token in seen:
+            warnings.append(
+                f"emoji token {token!r} is produced by both {seen[token]!r} and {filename!r}"
+            )
+        seen[token] = filename
+        rows.append(
+            '<figure class="emoji-tile">'
+            f'<img src="{{{{ \'/assets/emoji/{published[filename]}\' | relative_url }}}}"'
+            f' alt="" width="32" height="32" loading="lazy">'
+            f"<figcaption>{esc(token)}</figcaption></figure>"
+        )
+    head = frontmatter(
+        "Chat emoji",
+        wide=True,
+        description=(
+            "Every chat emoji TaystJK ships, and the text you type to send each one."
+        ),
+    ) + f"""
+<div class="page-heading" markdown="1">
+<p class="eyebrow">Player guide</p>
+
+# Chat emoji
+
+<p class="page-lede">TaystJK ships {len(filenames)} chat emoji. Type the text under an image to send it. They are drawn in the chat box only when <code>cg_chatBoxEmojis</code> is on.</p>
+
+{generated_from(sha)}
+</div>
+
+The client builds this list by reading the files in `gfx/emoji`, so a server or a
+pk3 you install can add more. `listEmojis` prints what your own client loaded.
+
+<div class="emoji-grid">
+{chr(10).join(rows)}
+</div>
+"""
+    return head, warnings
 
 
 ADDED_ON_ANCHOR = "/TaystJK/whats-new/#how-to-tell-what-your-build-has"
@@ -1342,6 +1471,10 @@ def main() -> None:
     refs["14cea1563762076974bee277afadbd5bf234c494"] = "14cea1563762076974bee277afadbd5bf234c494"
 
     write(Path("index.md"), home_page(cvars, commands))
+    emoji, emoji_warnings = emoji_page(CURRENT_REF, cvars[0]["source_commit"])
+    write(Path("emoji.md"), emoji)
+    for warning in emoji_warnings:
+        print(f"warning: {warning}")
     whats_new, hidden_from_whats_new, whats_new_warnings = whats_new_page(cvars + commands)
     write(Path("whats-new.md"), whats_new)
     for warning in whats_new_warnings:
