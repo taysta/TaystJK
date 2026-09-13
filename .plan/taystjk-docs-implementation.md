@@ -147,9 +147,16 @@ Work items:
    client behaviour changes, cosmetics, HUD and movement tools, renderers, movement styles,
    Tribes, shipped configs, emoji index, platform support matrix, builds and versioning.
 3. New Develop children: documentation system, in-game docs (xdocs), contributing.
+   [2026-09-13: all three exist. contributing landed in Phase 5; the other two were never
+   created and were written now. The xdocs page was the gap that mattered — the reference
+   already showed an xdocs badge and offered "Has xdocs entry" as a filter, so a reader
+   could ask what one was and find no answer anywhere.]
 4. New pages elsewhere: overview (how the reference works, how the docs are laid out),
    glossary, troubleshooting hub, where to report what, mod compatibility matrix,
    attribution and licensing.
+   [2026-09-13: all present. Attribution and licensing was the last one missing — the site
+   never stated that TaystJK is GPLv2. Origin counts on it are read from `_data`, not from
+   this plan's figures.]
 5. Retire the orphans per the Phase 0 decision; apply the redirect map.
 6. jaPRO explainer placed on `index.md` and expanded in the overview.
 

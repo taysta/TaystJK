@@ -112,7 +112,7 @@ def main() -> None:
         Path("features.md"), *Path("features").rglob("*.md"),
         Path("overview.md"), Path("glossary.md"),
         Path("troubleshooting.md"), Path("where-to-report.md"),
-        Path("mod-compatibility.md"), Path("devlog.md"),
+        Path("mod-compatibility.md"), Path("devlog.md"), Path("licensing.md"),
         *Path("_devlog").glob("*.md"),
     ]
     for page in pages:
