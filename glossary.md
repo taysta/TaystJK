@@ -36,10 +36,11 @@ See [movement styles](/TaystJK/features/movement-styles/).
 **Ski** — sliding along the ground instead of running, in the Tribes movement style, with
 its own landing sound. See [Tribes](/TaystJK/features/tribes/).
 
-**IFF** — *not documented here.* The term appears in this project's planning notes as a
-Tribes feature, but a search of the whole source tree finds no occurrence of it, so there is
-nothing to define it against. If it exists it is not in the client; confirm what it refers
-to before adding an entry.
+**IFF** — identification friend-or-foe: a team-coloured marker floating above other players
+in the Tribes movement style, so you can tell at a glance who is on your side. It grows with
+distance so it stays readable far away, and enemies are only marked within a limited range
+([`cg_players.c`](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_players.c#L11059)).
+See [Tribes](/TaystJK/features/tribes/).
 
 ## Files and directories
 
