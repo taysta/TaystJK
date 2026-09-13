@@ -1,0 +1,88 @@
+---
+title: "Where to report"
+layout: reference
+nav_order: 10
+description: "Which project owns a problem: the client, the server's game module, the Vulkan renderer, or a closed-source mod."
+---
+
+<div class="page-heading" markdown="1">
+<p class="eyebrow">Start here</p>
+
+# Where to report a problem
+
+<p class="page-lede">TaystJK is a client. A lot of what you see while playing belongs to the server's game module or to a renderer maintained elsewhere, and reports sent to the wrong project sit unanswered.</p>
+</div>
+
+## The short version
+
+| What is wrong | Where it goes |
+|:--|:--|
+| The client crashes, will not start, will not connect, mis-renders, or mishandles files, keys or configs | [taysta/TaystJK](https://github.com/taysta/TaystJK) |
+| How the game *plays* — movement, saber behaviour, scoring, admin commands, race and defrag | [videoP/jaPRO](https://github.com/videoP/jaPRO) |
+| Something only wrong on the Vulkan renderer | [JKSunny/EternalJK](https://github.com/JKSunny/EternalJK) |
+| Something only wrong on a JA+ server | Nowhere; see below |
+
+## How to tell which
+
+The distinction is not obvious from inside the game, so use these tests rather than
+guessing.
+
+**Does it happen on every server, or only some?** A problem that follows you from server to
+server is the client's. One that appears only on particular servers is almost certainly the
+game module those servers run — the rules live there, not in your client. The
+[overview](/TaystJK/overview/) explains that split, and the `taystJKinfo` feature flags in
+the [glossary](/TaystJK/glossary/) explain why a feature can work on one server and silently
+do nothing on another.
+
+**Does it survive switching renderer?** Run `cl_renderer rd-taystjk` then `vid_restart` and
+try again. If the problem disappears, it belongs to the renderer you were using, and if that
+was Vulkan it belongs to JKSunny. If it persists on the default renderer it is not a
+renderer bug. See [Renderers](/TaystJK/features/renderers/).
+
+**Is it drawn, or is it decided?** Broadly: if the client got it wrong on screen it is ours;
+if the outcome itself was wrong, the server decided it.
+
+## The game module
+
+Most of what players think of as "the game" — how movement feels, what a saber does, whether
+a shot registered, how a race is timed, what an admin command does — is the server's game
+module. On a jaPRO server that is jaPRO's code, and it is developed at
+<https://github.com/videoP/jaPRO>.
+
+TaystJK ships jaPRO's client-side features and assets, which is why the two are easy to
+confuse. Shipping the assets does not mean owning the rules. See
+[the overview](/TaystJK/overview/).
+
+## The Vulkan renderer
+
+The Vulkan backend is developed downstream by JKSunny and fixes flow from there, so
+Vulkan-specific rendering problems belong at
+<https://github.com/JKSunny/EternalJK>.
+
+Check first that it really is Vulkan-specific by switching to `rd-taystjk`. "Only happens on
+Vulkan" is the single most useful sentence such a report can contain.
+
+## JA+
+
+JA+ is a closed-source mod. Nobody outside its authors can fix its behaviour, and TaystJK
+cannot work around what it does not have source for. If a problem happens only on JA+
+servers, there is usually no project to report it to.
+
+What *is* worth reporting here is the client failing to cope — crashing, or mis-detecting
+the server mod. That is our side of the boundary even when the trigger is JA+.
+
+## What makes a report useful
+
+Whichever project you file with:
+
+- the output of `version` and `modversion`, pasted rather than summarised — see
+  [builds and versioning](/TaystJK/features/builds-and-versioning/)
+- your operating system and whether the build is 32- or 64-bit
+- which renderer, and whether switching changes anything
+- the server and the mod it runs
+- what you did, what happened, and what you expected instead
+
+<!-- TODO: the planning notes attribute specific redirected reports to this routing
+     (#268, #266, #267, #121 and #244 to jaPRO; #73 and #107 to the Vulkan renderer; #178 to
+     JA+ being closed source). The tracker was not reachable while writing, so none is cited
+     here. Confirm them before treating those issues as closable by this page. -->
