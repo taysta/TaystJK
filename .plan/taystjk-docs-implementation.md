@@ -259,8 +259,11 @@ treated as an announcement.]
    wiki page if the feature isn't cvar-shaped.
 4. Wire the Phase 2 changelog coverage report into CI with a ratchet, so the gap can shrink
    but not grow.
-5. Drift check between `master`'s `docs/` files and the wiki, or a canonical-copy notice on
-   each.
+5. ~~Drift check between `master`'s `docs/` files and the wiki, or a canonical-copy notice
+   on each.~~ **Dropped 2026-09-13.** Both options assume those files are this project's
+   documentation. They are not — the jaPRO ones came downstream with the gamecode. The wiki
+   is canonical and cites them as external sources; see "master's `docs/` folder is a source
+   to cite" in `CONVENTIONS.md`.
 6. Regenerate the reference as part of the release workflow.
 
 **Acceptance:** a new cvar merged to `master` produces a visible signal within a week without

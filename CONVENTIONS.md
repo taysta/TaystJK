@@ -174,6 +174,24 @@ Renaming a heading changes its id and silently breaks inbound links. If you rena
 other pages point at, update them — `check_generated.py` validates internal links, so run it
 after.
 
+### `master`'s `docs/` folder is a source to cite, not a copy to mirror
+
+The source branch carries a `docs/` folder. Most of it did not originate here —
+`japro_docs.md` and `Defrag Mapping Guide.md` arrived with a jaPRO update and are jaPRO's
+own documentation, carried downstream alongside the gamecode.
+
+This site is the documentation. Those files are **reference material to cite**, the same way
+any upstream source is cited:
+
+- Link to a file when it is the authority on something, as the movement styles page does for
+  the mapping guide. Say whose account it is, since it is not this project's.
+- Do not copy it here, and do not treat it as canonical. It changes when upstream changes,
+  on someone else's schedule.
+- Do not write a drift check against it. Divergence is expected, not a defect.
+
+Where a page leans on one of these files, attribute it. "jaPRO's own guide" is accurate;
+"the maintainer's account" is not.
+
 ### Do not cite issue or PR numbers
 
 The tracker is the live record of what is broken and what was fixed; these pages are not a
