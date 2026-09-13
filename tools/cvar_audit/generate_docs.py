@@ -1184,6 +1184,9 @@ def static_index_page(cvars: list[dict[str, Any]], commands: list[dict[str, Any]
 
 
 def home_page(cvars: list[dict[str, Any]], commands: list[dict[str, Any]]) -> str:
+    entries = cvars + commands
+    total_count = len(entries)
+    japro_count = sum(1 for entry in entries if entry["origin"]["source"] == "japro")
     return frontmatter(
         "TaystJK — one client for Jedi Academy multiplayer",
         1,
@@ -1200,6 +1203,7 @@ def home_page(cvars: list[dict[str, Any]], commands: list[dict[str, Any]]) -> st
     <p class="page-lede">Move between the game's major server communities without giving up a modern, responsive client. TaystJK combines mod-aware compatibility with cross-platform performance and practical quality-of-life improvements.</p>
     <nav class="docs-intro-links" aria-label="Project links">
       <a href="{{{{ '/install/' | relative_url }}}}">Installation</a>
+      <a href="{{{{ '/overview/' | relative_url }}}}">How this site works</a>
       <a href="https://github.com/taysta/TaystJK/releases/tag/latest">Latest release</a>
       <a href="https://github.com/taysta/TaystJK">Source repository</a>
     </nav>
@@ -1250,6 +1254,8 @@ def home_page(cvars: list[dict[str, Any]], commands: list[dict[str, Any]]) -> st
   </div>
 
   <p class="project-lineage">TaystJK is a considered assembly of proven work from OpenJK, EternalJK, jaPRO, JK2MV, NewJK, rend2, the community's Vulkan renderer work, and TaystJK's own contributors. Code brought across project boundaries is ported with permission, credited to its source, and maintained as part of a coherent client rather than a loose collection of patches. <a href="{{{{ '/reference/sources/' | relative_url }}}}">See the source lineage.</a></p>
+
+  <p class="project-lineage"><strong>jaPRO</strong> is the largest single source of what this client can do: {japro_count} of the {total_count:,} entries in the console reference originate there. TaystJK ships jaPRO's client-side features and assets, so they are available on any server. The gameplay rules are a separate thing that lives in the server's game module, and bugs in those belong to <a href="https://github.com/videoP/jaPRO">videoP/jaPRO</a>. <a href="{{{{ '/overview/' | relative_url }}}}">What the split means.</a></p>
 </section>
 
 <section class="home-compatibility" aria-labelledby="compatibility-heading">
