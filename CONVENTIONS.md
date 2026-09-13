@@ -189,6 +189,34 @@ first" carries the whole of it.
 Linking <https://github.com/taysta/TaystJK/issues> as somewhere to *file* a report is fine.
 Citing individual numbers is not.
 
+## 6a. Devlog posts
+
+A post is one file in `_devlog/`. Nothing else needs editing — the index, the Atom feed and
+the site search all read the collection, so a new file appears in all three on the next
+build.
+
+Name it `YYYY-MM-DD-short-slug.md`. The filename is the URL, so the date shows there too;
+that is deliberate, because a devlog entry is a dated thing and the URL should say when.
+
+```yaml
+---
+title: "A console reference generated from source"
+date: 2026-09-13
+author: tayst
+description: "One sentence. Shown on the index, in the feed, and under the post title."
+---
+```
+
+`date` is required — it orders the index and the feed, and it is what the feed's `updated`
+timestamp comes from. `author` and `description` are optional but worth writing; without a
+description the index entry is a bare title.
+
+Do not add a `layout` or an H1. The layout supplies both, including the heading block, so a
+post starts at its first `##`.
+
+Posts follow the same heading, code fence and link rules as every other page. They are not
+exempt from §6 either: write what changed and why, not which issue number it was.
+
 ## 7. Terminology
 
 Use these consistently.

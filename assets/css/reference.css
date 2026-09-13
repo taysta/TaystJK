@@ -1367,3 +1367,46 @@ kbd { padding: .15rem .42rem; color: var(--text-soft); background: var(--surface
   .site-search input:focus { width: 100%; }
   .search-results { width: 100%; }
 }
+
+/* ------------------------------------------------------------------------ devlog */
+
+.post-meta {
+  margin: .35rem 0 0;
+  color: var(--muted);
+  font-size: .86rem;
+}
+
+.devlog-list {
+  padding: 0;
+  margin: 2rem 0 0;
+  list-style: none;
+}
+
+.devlog-list li {
+  padding: 1.15rem 0;
+  border-top: 1px solid var(--line);
+}
+
+.devlog-list li:last-child { border-bottom: 1px solid var(--line); }
+
+.devlog-title {
+  font-size: 1.12rem;
+  font-weight: 650;
+  text-decoration: none;
+}
+
+.devlog-title:hover { text-decoration: underline; }
+
+.devlog-date {
+  display: block;
+  margin-top: .2rem;
+  color: var(--muted);
+  font-size: .78rem;
+  letter-spacing: .04em;
+  text-transform: uppercase;
+}
+
+.devlog-summary {
+  margin: .5rem 0 0;
+  color: var(--text-soft);
+}
