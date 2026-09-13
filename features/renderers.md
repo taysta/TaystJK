@@ -75,7 +75,13 @@ Vulkan-specific rendering problems to
 Anything you can also reproduce on `rd-taystjk` is not a Vulkan bug. Switch backends before
 reporting — it is the single most useful thing you can say in the report.
 
-<!-- TODO: switching renderers at runtime is reported to crash on some maps and asset sets.
-     The behaviour was not reproduced or located in source, and the issue numbers in the
-     planning notes were not verified against the tracker. Confirm before documenting, and
-     link the issues rather than promising a fix. -->
+## Switching used to freeze on macOS
+
+`vid_restart` — which is how you switch renderer — could freeze the client on Apple Silicon,
+leaving audio running and the pointer spinning
+([#343](https://github.com/taysta/TaystJK/issues/343)).
+
+The cause was `glConfig` being null on a restart, and it was fixed in
+[#367](https://github.com/taysta/TaystJK/pull/367), which is the commit this reference is
+generated from. If you are on an older build and switching renderers hangs on macOS, that is
+this bug and updating fixes it.
