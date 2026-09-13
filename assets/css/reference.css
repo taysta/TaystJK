@@ -106,9 +106,9 @@ pre code { padding: 0; background: none; border: 0; }
 
 .header-inner {
   display: grid;
-  grid-template-columns: auto 1fr auto;
+  grid-template-columns: auto 1fr auto auto;
   align-items: center;
-  gap: 2rem;
+  gap: 1.25rem;
   width: min(calc(100% - 2.5rem), var(--wide));
   min-height: 70px;
   margin: auto;
@@ -1221,4 +1221,149 @@ kbd { padding: .15rem .42rem; color: var(--text-soft); background: var(--surface
 
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { scroll-behavior: auto !important; animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }
+}
+
+
+/* ---------------------------------------------------------------- heading anchors */
+
+.page-content h2,
+.page-content h3,
+.page-content h4 { position: relative; }
+
+.heading-anchor {
+  margin-left: .4em;
+  padding: 0 .15em;
+  color: var(--muted);
+  font-weight: 500;
+  text-decoration: none;
+  opacity: 0;
+  transition: opacity .12s ease-in-out, color .12s ease-in-out;
+}
+
+.page-content h2:hover .heading-anchor,
+.page-content h3:hover .heading-anchor,
+.page-content h4:hover .heading-anchor,
+.heading-anchor:focus { opacity: 1; }
+
+.heading-anchor:hover,
+.heading-anchor:focus { color: var(--accent); }
+
+.heading-copied > .heading-anchor { opacity: 1; color: var(--accent); }
+
+.heading-copied::after {
+  content: "Link copied";
+  position: absolute;
+  margin-left: .6em;
+  color: var(--accent);
+  font-size: .62em;
+  font-weight: 600;
+  letter-spacing: .04em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+:target { scroll-margin-top: 90px; }
+
+/* ------------------------------------------------------------------- search box */
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.site-search {
+  position: relative;
+  justify-self: end;
+}
+
+.site-search input {
+  width: 190px;
+  padding: .42rem .7rem;
+  color: var(--text);
+  font: inherit;
+  font-size: .85rem;
+  background: var(--panel-bg);
+  border: 1px solid var(--line);
+  border-radius: var(--control-radius);
+  transition: width .14s ease-in-out, border-color .14s ease-in-out;
+}
+
+.site-search input::placeholder { color: var(--muted); }
+
+.site-search input:focus {
+  width: 260px;
+  background: var(--panel-bg-hover);
+  border-color: var(--accent);
+  outline: none;
+}
+
+.search-results {
+  position: absolute;
+  z-index: 40;
+  top: calc(100% + .45rem);
+  right: 0;
+  width: min(30rem, 70vw);
+  max-height: 70vh;
+  padding: .3rem;
+  overflow-y: auto;
+  list-style: none;
+  background: var(--surface);
+  border: 1px solid var(--line-bright);
+  border-radius: var(--control-radius);
+  box-shadow: 0 18px 44px rgba(0, 0, 0, .5);
+}
+
+.search-results li { margin: 0; }
+
+.search-results a {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 0 .6rem;
+  padding: .45rem .6rem;
+  color: var(--text);
+  text-decoration: none;
+  border-radius: 5px;
+}
+
+.search-results a:hover,
+.search-results a:focus,
+.search-results a.is-active { background: var(--surface-3); outline: none; }
+
+.search-title { font-size: .87rem; font-weight: 600; }
+
+.search-kind {
+  align-self: center;
+  padding: .1rem .4rem;
+  color: var(--accent);
+  font-size: .62rem;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+  border: 1px solid var(--line-bright);
+  border-radius: 999px;
+}
+
+.search-context {
+  grid-column: 1 / -1;
+  overflow: hidden;
+  color: var(--muted);
+  font-size: .76rem;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.search-empty { padding: .6rem; color: var(--muted); font-size: .82rem; }
+
+@media (max-width: 900px) {
+  .header-inner { grid-template-columns: auto 1fr auto; gap: 1rem; }
+  .site-search { grid-column: 1 / -1; justify-self: stretch; }
+  .site-search input,
+  .site-search input:focus { width: 100%; }
+  .search-results { width: 100%; }
 }

@@ -162,6 +162,16 @@ way that line-numbered `blob` links on a moving branch do not.
 If you cannot verify a claim against source, write a visible `TODO` rather than a
 plausible sentence.
 
+### Link to a heading, not to a page
+
+Every `h2`, `h3` and `h4` gets a hover anchor, and kramdown gives each one a stable id from
+its text. When you cross-reference a specific point, link the section rather than the page:
+`/TaystJK/install/#when-to-use-vm_legacy`, not `/TaystJK/install/`.
+
+Renaming a heading changes its id and silently breaks inbound links. If you rename one that
+other pages point at, update them — `check_generated.py` validates internal links, so run it
+after.
+
 ### Do not cite issue or PR numbers
 
 The tracker is the live record of what is broken and what was fixed; these pages are not a

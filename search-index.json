@@ -1,0 +1,53 @@
+---
+layout: none
+permalink: /search-index.json
+sitemap: false
+---
+{%- comment -%}
+Build-time search index for the whole site.
+
+Prose pages contribute a page entry plus one entry per h2/h3, so a result can deep-link
+to a section. The generated cvar/command detail pages contribute title and url only --
+there are ~2,000 of them and their searchable detail already lives in the reference app.
+{%- endcomment -%}
+{%- assign first = true -%}
+[
+{%- for p in site.pages -%}
+  {%- if p.title == nil or p.title == "" -%}{%- continue -%}{%- endif -%}
+  {%- if p.search_exclude == true -%}{%- continue -%}{%- endif -%}
+  {%- if p.layout == "none" -%}{%- continue -%}{%- endif -%}
+  {%- if p.url == "/search-index.json" -%}{%- continue -%}{%- endif -%}
+
+  {%- assign is_entry = false -%}
+  {%- if p.url contains "/reference/cvars/" or p.url contains "/reference/commands/" -%}
+    {%- assign is_entry = true -%}
+  {%- endif -%}
+
+  {%- if first == false -%},{%- endif -%}{%- assign first = false -%}
+  {%- if is_entry -%}
+    {"t":{{ p.title | jsonify }},"u":{{ p.url | jsonify }},"k":"entry"}
+  {%- else -%}
+    {%- assign html = p.content | markdownify -%}
+    {%- assign body = html | strip_html | normalize_whitespace | truncate: 1500 -%}
+    {"t":{{ p.title | jsonify }},"u":{{ p.url | jsonify }},"k":"page","d":{{ p.description | default: "" | jsonify }},"b":{{ body | jsonify }}}
+    {%- assign h2parts = html | split: '<h2 id="' -%}
+    {%- for part in h2parts offset:1 -%}
+      {%- assign hid = part | split: '"' | first -%}
+      {%- assign hraw = part | split: '</h2>' | first -%}
+      {%- assign htext = hraw | replace_first: hid, '' | remove_first: '">' | strip_html | strip -%}
+      {%- if htext != "" -%}
+        ,{"t":{{ htext | jsonify }},"u":{{ p.url | append: "#" | append: hid | jsonify }},"k":"section","p":{{ p.title | jsonify }}}
+      {%- endif -%}
+    {%- endfor -%}
+    {%- assign h3parts = html | split: '<h3 id="' -%}
+    {%- for part in h3parts offset:1 -%}
+      {%- assign hid = part | split: '"' | first -%}
+      {%- assign hraw = part | split: '</h3>' | first -%}
+      {%- assign htext = hraw | replace_first: hid, '' | remove_first: '">' | strip_html | strip -%}
+      {%- if htext != "" -%}
+        ,{"t":{{ htext | jsonify }},"u":{{ p.url | append: "#" | append: hid | jsonify }},"k":"section","p":{{ p.title | jsonify }}}
+      {%- endif -%}
+    {%- endfor -%}
+  {%- endif -%}
+{%- endfor -%}
+]
