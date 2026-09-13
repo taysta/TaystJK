@@ -3,6 +3,7 @@ title: "Overview"
 layout: reference
 nav_order: 7
 description: "How this documentation is organised, what jaPRO is, and how to read an entry in the generated console reference."
+toc: true
 ---
 
 <div class="page-heading" markdown="1">

@@ -20,7 +20,7 @@ The generated console reference does not follow this document — it is produced
 | `layout` | string | yes | Always `reference`. `_config.yml` defaults supply it, but every page sets it explicitly. |
 | `description` | string | yes | One sentence. Drives `<meta name="description">`, listing cards, and search previews. |
 | `nav_order` | integer | no | **Inert.** Left over from the Just-the-Docs theme, which this site no longer uses. The top nav is hardcoded in `_layouts/reference.html`; add a page there. Existing values are harmless, so they are left in place. |
-| `toc` | bool | no | Adds the collapsible "On this page" rail down the left of the page. Worth it from about five `##` sections; below three headings the rail suppresses itself. Headings inside a tab panel are left out, since only one panel is visible at a time. |
+| `toc` | bool | no | Adds the collapsible "On this page" rail. See §3a for when a page wants one. |
 | `wide` | bool | no | `true` opts into the wider content column (`--wide`, 1180px). Used by index, development, reference. |
 | `reference_app` | bool | no | `reference.md` only. Adds `has-reference-app` to `<body>` and mounts the search app. |
 | `parent` | string | no | **Inert**, as `nav_order`. No sidebar is generated. |
@@ -108,6 +108,33 @@ first commit — never invented.
 - Kramdown gives every heading a stable id, and `site-search.js` adds a hover anchor to
   `h2`–`h4`, so every section is linkable. Do not reword a heading another page links to
   without updating the link.
+
+## 3a. When a page gets the contents rail
+
+`toc: true` adds the collapsible rail down the left. The question it answers is **do people
+arrive here wanting one part of this page, or do they read it through?**
+
+A rail is for pages that get *navigated*: task guides someone returns to for one step, and
+multi-topic pages someone reaches from search wanting one topic. Install, server hosting,
+HUD and movement tools, troubleshooting, mod compatibility. On a page read start to finish
+the rail is furniture.
+
+Section count is a bad proxy for this and was used as one at first, which produced obvious
+nonsense — `development/xdocs.md` and `development/documentation-system.md` are sibling
+how-tos of almost identical length, and a five-heading cutoff gave one a rail and not the
+other. Length is no better on its own: `features/shipped-configs.md` is short and worth
+navigating, because it is a list you scan for the one config you want.
+
+Deliberately without one:
+
+- `features/movement-styles.md` and `features/platform-support.md` — the content is a table;
+  the table is the navigation
+- `features/renderers.md`, `licensing.md` — short, and read in order
+- `glossary.md` — three sections, so a rail would list three links; browser find beats that
+
+Below three headings the rail suppresses itself regardless, so `toc: true` on a short page is
+inert rather than broken. Headings inside a tab panel are always left out: only one panel is
+visible at a time, so a link into a hidden one goes nowhere the reader can see.
 
 ## 4. Code fences
 
