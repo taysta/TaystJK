@@ -19,11 +19,12 @@ The generated console reference does not follow this document — it is produced
 | `title` | string | yes | Quoted. Non-ASCII is escaped, e.g. `"TaystJK — one client"`. Appears in `<title>` as `{title} · TaystJK`. |
 | `layout` | string | yes | Always `reference`. `_config.yml` defaults supply it, but every page sets it explicitly. |
 | `description` | string | yes | One sentence. Drives `<meta name="description">`, listing cards, and search previews. |
-| `nav_order` | integer | top-level pages | Top nav order: index 1, install 2, server-hosting 3, features 4, development 5, reference 6. |
+| `nav_order` | integer | no | **Inert.** Left over from the Just-the-Docs theme, which this site no longer uses. The top nav is hardcoded in `_layouts/reference.html`; add a page there. Existing values are harmless, so they are left in place. |
 | `wide` | bool | no | `true` opts into the wider content column (`--wide`, 1180px). Used by index, development, reference. |
 | `reference_app` | bool | no | `reference.md` only. Adds `has-reference-app` to `<body>` and mounts the search app. |
-| `parent` | string | child pages | Just-the-Docs parent title. |
-| `nav_exclude` | bool | no | Keeps a page out of navigation. Also drives the reference breadcrumb in the layout. |
+| `parent` | string | no | **Inert**, as `nav_order`. No sidebar is generated. |
+| `nav_exclude` | bool | no | No longer affects navigation. The layout reuses it to decide whether to draw the reference breadcrumb. |
+| `search_exclude` | bool | no | Keeps a page out of `/search-index.json`, and so out of the header search. |
 
 `has_children` and anchor-target `permalink` appear only on the legacy orphaned pages
 (`hardcoded-changes.md` and its child stubs). Do not use them on new pages.
@@ -103,8 +104,9 @@ first commit — never invented.
 - Sections are `##`. Subsections are `###`.
 - Do not go deeper than `###`. If you need `####`, the page wants splitting.
 - Sentence case, not Title Case: "Install for your platform", not "Install For Your Platform".
-- Headings are anchor targets (`heading_anchors: true`), so do not reword one that another
-  page links to without updating the link.
+- Kramdown gives every heading a stable id, and `site-search.js` adds a hover anchor to
+  `h2`–`h4`, so every section is linkable. Do not reword a heading another page links to
+  without updating the link.
 
 ## 4. Code fences
 

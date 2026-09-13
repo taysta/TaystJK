@@ -94,14 +94,21 @@ artifacts, not part of the site.
 
 ## Site engine
 
-- Jekyll with `remote_theme: just-the-docs/just-the-docs` (see `_config.yml`). A single
-  custom layout, `_layouts/reference.html`, is applied to every page by `defaults`.
+- Jekyll with **no theme**. Every layout is local: `_layouts/reference.html` is applied to
+  every page by `defaults`, and `_layouts/none.html` is raw output for the redirect stubs
+  and `search-index.json`. Navigation is hardcoded in `reference.html` — adding a page to
+  the top nav means editing that file. `nav_order` and `parent` front matter are inert
+  leftovers; `nav_exclude` survives only because the layout reuses it for the reference
+  breadcrumb.
 - The site is built by GitHub Pages. There is **no `Gemfile` and no local Jekyll install**
   here, so `bundle exec jekyll serve` does not work out of the box. Use
   `tools/cvar_audit/check_generated.py` as the local validation proxy for the generated
   pages and internal links.
-- Site JS: `assets/js/reference-app.js` (search app **and** the platform selector).
-  Site CSS: `assets/css/reference.css`; `_sass/` holds theme overrides.
+- Site JS: `assets/js/reference-app.js` (the console reference's filtering UI **and** the
+  platform selector) and `assets/js/site-search.js` (heading anchors and the header search).
+  Site CSS: the single hand-written `assets/css/reference.css`; there is no Sass.
+- Site-wide search reads `/search-index.json`, which Liquid generates at build time from
+  `site.pages`. Pages opt out with `search_exclude`.
 
 ## Generated vs hand-written — never hand-edit generated files
 
