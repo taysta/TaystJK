@@ -3,6 +3,7 @@ title: "Install TaystJK"
 layout: reference
 nav_order: 2
 description: "Install TaystJK on Windows, Linux, or macOS without conflicting with other Jedi Academy clients."
+toc: true
 ---
 
 <div class="page-heading" markdown="1">

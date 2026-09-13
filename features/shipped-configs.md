@@ -4,6 +4,7 @@ layout: reference
 nav_order: 8
 parent: "Features"
 description: "The fourteen configuration files that ship with the client, what each one sets up, and how to apply one."
+toc: true
 ---
 
 <div class="page-heading" markdown="1">

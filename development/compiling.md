@@ -2,6 +2,7 @@
 title: "Compiling"
 layout: reference
 description: "Configure and compile TaystJK with CMake on Windows, Linux, or macOS."
+toc: true
 ---
 
 <div class="page-heading" markdown="1">

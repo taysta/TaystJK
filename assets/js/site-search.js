@@ -14,6 +14,9 @@
     var headings = article.querySelectorAll("h2[id], h3[id], h4[id]");
     Array.prototype.forEach.call(headings, function (heading) {
       if (heading.querySelector(".heading-anchor")) return;
+      /* The "On this page" label is a heading with an id too, but it is furniture -- an
+         anchor to it is not something anyone wants to copy. */
+      if (heading.closest(".page-toc")) return;
 
       var link = doc.createElement("a");
       link.className = "heading-anchor";
@@ -36,6 +39,112 @@
 
       heading.appendChild(link);
     });
+  }
+
+  /* -------------------------------------------------------------------- toc */
+
+  function buildToc() {
+    var article = doc.querySelector(".page-content[data-toc]");
+    var main = doc.querySelector(".site-main");
+    if (!article || !main) return;
+
+    /* Headings inside a tab panel are skipped. Only one panel is visible at a time, so a
+       link to a heading in a hidden one goes nowhere the reader can see -- and the tab
+       strip is already the navigation for that part of the page. */
+    var headings = Array.prototype.filter.call(
+      article.querySelectorAll("h2[id], h3[id]"),
+      function (heading) {
+        return !heading.closest("[data-platform-panel], [data-baseline-panel]");
+      }
+    );
+
+    if (headings.length < 3) return;
+
+    var storageKey = "taystjk-toc-collapsed";
+    var collapsed = false;
+    try {
+      collapsed = global.localStorage.getItem(storageKey) === "true";
+    } catch (error) {
+      collapsed = false;
+    }
+
+    var rail = doc.createElement("aside");
+    rail.className = "page-toc-rail";
+
+    var toggle = doc.createElement("button");
+    toggle.type = "button";
+    toggle.className = "page-toc-toggle";
+    toggle.setAttribute("aria-controls", "page-toc-nav");
+    toggle.innerHTML =
+      '<span class="page-toc-chevron" aria-hidden="true"></span>' +
+      '<span class="page-toc-label">On this page</span>';
+    rail.appendChild(toggle);
+
+    var nav = doc.createElement("nav");
+    nav.id = "page-toc-nav";
+    nav.className = "page-toc";
+    nav.setAttribute("aria-label", "On this page");
+
+    var list = doc.createElement("ul");
+    headings.forEach(function (item) {
+      var li = doc.createElement("li");
+      if (item.tagName === "H3") li.className = "page-toc-sub";
+      var link = doc.createElement("a");
+      link.href = "#" + item.id;
+      link.textContent = item.textContent.trim();
+      li.appendChild(link);
+      list.appendChild(li);
+    });
+    nav.appendChild(list);
+    rail.appendChild(nav);
+
+    function apply(next, persist) {
+      collapsed = next;
+      rail.dataset.collapsed = next ? "true" : "false";
+      main.dataset.tocCollapsed = next ? "true" : "false";
+      toggle.setAttribute("aria-expanded", next ? "false" : "true");
+      toggle.setAttribute("title", next ? "Show page sections" : "Hide page sections");
+      if (!persist) return;
+      try {
+        global.localStorage.setItem(storageKey, next ? "true" : "false");
+      } catch (error) {
+        // The toggle still works when storage is unavailable.
+      }
+    }
+
+    toggle.addEventListener("click", function () { apply(!collapsed, true); });
+
+    main.classList.add("has-toc");
+    main.insertBefore(rail, main.firstChild);
+    apply(collapsed, false);
+
+    markCurrentSection(nav, headings);
+  }
+
+  /* Highlights the section currently in view, so the rail says where you are. */
+  function markCurrentSection(nav, headings) {
+    if (!global.IntersectionObserver) return;
+    var links = {};
+    Array.prototype.forEach.call(nav.querySelectorAll("a"), function (link) {
+      links[link.getAttribute("href").slice(1)] = link;
+    });
+
+    var seen = {};
+    var observer = new global.IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) { seen[entry.target.id] = entry.isIntersecting; });
+
+      var currentId = null;
+      for (var i = 0; i < headings.length; i++) {
+        if (seen[headings[i].id]) { currentId = headings[i].id; break; }
+      }
+      if (!currentId) return;
+
+      Object.keys(links).forEach(function (id) {
+        links[id].classList.toggle("is-current", id === currentId);
+      });
+    }, { rootMargin: "-80px 0px -70% 0px" });
+
+    headings.forEach(function (heading) { observer.observe(heading); });
   }
 
   /* ----------------------------------------------------------------- search */
@@ -187,6 +296,9 @@
   }
 
   function init() {
+    /* Order matters: the table of contents reads heading text, and addHeadingAnchors
+       appends a "#" link inside each heading. */
+    buildToc();
     addHeadingAnchors();
     setupSearch();
   }

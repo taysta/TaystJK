@@ -4,6 +4,7 @@ layout: reference
 nav_order: 2
 parent: "Features"
 description: "Engine and client behaviour that differs from stock Jedi Academy: shader overrides, modifier binds, console editing, and widescreen assets."
+toc: true
 origin: taystjk
 ---
 

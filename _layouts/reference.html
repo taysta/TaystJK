@@ -95,7 +95,7 @@
         <span>{{ page.title }}</span>
       </nav>
       {% endif %}
-      <article class="page-content">
+      <article class="page-content"{% if page.toc %} data-toc{% endif %}>
         {% if page.status and page.status != 'stable' %}
         <p class="page-status-row">
           <span class="page-status page-status-{{ page.status }}">{{ page.status }}</span>

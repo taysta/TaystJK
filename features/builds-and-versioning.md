@@ -4,6 +4,7 @@ layout: reference
 nav_order: 11
 parent: "Features"
 description: "How TaystJK releases are identified, what your build reports, and how to read it in a bug report."
+toc: true
 ---
 
 <div class="page-heading" markdown="1">

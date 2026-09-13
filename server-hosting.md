@@ -3,6 +3,7 @@ title: "Server hosting"
 layout: reference
 nav_order: 3
 description: "Run a TaystJK dedicated server with Docker Compose or a native binary, configure rotations, and serve PK3 downloads."
+toc: true
 ---
 
 <div class="page-heading" markdown="1">
