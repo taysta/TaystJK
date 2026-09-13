@@ -30,9 +30,9 @@ guessing.
 **Does it happen on every server, or only some?** A problem that follows you from server to
 server is the client's. One that appears only on particular servers is almost certainly the
 game module those servers run — the rules live there, not in your client. The
-[overview](/TaystJK/overview/) explains that split, and the `taystJKinfo` feature flags in
-the [glossary](/TaystJK/glossary/) explain why a feature can work on one server and silently
-do nothing on another.
+[overview](/TaystJK/overview/) explains that split, and
+[mod compatibility](/TaystJK/mod-compatibility/) explains why a feature can work on one
+server and silently do nothing on another.
 
 **Does it survive switching renderer?** Run `cl_renderer rd-taystjk` then `vid_restart` and
 try again. If the problem disappears, it belongs to the renderer you were using, and if that

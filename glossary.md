@@ -89,7 +89,8 @@ server browser before you connect. A cvar registered `CVAR_SERVERINFO` is part o
 
 **Feature flag** — `taystJKinfo`, a serverinfo key through which a server mod advertises
 which TaystJK client features it supports, independently of which mod it is. It is why a
-feature can work on one server and silently do nothing on another.
+feature can work on one server and silently do nothing on another; see
+[mod compatibility](/TaystJK/mod-compatibility/).
 
 **Origin** — in the console reference, the project an entry *first appeared* in, not every
 fork that ships it. See [sources and methodology](/TaystJK/reference/sources/).
