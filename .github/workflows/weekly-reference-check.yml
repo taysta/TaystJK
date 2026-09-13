@@ -1,0 +1,82 @@
+name: Weekly reference check
+
+# The console reference is generated from this branch but lives on gh-pages, and its own
+# workflow only runs when someone touches that branch. A cvar added here would otherwise go
+# unnoticed until the docs branch happened to be edited.
+#
+# This has to live on the default branch: GitHub only runs scheduled workflows from the
+# default branch, so the same cron sitting in the gh-pages workflow would never fire. It
+# checks gh-pages out and runs that branch's own script, so the two cannot drift apart.
+
+on:
+  schedule:
+    - cron: "17 6 * * 1"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out the docs branch
+        uses: actions/checkout@v4
+        with:
+          ref: gh-pages
+          fetch-depth: 0
+
+      - name: Make this branch available to the drift check
+        run: git fetch origin master:refs/remotes/origin/master
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Run every check
+        run: tools/cvar_audit/run_all.sh --ref origin/master
+
+  report-failure:
+    needs: check
+    if: failure()
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      issues: write
+    steps:
+      - name: Open or update the tracking issue
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          REPO: ${{ github.repository }}
+          RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+        run: |
+          set -euo pipefail
+
+          # Create the label first: listing by a label that does not exist is an error,
+          # and `set -e` would abort before anything got reported.
+          gh label create reference-drift --repo "$REPO" \
+            --description "Weekly console reference check is failing" \
+            --color D93F0B 2>/dev/null || true
+
+          existing=$(gh issue list --repo "$REPO" --state open --label reference-drift \
+            --json number --jq '.[0].number // empty' || true)
+
+          if [ -n "$existing" ]; then
+            gh issue comment "$existing" --repo "$REPO" \
+              --body "Still failing as of $(date -u '+%Y-%m-%d'). Run: $RUN_URL"
+          else
+            gh issue create --repo "$REPO" --title "Weekly reference check is failing" \
+              --label reference-drift \
+              --body "The weekly console reference check failed.
+
+          The likely cause is that \`master\` has moved and the reference data checked in on
+          \`gh-pages\` no longer matches the registrations in the source. Regenerating on the
+          docs branch fixes it; \`tools/cvar_audit/README.md\` there has the order to run
+          things in.
+
+          It can also be an ordinary test failure. Read the run before assuming drift.
+
+          Run: $RUN_URL
+
+          This issue is updated rather than duplicated while it stays open."
+          fi
