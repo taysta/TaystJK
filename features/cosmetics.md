@@ -4,6 +4,7 @@ layout: reference
 nav_order: 3
 parent: "Features"
 description: "Hats and capes: how the cosmetics system works, how to add one, and the offsets format that positions it per model and per skin."
+toc: true
 origin: taystjk
 ---
 

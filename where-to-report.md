@@ -3,6 +3,7 @@ title: "Where to report"
 layout: reference
 nav_order: 10
 description: "Which project owns a problem: the client, the server's game module, the Vulkan renderer, or a closed-source mod."
+toc: true
 ---
 
 <div class="page-heading" markdown="1">

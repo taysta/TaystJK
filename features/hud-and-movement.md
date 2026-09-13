@@ -4,6 +4,7 @@ layout: reference
 nav_order: 4
 parent: "Features"
 description: "Killfeed, team overlays, the centre timer and team score, SnapHUD, PitchHUD, the strafe helper, the speedometer, and the movement-keys display."
+toc: true
 origin: japro
 ---
 

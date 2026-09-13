@@ -3,6 +3,7 @@ title: "Troubleshooting"
 layout: reference
 nav_order: 9
 description: "Fixes for the problems players and server admins hit most often, listed by what you actually see."
+toc: true
 ---
 
 <div class="page-heading" markdown="1">

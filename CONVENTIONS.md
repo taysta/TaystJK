@@ -20,6 +20,7 @@ The generated console reference does not follow this document — it is produced
 | `layout` | string | yes | Always `reference`. `_config.yml` defaults supply it, but every page sets it explicitly. |
 | `description` | string | yes | One sentence. Drives `<meta name="description">`, listing cards, and search previews. |
 | `nav_order` | integer | no | **Inert.** Left over from the Just-the-Docs theme, which this site no longer uses. The top nav is hardcoded in `_layouts/reference.html`; add a page there. Existing values are harmless, so they are left in place. |
+| `toc` | bool | no | Adds the collapsible "On this page" rail down the left of the page. Worth it from about five `##` sections; below three headings the rail suppresses itself. Headings inside a tab panel are left out, since only one panel is visible at a time. |
 | `wide` | bool | no | `true` opts into the wider content column (`--wide`, 1180px). Used by index, development, reference. |
 | `reference_app` | bool | no | `reference.md` only. Adds `has-reference-app` to `<body>` and mounts the search app. |
 | `parent` | string | no | **Inert**, as `nav_order`. No sidebar is generated. |

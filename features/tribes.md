@@ -4,6 +4,7 @@ layout: reference
 nav_order: 7
 parent: "Features"
 description: "The Tribes movement mode: skiing, jetpack, IFF markers, its own HUD and weapons. Experimental and lightly played."
+toc: true
 origin: japro
 status: experimental
 ---

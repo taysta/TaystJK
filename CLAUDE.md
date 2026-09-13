@@ -191,6 +191,7 @@ everything that is wrong. Pass `--ref <ref>` to compare against a source ref oth
     python3 tools/cvar_audit/test_provenance.py
     node    tools/cvar_audit/test_reference_app.js
     node    tools/cvar_audit/test_site_search.js
+    node    tools/cvar_audit/test_toc.js
     python3 tools/cvar_audit/test_liquid.py
     python3 tools/cvar_audit/validate.py
     python3 tools/cvar_audit/check_generated.py

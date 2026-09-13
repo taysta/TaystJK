@@ -2,6 +2,7 @@
 title: "Debugging"
 layout: reference
 description: "Debug the TaystJK engine and game modules with Visual Studio, GDB, LLDB, or CLion."
+toc: true
 ---
 
 <div class="page-heading" markdown="1">
