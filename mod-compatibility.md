@@ -67,6 +67,19 @@ Lugormod is a special case throughout: it is recognised on its own and several m
 paths branch specifically for it, because it moves players in ways the stock prediction
 gets wrong.
 
+## Base Enhanced and Base Entranced: use NewJK
+
+If you play on **base_enhanced** or **base_entranced** servers, the recommended client is
+not this one. Use [NewJK/NewMod](https://jkanewmod.github.io/) instead.
+
+Those server mods and NewMod share an author, and NewMod is built for them specifically —
+it supports their features properly rather than approximately. TaystJK recognises
+base_enhanced well enough not to break, but it is not trying to replace that pairing and
+should not be treated as a substitute for it.
+
+This is a recommendation about which client to run, not a limitation you can configure
+around.
+
 ## `taystJKinfo`: how a server turns these on
 
 A server does not have to be JA+ or jaPRO. Any game module can advertise the individual
