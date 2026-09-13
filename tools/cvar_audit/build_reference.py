@@ -423,7 +423,10 @@ def numeric_default(default: str | None) -> float | None:
 def infer_type(default: str | None, variables: list[str], occurrences: list[dict[str, Any]]) -> str:
     text = "\n".join(item["text"] for item in occurrences)
     escaped = "|".join(re.escape(variable) for variable in variables)
-    if escaped and re.search(rf"(?:{escaped})(?:\. |->)integer\s*&".replace(" ", ""), text):
+    # A single `&` is a mask test; `&&` is just a boolean guard such as
+    # `r_clear->integer && vk.clearAttachment`, which says nothing about the
+    # value's shape.
+    if escaped and re.search(rf"(?:{escaped})(?:\. |->)integer\s*&(?!&)".replace(" ", ""), text):
         return "bitmask"
     if escaped and re.search(rf"sscanf\s*\([^\n]*(?:{escaped})(?:\. |->)string[^\n]*%[fdi][^\n]*%[fdi][^\n]*%[fdi]".replace(" ", ""), text):
         return "color"

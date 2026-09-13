@@ -11,7 +11,7 @@ search_exclude: false
 
 <p class="ref-warning"><strong>Needs review.</strong> The inventory/provenance evidence is recorded, but some behavior, options, or attribution still lacks a direct user-facing source.</p>
 
-Registered by the current source, but no user-facing behavior description has been verified. Consult the cited behavior reads before relying on values not listed here.
+Controls `r_ext_compressed_lightmaps` in the renderer module. Consult the cited behavior reads before relying on values not listed here.
 
 ## At a glance
 
@@ -29,13 +29,16 @@ Registered by the current source, but no user-facing behavior description has be
 | In-game xdocs | No |
 | In-game menu | No |
 | Default | `0` |
-| Value type | `int` |
+| Value type | `bool` |
 | Restart | Yes; the value is latched. |
 | Cheat protected | No |
 
 ## Values
 
-No discrete value list is enforced or documented in the inspected source.
+| Value | Meaning | Evidence |
+|:--|:--|:--|
+| `0` | Disabled. | [codemp/rd-vanilla/tr_bsp.cpp:247](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-vanilla/tr_bsp.cpp#L247) |
+| `1` | Enabled. | [codemp/rd-vanilla/tr_bsp.cpp:247](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-vanilla/tr_bsp.cpp#L247) |
 
 ## Flags
 
@@ -83,5 +86,8 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 - registration: [codemp/rd-dedicated/tr_init.cpp:319](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-dedicated/tr_init.cpp#L319) (Cvar_Get)
 - registration: [codemp/rd-vanilla/tr_init.cpp:1632](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-vanilla/tr_init.cpp#L1632) (Cvar_Get)
 - registration: [codemp/rd-vulkan/tr_init.cpp:785](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-vulkan/tr_init.cpp#L785) (Cvar_Get)
+- behavior: [codemp/rd-vanilla/tr_bsp.cpp:247](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-vanilla/tr_bsp.cpp#L247)
+- behavior: [codemp/rd-vanilla/tr_init.cpp:1524](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-vanilla/tr_init.cpp#L1524)
+- behavior: [codemp/rd-vanilla/tr_shader.cpp:3361](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-vanilla/tr_shader.cpp#L3361)
 
 <p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/6ff04c0baf588a89e5ec9361ad7a0992941d7655"><code>6ff04c0baf58</code></a> on 2026-09-09. Anything merged after that is not reflected here.</p>

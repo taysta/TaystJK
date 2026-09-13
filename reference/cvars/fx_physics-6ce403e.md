@@ -28,7 +28,7 @@ Controls physics applied to FX system particles - 0: Disable all FX physics - 1:
 | In-game xdocs | No |
 | In-game menu | No |
 | Default | `2` |
-| Value type | `bitmask` |
+| Value type | `enum` |
 | Restart | No latch flag is registered. |
 | Cheat protected | No |
 

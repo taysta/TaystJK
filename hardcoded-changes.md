@@ -9,12 +9,12 @@ search_exclude: true
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<meta http-equiv="refresh" content="0; url={{ '/features/' | relative_url }}">
-<link rel="canonical" href="{{ '/features/' | relative_url }}">
+<meta http-equiv="refresh" content="0; url={{ '/whats-new/' | relative_url }}">
+<link rel="canonical" href="{{ '/whats-new/' | relative_url }}">
 <meta name="robots" content="noindex">
 <title>Page moved</title>
 </head>
 <body>
-<p>This page has moved to <a href="{{ '/features/' | relative_url }}">{{ '/features/' | relative_url }}</a>.</p>
+<p>This page has moved to <a href="{{ '/whats-new/' | relative_url }}">{{ '/whats-new/' | relative_url }}</a>.</p>
 </body>
 </html>

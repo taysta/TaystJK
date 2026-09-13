@@ -28,7 +28,7 @@ Always use the small version of the scoreboard
 | In-game xdocs | Yes — [codemp/ui/ui_xdocs.h:193](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/ui/ui_xdocs.h#L193) |
 | In-game menu | Yes — [ingame_setup.menu:4074](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/assets/japro/ui/jamp/ingame_setup.menu#L4074) |
 | Default | `0` |
-| Value type | `bitmask` |
+| Value type | `bool` |
 | Restart | No latch flag is registered. |
 | Cheat protected | No |
 

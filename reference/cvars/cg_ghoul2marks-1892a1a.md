@@ -28,7 +28,7 @@ Controls `cg_ghoul2Marks` in the cgame module. Consult the cited behavior reads 
 | In-game xdocs | No |
 | In-game menu | No |
 | Default | `16` |
-| Value type | `bitmask` |
+| Value type | `int` |
 | Restart | No latch flag is registered. |
 | Cheat protected | No |
 

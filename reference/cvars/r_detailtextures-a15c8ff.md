@@ -11,7 +11,7 @@ search_exclude: false
 
 <p class="ref-warning"><strong>Needs review.</strong> The inventory/provenance evidence is recorded, but some behavior, options, or attribution still lacks a direct user-facing source.</p>
 
-Controls `r_detailtextures` in the renderer module. Consult the cited behavior reads before relying on values not listed here.
+Controls `r_detailTextures` in the renderer module. Consult the cited behavior reads before relying on values not listed here.
 
 ## At a glance
 

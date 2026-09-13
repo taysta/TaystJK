@@ -238,9 +238,20 @@ def string_literal(value: str) -> str | None:
 
 
 def assignment_variable(text: str, offset: int) -> str | None:
+    """The variable a registration's result is assigned to, if any.
+
+    The call is often reached through an interface pointer rather than by name
+    -- ``r_bloom = ri.Cvar_Get(...)`` in the renderers, ``trap->Cvar_Get(...)``
+    in the game modules -- so any chain of ``x.`` or ``x->`` between the ``=``
+    and the call is skipped.  Without that, every cvar registered through an
+    interface recorded no variable at all.
+    """
     line_start = text.rfind("\n", 0, offset) + 1
     prefix = text[line_start:offset]
-    match = re.search(r"([A-Za-z_][A-Za-z0-9_]*)\s*=\s*$", prefix)
+    match = re.search(
+        r"([A-Za-z_][A-Za-z0-9_]*)\s*=\s*(?:[A-Za-z_][A-Za-z0-9_]*\s*(?:\.|->)\s*)*$",
+        prefix,
+    )
     return match.group(1) if match else None
 
 

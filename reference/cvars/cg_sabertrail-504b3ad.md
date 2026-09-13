@@ -28,13 +28,15 @@ Controls `cg_saberTrail` in the cgame module. Consult the cited behavior reads b
 | In-game xdocs | No |
 | In-game menu | Yes — [ingame_setup.menu:3557](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/assets/japro/ui/jamp/ingame_setup.menu#L3557) |
 | Default | `1` |
-| Value type | `bitmask` |
+| Value type | `enum` |
 | Restart | No latch flag is registered. |
 | Cheat protected | No |
 
 ## Values
 
-No discrete value list is enforced or documented in the inspected source.
+| Value | Meaning | Evidence |
+|:--|:--|:--|
+| `2` | Selects the code path tested for value 2. | [codemp/cgame/cg_players.c:6373](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_players.c#L6373) |
 
 ## Flags
 

@@ -28,16 +28,13 @@ Controls `r_texturebitslm` in the renderer module. Consult the cited behavior re
 | In-game xdocs | No |
 | In-game menu | No |
 | Default | `0` |
-| Value type | `bool` |
+| Value type | `bitmask` |
 | Restart | Yes; the value is latched. |
 | Cheat protected | No |
 
 ## Values
 
-| Value | Meaning | Evidence |
-|:--|:--|:--|
-| `0` | Disabled. | [codemp/rd-vanilla/tr_image.cpp:669](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-vanilla/tr_image.cpp#L669) |
-| `1` | Enabled. | [codemp/rd-vanilla/tr_image.cpp:669](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-vanilla/tr_image.cpp#L669) |
+No discrete value list is enforced or documented in the inspected source.
 
 ## Flags
 

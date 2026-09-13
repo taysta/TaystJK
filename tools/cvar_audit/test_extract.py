@@ -4,7 +4,7 @@
 import unittest
 
 from extract import extract_commands, extract_cvars
-from build_reference import clean_description, command_syntax, infer_values
+from build_reference import clean_description, command_syntax, infer_type, infer_values
 from generate_docs import emoji_token, q_strstrip
 
 
@@ -112,6 +112,27 @@ Cvar_Get("cg_anim", BOTH_RUN1, CVAR_ARCHIVE);
         self.assertEqual(records["ui_char_anim"].default, "BOTH_WALK1")
         self.assertIsNone(records["ui_char_anim"].default_macro)
         self.assertIsNone(records["ui_char_anim"].default_macro_kind)
+
+    def test_interface_pointer_registrations_bind_their_variable(self) -> None:
+        source = r'''
+r_bloom = ri.Cvar_Get("r_bloom", "0", CVAR_ARCHIVE);
+cg_thing = trap->Cvar_Get("cg_thing", "1", CVAR_ARCHIVE);
+sv_fps = Cvar_Get("sv_fps", "20", CVAR_ARCHIVE);
+naked = Cvar_Get("naked_name", "1", CVAR_ARCHIVE);
+'''
+        records = {r.name: r for r in extract_cvars([("codemp/rd-vulkan/tr_init.cpp", source)])}
+        # Reached through an interface pointer; the variable is still the cvar's.
+        self.assertEqual(records["r_bloom"].variable, "r_bloom")
+        self.assertEqual(records["cg_thing"].variable, "cg_thing")
+        # Plain calls keep working.
+        self.assertEqual(records["sv_fps"].variable, "sv_fps")
+        self.assertEqual(records["naked_name"].variable, "naked")
+
+    def test_boolean_guard_is_not_a_bitmask(self) -> None:
+        occurrences = [{"text": "if ( r_clear->integer && vk.clearAttachment ) {"}]
+        self.assertEqual(infer_type("0", ["r_clear"], occurrences), "bool")
+        masked = [{"text": "if (cg_logChat.integer & (1 << i)) {"}]
+        self.assertEqual(infer_type("0", ["cg_logChat"], masked), "bitmask")
 
     def test_emoji_tokens_follow_the_client(self) -> None:
         # Ports CG_LoadEmojis and Q_strstrip; the filename is not the token.

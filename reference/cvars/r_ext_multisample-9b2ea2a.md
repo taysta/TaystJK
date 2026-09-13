@@ -29,7 +29,7 @@ Disable/enable framebuffer MSAA
 | In-game xdocs | No |
 | In-game menu | Yes — [ingame_setup.menu:1480](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/assets/japro/ui/jamp/ingame_setup.menu#L1480), [setup.menu:1383](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/assets/japro/ui/jamp/setup.menu#L1383) |
 | Default | `0` |
-| Value type | `bitmask` |
+| Value type | `int` |
 | Restart | Yes; the value is latched. |
 | Cheat protected | No |
 
@@ -100,8 +100,8 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 - registration: [shared/sdl/sdl_window.cpp:816](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/shared/sdl/sdl_window.cpp#L816) (Cvar_Get)
 - behavior: [codemp/rd-vulkan/vk_init.cpp:518](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-vulkan/vk_init.cpp#L518)
 - behavior: [codemp/rd-vulkan/vk_init.cpp:519](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-vulkan/vk_init.cpp#L519)
+- behavior: [shared/rd-rend2/tr_fbo.cpp:412](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/shared/rd-rend2/tr_fbo.cpp#L412)
+- behavior: [shared/rd-rend2/tr_fbo.cpp:420](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/shared/rd-rend2/tr_fbo.cpp#L420)
 - behavior: [codemp/rd-vulkan/vk_init.cpp:527](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-vulkan/vk_init.cpp#L527)
-- behavior: [shared/sdl/sdl_window.cpp:474](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/shared/sdl/sdl_window.cpp#L474)
-- behavior: [codemp/rd-vulkan/tr_init.cpp:921](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-vulkan/tr_init.cpp#L921)
 
 <p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/6ff04c0baf588a89e5ec9361ad7a0992941d7655"><code>6ff04c0baf58</code></a> on 2026-09-09. Anything merged after that is not reflected here.</p>

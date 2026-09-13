@@ -28,7 +28,7 @@ Controls `g_maxFallDmg` in the game module. Consult the cited behavior reads bef
 | In-game xdocs | No |
 | In-game menu | No |
 | Default | `0` |
-| Value type | `bitmask` |
+| Value type | `float` |
 | Restart | No latch flag is registered. |
 | Cheat protected | No |
 

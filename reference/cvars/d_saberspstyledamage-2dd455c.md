@@ -26,7 +26,7 @@ Toggle use of SP style damage in normal game.
 | In-game xdocs | No |
 | In-game menu | No |
 | Default | `1` |
-| Value type | `bitmask` |
+| Value type | `float` |
 | Restart | No latch flag is registered. |
 | Cheat protected | No |
 

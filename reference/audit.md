@@ -1577,7 +1577,7 @@ The dump was captured from stdout after loading `mp/ffa3`; stdout does not use t
 | [`r_customheight`](/TaystJK/reference/cvars/r_customheight-380d198/) | cvar | renderer | Controls `r_customheight` in the renderer module. |
 | [`r_customwidth`](/TaystJK/reference/cvars/r_customwidth-40fe778/) | cvar | renderer | Controls `r_customwidth` in the renderer module. |
 | [`r_debugContext`](/TaystJK/reference/cvars/r_debugcontext-c9977dd/) | cvar | renderer | Controls `r_debugContext` in the renderer module. |
-| [`r_debuglight`](/TaystJK/reference/cvars/r_debuglight-b8d0433/) | cvar | renderer | Controls `r_debuglight` in the renderer module. |
+| [`r_debuglight`](/TaystJK/reference/cvars/r_debuglight-b8d0433/) | cvar | renderer | Controls `r_debugLight` in the renderer module. |
 | [`r_debugSort`](/TaystJK/reference/cvars/r_debugsort-3e4fd35/) | cvar | renderer | Controls `r_debugSort` in the renderer module. |
 | [`r_debugSurface`](/TaystJK/reference/cvars/r_debugsurface-abe21fc/) | cvar | renderer | Controls `cv2` in the renderer module. |
 | [`r_debugSurfaceUpdate`](/TaystJK/reference/cvars/r_debugsurfaceupdate-3194b25/) | cvar | engine-shared | Controls `cv` in the engine-shared module. |
@@ -1585,7 +1585,7 @@ The dump was captured from stdout after loading `mp/ffa3`; stdout does not use t
 | [`r_defaultImage`](/TaystJK/reference/cvars/r_defaultimage-48ebde4/) | cvar | renderer | Controls `r_defaultImage` in the renderer module. |
 | [`r_depthbits`](/TaystJK/reference/cvars/r_depthbits-16d7986/) | cvar | renderer | Controls `r_depthbits` in the renderer module. |
 | [`r_depthPrepass`](/TaystJK/reference/cvars/r_depthprepass-3fbd4eb/) | cvar | renderer | Controls `r_depthPrepass` in the renderer module. |
-| [`r_detailtextures`](/TaystJK/reference/cvars/r_detailtextures-a15c8ff/) | cvar | renderer | Controls `r_detailtextures` in the renderer module. |
+| [`r_detailtextures`](/TaystJK/reference/cvars/r_detailtextures-a15c8ff/) | cvar | renderer | Controls `r_detailTextures` in the renderer module. |
 | [`r_directedScale`](/TaystJK/reference/cvars/r_directedscale-6aee8ad/) | cvar | renderer | Controls `r_directedScale` in the renderer module. |
 | [`r_displayRefresh`](/TaystJK/reference/cvars/r_displayrefresh-59d8e1d/) | cvar | renderer | Controls `r_displayRefresh` in the renderer module. |
 | [`r_distanceCull`](/TaystJK/reference/cvars/r_distancecull-9ac0a11/) | cvar | renderer | Controls `r_distanceCull` in the renderer module. |
@@ -1612,7 +1612,7 @@ The dump was captured from stdout after loading `mp/ffa3`; stdout does not use t
 | [`r_dynamiclight`](/TaystJK/reference/cvars/r_dynamiclight-917a4f5/) | cvar | renderer | Controls `r_dynamiclight` in the renderer module. |
 | [`r_environmentMapping`](/TaystJK/reference/cvars/r_environmentmapping-4bbfdcf/) | cvar | renderer | Controls `r_environmentMapping` in the renderer module. |
 | [`r_ext_alpha_to_coverage`](/TaystJK/reference/cvars/r_ext_alpha_to_coverage-5cfb4fd/) | cvar | renderer | Controls `r_ext_alpha_to_coverage` in the renderer module. |
-| [`r_ext_compress_lightmaps`](/TaystJK/reference/cvars/r_ext_compress_lightmaps-1ddfa36/) | cvar | renderer | Registered by the current source, but no user-facing behavior description has been verified. |
+| [`r_ext_compress_lightmaps`](/TaystJK/reference/cvars/r_ext_compress_lightmaps-1ddfa36/) | cvar | renderer | Controls `r_ext_compressed_lightmaps` in the renderer module. |
 | [`r_ext_framebuffer_multisample`](/TaystJK/reference/cvars/r_ext_framebuffer_multisample-0dd78ce/) | cvar | renderer | Controls `r_ext_framebuffer_multisample` in the renderer module. |
 | [`r_ext_gamma_control`](/TaystJK/reference/cvars/r_ext_gamma_control-8e482d7/) | cvar | renderer | Registered by the current source, but no user-facing behavior description has been verified. |
 | [`r_ext_max_anisotropy`](/TaystJK/reference/cvars/r_ext_max_anisotropy-ae414a3/) | cvar | renderer | Controls `r_ext_max_anisotropy` in the renderer module. |
@@ -1642,8 +1642,8 @@ The dump was captured from stdout after loading `mp/ffa3`; stdout does not use t
 | [`r_fullscreen`](/TaystJK/reference/cvars/r_fullscreen-3ecab87/) | cvar | renderer | Controls `r_fullscreen` in the renderer module. |
 | [`r_gamma`](/TaystJK/reference/cvars/r_gamma-9954e45/) | cvar | renderer | Controls `r_gamma` in the renderer module. |
 | [`r_gammaShaders`](/TaystJK/reference/cvars/r_gammashaders-f8fed87/) | cvar | renderer | Set gamma using pixel shaders inside the game window only. |
-| [`r_ghoul2animsmooth`](/TaystJK/reference/cvars/r_ghoul2animsmooth-475e6c7/) | cvar | renderer | Controls `r_ghoul2animsmooth` in the renderer module. |
-| [`r_ghoul2unsqashaftersmooth`](/TaystJK/reference/cvars/r_ghoul2unsqashaftersmooth-8ec055c/) | cvar | renderer | Controls `r_ghoul2unsqashaftersmooth` in the renderer module. |
+| [`r_ghoul2animsmooth`](/TaystJK/reference/cvars/r_ghoul2animsmooth-475e6c7/) | cvar | renderer | Controls `r_Ghoul2AnimSmooth` in the renderer module. |
+| [`r_ghoul2unsqashaftersmooth`](/TaystJK/reference/cvars/r_ghoul2unsqashaftersmooth-8ec055c/) | cvar | renderer | Controls `r_Ghoul2UnSqashAfterSmooth` in the renderer module. |
 | [`r_greyscale`](/TaystJK/reference/cvars/r_greyscale-442b35b/) | cvar | renderer | Controls `r_greyscale` in the renderer module. |
 | [`r_ignore`](/TaystJK/reference/cvars/r_ignore-737663a/) | cvar | renderer | Registered by the current source, but no user-facing behavior description has been verified. |
 | [`r_ignoreDstAlpha`](/TaystJK/reference/cvars/r_ignoredstalpha-bad37b1/) | cvar | renderer | Controls `r_ignoreDstAlpha` in the renderer module. |
@@ -1674,15 +1674,15 @@ The dump was captured from stdout after loading `mp/ffa3`; stdout does not use t
 | [`r_noborder`](/TaystJK/reference/cvars/r_noborder-09eac22/) | cvar | renderer | Controls `r_noborder` in the renderer module. |
 | [`r_nocull`](/TaystJK/reference/cvars/r_nocull-45c5f6a/) | cvar | renderer | Controls `r_nocull` in the renderer module. |
 | [`r_nocurves`](/TaystJK/reference/cvars/r_nocurves-cdabcba/) | cvar | renderer | Controls `r_nocurves` in the renderer module. |
-| [`r_noghoul2`](/TaystJK/reference/cvars/r_noghoul2-182f730/) | cvar | renderer | Registered by the current source, but no user-facing behavior description has been verified. |
+| [`r_noghoul2`](/TaystJK/reference/cvars/r_noghoul2-182f730/) | cvar | renderer | Controls `r_noServerGhoul2` in the renderer module. |
 | [`r_nomip`](/TaystJK/reference/cvars/r_nomip-784a698/) | cvar | renderer | Apply picmip only on worldspawn textures |
 | [`r_noportals`](/TaystJK/reference/cvars/r_noportals-b716e20/) | cvar | renderer | Controls `r_noportals` in the renderer module. |
 | [`r_noPrecacheGLA`](/TaystJK/reference/cvars/r_noprecachegla-754f482/) | cvar | renderer | Controls `r_noPrecacheGLA` in the renderer module. |
 | [`r_norefresh`](/TaystJK/reference/cvars/r_norefresh-8502c24/) | cvar | renderer | Controls `r_norefresh` in the renderer module. |
-| [`r_noserverghoul2`](/TaystJK/reference/cvars/r_noserverghoul2-13e2e0d/) | cvar | renderer | Controls `r_noserverghoul2` in the renderer module. |
+| [`r_noserverghoul2`](/TaystJK/reference/cvars/r_noserverghoul2-13e2e0d/) | cvar | renderer | Controls `r_noServerGhoul2` in the renderer module. |
 | [`r_novis`](/TaystJK/reference/cvars/r_novis-2bb6ab2/) | cvar | renderer | Controls `r_novis` in the renderer module. |
-| [`r_offsetfactor`](/TaystJK/reference/cvars/r_offsetfactor-349c509/) | cvar | renderer | Controls `r_offsetfactor` in the renderer module. |
-| [`r_offsetunits`](/TaystJK/reference/cvars/r_offsetunits-e36e68f/) | cvar | renderer | Controls `r_offsetunits` in the renderer module. |
+| [`r_offsetfactor`](/TaystJK/reference/cvars/r_offsetfactor-349c509/) | cvar | renderer | Controls `r_offsetFactor` in the renderer module. |
+| [`r_offsetunits`](/TaystJK/reference/cvars/r_offsetunits-e36e68f/) | cvar | renderer | Controls `r_offsetUnits` in the renderer module. |
 | [`r_overBrightBits`](/TaystJK/reference/cvars/r_overbrightbits-acf2388/) | cvar | renderer | Controls `r_overBrightBits` in the renderer module. |
 | [`r_picmip`](/TaystJK/reference/cvars/r_picmip-94fef1f/) | cvar | renderer | Controls `r_picmip` in the renderer module. |
 | [`r_portalOnly`](/TaystJK/reference/cvars/r_portalonly-119fda0/) | cvar | renderer | Controls `r_portalOnly` in the renderer module. |
@@ -1742,7 +1742,7 @@ The dump was captured from stdout after loading `mp/ffa3`; stdout does not use t
 | [`r_texturebits`](/TaystJK/reference/cvars/r_texturebits-10d2b90/) | cvar | renderer | Controls `r_texturebits` in the renderer module. |
 | [`r_texturebitslm`](/TaystJK/reference/cvars/r_texturebitslm-a3e9dd1/) | cvar | renderer | Controls `r_texturebitslm` in the renderer module. |
 | [`r_textureMode`](/TaystJK/reference/cvars/r_texturemode-e53a999/) | cvar | renderer | Controls `r_textureMode` in the renderer module. |
-| [`r_uifullscreen`](/TaystJK/reference/cvars/r_uifullscreen-9c735db/) | cvar | renderer | Controls `r_uifullscreen` in the renderer module. |
+| [`r_uifullscreen`](/TaystJK/reference/cvars/r_uifullscreen-9c735db/) | cvar | renderer | Controls `r_uiFullScreen` in the renderer module. |
 | [`r_vbo`](/TaystJK/reference/cvars/r_vbo-8ee14c4/) | cvar | renderer | Cache static world surfaces |
 | [`r_vbo_models`](/TaystJK/reference/cvars/r_vbo_models-8579ecd/) | cvar | renderer | Cache ghoul2 and md3 model surfaces |
 | [`r_verbose`](/TaystJK/reference/cvars/r_verbose-d91726d/) | cvar | renderer | Controls `r_verbose` in the renderer module. |
@@ -3148,12 +3148,12 @@ These entries have dated post-origin registration or behavior evidence on TaystJ
 | [`r_cullRoofFaces`](/TaystJK/reference/cvars/r_cullrooffaces-6bb0064/) | cvar | renderer | Controls `r_cullRoofFaces` in the renderer module. |
 | [`r_customheight`](/TaystJK/reference/cvars/r_customheight-380d198/) | cvar | renderer | Controls `r_customheight` in the renderer module. |
 | [`r_customwidth`](/TaystJK/reference/cvars/r_customwidth-40fe778/) | cvar | renderer | Controls `r_customwidth` in the renderer module. |
-| [`r_debuglight`](/TaystJK/reference/cvars/r_debuglight-b8d0433/) | cvar | renderer | Controls `r_debuglight` in the renderer module. |
+| [`r_debuglight`](/TaystJK/reference/cvars/r_debuglight-b8d0433/) | cvar | renderer | Controls `r_debugLight` in the renderer module. |
 | [`r_debugSort`](/TaystJK/reference/cvars/r_debugsort-3e4fd35/) | cvar | renderer | Controls `r_debugSort` in the renderer module. |
 | [`r_debugSurface`](/TaystJK/reference/cvars/r_debugsurface-abe21fc/) | cvar | renderer | Controls `cv2` in the renderer module. |
 | [`r_debugSurfaceUpdate`](/TaystJK/reference/cvars/r_debugsurfaceupdate-3194b25/) | cvar | engine-shared | Controls `cv` in the engine-shared module. |
 | [`r_depthbits`](/TaystJK/reference/cvars/r_depthbits-16d7986/) | cvar | renderer | Controls `r_depthbits` in the renderer module. |
-| [`r_detailtextures`](/TaystJK/reference/cvars/r_detailtextures-a15c8ff/) | cvar | renderer | Controls `r_detailtextures` in the renderer module. |
+| [`r_detailtextures`](/TaystJK/reference/cvars/r_detailtextures-a15c8ff/) | cvar | renderer | Controls `r_detailTextures` in the renderer module. |
 | [`r_device`](/TaystJK/reference/cvars/r_device-8238fc4/) | cvar | renderer | Select physical device to render: 0+ - use explicit device index -1 - first discrete GPU -2 - first integrated GPU |
 | [`r_directedScale`](/TaystJK/reference/cvars/r_directedscale-6aee8ad/) | cvar | renderer | Controls `r_directedScale` in the renderer module. |
 | [`r_displayRefresh`](/TaystJK/reference/cvars/r_displayrefresh-59d8e1d/) | cvar | renderer | Controls `r_displayRefresh` in the renderer module. |
@@ -3177,7 +3177,7 @@ These entries have dated post-origin registration or behavior evidence on TaystJ
 | [`r_dynamiclight`](/TaystJK/reference/cvars/r_dynamiclight-917a4f5/) | cvar | renderer | Controls `r_dynamiclight` in the renderer module. |
 | [`r_environmentMapping`](/TaystJK/reference/cvars/r_environmentmapping-4bbfdcf/) | cvar | renderer | Controls `r_environmentMapping` in the renderer module. |
 | [`r_ext_compiled_vertex_array`](/TaystJK/reference/cvars/r_ext_compiled_vertex_array-d6b2813/) | cvar | renderer | Unused |
-| [`r_ext_compress_lightmaps`](/TaystJK/reference/cvars/r_ext_compress_lightmaps-1ddfa36/) | cvar | renderer | Registered by the current source, but no user-facing behavior description has been verified. |
+| [`r_ext_compress_lightmaps`](/TaystJK/reference/cvars/r_ext_compress_lightmaps-1ddfa36/) | cvar | renderer | Controls `r_ext_compressed_lightmaps` in the renderer module. |
 | [`r_ext_compress_textures`](/TaystJK/reference/cvars/r_ext_compress_textures-f9b3b78/) | cvar | renderer | Disable/enable texture compression |
 | [`r_ext_gamma_control`](/TaystJK/reference/cvars/r_ext_gamma_control-8e482d7/) | cvar | renderer | Registered by the current source, but no user-facing behavior description has been verified. |
 | [`r_ext_multisample`](/TaystJK/reference/cvars/r_ext_multisample-9b2ea2a/) | cvar | renderer | Disable/enable framebuffer MSAA |
@@ -3197,8 +3197,8 @@ These entries have dated post-origin registration or behavior evidence on TaystJ
 | [`r_fullscreen`](/TaystJK/reference/cvars/r_fullscreen-3ecab87/) | cvar | renderer | Controls `r_fullscreen` in the renderer module. |
 | [`r_gamma`](/TaystJK/reference/cvars/r_gamma-9954e45/) | cvar | renderer | Controls `r_gamma` in the renderer module. |
 | [`r_gammaShaders`](/TaystJK/reference/cvars/r_gammashaders-f8fed87/) | cvar | renderer | Set gamma using pixel shaders inside the game window only. |
-| [`r_ghoul2animsmooth`](/TaystJK/reference/cvars/r_ghoul2animsmooth-475e6c7/) | cvar | renderer | Controls `r_ghoul2animsmooth` in the renderer module. |
-| [`r_ghoul2unsqashaftersmooth`](/TaystJK/reference/cvars/r_ghoul2unsqashaftersmooth-8ec055c/) | cvar | renderer | Controls `r_ghoul2unsqashaftersmooth` in the renderer module. |
+| [`r_ghoul2animsmooth`](/TaystJK/reference/cvars/r_ghoul2animsmooth-475e6c7/) | cvar | renderer | Controls `r_Ghoul2AnimSmooth` in the renderer module. |
+| [`r_ghoul2unsqashaftersmooth`](/TaystJK/reference/cvars/r_ghoul2unsqashaftersmooth-8ec055c/) | cvar | renderer | Controls `r_Ghoul2UnSqashAfterSmooth` in the renderer module. |
 | [`r_greyscale`](/TaystJK/reference/cvars/r_greyscale-442b35b/) | cvar | renderer | Controls `r_greyscale` in the renderer module. |
 | [`r_hdr`](/TaystJK/reference/cvars/r_hdr-806f3ee/) | cvar | renderer | Disable/enable rendering in HDR |
 | [`r_ignore`](/TaystJK/reference/cvars/r_ignore-737663a/) | cvar | renderer | Registered by the current source, but no user-facing behavior description has been verified. |
@@ -3224,14 +3224,14 @@ These entries have dated post-origin registration or behavior evidence on TaystJ
 | [`r_noborder`](/TaystJK/reference/cvars/r_noborder-09eac22/) | cvar | renderer | Controls `r_noborder` in the renderer module. |
 | [`r_nocull`](/TaystJK/reference/cvars/r_nocull-45c5f6a/) | cvar | renderer | Controls `r_nocull` in the renderer module. |
 | [`r_nocurves`](/TaystJK/reference/cvars/r_nocurves-cdabcba/) | cvar | renderer | Controls `r_nocurves` in the renderer module. |
-| [`r_noghoul2`](/TaystJK/reference/cvars/r_noghoul2-182f730/) | cvar | renderer | Registered by the current source, but no user-facing behavior description has been verified. |
+| [`r_noghoul2`](/TaystJK/reference/cvars/r_noghoul2-182f730/) | cvar | renderer | Controls `r_noServerGhoul2` in the renderer module. |
 | [`r_noportals`](/TaystJK/reference/cvars/r_noportals-b716e20/) | cvar | renderer | Controls `r_noportals` in the renderer module. |
 | [`r_noPrecacheGLA`](/TaystJK/reference/cvars/r_noprecachegla-754f482/) | cvar | renderer | Controls `r_noPrecacheGLA` in the renderer module. |
 | [`r_norefresh`](/TaystJK/reference/cvars/r_norefresh-8502c24/) | cvar | renderer | Controls `r_norefresh` in the renderer module. |
-| [`r_noserverghoul2`](/TaystJK/reference/cvars/r_noserverghoul2-13e2e0d/) | cvar | renderer | Controls `r_noserverghoul2` in the renderer module. |
+| [`r_noserverghoul2`](/TaystJK/reference/cvars/r_noserverghoul2-13e2e0d/) | cvar | renderer | Controls `r_noServerGhoul2` in the renderer module. |
 | [`r_novis`](/TaystJK/reference/cvars/r_novis-2bb6ab2/) | cvar | renderer | Controls `r_novis` in the renderer module. |
-| [`r_offsetfactor`](/TaystJK/reference/cvars/r_offsetfactor-349c509/) | cvar | renderer | Controls `r_offsetfactor` in the renderer module. |
-| [`r_offsetunits`](/TaystJK/reference/cvars/r_offsetunits-e36e68f/) | cvar | renderer | Controls `r_offsetunits` in the renderer module. |
+| [`r_offsetfactor`](/TaystJK/reference/cvars/r_offsetfactor-349c509/) | cvar | renderer | Controls `r_offsetFactor` in the renderer module. |
+| [`r_offsetunits`](/TaystJK/reference/cvars/r_offsetunits-e36e68f/) | cvar | renderer | Controls `r_offsetUnits` in the renderer module. |
 | [`r_overBrightBits`](/TaystJK/reference/cvars/r_overbrightbits-acf2388/) | cvar | renderer | Controls `r_overBrightBits` in the renderer module. |
 | [`r_parallaxMapping`](/TaystJK/reference/cvars/r_parallaxmapping-2354566/) | cvar | renderer | Disable/enable parallax mapping |
 | [`r_patchStitching`](/TaystJK/reference/cvars/r_patchstitching-1b7ebad/) | cvar | renderer | Enable stitching of neighbouring patch surfaces |
@@ -3266,7 +3266,7 @@ These entries have dated post-origin registration or behavior evidence on TaystJ
 | [`r_texturebits`](/TaystJK/reference/cvars/r_texturebits-10d2b90/) | cvar | renderer | Controls `r_texturebits` in the renderer module. |
 | [`r_texturebitslm`](/TaystJK/reference/cvars/r_texturebitslm-a3e9dd1/) | cvar | renderer | Controls `r_texturebitslm` in the renderer module. |
 | [`r_textureMode`](/TaystJK/reference/cvars/r_texturemode-e53a999/) | cvar | renderer | Controls `r_textureMode` in the renderer module. |
-| [`r_uifullscreen`](/TaystJK/reference/cvars/r_uifullscreen-9c735db/) | cvar | renderer | Controls `r_uifullscreen` in the renderer module. |
+| [`r_uifullscreen`](/TaystJK/reference/cvars/r_uifullscreen-9c735db/) | cvar | renderer | Controls `r_uiFullScreen` in the renderer module. |
 | [`r_vbo`](/TaystJK/reference/cvars/r_vbo-8ee14c4/) | cvar | renderer | Cache static world surfaces |
 | [`r_vbo_models`](/TaystJK/reference/cvars/r_vbo_models-8579ecd/) | cvar | renderer | Cache ghoul2 and md3 model surfaces |
 | [`r_verbose`](/TaystJK/reference/cvars/r_verbose-d91726d/) | cvar | renderer | Controls `r_verbose` in the renderer module. |
