@@ -87,13 +87,39 @@ is audibly different from a ground kill
 
 ## Classes
 
-The server tracks a class per player
-([`g_active.c`](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_active.c#L4296)),
-which changes how that player behaves in the mode.
+You do not pick a class with a command — **your player model decides it**
+([`DetectTribesClass`](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_client.c#L2263)),
+on a server running `g_tribesMode 1`.
 
-<!-- TODO: how a player picks their class was not found. tribesClass is read server-side in
-     g_active.c but nothing in this tree sets it from a command or a menu, so the selection
-     probably lives in jaPRO's own game module. Confirm against a live Tribes server. -->
+| Class | Models |
+|:--|:--|
+| Heavy | `tribesheavy`, `reborn_twin`, `reelo`, `noghri`, `rax_joris` |
+| Light | `tavion`, `tavion_new`, `jan`, `alora`, `alora2`, `jedi_tf`, `jedi_zf`, `jedi_hf`, `monmothma` |
+| Medium | everything else — the default |
+
+Set your `model` and you change class. The server confirms with a message such as
+"Spawning as Tribes heavy class", and **it kills you** so you respawn as the new class, so
+do not do it mid-run.
+
+Anything not on the list is medium, so an unusual model never locks you out — it just makes
+you medium. Names other than `tribesheavy` are matched by prefix, so a skin suffix such as
+`tavion/red` still counts. `tribesheavy` is compared over more characters than the name is
+long, so there only a bare `tribesheavy` works and `tribesheavy/default` falls through to
+medium.
+
+What the class changes:
+
+- **Speed.** Light runs at 1.05×, heavy at 0.78×
+  ([`g_active.c`](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_active.c#L4296)).
+- **Weight.** Explosions throw light further and heavy less — knockback mass is 175, 200 and
+  240 ([`g_combat.c`](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_combat.c#L5121)).
+- **What `thrownade` throws.** A thermal for light, a detpack for medium, a tripmine for
+  heavy ([`Cmd_ThrowNade_f`](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_cmds.c#L8660)).
+
+The last two need the server's Tribes weapon tweak (`g_tweakWeapons`); the speed difference
+does not. None of it applies in racemode: there you have no class at all unless you are on a
+team in a team gametype
+([`ClientUserinfoChanged`](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_client.c#L2542)).
 
 ## Setting it up
 

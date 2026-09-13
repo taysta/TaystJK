@@ -81,18 +81,34 @@ which is what makes skiing work. WSW does none of that.
 
 ## Choosing a style
 
-The style in force is server-side: `g_movementStyle` selects it, and a value at or beyond
-the end of the enum is rejected
-([`bg_pmove.c`](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/bg_pmove.c#L451)).
-Each player also carries their own current style in `STAT_MOVEMENTSTYLE`, which is how a
-race server lets different players run different physics at once and keeps a separate
-leaderboard per style.
+Players pick their own style with `/move`, which the server implements
+([`g_cmds.c`](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_cmds.c#L9004)):
 
-<!-- TODO: no player-facing command for choosing your own style exists in this tree.
-     codemp/game is the game module and its command table has "race" but nothing for style,
-     and STAT_MOVEMENTSTYLE is only ever read during movement, never set by a command here.
-     A jaPRO race server presumably provides one; name it only after confirming against a
-     live server or jaPRO's own source. -->
+```text
+move <siege, jka, qw, cpm, q3, pjk, wsw, rjq3, rjcpm, swoop, jetpack,
+      speed, sp, slick, botcpm, coop, ocpm, tribes, or surf>
+```
+
+Run it with no argument and it prints exactly that list, which is the quickest way to see
+what your server accepts.
+
+Four conditions must hold, and the command tells you which one you failed
+([`Cmd_MovementStyle_f`](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_cmds.c#L6687)):
+
+- The server must have race mode enabled (`g_raceMode`).
+- You must be **in** racemode yourself, not just on a server that allows it.
+- You must be alive — not dead, not spectating.
+- You must be **standing still**. Any velocity and it refuses.
+
+That last one catches people out. Try it while you are still drifting and the style does
+not change; the only sign is the refusal printed to your console.
+
+Outside racemode there is no per-player choice: `g_movementStyle` picks the style for
+everyone, clamped to the enum — below the first style it falls back to `siege`, and at or
+past the end of it to `jka`
+([`bg_pmove.c`](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/bg_pmove.c#L445)).
+In racemode your own `STAT_MOVEMENTSTYLE` wins instead, which is how one race server runs
+different physics per player and keeps a leaderboard per style.
 
 Style is a game-module concern, so what you can select depends on the server. The client
 draws what it is told; see [the overview](/TaystJK/overview/) for where that boundary runs.
