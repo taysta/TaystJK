@@ -161,8 +161,8 @@ needs a jaPRO server to have anything to show.
 ## The centre timer and team score
 
 The stock HUD puts the timer and scores in the top-right corner. TaystJK adds a centred
-arrangement across the top of the screen instead, in the style Quake players expect, built
-from three cvars that are designed to be set together
+arrangement across the top of the screen instead — the maintainer's changelog calls the
+timer Counter-Strike style — built from three cvars that are designed to be set together
 ([`CG_DrawTaystHUD`](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_draw.c#L3825)).
 
 ```text
@@ -200,8 +200,8 @@ exec hud_tayst
 
 `cg_hudFiles` swaps the underlying HUD layout rather than individual elements
 ([`cg_main.c`](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_main.c#L2611)):
-`3` loads the Elegance HUD and `4` loads the Tayst HUD, both shipped in the asset pk3. The
-default leaves the stock Jedi Academy HUD in place. It takes effect immediately — the cvar
+`3` loads the Elegance HUD and `4` loads the Tayst HUD — the Quake-style one — both shipped
+in the asset pk3. The default leaves the stock Jedi Academy HUD in place. It takes effect immediately — the cvar
 reloads the HUD when it changes
 ([`cg_cvar.c`](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_cvar.c#L59)).
 
