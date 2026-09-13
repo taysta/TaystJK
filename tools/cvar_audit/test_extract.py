@@ -5,6 +5,7 @@ import unittest
 
 from extract import extract_commands, extract_cvars
 from build_reference import clean_description, command_syntax, infer_values
+from generate_docs import emoji_token, q_strstrip
 
 
 class ExtractTests(unittest.TestCase):
@@ -111,6 +112,21 @@ Cvar_Get("cg_anim", BOTH_RUN1, CVAR_ARCHIVE);
         self.assertEqual(records["ui_char_anim"].default, "BOTH_WALK1")
         self.assertIsNone(records["ui_char_anim"].default_macro)
         self.assertIsNone(records["ui_char_anim"].default_macro_kind)
+
+    def test_emoji_tokens_follow_the_client(self) -> None:
+        # Ports CG_LoadEmojis and Q_strstrip; the filename is not the token.
+        self.assertEqual(q_strstrip("a`b~c!d", "`~!", ":>"), "a:b>cd")
+        self.assertEqual(q_strstrip("keep", "", ""), "keep")
+        # Backtick becomes a colon; '!' uppercases the next character, then goes.
+        self.assertEqual(emoji_token("#`!B.png"), "#:B")
+        self.assertEqual(emoji_token("#`(.png"), "#:(")
+        # Tilde becomes '>': the comment in cg_main.c gives ~`D as #>:D.
+        self.assertEqual(emoji_token("#~`D.png"), "#>:D")
+        # Nothing to substitute.
+        self.assertEqual(emoji_token("#8).png"), "#8)")
+        self.assertEqual(emoji_token("#^_^.png"), "#^_^")
+        # A trailing '!' has nothing to uppercase and is simply dropped.
+        self.assertEqual(emoji_token("#oops!.png"), "#oops")
 
     def test_command_tables_and_forwarded_commands(self) -> None:
         source = r'''
