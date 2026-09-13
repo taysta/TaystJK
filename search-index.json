@@ -35,7 +35,11 @@ there are ~2,000 of them and their searchable detail already lives in the refere
       {%- assign hid = part | split: '"' | first -%}
       {%- assign hraw = part | split: '</h2>' | first -%}
       {%- assign htext = hraw | replace_first: hid, '' | remove_first: '">' | strip_html | strip -%}
-      {%- if htext != "" -%}
+      {%- comment -%}
+        catalog-title is the reference app's mount-point label, repeated on every generated
+        category and feature page. It is UI chrome, not a section worth finding.
+      {%- endcomment -%}
+      {%- if htext != "" and hid != "catalog-title" -%}
         ,{"t":{{ htext | jsonify }},"u":{{ p.url | append: "#" | append: hid | jsonify }},"k":"section","p":{{ p.title | jsonify }}}
       {%- endif -%}
     {%- endfor -%}
