@@ -53,6 +53,9 @@ Keep your settings in a file of your own and load it explicitly:
 Your file is then the source of truth and the generated config is just a dump. Do not edit
 the generated one. See [Server hosting](/TaystJK/server-hosting/).
 
+This is what [#294](https://github.com/taysta/TaystJK/issues/294) turned out to be, and `+exec server.cfg` is how it was
+resolved.
+
 ## The game will not open on macOS after an update
 
 macOS re-applies the quarantine attribute to every fresh download, so an update quarantines
@@ -62,6 +65,17 @@ is not a signing problem and re-signing is not the fix.
 Clearing the attribute is covered step by step on the
 [install page](/TaystJK/install/) — follow it there rather than copying a command from
 memory, because the guidance about when `sudo` is and is not appropriate matters.
+
+[#261](https://github.com/taysta/TaystJK/issues/261) is this, including the detail that catches people out: replacing a build
+that already ran quarantines the new copy, so an install that worked yesterday can fail
+today. Approving the app in System Settings is not a substitute for clearing the attribute.
+
+## "Failed loading SDL3 library" on macOS
+
+**Fixed — update your build.** A run of builds shipped a broken sdl2-compat and would not
+start at all on macOS ([#355](https://github.com/taysta/TaystJK/issues/355)). It was a packaging fault rather than anything on
+your machine, and a later build fixed it. If you are stuck on an affected build, take a
+newer one rather than copying dylibs between installations.
 
 ## The client crashes when joining a modded server
 
@@ -77,6 +91,26 @@ What you see is a crash or an immediate disconnect on joining a server that sets
 to that directory, while everything else works. Either install the matching build of the
 mod, or remove the stale mod directory. The [install guide](/TaystJK/install/) covers
 keeping TaystJK separate from an older installation.
+
+[#275](https://github.com/taysta/TaystJK/issues/275) is exactly this: a 32-bit JA+ `ui` library and a 64-bit client. Run the
+32-bit build if you want that mod's client-side pieces.
+
+**If the architecture already matches and it still crashes**, the mod is probably built
+against the older module API — JA++ is
+([#269](https://github.com/taysta/TaystJK/issues/269)). The giveaway is that the client dies on the first console command you
+type. `vm_legacy` forces the legacy API, as a bitmask over the three modules: 1 game,
+2 cgame, 4 ui ([`vm.cpp`](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/qcommon/vm.cpp#L153)).
+
+```text
++set fs_forceGame japlus +set vm_legacy 7
+```
+
+7 is all three, which is what closed that report. Nothing detects this for you; you have to
+set it before joining.
+
+A third cause is the mod's own assets rather than its code — one mod crashed 32-bit clients
+on load with an 8192×8192 font PNG. If a single mod fails everywhere and others are fine,
+that belongs with the mod's author; see [where to report](/TaystJK/where-to-report/).
 
 ## No saber hum, or sound distances are wrong, on Linux
 
@@ -95,9 +129,3 @@ If you are seeing this on a current build, it is something new rather than these
 say which build, and check the SDL audio driver the client names at startup
 ([`sdl_sound.cpp`](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/shared/sdl/sdl_sound.cpp#L189)).
 
----
-
-<!-- TODO: the remaining symptoms are written from source and not yet cross-referenced to
-     the tracker. The planning notes attach #215 and #294 to the server list, #261/#355/#343
-     to macOS, and #269/#275 to the modded-server crash. #215 is read and reflected above;
-     confirm the rest and link them. -->
