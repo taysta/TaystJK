@@ -80,26 +80,24 @@ keeping TaystJK separate from an older installation.
 
 ## No saber hum, or sound distances are wrong, on Linux
 
-Sound is initialised through SDL, which picks an audio driver from the system
+**Fixed — update your build.** These were one regression, not two. A change that let
+non-Windows builds use OpenAL
+([`94513af80`](https://github.com/taysta/TaystJK/commit/94513af801211c817ed5607e7e3a49b49065189d))
+removed saber hum ([#245](https://github.com/taysta/TaystJK/issues/245)) and made every
+sound play at full volume regardless of distance
+([#246](https://github.com/taysta/TaystJK/issues/246)). Both reports point at the same
+commit.
+
+It was reverted in [#247](https://github.com/taysta/TaystJK/pull/247) and the reporter
+confirmed both symptoms were gone. Any build from after that revert is fine.
+
+If you are seeing this on a current build, it is something new rather than these reports —
+say which build, and check the SDL audio driver the client names at startup
 ([`sdl_sound.cpp`](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/shared/sdl/sdl_sound.cpp#L189)).
-The driver it picks is printed at startup — read the console before anything else, because
-it tells you which backend you actually got.
-
-`s_initsound` turns sound on and off entirely
-([`snd_dma.cpp`](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/snd_dma.cpp#L484)).
-If audio works but positioning or looping sounds are wrong, the usual cause is the driver
-SDL selected rather than the game; forcing a different SDL audio driver through the
-environment is the first thing to try.
-
-<!-- TODO: this section is thinner than the others. The planning notes tie it to specific
-     reports about saber hum and sound distance on Linux, and the useful detail is in those
-     comments. Someone with tracker access should name the driver that works and the exact
-     environment variable, rather than leaving this at "try a different driver". -->
 
 ---
 
-<!-- TODO: every symptom above was written from source, because the issue tracker was not
-     reachable while writing. The planning notes attach specific issue numbers to each
-     symptom (#215 and #294 for the server list, #261/#355/#343 for macOS, #269/#275 for the
-     mod crash, #245/#246 for Linux audio, #294 for the config rewrite). Confirm each
-     against the tracker and link it, and only then treat those issues as closable. -->
+<!-- TODO: the remaining symptoms are written from source and not yet cross-referenced to
+     the tracker. The planning notes attach #215 and #294 to the server list, #261/#355/#343
+     to macOS, and #269/#275 to the modded-server crash. #215 is read and reflected above;
+     confirm the rest and link them. -->
