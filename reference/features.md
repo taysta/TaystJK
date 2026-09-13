@@ -4,6 +4,7 @@ layout: reference
 nav_order: 6
 parent: "Console reference"
 wide: true
+description: "Every cvar and command grouped by the feature it belongs to, for when you know the feature but not the name."
 ---
 
 <div class="page-heading" markdown="1">

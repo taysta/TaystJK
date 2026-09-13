@@ -304,3 +304,7 @@ module — is written into the demo. It is on by default and invisible to ordina
 6. Test RCON, then keep the password out of screenshots, logs, and public configuration files.
 
 Use the [console reference](/TaystJK/reference/?kind=cvar&network=server-authoritative) to inspect server-owned cvars and their exact source registrations.
+
+If the server does not appear in the list, or it keeps rewriting your config, both have
+their own entries on [troubleshooting](/TaystJK/troubleshooting/) — they are the two things
+that go wrong most often here.

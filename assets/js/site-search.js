@@ -21,7 +21,9 @@
       var link = doc.createElement("a");
       link.className = "heading-anchor";
       link.href = "#" + heading.id;
-      link.setAttribute("aria-label", "Link to this section");
+      /* Naming the section matters: without it a screen reader announces the same
+         "link to this section" once per heading, with nothing to tell them apart. */
+      link.setAttribute("aria-label", "Link to section: " + heading.textContent.trim());
       link.innerHTML = "<span aria-hidden=\"true\">#</span>";
 
       link.addEventListener("click", function (event) {
@@ -229,7 +231,12 @@
     if (!form) return;
     var input = form.querySelector("input");
     var list = form.querySelector(".search-results");
+    var status = form.querySelector(".search-status");
     if (!input || !list) return;
+
+    function announce(text) {
+      if (status) status.textContent = text;
+    }
 
     var base = form.dataset.baseurl || "";
     var active = -1;
@@ -237,6 +244,7 @@
     function close() {
       list.hidden = true;
       active = -1;
+      announce("");
     }
 
     function currentLinks() {
@@ -248,8 +256,12 @@
       if (query.length < 2) { close(); return; }
       loadIndex(base).then(function (items) {
         if (normalize(input.value).trim() !== query) return;
-        render(list, rank(items, query), base);
+        var results = rank(items, query);
+        render(list, results, base);
         active = -1;
+        announce(results.length
+          ? results.length + (results.length === 1 ? " result" : " results") + " for " + query
+          : "No results for " + query);
       });
     }
 

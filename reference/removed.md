@@ -3,6 +3,7 @@ title: "Removed and inactive"
 layout: reference
 nav_order: 6
 parent: "Console reference"
+description: "Names the client no longer registers, kept so an old config or guide referring to one can be understood."
 ---
 
 # Removed and inactive names

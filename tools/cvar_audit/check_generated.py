@@ -5,6 +5,7 @@ from __future__ import annotations
 
 import json
 import re
+import subprocess
 from pathlib import Path
 
 from generate_docs import collection_slug, compact_catalog_entry, home_page, resolve_url, slug
@@ -12,6 +13,46 @@ from generate_docs import collection_slug, compact_catalog_entry, home_page, res
 
 ROOT = Path(".")
 LINK = re.compile(r"(?:\]\(|href=[\"'])(/TaystJK/[^)\"'#?]*)")
+
+
+def missing_description_errors() -> list:
+    """Every published page needs a description.
+
+    It is the only summary the listing cards and the meta tags have, and it is what a
+    search result shows under the title. A page without one renders a blank card and
+    falls back to the site-wide description everywhere else.
+
+    Tracked files only — an untracked local build tree is not part of the site. Redirect
+    stubs are exempt: they carry `layout: none` and are never indexed.
+    """
+    tracked = subprocess.run(
+        ["git", "ls-files", "*.md"], capture_output=True, text=True, check=True
+    ).stdout.split()
+
+    skip_dirs = {"tools"}
+    skip_names = {"CLAUDE.md", "CONVENTIONS.md", "README.md"}
+    errors = []
+
+    for name in sorted(tracked):
+        path = Path(name)
+        if path.parts[0].startswith(".") or path.parts[0] in skip_dirs:
+            continue
+        if path.name in skip_names:
+            continue
+        # Generated entry pages are nav-excluded details, not listed anywhere.
+        if path.parts[:2] in (("reference", "cvars"), ("reference", "commands")):
+            continue
+
+        text = path.read_text(encoding="utf-8", errors="ignore")
+        if not text.startswith("---"):
+            continue
+        front = text.split("---", 2)[1]
+        if re.search(r"^layout:\s*none\s*$", front, re.M):
+            continue
+        if not re.search(r"^description:", front, re.M):
+            errors.append(f"page has no description front matter: {path}")
+
+    return errors
 
 
 def tab_panel_errors(page, text) -> list:
@@ -124,6 +165,8 @@ def main() -> None:
             if resolve_url(url) is None:
                 errors.append(f"broken internal link in {page}: {url}")
         errors.extend(tab_panel_errors(page, text))
+
+    errors.extend(missing_description_errors())
 
     if errors:
         raise SystemExit("\n".join(errors))

@@ -260,6 +260,10 @@ This layout is adapted from the longer [multiple modded clients guide on JKHub](
 
 ## Next steps
 
+- [What this client adds](/TaystJK/features/) — the HUD tools, movement styles and cosmetics
+- [Something is wrong](/TaystJK/troubleshooting/) — listed by symptom, including the macOS
+  and modded-server cases above
+- [Why a feature works on one server and not another](/TaystJK/mod-compatibility/)
 - [Host a dedicated server](/TaystJK/server-hosting/)
 - [Search cvars and commands](/TaystJK/reference/)
 - [Compile TaystJK from source](/TaystJK/development/compiling/)
