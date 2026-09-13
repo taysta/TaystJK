@@ -53,19 +53,23 @@ Rationale, one line each:
 
 ## 2. `added_on`
 
-TaystJK has no release versioning, so feature availability is a date, never "added in
-vX.Y". Format: `YYYY-MM-DD (shorthash)` — for example `2025-03-14 (a1b2c3d)`.
+TaystJK has no release versioning. Releases are rolling: the `latest` tag is moved onto
+each release commit, so a build identifies itself as `latest-<shorthash>` plus a compile
+date, and availability is a date, never "added in vX.Y".
 
-The date is the only part a reader can act on. `version` ends with the engine's compile
-date (`SOURCE_DATE`, `codemp/qcommon/common.cpp`), and `modversion` prints the game
-module's compile date and time followed by a `tag-hash` pair (`CG_ModVersion_f`). Tell
-readers to compare that date; an older build does not have the entry.
+Format: `YYYY-MM-DD (shorthash)` — for example `2025-03-14 (a1b2c3d)`.
 
-Neither half of the identifier orders builds. The hash is unordered. The tag is only
-whatever `git describe --tags --abbrev=0` found — `CMakeLists.txt` fills `GIT_TAG` that
-way — and the repository carries 38 tags inherited from the fork's ancestry, so it
-currently resolves to `latest-actions-autorelease-update` even though the release itself
-is published under `latest`. Do not describe builds as `latest-<shorthash>`.
+`version` ends with the engine's compile date (`SOURCE_DATE`, `codemp/qcommon/common.cpp`),
+and `modversion` prints the game module's compile date and time followed by the
+`GIT_TAG-GIT_HASH` pair (`CG_ModVersion_f`). `CMakeLists.txt` fills those from
+`git describe --tags --abbrev=0` and `git rev-parse --short`, and because `latest` sits on
+the release commit, describe resolves to `latest`.
+
+Tell readers to compare **the date**; an older build does not have the entry. The hash does
+not order builds — two short hashes cannot be ranked against each other — and the tag is
+the same string on every release, so neither half of the identifier answers "is mine
+newer". The semver-looking tags in the repository (`1.0` … `1.5.5`) are inherited from the
+fork's ancestry and are not TaystJK releases.
 
 State that comparison rule once and link to it from wherever `added_on` renders, rather
 than repeating it per page. For generated entries that explanation lives on
