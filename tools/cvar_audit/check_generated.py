@@ -14,6 +14,37 @@ ROOT = Path(".")
 LINK = re.compile(r"(?:\]\(|href=[\"'])(/TaystJK/[^)\"'#?]*)")
 
 
+def tab_panel_errors(page, text) -> list:
+    """Tab panels must close at column 0 when their content ends with a list.
+
+    Kramdown reads an indented line following a list as continuation content of the final
+    item, so an indented "</section>" does not close the panel -- the next panel is parsed
+    inside it instead. Every panel after the first then sits inside a hidden one, and the
+    toggle appears to do nothing. Panels ending in a paragraph are unaffected, which is why
+    this only became visible on the generated what's-new page.
+    """
+    errors = []
+    lines = text.split("\n")
+    open_panel = None
+    previous = ""
+
+    for number, line in enumerate(lines, start=1):
+        if "data-baseline-panel=" in line or "data-platform-panel=" in line:
+            open_panel = number
+        elif line.strip() == "</section>" and open_panel is not None:
+            if line.startswith((" ", "\t")) and previous.lstrip().startswith("- "):
+                errors.append(
+                    f"{page}:{number}: panel opened at line {open_panel} closes with an "
+                    f"indented </section> after a list; kramdown will nest the next panel "
+                    f"inside it. Put the close tag at column 0."
+                )
+            open_panel = None
+        if line.strip():
+            previous = line
+
+    return errors
+
+
 def main() -> None:
     errors: list[str] = []
     datasets = {
@@ -81,6 +112,7 @@ def main() -> None:
         Path("features.md"), *Path("features").rglob("*.md"),
         Path("overview.md"), Path("glossary.md"),
         Path("troubleshooting.md"), Path("where-to-report.md"),
+        Path("mod-compatibility.md"),
     ]
     for page in pages:
         text = page.read_text()
@@ -90,6 +122,7 @@ def main() -> None:
             url = match.group(1)
             if resolve_url(url) is None:
                 errors.append(f"broken internal link in {page}: {url}")
+        errors.extend(tab_panel_errors(page, text))
 
     if errors:
         raise SystemExit("\n".join(errors))

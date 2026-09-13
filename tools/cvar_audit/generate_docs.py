@@ -649,7 +649,11 @@ def whats_new_page(entries: list[dict[str, Any]]) -> tuple[str, list[str], list[
             "",
         ])
         body.extend(whats_new_rows(members, panel_features, tuning))
-        body.extend(["  </section>", ""])
+        # The close tag must start at column 0. Each panel ends with a list, and kramdown
+        # reads an indented line after one as continuation content of the final item -- so
+        # an indented "</section>" never closes the panel, and the next panel is parsed
+        # inside this one. The toggle then has nothing it can show.
+        body.extend(["</section>", ""])
     body.append("</section>")
     return head + "\n".join(tabs + body), hidden, warnings
 
