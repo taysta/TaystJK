@@ -1359,7 +1359,8 @@ def audit_page(
     ambiguous = [entry for entry in entries if entry["origin"]["confidence"] != "high"]
     modified = [entry for entry in entries if entry.get("modified_by")]
     modification_count = sum(len(entry.get("modified_by", [])) for entry in entries)
-    lines = [frontmatter("Audit report", 7, "Console reference"), "# Audit report", "",
+    lines = [frontmatter("Audit report", 7, "Console reference",
+        description="What the reference knows and how confidently: coverage, provenance confidence, and the entries still needing review."), "# Audit report", "",
              "This is the deliberately untidy review queue behind the published reference. `unknown` and `needs-review` are used instead of guesses.", "",
              "## Totals by origin", "", count_table(entries, lambda entry: ORIGIN_LABELS.get(entry["origin"]["source"], entry["origin"]["source"])), "",
              "## Runtime reconciliation", ""]
@@ -1420,7 +1421,8 @@ def sources_page(refs: dict[str, str]) -> str:
         ref = ref_for[source]
         sha = refs.get(ref, ref)
         rows.append(f"| {badge(source)} | [`{repo}@{sha[:12]}`](https://github.com/{repo}/tree/{sha}) | {details[source]} |")
-    return frontmatter("Sources and methodology", 6, "Console reference") + """
+    return frontmatter("Sources and methodology", 6, "Console reference",
+        description="Which upstream project each entry is attributed to, and the rules the resolver follows to decide.") + """
 # Sources and methodology
 
 The reference separates origin from current availability. An entry inherited from Raven remains **Base Jedi Academy** even though OpenJK and every fork ship it. A cvar registered only by `rd-vulkan` is not automatically Vulkan-originated: the resolver checks rend2 and other upstream snapshots first.
@@ -1455,7 +1457,8 @@ The [audit report](/TaystJK/reference/audit/) lists every medium/low attribution
 
 
 def removed_page(items: list[dict[str, Any]], source_sha: str) -> str:
-    lines = [frontmatter("Removed and inactive", 6, "Console reference"), "# Removed and inactive names", "",
+    lines = [frontmatter("Removed and inactive", 6, "Console reference",
+        description="Names the client no longer registers, kept so an old config or guide referring to one can be understood."), "# Removed and inactive names", "",
              "These identifiers are not part of the active static inventory, but remain useful search targets. `inactive` means the apparent registration is commented/disabled in the current tree; `renamed` identifies a verified replacement.", "",
              "| Name | Kind | Status | Replacement | Reason | Evidence |", "|:--|:--|:--|:--|:--|:--|"]
     for item in items:
@@ -1542,7 +1545,8 @@ An entry marked **needs review** is real and has registration evidence, but one 
                 f'<a class="directory-card" href="/TaystJK/reference/origins/{source}/">'
                 f'{badge(source)}<strong>{ORIGIN_LABELS[source]}</strong><span>{count:,} entries</span></a>'
             )
-    write(Path("reference/origins.md"), frontmatter("By origin", 3, "Console reference", wide=True) + """
+    write(Path("reference/origins.md"), frontmatter("By origin", 3, "Console reference", wide=True,
+        description="Every cvar and command grouped by the project it first appeared in, from base Jedi Academy through to TaystJK.") + """
 <div class="page-heading" markdown="1">
 <p class="eyebrow">Provenance</p>
 
@@ -1572,7 +1576,8 @@ An entry marked **needs review** is real and has registration evidence, but one 
             f'<a class="directory-card" href="/TaystJK/reference/modules/{module}/">'
             f'<span class="directory-code">{esc(module)}</span><strong>{count:,}</strong><span>entries</span></a>'
         )
-    write(Path("reference/modules.md"), frontmatter("By module", 4, "Console reference", wide=True) + """
+    write(Path("reference/modules.md"), frontmatter("By module", 4, "Console reference", wide=True,
+        description="Every cvar and command grouped by the module that registers it: engine, renderer, game, cgame or UI.") + """
 <div class="page-heading" markdown="1">
 <p class="eyebrow">Registration context</p>
 
@@ -1601,7 +1606,8 @@ An entry marked **needs review** is real and has registration evidence, but one 
             f'<span class="directory-code">{esc(category)}</span><strong>{len(selected):,}</strong>'
             f'<span>{cvar_count:,} cvars · {command_count:,} commands</span></a>'
         )
-    write(Path("reference/categories.md"), frontmatter("By topic", 5, "Console reference", wide=True) + """
+    write(Path("reference/categories.md"), frontmatter("By topic", 5, "Console reference", wide=True,
+        description="Every cvar and command grouped by subject, from audio and HUD through to movement and networking.") + """
 <div class="page-heading" markdown="1">
 <p class="eyebrow">Broad areas</p>
 
@@ -1633,7 +1639,8 @@ An entry marked **needs review** is real and has registration evidence, but one 
             f'<span class="directory-code">{esc(feature)}</span><strong>{len(selected):,}</strong>'
             f'<span>{cvar_count:,} {cvar_label} · {command_count:,} {command_label} · {esc(" / ".join(topics))}</span></a>'
         )
-    write(Path("reference/features.md"), frontmatter("By feature", 6, "Console reference", wide=True) + """
+    write(Path("reference/features.md"), frontmatter("By feature", 6, "Console reference", wide=True,
+        description="Every cvar and command grouped by the feature it belongs to, for when you know the feature but not the name.") + """
 <div class="page-heading" markdown="1">
 <p class="eyebrow">Control families</p>
 

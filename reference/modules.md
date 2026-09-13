@@ -4,6 +4,7 @@ layout: reference
 nav_order: 4
 parent: "Console reference"
 wide: true
+description: "Every cvar and command grouped by the module that registers it: engine, renderer, game, cgame or UI."
 ---
 
 <div class="page-heading" markdown="1">

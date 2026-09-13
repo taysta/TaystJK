@@ -4,6 +4,7 @@ layout: reference
 nav_order: 5
 parent: "Console reference"
 wide: true
+description: "Every cvar and command grouped by subject, from audio and HUD through to movement and networking."
 ---
 
 <div class="page-heading" markdown="1">

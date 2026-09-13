@@ -4,6 +4,7 @@ layout: reference
 nav_order: 3
 parent: "Console reference"
 wide: true
+description: "Every cvar and command grouped by the project it first appeared in, from base Jedi Academy through to TaystJK."
 ---
 
 <div class="page-heading" markdown="1">
