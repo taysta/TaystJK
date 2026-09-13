@@ -1,4 +1,4 @@
-name: Weekly reference check
+name: Reference check
 
 # The console reference is generated from this branch but lives on gh-pages, and its own
 # workflow only runs when someone touches that branch. A cvar added here would otherwise go
@@ -7,10 +7,17 @@ name: Weekly reference check
 # This has to live on the default branch: GitHub only runs scheduled workflows from the
 # default branch, so the same cron sitting in the gh-pages workflow would never fire. It
 # checks gh-pages out and runs that branch's own script, so the two cannot drift apart.
+#
+# It cannot regenerate the reference. That needs eight upstream remotes, GitHub PR metadata
+# supplied by hand, and a runtime capture from a client that has actually launched -- none
+# of which a runner can do. So it reports staleness and leaves regeneration to a person.
 
 on:
   schedule:
     - cron: "17 6 * * 1"
+  # Catch a stale reference on release day rather than up to a week later.
+  release:
+    types: [published]
   workflow_dispatch:
 
 permissions:
@@ -49,8 +56,16 @@ jobs:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           REPO: ${{ github.repository }}
           RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+          EVENT: ${{ github.event_name }}
+          RELEASE_TAG: ${{ github.event.release.tag_name }}
         run: |
           set -euo pipefail
+
+          if [ "$EVENT" = "release" ]; then
+            context="The reference check failed for release ${RELEASE_TAG}."
+          else
+            context="The scheduled console reference check failed."
+          fi
 
           # Create the label first: listing by a label that does not exist is an error,
           # and `set -e` would abort before anything got reported.
@@ -63,11 +78,11 @@ jobs:
 
           if [ -n "$existing" ]; then
             gh issue comment "$existing" --repo "$REPO" \
-              --body "Still failing as of $(date -u '+%Y-%m-%d'). Run: $RUN_URL"
+              --body "$context Still failing as of $(date -u '+%Y-%m-%d'). Run: $RUN_URL"
           else
-            gh issue create --repo "$REPO" --title "Weekly reference check is failing" \
+            gh issue create --repo "$REPO" --title "Console reference check is failing" \
               --label reference-drift \
-              --body "The weekly console reference check failed.
+              --body "$context
 
           The likely cause is that \`master\` has moved and the reference data checked in on
           \`gh-pages\` no longer matches the registrations in the source. Regenerating on the
