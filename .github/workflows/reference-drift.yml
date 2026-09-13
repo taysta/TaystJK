@@ -5,11 +5,10 @@ on:
     branches: [gh-pages]
   push:
     branches: [gh-pages]
-  # The reference is generated from `master`, but nothing on `master` triggers this
-  # workflow. Without a schedule, a cvar added there goes unnoticed until someone
-  # happens to touch the docs branch.
-  schedule:
-    - cron: "17 6 * * 1"
+  # No `schedule:` here, deliberately. GitHub only runs scheduled workflows from the
+  # repository's default branch, which is `master`; a cron in a workflow that exists only
+  # on `gh-pages` would never fire. The weekly run lives on `master` instead, in
+  # `weekly-reference-check.yml`, and checks this branch out to run the same script.
   workflow_dispatch:
 
 permissions:
@@ -24,22 +23,8 @@ jobs:
           fetch-depth: 0
       - name: Fetch source branch
         run: git fetch origin master:refs/remotes/origin/master
-      - name: Test extractor
-        run: python3 tools/cvar_audit/test_extract.py
-      - name: Test provenance chronology
-        run: python3 tools/cvar_audit/test_provenance.py
-      - name: Test reference search and filters
-        run: node tools/cvar_audit/test_reference_app.js
-      - name: Test site search ranking
-        run: node tools/cvar_audit/test_site_search.js
-      - name: Check Liquid templates
-        run: python3 tools/cvar_audit/test_liquid.py
-      - name: Validate reference records
-        run: python3 tools/cvar_audit/validate.py
-      - name: Validate generated pages and links
-        run: python3 tools/cvar_audit/check_generated.py
-      - name: Check source registration drift
-        run: python3 tools/cvar_audit/check_drift.py --ref origin/master
+      - name: Run every check
+        run: tools/cvar_audit/run_all.sh --ref origin/master
       - name: Check changelog coverage
         run: >-
           python3 tools/cvar_audit/changelog_coverage.py
@@ -51,53 +36,6 @@ jobs:
           name: changelog-coverage
           path: changelog-coverage.json
           if-no-files-found: ignore
-
-  # A scheduled run has nobody watching it, so a failure is turned into an issue rather
-  # than a red mark in a tab no one opens. Only on the schedule: a failing pull request
-  # already reports itself to the person who opened it.
-  report-failure:
-    needs: verify-reference
-    if: failure() && github.event_name == 'schedule'
-    runs-on: ubuntu-latest
-    permissions:
-      contents: read
-      issues: write
-    steps:
-      - name: Open or update the tracking issue
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          REPO: ${{ github.repository }}
-          RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
-        run: |
-          set -euo pipefail
-          title="Weekly reference check is failing"
-
-          # Create the label first: listing by a label that does not exist is an error,
-          # and `set -e` would abort before anything is reported.
-          gh label create reference-drift --repo "$REPO" \
-            --description "Scheduled console reference check is failing" \
-            --color D93F0B 2>/dev/null || true
-
-          existing=$(gh issue list --repo "$REPO" --state open --label reference-drift \
-            --json number --jq '.[0].number // empty' || true)
-
-          if [ -n "$existing" ]; then
-            gh issue comment "$existing" --repo "$REPO" \
-              --body "Still failing as of $(date -u '+%Y-%m-%d'). Run: $RUN_URL"
-          else
-            gh issue create --repo "$REPO" --title "$title" --label reference-drift \
-              --body "The weekly console reference check failed.
-
-          This usually means \`master\` has moved and the checked-in reference data no longer
-          matches the registrations in the source. Regenerating on the docs branch fixes it;
-          \`tools/cvar_audit/README.md\` has the order to run things in.
-
-          It can also be an ordinary test failure. Read the run before assuming drift.
-
-          Run: $RUN_URL
-
-          This issue is updated rather than duplicated while it stays open."
-          fi
 
   build-site:
     runs-on: ubuntu-latest
