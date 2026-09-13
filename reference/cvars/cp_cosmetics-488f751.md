@@ -24,7 +24,7 @@ Controls `cp_cosmetics` in the cgame module. Consult the cited behavior reads be
 | Network scope | `needs-server-support` — Sent to, or only useful with, a supporting game server. |
 | Derivation | `code-trace` |
 | Confidence | `medium` |
-| Added | 2018-09-08 in [`7778371e9`](https://github.com/taysta/TaystJK/commit/7778371e96142ef5afaea5c030ea863c9462d2aa) <span class="status-chip">needs review</span> — [how to compare this against your build](/TaystJK/whats-new/#how-to-tell-what-your-build-has) |
+| Added | 2018-09-08 in [`7778371e9`](https://github.com/taysta/TaystJK/commit/7778371e96142ef5afaea5c030ea863c9462d2aa) <span class="status-chip">needs review</span> — [how to compare this against your build](/TaystJK/features/whats-new/#how-to-tell-what-your-build-has) |
 | In-game xdocs | No |
 | In-game menu | No |
 | Default | `0` |

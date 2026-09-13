@@ -25,7 +25,7 @@ Controls `ui_browserFilterInvalidInfo` in the ui module. Consult the cited behav
 | Network scope | `client-only` — Local to the client/UI/renderer. |
 | Derivation | `code-trace` |
 | Confidence | `medium` |
-| Added | 2014-05-07 in [`938464848`](https://github.com/taysta/TaystJK/commit/9384648488c06d42a7498256cdeeca2e13ae19ed) <span class="status-chip">needs review</span> — [how to compare this against your build](/TaystJK/whats-new/#how-to-tell-what-your-build-has) |
+| Added | 2014-05-07 in [`938464848`](https://github.com/taysta/TaystJK/commit/9384648488c06d42a7498256cdeeca2e13ae19ed) <span class="status-chip">needs review</span> — [how to compare this against your build](/TaystJK/features/whats-new/#how-to-tell-what-your-build-has) |
 | In-game xdocs | No |
 | In-game menu | No |
 | Default | `1` |

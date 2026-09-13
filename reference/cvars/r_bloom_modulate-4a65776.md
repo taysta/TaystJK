@@ -23,7 +23,7 @@ Modulate extracted color: 0: off (color = color, i.e. no changes) 1: by itself (
 | Network scope | `client-only` — Local to the client/UI/renderer. |
 | Derivation | `documented` |
 | Confidence | `high` |
-| Added | 2023-10-28 in [`85114c9ab`](https://github.com/taysta/TaystJK/commit/85114c9abfce0a2c70681224b30ef0bafac2a186) — [how to compare this against your build](/TaystJK/whats-new/#how-to-tell-what-your-build-has) |
+| Added | 2023-10-28 in [`85114c9ab`](https://github.com/taysta/TaystJK/commit/85114c9abfce0a2c70681224b30ef0bafac2a186) — [how to compare this against your build](/TaystJK/features/whats-new/#how-to-tell-what-your-build-has) |
 | In-game xdocs | No |
 | In-game menu | No |
 | Default | `0` |

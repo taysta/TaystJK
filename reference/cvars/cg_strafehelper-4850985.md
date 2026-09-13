@@ -25,7 +25,7 @@ Configure with the /strafehelper command
 | Network scope | `client-only` — Local to the client/UI/renderer. |
 | Derivation | `documented` |
 | Confidence | `medium` |
-| Added | 2018-04-19 in [`1d5acfc05`](https://github.com/taysta/TaystJK/commit/1d5acfc05276cbb6032b5fd9ccd01a8d41233763) <span class="status-chip">needs review</span> — [how to compare this against your build](/TaystJK/whats-new/#how-to-tell-what-your-build-has) |
+| Added | 2018-04-19 in [`1d5acfc05`](https://github.com/taysta/TaystJK/commit/1d5acfc05276cbb6032b5fd9ccd01a8d41233763) <span class="status-chip">needs review</span> — [how to compare this against your build](/TaystJK/features/whats-new/#how-to-tell-what-your-build-has) |
 | In-game xdocs | Yes — [codemp/ui/ui_xdocs.h:323](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/ui/ui_xdocs.h#L323) |
 | In-game menu | No |
 | Default | `3008` |

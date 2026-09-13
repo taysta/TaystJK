@@ -24,7 +24,7 @@ Runs `vk_info_f` in the renderer module.
 | Network scope | `client-only` — Local to the client/UI/renderer. |
 | Derivation | `documented` |
 | Confidence | `high` |
-| Added | 2021-10-24 in [`bd3a458a8`](https://github.com/taysta/TaystJK/commit/bd3a458a8bb29a0348177f586389b98b5f7592a5) — [how to compare this against your build](/TaystJK/whats-new/#how-to-tell-what-your-build-has) |
+| Added | 2021-10-24 in [`bd3a458a8`](https://github.com/taysta/TaystJK/commit/bd3a458a8bb29a0348177f586389b98b5f7592a5) — [how to compare this against your build](/TaystJK/features/whats-new/#how-to-tell-what-your-build-has) |
 | In-game xdocs | No |
 | In-game menu | No |
 | Syntax | `vkinfo` |

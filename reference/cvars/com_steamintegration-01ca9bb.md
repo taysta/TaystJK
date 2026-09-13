@@ -24,7 +24,7 @@ Enables automatic Steam API integration (requires a steam_api64.dll to be in Gam
 | Network scope | `client-only` — Local to the client/UI/renderer. |
 | Derivation | `documented` |
 | Confidence | `medium` |
-| Added | 2019-03-21 in [`df21cc35f`](https://github.com/taysta/TaystJK/commit/df21cc35f5ef9cb78a9003abf7c5ab1acbe31dfe) <span class="status-chip">needs review</span> — [how to compare this against your build](/TaystJK/whats-new/#how-to-tell-what-your-build-has) |
+| Added | 2019-03-21 in [`df21cc35f`](https://github.com/taysta/TaystJK/commit/df21cc35f5ef9cb78a9003abf7c5ab1acbe31dfe) <span class="status-chip">needs review</span> — [how to compare this against your build](/TaystJK/features/whats-new/#how-to-tell-what-your-build-has) |
 | In-game xdocs | No |
 | In-game menu | No |
 | Default | `1` |

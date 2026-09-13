@@ -22,7 +22,7 @@ Rww - these used to all default to 0 (closed).. I changed them to 1 (human)
 | Network scope | `client-only` — Local to the client/UI/renderer. |
 | Derivation | `documented` |
 | Confidence | `high` |
-| Added | 2013-04-08 in [`14cea1563`](https://github.com/taysta/TaystJK/commit/14cea1563762076974bee277afadbd5bf234c494) — [how to compare this against your build](/TaystJK/whats-new/#how-to-tell-what-your-build-has) |
+| Added | 2013-04-08 in [`14cea1563`](https://github.com/taysta/TaystJK/commit/14cea1563762076974bee277afadbd5bf234c494) — [how to compare this against your build](/TaystJK/features/whats-new/#how-to-tell-what-your-build-has) |
 | In-game xdocs | No |
 | In-game menu | No |
 | Default | `1` |

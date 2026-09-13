@@ -24,7 +24,7 @@ Controls `g_voteDelay` in the game module. Consult the cited behavior reads befo
 | Network scope | `server-authoritative` — Owned or enforced by the server. |
 | Derivation | `code-trace` |
 | Confidence | `medium` |
-| Added | 2013-10-25 in [`872159cb6`](https://github.com/taysta/TaystJK/commit/872159cb6796e09bcd1065e318453e5358f52821) <span class="status-chip">needs review</span> — [how to compare this against your build](/TaystJK/whats-new/#how-to-tell-what-your-build-has) |
+| Added | 2013-10-25 in [`872159cb6`](https://github.com/taysta/TaystJK/commit/872159cb6796e09bcd1065e318453e5358f52821) <span class="status-chip">needs review</span> — [how to compare this against your build](/TaystJK/features/whats-new/#how-to-tell-what-your-build-has) |
 | In-game xdocs | No |
 | In-game menu | No |
 | Default | `3000` |

@@ -22,7 +22,7 @@ In Vanilla certain glow stages are skipped, render those anyway
 | Network scope | `client-only` — Local to the client/UI/renderer. |
 | Derivation | `documented` |
 | Confidence | `high` |
-| Added | 2023-09-24 in [`a435f91de`](https://github.com/taysta/TaystJK/commit/a435f91de078325de74408f44053240448efe1b4) — [how to compare this against your build](/TaystJK/whats-new/#how-to-tell-what-your-build-has) |
+| Added | 2023-09-24 in [`a435f91de`](https://github.com/taysta/TaystJK/commit/a435f91de078325de74408f44053240448efe1b4) — [how to compare this against your build](/TaystJK/features/whats-new/#how-to-tell-what-your-build-has) |
 | In-game xdocs | No |
 | In-game menu | No |
 | Default | `0` |

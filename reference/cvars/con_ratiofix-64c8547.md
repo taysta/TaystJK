@@ -25,7 +25,7 @@ Correct console background height, should probably disable for custom console ba
 | Network scope | `client-only` — Local to the client/UI/renderer. |
 | Derivation | `documented` |
 | Confidence | `medium` |
-| Added | 2018-10-20 in [`952c06842`](https://github.com/taysta/TaystJK/commit/952c06842ed0717365fb37927585d6498e7a77a0) <span class="status-chip">needs review</span> — [how to compare this against your build](/TaystJK/whats-new/#how-to-tell-what-your-build-has) |
+| Added | 2018-10-20 in [`952c06842`](https://github.com/taysta/TaystJK/commit/952c06842ed0717365fb37927585d6498e7a77a0) <span class="status-chip">needs review</span> — [how to compare this against your build](/TaystJK/features/whats-new/#how-to-tell-what-your-build-has) |
 | In-game xdocs | No |
 | In-game menu | No |
 | Default | `1` |

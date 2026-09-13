@@ -23,7 +23,7 @@ Controls target-name display below the crosshair. Zero disables it, negative val
 | Network scope | `client-only` — Local to the client/UI/renderer. |
 | Derivation | `mixed` |
 | Confidence | `high` |
-| Added | 2013-04-08 in [`14cea1563`](https://github.com/taysta/TaystJK/commit/14cea1563762076974bee277afadbd5bf234c494) — [how to compare this against your build](/TaystJK/whats-new/#how-to-tell-what-your-build-has) |
+| Added | 2013-04-08 in [`14cea1563`](https://github.com/taysta/TaystJK/commit/14cea1563762076974bee277afadbd5bf234c494) — [how to compare this against your build](/TaystJK/features/whats-new/#how-to-tell-what-your-build-has) |
 | In-game xdocs | Yes — [codemp/ui/ui_xdocs.h:586](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/ui/ui_xdocs.h#L586) |
 | In-game menu | Yes — [setup.menu:2642](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/assets/japro/ui/jamp/setup.menu#L2642) |
 | Default | `1` |

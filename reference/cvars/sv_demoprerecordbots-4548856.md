@@ -22,7 +22,7 @@ Do demo pre-recording for bots as well
 | Network scope | `server-authoritative` — Owned or enforced by the server. |
 | Derivation | `documented` |
 | Confidence | `high` |
-| Added | 2024-01-14 in [`80bf35177`](https://github.com/taysta/TaystJK/commit/80bf35177f0a769bb51f61c65e3148a69997ed8a) — [how to compare this against your build](/TaystJK/whats-new/#how-to-tell-what-your-build-has) |
+| Added | 2024-01-14 in [`80bf35177`](https://github.com/taysta/TaystJK/commit/80bf35177f0a769bb51f61c65e3148a69997ed8a) — [how to compare this against your build](/TaystJK/features/whats-new/#how-to-tell-what-your-build-has) |
 | In-game xdocs | No |
 | In-game menu | No |
 | Default | `0` |

@@ -24,7 +24,7 @@ Runs `Svcmd_EntityInfo_f` in the game module.
 | Network scope | `needs-server-support` — Sent to, or only useful with, a supporting game server. |
 | Derivation | `code-trace` |
 | Confidence | `medium` |
-| Added | 2018-02-04 in [`675e97128`](https://github.com/taysta/TaystJK/commit/675e97128f486095bc24289cf0610badfd8130fd) <span class="status-chip">needs review</span> — [how to compare this against your build](/TaystJK/whats-new/#how-to-tell-what-your-build-has) |
+| Added | 2018-02-04 in [`675e97128`](https://github.com/taysta/TaystJK/commit/675e97128f486095bc24289cf0610badfd8130fd) <span class="status-chip">needs review</span> — [how to compare this against your build](/TaystJK/features/whats-new/#how-to-tell-what-your-build-has) |
 | In-game xdocs | No |
 | In-game menu | No |
 | Syntax | `entityinfo` |

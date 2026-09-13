@@ -25,7 +25,7 @@ Notifies you when someone connects to the server
 | Network scope | `client-only` — Local to the client/UI/renderer. |
 | Derivation | `documented` |
 | Confidence | `medium` |
-| Added | 2016-04-14 in [`8fff5e2c8`](https://github.com/taysta/TaystJK/commit/8fff5e2c8dc2a92e8070998bb28ded23ac644b27) <span class="status-chip">needs review</span> — [how to compare this against your build](/TaystJK/whats-new/#how-to-tell-what-your-build-has) |
+| Added | 2016-04-14 in [`8fff5e2c8`](https://github.com/taysta/TaystJK/commit/8fff5e2c8dc2a92e8070998bb28ded23ac644b27) <span class="status-chip">needs review</span> — [how to compare this against your build](/TaystJK/features/whats-new/#how-to-tell-what-your-build-has) |
 | In-game xdocs | No |
 | In-game menu | No |
 | Default | `0` |

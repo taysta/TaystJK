@@ -24,7 +24,7 @@ Runs `Cmd_ThrowNade_f` in the game module.
 | Network scope | `needs-server-support` — Sent to, or only useful with, a supporting game server. |
 | Derivation | `code-trace` |
 | Confidence | `high` |
-| Added | 2024-02-06 in [`7dce9a576`](https://github.com/taysta/TaystJK/commit/7dce9a5768238bbc22a004660c36c252c217701f) — [how to compare this against your build](/TaystJK/whats-new/#how-to-tell-what-your-build-has) |
+| Added | 2024-02-06 in [`7dce9a576`](https://github.com/taysta/TaystJK/commit/7dce9a5768238bbc22a004660c36c252c217701f) — [how to compare this against your build](/TaystJK/features/whats-new/#how-to-tell-what-your-build-has) |
 | In-game xdocs | No |
 | In-game menu | No |
 | Syntax | `thrownade` |

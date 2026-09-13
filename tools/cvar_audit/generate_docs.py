@@ -424,6 +424,8 @@ def emoji_page(ref: str, sha: str) -> tuple[str, list[str]]:
         )
     head = frontmatter(
         "Chat emoji",
+        9,
+        "Features",
         wide=True,
         description=(
             "Every chat emoji TaystJK ships, and the text you type to send each one."
@@ -449,7 +451,7 @@ pk3 you install can add more. `listEmojis` prints what your own client loaded.
     return head, warnings
 
 
-ADDED_ON_ANCHOR = "/TaystJK/whats-new/#how-to-tell-what-your-build-has"
+ADDED_ON_ANCHOR = "/TaystJK/features/whats-new/#how-to-tell-what-your-build-has"
 # Every claim here is read from source: the printf in CG_ModVersion_f, the
 # version cvar in codemp/qcommon/common.cpp, and the git describe/rev-parse
 # calls CMakeLists.txt uses to fill GIT_TAG and GIT_HASH.
@@ -601,6 +603,8 @@ def whats_new_page(entries: list[dict[str, Any]]) -> tuple[str, list[str], list[
     }
     head = frontmatter(
         "What's new",
+        1,
+        "Features",
         wide=True,
         description=(
             "Every cvar and console command TaystJK adds, grouped by topic and "
@@ -1470,16 +1474,16 @@ def main() -> None:
 
     write(Path("index.md"), home_page(cvars, commands))
     emoji, emoji_warnings = emoji_page(CURRENT_REF, cvars[0]["source_commit"])
-    write(Path("emoji.md"), emoji)
+    write(Path("features/emoji.md"), emoji)
     for warning in emoji_warnings:
         print(f"warning: {warning}")
     whats_new, hidden_from_whats_new, whats_new_warnings = whats_new_page(cvars + commands)
-    write(Path("whats-new.md"), whats_new)
+    write(Path("features/whats-new.md"), whats_new)
     for warning in whats_new_warnings:
         print(f"warning: {warning}")
     write(Path("reference.md"), frontmatter(
         "Console reference",
-        5,
+        6,
         wide=True,
         reference_app=True,
         description="Search and filter every cvar and console command available in TaystJK.",

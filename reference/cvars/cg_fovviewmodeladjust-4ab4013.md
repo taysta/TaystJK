@@ -24,7 +24,7 @@ Shifts viewmodels down above cg_fov 90
 | Network scope | `client-only` — Local to the client/UI/renderer. |
 | Derivation | `documented` |
 | Confidence | `medium` |
-| Added | 2013-08-04 in [`004c73dcf`](https://github.com/taysta/TaystJK/commit/004c73dcfeb386fb520067d21963db250e6bdd2d) <span class="status-chip">needs review</span> — [how to compare this against your build](/TaystJK/whats-new/#how-to-tell-what-your-build-has) |
+| Added | 2013-08-04 in [`004c73dcf`](https://github.com/taysta/TaystJK/commit/004c73dcfeb386fb520067d21963db250e6bdd2d) <span class="status-chip">needs review</span> — [how to compare this against your build](/TaystJK/features/whats-new/#how-to-tell-what-your-build-has) |
 | In-game xdocs | No |
 | In-game menu | No |
 | Default | `1` |

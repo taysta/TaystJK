@@ -19,7 +19,7 @@ The generated console reference does not follow this document — it is produced
 | `title` | string | yes | Quoted. Non-ASCII is escaped, e.g. `"TaystJK — one client"`. Appears in `<title>` as `{title} · TaystJK`. |
 | `layout` | string | yes | Always `reference`. `_config.yml` defaults supply it, but every page sets it explicitly. |
 | `description` | string | yes | One sentence. Drives `<meta name="description">`, listing cards, and search previews. |
-| `nav_order` | integer | top-level pages | Top nav order: index 1, install 2, server-hosting 3, development 4, reference 5. |
+| `nav_order` | integer | top-level pages | Top nav order: index 1, install 2, server-hosting 3, features 4, development 5, reference 6. |
 | `wide` | bool | no | `true` opts into the wider content column (`--wide`, 1180px). Used by index, development, reference. |
 | `reference_app` | bool | no | `reference.md` only. Adds `has-reference-app` to `<body>` and mounts the search app. |
 | `parent` | string | child pages | Just-the-Docs parent title. |
@@ -295,25 +295,25 @@ same stub file we would write by hand. That left a new build-time dependency, on
 with no local Jekyll build to catch a misconfiguration, in exchange for nothing. If the
 Features section later makes `redirect_from` natural, revisit this.
 
-> **TODO — destinations are provisional.** Each retired URL points at the closest page
-> that exists today, not at its eventual home. The `cvars/` and `commands/` listings go to
-> the generated console reference, which is what replaced them; `hardcoded-changes` goes to
-> the what's-new page, which is what it was describing. Revisit once the Features section is
-> built and point each at the specific page: shader-override and keybind content to
-> `features/client-behaviour.md`, the Vulkan stub to `features/renderers.md`, and each
-> `cvars/`/`commands/` URL to the feature page covering that topic.
+Destinations point at the Features page that covers each topic. Two entries route to the
+console reference instead, because no feature page covers demos or sound.
 
 | Retired URL | Destination |
 |:--|:--|
-| `/TaystJK/hardcoded-changes/` | `/TaystJK/whats-new/` |
-| `/TaystJK/cvars/crosshair/` | `/TaystJK/reference/` |
+| `/TaystJK/hardcoded-changes/` | `/TaystJK/features/client-behaviour/` |
+| `/TaystJK/cvars/crosshair/` | `/TaystJK/features/hud-and-movement/` |
+| `/TaystJK/cvars/hud/` | `/TaystJK/features/hud-and-movement/` |
+| `/TaystJK/cvars/strafe/` | `/TaystJK/features/hud-and-movement/` |
+| `/TaystJK/commands/strafe/` | `/TaystJK/features/hud-and-movement/` |
 | `/TaystJK/cvars/demos/` | `/TaystJK/reference/` |
-| `/TaystJK/cvars/hud/` | `/TaystJK/reference/` |
-| `/TaystJK/cvars/miscellanous/` | `/TaystJK/reference/` |
 | `/TaystJK/cvars/sound/` | `/TaystJK/reference/` |
-| `/TaystJK/cvars/strafe/` | `/TaystJK/reference/` |
+| `/TaystJK/cvars/miscellanous/` | `/TaystJK/reference/` |
 | `/TaystJK/commands/miscellaneous/` | `/TaystJK/reference/` |
-| `/TaystJK/commands/strafe/` | `/TaystJK/reference/` |
+| `/TaystJK/whats-new/` | `/TaystJK/features/whats-new/` |
+| `/TaystJK/emoji/` | `/TaystJK/features/emoji/` |
+
+The last two are not retired content: both pages are generated, and moved into the Features
+section when it was built. The old URLs were published in the interim, so they redirect.
 
 `/TaystJK/cvars/miscellanous/` keeps the original misspelling, because that is the URL
 that was published.

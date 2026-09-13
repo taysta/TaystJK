@@ -22,7 +22,7 @@ The fps to use while the server is in hibernation mode.
 | Network scope | `server-authoritative` — Owned or enforced by the server. |
 | Derivation | `documented` |
 | Confidence | `high` |
-| Added | 2018-10-14 in [`c648f59e6`](https://github.com/taysta/TaystJK/commit/c648f59e6b353f9755a4890a1e6f27abb2491cd1) — [how to compare this against your build](/TaystJK/whats-new/#how-to-tell-what-your-build-has) |
+| Added | 2018-10-14 in [`c648f59e6`](https://github.com/taysta/TaystJK/commit/c648f59e6b353f9755a4890a1e6f27abb2491cd1) — [how to compare this against your build](/TaystJK/features/whats-new/#how-to-tell-what-your-build-has) |
 | In-game xdocs | No |
 | In-game menu | No |
 | Default | `2` |

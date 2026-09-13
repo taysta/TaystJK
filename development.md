@@ -1,7 +1,7 @@
 ---
 title: "Development"
 layout: reference
-nav_order: 4
+nav_order: 5
 wide: true
 description: "Build, debug, and understand the TaystJK codebase."
 ---

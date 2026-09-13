@@ -24,7 +24,7 @@ File to use to store bans and exceptions
 | Network scope | `server-authoritative` — Owned or enforced by the server. |
 | Derivation | `documented` |
 | Confidence | `medium` |
-| Added | 2014-08-16 in [`73e537fde`](https://github.com/taysta/TaystJK/commit/73e537fdea2620522dc7068f29cbd95fa113e13b) <span class="status-chip">needs review</span> — [how to compare this against your build](/TaystJK/whats-new/#how-to-tell-what-your-build-has) |
+| Added | 2014-08-16 in [`73e537fde`](https://github.com/taysta/TaystJK/commit/73e537fdea2620522dc7068f29cbd95fa113e13b) <span class="status-chip">needs review</span> — [how to compare this against your build](/TaystJK/features/whats-new/#how-to-tell-what-your-build-has) |
 | In-game xdocs | No |
 | In-game menu | No |
 | Default | `serverbans.dat` |

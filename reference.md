@@ -1,7 +1,7 @@
 ---
 title: "Console reference"
 layout: reference
-nav_order: 5
+nav_order: 6
 wide: true
 reference_app: true
 description: "Search and filter every cvar and console command available in TaystJK."

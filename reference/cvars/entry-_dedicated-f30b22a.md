@@ -24,7 +24,7 @@ Controls `com_dedicated` in the engine-shared module. Consult the cited behavior
 | Network scope | `client-only` — Local to the client/UI/renderer. |
 | Derivation | `code-trace` |
 | Confidence | `medium` |
-| Added | 2013-05-11 in [`f203e799b`](https://github.com/taysta/TaystJK/commit/f203e799b14c0716833793eed611c272111c3cb6) <span class="status-chip">needs review</span> — [how to compare this against your build](/TaystJK/whats-new/#how-to-tell-what-your-build-has) |
+| Added | 2013-05-11 in [`f203e799b`](https://github.com/taysta/TaystJK/commit/f203e799b14c0716833793eed611c272111c3cb6) <span class="status-chip">needs review</span> — [how to compare this against your build](/TaystJK/features/whats-new/#how-to-tell-what-your-build-has) |
 | In-game xdocs | No |
 | In-game menu | No |
 | Default | `0` |

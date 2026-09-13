@@ -24,7 +24,7 @@ Controls `r_marksOnTriangleMeshes` in the renderer module. Consult the cited beh
 | Network scope | `client-only` — Local to the client/UI/renderer. |
 | Derivation | `code-trace` |
 | Confidence | `medium` |
-| Added | 2014-03-18 in [`b858635e7`](https://github.com/taysta/TaystJK/commit/b858635e72986ef57c393eaf4e5c1cf4a07f9ca2) <span class="status-chip">needs review</span> — [how to compare this against your build](/TaystJK/whats-new/#how-to-tell-what-your-build-has) |
+| Added | 2014-03-18 in [`b858635e7`](https://github.com/taysta/TaystJK/commit/b858635e72986ef57c393eaf4e5c1cf4a07f9ca2) <span class="status-chip">needs review</span> — [how to compare this against your build](/TaystJK/features/whats-new/#how-to-tell-what-your-build-has) |
 | In-game xdocs | No |
 | In-game menu | No |
 | Default | `0` |

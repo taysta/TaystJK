@@ -24,7 +24,7 @@ Controls `g_newVehicleDamageScale` in the game module. Consult the cited behavio
 | Network scope | `server-authoritative` — Owned or enforced by the server. |
 | Derivation | `code-trace` |
 | Confidence | `high` |
-| Added | 2023-12-28 in [`3567d72d9`](https://github.com/taysta/TaystJK/commit/3567d72d98c5b41549e76ef6e4841bb14c318fba) — [how to compare this against your build](/TaystJK/whats-new/#how-to-tell-what-your-build-has) |
+| Added | 2023-12-28 in [`3567d72d9`](https://github.com/taysta/TaystJK/commit/3567d72d98c5b41549e76ef6e4841bb14c318fba) — [how to compare this against your build](/TaystJK/features/whats-new/#how-to-tell-what-your-build-has) |
 | In-game xdocs | No |
 | In-game menu | No |
 | Default | `0` |

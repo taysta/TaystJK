@@ -24,7 +24,7 @@ Controls `com_maxfpsMinimized` in the engine-shared module. Consult the cited be
 | Network scope | `client-only` — Local to the client/UI/renderer. |
 | Derivation | `code-trace` |
 | Confidence | `high` |
-| Added | 2016-03-21 in [`f5defc782`](https://github.com/taysta/TaystJK/commit/f5defc782a901c885afbd5d8f1c3cb23072583dc) — [how to compare this against your build](/TaystJK/whats-new/#how-to-tell-what-your-build-has) |
+| Added | 2016-03-21 in [`f5defc782`](https://github.com/taysta/TaystJK/commit/f5defc782a901c885afbd5d8f1c3cb23072583dc) — [how to compare this against your build](/TaystJK/features/whats-new/#how-to-tell-what-your-build-has) |
 | In-game xdocs | No |
 | In-game menu | No |
 | Default | `50` |

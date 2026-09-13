@@ -25,7 +25,7 @@ Runs `SV_MigrateCheckpoints_f` in the game module.
 | Network scope | `needs-server-support` — Sent to, or only useful with, a supporting game server. |
 | Derivation | `code-trace` |
 | Confidence | `high` |
-| Added | 2026-07-30 in [`8294d8bc3`](https://github.com/taysta/TaystJK/commit/8294d8bc33182b19e70ebd87d4dd482917e46ca5) — [how to compare this against your build](/TaystJK/whats-new/#how-to-tell-what-your-build-has) |
+| Added | 2026-07-30 in [`8294d8bc3`](https://github.com/taysta/TaystJK/commit/8294d8bc33182b19e70ebd87d4dd482917e46ca5) — [how to compare this against your build](/TaystJK/features/whats-new/#how-to-tell-what-your-build-has) |
 | In-game xdocs | No |
 | In-game menu | No |
 | Syntax | `migrateCheckpoints` |
