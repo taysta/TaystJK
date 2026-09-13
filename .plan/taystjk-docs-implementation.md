@@ -267,7 +267,13 @@ treated as an announcement.]
    documentation. They are not — the jaPRO ones came downstream with the gamecode. The wiki
    is canonical and cites them as external sources; see "master's `docs/` folder is a source
    to cite" in `CONVENTIONS.md`.
-6. Regenerate the reference as part of the release workflow.
+6. ~~Regenerate the reference as part of the release workflow.~~ **Not possible as written
+   [2026-09-13].** Regeneration needs eight upstream remote-tracking refs, GitHub PR
+   metadata passed by hand, and a runtime capture from a launched client — none of it
+   available to a runner. Done as the achievable half instead: `reference-check.yml` on
+   `master` also runs on `release: published`, so a stale reference is reported on release
+   day rather than up to a week later. Regenerating stays a person's job, and the workflow
+   header says so.
 
 **Acceptance:** a new cvar merged to `master` produces a visible signal within a week without
 anyone touching `gh-pages`. [Met once `weekly-reference-check.yml` is merged to `master` —
