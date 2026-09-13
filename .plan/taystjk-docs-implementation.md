@@ -175,7 +175,9 @@ Order, hardest evidence first:
 4. HUD and movement tools — killfeed, team overlays, SnapHUD, PitchHUD, strafe helper,
    speedometer, movement keys, score and status placement.
 5. Movement styles — all nineteen `MV_*` entries from `codemp/game/bg_public.h:562-585`,
-   WSW described as a CPM-family Warsow style, not as part of Tribes.
+   one table row each. WSW is an ordinary CPM-family Warsow style and gets a row like the
+   rest; the "not part of Tribes" point is a filing note for whoever writes the page, not
+   page content. [2026-09-13: it was published as an argument and has been removed.]
 6. Tribes — its own page, `status: experimental`.
 7. Shipped configs — the fourteen `.cfg` files under `assets/japro/`.
 8. Platform support matrix, builds and versioning, emoji index body text.
@@ -187,7 +189,11 @@ restates a cvar table the reference already generates — it links instead.
 
 ## Phase 5 — Task and troubleshooting content
 
-Sourced from the issue tracker. Each page names the issues it resolves so they can be closed.
+Use the issue tracker to decide *which* problems are worth a page — the ones that recur.
+Do not cite issue or PR numbers in the pages themselves; see "Do not cite issue or PR
+numbers" in `CONVENTIONS.md`. The numbers below are the evidence for writing each entry,
+not something to reproduce on the site. An entry is finished when it would still read
+correctly after every issue behind it is closed.
 
 1. Troubleshooting hub: server not in the list (#215, #294), updating a build on macOS
    (#261, #355, #343), multiple mods in one GameData (#269, #275), Linux audio (#245, #246).
@@ -203,8 +209,8 @@ Sourced from the issue tracker. Each page names the issues it resolves so they c
    build-from-source pointer for reporters.
 7. Glossary and attribution pages.
 
-**Acceptance:** #331 and #332 closable; every troubleshooting entry names the symptom a user
-would actually search for, not the internal cause.
+**Acceptance:** every troubleshooting entry names the symptom a user would actually search
+for, not the internal cause, and carries no issue or PR citation.
 
 ---
 
