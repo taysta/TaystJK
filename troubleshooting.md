@@ -53,9 +53,6 @@ Keep your settings in a file of your own and load it explicitly:
 Your file is then the source of truth and the generated config is just a dump. Do not edit
 the generated one. See [Server hosting](/TaystJK/server-hosting/).
 
-This is what [#294](https://github.com/taysta/TaystJK/issues/294) turned out to be, and `+exec server.cfg` is how it was
-resolved.
-
 ## The game will not open on macOS after an update
 
 macOS re-applies the quarantine attribute to every fresh download, so an update quarantines
@@ -66,16 +63,13 @@ Clearing the attribute is covered step by step on the
 [install page](/TaystJK/install/) — follow it there rather than copying a command from
 memory, because the guidance about when `sudo` is and is not appropriate matters.
 
-[#261](https://github.com/taysta/TaystJK/issues/261) is this, including the detail that catches people out: replacing a build
-that already ran quarantines the new copy, so an install that worked yesterday can fail
-today. Approving the app in System Settings is not a substitute for clearing the attribute.
+Approving the app in System Settings is not a substitute for clearing the attribute, and
+this is why an install that worked yesterday can fail today: it is the *replacement* that
+is quarantined, not your original install.
 
-## "Failed loading SDL3 library" on macOS
-
-**Fixed — update your build.** A run of builds shipped a broken sdl2-compat and would not
-start at all on macOS ([#355](https://github.com/taysta/TaystJK/issues/355)). It was a packaging fault rather than anything on
-your machine, and a later build fixed it. If you are stuck on an affected build, take a
-newer one rather than copying dylibs between installations.
+If the client instead fails naming a library it could not load, that is not quarantine.
+Take a current build first — that class of fault has been a packaging problem more than
+once — and if a current build still does it, report it.
 
 ## The client crashes when joining a modded server
 
@@ -90,42 +84,28 @@ in `GameData` and the client will try to use it.
 What you see is a crash or an immediate disconnect on joining a server that sets `fs_game`
 to that directory, while everything else works. Either install the matching build of the
 mod, or remove the stale mod directory. The [install guide](/TaystJK/install/) covers
-keeping TaystJK separate from an older installation.
-
-[#275](https://github.com/taysta/TaystJK/issues/275) is exactly this: a 32-bit JA+ `ui` library and a 64-bit client. Run the
-32-bit build if you want that mod's client-side pieces.
+keeping TaystJK separate from an older installation. The common case is a 32-bit JA+ `ui`
+library against a 64-bit client: run the 32-bit build if you want that mod's client-side
+pieces.
 
 **If the architecture already matches and it still crashes**, the mod is probably built
-against the older module API — JA++ is
-([#269](https://github.com/taysta/TaystJK/issues/269)). The giveaway is that the client dies on the first console command you
-type. `vm_legacy` forces the legacy API, as a bitmask over the three modules: 1 game,
-2 cgame, 4 ui ([`vm.cpp`](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/qcommon/vm.cpp#L153)).
+against the older module API. The giveaway is that the client dies on the first console
+command you type. The fix is `vm_legacy`, set on the command line before the modules load;
+the install guide explains which bits to use for which module in
+[when to use `vm_legacy`](/TaystJK/install/#when-to-use-vm_legacy). Nothing detects this for
+you.
 
-```text
-+set fs_forceGame japlus +set vm_legacy 7
-```
-
-7 is all three, which is what closed that report. Nothing detects this for you; you have to
-set it before joining.
-
-A third cause is the mod's own assets rather than its code — one mod crashed 32-bit clients
-on load with an 8192×8192 font PNG. If a single mod fails everywhere and others are fine,
-that belongs with the mod's author; see [where to report](/TaystJK/where-to-report/).
+A third cause is the mod's own assets rather than its code — an oversized texture can
+exhaust a 32-bit client's memory while loading. If a single mod fails everywhere and others
+are fine, that belongs with the mod's author; see
+[where to report](/TaystJK/where-to-report/).
 
 ## No saber hum, or sound distances are wrong, on Linux
 
-**Fixed — update your build.** These were one regression, not two. A change that let
-non-Windows builds use OpenAL
-([`94513af80`](https://github.com/taysta/TaystJK/commit/94513af801211c817ed5607e7e3a49b49065189d))
-removed saber hum ([#245](https://github.com/taysta/TaystJK/issues/245)) and made every
-sound play at full volume regardless of distance
-([#246](https://github.com/taysta/TaystJK/issues/246)). Both reports point at the same
-commit.
+Update your build before anything else. Both symptoms have been caused by the same
+regression in how non-Windows builds select their audio path, and that was reverted — so on
+a current build this should be gone.
 
-It was reverted in [#247](https://github.com/taysta/TaystJK/pull/247) and the reporter
-confirmed both symptoms were gone. Any build from after that revert is fine.
-
-If you are seeing this on a current build, it is something new rather than these reports —
-say which build, and check the SDL audio driver the client names at startup
+If a current build still does it, it is something new. Say which build, and check the SDL
+audio driver the client names at startup
 ([`sdl_sound.cpp`](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/shared/sdl/sdl_sound.cpp#L189)).
-

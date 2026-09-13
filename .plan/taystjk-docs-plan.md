@@ -41,7 +41,7 @@ Features         NEW — the "hardcoded changes" replacement
   ├─ Cosmetics                  (command, adding new ones, custom offsets)
   ├─ HUD and movement tools     (killfeed, overlays, strafe helper, SnapHUD, PitchHUD)
   ├─ Renderers                  (what each backend is for, switching, differences)
-  ├─ Movement modes             (jaPRO styles, Tribes/WSW, physics notes)
+  ├─ Movement modes             (the 19 jaPRO styles; Tribes gets its own page)
   └─ Shipped configs and assets (presets that ship in the release)
 Develop          (unchanged + new pages below)
   ├─ Documentation system       (how the reference is generated, how to add a page)
@@ -94,7 +94,14 @@ Counts in brackets are related commits found in the fork delta.
 - Documentable differences: rend2 memory pressure on 32-bit (already in Install), Vulkan
   is maintained downstream by JKSunny (report bugs there), bloom path is Vulkan/FBO,
   `.oshader` support is in all three.
-- Known instability worth naming: renderer switching crashes (#363, #73, #107).
+- Known instability worth naming: #363, crash when switching away from Vulkan, still open.
+  [Corrected 2026-09-13: #73 and #107 are not switching crashes. Both are Vulkan rendering
+  faults that were routed to JKSunny/EternalJK. #343, a macOS `vid_restart` freeze, was
+  fixed by #367 — the commit this reference is pinned to.]
+  [2026-09-13: issue numbers in this file are a guide to which problems recur and are worth
+  a page. They are not citations — none of them belongs on the site. See "Do not cite issue
+  or PR numbers" in `CONVENTIONS.md`. Several were published as citations and have been
+  removed.]
 
 ### 2.4 HUD and movement tools
 
@@ -125,20 +132,30 @@ Counts in brackets are related commits found in the fork delta.
   HUD keybind prompt, shots-remaining display, single-fire/select-fire mode, mortar
   projectile effects, midair/frag sounds, `japro_tribes.cfg` and `japro_tribes_server.cfg`.
   Experimental — few players have used it.
-- **WSW is not part of Tribes.** `MV_WSW` is a separate Warsow-inspired strafe style in the
-  CPM family (shares double-jump handling with CPM/RJCPM/SLICK/BOTCPM, own
-  `pm_wsw_accelerate` 12.0 and `pm_wsw_duckScale` 0.3125, rampjump weakened because it has
-  no speedloss). It belongs on the movement styles page with the other eighteen. The only
-  overlap with Tribes is the dash button (`BUTTON_DASH` / `STAT_DASHTIME`), which Tribes
-  also gates its slick-friction path on.
+- **Filing note, done — do not write this up as page content.** `MV_WSW` is a separate
+  Warsow-inspired strafe style in the CPM family, not part of Tribes; the only overlap is
+  the dash button (`BUTTON_DASH` / `STAT_DASHTIME`), which Tribes also gates its
+  slick-friction path on. This corrects the nav sketch in section 1, which had grouped
+  "Tribes/WSW". It says where the style goes — one row in the movement styles table with
+  the other eighteen — and nothing more.
+  [2026-09-13: this was published as a section titled "WSW is a CPM-family style, not part
+  of Tribes", which argued against a misconception only this document held and gave one of
+  nineteen styles a whole H2. Removed. The style's behaviour now sits in its table row,
+  taken from the maintainer's own `Defrag Mapping Guide.md` line like every other row.
+  General lesson for the rest of this file: a note here saying "X is not Y" is usually an
+  instruction about where content goes, not a claim the reader needs to see rebutted.]
 - Knockback prediction for racemode; Lugormod jump prediction (lumayaa).
 
 ### 2.6 Console, binds, client behaviour
 
 - Modifier binds (`ctrl+x`), separate `rctrl`/`ralt`/`rshift`, nested quotes — from the old
   hardcoded-changes page, still accurate, currently homeless.
-- `waitf`, `delay`, `ifCvar`, `strSub` from NewMod; music commands (Windows only — worth
-  stating).
+- `waitf`, `delay`, `ifCvar`, `strSub` from NewMod.
+  [Corrected 2026-09-13: this line also claimed music commands were Windows-only. They are
+  not. `music`, `stopmusic`, `soundlist`, `soundstop` and `s_dynamic` are registered
+  unconditionally in `S_Init` (`codemp/client/snd_dma.cpp:492-499`). The only `_WIN32` guard
+  nearby is `timeGetTime` for lip-sync timing, which is a different subject and is worth
+  checking on its own: outside Windows that clock is hardcoded to 0 behind a FIXME.]
 - `con_datetime`, `con_height`, `cl_exitCommand`, `cl_chatBubbleUnfocused`,
   `cl_chatBubbleSelf`, `cl_filterGames`, `slot` / `slotnext` / `slotprev`.
 - Chat emojis — shipped emoji set under `assets/japro/gfx/emoji/`, buffer raised to 8 KB
@@ -323,4 +340,5 @@ Recommend the collection, with an Atom feed so it can be syndicated to Discord.
    most readers want and is roughly four times the content.
 2. Does `docs/` in `master` stay, move, or get mirrored?
 3. Generate the "What's new" page from reference data, or keep it hand-written?
-4. Is the Tribes/WSW mode considered a supported, documented feature or still experimental?
+4. Is Tribes considered a supported, documented feature or still experimental? (WSW is not
+   part of this question — it is an ordinary movement style; see section 2.5.)

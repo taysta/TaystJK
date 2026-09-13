@@ -162,6 +162,21 @@ way that line-numbered `blob` links on a moving branch do not.
 If you cannot verify a claim against source, write a visible `TODO` rather than a
 plausible sentence.
 
+### Do not cite issue or PR numbers
+
+The tracker is the live record of what is broken and what was fixed; these pages are not a
+mirror of it. A wiki page that says "#343 is fixed in #367" is stale the moment either
+changes, and an open issue named here is a promise the page cannot keep.
+
+Read the tracker freely — it is the best guide to which problems actually recur, and which
+ones are worth a page at all. Then write the problem, not the report: the symptom a reader
+would recognise, the cause, and what to do about it, in terms that stay true after the
+issue is closed. A fault that is fixed does not need its history retold; "update your build
+first" carries the whole of it.
+
+Linking <https://github.com/taysta/TaystJK/issues> as somewhere to *file* a report is fine.
+Citing individual numbers is not.
+
 ## 7. Terminology
 
 Use these consistently.
