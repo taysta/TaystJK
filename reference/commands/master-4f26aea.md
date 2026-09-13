@@ -24,6 +24,7 @@ Forwards this command to the connected game server.
 | Network scope | `needs-server-support` — Sent to, or only useful with, a supporting game server. |
 | Derivation | `documented` |
 | Confidence | `high` |
+| Added | 2018-09-26 in [`50d84d540`](https://github.com/taysta/TaystJK/commit/50d84d54083775a21c419d4f1d511e755eb63e65) — [how to compare this against your build](/TaystJK/whats-new/#how-to-tell-what-your-build-has) |
 | In-game xdocs | No |
 | In-game menu | No |
 | Syntax | `master <name (or none)>` |

@@ -22,6 +22,7 @@ Server gametype value
 | Network scope | `server-authoritative` — Owned or enforced by the server. |
 | Derivation | `documented` |
 | Confidence | `high` |
+| Added | 2013-04-08 in [`14cea1563`](https://github.com/taysta/TaystJK/commit/14cea1563762076974bee277afadbd5bf234c494) — [how to compare this against your build](/TaystJK/whats-new/#how-to-tell-what-your-build-has) |
 | In-game xdocs | Yes — [codemp/ui/ui_xdocs.h:511](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/ui/ui_xdocs.h#L511) |
 | In-game menu | Yes — [ingame.menu:229](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/assets/japro/ui/jamp/ingame.menu#L229), [ingame.menu:274](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/assets/japro/ui/jamp/ingame.menu#L274), [ingame.menu:320](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/assets/japro/ui/jamp/ingame.menu#L320) |
 | Default | `0` |

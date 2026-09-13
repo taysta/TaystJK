@@ -25,6 +25,7 @@ Controls `ui_browserShowPasswordProtected` in the ui module. Consult the cited b
 | Network scope | `client-only` — Local to the client/UI/renderer. |
 | Derivation | `code-trace` |
 | Confidence | `medium` |
+| Added | 2013-09-28 in [`8fdb5fb65`](https://github.com/taysta/TaystJK/commit/8fdb5fb65dbe118ba0208194e9cf42ace7d6a6dd) <span class="status-chip">needs review</span> — [how to compare this against your build](/TaystJK/whats-new/#how-to-tell-what-your-build-has) |
 | In-game xdocs | No |
 | In-game menu | No |
 | Default | `1` |

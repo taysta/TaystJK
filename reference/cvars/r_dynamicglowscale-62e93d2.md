@@ -24,6 +24,7 @@ Controls `r_DynamicGlowScale` in the renderer module. Consult the cited behavior
 | Network scope | `client-only` — Local to the client/UI/renderer. |
 | Derivation | `code-trace` |
 | Confidence | `medium` |
+| Added | 2018-03-29 in [`f768a9d0b`](https://github.com/taysta/TaystJK/commit/f768a9d0b3b10086974b9c9a01b620549d13915e) <span class="status-chip">needs review</span> — [how to compare this against your build](/TaystJK/whats-new/#how-to-tell-what-your-build-has) |
 | In-game xdocs | No |
 | In-game menu | No |
 | Default | `0.25` |

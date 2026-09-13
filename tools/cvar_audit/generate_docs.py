@@ -320,16 +320,62 @@ def declared_features(root: Path = Path(".")) -> list[dict[str, Any]]:
     return features
 
 
-def added_on_cell(entry: dict[str, Any]) -> str:
-    """Availability marker for an entry.
+ADDED_ON_ANCHOR = "/TaystJK/whats-new/#how-to-tell-what-your-build-has"
+# Every claim here is read from source: the printf in CG_ModVersion_f, the
+# version cvar in codemp/qcommon/common.cpp, and the git describe/rev-parse
+# calls CMakeLists.txt uses to fill GIT_TAG and GIT_HASH.
+ADDED_ON_NOTE = """## How to tell what your build has
 
-    INSERTION POINT (Prompt 2.3): `added_on` is not emitted into the reference
-    data yet.  Once build_reference derives it from origin.first_commit this
-    renders automatically here and anywhere else the helper is used; nothing
-    below needs changing.
-    """
+Availability here is a date, because TaystJK has no release versioning. The download is a
+rolling release and a build identifies itself by when it was compiled.
+
+- `version` prints the engine build and ends with the date it was compiled.
+- `modversion` prints the game module's compile date and time, followed by a
+  `tag-hash` identifier.
+
+**Compare the date.** If your build is older than the date on an entry, your build does not
+have it.
+
+Two things that identifier will not tell you. The hash is not ordered: two short hashes
+cannot be ranked against each other, so comparing them says nothing about which is newer.
+And the tag in front of it is only the nearest Git tag reachable from the commit the build
+was made at, not a release number — on current sources it reads
+`latest-actions-autorelease-update`, while the download itself is published under `latest`.
+
+A date marked *needs review* rests on an attribution that could not be proven exactly. The
+entry is real; treat the date as approximate.
+"""
+
+
+def added_on_cell(entry: dict[str, Any]) -> str:
+    """Short availability marker for a list row."""
     value = entry.get("added_on")
-    return f' <span class="meta-chip">{esc(value)}</span>' if value else ""
+    if not value:
+        return ""
+    if isinstance(value, str):  # hand-written front matter supplies a plain string
+        return f' <span class="meta-chip">{esc(value)}</span>'
+    chip = "meta-chip" if value.get("certain") else "status-chip"
+    suffix = "" if value.get("certain") else " · needs review"
+    return f' <span class="{chip}">{esc(value["date"])}{suffix}</span>'
+
+
+def added_on_row(entry: dict[str, Any]) -> str | None:
+    """The `Added` row for an entry's detail table."""
+    value = entry.get("added_on")
+    if not isinstance(value, dict):
+        return None
+    commit = (
+        f'[{code(value["short"])}]'
+        f'(https://github.com/taysta/TaystJK/commit/{esc(value["commit"])})'
+    )
+    caveat = (
+        "" if value.get("certain")
+        else ' <span class="status-chip">needs review</span>'
+    )
+    return (
+        f'| Added | {esc(value["date"])} in {commit}{caveat} '
+        f'— [how to compare this against your build]({ADDED_ON_ANCHOR}) |'
+    )
 
 
 def feature_row(feature: dict[str, Any]) -> str:
@@ -443,6 +489,8 @@ def whats_new_page(entries: list[dict[str, Any]]) -> tuple[str, list[str], list[
 
 {generated_from(entries[0]["source_commit"])}
 </div>
+
+{ADDED_ON_NOTE}
 
 <section class="baseline-guide" data-baseline-guide>
   <div class="baseline-selector-shell platform-selector-shell">
@@ -717,6 +765,7 @@ def detail_page(entry: dict[str, Any], refs: dict[str, str]) -> str:
         f"| Network scope | {code(entry['network'])} — {NETWORK_HELP.get(entry['network'], '')} |",
         f"| Derivation | {code(entry['derivation'])} |",
         f"| Confidence | {code(entry['confidence'])} |",
+        *( [added_on_row(entry)] if added_on_row(entry) else [] ),
     ])
     xdocs = entry.get("xdocs")
     if xdocs:

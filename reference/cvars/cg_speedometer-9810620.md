@@ -23,6 +23,7 @@ Configure with the /speedometer command
 | Network scope | `client-only` — Local to the client/UI/renderer. |
 | Derivation | `documented` |
 | Confidence | `high` |
+| Added | 2018-11-04 in [`ead7c2c37`](https://github.com/taysta/TaystJK/commit/ead7c2c37109a313e0f3994b832e627636e0fa06) — [how to compare this against your build](/TaystJK/whats-new/#how-to-tell-what-your-build-has) |
 | In-game xdocs | Yes — [codemp/ui/ui_xdocs.h:107](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/ui/ui_xdocs.h#L107) |
 | In-game menu | Yes — [ingame_setup.menu:3998](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/assets/japro/ui/jamp/ingame_setup.menu#L3998) |
 | Default | `0` |

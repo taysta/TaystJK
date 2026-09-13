@@ -24,6 +24,7 @@ Controls `ui_isJAPro` in the ui module. Consult the cited behavior reads before 
 | Network scope | `client-only` — Local to the client/UI/renderer. |
 | Derivation | `code-trace` |
 | Confidence | `medium` |
+| Added | 2018-02-05 in [`f4405327b`](https://github.com/taysta/TaystJK/commit/f4405327b9363ad0b91cd0ae1717fe9ed939982b) <span class="status-chip">needs review</span> — [how to compare this against your build](/TaystJK/whats-new/#how-to-tell-what-your-build-has) |
 | In-game xdocs | No |
 | In-game menu | Yes — [ingame.menu:584](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/assets/japro/ui/jamp/ingame.menu#L584), [ingame.menu:618](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/assets/japro/ui/jamp/ingame.menu#L618), [ingame_setup.menu:4508](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/assets/japro/ui/jamp/ingame_setup.menu#L4508) |
 | Default | `0` |

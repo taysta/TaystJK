@@ -25,6 +25,7 @@ Controls `cg_pitchHudAngle` in the cgame module. Consult the cited behavior read
 | Network scope | `client-only` — Local to the client/UI/renderer. |
 | Derivation | `code-trace` |
 | Confidence | `high` |
+| Added | 2024-03-02 in [`1d4c081cb`](https://github.com/taysta/TaystJK/commit/1d4c081cb7621bf86ee9e3d1a523df56cf2992d1) — [how to compare this against your build](/TaystJK/whats-new/#how-to-tell-what-your-build-has) |
 | In-game xdocs | No |
 | In-game menu | No |
 | Default | `` |

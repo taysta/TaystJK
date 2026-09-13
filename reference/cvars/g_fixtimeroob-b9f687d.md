@@ -24,6 +24,7 @@ Controls `g_fixTimerOOB` in the game module. Consult the cited behavior reads be
 | Network scope | `server-authoritative` — Owned or enforced by the server. |
 | Derivation | `code-trace` |
 | Confidence | `medium` |
+| Added | 2020-05-15 in [`0bfdb71ae`](https://github.com/taysta/TaystJK/commit/0bfdb71aee77ef4f66a7dbd4ec968946ac230e8d) <span class="status-chip">needs review</span> — [how to compare this against your build](/TaystJK/whats-new/#how-to-tell-what-your-build-has) |
 | In-game xdocs | No |
 | In-game menu | No |
 | Default | `0` |

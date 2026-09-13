@@ -23,6 +23,7 @@ Scale console font relative to it's original size.
 | Network scope | `client-only` — Local to the client/UI/renderer. |
 | Derivation | `documented` |
 | Confidence | `high` |
+| Added | 2018-02-05 in [`135f10928`](https://github.com/taysta/TaystJK/commit/135f109285cbe2e07bbfd4ef2dbe0ef5b492af1a) — [how to compare this against your build](/TaystJK/whats-new/#how-to-tell-what-your-build-has) |
 | In-game xdocs | No |
 | In-game menu | No |
 | Default | `1.0` |

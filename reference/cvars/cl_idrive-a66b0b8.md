@@ -24,6 +24,7 @@ Controls `cl_idrive` in the engine-client module. Consult the cited behavior rea
 | Network scope | `client-only` — Local to the client/UI/renderer. |
 | Derivation | `code-trace` |
 | Confidence | `high` |
+| Added | 2017-12-04 in [`e0d7a341b`](https://github.com/taysta/TaystJK/commit/e0d7a341bc6c9a68a359941a4065e9c6b408305a) — [how to compare this against your build](/TaystJK/whats-new/#how-to-tell-what-your-build-has) |
 | In-game xdocs | No |
 | In-game menu | No |
 | Default | `0` |

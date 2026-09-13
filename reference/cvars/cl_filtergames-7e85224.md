@@ -22,6 +22,7 @@ List of fs_game to filter (space separated)
 | Network scope | `client-only` — Local to the client/UI/renderer. |
 | Derivation | `documented` |
 | Confidence | `high` |
+| Added | 2023-11-28 in [`47e33dfb6`](https://github.com/taysta/TaystJK/commit/47e33dfb6fd55a1ae75888b7a33f056a8aba91ae) — [how to compare this against your build](/TaystJK/whats-new/#how-to-tell-what-your-build-has) |
 | In-game xdocs | No |
 | In-game menu | No |
 | Default | `MBII MBIIOpenBeta` |

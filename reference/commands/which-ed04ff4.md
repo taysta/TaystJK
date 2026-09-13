@@ -24,6 +24,7 @@ Determines which search path a file was loaded from
 | Network scope | `client-only` — Local to the client/UI/renderer. |
 | Derivation | `documented` |
 | Confidence | `medium` |
+| Added | 2013-12-23 in [`924f4bc4f`](https://github.com/taysta/TaystJK/commit/924f4bc4fbf3bbb84b6347d594d3f5daf475accb) <span class="status-chip">needs review</span> — [how to compare this against your build](/TaystJK/whats-new/#how-to-tell-what-your-build-has) |
 | In-game xdocs | No |
 | In-game menu | Yes — [ingame_setup.menu:4192](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/assets/japro/ui/jamp/ingame_setup.menu#L4192) |
 | Syntax | `which <file>` |

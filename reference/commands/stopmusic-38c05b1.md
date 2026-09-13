@@ -24,6 +24,7 @@ Stops all music
 | Network scope | `client-only` — Local to the client/UI/renderer. |
 | Derivation | `documented` |
 | Confidence | `medium` |
+| Added | 2014-08-16 in [`6af6b30a2`](https://github.com/taysta/TaystJK/commit/6af6b30a26589bf375b01c5d1e1a0490fb3c9074) <span class="status-chip">needs review</span> — [how to compare this against your build](/TaystJK/whats-new/#how-to-tell-what-your-build-has) |
 | In-game xdocs | No |
 | In-game menu | No |
 | Syntax | `stopmusic` |

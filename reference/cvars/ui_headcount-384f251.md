@@ -24,6 +24,7 @@ Controls `ui_headCount` in the ui module. Consult the cited behavior reads befor
 | Network scope | `client-only` — Local to the client/UI/renderer. |
 | Derivation | `code-trace` |
 | Confidence | `medium` |
+| Added | 2019-03-18 in [`0b9f190a7`](https://github.com/taysta/TaystJK/commit/0b9f190a7a4b85682fcc0f1ff0d15e5a153e1180) <span class="status-chip">needs review</span> — [how to compare this against your build](/TaystJK/whats-new/#how-to-tell-what-your-build-has) |
 | In-game xdocs | No |
 | In-game menu | No |
 | Default | `-1` |

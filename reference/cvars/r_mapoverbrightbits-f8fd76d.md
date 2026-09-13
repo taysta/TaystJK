@@ -24,6 +24,7 @@ Controls `r_mapOverBrightBits` in the renderer module. Consult the cited behavio
 | Network scope | `client-only` — Local to the client/UI/renderer. |
 | Derivation | `code-trace` |
 | Confidence | `medium` |
+| Added | 2013-04-16 in [`cefb950a8`](https://github.com/taysta/TaystJK/commit/cefb950a82f7161ea280010aaebc9ab8bce17003) <span class="status-chip">needs review</span> — [how to compare this against your build](/TaystJK/whats-new/#how-to-tell-what-your-build-has) |
 | In-game xdocs | No |
 | In-game menu | No |
 | Default | `0` |

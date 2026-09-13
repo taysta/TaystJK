@@ -24,6 +24,7 @@ Kick a user from the server by userid
 | Network scope | `server-authoritative` — Owned or enforced by the server. |
 | Derivation | `documented` |
 | Confidence | `medium` |
+| Added | 2013-04-08 in [`9344b45fc`](https://github.com/taysta/TaystJK/commit/9344b45fc2d8bb45e285499cd5706321eca2661e) <span class="status-chip">needs review</span> — [how to compare this against your build](/TaystJK/whats-new/#how-to-tell-what-your-build-has) |
 | In-game xdocs | No |
 | In-game menu | No |
 | Syntax | `kicknum <client number>` |

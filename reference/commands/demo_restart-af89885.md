@@ -22,6 +22,7 @@ Restarts the current or last-played demo
 | Network scope | `client-only` — Local to the client/UI/renderer. |
 | Derivation | `documented` |
 | Confidence | `high` |
+| Added | 2019-07-26 in [`94672e48e`](https://github.com/taysta/TaystJK/commit/94672e48ece0771144723030e011e2443c68a435) — [how to compare this against your build](/TaystJK/whats-new/#how-to-tell-what-your-build-has) |
 | In-game xdocs | No |
 | In-game menu | No |
 | Syntax | `demo_restart` |

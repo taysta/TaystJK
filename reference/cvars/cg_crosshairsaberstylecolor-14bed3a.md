@@ -25,6 +25,7 @@ Controls `cg_crosshairSaberStyleColor` in the cgame module. Consult the cited be
 | Network scope | `client-only` — Local to the client/UI/renderer. |
 | Derivation | `code-trace` |
 | Confidence | `medium` |
+| Added | 2018-12-18 in [`3173474c4`](https://github.com/taysta/TaystJK/commit/3173474c4b67cc9603582a8ddc4065ebd9e7c824) <span class="status-chip">needs review</span> — [how to compare this against your build](/TaystJK/whats-new/#how-to-tell-what-your-build-has) |
 | In-game xdocs | No |
 | In-game menu | No |
 | Default | `0` |

@@ -24,6 +24,7 @@ Enables autocomplete when pressing enter
 | Network scope | `client-only` — Local to the client/UI/renderer. |
 | Derivation | `documented` |
 | Confidence | `medium` |
+| Added | 2016-08-04 in [`d23425fac`](https://github.com/taysta/TaystJK/commit/d23425fac341e069713ca2e49b6eeb87eceeb312) <span class="status-chip">needs review</span> — [how to compare this against your build](/TaystJK/whats-new/#how-to-tell-what-your-build-has) |
 | In-game xdocs | No |
 | In-game menu | No |
 | Default | `1` |

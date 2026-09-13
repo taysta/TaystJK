@@ -24,6 +24,7 @@ Registered by the current source, but no user-facing behavior description has be
 | Network scope | `client-only` — Local to the client/UI/renderer. |
 | Derivation | `code-trace` |
 | Confidence | `medium` |
+| Added | 2014-05-17 in [`3a70129c5`](https://github.com/taysta/TaystJK/commit/3a70129c5dd2e43fec4177cf18a93c4dbce1f262) <span class="status-chip">needs review</span> — [how to compare this against your build](/TaystJK/whats-new/#how-to-tell-what-your-build-has) |
 | In-game xdocs | No |
 | In-game menu | No |
 | Default | `update.jkhub.org` <span class="meta-chip">from JKHUB_UPDATE_SERVER_NAME</span> |

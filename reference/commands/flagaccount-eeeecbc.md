@@ -24,6 +24,7 @@ Runs `Svcmd_FlagAccount_f` in the game module.
 | Network scope | `needs-server-support` — Sent to, or only useful with, a supporting game server. |
 | Derivation | `documented` |
 | Confidence | `medium` |
+| Added | 2018-11-04 in [`ad634ee5d`](https://github.com/taysta/TaystJK/commit/ad634ee5d2ffe8264a546136a174ee3fdba985c3) <span class="status-chip">needs review</span> — [how to compare this against your build](/TaystJK/whats-new/#how-to-tell-what-your-build-has) |
 | In-game xdocs | No |
 | In-game menu | No |
 | Syntax | `flagAccount <username> <set (optional)> <flag>` |

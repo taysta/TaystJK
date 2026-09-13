@@ -24,6 +24,7 @@ Controls `g_fixWeaponAttackAnim` in the game module. Consult the cited behavior 
 | Network scope | `server-authoritative` — Owned or enforced by the server. |
 | Derivation | `code-trace` |
 | Confidence | `high` |
+| Added | 2024-02-26 in [`cd784cbf2`](https://github.com/taysta/TaystJK/commit/cd784cbf26dac3fe0120ee2ec30654f17b5ab26d) — [how to compare this against your build](/TaystJK/whats-new/#how-to-tell-what-your-build-has) |
 | In-game xdocs | No |
 | In-game menu | No |
 | Default | `1` |

@@ -24,6 +24,7 @@ Restarts the filesystem if no module is currently using files from a pk3
 | Network scope | `client-only` — Local to the client/UI/renderer. |
 | Derivation | `documented` |
 | Confidence | `medium` |
+| Added | 2019-05-06 in [`97745ce28`](https://github.com/taysta/TaystJK/commit/97745ce2823e9cb6f7ab683fcfe765cea40540ca) <span class="status-chip">needs review</span> — [how to compare this against your build](/TaystJK/whats-new/#how-to-tell-what-your-build-has) |
 | In-game xdocs | No |
 | In-game menu | No |
 | Syntax | `fs_restart` |

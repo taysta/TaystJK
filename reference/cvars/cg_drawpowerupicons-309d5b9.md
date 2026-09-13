@@ -24,6 +24,7 @@ Controls `cg_drawPowerUpIcons` in the cgame module. Consult the cited behavior r
 | Network scope | `client-only` — Local to the client/UI/renderer. |
 | Derivation | `code-trace` |
 | Confidence | `medium` |
+| Added | 2019-02-01 in [`36099aff4`](https://github.com/taysta/TaystJK/commit/36099aff40311c07debb705920963359cd57b77f) <span class="status-chip">needs review</span> — [how to compare this against your build](/TaystJK/whats-new/#how-to-tell-what-your-build-has) |
 | In-game xdocs | No |
 | In-game menu | No |
 | Default | `1` |

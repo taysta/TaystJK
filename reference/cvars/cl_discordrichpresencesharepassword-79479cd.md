@@ -24,6 +24,7 @@ If set, sends password to Discord friends who request to join your game
 | Network scope | `client-only` — Local to the client/UI/renderer. |
 | Derivation | `documented` |
 | Confidence | `medium` |
+| Added | 2019-03-20 in [`53b43cd32`](https://github.com/taysta/TaystJK/commit/53b43cd32500dfc4544b7213f14e69064037acfb) <span class="status-chip">needs review</span> — [how to compare this against your build](/TaystJK/whats-new/#how-to-tell-what-your-build-has) |
 | In-game xdocs | No |
 | In-game menu | No |
 | Default | `1` |

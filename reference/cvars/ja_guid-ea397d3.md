@@ -24,6 +24,7 @@ Client GUID
 | Network scope | `needs-server-support` — Sent to, or only useful with, a supporting game server. |
 | Derivation | `documented` |
 | Confidence | `medium` |
+| Added | 2013-07-16 in [`cccf3136b`](https://github.com/taysta/TaystJK/commit/cccf3136bac26ff9af1548fbb98fa127947f31f5) <span class="status-chip">needs review</span> — [how to compare this against your build](/TaystJK/whats-new/#how-to-tell-what-your-build-has) |
 | In-game xdocs | No |
 | In-game menu | No |
 | Default | `` |

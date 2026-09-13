@@ -24,6 +24,7 @@ Controls `net_enabled` in the engine-shared module. Consult the cited behavior r
 | Network scope | `client-only` — Local to the client/UI/renderer. |
 | Derivation | `code-trace` |
 | Confidence | `medium` |
+| Added | 2014-01-31 in [`cd5d3753f`](https://github.com/taysta/TaystJK/commit/cd5d3753f0a75b3cde603080fb770a600540e13c) <span class="status-chip">needs review</span> — [how to compare this against your build](/TaystJK/whats-new/#how-to-tell-what-your-build-has) |
 | In-game xdocs | No |
 | In-game menu | No |
 | Default | `1` |
