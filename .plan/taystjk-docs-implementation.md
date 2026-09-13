@@ -249,8 +249,11 @@ treated as an announcement.]
 
 ## Phase 7 — Maintenance automation
 
-1. Add `schedule:` to `reference-drift.yml` (weekly), and have drift open or update a
-   tracking issue rather than only failing.
+1. ~~Add `schedule:` to `reference-drift.yml` (weekly)~~ — **the schedule cannot live
+   there.** GitHub runs scheduled workflows only from the default branch, which is `master`;
+   a cron in a `gh-pages`-only workflow never fires. Done instead as
+   `weekly-reference-check.yml` on `master`, which checks `gh-pages` out and runs its
+   `run_all.sh`, opening or updating an issue on failure. [2026-09-13]
 2. Master-side PR check: grep the diff for `Cvar_Get`, `Cvar_Register`, `AddCommand`; when
    matched, comment with links to the xdocs macros, the reference pipeline and the docs
    checklist. Non-blocking.
@@ -267,7 +270,8 @@ treated as an announcement.]
 6. Regenerate the reference as part of the release workflow.
 
 **Acceptance:** a new cvar merged to `master` produces a visible signal within a week without
-anyone touching `gh-pages`.
+anyone touching `gh-pages`. [Met once `weekly-reference-check.yml` is merged to `master` —
+it is on a branch awaiting review, so the criterion is not satisfied until then.]
 
 ---
 
