@@ -1,0 +1,14 @@
+{
+  "_comment": [
+    "Ceiling for how many reference entries CHANGELOG.md may fail to mention.",
+    "Only taystjk is ratcheted: those are this fork's own additions, which no",
+    "upstream changelog will ever cover. The other origins are reported but not",
+    "gated, because documenting base JKA or OpenJK entries is not this project's job.",
+    "To lower it after writing changelog entries, run:",
+    "  python3 tools/cvar_audit/changelog_coverage.py --update-ratchet",
+    "and commit the result."
+  ],
+  "buckets": {
+    "taystjk": 57
+  }
+}
