@@ -219,6 +219,59 @@ You may combine a force list with a whitelist or blacklist. Avoid using whitelis
 
 The behavior is inherited from JK2MV; its wiki has useful background on [downloaded files](https://github.com/mvdevs/jk2mv/wiki/Downloaded-Files), [HTTP downloads](https://github.com/mvdevs/jk2mv/wiki/HTTP-Downloads), and [PK3 referencing](https://github.com/mvdevs/jk2mv/wiki/PK3-Referencing).
 
+## Running a pure server with a mod
+
+`sv_pure 1` requires clients to load their client-side modules from a PK3 rather than from
+loose files, and the server checks that its own `cgame` and `ui` are packed before it
+validates anyone
+([`sv_client.cpp`](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/server/sv_client.cpp#L957)).
+
+The practical consequence: if you run a mod whose `cgame` and `ui` libraries sit loose in
+its `fs_game` directory, pure validation fails and clients are rejected. Either pack the
+mod's client-side files into a PK3, or run that server with `sv_pure 0`. A stock TaystJK
+server is unaffected because its modules ship inside the asset PK3s.
+
+## Server-side demo recording
+
+A dedicated server can record demos itself, independently of anything the players do. The
+commands exist only in the dedicated build
+([`sv_ccmds.cpp`](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/server/sv_ccmds.cpp#L2343)):
+
+| Command | Does |
+|:--|:--|
+| `svrecord` | Start recording |
+| `svstoprecord` | Stop recording |
+| `sv_listrecording` | List what is currently being recorded |
+| `svrenamedemo` | Rename a recorded demo |
+| `svdemometa` | Attach a metadata entry for one player: clientnum, key, value |
+| `svdemoclearmeta` | Clear one player's metadata |
+| `svdemoclearprerecord` | Discard one player's buffered pre-record data |
+
+Demos are written under `demos/` in the server's game directory.
+
+### Pre-recording
+
+The problem with recording on demand is that the interesting thing has already happened by
+the time you type the command. Pre-recording keeps a rolling buffer so a demo can be
+started *retroactively*.
+
+```text
+seta sv_demoPreRecord 1
+seta sv_demoPreRecordTime 15
+```
+
+`sv_demoPreRecordTime` is how many seconds are kept. A demo can only begin from a full
+snapshot, so the server periodically stores one; `sv_demoPreRecordKeyframeDistance` controls
+how often, in seconds. A larger gap costs less memory and coarsens how far back a demo can
+actually start. `sv_demoPreRecordBots` extends the buffer to bots, which is off by default
+because it is usually wasted work.
+
+Buffering runs per connected client, so the memory cost scales with your player count as
+well as with the time window. Raise `sv_demoPreRecordTime` deliberately.
+
+`sv_demoWriteMeta` controls whether the metadata set by `svdemometa` — and by the game
+module — is written into the demo. It is on by default and invisible to ordinary playback.
+
 ## Verify before going public
 
 1. Join from a second machine or network, not only `localhost`.
