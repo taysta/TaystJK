@@ -119,6 +119,11 @@ description: "TaystJK is a cross-platform Jedi Academy multiplayer client built 
       <p>Dedicated server deployment, map rotation, downloads, and PK3 references.</p>
       <span>Server guide →</span>
     </a>
+    <a class="home-guide" href="{{ '/features/' | relative_url }}">
+      <h3>Features</h3>
+      <p>What this client adds: HUD and movement tools, renderers, cosmetics, and movement styles.</p>
+      <span>Browse the features →</span>
+    </a>
     <a class="home-guide" href="{{ '/development/' | relative_url }}">
       <h3>Development</h3>
       <p>Build configuration, platform targets, debugging, and dependency details.</p>
@@ -147,6 +152,14 @@ description: "TaystJK is a cross-platform Jedi Academy multiplayer client built 
     <a href="{{ '/reference/sources/' | relative_url }}">
       <strong>Source provenance</strong>
       <span>How reference entries and code lineage are determined.</span>
+    </a>
+    <a href="{{ '/troubleshooting/' | relative_url }}">
+      <strong>Troubleshooting</strong>
+      <span>Common problems listed by the symptom you actually see.</span>
+    </a>
+    <a href="{{ '/mod-compatibility/' | relative_url }}">
+      <strong>Mod compatibility</strong>
+      <span>Why a feature works on one server and does nothing on another.</span>
     </a>
     <a href="{{ '/ai-disclosure/' | relative_url }}">
       <strong>AI disclosure</strong>

@@ -526,6 +526,10 @@ th { color: var(--text); background: var(--surface); }
   border-left: 1px solid var(--line);
 }
 
+/* Five cards in a two-column grid leaves the last one beside an empty cell; let it
+   span the row instead. */
+.home-guide:last-child:nth-child(odd) { grid-column: 1 / -1; }
+
 .home-guide {
   display: flex;
   min-height: 190px;
