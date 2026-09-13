@@ -11,6 +11,7 @@
     <link rel="stylesheet" href="{{ '/assets/css/reference.css' | relative_url }}">
     <script>document.documentElement.classList.add('js');</script>
     <script defer src="{{ '/assets/js/reference-app.js' | relative_url }}"></script>
+    <script defer src="{{ '/assets/js/site-search.js' | relative_url }}"></script>
   </head>
   <body{% if page.reference_app %} class="has-reference-app"{% endif %}>
     <a class="skip-link" href="#main-content">Skip to content</a>
@@ -37,6 +38,13 @@
           <a href="{{ '/development/' | relative_url }}"{% if nav_section == 'development' %} class="active"{% endif %}>Develop</a>
           <a href="{{ '/reference/' | relative_url }}"{% if nav_section == 'reference' %} class="active"{% endif %}>Reference</a>
         </nav>
+
+        <form class="site-search" role="search" data-baseurl="{{ site.baseurl }}" autocomplete="off">
+          <label class="visually-hidden" for="site-search-input">Search the documentation</label>
+          <input id="site-search-input" type="search" placeholder="Search docs&hellip;" aria-describedby="site-search-hint">
+          <span id="site-search-hint" class="visually-hidden">Press slash to focus. Results appear as you type.</span>
+          <ul class="search-results" hidden></ul>
+        </form>
 
         <a class="header-github" href="https://github.com/taysta/TaystJK" rel="noopener">
           <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M12 .8a11.4 11.4 0 0 0-3.6 22.2c.6.1.8-.2.8-.5v-2c-3.3.7-4-1.4-4-1.4-.5-1.4-1.3-1.8-1.3-1.8-1.1-.7.1-.7.1-.7 1.2.1 1.8 1.2 1.8 1.2 1.1 1.8 2.8 1.3 3.4 1 .1-.8.4-1.3.8-1.6-2.7-.3-5.5-1.3-5.5-5.7 0-1.3.5-2.3 1.2-3.1-.1-.3-.5-1.6.1-3.1 0 0 1-.3 3.2 1.2a11 11 0 0 1 5.8 0c2.2-1.5 3.2-1.2 3.2-1.2.6 1.5.2 2.8.1 3.1.8.8 1.2 1.8 1.2 3.1 0 4.4-2.8 5.4-5.5 5.7.4.4.8 1.1.8 2.2v3.2c0 .3.2.6.8.5A11.4 11.4 0 0 0 12 .8Z"/></svg>

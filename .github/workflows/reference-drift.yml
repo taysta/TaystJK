@@ -22,6 +22,8 @@ jobs:
         run: python3 tools/cvar_audit/test_provenance.py
       - name: Test reference search and filters
         run: node tools/cvar_audit/test_reference_app.js
+      - name: Test site search ranking
+        run: node tools/cvar_audit/test_site_search.js
       - name: Validate reference records
         run: python3 tools/cvar_audit/validate.py
       - name: Validate generated pages and links
