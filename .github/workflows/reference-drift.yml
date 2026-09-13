@@ -28,3 +28,14 @@ jobs:
         run: python3 tools/cvar_audit/check_generated.py
       - name: Check source registration drift
         run: python3 tools/cvar_audit/check_drift.py --ref origin/master
+      - name: Check changelog coverage
+        run: >-
+          python3 tools/cvar_audit/changelog_coverage.py
+          --ref origin/master --json changelog-coverage.json
+      - name: Upload changelog coverage report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: changelog-coverage
+          path: changelog-coverage.json
+          if-no-files-found: ignore
