@@ -52,13 +52,12 @@ and the feature is absent rather than disabled. The same applies to ARM Linux. R
 x86-64 build under Rosetta is compiled differently and is not the same thing as an arm64
 build.
 
+The Windows AddressSanitizer build does not have it either, for an unrelated reason — see
+[the AddressSanitizer build](/TaystJK/features/builds-and-versioning/#the-addresssanitizer-build).
+
 ## Renderers
 
 Which renderer backends exist in your build is also a build-time choice, and a missing one
 falls back to the default with a message rather than failing. See
 [Renderers](/TaystJK/features/renderers/).
 
-<!-- TODO: the planning notes also list music commands as Windows-only, Discord being
-     disabled under AddressSanitizer on MSVC, and portable builds falling back to the
-     install path for logs because homepath is null. None of the three was checked against
-     source for this page. Verify each before adding a row. -->
