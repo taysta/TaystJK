@@ -134,9 +134,12 @@ directly fails `check_generated.py`.
 Hand-written: `install.md`, `server-hosting.md`, `development.md`,
 `development/*.md`, `reference.md`, `reference/sources.md`, `ai-disclosure.md`.
 
-Legacy orphaned trees still built but not linked from nav: `hardcoded-changes.md` + its
-four child stubs, `cvars/`, `commands/` (the last two are `nav_exclude`/`search_exclude`
-in `_config.yml`; note the misspelled `cvars/miscellanous.md`). Their content is stale.
+Retired URLs are kept alive as redirect stubs, not as stale pages: `hardcoded-changes.md`,
+the six under `cvars/` and the two under `commands/` are all `layout: none` "Page moved"
+documents (note the misspelled `cvars/miscellanous.md`). The four
+`hardcoded-changes/` child stubs are gone. `cvars/` and `commands/` are additionally
+`nav_exclude`/`search_exclude` by a `_config.yml` default. Keep the stubs — deleting them
+404s links that are already out in the world.
 
 ## The reference pipeline (`tools/cvar_audit/`)
 
