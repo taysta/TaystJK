@@ -249,6 +249,47 @@ Use `vm_legacy 6` only when both the JA++ `cgame` and UI libraries require the l
 
 If the console reports `VM_CreateLegacy: ... succeeded`, the requested legacy interface loaded. If it reports an architecture mismatch, a missing entry point, or repeated load failures, recheck the mod build and directory rather than trying unrelated bit values.
 
+## Steam playtime and overlay
+
+Optional, and **Windows only** — `Sys_SteamInit` is an empty stub everywhere else
+([`sys_unix.cpp`](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/shared/sys/sys_unix.cpp#L655)).
+
+With it working, Steam counts your TaystJK time against Jedi Academy and the overlay works,
+without having to launch the client through Steam.
+
+`com_steamIntegration` is already **on by default**
+([`common.cpp`](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/qcommon/common.cpp#L1452)), so there is nothing to enable. It
+does nothing until you supply two files, neither of which ships with TaystJK or with retail
+Jedi Academy. Put both in `GameData`, beside the executable:
+
+| File | Which build |
+|:--|:--|
+| `steam_api64.dll` | 64-bit TaystJK |
+| `steam_api.dll` | 32-bit TaystJK |
+| `steam_appid.txt` containing `6020` | both |
+
+`6020` is Jedi Academy's Steam app ID.
+
+**Mind the architecture.** The
+[Steam Integration Tools](https://jkhub.org/files/file/3549-steam-integration-tools/)
+package on JKHub is the usual source for these, but it provides the **32-bit**
+`steam_api.dll` only. If you run the 64-bit build — which most people do — that package
+alone will not work; you need `steam_api64.dll`, which comes from the Steamworks SDK.
+
+If the file is missing the client says so at startup in red, and otherwise runs normally:
+
+```text
+Steam integration failed: Couldn't find steam_api64.dll
+```
+
+The cvar is latched, so a change needs a restart. Set `com_steamIntegration 0` to stop the
+client looking at all.
+
+Why you have to supply these: the Steamworks SDK's terms do not fit TaystJK's GPLv2
+licence, so the library cannot be bundled. The client loads it at runtime if it finds it,
+which keeps the licences apart
+([`sys_win32.cpp`](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/shared/sys/sys_win32.cpp#L714)).
+
 ## First-launch checks
 
 - Open the console with <kbd>Shift</kbd> + <kbd>~</kbd> and run `version` to confirm that TaystJK is running.
