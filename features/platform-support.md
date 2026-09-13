@@ -20,6 +20,7 @@ Each of these is decided when the client is built, so no cvar will turn it on.
 |:--|:--|:--|
 | EAX environmental audio | 32-bit Windows | 64-bit Windows, Linux, macOS |
 | Discord Rich Presence | x86-64 Windows, Linux and macOS | Apple Silicon macOS, ARM Linux |
+| Steam playtime and overlay | Windows | Linux, macOS |
 
 ## EAX is 32-bit Windows only
 
@@ -54,6 +55,22 @@ build.
 
 The Windows AddressSanitizer build does not have it either, for an unrelated reason — see
 [the AddressSanitizer build](/TaystJK/features/builds-and-versioning/#the-addresssanitizer-build).
+
+## Steam integration is Windows only
+
+`Sys_SteamInit` has a real implementation only in the Windows platform layer. The Unix one
+is an empty function whose comment says as much — "Only Windows has this feature at the
+moment"
+([`sys_unix.cpp`](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/shared/sys/sys_unix.cpp#L650)).
+
+This is not a build-time choice you can change: on Linux and macOS there is no code to
+enable. `com_steamIntegration` still exists and still defaults to `1` there, because it is
+registered in shared code — so the cvar being on is not evidence the feature is doing
+anything.
+
+Even on Windows it needs two files you have to supply yourself, and the commonly available
+package is 32-bit only. Setting it up is covered on the
+[install page](/TaystJK/install/#steam-playtime-and-overlay).
 
 ## Renderers
 
