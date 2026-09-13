@@ -86,12 +86,17 @@ their own bindings
 ([`cl_keys.cpp`](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/cl_keys.cpp#L188)),
 so `bind rctrl kill` affects only the right-hand key.
 
-<!-- TODO: the retired hardcoded-changes page claimed a right-side key with no binding of
-     its own falls back to the generic binding, and that the left-side key always uses the
-     generic one. Separate bindability is verified (the keynames table and the per-modifier
-     binding slots). The fallback is not: every binding[] read in cl_keys.cpp belongs to
-     setting or listing a bind, not to dispatching a press, so the press-time resolution is
-     in another translation unit. Find it before stating the behaviour. -->
+If the right-hand key has no binding of its own, the press falls back to the generic one
+([`CL_ParseBinding`](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/cl_keys.cpp#L1609)).
+So `bind ctrl +attack` gives you both Ctrl keys, and `bind rctrl kill` on top of it
+overrides only the right one. There is no fallback in the other direction: `SHIFT`, `CTRL`
+and `ALT` *are* the left-hand keys, and nothing you bind to `RCTRL` reaches them.
+
+**Which modifier counts as held.** Only the left-hand modifier arms a `ctrl+` style binding
+([`cl_keys.cpp`](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/cl_keys.cpp#L1619)).
+Hold the **right** Ctrl and press <kbd>X</kbd> and you get plain <kbd>X</kbd>, not
+`ctrl+x` — the right-hand keys can carry bindings, but they cannot act as modifiers for
+another key. When more than one is held, the order is alt, then ctrl, then shift.
 
 ## Console and chat editing
 
