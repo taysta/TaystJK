@@ -203,13 +203,25 @@ correctly after every issue behind it is closed.
 2. Where to report what (#268, #266, #267, #121, #244, #73, #107).
 3. Mod compatibility matrix — `serverMod` detection, feature flags, Lugormod
    `STAT_EXTRA_FORCE_BITS` collisions.
+   [2026-09-13: written as `mod-compatibility.md`. The load-bearing fact is that the six
+   server kinds are an ordered enum and most checks read "at least JA+". Also records the
+   recommendation to run NewJK/NewMod rather than TaystJK on base_enhanced and
+   base_entranced, which share an author with NewMod. The Lugormod stat collisions were not
+   covered -- they are an implementation detail with no player-facing symptom identified
+   yet, so they need a reader-visible symptom before they earn a paragraph.]
 4. Server hosting additions: master servers and heartbeat, don't hand-edit
-   `taystjk_server.cfg`, `sv_pure` on non-base `fs_game` (#365), the real-world Docker
-   Compose example from #331, filesystem and downloads internals, serverside demo recording.
+   `taystjk_server.cfg`, `sv_pure` on non-base `fs_game`, the real-world Docker Compose
+   example, filesystem and downloads internals, serverside demo recording.
+   [2026-09-13: done. `sv_pure` turned out to be two separate facts: a mod with loose
+   cgame/ui libraries fails pure validation outright, and -- not in this plan at all --
+   TaystJK bypasses pure entirely when the server's gamename is exactly `basejka`, so
+   `sv_pure` is not an asset-parity guarantee for these clients.]
 5. Feature flags spec on the Develop side — `taystJKinfo`, bits from
    `codemp/game/bg_public.h:550-556`, how a server mod advertises them.
+   [2026-09-13: written as `development/feature-flags.md`.]
 6. Contributing — PR flow, grabbing artifacts from a PR's Actions run to test a fix,
    build-from-source pointer for reporters.
+   [2026-09-13: written as `development/contributing.md`.]
 7. Glossary and attribution pages.
 
 **Acceptance:** every troubleshooting entry names the symptom a user would actually search
