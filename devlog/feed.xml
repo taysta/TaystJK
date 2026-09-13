@@ -1,0 +1,33 @@
+---
+layout: none
+permalink: /devlog/feed.xml
+---
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <title>{{ site.title }} devlog</title>
+  <subtitle>{{ site.description | escape }}</subtitle>
+  <link href="{{ '/devlog/feed.xml' | absolute_url }}" rel="self"/>
+  <link href="{{ '/devlog/' | absolute_url }}"/>
+  <id>{{ '/devlog/' | absolute_url }}</id>
+  {%- assign posts = site.devlog | sort: "date" | reverse %}
+  {%- if posts.size > 0 %}
+  <updated>{{ posts.first.date | date_to_xmlschema }}</updated>
+  {%- else %}
+  <updated>{{ site.time | date_to_xmlschema }}</updated>
+  {%- endif %}
+  {%- for post in posts %}
+  <entry>
+    <title>{{ post.title | escape }}</title>
+    <link href="{{ post.url | absolute_url }}"/>
+    <id>{{ post.url | absolute_url }}</id>
+    <updated>{{ post.date | date_to_xmlschema }}</updated>
+    {%- if post.author %}
+    <author><name>{{ post.author | escape }}</name></author>
+    {%- endif %}
+    {%- if post.description %}
+    <summary>{{ post.description | escape }}</summary>
+    {%- endif %}
+    <content type="html">{{ post.content | strip_newlines }}</content>
+  </entry>
+  {%- endfor %}
+</feed>

@@ -11,8 +11,9 @@ to a section. The generated cvar/command detail pages contribute title and url o
 there are ~2,000 of them and their searchable detail already lives in the reference app.
 {%- endcomment -%}
 {%- assign first = true -%}
+{%- assign indexed = site.pages | concat: site.devlog -%}
 [
-{%- for p in site.pages -%}
+{%- for p in indexed -%}
   {%- if p.title == nil or p.title == "" -%}{%- continue -%}{%- endif -%}
   {%- if p.search_exclude == true -%}{%- continue -%}{%- endif -%}
   {%- if p.layout == "none" -%}{%- continue -%}{%- endif -%}

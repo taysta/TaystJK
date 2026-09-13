@@ -28,6 +28,7 @@
     <meta name="twitter:title" content="{{ page_title | escape }}">
     <meta name="twitter:description" content="{{ page_desc | escape }}">
     <meta name="twitter:image" content="{{ '/assets/social-card.png' | absolute_url }}">
+    <link rel="alternate" type="application/atom+xml" title="{{ site.title }} devlog" href="{{ '/devlog/feed.xml' | absolute_url }}">
     <link rel="icon" type="image/x-icon" href="{{ '/shared/icons/TaystJK.ico' | relative_url }}">
     <link rel="stylesheet" href="{{ '/assets/css/reference.css' | relative_url }}">
     <script>document.documentElement.classList.add('js');</script>
@@ -51,6 +52,7 @@
         {% elsif page.url contains '/features' %}{% assign nav_section = 'features' %}
         {% elsif page.url contains '/development' %}{% assign nav_section = 'development' %}
         {% elsif page.url contains '/reference' %}{% assign nav_section = 'reference' %}
+        {% elsif page.url contains '/devlog' %}{% assign nav_section = 'devlog' %}
         {% endif %}
         <nav class="site-nav" aria-label="Primary navigation">
           <a href="{{ '/install/' | relative_url }}"{% if nav_section == 'install' %} class="active"{% endif %}>Install</a>
@@ -58,6 +60,7 @@
           <a href="{{ '/features/' | relative_url }}"{% if nav_section == 'features' %} class="active"{% endif %}>Features</a>
           <a href="{{ '/development/' | relative_url }}"{% if nav_section == 'development' %} class="active"{% endif %}>Develop</a>
           <a href="{{ '/reference/' | relative_url }}"{% if nav_section == 'reference' %} class="active"{% endif %}>Reference</a>
+          <a href="{{ '/devlog/' | relative_url }}"{% if nav_section == 'devlog' %} class="active"{% endif %}>Devlog</a>
         </nav>
 
         <form class="site-search" role="search" data-baseurl="{{ site.baseurl }}" autocomplete="off">
@@ -118,6 +121,7 @@
         <a href="{{ '/reference/' | relative_url }}">Console reference</a>
         <a href="{{ '/overview/' | relative_url }}">Overview</a>
         <a href="{{ '/glossary/' | relative_url }}">Glossary</a>
+        <a href="{{ '/devlog/' | relative_url }}">Devlog</a>
         <a href="https://github.com/taysta/TaystJK/releases/tag/latest">Latest release</a>
       </nav>
     </footer>

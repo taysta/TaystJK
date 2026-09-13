@@ -65,9 +65,10 @@ def check(path):
 
 def main():
     targets = sorted(ROOT.glob("_layouts/*.html"))
-    index = ROOT / "search-index.json"
-    if index.exists():
-        targets.append(index)
+    for extra in ("search-index.json", "devlog.md", "devlog/feed.xml"):
+        path = ROOT / extra
+        if path.exists():
+            targets.append(path)
 
     if not targets:
         print("no templates found", file=sys.stderr)
