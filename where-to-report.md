@@ -53,6 +53,17 @@ TaystJK ships jaPRO's client-side features and assets, which is why the two are 
 confuse. Shipping the assets does not mean owning the rules. See
 [the overview](/TaystJK/overview/).
 
+This is the most common misrouting on the tracker. Each of these was filed here and each
+belongs to jaPRO:
+
+- [#121](https://github.com/taysta/TaystJK/issues/121) — the warp list truncating
+- [#266](https://github.com/taysta/TaystJK/issues/266) — emote animations
+- [#267](https://github.com/taysta/TaystJK/issues/267) — bringing back an admin command
+- [#268](https://github.com/taysta/TaystJK/issues/268) — Full Force duels offering only your selected powers
+
+Fixes made there reach TaystJK when jaPRO is pulled downstream, so filing in the right place
+is also the faster route.
+
 ## The Vulkan renderer
 
 The Vulkan backend is developed downstream by JKSunny and fixes flow from there, so
@@ -62,6 +73,11 @@ Vulkan-specific rendering problems belong at
 Check first that it really is Vulkan-specific by switching to `rd-taystjk`. "Only happens on
 Vulkan" is the single most useful sentence such a report can contain.
 
+[#73](https://github.com/taysta/TaystJK/issues/73) and [#107](https://github.com/taysta/TaystJK/issues/107)
+both went this way, and #107 is the model to copy.
+Asked whether the problem also happened on the default renderer, the reporter checked,
+confirmed it did not, and refiled at EternalJK — where it could actually be fixed.
+
 ## JA+
 
 JA+ is a closed-source mod. Nobody outside its authors can fix its behaviour, and TaystJK
@@ -70,6 +86,11 @@ servers, there is usually no project to report it to.
 
 What *is* worth reporting here is the client failing to cope — crashing, or mis-detecting
 the server mod. That is our side of the boundary even when the trigger is JA+.
+
+[#178](https://github.com/taysta/TaystJK/issues/178) is the shape of this: a request for tools against players who evade bans.
+Chat and moderation are handled by the game module rather than the engine, and on a JA+
+server that module is closed source — so the answer was to move to an open-source mod, not
+to change the client.
 
 ## What makes a report useful
 
@@ -82,7 +103,3 @@ Whichever project you file with:
 - the server and the mod it runs
 - what you did, what happened, and what you expected instead
 
-<!-- TODO: the planning notes attribute specific redirected reports to this routing
-     (#268, #266, #267, #121 and #244 to jaPRO; #73 and #107 to the Vulkan renderer; #178 to
-     JA+ being closed source). The tracker was not reachable while writing, so none is cited
-     here. Confirm them before treating those issues as closable by this page. -->
