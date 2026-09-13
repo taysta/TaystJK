@@ -231,6 +231,27 @@ its `fs_game` directory, pure validation fails and clients are rejected. Either 
 mod's client-side files into a PK3, or run that server with `sv_pure 0`. A stock TaystJK
 server is unaffected because its modules ship inside the asset PK3s.
 
+### `sv_pure` does not constrain TaystJK on a `basejka` server
+
+If your server reports its `gamename` as exactly `basejka`, TaystJK clients bypass the pure
+restriction ([`cl_parse.cpp`](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/cl_parse.cpp#L466)).
+
+Two things happen at once. The client marks the base assets pak as referenced so the
+checksums it reports back look like a stock client's
+([`files.cpp`](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/qcommon/files.cpp#L4169)), and it skips loading your pak list
+altogether — which leaves it with no list to restrict against, so every pak it has is
+treated as allowed
+([`FS_PakIsPure`](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/qcommon/files.cpp#L393)).
+
+The effect is that the client authenticates as pure while still loading its own assets:
+emoji, cosmetics, HUD files and any other PK3 the player has installed. This is deliberate —
+it is what lets TaystJK's client-side additions work on stock servers — but it means
+**`sv_pure` is not an asset-parity guarantee for these clients.** If you are relying on pure
+to ensure everyone sees identical content, a `basejka` gamename does not give you that.
+
+Servers reporting any other `gamename`, including jaPRO and JA+, are unaffected and pure
+behaves normally.
+
 ## Server-side demo recording
 
 A dedicated server can record demos itself, independently of anything the players do. The
