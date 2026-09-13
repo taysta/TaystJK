@@ -164,11 +164,13 @@ Regenerate (from repo root), in order:
 
 ## Verification
 
-Run all six after any pipeline or generated-content change (this is what CI runs):
+Run all eight after any pipeline or generated-content change (this is what CI runs):
 
     python3 tools/cvar_audit/test_extract.py
     python3 tools/cvar_audit/test_provenance.py
     node    tools/cvar_audit/test_reference_app.js
+    node    tools/cvar_audit/test_site_search.js
+    python3 tools/cvar_audit/test_liquid.py
     python3 tools/cvar_audit/validate.py
     python3 tools/cvar_audit/check_generated.py
     python3 tools/cvar_audit/check_drift.py --ref origin/master

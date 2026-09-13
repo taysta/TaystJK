@@ -24,6 +24,8 @@ jobs:
         run: node tools/cvar_audit/test_reference_app.js
       - name: Test site search ranking
         run: node tools/cvar_audit/test_site_search.js
+      - name: Check Liquid templates
+        run: python3 tools/cvar_audit/test_liquid.py
       - name: Validate reference records
         run: python3 tools/cvar_audit/validate.py
       - name: Validate generated pages and links

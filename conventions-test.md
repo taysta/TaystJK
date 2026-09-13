@@ -2,6 +2,7 @@
 title: "Conventions test page"
 layout: reference
 nav_exclude: true
+search_exclude: true
 status: experimental
 origin: taystjk
 added_on: "2026-09-13 (6ff04c0)"
