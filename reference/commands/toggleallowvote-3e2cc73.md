@@ -24,6 +24,7 @@ Runs `Svcmd_ToggleAllowVote_f` in the game module.
 | Network scope | `needs-server-support` — Sent to, or only useful with, a supporting game server. |
 | Derivation | `code-trace` |
 | Confidence | `medium` |
+| Added | 2014-08-06 in [`bb3ed393a`](https://github.com/taysta/TaystJK/commit/bb3ed393a5fb8c3b280f4ae9a12b3fb9d04ee4a5) <span class="status-chip">needs review</span> — [how to compare this against your build](/TaystJK/whats-new/#how-to-tell-what-your-build-has) |
 | In-game xdocs | No |
 | In-game menu | No |
 | Syntax | `toggleallowvote [arguments]` |

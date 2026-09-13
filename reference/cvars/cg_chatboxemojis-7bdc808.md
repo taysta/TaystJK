@@ -25,6 +25,7 @@ Controls `cg_chatBoxEmojis` in the cgame module. Consult the cited behavior read
 | Network scope | `client-only` — Local to the client/UI/renderer. |
 | Derivation | `code-trace` |
 | Confidence | `high` |
+| Added | 2020-05-15 in [`caa8f2745`](https://github.com/taysta/TaystJK/commit/caa8f274580f151f8472d987144146ca02430d3f) — [how to compare this against your build](/TaystJK/whats-new/#how-to-tell-what-your-build-has) |
 | In-game xdocs | No |
 | In-game menu | Yes — [ingame_setup.menu:3637](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/assets/japro/ui/jamp/ingame_setup.menu#L3637) |
 | Default | `1` |

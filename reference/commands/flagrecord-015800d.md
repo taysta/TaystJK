@@ -24,6 +24,7 @@ Runs `Cmd_InvalidateRace_f` in the game module.
 | Network scope | `needs-server-support` — Sent to, or only useful with, a supporting game server. |
 | Derivation | `documented` |
 | Confidence | `high` |
+| Added | 2023-12-11 in [`9b57ee1b8`](https://github.com/taysta/TaystJK/commit/9b57ee1b856693898de14daff824dcf111f94b57) — [how to compare this against your build](/TaystJK/whats-new/#how-to-tell-what-your-build-has) |
 | In-game xdocs | No |
 | In-game menu | No |
 | Syntax | `flagRecord <username> <coursename> <style> <season> <mode: f, u, d>. Use * in place of space in the coursename` |

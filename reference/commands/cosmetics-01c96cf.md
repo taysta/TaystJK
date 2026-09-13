@@ -24,6 +24,7 @@ Runs `CG_Cosmetics_f` in the cgame module.
 | Network scope | `client-only` — Local to the client/UI/renderer. |
 | Derivation | `code-trace` |
 | Confidence | `medium` |
+| Added | 2018-10-15 in [`1e4377ef4`](https://github.com/taysta/TaystJK/commit/1e4377ef412feb0bdce70884035cb5b62f640293) <span class="status-chip">needs review</span> — [how to compare this against your build](/TaystJK/whats-new/#how-to-tell-what-your-build-has) |
 | In-game xdocs | No |
 | In-game menu | No |
 | Syntax | `cosmetics` |

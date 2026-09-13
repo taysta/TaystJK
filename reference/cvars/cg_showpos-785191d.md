@@ -24,6 +24,7 @@ Controls `cg_showpos` in the cgame module. Consult the cited behavior reads befo
 | Network scope | `client-only` — Local to the client/UI/renderer. |
 | Derivation | `code-trace` |
 | Confidence | `medium` |
+| Added | 2018-11-04 in [`0b6764d01`](https://github.com/taysta/TaystJK/commit/0b6764d0171edd446ef75464ad2edeaaead40e92) <span class="status-chip">needs review</span> — [how to compare this against your build](/TaystJK/whats-new/#how-to-tell-what-your-build-has) |
 | In-game xdocs | No |
 | In-game menu | No |
 | Default | `0` |

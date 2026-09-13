@@ -63,9 +63,31 @@ The date is what a reader compares against. Tell readers to compare the build da
 by `version` / `modversion` against the date shown: an older build date means the feature
 is absent. Comparing short hashes alone tells them nothing about ordering.
 
-State that comparison rule once on the overview page and link to it from wherever
-`added_on` renders, rather than repeating it per page. The overview page does not exist
-yet; until it does, link to nothing and keep the rule in this file.
+State that comparison rule once and link to it from wherever `added_on` renders, rather
+than repeating it per page. For generated entries that explanation lives on
+`whats-new.md` under "How to tell what your build has"; move it to the overview page when
+Phase 3 creates one.
+
+### Which date, for generated entries
+
+The reference derives `added_on` from `origin.first_commit` using that commit's
+**committer** date, not its author date. The two answer different questions:
+
+- *Attribution* — who had it first — is resolved in `provenance.py` across the upstream
+  repositories, and ranks on author and PR dates so that work authored upstream keeps its
+  credit even when TaystJK merged it first. Do not change that.
+- *Availability* — is it in my build — is a question about this repository only.
+  `first_commit` is always an ancestor of `origin/master`, and its committer date is when
+  the change entered that history. An author date can be earlier and would claim a feature
+  was available before TaystJK had it.
+
+Nine of the 204 cited commits differ between the two dates, by one to fourteen days. The
+largest blast radius is the original Raven source import, authored 2013-04-04 and committed
+2013-04-08, which 1,043 entries date from.
+
+A date is marked *needs review* when `origin.confidence` is `medium`: it is only as firm as
+the attribution it rests on. A date is omitted entirely when the origin has no resolvable
+first commit — never invented.
 
 ## 3. Headings
 

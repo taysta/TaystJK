@@ -24,6 +24,7 @@ Delete a demo
 | Network scope | `client-only` — Local to the client/UI/renderer. |
 | Derivation | `documented` |
 | Confidence | `medium` |
+| Added | 2018-04-26 in [`98e5c2a48`](https://github.com/taysta/TaystJK/commit/98e5c2a48010c576340c61f85b857123fbd74b4c) <span class="status-chip">needs review</span> — [how to compare this against your build](/TaystJK/whats-new/#how-to-tell-what-your-build-has) |
 | In-game xdocs | No |
 | In-game menu | Yes — [demo_delete.menu:177](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/assets/japro/ui/jamp/demo_delete.menu#L177) |
 | Syntax | `deletedemo` |

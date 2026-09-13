@@ -25,6 +25,7 @@ Controls `cg_strafeTrailPlums` in the cgame module. Consult the cited behavior r
 | Network scope | `client-only` — Local to the client/UI/renderer. |
 | Derivation | `code-trace` |
 | Confidence | `high` |
+| Added | 2024-04-15 in [`258031c97`](https://github.com/taysta/TaystJK/commit/258031c97e933f2293dc35c18af5ea16847f0241) — [how to compare this against your build](/TaystJK/whats-new/#how-to-tell-what-your-build-has) |
 | In-game xdocs | No |
 | In-game menu | No |
 | Default | `0` |

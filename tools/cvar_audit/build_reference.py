@@ -547,6 +547,56 @@ BASELINE_BUCKETS: tuple[tuple[str, frozenset[str]], ...] = (
 )
 
 
+def commit_dates(shas: Iterable[str]) -> dict[str, tuple[str, str]]:
+    """Map each commit to its (date, abbreviated hash).
+
+    Committer date, not author date.  It is when the change entered this
+    repository's history, which is what a reader can compare a build date
+    against; an author date can predate integration, by up to two weeks in the
+    commits this reference cites.  The abbreviation is Git's own, so it matches
+    the hash a build prints.
+    """
+    wanted = sorted({sha for sha in shas if sha})
+    if not wanted:
+        return {}
+    result = subprocess.run(
+        ["git", "log", "--no-walk", "--format=%H %h %cI", "--stdin"],
+        input="\n".join(wanted) + "\n", check=False, text=True,
+        stdout=subprocess.PIPE, stderr=subprocess.PIPE,
+    )
+    if result.returncode:
+        raise RuntimeError(f"git log failed: {result.stderr.strip()}")
+    dates: dict[str, tuple[str, str]] = {}
+    for line in result.stdout.splitlines():
+        full, _, rest = line.partition(" ")
+        short, _, iso = rest.partition(" ")
+        dates[full] = (iso[:10], short)
+    return dates
+
+
+def added_on_for(
+    origin: dict[str, Any], dates: dict[str, tuple[str, str]],
+) -> dict[str, Any] | None:
+    """When an entry first landed, as `YYYY-MM-DD (shorthash)` plus its commit.
+
+    `certain` is false when the origin itself is only medium-confidence: the
+    date is then as provisional as the attribution it rests on, and must not be
+    presented as settled.
+    """
+    sha = origin.get("first_commit")
+    resolved = dates.get(sha) if sha else None
+    if not resolved:
+        return None  # origin unresolved: omit rather than invent a date
+    date, short = resolved
+    return {
+        "date": date,
+        "commit": sha,
+        "short": short,
+        "label": f"{date} ({short})",
+        "certain": origin.get("confidence") == "high",
+    }
+
+
 def baseline_for(source: str | None) -> str | None:
     """The narrowest baseline an entry is new against, or None."""
     for name, sources in BASELINE_BUCKETS:
@@ -716,6 +766,11 @@ def main() -> None:
     file_map = dict(files)
     definitions = define_index(files)
     ranges, range_aliases = range_index(files, definitions)
+    first_commit_dates = commit_dates(
+        entry.get("first_commit")
+        for kind in ("cvars", "commands")
+        for entry in provenance[kind].values()
+    )
 
     cvars: list[dict[str, Any]] = []
     for key, records in sorted(cvar_groups.items()):
@@ -855,6 +910,7 @@ def main() -> None:
             "requires_restart": "CVAR_LATCH" in flags, "cheat_protected": "CVAR_CHEAT" in flags,
             "origin": {key2: value for key2, value in origin.items() if key2 != "modified_by"},
             "baseline": baseline_for(origin.get("source")),
+            "added_on": added_on_for(origin, first_commit_dates),
             "modified_by": origin.get("modified_by", []), "evidence": evidence + behavior_evidence,
             "confidence": origin.get("confidence", "low"), "status": status,
             "category": category_for(name, "cvar", primary, summary),
@@ -930,6 +986,7 @@ def main() -> None:
             "gating": gating, "handlers": handlers,
             "origin": {key2: value for key2, value in origin.items() if key2 != "modified_by"},
             "baseline": baseline_for(origin.get("source")),
+            "added_on": added_on_for(origin, first_commit_dates),
             "modified_by": origin.get("modified_by", []), "evidence": evidence,
             "confidence": origin.get("confidence", "low"), "status": status,
             "category": category_for(name, "command", primary, summary),

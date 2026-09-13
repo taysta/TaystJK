@@ -22,6 +22,7 @@ Offset vehicle camera ranges (useful for ultrawide monitors)
 | Network scope | `client-only` — Local to the client/UI/renderer. |
 | Derivation | `documented` |
 | Confidence | `high` |
+| Added | 2025-11-28 in [`174a753ff`](https://github.com/taysta/TaystJK/commit/174a753ff4143f03f7b6074675b1a63dac294dd6) — [how to compare this against your build](/TaystJK/whats-new/#how-to-tell-what-your-build-has) |
 | In-game xdocs | Yes — [codemp/ui/ui_xdocs.h:583](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/ui/ui_xdocs.h#L583) |
 | In-game menu | No |
 | Default | `0` |

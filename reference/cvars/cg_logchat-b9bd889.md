@@ -24,6 +24,7 @@ Controls `cg_logChat` in the cgame module. Consult the cited behavior reads befo
 | Network scope | `client-only` — Local to the client/UI/renderer. |
 | Derivation | `code-trace` |
 | Confidence | `medium` |
+| Added | 2015-11-18 in [`f1b9b8958`](https://github.com/taysta/TaystJK/commit/f1b9b895897d19abcc7cfba7f63015a627e80df2) <span class="status-chip">needs review</span> — [how to compare this against your build](/TaystJK/whats-new/#how-to-tell-what-your-build-has) |
 | In-game xdocs | No |
 | In-game menu | No |
 | Default | `1` |

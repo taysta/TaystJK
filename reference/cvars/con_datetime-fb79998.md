@@ -23,6 +23,7 @@ Display human readable date/time in console
 | Network scope | `client-only` — Local to the client/UI/renderer. |
 | Derivation | `documented` |
 | Confidence | `high` |
+| Added | 2026-06-02 in [`837d02412`](https://github.com/taysta/TaystJK/commit/837d024126688db090380ec8381db2e7b3fd2cb5) — [how to compare this against your build](/TaystJK/whats-new/#how-to-tell-what-your-build-has) |
 | In-game xdocs | No |
 | In-game menu | No |
 | Default | `0` |

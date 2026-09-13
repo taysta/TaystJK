@@ -23,6 +23,7 @@ Display walk movement key input
 | Network scope | `client-only` — Local to the client/UI/renderer. |
 | Derivation | `documented` |
 | Confidence | `high` |
+| Added | 2026-06-07 in [`77a255000`](https://github.com/taysta/TaystJK/commit/77a255000dd43e3884ccd2651364f23284fc0161) — [how to compare this against your build](/TaystJK/whats-new/#how-to-tell-what-your-build-has) |
 | In-game xdocs | Yes — [codemp/ui/ui_xdocs.h:104](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/ui/ui_xdocs.h#L104) |
 | In-game menu | No |
 | Default | `0` |

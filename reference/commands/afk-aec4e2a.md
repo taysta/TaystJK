@@ -24,6 +24,7 @@ Rename to or from afk
 | Network scope | `client-only` — Local to the client/UI/renderer. |
 | Derivation | `documented` |
 | Confidence | `medium` |
+| Added | 2016-03-05 in [`d0b29886a`](https://github.com/taysta/TaystJK/commit/d0b29886a80d60ad1ed079f29aa6cda560ebeede) <span class="status-chip">needs review</span> — [how to compare this against your build](/TaystJK/whats-new/#how-to-tell-what-your-build-has) |
 | In-game xdocs | No |
 | In-game menu | No |
 | Syntax | `afk` |

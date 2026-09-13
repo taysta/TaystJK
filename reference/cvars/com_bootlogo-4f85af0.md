@@ -24,6 +24,7 @@ Show intro movies
 | Network scope | `client-only` — Local to the client/UI/renderer. |
 | Derivation | `documented` |
 | Confidence | `medium` |
+| Added | 2013-07-26 in [`9e2ed38fa`](https://github.com/taysta/TaystJK/commit/9e2ed38faed06f59064add98791664ca02c82afa) <span class="status-chip">needs review</span> — [how to compare this against your build](/TaystJK/whats-new/#how-to-tell-what-your-build-has) |
 | In-game xdocs | No |
 | In-game menu | No |
 | Default | `0` |
