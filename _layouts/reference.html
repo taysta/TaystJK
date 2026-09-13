@@ -7,6 +7,27 @@
     <title>{% if page.title %}{{ page.title }} · {% endif %}{{ site.title }}</title>
     <meta name="description" content="{{ page.description | default: site.description | escape }}">
     <link rel="canonical" href="{{ page.url | absolute_url }}">
+
+    {%- comment -%}
+      Link previews. Written here rather than by jekyll-seo-tag, which this site no longer
+      depends on: the plugin needs its own tag call and would duplicate the title,
+      description and canonical already written above.
+    {%- endcomment -%}
+    {%- assign page_title = page.title | default: site.title -%}
+    {%- assign page_desc = page.description | default: site.description -%}
+    <meta property="og:type" content="{% if page.url == '/' %}website{% else %}article{% endif %}">
+    <meta property="og:site_name" content="{{ site.title }} Documentation">
+    <meta property="og:title" content="{{ page_title | escape }}">
+    <meta property="og:description" content="{{ page_desc | escape }}">
+    <meta property="og:url" content="{{ page.url | absolute_url }}">
+    <meta property="og:image" content="{{ '/assets/social-card.png' | absolute_url }}">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:image:alt" content="TaystJK Documentation — one client for Jedi Academy multiplayer">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="{{ page_title | escape }}">
+    <meta name="twitter:description" content="{{ page_desc | escape }}">
+    <meta name="twitter:image" content="{{ '/assets/social-card.png' | absolute_url }}">
     <link rel="icon" type="image/x-icon" href="{{ '/shared/icons/TaystJK.ico' | relative_url }}">
     <link rel="stylesheet" href="{{ '/assets/css/reference.css' | relative_url }}">
     <script>document.documentElement.classList.add('js');</script>
