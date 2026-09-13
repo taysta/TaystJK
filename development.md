@@ -20,4 +20,5 @@ description: "Build, debug, and understand the TaystJK codebase."
   <a class="browse-card" href="/TaystJK/development/libraries/"><span class="browse-icon">03</span><h3>Libraries</h3><p>See the versions of bundled dependencies and learn when CMake selects system libraries instead.</p><b>Library inventory →</b></a>
   <a class="browse-card" href="/TaystJK/reference/sources/"><span class="browse-icon">04</span><h3>Code lineage</h3><p>Understand how TaystJK relates to OpenJK, EternalJK, jaPRO, JK2MV, NewJK, rend2, and Vulkan work.</p><b>Source methodology →</b></a>
   <a class="browse-card" href="/TaystJK/development/feature-flags/"><span class="browse-icon">05</span><h3>Feature flags</h3><p>Advertise the optional client-side features your game module supports, without being detected as JA+ or jaPRO.</p><b>taystJKinfo spec →</b></a>
+  <a class="browse-card" href="/TaystJK/development/contributing/"><span class="browse-icon">06</span><h3>Contribute</h3><p>Which branch to target, what CI builds, how to test a fix from a PR artifact without compiling it yourself.</p><b>Contributing guide →</b></a>
 </div>
