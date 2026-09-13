@@ -292,7 +292,7 @@ entry is real; treat the date as approximate.
 
 ### Server & networking (16)
 
-- taystJKinfo feature flags <span class="meta-chip">page not written yet</span> <span class="label ref-origin ref-origin-taystjk">TaystJK</span> <span class="meta-chip">feature</span> — A serverinfo key letting any server mod advertise which TaystJK client features it supports.
+- [taystJKinfo feature flags](/TaystJK/development/feature-flags/) <span class="label ref-origin ref-origin-taystjk">TaystJK</span> <span class="meta-chip">feature</span> — A serverinfo key letting any server mod advertise which TaystJK client features it supports.
 - [`r_cubeMapping`](/TaystJK/reference/cvars/r_cubemapping-86bf3af/) <span class="label ref-origin ref-origin-rend2">rend2</span> <span class="meta-chip">2023-10-03</span> — Disable/enable cubemapping
 - [`r_cubeMappingBounces`](/TaystJK/reference/cvars/r_cubemappingbounces-e20074f/) <span class="label ref-origin ref-origin-rend2">rend2</span> <span class="meta-chip">2023-10-03</span> — Renders cubemaps multiple times to get reflections in reflections
 - [`r_deluxeMapping`](/TaystJK/reference/cvars/r_deluxemapping-a9c1e61/) <span class="label ref-origin ref-origin-rend2">rend2</span> <span class="meta-chip">2023-10-03</span> — Disable/enable reading deluxemaps when compiled with q3map2
@@ -309,7 +309,7 @@ entry is real; treat the date as approximate.
 - [`ui_r_parallaxmapping`](/TaystJK/reference/cvars/ui_r_parallaxmapping-5756301/) <span class="label ref-origin ref-origin-rend2">rend2</span> <span class="meta-chip">2023-10-14</span> — Controls `ui_r_parallaxmapping` in the ui module.
 - [`whitelistip`](/TaystJK/reference/commands/whitelistip-d79fc84/) <span class="label ref-origin ref-origin-jk2mv">JK2MV</span> <span class="meta-chip">2020-05-15</span> — Add IP to the whitelist
 
-  </section>
+</section>
 
   <section class="baseline-panel platform-panel" id="baseline-panel-openjk" role="tabpanel" aria-labelledby="baseline-tab-openjk" tabindex="0" data-baseline-panel="openjk" markdown="1">
 
@@ -1153,7 +1153,7 @@ entry is real; treat the date as approximate.
 
 ### Server & networking (32)
 
-- taystJKinfo feature flags <span class="meta-chip">page not written yet</span> <span class="label ref-origin ref-origin-taystjk">TaystJK</span> <span class="meta-chip">feature</span> — A serverinfo key letting any server mod advertise which TaystJK client features it supports.
+- [taystJKinfo feature flags](/TaystJK/development/feature-flags/) <span class="label ref-origin ref-origin-taystjk">TaystJK</span> <span class="meta-chip">feature</span> — A serverinfo key letting any server mod advertise which TaystJK client features it supports.
 - [`cg_autoLoginServer1`](/TaystJK/reference/cvars/cg_autologinserver1-0ca4073/) <span class="label ref-origin ref-origin-japro">jaPRO</span> <span class="status-chip">2018-09-03 · needs review</span> — IP of server to try to autologin on, used with /autologin command. If you are not on the right server, the password will not be sent to the server.
 - [`cg_autoLoginServer2`](/TaystJK/reference/cvars/cg_autologinserver2-9a34450/) <span class="label ref-origin ref-origin-japro">jaPRO</span> <span class="status-chip">2018-09-03 · needs review</span> — Controls `cg_autoLoginServer2` in the cgame module.
 - [`cg_autoLoginServer3`](/TaystJK/reference/cvars/cg_autologinserver3-66a3457/) <span class="label ref-origin ref-origin-japro">jaPRO</span> <span class="status-chip">2018-09-03 · needs review</span> — Controls `cg_autoLoginServer3` in the cgame module.
@@ -1186,7 +1186,7 @@ entry is real; treat the date as approximate.
 - [`ui_sv_pure`](/TaystJK/reference/cvars/ui_sv_pure-05aa09d/) <span class="label ref-origin ref-origin-eternaljk">EternalJK</span> <span class="status-chip">2019-06-12 · needs review</span> — Controls `ui_sv_pure` in the ui module.
 - [`whitelistip`](/TaystJK/reference/commands/whitelistip-d79fc84/) <span class="label ref-origin ref-origin-jk2mv">JK2MV</span> <span class="meta-chip">2020-05-15</span> — Add IP to the whitelist
 
-  </section>
+</section>
 
   <section class="baseline-panel platform-panel" id="baseline-panel-basejka" role="tabpanel" aria-labelledby="baseline-tab-basejka" tabindex="0" data-baseline-panel="basejka" markdown="1">
 
@@ -2164,7 +2164,7 @@ entry is real; treat the date as approximate.
 
 ### Server & networking (65)
 
-- taystJKinfo feature flags <span class="meta-chip">page not written yet</span> <span class="label ref-origin ref-origin-taystjk">TaystJK</span> <span class="meta-chip">feature</span> — A serverinfo key letting any server mod advertise which TaystJK client features it supports.
+- [taystJKinfo feature flags](/TaystJK/development/feature-flags/) <span class="label ref-origin ref-origin-taystjk">TaystJK</span> <span class="meta-chip">feature</span> — A serverinfo key letting any server mod advertise which TaystJK client features it supports.
 - [`cg_autoLoginServer1`](/TaystJK/reference/cvars/cg_autologinserver1-0ca4073/) <span class="label ref-origin ref-origin-japro">jaPRO</span> <span class="status-chip">2018-09-03 · needs review</span> — IP of server to try to autologin on, used with /autologin command. If you are not on the right server, the password will not be sent to the server.
 - [`cg_autoLoginServer2`](/TaystJK/reference/cvars/cg_autologinserver2-9a34450/) <span class="label ref-origin ref-origin-japro">jaPRO</span> <span class="status-chip">2018-09-03 · needs review</span> — Controls `cg_autoLoginServer2` in the cgame module.
 - [`cg_autoLoginServer3`](/TaystJK/reference/cvars/cg_autologinserver3-66a3457/) <span class="label ref-origin ref-origin-japro">jaPRO</span> <span class="status-chip">2018-09-03 · needs review</span> — Controls `cg_autoLoginServer3` in the cgame module.
@@ -2230,6 +2230,6 @@ entry is real; treat the date as approximate.
 - [`ui_sv_pure`](/TaystJK/reference/cvars/ui_sv_pure-05aa09d/) <span class="label ref-origin ref-origin-eternaljk">EternalJK</span> <span class="status-chip">2019-06-12 · needs review</span> — Controls `ui_sv_pure` in the ui module.
 - [`whitelistip`](/TaystJK/reference/commands/whitelistip-d79fc84/) <span class="label ref-origin ref-origin-jk2mv">JK2MV</span> <span class="meta-chip">2020-05-15</span> — Add IP to the whitelist
 
-  </section>
+</section>
 
 </section>
