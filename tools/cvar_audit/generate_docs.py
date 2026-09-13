@@ -1280,7 +1280,7 @@ def home_page(cvars: list[dict[str, Any]], commands: list[dict[str, Any]]) -> st
       <div><span class="compatibility-mark">JA+</span><h3>JA+ / JA++</h3></div>
       <p>Server detection and feature-aware handling for the JA+ family: roll variants, flip-kicks, grappling, custom animations, plugin settings, and private-duel isolation.</p>
     </article>
-    <article class="compatibility-card compatibility-card-primary">
+    <article class="compatibility-card">
       <div><span class="compatibility-mark">PRO</span><h3>jaPRO</h3></div>
       <p>The deepest integration: racing and custom movement styles, timing and checkpoint tools, movement analysis, demo workflows, improved prediction, and Tribes mode.</p>
     </article>

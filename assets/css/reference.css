@@ -493,7 +493,6 @@ th { color: var(--text); background: var(--surface); }
   background: var(--panel-bg-hover);
 }
 
-.compatibility-card-primary { background: rgba(104, 225, 212, .07); }
 .compatibility-card > div { display: flex; align-items: center; gap: .7rem; }
 .compatibility-card h3 { margin: 0; font-size: 1.08rem; }
 .compatibility-card p { margin: .8rem 0 0; font-size: .87rem; }
