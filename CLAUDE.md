@@ -176,7 +176,13 @@ Regenerate (from repo root), in order:
 
 ## Verification
 
-Run all eight after any pipeline or generated-content change (this is what CI runs):
+Run this after any pipeline or generated-content change (it is what CI runs):
+
+    tools/cvar_audit/run_all.sh
+
+That script runs all eight and keeps going after a failure, so one run reports
+everything that is wrong. Pass `--ref <ref>` to compare against a source ref other than
+`origin/master`. The individual checks, if you want one on its own:
 
     python3 tools/cvar_audit/test_extract.py
     python3 tools/cvar_audit/test_provenance.py
@@ -187,8 +193,11 @@ Run all eight after any pipeline or generated-content change (this is what CI ru
     python3 tools/cvar_audit/check_generated.py
     python3 tools/cvar_audit/check_drift.py --ref origin/master
 
-CI: `.github/workflows/reference-drift.yml` runs the same set, but only on `gh-pages`
-push/PR and `workflow_dispatch` — never on `master`. Note `origin/master` currently equals
+CI: `.github/workflows/reference-drift.yml` runs the same script on `gh-pages` push/PR and
+`workflow_dispatch`. It deliberately has no `schedule:` — GitHub runs scheduled workflows
+only from the default branch, which is `master`, so a cron here would never fire. The weekly
+run is `weekly-reference-check.yml` on `master`, which checks `gh-pages` out and runs the
+same script, opening an issue when it fails. Note `origin/master` currently equals
 the pinned `source_commit`, so `check_drift` against it only catches drift once origin
 advances; point `--ref` at the true source tip to test real drift.
 
