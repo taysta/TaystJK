@@ -37,21 +37,33 @@ jaPRO is a Jedi Academy mod, and the single largest source of what this client c
 **458 of the 2,014** entries in the reference originate there, more than any project other
 than the base game itself.
 
-TaystJK ships jaPRO's client-side work — the HUD tools, movement helpers, cosmetics and
-their assets. The build packages `assets/japro/` into `japro-assets.pk3` and installs it
-into your `taystjk/` directory
-([`codemp/CMakeLists.txt`](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/CMakeLists.txt#L81)),
-so those features are present whatever server you join.
+**TaystJK bundles both halves of jaPRO**, not just the client side. The build produces the
+client-side gamecode (`cgame`) *and* the server-side gamecode (`jampgame`), along with the
+UI and the engine
+([`CMakeLists.txt`](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/CMakeLists.txt#L42)).
+The split shows in the reference: of those 458 entries, 261 are in the `cgame` module and
+**190 are in `game`** — the module that decides the rules.
 
-That is not the same as playing on a jaPRO server. The gameplay rules — the movement
-styles, the race and admin systems, the scoring — live in the server's game module. A
-jaPRO server runs jaPRO's game module; your client only draws what it is told.
+| What you get | Where it lives | What it gives you |
+|:--|:--|:--|
+| Client-side gamecode | `cgame` | The HUD tools, movement helpers, cosmetics — present on every server you join |
+| Server-side gamecode | `jampgame` | Race mode, the movement styles, Tribes, the admin system — when *you* host |
+| Assets | `japro-assets.pk3` | The shaders, models and icons those features draw ([`codemp/CMakeLists.txt`](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/CMakeLists.txt#L81)) |
 
-**This matters when something is wrong.** If the problem is how the game plays, it belongs
-to the game module, and its home is <https://github.com/videoP/jaPRO>. If the problem is
-how the client renders, connects, binds keys, or loads files, it belongs here. The
-reference's **network scope** field is the quickest way to tell which side owns a given
-cvar.
+So a TaystJK dedicated server serves jaPRO-style gameplay out of the box, with nothing else
+installed. That is why this site can cite `codemp/game/` for things like `/move` and the
+Tribes classes: that code is in this tree.
+
+**Joining someone else's server is the other case.** There, their game module decides the
+rules and your bundled copy is not used at all — which is why the same feature can behave
+differently from server to server. See
+[mod compatibility](/TaystJK/mod-compatibility/).
+
+**This matters when something is wrong.** Gameplay belongs to the game module, and that
+code is maintained upstream at <https://github.com/videoP/jaPRO> and pulled down here — so
+that is where a rules problem goes, even though a copy of the module ships with this client.
+How the client renders, connects, binds keys or loads files belongs here. The reference's
+**network scope** field is the quickest way to tell which side owns a given cvar.
 
 ## Reading an entry
 

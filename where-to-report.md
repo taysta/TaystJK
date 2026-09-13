@@ -49,8 +49,10 @@ a shot registered, how a race is timed, what an admin command does — is the se
 module. On a jaPRO server that is jaPRO's code, and it is developed at
 <https://github.com/videoP/jaPRO>.
 
-TaystJK ships jaPRO's client-side features and assets, which is why the two are easy to
-confuse. Shipping the assets does not mean owning the rules. See
+TaystJK bundles jaPRO's gamecode on both sides — the client-side `cgame` and the
+server-side `jampgame` — which is why the two are easy to confuse. Bundling a copy is not
+the same as owning it: the code is maintained upstream and pulled down here, and when you
+join someone else's server it is *their* module running, not yours. See
 [the overview](/TaystJK/overview/).
 
 This is the most common misrouting, and it catches out things that feel client-side: a
