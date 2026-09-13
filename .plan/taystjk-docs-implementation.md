@@ -238,6 +238,12 @@ for, not the internal cause, and carries no issue or PR citation.
 
 **Acceptance:** a new file in `_devlog/` with front matter appears on the index and in the
 feed with no other edits.
+[2026-09-13: done, and the acceptance test was run rather than assumed -- a second post was
+added, built, confirmed on the index and in the feed in the right order, then deleted. Built
+without jekyll-feed: there is no theme and no plugins, so the feed is a Liquid template like
+search-index.json. Posts are also picked up by the site search. The seed post is a
+placeholder written to exercise the layout and should be rewritten or replaced before it is
+treated as an announcement.]
 
 ---
 
