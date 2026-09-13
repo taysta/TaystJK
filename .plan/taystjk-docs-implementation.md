@@ -173,7 +173,10 @@ Order, hardest evidence first:
 3. Renderers — what each backend is for, `cl_renderer` + `vid_restart`, differences,
    where Vulkan bugs go, known switching instability.
 4. HUD and movement tools — killfeed, team overlays, SnapHUD, PitchHUD, strafe helper,
-   speedometer, movement keys, score and status placement.
+   speedometer, movement keys, score and status placement, the centre timer and team score
+   (`cg_drawTimer 7` / `cg_drawScores 3` / `cg_drawStatus 2`), and `cg_hudFiles`.
+   [2026-09-13: written. `hud_tayst.cfg` is the reference for which options the new HUD
+   turns on; the bitmask tools are configured by their companion commands, not by hand.]
 5. Movement styles — all nineteen `MV_*` entries from `codemp/game/bg_public.h:562-585`,
    one table row each. WSW is an ordinary CPM-family Warsow style and gets a row like the
    rest; the "not part of Tribes" point is a filing note for whoever writes the page, not
