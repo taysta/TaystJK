@@ -31,7 +31,7 @@ on the source branch, which is the maintainer's own account of what each style i
 | `cpm` | CPM, via Q3 defrag | No force jumps, base speed 320, high air control, rampjumps, double jumps. |
 | `q3` | Vanilla Q3 defrag | CPM without the increased air control. |
 | `pjk` | CPM | CPM with force jump and normal JKA base speed. |
-| `wsw` | Warsow | CPM plus a dash and a walljump; see below. |
+| `wsw` | Warsow / Warfork | CPM plus a dash and a walljump; see below. |
 | `rjq3` | Q3 | Q3 with a rocket launcher, moving by self-knockback. |
 | `rjcpm` | RJQ3 | RJQ3 with air control. |
 | `swoop` | — | Riding a swoop bike, with a gravity-boost option. |
@@ -52,8 +52,11 @@ they are left as the guide states them.
 
 ## WSW is a CPM-family style, not part of Tribes
 
-Warsow-inspired movement is easy to mistake for Tribes because both have a dash. They are
-separate styles and the resemblance is one button.
+`wsw` takes its movement from Warsow, and from Warfork, the actively developed continuation
+that carries the same movement — that is the name most players will know it by now.
+
+It is easy to mistake for Tribes because both have a dash. They are separate styles and the
+resemblance is one button.
 
 WSW sits in the CPM family. It shares the double-jump path with CPM, RJCPM, SLICK and
 BOTCPM
