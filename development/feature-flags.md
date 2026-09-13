@@ -1,6 +1,7 @@
 ---
 title: "Feature flags (`taystJKinfo`)"
 layout: reference
+parent: "Development"
 description: "The serverinfo key a game module uses to tell TaystJK clients which optional client-side features it supports."
 ---
 

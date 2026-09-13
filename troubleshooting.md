@@ -100,6 +100,9 @@ exhaust a 32-bit client's memory while loading. If a single mod fails everywhere
 are fine, that belongs with the mod's author; see
 [where to report](/TaystJK/where-to-report/).
 
+If the client connects but a *feature* is missing rather than crashing, that is a different
+question — see [mod compatibility](/TaystJK/mod-compatibility/).
+
 ## No saber hum, or sound distances are wrong, on Linux
 
 Update your build before anything else. Both symptoms have been caused by the same
