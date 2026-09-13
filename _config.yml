@@ -10,7 +10,10 @@ url: "https://taysta.github.io" # the base hostname & protocol for your site, e.
 show_wip_banner: true
 
 permalink: pretty
-exclude: ["node_modules/", "*.gemspec", "*.gem", "Gemfile", "Gemfile.lock", "package.json", "package-lock.json", "script/", "tools/", ".cvar-audit/", "LICENSE.txt", "lib/", "bin/", "README.md", "CONVENTIONS.md", "CLAUDE.md", "Rakefile", "docs/tests/"]
+# This list replaces Jekyll's defaults rather than adding to them, so local-only
+# artifacts have to be named here too or a local build copies them into _site.
+exclude: ["node_modules/", "*.gemspec", "*.gem", "Gemfile", "Gemfile.lock", "package.json", "package-lock.json", "script/", "tools/", ".cvar-audit/", "LICENSE.txt", "lib/", "bin/", "README.md", "CONVENTIONS.md", "CLAUDE.md", "Rakefile", "docs/tests/",
+          "vendor/", ".bundle/", "_site/", "build/", "cmake-build-debug/", "cmake-build-release/", "cmake-build-relwithdebinfo/", "compile_commands.json", ".idea/", "CMakeLists.txt", "CMakePresets.json"]
 
 # The former hand-written topic pages remain reachable through old links, but
 # the generated exhaustive reference is now the canonical navigation/search

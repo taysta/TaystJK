@@ -10,3 +10,8 @@ compile_commands.json
 
 # Written by changelog_coverage.py in CI
 changelog-coverage.json
+
+# Local Jekyll build
+_site/
+vendor/
+.bundle/
