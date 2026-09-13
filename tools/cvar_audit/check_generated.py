@@ -80,6 +80,7 @@ def main() -> None:
         Path("reference.md"), *Path("reference").rglob("*.md"),
         Path("features.md"), *Path("features").rglob("*.md"),
         Path("overview.md"), Path("glossary.md"),
+        Path("troubleshooting.md"), Path("where-to-report.md"),
     ]
     for page in pages:
         text = page.read_text()
