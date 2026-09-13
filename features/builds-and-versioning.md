@@ -65,6 +65,35 @@ Paste the whole line rather than summarising it. A useful report says:
 - the server and the mod it runs, because much of what you see is the server's game module
   rather than the client — see [the overview](/TaystJK/overview/)
 
-<!-- TODO: portable and debug build variants, and the Windows AddressSanitizer artifact,
-     are named in the planning notes but were not verified for this page. Check
-     BuildPortableVersion and the build workflow before describing them. -->
+## Every published build is portable
+
+Each artifact the build workflow uploads is built with `BuildPortableVersion=ON`
+([`build.yml`](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/.github/workflows/build.yml#L33)).
+
+A portable build has no home directory at all: `Sys_DefaultHomePath` returns nothing
+([`sys_win32.cpp`](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/shared/sys/sys_win32.cpp#L168),
+[`sys_unix.cpp`](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/shared/sys/sys_unix.cpp#L481)),
+and `fs_homepath` then falls back to the install path
+([`files.cpp`](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/qcommon/files.cpp#L3923)).
+Your configs, screenshots, downloaded PK3s and logs are written next to the executable
+rather than under your user profile. That is what lets you keep TaystJK entirely separate
+from another Jedi Academy installation, and it is why `fs_homepath` and `fs_basepath` read
+the same in `path`.
+
+Debug builds are compiled by CI as a check but never archived or uploaded — only Release is
+published ([`build.yml`](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/.github/workflows/build.yml#L144)).
+
+## The AddressSanitizer build
+
+One extra Windows artifact exists for diagnosing crashes: an x86-64 `RelWithDebInfo` build
+with AddressSanitizer enabled, shipped with its PDBs, the sanitizer runtime and a
+`Run-TaystJK-ASan.bat` launcher
+([`build.yml`](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/.github/workflows/build.yml#L116)).
+
+It is slower than a normal build and it has **no Discord Rich Presence**: the prebuilt
+`discord-rpc` library cannot link against an ASan-annotated binary, so the build forces the
+option off
+([`CMakeLists.txt`](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/CMakeLists.txt#L263)).
+
+You want this one only when someone investigating a crash asks for a sanitizer log.
+Otherwise take the ordinary Release build.
