@@ -338,7 +338,11 @@ Recommend the collection, with an Atom feed so it can be syndicated to Discord.
 
 1. Baseline for "What's new": versus base JKA, or versus EternalJK? Versus base JKA is what
    most readers want and is roughly four times the content.
-2. Does `docs/` in `master` stay, move, or get mirrored?
+2. ~~Does `docs/` in `master` stay, move, or get mirrored?~~ **Answered 2026-09-13: none of
+   those.** The folder's content did not originate in this project — `japro_docs.md` and
+   `Defrag Mapping Guide.md` came in with a jaPRO update and are jaPRO's own documentation.
+   The wiki is the documentation; those files are cited where they are the authority, with
+   the attribution made explicit. No mirroring, and no drift check — divergence is expected.
 3. Generate the "What's new" page from reference data, or keep it hand-written?
 4. Is Tribes considered a supported, documented feature or still experimental? (WSW is not
    part of this question — it is an ordinary movement style; see section 2.5.)

@@ -18,8 +18,10 @@ origin: japro
 There are nineteen, defined as the `MV_*` enum in
 [`bg_public.h`](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/bg_public.h#L560).
 The descriptions below follow
-[`docs/Defrag Mapping Guide.md`](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/docs/Defrag%20Mapping%20Guide.md)
-on the source branch, which is the maintainer's own account of what each style is for.
+[`docs/Defrag Mapping Guide.md`](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/docs/Defrag%20Mapping%20Guide.md),
+which ships on the source branch. It is jaPRO's own guide, carried downstream with the
+gamecode rather than written here — which is what makes it worth following: it is the
+account of the person who built the styles.
 
 ## The styles
 
