@@ -100,10 +100,19 @@ artifacts, not part of the site.
   the top nav means editing that file. `nav_order` and `parent` front matter are inert
   leftovers; `nav_exclude` survives only because the layout reuses it for the reference
   breadcrumb.
-- The site is built by GitHub Pages. There is **no `Gemfile` and no local Jekyll install**
-  here, so `bundle exec jekyll serve` does not work out of the box. Use
-  `tools/cvar_audit/check_generated.py` as the local validation proxy for the generated
-  pages and internal links.
+- The site is built by GitHub Pages, and also builds locally:
+
+      bundle install          # once; installs into vendor/bundle
+      bundle exec jekyll build
+      bundle exec jekyll serve
+
+  The `Gemfile` is local tooling only — Pages ignores it, and `_config.yml` excludes it from
+  the output. Local Jekyll is 4.x while Pages runs 3.x, so a local build proves the
+  templates render but is not byte-identical to production.
+- `_config.yml`'s `exclude` list **replaces** Jekyll's defaults rather than extending them,
+  so anything local that should not be published has to be named there. The untracked engine
+  artifacts (`build/`, `cmake-build-*/`, `compile_commands.json`) are already listed; without
+  them a local build copies 2 GB into `_site`.
 - Site JS: `assets/js/reference-app.js` (the console reference's filtering UI **and** the
   platform selector) and `assets/js/site-search.js` (heading anchors and the header search).
   Site CSS: the single hand-written `assets/css/reference.css`; there is no Sass.
