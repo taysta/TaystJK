@@ -19,7 +19,7 @@ Almost always one of three things, in this order.
 
 **Your server is not set to public.** `dedicated 1` is LAN play; only `dedicated 2` sends
 heartbeats to the master servers, and the source says so in as many words
-([`sv_main.cpp`](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/server/sv_main.cpp#L253)).
+([`sv_main.cpp`](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/server/sv_main.cpp#L257)).
 A server on `dedicated 1` is working correctly and will never appear on the internet tab.
 Check the local tab before assuming it is broken.
 
