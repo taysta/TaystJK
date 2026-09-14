@@ -74,6 +74,41 @@ cmake --install build --config RelWithDebInfo --prefix "C:\TaystJK-test"
 
 You can instead open the generated `TaystJK.sln`, select `RelWithDebInfo` and `x64`, and build the solution. Use `Debug` when you want the least optimized stepping experience.
 
+### Generating the solution with the bundled script
+
+The repository ships a script that asks the questions and runs CMake for you
+([`build/build-windows-msvc.bat`](%(B)s/build/build-windows-msvc.bat)). Run it from the
+`build` directory. It **generates the solution only** — it does not compile anything, so
+open the `.sln` afterwards and build from Visual Studio.
+
+It asks two things, and pressing Enter takes the default:
+
+| Prompt | Default |
+|:--|:--|
+| Visual Studio version | 2022 (`msvc17`); 2015, 2017 and 2019 also offered |
+| Architecture | **32-bit (`x86`)** — choose `[2]` for x64 |
+
+Both answers name the folders, so a run with both defaults gives you:
+
+```text
+build/msvc17_x86/            the CMake build tree, with TaystJK.sln inside
+build/install-msvc17_x86/    where cmake --install puts the result
+```
+
+The pattern is `<vs>_<arch>` and `install-<vs>_<arch>`, both relative to `build/`, so
+picking VS2022 and x64 gives `build/msvc17_x64` and `build/install-msvc17_x64` instead.
+Choosing different answers on a later run therefore configures a separate tree rather than
+disturbing the first, and the script prints both paths before it starts.
+
+**The architecture default is 32-bit**, which is not what you usually want: prefer x64 for
+development, for the reason in the paragraph above. Press `2` at that prompt.
+
+Press `C` at the third prompt to toggle what gets built — the engine, the dedicated server,
+each renderer backend, the game, cgame and UI modules, Discord Rich Presence, tests — or to
+set a custom install path. Everything except tests is on by default, and portable builds
+are on, matching what the release workflow produces. If CMake is not on your `PATH` the
+script says so and stops rather than failing later.
+
 Prefer an x64 build when developing or testing rend2. Its memory use can exhaust a 32-bit process's limited address space on demanding maps or asset sets. Build for Win32 only when you need to test a 32-bit compatibility path, such as the shipped `EaxMan.dll` integration.
   </section>
 
