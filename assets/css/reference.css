@@ -576,8 +576,13 @@ th { color: var(--text); background: var(--surface); }
   text-decoration: none;
 }
 
-.home-resource-list a:first-child { padding-left: 0; }
-.home-resource-list a:last-child { padding-right: 0; border-right: 0; }
+/* Align by grid column, not document order: with more than three items the fourth
+   starts a new row in column one, and a :first-child rule leaves it indented against
+   the item above it. */
+.home-resource-list a:nth-child(3n+1) { padding-left: 0; }
+.home-resource-list a:nth-child(3n) { padding-right: 0; border-right: 0; }
+.home-resource-list a:last-child { border-right: 0; }
+.home-resource-list a:nth-child(n+4) { border-top: 1px solid var(--line); }
 .home-resource-list a:hover strong { color: var(--accent); }
 .home-resource-list strong { font-size: .86rem; }
 .home-resource-list span { color: var(--muted); font-size: .76rem; line-height: 1.5; }
