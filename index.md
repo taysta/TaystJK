@@ -1,9 +1,11 @@
 ---
 title: "TaystJK \u2014 one client for Jedi Academy multiplayer"
 layout: reference
+generated: true
 nav_order: 1
 wide: true
 description: "TaystJK is a cross-platform Jedi Academy multiplayer client built for Base JKA, JA+/JA++, jaPRO, and Lugormod servers, with modern performance and quality-of-life improvements."
+toc: true
 ---
 
 <div class="docs-overview">
@@ -20,7 +22,7 @@ description: "TaystJK is a cross-platform Jedi Academy multiplayer client built 
   </section>
 
   <nav class="docs-quick-links" aria-labelledby="quick-links-heading">
-    <h2 id="quick-links-heading">Quick links</h2>
+    <h2 id="quick-links-heading" data-toc-skip>Quick links</h2>
     <a href="{{ '/server-hosting/' | relative_url }}">
       <strong>Run a server</strong>
       <span>Docker Compose, server.cfg, downloads, and reflists</span>

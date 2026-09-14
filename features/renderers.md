@@ -4,6 +4,7 @@ layout: reference
 nav_order: 5
 parent: "Features"
 description: "The three renderer backends, what each is for, how to switch between them, and where renderer bugs belong."
+toc: true
 ---
 
 <div class="page-heading" markdown="1">

@@ -1,6 +1,7 @@
 ---
 title: "sv_autoDemo"
 layout: reference
+generated: true
 nav_exclude: true
 search_exclude: false
 ---

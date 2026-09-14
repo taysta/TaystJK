@@ -1,6 +1,7 @@
 ---
 title: "What's new"
 layout: reference
+generated: true
 nav_order: 1
 parent: "Features"
 wide: true

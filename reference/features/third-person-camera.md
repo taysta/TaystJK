@@ -1,6 +1,7 @@
 ---
 title: "Third-person camera"
 layout: reference
+generated: true
 nav_order: 27
 parent: "By feature"
 wide: true

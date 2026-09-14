@@ -1,6 +1,7 @@
 ---
 title: "Shadows"
 layout: reference
+generated: true
 nav_order: 22
 parent: "By feature"
 wide: true

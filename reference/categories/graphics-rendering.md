@@ -1,6 +1,7 @@
 ---
 title: "Graphics & rendering"
 layout: reference
+generated: true
 nav_order: 10
 parent: "By topic"
 wide: true

@@ -2,6 +2,7 @@
 title: "Libraries and versions"
 layout: reference
 description: "Bundled and optional third-party libraries used by the current TaystJK source tree."
+toc: true
 ---
 
 <div class="page-heading" markdown="1">

@@ -1,6 +1,7 @@
 ---
 title: "Console"
 layout: reference
+generated: true
 nav_order: 6
 parent: "By feature"
 wide: true

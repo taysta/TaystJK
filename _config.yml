@@ -35,6 +35,7 @@ defaults:
       type: "devlog"
     values:
       layout: devlog
+      toc: true
   - scope:
       path: "cvars"
     values:

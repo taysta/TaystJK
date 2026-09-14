@@ -1,6 +1,7 @@
 ---
 title: "Movement keys"
 layout: reference
+generated: true
 nav_order: 15
 parent: "By feature"
 wide: true

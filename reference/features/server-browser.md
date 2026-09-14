@@ -1,6 +1,7 @@
 ---
 title: "Server browser"
 layout: reference
+generated: true
 nav_order: 21
 parent: "By feature"
 wide: true

@@ -1,6 +1,7 @@
 ---
 title: "jaPRO"
 layout: reference
+generated: true
 nav_order: 3
 parent: "By origin"
 wide: true

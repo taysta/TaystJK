@@ -103,6 +103,16 @@
         </p>
         {% endif %}
         {{ content }}
+
+        {%- comment -%}
+          Only on hand-written pages. The generator stamps `generated: true`, and an edit
+          link on one of those would invite a change that the next pipeline run discards.
+        {%- endcomment -%}
+        {%- unless page.generated %}
+        <p class="page-edit">
+          <a href="https://github.com/taysta/TaystJK/edit/gh-pages/{{ page.path }}">Edit this page on GitHub</a>
+        </p>
+        {%- endunless %}
       </article>
     </main>
 

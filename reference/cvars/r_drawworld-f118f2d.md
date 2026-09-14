@@ -1,6 +1,7 @@
 ---
 title: "r_drawworld"
 layout: reference
+generated: true
 nav_exclude: true
 search_exclude: false
 ---

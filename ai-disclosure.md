@@ -1,6 +1,7 @@
 ---
 title: "AI disclosure"
 description: "How AI-assisted tools have been used in the TaystJK documentation wiki."
+toc: true
 nav_exclude: true
 ---
 

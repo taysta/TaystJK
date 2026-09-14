@@ -1,6 +1,7 @@
 ---
 title: "char_color_blue"
 layout: reference
+generated: true
 nav_exclude: true
 search_exclude: false
 ---

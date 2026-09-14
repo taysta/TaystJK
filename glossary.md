@@ -3,6 +3,7 @@ title: "Glossary"
 layout: reference
 nav_order: 8
 description: "Terms the guides and the console reference assume you already know."
+toc: true
 ---
 
 <div class="page-heading" markdown="1">

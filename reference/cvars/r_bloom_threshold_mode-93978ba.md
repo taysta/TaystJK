@@ -1,6 +1,7 @@
 ---
 title: "r_bloom_threshold_mode"
 layout: reference
+generated: true
 nav_exclude: true
 search_exclude: false
 ---

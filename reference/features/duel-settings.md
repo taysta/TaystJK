@@ -1,6 +1,7 @@
 ---
 title: "Duel settings"
 layout: reference
+generated: true
 nav_order: 9
 parent: "By feature"
 wide: true

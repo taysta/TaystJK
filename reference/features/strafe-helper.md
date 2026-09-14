@@ -1,6 +1,7 @@
 ---
 title: "Strafe helper"
 layout: reference
+generated: true
 nav_order: 25
 parent: "By feature"
 wide: true

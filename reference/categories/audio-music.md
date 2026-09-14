@@ -1,6 +1,7 @@
 ---
 title: "Audio & music"
 layout: reference
+generated: true
 nav_order: 2
 parent: "By topic"
 wide: true

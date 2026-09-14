@@ -1,6 +1,7 @@
 ---
 title: "By module"
 layout: reference
+generated: true
 nav_order: 4
 parent: "Console reference"
 wide: true

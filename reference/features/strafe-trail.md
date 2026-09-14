@@ -1,6 +1,7 @@
 ---
 title: "Strafe trail"
 layout: reference
+generated: true
 nav_order: 26
 parent: "By feature"
 wide: true

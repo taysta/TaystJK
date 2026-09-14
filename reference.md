@@ -1,6 +1,7 @@
 ---
 title: "Console reference"
 layout: reference
+generated: true
 nav_order: 6
 wide: true
 reference_app: true

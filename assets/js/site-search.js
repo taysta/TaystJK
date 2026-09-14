@@ -97,11 +97,15 @@
     var headings = Array.prototype.filter.call(
       article.querySelectorAll("h2[id], h3[id]"),
       function (heading) {
+        /* data-toc-skip marks a heading that labels furniture rather than a section of
+           the page -- a sidebar caption, a mounted widget's title. */
+        if (heading.hasAttribute("data-toc-skip")) return false;
         return !heading.closest("[data-platform-panel], [data-baseline-panel]");
       }
     );
 
-    if (headings.length < 3) return;
+    /* Two is enough to be worth navigating; one is just the page itself. */
+    if (headings.length < 2) return;
 
     var storageKey = "taystjk-toc-collapsed";
     var collapsed = false;

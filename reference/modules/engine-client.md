@@ -1,6 +1,7 @@
 ---
 title: "engine-client"
 layout: reference
+generated: true
 nav_order: 2
 parent: "By module"
 wide: true

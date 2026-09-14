@@ -1,6 +1,7 @@
 ---
 title: "cg_siegeTeam1Name"
 layout: reference
+generated: true
 nav_exclude: true
 search_exclude: false
 ---

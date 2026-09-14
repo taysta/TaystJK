@@ -1,6 +1,7 @@
 ---
 title: "Bots & AI"
 layout: reference
+generated: true
 nav_order: 3
 parent: "By topic"
 wide: true

@@ -1,6 +1,7 @@
 ---
 title: "r_ext_multisample"
 layout: reference
+generated: true
 nav_exclude: true
 search_exclude: false
 ---

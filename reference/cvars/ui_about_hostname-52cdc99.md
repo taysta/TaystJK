@@ -1,6 +1,7 @@
 ---
 title: "ui_about_hostname"
 layout: reference
+generated: true
 nav_exclude: true
 search_exclude: false
 ---

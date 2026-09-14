@@ -1,6 +1,7 @@
 ---
 title: "Static A\u2013Z index"
 layout: reference
+generated: true
 wide: true
 description: "A no-JavaScript index of every TaystJK cvar and console command."
 ---

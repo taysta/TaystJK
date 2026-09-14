@@ -1,6 +1,7 @@
 ---
 title: "Wind"
 layout: reference
+generated: true
 nav_order: 29
 parent: "By feature"
 wide: true

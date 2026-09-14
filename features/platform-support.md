@@ -4,6 +4,7 @@ layout: reference
 nav_order: 10
 parent: "Features"
 description: "Features whose availability depends on your operating system or processor architecture."
+toc: true
 ---
 
 <div class="page-heading" markdown="1">

@@ -1,6 +1,7 @@
 ---
 title: "cl_noprint"
 layout: reference
+generated: true
 nav_exclude: true
 search_exclude: false
 ---

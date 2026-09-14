@@ -1,6 +1,7 @@
 ---
 title: "EternalJK"
 layout: reference
+generated: true
 nav_order: 2
 parent: "By origin"
 wide: true

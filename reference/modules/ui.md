@@ -1,6 +1,7 @@
 ---
 title: "ui"
 layout: reference
+generated: true
 nav_order: 7
 parent: "By module"
 wide: true

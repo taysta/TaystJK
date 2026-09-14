@@ -1,6 +1,7 @@
 ---
 title: "ui_tm1_cnt"
 layout: reference
+generated: true
 nav_exclude: true
 search_exclude: false
 ---

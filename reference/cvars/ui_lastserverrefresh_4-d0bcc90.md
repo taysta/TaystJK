@@ -1,6 +1,7 @@
 ---
 title: "ui_lastServerRefresh_4"
 layout: reference
+generated: true
 nav_exclude: true
 search_exclude: false
 ---

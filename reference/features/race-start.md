@@ -1,6 +1,7 @@
 ---
 title: "Race start"
 layout: reference
+generated: true
 nav_order: 18
 parent: "By feature"
 wide: true

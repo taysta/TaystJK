@@ -1,6 +1,7 @@
 ---
 title: "ui_sha_b"
 layout: reference
+generated: true
 nav_exclude: true
 search_exclude: false
 ---

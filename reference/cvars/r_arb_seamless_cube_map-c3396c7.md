@@ -1,6 +1,7 @@
 ---
 title: "r_arb_seamless_cube_map"
 layout: reference
+generated: true
 nav_exclude: true
 search_exclude: false
 ---

@@ -1,6 +1,7 @@
 ---
 title: "Pitch helper"
 layout: reference
+generated: true
 nav_order: 17
 parent: "By feature"
 wide: true

@@ -1,9 +1,11 @@
 ---
 title: "Sources and methodology"
 layout: reference
+generated: true
 nav_order: 6
 parent: "Console reference"
 description: "Which upstream project each entry is attributed to, and the rules the resolver follows to decide."
+toc: true
 ---
 
 # Sources and methodology

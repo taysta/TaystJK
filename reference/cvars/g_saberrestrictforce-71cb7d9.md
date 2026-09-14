@@ -1,6 +1,7 @@
 ---
 title: "g_saberRestrictForce"
 layout: reference
+generated: true
 nav_exclude: true
 search_exclude: false
 ---

@@ -1,6 +1,7 @@
 ---
 title: "Files & downloads"
 layout: reference
+generated: true
 nav_order: 8
 parent: "By topic"
 wide: true

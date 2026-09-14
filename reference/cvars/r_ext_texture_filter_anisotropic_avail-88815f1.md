@@ -1,6 +1,7 @@
 ---
 title: "r_ext_texture_filter_anisotropic_avail"
 layout: reference
+generated: true
 nav_exclude: true
 search_exclude: false
 ---

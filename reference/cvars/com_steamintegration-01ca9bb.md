@@ -1,6 +1,7 @@
 ---
 title: "com_steamIntegration"
 layout: reference
+generated: true
 nav_exclude: true
 search_exclude: false
 ---

@@ -1,6 +1,7 @@
 ---
 title: "cg_raceTimerY"
 layout: reference
+generated: true
 nav_exclude: true
 search_exclude: false
 ---

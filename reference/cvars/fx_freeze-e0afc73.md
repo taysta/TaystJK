@@ -1,6 +1,7 @@
 ---
 title: "fx_freeze"
 layout: reference
+generated: true
 nav_exclude: true
 search_exclude: false
 ---

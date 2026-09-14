@@ -1,6 +1,7 @@
 ---
 title: "Chat & social"
 layout: reference
+generated: true
 nav_order: 4
 parent: "By topic"
 wide: true

@@ -1,6 +1,7 @@
 ---
 title: "Dynamic lights"
 layout: reference
+generated: true
 nav_order: 10
 parent: "By feature"
 wide: true
