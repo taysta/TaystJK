@@ -100,6 +100,13 @@ assert.equal(catalog.choosePlatform("", "macos", "Win32"), "macos");
 assert.equal(catalog.choosePlatform("invalid", "invalid", "Linux x86_64"), "linux");
 assert.equal(catalog.choosePlatform("Windows", "", "Linux x86_64"), "windows");
 
+// Detection against the strings browsers actually report, rather than bare tokens.
+assert.equal(catalog.choosePlatform("", "", "macOS MacIntel Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7)"), "macos");
+assert.equal(catalog.choosePlatform("", "", "Win32 Mozilla/5.0 (Windows NT 10.0; Win64; x64)"), "windows");
+// Windows is the fallback when nothing can be told apart, including an empty string --
+// it is the platform most readers are on, and the one the tab order leads with.
+assert.equal(catalog.choosePlatform("", "", ""), "windows");
+
 // What's-new baseline toggle: query wins, then stored, then the default.
 assert.equal(catalog.chooseBaseline("openjk", "basejka"), "openjk");
 assert.equal(catalog.chooseBaseline("", "basejka"), "basejka");

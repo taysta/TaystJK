@@ -65,8 +65,8 @@ Choose your operating system to see its debugger setup. Your selection is saved 
     <p class="platform-selector-label">Operating system</p>
     <div class="platform-selector" role="tablist" aria-label="Operating system">
       <button type="button" id="platform-tab-windows" role="tab" aria-controls="platform-panel-windows" aria-selected="false" tabindex="-1" data-platform-choice="windows">Windows</button>
-      <button type="button" id="platform-tab-linux" role="tab" aria-controls="platform-panel-linux" aria-selected="false" tabindex="-1" data-platform-choice="linux">Linux</button>
       <button type="button" id="platform-tab-macos" role="tab" aria-controls="platform-panel-macos" aria-selected="false" tabindex="-1" data-platform-choice="macos">macOS</button>
+      <button type="button" id="platform-tab-linux" role="tab" aria-controls="platform-panel-linux" aria-selected="false" tabindex="-1" data-platform-choice="linux">Linux</button>
     </div>
   </div>
 
@@ -107,20 +107,6 @@ After changing engine or module code, build **Debug** again and rerun **INSTALL*
 If a breakpoint remains hollow, open **Debug → Windows → Modules** and confirm that the expected installed DLL and its matching PDB were loaded. The debugger properties are stored in Visual Studio's per-user project settings, so deleting and regenerating `build-vs` requires configuring them again.
   </section>
 
-  <section class="platform-panel" id="platform-panel-linux" role="tabpanel" aria-labelledby="platform-tab-linux" tabindex="0" data-platform-panel="linux" markdown="1">
-## Linux
-
-### GDB
-
-Launch the installed executable from the test directory so relative game paths resolve correctly:
-
-```bash
-gdb --args ./taystjk.x86_64 +set r_fullscreen 0 +set fs_game taystjk
-```
-
-Useful first commands are `run`, `bt`, `info sharedlibrary`, and `break function_name`.
-  </section>
-
   <section class="platform-panel" id="platform-panel-macos" role="tabpanel" aria-labelledby="platform-tab-macos" tabindex="0" data-platform-panel="macos" markdown="1">
 ## macOS
 
@@ -145,6 +131,20 @@ lldb -- "$HOME/Library/Application Support/TaystJK/taystjk.arm64.app/Contents/Ma
 
 Useful first commands are `run`, `thread backtrace`, `image list`, and `break function_name`.
   </section>
+  <section class="platform-panel" id="platform-panel-linux" role="tabpanel" aria-labelledby="platform-tab-linux" tabindex="0" data-platform-panel="linux" markdown="1">
+## Linux
+
+### GDB
+
+Launch the installed executable from the test directory so relative game paths resolve correctly:
+
+```bash
+gdb --args ./taystjk.x86_64 +set r_fullscreen 0 +set fs_game taystjk
+```
+
+Useful first commands are `run`, `bt`, `info sharedlibrary`, and `break function_name`.
+  </section>
+
 </section>
 
 ## CLion
