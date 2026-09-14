@@ -85,9 +85,20 @@ Most tasks read `master` while writing `gh-pages`. A worktree is checked out so 
 readable at once:
 
     /Users/tayst/CLionProjects/TaystJK        <- docs branch (gh-pages family)
-    /Users/tayst/CLionProjects/TaystJK-src    <- master (engine source)
+    /Users/tayst/CLionProjects/TaystJK-src    <- engine source, detached HEAD
 
-Recreate it if missing: `git worktree add ../TaystJK-src master`.
+The source worktree is **detached, not on `master`**, and should stay that way: git refuses
+to check a branch out in two places, so holding `master` here stops it being opened in an
+IDE or anywhere else. Detached costs nothing, since everything done here is reading.
+
+Recreate it if missing:
+
+    git worktree add --detach ../TaystJK-src origin/master
+
+Move it to a newer commit with `git -C ../TaystJK-src checkout --detach <ref>`. Nothing in
+the pipeline reads this worktree's HEAD — `check_drift.py` and `provenance.py` use the
+remote-tracking refs in the main checkout — so its position only affects what you see when
+reading files there.
 
 Untracked `build/`, `cmake-build-*/`, `lib/`, `compile_commands.json`, `.idea/` are local
 artifacts, not part of the site.
