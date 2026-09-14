@@ -1181,6 +1181,10 @@ kbd { padding: .15rem .42rem; color: var(--text-soft); background: var(--surface
   .brand-mark { width: 34px; height: 34px; }
   .site-nav { flex: 1; justify-content: space-between; gap: 0; }
   .site-nav a { padding: .45rem .42rem; font-size: .72rem; }
+  /* The header is flex here, so the grid-column rule the search box gets at 900px does
+     nothing. Wrap it onto its own row instead of letting it fight the nav for width. */
+  .header-inner { flex-wrap: wrap; row-gap: .5rem; padding-bottom: .5rem; }
+  .site-search { flex: 1 0 100%; order: 3; }
   .wip-banner-inner { flex-wrap: wrap; gap: .1rem .45rem; width: min(calc(100% - 1.25rem), var(--wide)); padding: .5rem 0; line-height: 1.4; }
   .site-main,
   .site-main-wide,
@@ -1533,4 +1537,59 @@ kbd { padding: .15rem .42rem; color: var(--text-soft); background: var(--surface
 
   .page-toc-rail[data-collapsed="true"] .page-toc-label { display: inline; }
   .page-toc-rail[data-collapsed="true"] .page-toc-toggle { justify-content: flex-start; }
+}
+
+
+/* ----------------------------------------------------------- syntax highlighting
+
+   Kramdown runs fenced code through Rouge, which emits these classes. Without a theme
+   the markup is present but invisible and every block renders flat. Tuned to the page
+   palette rather than a stock theme, so code sits in the design instead of beside it. */
+
+.highlight .c, .highlight .c1, .highlight .cm, .highlight .cs { color: #6f7d92; font-style: italic; }
+.highlight .k, .highlight .kd, .highlight .kn, .highlight .kp, .highlight .kr, .highlight .kt { color: var(--violet); }
+.highlight .s, .highlight .s1, .highlight .s2, .highlight .sb, .highlight .sc, .highlight .sd,
+.highlight .sh, .highlight .si, .highlight .sx, .highlight .dl { color: #9fd8a8; }
+.highlight .se { color: var(--gold); }
+.highlight .m, .highlight .mi, .highlight .mf, .highlight .mh, .highlight .mo, .highlight .il { color: var(--gold); }
+.highlight .na, .highlight .nt { color: var(--accent); }
+.highlight .nb, .highlight .bp, .highlight .nc, .highlight .nf, .highlight .nn { color: #8fc7f0; }
+.highlight .nv, .highlight .vg, .highlight .vi { color: var(--text); }
+.highlight .o, .highlight .ow, .highlight .p, .highlight .pi { color: var(--text-soft); }
+.highlight .cp { color: #6f7d92; }
+.highlight .err { color: var(--danger); }
+.highlight .gd { color: var(--danger); }
+.highlight .gi { color: #9fd8a8; }
+
+/* --------------------------------------------------------------- copy code */
+
+.code-block { position: relative; }
+
+.code-copy {
+  position: absolute;
+  top: .55rem;
+  right: .55rem;
+  padding: .22rem .5rem;
+  color: var(--muted);
+  font: inherit;
+  font-size: .7rem;
+  font-weight: 600;
+  letter-spacing: .04em;
+  cursor: pointer;
+  background: var(--surface-2);
+  border: 1px solid var(--line);
+  border-radius: 5px;
+  opacity: 0;
+  transition: opacity .12s ease-in-out, color .12s ease-in-out;
+}
+
+.code-block:hover .code-copy,
+.code-copy:focus-visible { opacity: 1; }
+
+.code-copy:hover { color: var(--text); border-color: var(--line-bright); }
+.code-copy.is-copied { color: var(--accent); border-color: var(--accent); opacity: 1; }
+
+/* Touch devices have no hover, so the button would never appear. */
+@media (hover: none) {
+  .code-copy { opacity: 1; }
 }
