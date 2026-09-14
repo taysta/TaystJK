@@ -1,6 +1,8 @@
 ---
 title: "Compiling"
 layout: reference
+parent: "Development"
+nav_order: 1
 description: "Configure and compile TaystJK with CMake on Windows, Linux, or macOS."
 toc: true
 ---

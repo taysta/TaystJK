@@ -2,6 +2,7 @@
 title: "In-game documentation (xdocs)"
 layout: reference
 parent: "Development"
+nav_order: 6
 description: "How a cvar or command documents itself inside the client, what the macros do, and how that relates to the description in its registration."
 toc: true
 ---

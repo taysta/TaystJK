@@ -1,6 +1,8 @@
 ---
 title: "Libraries and versions"
 layout: reference
+parent: "Development"
+nav_order: 3
 description: "Bundled and optional third-party libraries used by the current TaystJK source tree."
 toc: true
 ---
