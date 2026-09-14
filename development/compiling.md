@@ -54,8 +54,8 @@ Choose your operating system to see its prerequisites and build steps. Your sele
     <p class="platform-selector-label">Operating system</p>
     <div class="platform-selector" role="tablist" aria-label="Operating system">
       <button type="button" id="platform-tab-windows" role="tab" aria-controls="platform-panel-windows" aria-selected="false" tabindex="-1" data-platform-choice="windows">Windows</button>
-      <button type="button" id="platform-tab-linux" role="tab" aria-controls="platform-panel-linux" aria-selected="false" tabindex="-1" data-platform-choice="linux">Linux</button>
       <button type="button" id="platform-tab-macos" role="tab" aria-controls="platform-panel-macos" aria-selected="false" tabindex="-1" data-platform-choice="macos">macOS</button>
+      <button type="button" id="platform-tab-linux" role="tab" aria-controls="platform-panel-linux" aria-selected="false" tabindex="-1" data-platform-choice="linux">Linux</button>
     </div>
   </div>
 
@@ -77,6 +77,28 @@ You can instead open the generated `TaystJK.sln`, select `RelWithDebInfo` and `x
 Prefer an x64 build when developing or testing rend2. Its memory use can exhaust a 32-bit process's limited address space on demanding maps or asset sets. Build for Win32 only when you need to test a 32-bit compatibility path, such as the shipped `EaxMan.dll` integration.
   </section>
 
+  <section class="platform-panel" id="platform-panel-macos" role="tabpanel" aria-labelledby="platform-tab-macos" tabindex="0" data-platform-panel="macos" markdown="1">
+## macOS
+
+Install Xcode Command Line Tools and CMake. The repository bundles the image libraries and SDL for the default Apple build:
+
+```bash
+xcode-select --install
+brew install cmake
+cmake -S . -B build -G Xcode \
+  -DCMAKE_INSTALL_PREFIX="$HOME/Library/Application Support/Steam/steamapps/common/Jedi Academy"
+cmake --build build --config RelWithDebInfo --parallel
+```
+
+On Apple silicon, CMake selects `arm64` from the host architecture and raises the deployment target to macOS 11 when necessary. For a development build, run the install target and then use the repository's helper to move and sign the installed files:
+
+```bash
+cmake --build build --config RelWithDebInfo --target install
+./scripts/macosx/moveandsign.sh
+```
+
+The helper currently expects the install staging directory under the default Steam location and moves the result to `~/Library/Application Support/TaystJK`. Review the path and architecture variables at the top of [the script](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/scripts/macosx/moveandsign.sh) before using it with a different setup. The [debugging guide](/TaystJK/development/debugging/#clion) covers pointing CLion at the executable in that installed layout.
+  </section>
   <section class="platform-panel" id="platform-panel-linux" role="tabpanel" aria-labelledby="platform-tab-linux" tabindex="0" data-platform-panel="linux" markdown="1">
 ## Linux
 
@@ -108,28 +130,6 @@ cmake --build build-server --parallel
 ```
   </section>
 
-  <section class="platform-panel" id="platform-panel-macos" role="tabpanel" aria-labelledby="platform-tab-macos" tabindex="0" data-platform-panel="macos" markdown="1">
-## macOS
-
-Install Xcode Command Line Tools and CMake. The repository bundles the image libraries and SDL for the default Apple build:
-
-```bash
-xcode-select --install
-brew install cmake
-cmake -S . -B build -G Xcode \
-  -DCMAKE_INSTALL_PREFIX="$HOME/Library/Application Support/Steam/steamapps/common/Jedi Academy"
-cmake --build build --config RelWithDebInfo --parallel
-```
-
-On Apple silicon, CMake selects `arm64` from the host architecture and raises the deployment target to macOS 11 when necessary. For a development build, run the install target and then use the repository's helper to move and sign the installed files:
-
-```bash
-cmake --build build --config RelWithDebInfo --target install
-./scripts/macosx/moveandsign.sh
-```
-
-The helper currently expects the install staging directory under the default Steam location and moves the result to `~/Library/Application Support/TaystJK`. Review the path and architecture variables at the top of [the script](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/scripts/macosx/moveandsign.sh) before using it with a different setup. The [debugging guide](/TaystJK/development/debugging/#clion) covers pointing CLion at the executable in that installed layout.
-  </section>
 </section>
 
 ## Install and test

@@ -36,8 +36,8 @@ Choose your operating system to see its prerequisites and installation steps. Yo
     <p class="platform-selector-label">Operating system</p>
     <div class="platform-selector" role="tablist" aria-label="Operating system">
       <button type="button" id="platform-tab-windows" role="tab" aria-controls="platform-panel-windows" aria-selected="false" tabindex="-1" data-platform-choice="windows">Windows</button>
-      <button type="button" id="platform-tab-linux" role="tab" aria-controls="platform-panel-linux" aria-selected="false" tabindex="-1" data-platform-choice="linux">Linux</button>
       <button type="button" id="platform-tab-macos" role="tab" aria-controls="platform-panel-macos" aria-selected="false" tabindex="-1" data-platform-choice="macos">macOS</button>
+      <button type="button" id="platform-tab-linux" role="tab" aria-controls="platform-panel-linux" aria-selected="false" tabindex="-1" data-platform-choice="linux">Linux</button>
     </div>
   </div>
 
@@ -69,6 +69,37 @@ This is the simplest layout when TaystJK is your only modded client.
 For a non-Steam copy, locate the directory containing `base`, `jamp.exe`, and `jasp.exe`; that is the `GameData` directory.
   </section>
 
+  <section class="platform-panel" id="platform-panel-macos" role="tabpanel" aria-labelledby="platform-tab-macos" tabindex="0" data-platform-panel="macos" markdown="1">
+## macOS
+
+### Install prerequisites
+
+Current TaystJK releases bundle SDL 2 inside the app, along with the non-system image and compression libraries. No Homebrew package is required for the current prebuilt app. If an older archive reports a missing SDL library, replace it with the current release; `brew install sdl2` is only relevant to an older system-linked build or a source build configured with `UseInternalSDL2=OFF`.
+
+### Install TaystJK
+
+This is the simplest layout when TaystJK is your only modded client.
+
+1. Extract the TaystJK archive and copy its `.app` bundle to a directory you control.
+2. Put the retail `base` directory beside the app, or point the app at an existing Jedi Academy installation with `fs_cdPath` as described below.
+3. Launch the app. User data is stored under `~/Library/Application Support/TaystJK/`.
+
+The [release workflow](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/.github/workflows/build.yml#L435) ad-hoc signs the universal app before packaging, so a normal installation does not need another `codesign` command. If macOS quarantines the downloaded app and refuses to open it, clear that attribute from the extracted bundle:
+
+```bash
+xattr -dr com.apple.quarantine "/path/to/taystjk.app"
+```
+
+Run this without `sudo` when the app is in a directory you own. Use `sudo` only if `xattr` reports a permissions error and you have confirmed the path is the intended TaystJK bundle. Quarantine alone is not a reason to re-sign the app. You can verify the packaged signature with:
+
+```bash
+codesign --verify --deep --strict "/path/to/taystjk.app"
+```
+
+If verification fails, re-extract a fresh copy of the official archive rather than blindly signing the damaged copy. The separate `moveandsign.sh` workflow described in the [debugging guide](/TaystJK/development/debugging/#macos-move-and-sign-the-installed-build) is for locally built development binaries.
+
+On Apple silicon, use the universal or native arm64 release. Intel Macs need the x86_64 release.
+  </section>
   <section class="platform-panel" id="platform-panel-linux" role="tabpanel" aria-labelledby="platform-tab-linux" tabindex="0" data-platform-panel="linux" markdown="1">
 ## Linux
 
@@ -113,37 +144,6 @@ This is the simplest layout when TaystJK is your only modded client.
 If the retail files are only available through Steam, SteamCMD can download app `6020` after setting `@sSteamCmdForcePlatformType windows`; only the platform-neutral PK3 assets are needed from that download.
   </section>
 
-  <section class="platform-panel" id="platform-panel-macos" role="tabpanel" aria-labelledby="platform-tab-macos" tabindex="0" data-platform-panel="macos" markdown="1">
-## macOS
-
-### Install prerequisites
-
-Current TaystJK releases bundle SDL 2 inside the app, along with the non-system image and compression libraries. No Homebrew package is required for the current prebuilt app. If an older archive reports a missing SDL library, replace it with the current release; `brew install sdl2` is only relevant to an older system-linked build or a source build configured with `UseInternalSDL2=OFF`.
-
-### Install TaystJK
-
-This is the simplest layout when TaystJK is your only modded client.
-
-1. Extract the TaystJK archive and copy its `.app` bundle to a directory you control.
-2. Put the retail `base` directory beside the app, or point the app at an existing Jedi Academy installation with `fs_cdPath` as described below.
-3. Launch the app. User data is stored under `~/Library/Application Support/TaystJK/`.
-
-The [release workflow](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/.github/workflows/build.yml#L435) ad-hoc signs the universal app before packaging, so a normal installation does not need another `codesign` command. If macOS quarantines the downloaded app and refuses to open it, clear that attribute from the extracted bundle:
-
-```bash
-xattr -dr com.apple.quarantine "/path/to/taystjk.app"
-```
-
-Run this without `sudo` when the app is in a directory you own. Use `sudo` only if `xattr` reports a permissions error and you have confirmed the path is the intended TaystJK bundle. Quarantine alone is not a reason to re-sign the app. You can verify the packaged signature with:
-
-```bash
-codesign --verify --deep --strict "/path/to/taystjk.app"
-```
-
-If verification fails, re-extract a fresh copy of the official archive rather than blindly signing the damaged copy. The separate `moveandsign.sh` workflow described in the [debugging guide](/TaystJK/development/debugging/#macos-move-and-sign-the-installed-build) is for locally built development binaries.
-
-On Apple silicon, use the universal or native arm64 release. Intel Macs need the x86_64 release.
-  </section>
 </section>
 
 ## Installing several modded clients
