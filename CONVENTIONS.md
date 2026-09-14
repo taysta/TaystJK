@@ -136,6 +136,16 @@ Below three headings the rail suppresses itself regardless, so `toc: true` on a 
 inert rather than broken. Headings inside a tab panel are always left out: only one panel is
 visible at a time, so a link into a hidden one goes nowhere the reader can see.
 
+## 3b. What the layout adds on every page
+
+Written once, so pages do not reimplement them:
+
+- **Heading anchors** on `h2`–`h4`, and the contents rail where `toc: true` is set (§3a).
+- **A copy button on every code block**, added by JS. Nothing in the Markdown is needed.
+- **Syntax highlighting** for fenced blocks with a language tag, which is why §4 requires
+  one — an untagged fence renders flat.
+- **Search**, which reads `search-index.json`; opt a page out with `search_exclude`.
+
 ## 4. Code fences
 
 Every fence carries a language tag. Tags in use:

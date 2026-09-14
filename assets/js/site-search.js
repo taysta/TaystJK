@@ -43,6 +43,47 @@
     });
   }
 
+  /* ------------------------------------------------------------- copy code */
+
+  function addCopyButtons() {
+    if (!global.navigator.clipboard) return;
+    var article = doc.querySelector(".page-content");
+    if (!article) return;
+
+    Array.prototype.forEach.call(article.querySelectorAll("pre"), function (block) {
+      if (block.parentElement.classList.contains("code-block")) return;
+
+      var wrap = doc.createElement("div");
+      wrap.className = "code-block";
+      block.parentNode.insertBefore(wrap, block);
+      wrap.appendChild(block);
+
+      var button = doc.createElement("button");
+      button.type = "button";
+      button.className = "code-copy";
+      button.textContent = "Copy";
+      /* Most blocks here are commands to paste into a console, so name what is being
+         copied rather than leaving a screen reader with a row of bare "Copy" buttons. */
+      button.setAttribute("aria-label", "Copy code to clipboard");
+
+      button.addEventListener("click", function () {
+        global.navigator.clipboard.writeText(block.innerText.replace(/\n$/, "")).then(function () {
+          button.textContent = "Copied";
+          button.classList.add("is-copied");
+          global.setTimeout(function () {
+            button.textContent = "Copy";
+            button.classList.remove("is-copied");
+          }, 1400);
+        }, function () {
+          button.textContent = "Press Ctrl+C";
+          global.setTimeout(function () { button.textContent = "Copy"; }, 1800);
+        });
+      });
+
+      wrap.appendChild(button);
+    });
+  }
+
   /* -------------------------------------------------------------------- toc */
 
   function buildToc() {
@@ -312,6 +353,7 @@
        appends a "#" link inside each heading. */
     buildToc();
     addHeadingAnchors();
+    addCopyButtons();
     setupSearch();
   }
 
