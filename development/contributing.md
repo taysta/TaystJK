@@ -2,6 +2,7 @@
 title: "Contributing"
 layout: reference
 parent: "Development"
+nav_order: 5
 description: "How changes reach TaystJK: which branch to target, what CI builds, how to test a fix without compiling it yourself, and what a new cvar owes the documentation."
 toc: true
 ---

@@ -2,6 +2,7 @@
 title: "How this site is built"
 layout: reference
 parent: "Development"
+nav_order: 7
 description: "The pipeline that generates the console reference from engine source, what each script does, and how to add or change a page."
 toc: true
 ---

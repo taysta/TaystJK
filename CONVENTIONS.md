@@ -146,6 +146,17 @@ Written once, so pages do not reimplement them:
   work the next pipeline run throws away.
 - **Print styles**, which drop the chrome and invert the palette, since the dark theme
   prints as a solid black page.
+- **A breadcrumb** on any page with a `parent`, linking back to the section index.
+- **Previous/next links** across a section, ordered by `parent` + `nav_order`. Those two
+  fields were inert after the theme was removed; this gives them a job again, so a new
+  child page needs both or it drops out of the sequence.
+- **A "Last changed" date and a History link**, from `_data/page_updated.json`. Refresh it
+  with `python3 tools/cvar_audit/page_dates.py`; it lags by one commit, which is fine for
+  judging a page's age, and the History link is exact when precision matters.
+- **Light and dark themes.** Every colour resolves from a token in `:root`, and tints are
+  `color-mix()` on those tokens, so a theme is a second set of values rather than a second
+  stylesheet. Do not add a raw colour to a rule — add a token. Both themes are checked to
+  meet WCAG AA for body text, links and headings.
 
 ## 4. Code fences
 

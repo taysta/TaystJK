@@ -1,6 +1,8 @@
 ---
 title: "Debugging"
 layout: reference
+parent: "Development"
+nav_order: 2
 description: "Debug the TaystJK engine and game modules with Visual Studio, GDB, LLDB, or CLion."
 toc: true
 ---

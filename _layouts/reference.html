@@ -31,7 +31,15 @@
     <link rel="alternate" type="application/atom+xml" title="{{ site.title }} devlog" href="{{ '/devlog/feed.xml' | absolute_url }}">
     <link rel="icon" type="image/x-icon" href="{{ '/shared/icons/TaystJK.ico' | relative_url }}">
     <link rel="stylesheet" href="{{ '/assets/css/reference.css' | relative_url }}">
-    <script>document.documentElement.classList.add('js');</script>
+    <script>
+      document.documentElement.classList.add('js');
+      try {
+        var saved = localStorage.getItem('taystjk-theme');
+        if (saved === 'light' || saved === 'dark') {
+          document.documentElement.setAttribute('data-theme', saved);
+        }
+      } catch (e) { /* private mode; the system preference still applies */ }
+    </script>
     <script defer src="{{ '/assets/js/reference-app.js' | relative_url }}"></script>
     <script defer src="{{ '/assets/js/site-search.js' | relative_url }}"></script>
   </head>
@@ -71,6 +79,11 @@
           <p class="search-status visually-hidden" role="status" aria-live="polite"></p>
         </form>
 
+        <button type="button" class="theme-toggle" aria-label="Switch between light and dark theme">
+          <svg class="theme-icon-dark" aria-hidden="true" viewBox="0 0 24 24"><path d="M12 3a9 9 0 1 0 9 9 7 7 0 0 1-9-9Z"/></svg>
+          <svg class="theme-icon-light" aria-hidden="true" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4.2"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3M4.9 4.9l2.1 2.1M17 17l2.1 2.1M19.1 4.9 17 7M7 17l-2.1 2.1" stroke="currentColor" stroke-width="1.9" fill="none" stroke-linecap="round"/></svg>
+        </button>
+
         <a class="header-github" href="https://github.com/taysta/TaystJK" rel="noopener">
           <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M12 .8a11.4 11.4 0 0 0-3.6 22.2c.6.1.8-.2.8-.5v-2c-3.3.7-4-1.4-4-1.4-.5-1.4-1.3-1.8-1.3-1.8-1.1-.7.1-.7.1-.7 1.2.1 1.8 1.2 1.8 1.2 1.1 1.8 2.8 1.3 3.4 1 .1-.8.4-1.3.8-1.6-2.7-.3-5.5-1.3-5.5-5.7 0-1.3.5-2.3 1.2-3.1-.1-.3-.5-1.6.1-3.1 0 0 1-.3 3.2 1.2a11 11 0 0 1 5.8 0c2.2-1.5 3.2-1.2 3.2-1.2.6 1.5.2 2.8.1 3.1.8.8 1.2 1.8 1.2 3.1 0 4.4-2.8 5.4-5.5 5.7.4.4.8 1.1.8 2.2v3.2c0 .3.2.6.8.5A11.4 11.4 0 0 0 12 .8Z"/></svg>
           <span>GitHub</span>
@@ -89,14 +102,29 @@
     {% endif %}
 
     <main id="main-content" class="site-main{% if page.wide %} site-main-wide{% endif %}">
-      {% if page.nav_exclude and page.url contains '/reference/' %}
-      <nav class="breadcrumbs" aria-label="Breadcrumb">
-        <a href="{{ '/reference/' | relative_url }}">Console reference</a>
-        <span aria-hidden="true">/</span>
-        <span>{{ page.title }}</span>
-      </nav>
-      {% endif %}
       <article class="page-content"{% if page.toc %} data-toc{% endif %}>
+      {%- comment -%}
+          Child pages say where they sit and offer a way back up. The parent's title is
+          matched against the section index pages, which carry the same title.
+        {%- endcomment -%}
+        {% if page.parent %}
+        {%- assign parent_page = site.pages | where: "title", page.parent | first %}
+        <nav class="breadcrumbs" aria-label="Breadcrumb">
+          {%- if parent_page %}
+          <a href="{{ parent_page.url | relative_url }}">{{ page.parent }}</a>
+          {%- else %}
+          <span>{{ page.parent }}</span>
+          {%- endif %}
+          <span aria-hidden="true">/</span>
+          <span>{{ page.title }}</span>
+        </nav>
+        {% elsif page.nav_exclude and page.url contains '/reference/' %}
+        <nav class="breadcrumbs" aria-label="Breadcrumb">
+          <a href="{{ '/reference/' | relative_url }}">Console reference</a>
+          <span aria-hidden="true">/</span>
+          <span>{{ page.title }}</span>
+        </nav>
+        {% endif %}
         {% if page.status and page.status != 'stable' %}
         <p class="page-status-row">
           <span class="page-status page-status-{{ page.status }}">{{ page.status }}</span>
@@ -108,9 +136,48 @@
           Only on hand-written pages. The generator stamps `generated: true`, and an edit
           link on one of those would invite a change that the next pipeline run discards.
         {%- endcomment -%}
-        {%- unless page.generated %}
+        {%- comment -%}
+          Previous/next across a section, ordered by the `parent` + `nav_order` front
+          matter the pages already carry. Only pages that declare both take part, which
+          keeps the 2,000 generated entry pages out of it.
+        {%- endcomment -%}
+        {%- if page.parent and page.nav_order %}
+          {%- assign siblings = site.pages | where: "parent", page.parent | where_exp: "s", "s.nav_order" | sort: "nav_order" -%}
+          {%- assign here = -1 -%}
+          {%- for s in siblings -%}
+            {%- if s.url == page.url %}{% assign here = forloop.index0 %}{% endif -%}
+          {%- endfor -%}
+          {%- if here >= 0 and siblings.size > 1 %}
+          <nav class="page-sequence" aria-label="{{ page.parent }} section">
+            {%- if here > 0 -%}
+              {%- assign prev_index = here | minus: 1 -%}
+              {%- assign prev = siblings[prev_index] %}
+            <a class="page-sequence-prev" href="{{ prev.url | relative_url }}">
+              <span>Previous</span><strong>{{ prev.title }}</strong>
+            </a>
+            {%- endif -%}
+            {%- assign last = siblings.size | minus: 1 -%}
+            {%- if here < last -%}
+              {%- assign next_index = here | plus: 1 -%}
+              {%- assign next = siblings[next_index] %}
+            <a class="page-sequence-next" href="{{ next.url | relative_url }}">
+              <span>Next</span><strong>{{ next.title }}</strong>
+            </a>
+            {%- endif %}
+          </nav>
+          {%- endif -%}
+        {%- endif -%}
+
+        {%- assign updated = site.data.page_updated[page.path] -%}
+        {%- unless page.generated and updated == nil %}
         <p class="page-edit">
+          {%- if updated %}
+          <span class="page-updated">Last changed <time datetime="{{ updated }}">{{ updated | date: "%-d %B %Y" }}</time></span>
+          <a href="https://github.com/taysta/TaystJK/commits/gh-pages/{{ page.path }}">History</a>
+          {%- endif -%}
+          {%- unless page.generated %}
           <a href="https://github.com/taysta/TaystJK/edit/gh-pages/{{ page.path }}">Edit this page on GitHub</a>
+          {%- endunless %}
         </p>
         {%- endunless %}
       </article>
@@ -124,18 +191,16 @@
         </a>
         <p>A cross-platform, mod-aware client focused on compatibility, performance, and everyday quality of life.</p>
       </div>
+      {%- comment -%}
+        Deliberately short, and deliberately not a copy of the top nav: Install, Host,
+        Features, Develop, Reference and Devlog are already up there. What is left is the
+        orientation and meta pages that have nowhere else to live.
+      {%- endcomment -%}
       <nav aria-label="Footer navigation">
-        <a href="{{ '/install/' | relative_url }}">Install</a>
-        <a href="{{ '/server-hosting/' | relative_url }}">Server hosting</a>
-        <a href="{{ '/features/' | relative_url }}">Features</a>
-        <a href="{{ '/development/' | relative_url }}">Development</a>
-        <a href="{{ '/reference/' | relative_url }}">Console reference</a>
+        <a href="{{ '/overview/' | relative_url }}">Overview</a>
         <a href="{{ '/troubleshooting/' | relative_url }}">Troubleshooting</a>
         <a href="{{ '/where-to-report/' | relative_url }}">Where to report</a>
-        <a href="{{ '/mod-compatibility/' | relative_url }}">Mod compatibility</a>
-        <a href="{{ '/overview/' | relative_url }}">Overview</a>
         <a href="{{ '/glossary/' | relative_url }}">Glossary</a>
-        <a href="{{ '/devlog/' | relative_url }}">Devlog</a>
         <a href="{{ '/licensing/' | relative_url }}">Licensing</a>
         <a href="https://github.com/taysta/TaystJK/releases/tag/latest">Latest release</a>
       </nav>

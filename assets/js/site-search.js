@@ -43,6 +43,38 @@
     });
   }
 
+  /* ----------------------------------------------------------------- theme */
+
+  function setupTheme() {
+    var toggle = doc.querySelector(".theme-toggle");
+    if (!toggle) return;
+
+    var root = doc.documentElement;
+    var media = global.matchMedia ? global.matchMedia("(prefers-color-scheme: light)") : null;
+
+    function current() {
+      var explicit = root.getAttribute("data-theme");
+      if (explicit) return explicit;
+      return media && media.matches ? "light" : "dark";
+    }
+
+    function apply(theme) {
+      root.setAttribute("data-theme", theme);
+      toggle.setAttribute("aria-pressed", theme === "light" ? "true" : "false");
+      toggle.title = theme === "light" ? "Switch to dark theme" : "Switch to light theme";
+      try {
+        global.localStorage.setItem("taystjk-theme", theme);
+      } catch (error) {
+        // The toggle still works for this page view without storage.
+      }
+    }
+
+    apply(current());
+    toggle.addEventListener("click", function () {
+      apply(current() === "light" ? "dark" : "light");
+    });
+  }
+
   /* ------------------------------------------------------------- copy code */
 
   function addCopyButtons() {
@@ -355,6 +387,7 @@
   function init() {
     /* Order matters: the table of contents reads heading text, and addHeadingAnchors
        appends a "#" link inside each heading. */
+    setupTheme();
     buildToc();
     addHeadingAnchors();
     addCopyButtons();
