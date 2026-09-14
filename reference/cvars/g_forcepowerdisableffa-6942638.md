@@ -1,6 +1,7 @@
 ---
 title: "g_forcePowerDisableFFA"
 layout: reference
+generated: true
 nav_exclude: true
 search_exclude: false
 ---

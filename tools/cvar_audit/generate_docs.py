@@ -130,8 +130,9 @@ def frontmatter(
     wide: bool = False,
     reference_app: bool = False,
     description: str | None = None,
+    toc: bool = False,
 ) -> str:
-    lines = ["---", f"title: {json.dumps(title)}", "layout: reference"]
+    lines = ["---", f"title: {json.dumps(title)}", "layout: reference", "generated: true"]
     if nav_order is not None:
         lines.append(f"nav_order: {nav_order}")
     if parent:
@@ -144,6 +145,8 @@ def frontmatter(
         lines.append("reference_app: true")
     if description:
         lines.append(f"description: {json.dumps(description)}")
+    if toc:
+        lines.append("toc: true")
     lines.extend(["---", ""])
     return "\n".join(lines)
 
@@ -1195,6 +1198,7 @@ def home_page(cvars: list[dict[str, Any]], commands: list[dict[str, Any]]) -> st
         "TaystJK — one client for Jedi Academy multiplayer",
         1,
         wide=True,
+        toc=True,
         description=(
             "TaystJK is a cross-platform Jedi Academy multiplayer client built for Base JKA, "
             "JA+/JA++, jaPRO, and Lugormod servers, with modern performance and quality-of-life improvements."
@@ -1214,7 +1218,7 @@ def home_page(cvars: list[dict[str, Any]], commands: list[dict[str, Any]]) -> st
   </section>
 
   <nav class="docs-quick-links" aria-labelledby="quick-links-heading">
-    <h2 id="quick-links-heading">Quick links</h2>
+    <h2 id="quick-links-heading" data-toc-skip>Quick links</h2>
     <a href="{{{{ '/server-hosting/' | relative_url }}}}">
       <strong>Run a server</strong>
       <span>Docker Compose, server.cfg, downloads, and reflists</span>
@@ -1372,7 +1376,7 @@ def audit_page(
     ambiguous = [entry for entry in entries if entry["origin"]["confidence"] != "high"]
     modified = [entry for entry in entries if entry.get("modified_by")]
     modification_count = sum(len(entry.get("modified_by", [])) for entry in entries)
-    lines = [frontmatter("Audit report", 7, "Console reference",
+    lines = [frontmatter("Audit report", 7, "Console reference", toc=True,
         description="What the reference knows and how confidently: coverage, provenance confidence, and the entries still needing review."), "# Audit report", "",
              "This is the deliberately untidy review queue behind the published reference. `unknown` and `needs-review` are used instead of guesses.", "",
              "## Totals by origin", "", count_table(entries, lambda entry: ORIGIN_LABELS.get(entry["origin"]["source"], entry["origin"]["source"])), "",
@@ -1434,7 +1438,7 @@ def sources_page(refs: dict[str, str]) -> str:
         ref = ref_for[source]
         sha = refs.get(ref, ref)
         rows.append(f"| {badge(source)} | [`{repo}@{sha[:12]}`](https://github.com/{repo}/tree/{sha}) | {details[source]} |")
-    return frontmatter("Sources and methodology", 6, "Console reference",
+    return frontmatter("Sources and methodology", 6, "Console reference", toc=True,
         description="Which upstream project each entry is attributed to, and the rules the resolver follows to decide.") + """
 # Sources and methodology
 

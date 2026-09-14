@@ -1,6 +1,7 @@
 ---
 title: "By origin"
 layout: reference
+generated: true
 nav_order: 3
 parent: "Console reference"
 wide: true

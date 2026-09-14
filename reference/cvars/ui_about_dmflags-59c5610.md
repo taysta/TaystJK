@@ -1,6 +1,7 @@
 ---
 title: "ui_about_dmflags"
 layout: reference
+generated: true
 nav_exclude: true
 search_exclude: false
 ---

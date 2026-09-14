@@ -1,6 +1,7 @@
 ---
 title: "HUD & interface"
 layout: reference
+generated: true
 nav_order: 11
 parent: "By topic"
 wide: true

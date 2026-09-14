@@ -1,6 +1,7 @@
 ---
 title: "renderer"
 layout: reference
+generated: true
 nav_order: 6
 parent: "By module"
 wide: true

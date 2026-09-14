@@ -1,6 +1,7 @@
 ---
 title: "Killfeed"
 layout: reference
+generated: true
 nav_order: 14
 parent: "By feature"
 wide: true

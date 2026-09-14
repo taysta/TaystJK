@@ -1,6 +1,7 @@
 ---
 title: "Gameplay & combat"
 layout: reference
+generated: true
 nav_order: 9
 parent: "By topic"
 wide: true

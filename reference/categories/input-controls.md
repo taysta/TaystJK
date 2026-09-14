@@ -1,6 +1,7 @@
 ---
 title: "Input & controls"
 layout: reference
+generated: true
 nav_order: 12
 parent: "By topic"
 wide: true

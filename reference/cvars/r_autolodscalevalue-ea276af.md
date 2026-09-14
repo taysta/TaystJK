@@ -1,6 +1,7 @@
 ---
 title: "r_autolodscalevalue"
 layout: reference
+generated: true
 nav_exclude: true
 search_exclude: false
 ---

@@ -1,6 +1,7 @@
 ---
 title: "ui_move_desc"
 layout: reference
+generated: true
 nav_exclude: true
 search_exclude: false
 ---

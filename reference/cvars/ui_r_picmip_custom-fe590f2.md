@@ -1,6 +1,7 @@
 ---
 title: "ui_r_picmip_custom"
 layout: reference
+generated: true
 nav_exclude: true
 search_exclude: false
 ---

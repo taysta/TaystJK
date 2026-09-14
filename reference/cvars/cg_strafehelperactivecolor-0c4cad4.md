@@ -1,6 +1,7 @@
 ---
 title: "cg_strafeHelperActiveColor"
 layout: reference
+generated: true
 nav_exclude: true
 search_exclude: false
 ---

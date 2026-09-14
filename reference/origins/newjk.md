@@ -1,6 +1,7 @@
 ---
 title: "NewJK / NewMod"
 layout: reference
+generated: true
 nav_order: 4
 parent: "By origin"
 wide: true

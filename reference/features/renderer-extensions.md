@@ -1,6 +1,7 @@
 ---
 title: "Renderer extensions"
 layout: reference
+generated: true
 nav_order: 20
 parent: "By feature"
 wide: true

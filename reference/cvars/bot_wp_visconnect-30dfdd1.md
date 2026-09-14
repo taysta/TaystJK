@@ -1,6 +1,7 @@
 ---
 title: "bot_wp_visconnect"
 layout: reference
+generated: true
 nav_exclude: true
 search_exclude: false
 ---

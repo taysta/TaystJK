@@ -1,6 +1,7 @@
 ---
 title: "ui_ffa_timelimit"
 layout: reference
+generated: true
 nav_exclude: true
 search_exclude: false
 ---

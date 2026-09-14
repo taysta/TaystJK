@@ -1,6 +1,7 @@
 ---
 title: "Volumetric fog"
 layout: reference
+generated: true
 nav_order: 28
 parent: "By feature"
 wide: true

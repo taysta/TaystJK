@@ -1,6 +1,7 @@
 ---
 title: "Pitch HUD"
 layout: reference
+generated: true
 nav_order: 16
 parent: "By feature"
 wide: true

@@ -111,30 +111,26 @@ first commit — never invented.
 
 ## 3a. When a page gets the contents rail
 
-`toc: true` adds the collapsible rail down the left. The question it answers is **do people
-arrive here wanting one part of this page, or do they read it through?**
+`toc: true` adds the collapsible rail down the left. **Any page that scrolls and has more
+than one heading should have it.** In practice that is nearly every page with content; set
+it and move on.
 
-A rail is for pages that get *navigated*: task guides someone returns to for one step, and
-multi-topic pages someone reaches from search wanting one topic. Install, server hosting,
-HUD and movement tools, troubleshooting, mod compatibility. On a page read start to finish
-the rail is furniture.
+The rail suppresses itself below two headings, so `toc: true` on a short page is inert
+rather than broken, and there is no need to count first.
 
-Section count is a bad proxy for this and was used as one at first, which produced obvious
-nonsense — `development/xdocs.md` and `development/documentation-system.md` are sibling
-how-tos of almost identical length, and a five-heading cutoff gave one a rail and not the
-other. Length is no better on its own: `features/shipped-configs.md` is short and worth
-navigating, because it is a list you scan for the one config you want.
+Three things are left out of the rail automatically:
 
-Deliberately without one:
+- Headings inside a tab panel, because only one panel is visible at a time and a link into
+  a hidden one goes nowhere the reader can see. The tab strip is the navigation there.
+- Headings marked `data-toc-skip`, for captions that label furniture rather than a section —
+  the homepage's "Quick links" sidebar heading is the case this exists for.
+- Nothing else. Earlier revisions of this file tried to judge which pages "deserved" a rail
+  by section count and then by whether a page was read or navigated. Both produced results
+  that could not be defended, so the rule is now the simple one.
 
-- `features/movement-styles.md` and `features/platform-support.md` — the content is a table;
-  the table is the navigation
-- `features/renderers.md`, `licensing.md` — short, and read in order
-- `glossary.md` — three sections, so a rail would list three links; browser find beats that
-
-Below three headings the rail suppresses itself regardless, so `toc: true` on a short page is
-inert rather than broken. Headings inside a tab panel are always left out: only one panel is
-visible at a time, so a link into a hidden one goes nowhere the reader can see.
+The exception worth stating: `reference/all.md` has no rail despite qualifying. It is the
+no-JavaScript index, and the rail is built by JavaScript — it would never appear for the
+readers that page exists for.
 
 ## 3b. What the layout adds on every page
 
@@ -145,6 +141,11 @@ Written once, so pages do not reimplement them:
 - **Syntax highlighting** for fenced blocks with a language tag, which is why §4 requires
   one — an untagged fence renders flat.
 - **Search**, which reads `search-index.json`; opt a page out with `search_exclude`.
+- **An "Edit this page on GitHub" link**, on hand-written pages only. The generator stamps
+  `generated: true`, and the layout hides the link on those — editing a generated page is
+  work the next pipeline run throws away.
+- **Print styles**, which drop the chrome and invert the palette, since the dark theme
+  prints as a solid black page.
 
 ## 4. Code fences
 

@@ -1,6 +1,7 @@
 ---
 title: "game"
 layout: reference
+generated: true
 nav_order: 5
 parent: "By module"
 wide: true

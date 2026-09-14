@@ -1,6 +1,7 @@
 ---
 title: "cgame"
 layout: reference
+generated: true
 nav_order: 1
 parent: "By module"
 wide: true

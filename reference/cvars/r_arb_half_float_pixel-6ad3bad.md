@@ -1,6 +1,7 @@
 ---
 title: "r_arb_half_float_pixel"
 layout: reference
+generated: true
 nav_exclude: true
 search_exclude: false
 ---

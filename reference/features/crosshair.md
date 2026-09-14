@@ -1,6 +1,7 @@
 ---
 title: "Crosshair"
 layout: reference
+generated: true
 nav_order: 7
 parent: "By feature"
 wide: true

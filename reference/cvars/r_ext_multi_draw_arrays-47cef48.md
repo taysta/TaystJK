@@ -1,6 +1,7 @@
 ---
 title: "r_ext_multi_draw_arrays"
 layout: reference
+generated: true
 nav_exclude: true
 search_exclude: false
 ---

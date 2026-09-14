@@ -1,6 +1,7 @@
 ---
 title: "force_protect"
 layout: reference
+generated: true
 nav_exclude: true
 search_exclude: false
 ---

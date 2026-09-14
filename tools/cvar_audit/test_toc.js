@@ -39,11 +39,12 @@ function makeNode(tag) {
   };
 }
 
-/** heading stubs: `panel` marks one as living inside a tab panel */
-function heading(tag, id, text, panel) {
+/** heading stubs: `panel` marks one as inside a tab panel, `skip` as furniture */
+function heading(tag, id, text, panel, skip) {
   const node = makeNode(tag);
   node.id = id;
   node.textContent = text;
+  node.hasAttribute = (name) => name === "data-toc-skip" && !!skip;
   node.closest = (sel) =>
     panel && sel.indexOf("panel") !== -1 ? { tag: "panel" } : null;
   return node;
@@ -128,11 +129,15 @@ assert.deepStrictEqual(titles(toc).map((t) => t.sub), [false, false, false, true
 // It is the first thing in the main column, so it reads as a left rail.
 assert.strictEqual(toc.parent.children[0].className, "page-toc-rail", "rail comes before the article");
 
-// Too few headings is not worth a contents block.
-assert.strictEqual(run([
+// Two headings is enough to navigate; one is just the page itself.
+assert.ok(run([
   heading("h2", "a", "A"),
   heading("h2", "b", "B")
-]), null, "under three headings, no contents block");
+]), "two headings get a contents rail");
+
+assert.strictEqual(run([
+  heading("h2", "a", "A")
+]), null, "a single heading does not");
 
 // A page that is all panels gets nothing rather than an empty block.
 assert.strictEqual(run([
@@ -140,5 +145,22 @@ assert.strictEqual(run([
   heading("h2", "l", "Linux", true),
   heading("h2", "m", "macOS", true)
 ]), null, "all-panel headings produce no contents block");
+
+// data-toc-skip drops a heading that labels furniture rather than a section.
+let marked = run([
+  heading("h2", "quick-links-heading", "Quick links", false, true),
+  heading("h2", "one", "One"),
+  heading("h2", "two", "Two")
+]);
+assert.deepStrictEqual(titles(marked).map((t) => t.text), ["One", "Two"],
+  "data-toc-skip headings are left out");
+
+// Panels are skipped before the count is taken, so a page whose only extra headings
+// are inside panels still falls under the threshold.
+assert.strictEqual(run([
+  heading("h2", "intro", "Intro"),
+  heading("h2", "w", "Windows", true),
+  heading("h2", "l", "Linux", true)
+]), null, "panel headings do not count toward the threshold");
 
 console.log("on-this-page navigation is valid");

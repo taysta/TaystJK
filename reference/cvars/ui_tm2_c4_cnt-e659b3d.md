@@ -1,6 +1,7 @@
 ---
 title: "ui_tm2_c4_cnt"
 layout: reference
+generated: true
 nav_exclude: true
 search_exclude: false
 ---

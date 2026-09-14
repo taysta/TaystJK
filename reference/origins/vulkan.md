@@ -1,6 +1,7 @@
 ---
 title: "Vulkan"
 layout: reference
+generated: true
 nav_order: 5
 parent: "By origin"
 wide: true

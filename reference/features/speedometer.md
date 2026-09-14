@@ -1,6 +1,7 @@
 ---
 title: "Speedometer"
 layout: reference
+generated: true
 nav_order: 24
 parent: "By feature"
 wide: true

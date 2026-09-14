@@ -1,6 +1,7 @@
 ---
 title: "ui_cg_shadows"
 layout: reference
+generated: true
 nav_exclude: true
 search_exclude: false
 ---

@@ -1,6 +1,7 @@
 ---
 title: "Race timer"
 layout: reference
+generated: true
 nav_order: 19
 parent: "By feature"
 wide: true

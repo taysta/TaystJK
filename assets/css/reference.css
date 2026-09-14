@@ -1598,3 +1598,51 @@ kbd { padding: .15rem .42rem; color: var(--text-soft); background: var(--surface
 @media (hover: none) {
   .code-copy { opacity: 1; }
 }
+
+/* ------------------------------------------------------------------ edit link */
+
+.page-edit {
+  margin: 4rem 0 0;
+  padding-top: 1.2rem;
+  border-top: 1px solid var(--line);
+  font-size: .82rem;
+}
+
+.page-edit a { color: var(--muted); text-decoration: none; }
+.page-edit a:hover { color: var(--accent); text-decoration: underline; }
+
+/* ---------------------------------------------------------------------- print */
+
+@media print {
+  .site-header,
+  .wip-banner,
+  .site-footer,
+  .page-toc-rail,
+  .page-edit,
+  .code-copy,
+  .heading-anchor,
+  .skip-link { display: none !important; }
+
+  /* The palette is dark-first; on paper that is a solid black page. */
+  :root { color-scheme: light; }
+
+  body { color: #000; background: #fff; font-size: 11pt; }
+  a { color: #000; }
+  p, li, td, th, strong, h1, h2, h3, h4 { color: #000; }
+
+  .site-main,
+  .site-main.has-toc,
+  .site-main.site-main-wide.has-toc { display: block; width: 100%; padding: 0; }
+
+  pre, code {
+    color: #000;
+    background: #f4f4f4;
+    border: 1px solid #ccc;
+  }
+
+  /* A printed link is useless without its target. */
+  .page-content a[href^="http"]::after { content: " (" attr(href) ")"; font-size: 9pt; word-break: break-all; }
+
+  h2, h3 { break-after: avoid; }
+  pre, table, figure { break-inside: avoid; }
+}

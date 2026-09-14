@@ -1,6 +1,7 @@
 ---
 title: "Auto exposure"
 layout: reference
+generated: true
 nav_order: 1
 parent: "By feature"
 wide: true

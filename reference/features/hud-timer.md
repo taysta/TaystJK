@@ -1,6 +1,7 @@
 ---
 title: "HUD timer"
 layout: reference
+generated: true
 nav_order: 13
 parent: "By feature"
 wide: true

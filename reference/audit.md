@@ -1,9 +1,11 @@
 ---
 title: "Audit report"
 layout: reference
+generated: true
 nav_order: 7
 parent: "Console reference"
 description: "What the reference knows and how confidently: coverage, provenance confidence, and the entries still needing review."
+toc: true
 ---
 
 # Audit report

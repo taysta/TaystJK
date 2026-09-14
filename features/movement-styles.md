@@ -4,6 +4,7 @@ layout: reference
 nav_order: 6
 parent: "Features"
 description: "The nineteen movement styles a server can select, what each is derived from, and how each one plays."
+toc: true
 origin: japro
 ---
 

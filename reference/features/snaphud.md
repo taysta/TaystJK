@@ -1,6 +1,7 @@
 ---
 title: "SnapHUD"
 layout: reference
+generated: true
 nav_order: 23
 parent: "By feature"
 wide: true

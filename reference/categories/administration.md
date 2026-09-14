@@ -1,6 +1,7 @@
 ---
 title: "Administration"
 layout: reference
+generated: true
 nav_order: 1
 parent: "By topic"
 wide: true

@@ -1,6 +1,7 @@
 ---
 title: "say_team_mod"
 layout: reference
+generated: true
 nav_exclude: true
 search_exclude: false
 ---

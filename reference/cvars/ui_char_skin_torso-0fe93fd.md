@@ -1,6 +1,7 @@
 ---
 title: "ui_char_skin_torso"
 layout: reference
+generated: true
 nav_exclude: true
 search_exclude: false
 ---
