@@ -30,7 +30,7 @@ def missing_description_errors() -> list:
     ).stdout.split()
 
     skip_dirs = {"tools"}
-    skip_names = {"CLAUDE.md", "CONVENTIONS.md", "README.md"}
+    skip_names = {"AGENTS.md", "CLAUDE.md", "CONVENTIONS.md", "README.md"}
     errors = []
 
     for name in sorted(tracked):
