@@ -21,7 +21,7 @@ from pathlib import Path
 
 OUTPUT = Path("_data/page_updated.json")
 SKIP_DIRS = {"tools"}
-SKIP_NAMES = {"CLAUDE.md", "CONVENTIONS.md", "README.md"}
+SKIP_NAMES = {"AGENTS.md", "CLAUDE.md", "CONVENTIONS.md", "README.md"}
 
 
 def git(*args: str) -> str:

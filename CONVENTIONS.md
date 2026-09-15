@@ -19,11 +19,11 @@ The generated console reference does not follow this document — it is produced
 | `title` | string | yes | Quoted. Non-ASCII is escaped, e.g. `"TaystJK — one client"`. Appears in `<title>` as `{title} · TaystJK`. |
 | `layout` | string | yes | Always `reference`. `_config.yml` defaults supply it, but every page sets it explicitly. |
 | `description` | string | yes | One sentence. Drives `<meta name="description">`, listing cards, and search previews. |
-| `nav_order` | integer | no | **Inert.** Left over from the Just-the-Docs theme, which this site no longer uses. The top nav is hardcoded in `_layouts/reference.html`; add a page there. Existing values are harmless, so they are left in place. |
+| `nav_order` | integer | no | Orders previous/next links among pages with the same `parent`. The top nav is hardcoded in `_layouts/reference.html`; add a page there. |
 | `toc` | bool | no | Adds the collapsible "On this page" rail. See §3a for when a page wants one. |
 | `wide` | bool | no | `true` opts into the wider content column (`--wide`, 1180px). Used by index, development, reference. |
 | `reference_app` | bool | no | `reference.md` only. Adds `has-reference-app` to `<body>` and mounts the search app. |
-| `parent` | string | no | **Inert**, as `nav_order`. No sidebar is generated. |
+| `parent` | string | no | Parent page title for breadcrumbs and, with `nav_order`, section previous/next links. |
 | `nav_exclude` | bool | no | No longer affects navigation. The layout reuses it to decide whether to draw the reference breadcrumb. |
 | `search_exclude` | bool | no | Keeps a page out of `/search-index.json`, and so out of the header search. |
 
@@ -44,10 +44,10 @@ Rationale, one line each:
 - `layout` — explicit so a page never silently depends on a `defaults` change.
 - `description` — the only summary the card grid and meta tags have; a page without one
   renders a blank card.
-- `nav_order` — the top nav is hand-ordered, not alphabetical.
+- `nav_order` — orders child pages within a section; the top nav is hand-ordered separately.
 - `wide` — opt-in, because prose reads badly at 1180px but tables and grids need it.
 - `reference_app` — loads a search app that only one page uses.
-- `parent` / `nav_exclude` — placement and suppression in the sidebar.
+- `parent` — breadcrumbs and section sequencing; `nav_exclude` controls the reference breadcrumb fallback.
 - `origin` — lets a hand-written feature page be grouped into the same baseline buckets as
   reference entries, so non-cvar features are not invisible.
 - `status` — marks a feature that a reader should not assume is finished or supported.
@@ -317,7 +317,7 @@ emitted by `generate_docs.py`. Do not hand-write them onto guide pages.
 
 ## 9. The what's-new page
 
-`whats-new.md` is generated. Do not edit it. It lists what TaystJK adds relative to the
+`features/whats-new.md` is generated. Do not edit it. It lists what TaystJK adds relative to the
 client a reader is coming from, with a three-way baseline toggle, and it is built from two
 sources: the reference data, and the editorial layer in
 `tools/cvar_audit/whats-new-overrides.json`.
@@ -474,6 +474,7 @@ python3 tools/cvar_audit/validate.py
 python3 tools/cvar_audit/check_generated.py
 ```
 
-There is no local Jekyll build (no `Gemfile`, no jekyll gem installed); the site is built
-by GitHub Pages. `check_generated.py` is the local proxy — it validates the generated
-pages and every internal `/TaystJK/` link.
+The `Gemfile` provides a local Jekyll build: run `bundle install` if dependencies are
+missing, then `bundle exec jekyll build`. GitHub Pages builds the published site
+separately. `check_generated.py` validates generated pages and internal `/TaystJK/`
+links. See [AGENTS.md](AGENTS.md#verification) for the complete suite and PR checks.
