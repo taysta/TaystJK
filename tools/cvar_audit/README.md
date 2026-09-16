@@ -72,8 +72,18 @@ python3 tools/cvar_audit/check_drift.py --ref origin/master
 ```
 
 `provenance.py --limit 0` prewarms extraction caches without resolving entries.
-Use `--refresh` after upstream refs move. Caches are ignored; the state,
+Extraction caches include the source commit and extractor version, so changed refs and
+extractor updates are read automatically. Resolved provenance has its own schema version;
+extractor-only changes preserve the existing PR attribution. Use `--refresh` when
+re-resolving provenance, and supply the original PR exports to retain that evidence.
+Caches are ignored; the state,
 provenance, and runtime reconciliation reports are retained as audit artifacts.
+
+To rebuild the existing source snapshot without advancing it, pass its full
+`_data/reference-meta.json` `source_commit` as `--ref <sha>` to both `provenance.py`
+and `build_reference.py`. The assembly records the upstream commits used for independent
+baseline inventory comparisons. Page generation reuses those recorded commits and reads
+emoji assets from the same pinned TaystJK snapshot.
 
 For runtime capture, launch cvars and commands separately with
 `+cvarlist +quit` and `+cmdlist +quit`, redirecting stdout to different files.

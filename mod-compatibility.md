@@ -88,9 +88,12 @@ capabilities it supports by putting a bitmask in the `taystJKinfo` serverinfo ke
 the client reads on connect
 ([`cg_servercmds.c`](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_servercmds.c#L246)).
 
-Every gated feature above accepts this as an alternative to being recognised as JA+ or
-jaPRO. The bits are listed on
-[the feature flags spec](/TaystJK/development/feature-flags/).
+The mask covers RGB and black sabers, flipkick, grapple, and the three roll fixes. The
+bits are listed on [the feature flags spec](/TaystJK/development/feature-flags/#the-bits).
+It does not bypass the `plugin` command's JA+/jaPRO check
+([`cg_consolecmds.c`](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_consolecmds.c#L1292)),
+or enable the team overlay's force column on other mods: that still requires jaPRO
+([`cg_draw.c`](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_draw.c#L6082)).
 
 If you run a server on something other than JA+ or jaPRO and your players report that RGB
 sabers or flipkick do nothing, this key is the answer.

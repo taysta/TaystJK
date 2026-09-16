@@ -108,9 +108,12 @@ taken
 ([`cl_keys.cpp`](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/cl_keys.cpp#L565)).
 Each shortcut accepts either the left or the right modifier.
 
-Two cvars change the console itself: [`con_height`](/TaystJK/reference/) sets how far it
-drops down, and [`con_datetime`](/TaystJK/reference/) prefixes each line with a readable
-date and time. Look both up in the console reference for their defaults and flags.
+[`con_height`](/TaystJK/reference/) sets how far the console drops down.
+[`con_datetime`](/TaystJK/reference/) draws a date and time display in the console
+([`cl_console.cpp`](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/cl_console.cpp#L1090)).
+Use [`con_timestamps`](/TaystJK/reference/) for per-line timestamps
+([`cl_console.cpp`](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/cl_console.cpp#L399)).
+Look these up in the console reference for their defaults and flags.
 
 ## Widescreen assets
 

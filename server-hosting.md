@@ -222,15 +222,22 @@ The behavior is inherited from JK2MV; its wiki has useful background on [downloa
 
 ## Running a pure server with a mod
 
-`sv_pure 1` requires clients to load their client-side modules from a PK3 rather than from
-loose files, and the server checks that its own `cgame` and `ui` are packed before it
-validates anyone
+`sv_pure 1` checks the client's PK3 checksums against the server's expected files. The
+module checks specifically look for `cgamex86.dll` and `uix86.dll` inside PK3s
 ([`sv_client.cpp`](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/server/sv_client.cpp#L957)).
 
-The practical consequence: if you run a mod whose `cgame` and `ui` libraries sit loose in
-its `fs_game` directory, pure validation fails and clients are rejected. Either pack the
-mod's client-side files into a PK3, or run that server with `sv_pure 0`. A stock TaystJK
-server is unaffected because its modules ship inside the asset PK3s.
+TaystJK loads native modules as loose libraries. Its build installs them that way
+([cgame install rules](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/CMakeLists.txt#L162),
+[UI install rules](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/ui/CMakeLists.txt#L105)). Before loading a module,
+`FS_FindPureDLL` reads the corresponding legacy `x86.dll` so other platforms and
+architectures can account for the expected pure-server PK3 checksums
+([`files.cpp`](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/qcommon/files.cpp#L1862),
+[`vm.cpp`](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/qcommon/vm.cpp#L169)).
+
+Loose native libraries alone are therefore not a reason to disable `sv_pure`. If clients
+fail pure validation, check that the server and clients have the expected PK3s, including
+the legacy DLL entries used for these checks. Packing an x64 or ARM native library into a
+PK3 does not satisfy a check for an `x86.dll` entry.
 
 ### `sv_pure` does not constrain TaystJK on a `basejka` server
 

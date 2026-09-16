@@ -8,7 +8,7 @@
       "short": "14cea1563"
     },
     "arguments": [],
-    "baseline": null,
+    "baselines": [],
     "category": "Gameplay & combat",
     "cheat_protected": false,
     "confidence": "high",
@@ -159,7 +159,7 @@
       "short": "14cea1563"
     },
     "arguments": [],
-    "baseline": null,
+    "baselines": [],
     "category": "Gameplay & combat",
     "cheat_protected": false,
     "confidence": "high",
@@ -310,7 +310,7 @@
       "short": "14cea1563"
     },
     "arguments": [],
-    "baseline": null,
+    "baselines": [],
     "category": "Engine & diagnostics",
     "cheat_protected": false,
     "confidence": "high",
@@ -442,7 +442,7 @@
       "short": "14cea1563"
     },
     "arguments": [],
-    "baseline": null,
+    "baselines": [],
     "category": "Input & controls",
     "cheat_protected": false,
     "confidence": "high",
@@ -602,7 +602,7 @@
       "short": "14cea1563"
     },
     "arguments": [],
-    "baseline": null,
+    "baselines": [],
     "category": "Input & controls",
     "cheat_protected": false,
     "confidence": "high",
@@ -744,7 +744,7 @@
       "short": "14cea1563"
     },
     "arguments": [],
-    "baseline": null,
+    "baselines": [],
     "category": "Input & controls",
     "cheat_protected": false,
     "confidence": "high",
@@ -886,7 +886,7 @@
       "short": "14cea1563"
     },
     "arguments": [],
-    "baseline": null,
+    "baselines": [],
     "category": "Input & controls",
     "cheat_protected": false,
     "confidence": "high",
@@ -1028,7 +1028,7 @@
       "short": "14cea1563"
     },
     "arguments": [],
-    "baseline": null,
+    "baselines": [],
     "category": "Input & controls",
     "cheat_protected": false,
     "confidence": "high",
@@ -1174,7 +1174,7 @@
       "short": "14cea1563"
     },
     "arguments": [],
-    "baseline": null,
+    "baselines": [],
     "category": "Input & controls",
     "cheat_protected": false,
     "confidence": "high",
@@ -1324,7 +1324,7 @@
       "short": "14cea1563"
     },
     "arguments": [],
-    "baseline": null,
+    "baselines": [],
     "category": "Input & controls",
     "cheat_protected": false,
     "confidence": "high",
@@ -1470,7 +1470,9 @@
       "short": "c9c6ab99f"
     },
     "arguments": [],
-    "baseline": "basejka",
+    "baselines": [
+      "basejka"
+    ],
     "category": "Input & controls",
     "cheat_protected": false,
     "confidence": "high",
@@ -1890,7 +1892,7 @@
       "short": "14cea1563"
     },
     "arguments": [],
-    "baseline": null,
+    "baselines": [],
     "category": "Input & controls",
     "cheat_protected": false,
     "confidence": "high",
@@ -2040,7 +2042,7 @@
       "short": "14cea1563"
     },
     "arguments": [],
-    "baseline": null,
+    "baselines": [],
     "category": "Input & controls",
     "cheat_protected": false,
     "confidence": "high",
@@ -2182,7 +2184,7 @@
       "short": "14cea1563"
     },
     "arguments": [],
-    "baseline": null,
+    "baselines": [],
     "category": "Input & controls",
     "cheat_protected": false,
     "confidence": "high",
@@ -2323,7 +2325,7 @@
       "short": "14cea1563"
     },
     "arguments": [],
-    "baseline": null,
+    "baselines": [],
     "category": "Input & controls",
     "cheat_protected": false,
     "confidence": "high",
@@ -2465,7 +2467,7 @@
       "short": "14cea1563"
     },
     "arguments": [],
-    "baseline": null,
+    "baselines": [],
     "category": "Input & controls",
     "cheat_protected": false,
     "confidence": "high",
@@ -2607,7 +2609,7 @@
       "short": "14cea1563"
     },
     "arguments": [],
-    "baseline": null,
+    "baselines": [],
     "category": "Input & controls",
     "cheat_protected": false,
     "confidence": "high",
@@ -2767,7 +2769,7 @@
       "short": "14cea1563"
     },
     "arguments": [],
-    "baseline": null,
+    "baselines": [],
     "category": "Input & controls",
     "cheat_protected": false,
     "confidence": "high",
@@ -2908,7 +2910,7 @@
       "short": "14cea1563"
     },
     "arguments": [],
-    "baseline": null,
+    "baselines": [],
     "category": "Input & controls",
     "cheat_protected": false,
     "confidence": "high",
@@ -3050,7 +3052,10 @@
       "short": "bdcd618c6"
     },
     "arguments": [],
-    "baseline": "openjk",
+    "baselines": [
+      "openjk",
+      "basejka"
+    ],
     "category": "Gameplay & combat",
     "cheat_protected": false,
     "confidence": "medium",
@@ -3383,7 +3388,7 @@
       "short": "14cea1563"
     },
     "arguments": [],
-    "baseline": null,
+    "baselines": [],
     "category": "Gameplay & combat",
     "cheat_protected": false,
     "confidence": "high",
@@ -3552,7 +3557,7 @@
       "short": "14cea1563"
     },
     "arguments": [],
-    "baseline": null,
+    "baselines": [],
     "category": "Gameplay & combat",
     "cheat_protected": false,
     "confidence": "high",
@@ -3685,7 +3690,7 @@
       "short": "14cea1563"
     },
     "arguments": [],
-    "baseline": null,
+    "baselines": [],
     "category": "Gameplay & combat",
     "cheat_protected": false,
     "confidence": "high",
@@ -3818,7 +3823,7 @@
       "short": "14cea1563"
     },
     "arguments": [],
-    "baseline": null,
+    "baselines": [],
     "category": "Engine & diagnostics",
     "cheat_protected": false,
     "confidence": "high",
@@ -3950,7 +3955,10 @@
       "short": "664cf4094"
     },
     "arguments": [],
-    "baseline": "openjk",
+    "baselines": [
+      "openjk",
+      "basejka"
+    ],
     "category": "Gameplay & combat",
     "cheat_protected": false,
     "confidence": "medium",
@@ -4192,7 +4200,7 @@
       "short": "14cea1563"
     },
     "arguments": [],
-    "baseline": null,
+    "baselines": [],
     "category": "Engine & diagnostics",
     "cheat_protected": false,
     "confidence": "high",
@@ -4324,7 +4332,7 @@
       "short": "14cea1563"
     },
     "arguments": [],
-    "baseline": null,
+    "baselines": [],
     "category": "Engine & diagnostics",
     "cheat_protected": false,
     "confidence": "high",
@@ -4456,7 +4464,7 @@
       "short": "14cea1563"
     },
     "arguments": [],
-    "baseline": null,
+    "baselines": [],
     "category": "Engine & diagnostics",
     "cheat_protected": false,
     "confidence": "high",
@@ -4588,7 +4596,7 @@
       "short": "14cea1563"
     },
     "arguments": [],
-    "baseline": null,
+    "baselines": [],
     "category": "Engine & diagnostics",
     "cheat_protected": false,
     "confidence": "high",
@@ -4721,7 +4729,7 @@
       "short": "14cea1563"
     },
     "arguments": [],
-    "baseline": null,
+    "baselines": [],
     "category": "Engine & diagnostics",
     "cheat_protected": false,
     "confidence": "high",
@@ -4853,7 +4861,7 @@
       "short": "14cea1563"
     },
     "arguments": [],
-    "baseline": null,
+    "baselines": [],
     "category": "Engine & diagnostics",
     "cheat_protected": false,
     "confidence": "high",
@@ -4985,7 +4993,7 @@
       "short": "14cea1563"
     },
     "arguments": [],
-    "baseline": null,
+    "baselines": [],
     "category": "Engine & diagnostics",
     "cheat_protected": false,
     "confidence": "high",
@@ -5117,7 +5125,7 @@
       "short": "14cea1563"
     },
     "arguments": [],
-    "baseline": null,
+    "baselines": [],
     "category": "Engine & diagnostics",
     "cheat_protected": false,
     "confidence": "high",
@@ -5267,7 +5275,7 @@
       "short": "14cea1563"
     },
     "arguments": [],
-    "baseline": null,
+    "baselines": [],
     "category": "Engine & diagnostics",
     "cheat_protected": false,
     "confidence": "high",
@@ -5399,7 +5407,7 @@
       "short": "14cea1563"
     },
     "arguments": [],
-    "baseline": null,
+    "baselines": [],
     "category": "Gameplay & combat",
     "cheat_protected": false,
     "confidence": "high",
@@ -5566,7 +5574,11 @@
       "short": "baa02905f"
     },
     "arguments": [],
-    "baseline": "openjk",
+    "baselines": [
+      "eternaljk",
+      "openjk",
+      "basejka"
+    ],
     "category": "Gameplay & combat",
     "cheat_protected": false,
     "confidence": "high",
@@ -5732,7 +5744,7 @@
       "short": "14cea1563"
     },
     "arguments": [],
-    "baseline": null,
+    "baselines": [],
     "category": "Engine & diagnostics",
     "cheat_protected": false,
     "confidence": "high",
@@ -5864,7 +5876,7 @@
       "short": "14cea1563"
     },
     "arguments": [],
-    "baseline": null,
+    "baselines": [],
     "category": "Movement & race",
     "cheat_protected": false,
     "confidence": "high",
@@ -5996,7 +6008,7 @@
       "short": "14cea1563"
     },
     "arguments": [],
-    "baseline": null,
+    "baselines": [],
     "category": "Engine & diagnostics",
     "cheat_protected": false,
     "confidence": "high",
@@ -6129,7 +6141,7 @@
       "short": "14cea1563"
     },
     "arguments": [],
-    "baseline": null,
+    "baselines": [],
     "category": "Gameplay & combat",
     "cheat_protected": false,
     "confidence": "high",
@@ -6262,7 +6274,10 @@
       "short": "bdcd618c6"
     },
     "arguments": [],
-    "baseline": "openjk",
+    "baselines": [
+      "openjk",
+      "basejka"
+    ],
     "category": "Gameplay & combat",
     "cheat_protected": false,
     "confidence": "medium",
@@ -6552,7 +6567,7 @@
       "short": "14cea1563"
     },
     "arguments": [],
-    "baseline": null,
+    "baselines": [],
     "category": "Gameplay & combat",
     "cheat_protected": false,
     "confidence": "high",
@@ -6712,7 +6727,7 @@
       "short": "14cea1563"
     },
     "arguments": [],
-    "baseline": null,
+    "baselines": [],
     "category": "Gameplay & combat",
     "cheat_protected": false,
     "confidence": "high",
@@ -6872,7 +6887,7 @@
       "short": "14cea1563"
     },
     "arguments": [],
-    "baseline": null,
+    "baselines": [],
     "category": "Engine & diagnostics",
     "cheat_protected": false,
     "confidence": "high",
@@ -6995,7 +7010,7 @@
       "short": "14cea1563"
     },
     "arguments": [],
-    "baseline": null,
+    "baselines": [],
     "category": "Input & controls",
     "cheat_protected": false,
     "confidence": "high",
@@ -7173,7 +7188,7 @@
       "short": "14cea1563"
     },
     "arguments": [],
-    "baseline": null,
+    "baselines": [],
     "category": "Input & controls",
     "cheat_protected": false,
     "confidence": "high",
@@ -7315,7 +7330,7 @@
       "short": "14cea1563"
     },
     "arguments": [],
-    "baseline": null,
+    "baselines": [],
     "category": "Input & controls",
     "cheat_protected": false,
     "confidence": "high",
@@ -7457,7 +7472,7 @@
       "short": "14cea1563"
     },
     "arguments": [],
-    "baseline": null,
+    "baselines": [],
     "category": "Input & controls",
     "cheat_protected": false,
     "confidence": "high",
@@ -7599,7 +7614,7 @@
       "short": "14cea1563"
     },
     "arguments": [],
-    "baseline": null,
+    "baselines": [],
     "category": "Input & controls",
     "cheat_protected": false,
     "confidence": "high",
@@ -7740,7 +7755,7 @@
       "short": "14cea1563"
     },
     "arguments": [],
-    "baseline": null,
+    "baselines": [],
     "category": "Input & controls",
     "cheat_protected": false,
     "confidence": "high",
@@ -7881,7 +7896,7 @@
       "short": "14cea1563"
     },
     "arguments": [],
-    "baseline": null,
+    "baselines": [],
     "category": "Input & controls",
     "cheat_protected": false,
     "confidence": "high",
@@ -8022,7 +8037,9 @@
       "short": "c9c6ab99f"
     },
     "arguments": [],
-    "baseline": "basejka",
+    "baselines": [
+      "basejka"
+    ],
     "category": "Input & controls",
     "cheat_protected": false,
     "confidence": "high",
@@ -8442,7 +8459,7 @@
       "short": "14cea1563"
     },
     "arguments": [],
-    "baseline": null,
+    "baselines": [],
     "category": "Input & controls",
     "cheat_protected": false,
     "confidence": "high",
@@ -8583,7 +8600,7 @@
       "short": "14cea1563"
     },
     "arguments": [],
-    "baseline": null,
+    "baselines": [],
     "category": "Input & controls",
     "cheat_protected": false,
     "confidence": "high",
@@ -8725,7 +8742,7 @@
       "short": "14cea1563"
     },
     "arguments": [],
-    "baseline": null,
+    "baselines": [],
     "category": "Input & controls",
     "cheat_protected": false,
     "confidence": "high",
@@ -8866,7 +8883,7 @@
       "short": "14cea1563"
     },
     "arguments": [],
-    "baseline": null,
+    "baselines": [],
     "category": "Input & controls",
     "cheat_protected": false,
     "confidence": "high",
@@ -9008,7 +9025,7 @@
       "short": "14cea1563"
     },
     "arguments": [],
-    "baseline": null,
+    "baselines": [],
     "category": "Input & controls",
     "cheat_protected": false,
     "confidence": "high",
@@ -9150,7 +9167,7 @@
       "short": "14cea1563"
     },
     "arguments": [],
-    "baseline": null,
+    "baselines": [],
     "category": "Input & controls",
     "cheat_protected": false,
     "confidence": "high",
@@ -9328,7 +9345,7 @@
       "short": "14cea1563"
     },
     "arguments": [],
-    "baseline": null,
+    "baselines": [],
     "category": "Input & controls",
     "cheat_protected": false,
     "confidence": "high",
@@ -9469,7 +9486,7 @@
       "short": "14cea1563"
     },
     "arguments": [],
-    "baseline": null,
+    "baselines": [],
     "category": "Input & controls",
     "cheat_protected": false,
     "confidence": "high",
@@ -9611,7 +9628,10 @@
       "short": "bdcd618c6"
     },
     "arguments": [],
-    "baseline": "openjk",
+    "baselines": [
+      "openjk",
+      "basejka"
+    ],
     "category": "Gameplay & combat",
     "cheat_protected": false,
     "confidence": "medium",
@@ -9908,7 +9928,7 @@
       "short": "14cea1563"
     },
     "arguments": [],
-    "baseline": null,
+    "baselines": [],
     "category": "Gameplay & combat",
     "cheat_protected": false,
     "confidence": "high",
@@ -10068,7 +10088,7 @@
       "short": "14cea1563"
     },
     "arguments": [],
-    "baseline": null,
+    "baselines": [],
     "category": "Gameplay & combat",
     "cheat_protected": false,
     "confidence": "high",
@@ -10192,7 +10212,7 @@
       "short": "14cea1563"
     },
     "arguments": [],
-    "baseline": null,
+    "baselines": [],
     "category": "Gameplay & combat",
     "cheat_protected": false,
     "confidence": "high",
@@ -10316,7 +10336,7 @@
       "short": "14cea1563"
     },
     "arguments": [],
-    "baseline": null,
+    "baselines": [],
     "category": "Engine & diagnostics",
     "cheat_protected": false,
     "confidence": "high",
@@ -10439,7 +10459,10 @@
       "short": "664cf4094"
     },
     "arguments": [],
-    "baseline": "openjk",
+    "baselines": [
+      "openjk",
+      "basejka"
+    ],
     "category": "Gameplay & combat",
     "cheat_protected": false,
     "confidence": "medium",
@@ -10700,7 +10723,7 @@
       "short": "14cea1563"
     },
     "arguments": [],
-    "baseline": null,
+    "baselines": [],
     "category": "Engine & diagnostics",
     "cheat_protected": false,
     "confidence": "high",
@@ -10823,7 +10846,7 @@
       "short": "14cea1563"
     },
     "arguments": [],
-    "baseline": null,
+    "baselines": [],
     "category": "Engine & diagnostics",
     "cheat_protected": false,
     "confidence": "high",
@@ -10946,7 +10969,7 @@
       "short": "14cea1563"
     },
     "arguments": [],
-    "baseline": null,
+    "baselines": [],
     "category": "Engine & diagnostics",
     "cheat_protected": false,
     "confidence": "high",
@@ -11069,7 +11092,7 @@
       "short": "14cea1563"
     },
     "arguments": [],
-    "baseline": null,
+    "baselines": [],
     "category": "Engine & diagnostics",
     "cheat_protected": false,
     "confidence": "high",
@@ -11192,7 +11215,7 @@
       "short": "14cea1563"
     },
     "arguments": [],
-    "baseline": null,
+    "baselines": [],
     "category": "Engine & diagnostics",
     "cheat_protected": false,
     "confidence": "high",
@@ -11315,7 +11338,7 @@
       "short": "14cea1563"
     },
     "arguments": [],
-    "baseline": null,
+    "baselines": [],
     "category": "Engine & diagnostics",
     "cheat_protected": false,
     "confidence": "high",
@@ -11438,7 +11461,7 @@
       "short": "14cea1563"
     },
     "arguments": [],
-    "baseline": null,
+    "baselines": [],
     "category": "Engine & diagnostics",
     "cheat_protected": false,
     "confidence": "high",
@@ -11579,7 +11602,7 @@
       "short": "14cea1563"
     },
     "arguments": [],
-    "baseline": null,
+    "baselines": [],
     "category": "Engine & diagnostics",
     "cheat_protected": false,
     "confidence": "high",
@@ -11720,7 +11743,7 @@
       "short": "14cea1563"
     },
     "arguments": [],
-    "baseline": null,
+    "baselines": [],
     "category": "Engine & diagnostics",
     "cheat_protected": false,
     "confidence": "high",
@@ -11843,7 +11866,7 @@
       "short": "14cea1563"
     },
     "arguments": [],
-    "baseline": null,
+    "baselines": [],
     "category": "Gameplay & combat",
     "cheat_protected": false,
     "confidence": "high",
@@ -11983,7 +12006,11 @@
       "short": "baa02905f"
     },
     "arguments": [],
-    "baseline": "openjk",
+    "baselines": [
+      "eternaljk",
+      "openjk",
+      "basejka"
+    ],
     "category": "Gameplay & combat",
     "cheat_protected": false,
     "confidence": "high",
@@ -12149,7 +12176,7 @@
       "short": "14cea1563"
     },
     "arguments": [],
-    "baseline": null,
+    "baselines": [],
     "category": "Engine & diagnostics",
     "cheat_protected": false,
     "confidence": "high",
@@ -12272,7 +12299,7 @@
       "short": "14cea1563"
     },
     "arguments": [],
-    "baseline": null,
+    "baselines": [],
     "category": "Movement & race",
     "cheat_protected": false,
     "confidence": "high",
@@ -12395,7 +12422,7 @@
       "short": "14cea1563"
     },
     "arguments": [],
-    "baseline": null,
+    "baselines": [],
     "category": "Engine & diagnostics",
     "cheat_protected": false,
     "confidence": "high",
@@ -12519,7 +12546,7 @@
       "short": "14cea1563"
     },
     "arguments": [],
-    "baseline": null,
+    "baselines": [],
     "category": "Gameplay & combat",
     "cheat_protected": false,
     "confidence": "high",
@@ -12643,7 +12670,10 @@
       "short": "bdcd618c6"
     },
     "arguments": [],
-    "baseline": "openjk",
+    "baselines": [
+      "openjk",
+      "basejka"
+    ],
     "category": "Gameplay & combat",
     "cheat_protected": false,
     "confidence": "medium",
@@ -12924,7 +12954,10 @@
       "short": "d9d510063"
     },
     "arguments": [],
-    "baseline": "openjk",
+    "baselines": [
+      "openjk",
+      "basejka"
+    ],
     "category": "Gameplay & combat",
     "cheat_protected": false,
     "confidence": "medium",
@@ -13311,7 +13344,7 @@
       "short": "14cea1563"
     },
     "arguments": [],
-    "baseline": null,
+    "baselines": [],
     "category": "Bots & AI",
     "cheat_protected": false,
     "confidence": "high",
@@ -13524,7 +13557,10 @@
       "short": "bdcd618c6"
     },
     "arguments": [],
-    "baseline": "openjk",
+    "baselines": [
+      "openjk",
+      "basejka"
+    ],
     "category": "Movement & race",
     "cheat_protected": false,
     "confidence": "medium",
@@ -13766,7 +13802,9 @@
       "short": "fcc89fdf6"
     },
     "arguments": [],
-    "baseline": "basejka",
+    "baselines": [
+      "basejka"
+    ],
     "category": "Engine & diagnostics",
     "cheat_protected": false,
     "confidence": "medium",
@@ -14221,7 +14259,9 @@
       "short": "14cea1563"
     },
     "arguments": [],
-    "baseline": "basejka",
+    "baselines": [
+      "basejka"
+    ],
     "category": "Gameplay & combat",
     "cheat_protected": false,
     "confidence": "medium",
@@ -14642,7 +14682,10 @@
       "short": "bdcd618c6"
     },
     "arguments": [],
-    "baseline": "openjk",
+    "baselines": [
+      "openjk",
+      "basejka"
+    ],
     "category": "Audio & music",
     "cheat_protected": false,
     "confidence": "medium",
@@ -14884,7 +14927,10 @@
       "short": "bdcd618c6"
     },
     "arguments": [],
-    "baseline": "openjk",
+    "baselines": [
+      "openjk",
+      "basejka"
+    ],
     "category": "Gameplay & combat",
     "cheat_protected": false,
     "confidence": "medium",
@@ -15120,7 +15166,10 @@
       "short": "bdcd618c6"
     },
     "arguments": [],
-    "baseline": "openjk",
+    "baselines": [
+      "openjk",
+      "basejka"
+    ],
     "category": "Gameplay & combat",
     "cheat_protected": false,
     "confidence": "medium",
@@ -15356,7 +15405,10 @@
       "short": "bdcd618c6"
     },
     "arguments": [],
-    "baseline": "openjk",
+    "baselines": [
+      "openjk",
+      "basejka"
+    ],
     "category": "Gameplay & combat",
     "cheat_protected": false,
     "confidence": "medium",
@@ -15592,7 +15644,10 @@
       "short": "d0b29886a"
     },
     "arguments": [],
-    "baseline": "openjk",
+    "baselines": [
+      "openjk",
+      "basejka"
+    ],
     "category": "Engine & diagnostics",
     "cheat_protected": false,
     "confidence": "medium",
@@ -16054,7 +16109,10 @@
       "short": "bdcd618c6"
     },
     "arguments": [],
-    "baseline": "openjk",
+    "baselines": [
+      "openjk",
+      "basejka"
+    ],
     "category": "Gameplay & combat",
     "cheat_protected": false,
     "confidence": "medium",
@@ -16290,7 +16348,10 @@
       "short": "d9d510063"
     },
     "arguments": [],
-    "baseline": "openjk",
+    "baselines": [
+      "openjk",
+      "basejka"
+    ],
     "category": "Administration",
     "cheat_protected": false,
     "confidence": "medium",
@@ -16632,7 +16693,10 @@
       "short": "d9d510063"
     },
     "arguments": [],
-    "baseline": "openjk",
+    "baselines": [
+      "openjk",
+      "basejka"
+    ],
     "category": "Gameplay & combat",
     "cheat_protected": false,
     "confidence": "medium",
@@ -16906,7 +16970,10 @@
       "short": "d9d510063"
     },
     "arguments": [],
-    "baseline": "openjk",
+    "baselines": [
+      "openjk",
+      "basejka"
+    ],
     "category": "Gameplay & combat",
     "cheat_protected": false,
     "confidence": "medium",
@@ -17180,7 +17247,10 @@
       "short": "d9d510063"
     },
     "arguments": [],
-    "baseline": "openjk",
+    "baselines": [
+      "openjk",
+      "basejka"
+    ],
     "category": "Gameplay & combat",
     "cheat_protected": false,
     "confidence": "medium",
@@ -17425,7 +17495,10 @@
       "short": "d9d510063"
     },
     "arguments": [],
-    "baseline": "openjk",
+    "baselines": [
+      "openjk",
+      "basejka"
+    ],
     "category": "Gameplay & combat",
     "cheat_protected": false,
     "confidence": "medium",
@@ -17699,7 +17772,10 @@
       "short": "d9d510063"
     },
     "arguments": [],
-    "baseline": "openjk",
+    "baselines": [
+      "openjk",
+      "basejka"
+    ],
     "category": "Gameplay & combat",
     "cheat_protected": false,
     "confidence": "medium",
@@ -17973,7 +18049,10 @@
       "short": "d9d510063"
     },
     "arguments": [],
-    "baseline": "openjk",
+    "baselines": [
+      "openjk",
+      "basejka"
+    ],
     "category": "Gameplay & combat",
     "cheat_protected": false,
     "confidence": "medium",
@@ -18247,7 +18326,10 @@
       "short": "d9d510063"
     },
     "arguments": [],
-    "baseline": "openjk",
+    "baselines": [
+      "openjk",
+      "basejka"
+    ],
     "category": "Gameplay & combat",
     "cheat_protected": false,
     "confidence": "medium",
@@ -18521,7 +18603,10 @@
       "short": "d9d510063"
     },
     "arguments": [],
-    "baseline": "openjk",
+    "baselines": [
+      "openjk",
+      "basejka"
+    ],
     "category": "Gameplay & combat",
     "cheat_protected": false,
     "confidence": "medium",
@@ -18795,7 +18880,10 @@
       "short": "bdcd618c6"
     },
     "arguments": [],
-    "baseline": "openjk",
+    "baselines": [
+      "openjk",
+      "basejka"
+    ],
     "category": "Gameplay & combat",
     "cheat_protected": false,
     "confidence": "medium",
@@ -19084,7 +19172,10 @@
       "short": "d9d510063"
     },
     "arguments": [],
-    "baseline": "openjk",
+    "baselines": [
+      "openjk",
+      "basejka"
+    ],
     "category": "Gameplay & combat",
     "cheat_protected": false,
     "confidence": "medium",
@@ -19358,7 +19449,10 @@
       "short": "d9d510063"
     },
     "arguments": [],
-    "baseline": "openjk",
+    "baselines": [
+      "openjk",
+      "basejka"
+    ],
     "category": "Gameplay & combat",
     "cheat_protected": false,
     "confidence": "medium",
@@ -19632,7 +19726,10 @@
       "short": "bdcd618c6"
     },
     "arguments": [],
-    "baseline": "openjk",
+    "baselines": [
+      "openjk",
+      "basejka"
+    ],
     "category": "Gameplay & combat",
     "cheat_protected": false,
     "confidence": "medium",
@@ -19868,7 +19965,10 @@
       "short": "bdcd618c6"
     },
     "arguments": [],
-    "baseline": "openjk",
+    "baselines": [
+      "openjk",
+      "basejka"
+    ],
     "category": "Gameplay & combat",
     "cheat_protected": false,
     "confidence": "medium",
@@ -20104,7 +20204,10 @@
       "short": "bdcd618c6"
     },
     "arguments": [],
-    "baseline": "openjk",
+    "baselines": [
+      "openjk",
+      "basejka"
+    ],
     "category": "Administration",
     "cheat_protected": false,
     "confidence": "medium",
@@ -20340,7 +20443,10 @@
       "short": "d9d510063"
     },
     "arguments": [],
-    "baseline": "openjk",
+    "baselines": [
+      "openjk",
+      "basejka"
+    ],
     "category": "Gameplay & combat",
     "cheat_protected": false,
     "confidence": "medium",
@@ -20585,7 +20691,10 @@
       "short": "bdcd618c6"
     },
     "arguments": [],
-    "baseline": "openjk",
+    "baselines": [
+      "openjk",
+      "basejka"
+    ],
     "category": "Gameplay & combat",
     "cheat_protected": false,
     "confidence": "medium",
@@ -20821,7 +20930,10 @@
       "short": "d9d510063"
     },
     "arguments": [],
-    "baseline": "openjk",
+    "baselines": [
+      "openjk",
+      "basejka"
+    ],
     "category": "Gameplay & combat",
     "cheat_protected": false,
     "confidence": "medium",
@@ -21149,7 +21261,10 @@
       "short": "d9d510063"
     },
     "arguments": [],
-    "baseline": "openjk",
+    "baselines": [
+      "openjk",
+      "basejka"
+    ],
     "category": "Administration",
     "cheat_protected": false,
     "confidence": "medium",
@@ -21513,7 +21628,10 @@
       "short": "bdcd618c6"
     },
     "arguments": [],
-    "baseline": "openjk",
+    "baselines": [
+      "openjk",
+      "basejka"
+    ],
     "category": "Gameplay & combat",
     "cheat_protected": false,
     "confidence": "medium",
@@ -21749,7 +21867,10 @@
       "short": "d9d510063"
     },
     "arguments": [],
-    "baseline": "openjk",
+    "baselines": [
+      "openjk",
+      "basejka"
+    ],
     "category": "Administration",
     "cheat_protected": false,
     "confidence": "medium",
@@ -22112,7 +22233,10 @@
       "short": "d9d510063"
     },
     "arguments": [],
-    "baseline": "openjk",
+    "baselines": [
+      "openjk",
+      "basejka"
+    ],
     "category": "Gameplay & combat",
     "cheat_protected": false,
     "confidence": "medium",
@@ -22386,7 +22510,10 @@
       "short": "d9d510063"
     },
     "arguments": [],
-    "baseline": "openjk",
+    "baselines": [
+      "openjk",
+      "basejka"
+    ],
     "category": "Gameplay & combat",
     "cheat_protected": false,
     "confidence": "medium",
@@ -22910,7 +23037,10 @@
       "short": "d9d510063"
     },
     "arguments": [],
-    "baseline": "openjk",
+    "baselines": [
+      "openjk",
+      "basejka"
+    ],
     "category": "Administration",
     "cheat_protected": false,
     "confidence": "medium",
@@ -23252,7 +23382,10 @@
       "short": "d9d510063"
     },
     "arguments": [],
-    "baseline": "openjk",
+    "baselines": [
+      "openjk",
+      "basejka"
+    ],
     "category": "Gameplay & combat",
     "cheat_protected": false,
     "confidence": "medium",
@@ -23542,7 +23675,10 @@
       "short": "d9d510063"
     },
     "arguments": [],
-    "baseline": "openjk",
+    "baselines": [
+      "openjk",
+      "basejka"
+    ],
     "category": "Gameplay & combat",
     "cheat_protected": false,
     "confidence": "medium",
@@ -23869,7 +24005,10 @@
       "short": "d9d510063"
     },
     "arguments": [],
-    "baseline": "openjk",
+    "baselines": [
+      "openjk",
+      "basejka"
+    ],
     "category": "Gameplay & combat",
     "cheat_protected": false,
     "confidence": "medium",
@@ -24179,7 +24318,10 @@
       "short": "d9d510063"
     },
     "arguments": [],
-    "baseline": "openjk",
+    "baselines": [
+      "openjk",
+      "basejka"
+    ],
     "category": "Administration",
     "cheat_protected": false,
     "confidence": "medium",
@@ -24541,7 +24683,10 @@
       "short": "d9d510063"
     },
     "arguments": [],
-    "baseline": "openjk",
+    "baselines": [
+      "openjk",
+      "basejka"
+    ],
     "category": "Administration",
     "cheat_protected": false,
     "confidence": "medium",
@@ -24885,7 +25030,10 @@
       "short": "d9d510063"
     },
     "arguments": [],
-    "baseline": "openjk",
+    "baselines": [
+      "openjk",
+      "basejka"
+    ],
     "category": "Gameplay & combat",
     "cheat_protected": false,
     "confidence": "medium",
@@ -25193,7 +25341,10 @@
       "short": "d9d510063"
     },
     "arguments": [],
-    "baseline": "openjk",
+    "baselines": [
+      "openjk",
+      "basejka"
+    ],
     "category": "Administration",
     "cheat_protected": false,
     "confidence": "medium",
@@ -25520,7 +25671,10 @@
       "short": "bdcd618c6"
     },
     "arguments": [],
-    "baseline": "openjk",
+    "baselines": [
+      "openjk",
+      "basejka"
+    ],
     "category": "Gameplay & combat",
     "cheat_protected": false,
     "confidence": "medium",
@@ -25756,7 +25910,10 @@
       "short": "bdcd618c6"
     },
     "arguments": [],
-    "baseline": "openjk",
+    "baselines": [
+      "openjk",
+      "basejka"
+    ],
     "category": "Gameplay & combat",
     "cheat_protected": false,
     "confidence": "medium",
@@ -25992,7 +26149,10 @@
       "short": "d9d510063"
     },
     "arguments": [],
-    "baseline": "openjk",
+    "baselines": [
+      "openjk",
+      "basejka"
+    ],
     "category": "Chat & social",
     "cheat_protected": false,
     "confidence": "medium",
@@ -26283,7 +26443,10 @@
       "short": "bdcd618c6"
     },
     "arguments": [],
-    "baseline": "openjk",
+    "baselines": [
+      "openjk",
+      "basejka"
+    ],
     "category": "Gameplay & combat",
     "cheat_protected": false,
     "confidence": "medium",
@@ -26519,7 +26682,10 @@
       "short": "d9d510063"
     },
     "arguments": [],
-    "baseline": "openjk",
+    "baselines": [
+      "openjk",
+      "basejka"
+    ],
     "category": "Gameplay & combat",
     "cheat_protected": false,
     "confidence": "medium",
@@ -26793,7 +26959,10 @@
       "short": "d9d510063"
     },
     "arguments": [],
-    "baseline": "openjk",
+    "baselines": [
+      "openjk",
+      "basejka"
+    ],
     "category": "Gameplay & combat",
     "cheat_protected": false,
     "confidence": "medium",
@@ -27085,7 +27254,10 @@
       "short": "bdcd618c6"
     },
     "arguments": [],
-    "baseline": "openjk",
+    "baselines": [
+      "openjk",
+      "basejka"
+    ],
     "category": "Gameplay & combat",
     "cheat_protected": false,
     "confidence": "medium",
@@ -27321,7 +27493,10 @@
       "short": "bdcd618c6"
     },
     "arguments": [],
-    "baseline": "openjk",
+    "baselines": [
+      "openjk",
+      "basejka"
+    ],
     "category": "Administration",
     "cheat_protected": false,
     "confidence": "medium",
@@ -27557,7 +27732,10 @@
       "short": "d9d510063"
     },
     "arguments": [],
-    "baseline": "openjk",
+    "baselines": [
+      "openjk",
+      "basejka"
+    ],
     "category": "Chat & social",
     "cheat_protected": false,
     "confidence": "medium",
@@ -27866,7 +28044,10 @@
       "short": "d9d510063"
     },
     "arguments": [],
-    "baseline": "openjk",
+    "baselines": [
+      "openjk",
+      "basejka"
+    ],
     "category": "Gameplay & combat",
     "cheat_protected": false,
     "confidence": "medium",
@@ -28140,7 +28321,10 @@
       "short": "d9d510063"
     },
     "arguments": [],
-    "baseline": "openjk",
+    "baselines": [
+      "openjk",
+      "basejka"
+    ],
     "category": "Administration",
     "cheat_protected": false,
     "confidence": "medium",
@@ -28468,7 +28652,10 @@
       "short": "d9d510063"
     },
     "arguments": [],
-    "baseline": "openjk",
+    "baselines": [
+      "openjk",
+      "basejka"
+    ],
     "category": "Gameplay & combat",
     "cheat_protected": false,
     "confidence": "medium",
@@ -28766,7 +28953,10 @@
       "short": "d9d510063"
     },
     "arguments": [],
-    "baseline": "openjk",
+    "baselines": [
+      "openjk",
+      "basejka"
+    ],
     "category": "Chat & social",
     "cheat_protected": false,
     "confidence": "medium",
@@ -29038,7 +29228,10 @@
       "short": "bdcd618c6"
     },
     "arguments": [],
-    "baseline": "openjk",
+    "baselines": [
+      "openjk",
+      "basejka"
+    ],
     "category": "Gameplay & combat",
     "cheat_protected": false,
     "confidence": "medium",
@@ -29274,7 +29467,10 @@
       "short": "bdcd618c6"
     },
     "arguments": [],
-    "baseline": "openjk",
+    "baselines": [
+      "openjk",
+      "basejka"
+    ],
     "category": "Chat & social",
     "cheat_protected": false,
     "confidence": "medium",
@@ -29510,7 +29706,10 @@
       "short": "d9d510063"
     },
     "arguments": [],
-    "baseline": "openjk",
+    "baselines": [
+      "openjk",
+      "basejka"
+    ],
     "category": "Gameplay & combat",
     "cheat_protected": false,
     "confidence": "medium",
@@ -29755,7 +29954,10 @@
       "short": "d9d510063"
     },
     "arguments": [],
-    "baseline": "openjk",
+    "baselines": [
+      "openjk",
+      "basejka"
+    ],
     "category": "Gameplay & combat",
     "cheat_protected": false,
     "confidence": "medium",
@@ -30000,7 +30202,10 @@
       "short": "d9d510063"
     },
     "arguments": [],
-    "baseline": "openjk",
+    "baselines": [
+      "openjk",
+      "basejka"
+    ],
     "category": "Gameplay & combat",
     "cheat_protected": false,
     "confidence": "medium",
@@ -30245,7 +30450,10 @@
       "short": "d9d510063"
     },
     "arguments": [],
-    "baseline": "openjk",
+    "baselines": [
+      "openjk",
+      "basejka"
+    ],
     "category": "Gameplay & combat",
     "cheat_protected": false,
     "confidence": "medium",
@@ -30490,7 +30698,10 @@
       "short": "bdcd618c6"
     },
     "arguments": [],
-    "baseline": "openjk",
+    "baselines": [
+      "openjk",
+      "basejka"
+    ],
     "category": "Administration",
     "cheat_protected": false,
     "confidence": "medium",
@@ -30726,7 +30937,10 @@
       "short": "d9d510063"
     },
     "arguments": [],
-    "baseline": "openjk",
+    "baselines": [
+      "openjk",
+      "basejka"
+    ],
     "category": "Gameplay & combat",
     "cheat_protected": false,
     "confidence": "medium",
@@ -31000,7 +31214,10 @@
       "short": "d9d510063"
     },
     "arguments": [],
-    "baseline": "openjk",
+    "baselines": [
+      "openjk",
+      "basejka"
+    ],
     "category": "Gameplay & combat",
     "cheat_protected": false,
     "confidence": "medium",
@@ -31274,7 +31491,10 @@
       "short": "d9d510063"
     },
     "arguments": [],
-    "baseline": "openjk",
+    "baselines": [
+      "openjk",
+      "basejka"
+    ],
     "category": "Gameplay & combat",
     "cheat_protected": false,
     "confidence": "medium",
@@ -31548,7 +31768,10 @@
       "short": "d9d510063"
     },
     "arguments": [],
-    "baseline": "openjk",
+    "baselines": [
+      "openjk",
+      "basejka"
+    ],
     "category": "Gameplay & combat",
     "cheat_protected": false,
     "confidence": "medium",
@@ -31822,7 +32045,10 @@
       "short": "d9d510063"
     },
     "arguments": [],
-    "baseline": "openjk",
+    "baselines": [
+      "openjk",
+      "basejka"
+    ],
     "category": "Gameplay & combat",
     "cheat_protected": false,
     "confidence": "medium",
@@ -32096,7 +32322,10 @@
       "short": "d9d510063"
     },
     "arguments": [],
-    "baseline": "openjk",
+    "baselines": [
+      "openjk",
+      "basejka"
+    ],
     "category": "Administration",
     "cheat_protected": false,
     "confidence": "medium",
@@ -32370,7 +32599,10 @@
       "short": "d9d510063"
     },
     "arguments": [],
-    "baseline": "openjk",
+    "baselines": [
+      "openjk",
+      "basejka"
+    ],
     "category": "Administration",
     "cheat_protected": false,
     "confidence": "medium",
@@ -32644,7 +32876,10 @@
       "short": "d9d510063"
     },
     "arguments": [],
-    "baseline": "openjk",
+    "baselines": [
+      "openjk",
+      "basejka"
+    ],
     "category": "Gameplay & combat",
     "cheat_protected": false,
     "confidence": "medium",
@@ -32918,7 +33153,10 @@
       "short": "bdcd618c6"
     },
     "arguments": [],
-    "baseline": "openjk",
+    "baselines": [
+      "openjk",
+      "basejka"
+    ],
     "category": "Gameplay & combat",
     "cheat_protected": false,
     "confidence": "medium",
@@ -33154,7 +33392,10 @@
       "short": "d9d510063"
     },
     "arguments": [],
-    "baseline": "openjk",
+    "baselines": [
+      "openjk",
+      "basejka"
+    ],
     "category": "Graphics & rendering",
     "cheat_protected": false,
     "confidence": "medium",
@@ -33428,7 +33669,10 @@
       "short": "d9d510063"
     },
     "arguments": [],
-    "baseline": "openjk",
+    "baselines": [
+      "openjk",
+      "basejka"
+    ],
     "category": "Gameplay & combat",
     "cheat_protected": false,
     "confidence": "medium",
@@ -33702,7 +33946,10 @@
       "short": "d9d510063"
     },
     "arguments": [],
-    "baseline": "openjk",
+    "baselines": [
+      "openjk",
+      "basejka"
+    ],
     "category": "Gameplay & combat",
     "cheat_protected": false,
     "confidence": "medium",
@@ -33976,7 +34223,10 @@
       "short": "d9d510063"
     },
     "arguments": [],
-    "baseline": "openjk",
+    "baselines": [
+      "openjk",
+      "basejka"
+    ],
     "category": "Administration",
     "cheat_protected": false,
     "confidence": "medium",
@@ -34385,7 +34635,10 @@
       "short": "d9d510063"
     },
     "arguments": [],
-    "baseline": "openjk",
+    "baselines": [
+      "openjk",
+      "basejka"
+    ],
     "category": "Administration",
     "cheat_protected": false,
     "confidence": "medium",
@@ -34758,7 +35011,10 @@
       "short": "bdcd618c6"
     },
     "arguments": [],
-    "baseline": "openjk",
+    "baselines": [
+      "openjk",
+      "basejka"
+    ],
     "category": "Gameplay & combat",
     "cheat_protected": false,
     "confidence": "medium",
@@ -34994,7 +35250,10 @@
       "short": "d9d510063"
     },
     "arguments": [],
-    "baseline": "openjk",
+    "baselines": [
+      "openjk",
+      "basejka"
+    ],
     "category": "Gameplay & combat",
     "cheat_protected": false,
     "confidence": "medium",
@@ -35268,7 +35527,10 @@
       "short": "d9d510063"
     },
     "arguments": [],
-    "baseline": "openjk",
+    "baselines": [
+      "openjk",
+      "basejka"
+    ],
     "category": "Gameplay & combat",
     "cheat_protected": false,
     "confidence": "medium",
@@ -35577,7 +35839,10 @@
       "short": "f4d14139b"
     },
     "arguments": [],
-    "baseline": "openjk",
+    "baselines": [
+      "openjk",
+      "basejka"
+    ],
     "category": "Gameplay & combat",
     "cheat_protected": false,
     "confidence": "medium",
@@ -35832,7 +36097,10 @@
       "short": "bdcd618c6"
     },
     "arguments": [],
-    "baseline": "openjk",
+    "baselines": [
+      "openjk",
+      "basejka"
+    ],
     "category": "Administration",
     "cheat_protected": false,
     "confidence": "medium",
@@ -36068,7 +36336,10 @@
       "short": "bdcd618c6"
     },
     "arguments": [],
-    "baseline": "openjk",
+    "baselines": [
+      "openjk",
+      "basejka"
+    ],
     "category": "Gameplay & combat",
     "cheat_protected": false,
     "confidence": "medium",
@@ -36304,7 +36575,10 @@
       "short": "bdcd618c6"
     },
     "arguments": [],
-    "baseline": "openjk",
+    "baselines": [
+      "openjk",
+      "basejka"
+    ],
     "category": "Administration",
     "cheat_protected": false,
     "confidence": "medium",
@@ -36540,7 +36814,10 @@
       "short": "bdcd618c6"
     },
     "arguments": [],
-    "baseline": "openjk",
+    "baselines": [
+      "openjk",
+      "basejka"
+    ],
     "category": "Gameplay & combat",
     "cheat_protected": false,
     "confidence": "medium",
@@ -36819,7 +37096,7 @@
       "short": "14cea1563"
     },
     "arguments": [],
-    "baseline": null,
+    "baselines": [],
     "category": "HUD & interface",
     "cheat_protected": false,
     "confidence": "high",
@@ -36923,7 +37200,7 @@
       "short": "14cea1563"
     },
     "arguments": [],
-    "baseline": null,
+    "baselines": [],
     "category": "HUD & interface",
     "cheat_protected": false,
     "confidence": "high",
@@ -37054,7 +37331,10 @@
       "short": "bdcd618c6"
     },
     "arguments": [],
-    "baseline": "openjk",
+    "baselines": [
+      "openjk",
+      "basejka"
+    ],
     "category": "Gameplay & combat",
     "cheat_protected": false,
     "confidence": "medium",
@@ -37295,7 +37575,7 @@
       "short": "14cea1563"
     },
     "arguments": [],
-    "baseline": null,
+    "baselines": [],
     "category": "Input & controls",
     "cheat_protected": false,
     "confidence": "high",
@@ -37581,7 +37861,7 @@
       "short": "14cea1563"
     },
     "arguments": [],
-    "baseline": null,
+    "baselines": [],
     "category": "Input & controls",
     "cheat_protected": false,
     "confidence": "high",
@@ -37849,7 +38129,10 @@
       "short": "d9d510063"
     },
     "arguments": [],
-    "baseline": "openjk",
+    "baselines": [
+      "openjk",
+      "basejka"
+    ],
     "category": "Gameplay & combat",
     "cheat_protected": false,
     "confidence": "medium",
@@ -38176,7 +38459,9 @@
       "short": "14cea1563"
     },
     "arguments": [],
-    "baseline": "basejka",
+    "baselines": [
+      "basejka"
+    ],
     "category": "Bots & AI",
     "cheat_protected": false,
     "confidence": "medium",
@@ -38633,7 +38918,7 @@
       "short": "14cea1563"
     },
     "arguments": [],
-    "baseline": null,
+    "baselines": [],
     "category": "Engine & diagnostics",
     "cheat_protected": false,
     "confidence": "high",
@@ -38800,7 +39085,7 @@
       "short": "14cea1563"
     },
     "arguments": [],
-    "baseline": null,
+    "baselines": [],
     "category": "Gameplay & combat",
     "cheat_protected": false,
     "confidence": "high",
@@ -38904,7 +39189,7 @@
       "short": "14cea1563"
     },
     "arguments": [],
-    "baseline": null,
+    "baselines": [],
     "category": "Gameplay & combat",
     "cheat_protected": false,
     "confidence": "high",
@@ -39203,7 +39488,7 @@
       "short": "14cea1563"
     },
     "arguments": [],
-    "baseline": null,
+    "baselines": [],
     "category": "Gameplay & combat",
     "cheat_protected": false,
     "confidence": "high",
@@ -39746,7 +40031,10 @@
       "short": "bdcd618c6"
     },
     "arguments": [],
-    "baseline": "openjk",
+    "baselines": [
+      "openjk",
+      "basejka"
+    ],
     "category": "HUD & interface",
     "cheat_protected": false,
     "confidence": "medium",
@@ -39988,7 +40276,10 @@
       "short": "86c075638"
     },
     "arguments": [],
-    "baseline": "eternaljk",
+    "baselines": [
+      "eternaljk",
+      "basejka"
+    ],
     "category": "Graphics & rendering",
     "cheat_protected": false,
     "confidence": "high",
@@ -40279,7 +40570,7 @@
       "short": "14cea1563"
     },
     "arguments": [],
-    "baseline": null,
+    "baselines": [],
     "category": "Engine & diagnostics",
     "cheat_protected": false,
     "confidence": "high",
@@ -40430,7 +40721,10 @@
       "short": "d9d510063"
     },
     "arguments": [],
-    "baseline": "openjk",
+    "baselines": [
+      "openjk",
+      "basejka"
+    ],
     "category": "Gameplay & combat",
     "cheat_protected": false,
     "confidence": "medium",
@@ -40808,7 +41102,7 @@
       "short": "14cea1563"
     },
     "arguments": [],
-    "baseline": null,
+    "baselines": [],
     "category": "Engine & diagnostics",
     "cheat_protected": false,
     "confidence": "high",
@@ -40968,7 +41262,10 @@
       "short": "328d55f00"
     },
     "arguments": [],
-    "baseline": "openjk",
+    "baselines": [
+      "openjk",
+      "basejka"
+    ],
     "category": "Chat & social",
     "cheat_protected": false,
     "confidence": "medium",
@@ -41210,7 +41507,7 @@
       "short": "14cea1563"
     },
     "arguments": [],
-    "baseline": null,
+    "baselines": [],
     "category": "Engine & diagnostics",
     "cheat_protected": false,
     "confidence": "high",
@@ -41371,7 +41668,10 @@
       "short": "fa2b5ba68"
     },
     "arguments": [],
-    "baseline": "openjk",
+    "baselines": [
+      "openjk",
+      "basejka"
+    ],
     "category": "Administration",
     "cheat_protected": false,
     "confidence": "medium",
@@ -41681,7 +41981,10 @@
       "short": "fa2b5ba68"
     },
     "arguments": [],
-    "baseline": "openjk",
+    "baselines": [
+      "openjk",
+      "basejka"
+    ],
     "category": "Chat & social",
     "cheat_protected": false,
     "confidence": "medium",
@@ -41987,7 +42290,10 @@
       "short": "fa2b5ba68"
     },
     "arguments": [],
-    "baseline": "openjk",
+    "baselines": [
+      "openjk",
+      "basejka"
+    ],
     "category": "Chat & social",
     "cheat_protected": false,
     "confidence": "medium",
@@ -42248,7 +42554,10 @@
       "short": "fa2b5ba68"
     },
     "arguments": [],
-    "baseline": "openjk",
+    "baselines": [
+      "openjk",
+      "basejka"
+    ],
     "category": "Chat & social",
     "cheat_protected": false,
     "confidence": "medium",
@@ -42539,7 +42848,10 @@
       "short": "fa2b5ba68"
     },
     "arguments": [],
-    "baseline": "openjk",
+    "baselines": [
+      "openjk",
+      "basejka"
+    ],
     "category": "Chat & social",
     "cheat_protected": false,
     "confidence": "medium",
@@ -42830,7 +43142,10 @@
       "short": "fa2b5ba68"
     },
     "arguments": [],
-    "baseline": "openjk",
+    "baselines": [
+      "openjk",
+      "basejka"
+    ],
     "category": "Chat & social",
     "cheat_protected": false,
     "confidence": "medium",
@@ -43172,7 +43487,10 @@
       "short": "fa2b5ba68"
     },
     "arguments": [],
-    "baseline": "openjk",
+    "baselines": [
+      "openjk",
+      "basejka"
+    ],
     "category": "Administration",
     "cheat_protected": false,
     "confidence": "medium",
@@ -43433,7 +43751,10 @@
       "short": "bdcd618c6"
     },
     "arguments": [],
-    "baseline": "openjk",
+    "baselines": [
+      "openjk",
+      "basejka"
+    ],
     "category": "Chat & social",
     "cheat_protected": false,
     "confidence": "medium",
@@ -43725,7 +44046,10 @@
       "short": "fa2b5ba68"
     },
     "arguments": [],
-    "baseline": "openjk",
+    "baselines": [
+      "openjk",
+      "basejka"
+    ],
     "category": "Chat & social",
     "cheat_protected": false,
     "confidence": "medium",
@@ -44016,7 +44340,10 @@
       "short": "d9d510063"
     },
     "arguments": [],
-    "baseline": "openjk",
+    "baselines": [
+      "openjk",
+      "basejka"
+    ],
     "category": "Chat & social",
     "cheat_protected": false,
     "confidence": "medium",
@@ -44307,7 +44634,10 @@
       "short": "d9d510063"
     },
     "arguments": [],
-    "baseline": "openjk",
+    "baselines": [
+      "openjk",
+      "basejka"
+    ],
     "category": "Chat & social",
     "cheat_protected": false,
     "confidence": "medium",
@@ -44579,7 +44909,10 @@
       "short": "d9d510063"
     },
     "arguments": [],
-    "baseline": "openjk",
+    "baselines": [
+      "openjk",
+      "basejka"
+    ],
     "category": "Administration",
     "cheat_protected": false,
     "confidence": "medium",
@@ -44869,7 +45202,7 @@
       "short": "14cea1563"
     },
     "arguments": [],
-    "baseline": null,
+    "baselines": [],
     "category": "Engine & diagnostics",
     "cheat_protected": false,
     "confidence": "high",
@@ -45069,7 +45402,10 @@
       "short": "d9d510063"
     },
     "arguments": [],
-    "baseline": "openjk",
+    "baselines": [
+      "openjk",
+      "basejka"
+    ],
     "category": "Gameplay & combat",
     "cheat_protected": false,
     "confidence": "medium",
@@ -45366,7 +45702,10 @@
       "short": "be875666a"
     },
     "arguments": [],
-    "baseline": "openjk",
+    "baselines": [
+      "openjk",
+      "basejka"
+    ],
     "category": "Graphics & rendering",
     "cheat_protected": false,
     "confidence": "medium",
@@ -45744,7 +46083,10 @@
       "short": "bdcd618c6"
     },
     "arguments": [],
-    "baseline": "openjk",
+    "baselines": [
+      "openjk",
+      "basejka"
+    ],
     "category": "Gameplay & combat",
     "cheat_protected": false,
     "confidence": "medium",
@@ -45986,7 +46328,7 @@
       "short": "14cea1563"
     },
     "arguments": [],
-    "baseline": null,
+    "baselines": [],
     "category": "Engine & diagnostics",
     "cheat_protected": false,
     "confidence": "high",
@@ -46127,7 +46469,7 @@
       "short": "14cea1563"
     },
     "arguments": [],
-    "baseline": null,
+    "baselines": [],
     "category": "Administration",
     "cheat_protected": false,
     "confidence": "high",
@@ -46287,7 +46629,9 @@
       "short": "3e986be9a"
     },
     "arguments": [],
-    "baseline": "basejka",
+    "baselines": [
+      "basejka"
+    ],
     "category": "Gameplay & combat",
     "cheat_protected": false,
     "confidence": "medium",
@@ -46734,7 +47078,7 @@
       "short": "14cea1563"
     },
     "arguments": [],
-    "baseline": null,
+    "baselines": [],
     "category": "Engine & diagnostics",
     "cheat_protected": false,
     "confidence": "high",
@@ -46936,7 +47280,7 @@
       "short": "14cea1563"
     },
     "arguments": [],
-    "baseline": null,
+    "baselines": [],
     "category": "Engine & diagnostics",
     "cheat_protected": false,
     "confidence": "high",
@@ -47132,7 +47476,10 @@
       "short": "f1977d50a"
     },
     "arguments": [],
-    "baseline": "openjk",
+    "baselines": [
+      "openjk",
+      "basejka"
+    ],
     "category": "Engine & diagnostics",
     "cheat_protected": false,
     "confidence": "medium",
@@ -47429,7 +47776,10 @@
       "short": "71cc8ccba"
     },
     "arguments": [],
-    "baseline": "openjk",
+    "baselines": [
+      "openjk",
+      "basejka"
+    ],
     "category": "Engine & diagnostics",
     "cheat_protected": false,
     "confidence": "medium",
@@ -47816,7 +48166,7 @@
       "short": "14cea1563"
     },
     "arguments": [],
-    "baseline": null,
+    "baselines": [],
     "category": "Engine & diagnostics",
     "cheat_protected": false,
     "confidence": "high",
@@ -48047,7 +48397,7 @@
       "short": "14cea1563"
     },
     "arguments": [],
-    "baseline": null,
+    "baselines": [],
     "category": "Engine & diagnostics",
     "cheat_protected": false,
     "confidence": "high",
@@ -48170,7 +48520,7 @@
       "short": "14cea1563"
     },
     "arguments": [],
-    "baseline": null,
+    "baselines": [],
     "category": "Server & networking",
     "cheat_protected": false,
     "confidence": "high",
@@ -48527,7 +48877,10 @@
       "short": "fb24d6a98"
     },
     "arguments": [],
-    "baseline": "openjk",
+    "baselines": [
+      "openjk",
+      "basejka"
+    ],
     "category": "Gameplay & combat",
     "cheat_protected": false,
     "confidence": "medium",
@@ -48802,7 +49155,10 @@
       "short": "1e4377ef4"
     },
     "arguments": [],
-    "baseline": "openjk",
+    "baselines": [
+      "openjk",
+      "basejka"
+    ],
     "category": "Gameplay & combat",
     "cheat_protected": false,
     "confidence": "medium",
@@ -49208,7 +49564,7 @@
       "short": "14cea1563"
     },
     "arguments": [],
-    "baseline": null,
+    "baselines": [],
     "category": "Engine & diagnostics",
     "cheat_protected": false,
     "confidence": "high",
@@ -49474,7 +49830,11 @@
       "short": "9b57ee1b8"
     },
     "arguments": [],
-    "baseline": "openjk",
+    "baselines": [
+      "eternaljk",
+      "openjk",
+      "basejka"
+    ],
     "category": "Gameplay & combat",
     "cheat_protected": false,
     "confidence": "high",
@@ -49642,7 +50002,9 @@
       "short": "f7058dcb5"
     },
     "arguments": [],
-    "baseline": "basejka",
+    "baselines": [
+      "basejka"
+    ],
     "category": "Graphics & rendering",
     "cheat_protected": false,
     "confidence": "medium",
@@ -50135,7 +50497,7 @@
       "short": "14cea1563"
     },
     "arguments": [],
-    "baseline": null,
+    "baselines": [],
     "category": "Graphics & rendering",
     "cheat_protected": false,
     "confidence": "high",
@@ -50330,7 +50692,9 @@
       "short": "913e3cc57"
     },
     "arguments": [],
-    "baseline": "basejka",
+    "baselines": [
+      "basejka"
+    ],
     "category": "Graphics & rendering",
     "cheat_protected": false,
     "confidence": "medium",
@@ -50654,7 +51018,9 @@
       "short": "c9c6ab99f"
     },
     "arguments": [],
-    "baseline": "basejka",
+    "baselines": [
+      "basejka"
+    ],
     "category": "Engine & diagnostics",
     "cheat_protected": false,
     "confidence": "high",
@@ -51019,7 +51385,9 @@
       "short": "c9c6ab99f"
     },
     "arguments": [],
-    "baseline": "basejka",
+    "baselines": [
+      "basejka"
+    ],
     "category": "Engine & diagnostics",
     "cheat_protected": false,
     "confidence": "high",
@@ -51384,7 +51752,7 @@
       "short": "14cea1563"
     },
     "arguments": [],
-    "baseline": null,
+    "baselines": [],
     "category": "Engine & diagnostics",
     "cheat_protected": false,
     "confidence": "high",
@@ -51689,7 +52057,9 @@
       "short": "c9c6ab99f"
     },
     "arguments": [],
-    "baseline": "basejka",
+    "baselines": [
+      "basejka"
+    ],
     "category": "Engine & diagnostics",
     "cheat_protected": false,
     "confidence": "high",
@@ -52054,7 +52424,9 @@
       "short": "c9c6ab99f"
     },
     "arguments": [],
-    "baseline": "basejka",
+    "baselines": [
+      "basejka"
+    ],
     "category": "Engine & diagnostics",
     "cheat_protected": false,
     "confidence": "high",
@@ -52419,7 +52791,9 @@
       "short": "c9c6ab99f"
     },
     "arguments": [],
-    "baseline": "basejka",
+    "baselines": [
+      "basejka"
+    ],
     "category": "Engine & diagnostics",
     "cheat_protected": false,
     "confidence": "high",
@@ -52784,7 +53158,10 @@
       "short": "d9d510063"
     },
     "arguments": [],
-    "baseline": "openjk",
+    "baselines": [
+      "openjk",
+      "basejka"
+    ],
     "category": "Gameplay & combat",
     "cheat_protected": false,
     "confidence": "medium",
@@ -53100,7 +53477,9 @@
       "short": "b319c52fd"
     },
     "arguments": [],
-    "baseline": "basejka",
+    "baselines": [
+      "basejka"
+    ],
     "category": "Engine & diagnostics",
     "cheat_protected": true,
     "confidence": "medium",
@@ -53505,7 +53884,9 @@
       "short": "b319c52fd"
     },
     "arguments": [],
-    "baseline": "basejka",
+    "baselines": [
+      "basejka"
+    ],
     "category": "Engine & diagnostics",
     "cheat_protected": true,
     "confidence": "medium",
@@ -53910,7 +54291,9 @@
       "short": "b319c52fd"
     },
     "arguments": [],
-    "baseline": "basejka",
+    "baselines": [
+      "basejka"
+    ],
     "category": "Engine & diagnostics",
     "cheat_protected": true,
     "confidence": "medium",
@@ -54315,7 +54698,9 @@
       "short": "b319c52fd"
     },
     "arguments": [],
-    "baseline": "basejka",
+    "baselines": [
+      "basejka"
+    ],
     "category": "Engine & diagnostics",
     "cheat_protected": true,
     "confidence": "medium",
@@ -54720,7 +55105,9 @@
       "short": "b319c52fd"
     },
     "arguments": [],
-    "baseline": "basejka",
+    "baselines": [
+      "basejka"
+    ],
     "category": "Engine & diagnostics",
     "cheat_protected": true,
     "confidence": "medium",
@@ -55128,7 +55515,11 @@
       "milliseconds",
       "commands"
     ],
-    "baseline": "eternaljk",
+    "baselines": [
+      "eternaljk",
+      "openjk",
+      "basejka"
+    ],
     "category": "Engine & diagnostics",
     "cheat_protected": false,
     "confidence": "high",
@@ -55331,7 +55722,11 @@
     "arguments": [
       "text"
     ],
-    "baseline": "eternaljk",
+    "baselines": [
+      "eternaljk",
+      "openjk",
+      "basejka"
+    ],
     "category": "Engine & diagnostics",
     "cheat_protected": false,
     "confidence": "high",
@@ -55532,7 +55927,10 @@
       "short": "d9d510063"
     },
     "arguments": [],
-    "baseline": "openjk",
+    "baselines": [
+      "openjk",
+      "basejka"
+    ],
     "category": "Gameplay & combat",
     "cheat_protected": false,
     "confidence": "medium",
@@ -55847,7 +56245,10 @@
       "short": "bdcd618c6"
     },
     "arguments": [],
-    "baseline": "openjk",
+    "baselines": [
+      "openjk",
+      "basejka"
+    ],
     "category": "Movement & race",
     "cheat_protected": false,
     "confidence": "medium",
@@ -56083,7 +56484,10 @@
       "short": "98e5c2a48"
     },
     "arguments": [],
-    "baseline": "openjk",
+    "baselines": [
+      "openjk",
+      "basejka"
+    ],
     "category": "Demos & media",
     "cheat_protected": false,
     "confidence": "medium",
@@ -56385,7 +56789,10 @@
       "short": "bdcd618c6"
     },
     "arguments": [],
-    "baseline": "openjk",
+    "baselines": [
+      "openjk",
+      "basejka"
+    ],
     "category": "Audio & music",
     "cheat_protected": false,
     "confidence": "medium",
@@ -56621,7 +57028,7 @@
       "short": "14cea1563"
     },
     "arguments": [],
-    "baseline": null,
+    "baselines": [],
     "category": "Demos & media",
     "cheat_protected": false,
     "confidence": "high",
@@ -56913,7 +57320,10 @@
       "short": "94672e48e"
     },
     "arguments": [],
-    "baseline": "eternaljk",
+    "baselines": [
+      "openjk",
+      "basejka"
+    ],
     "category": "Demos & media",
     "cheat_protected": false,
     "confidence": "high",
@@ -57269,7 +57679,7 @@
       "short": "14cea1563"
     },
     "arguments": [],
-    "baseline": null,
+    "baselines": [],
     "category": "Server & networking",
     "cheat_protected": false,
     "confidence": "high",
@@ -57465,7 +57875,7 @@
       "short": "14cea1563"
     },
     "arguments": [],
-    "baseline": null,
+    "baselines": [],
     "category": "Server & networking",
     "cheat_protected": false,
     "confidence": "high",
@@ -57661,7 +58071,7 @@
       "short": "14cea1563"
     },
     "arguments": [],
-    "baseline": null,
+    "baselines": [],
     "category": "Server & networking",
     "cheat_protected": false,
     "confidence": "high",
@@ -57857,7 +58267,7 @@
       "short": "14cea1563"
     },
     "arguments": [],
-    "baseline": null,
+    "baselines": [],
     "category": "Files & downloads",
     "cheat_protected": false,
     "confidence": "high",
@@ -57999,7 +58409,7 @@
       "short": "14cea1563"
     },
     "arguments": [],
-    "baseline": null,
+    "baselines": [],
     "category": "Server & networking",
     "cheat_protected": false,
     "confidence": "high",
@@ -58140,7 +58550,10 @@
       "short": "bdcd618c6"
     },
     "arguments": [],
-    "baseline": "openjk",
+    "baselines": [
+      "openjk",
+      "basejka"
+    ],
     "category": "Gameplay & combat",
     "cheat_protected": false,
     "confidence": "medium",
@@ -58418,7 +58831,9 @@
       "short": "14cea1563"
     },
     "arguments": [],
-    "baseline": "basejka",
+    "baselines": [
+      "basejka"
+    ],
     "category": "Gameplay & combat",
     "cheat_protected": false,
     "confidence": "medium",
@@ -58904,7 +59319,10 @@
       "short": "bdcd618c6"
     },
     "arguments": [],
-    "baseline": "openjk",
+    "baselines": [
+      "openjk",
+      "basejka"
+    ],
     "category": "Administration",
     "cheat_protected": false,
     "confidence": "medium",
@@ -59140,7 +59558,7 @@
       "short": "14cea1563"
     },
     "arguments": [],
-    "baseline": null,
+    "baselines": [],
     "category": "Server & networking",
     "cheat_protected": false,
     "confidence": "high",
@@ -59299,7 +59717,7 @@
       "short": "14cea1563"
     },
     "arguments": [],
-    "baseline": null,
+    "baselines": [],
     "category": "Engine & diagnostics",
     "cheat_protected": false,
     "confidence": "high",
@@ -59441,7 +59859,7 @@
       "short": "14cea1563"
     },
     "arguments": [],
-    "baseline": null,
+    "baselines": [],
     "category": "Gameplay & combat",
     "cheat_protected": false,
     "confidence": "high",
@@ -59573,7 +59991,10 @@
       "short": "d9d510063"
     },
     "arguments": [],
-    "baseline": "openjk",
+    "baselines": [
+      "openjk",
+      "basejka"
+    ],
     "category": "Gameplay & combat",
     "cheat_protected": false,
     "confidence": "high",
@@ -59855,7 +60276,10 @@
       "short": "d9d510063"
     },
     "arguments": [],
-    "baseline": "openjk",
+    "baselines": [
+      "openjk",
+      "basejka"
+    ],
     "category": "Gameplay & combat",
     "cheat_protected": false,
     "confidence": "high",
@@ -60137,7 +60561,10 @@
       "short": "675e97128"
     },
     "arguments": [],
-    "baseline": "openjk",
+    "baselines": [
+      "openjk",
+      "basejka"
+    ],
     "category": "Gameplay & combat",
     "cheat_protected": false,
     "confidence": "medium",
@@ -60379,7 +60806,9 @@
       "short": "14cea1563"
     },
     "arguments": [],
-    "baseline": "basejka",
+    "baselines": [
+      "basejka"
+    ],
     "category": "Gameplay & combat",
     "cheat_protected": false,
     "confidence": "medium",
@@ -60893,7 +61322,7 @@
       "short": "14cea1563"
     },
     "arguments": [],
-    "baseline": null,
+    "baselines": [],
     "category": "Engine & diagnostics",
     "cheat_protected": false,
     "confidence": "high",
@@ -61034,7 +61463,7 @@
       "short": "14cea1563"
     },
     "arguments": [],
-    "baseline": null,
+    "baselines": [],
     "category": "Engine & diagnostics",
     "cheat_protected": false,
     "confidence": "high",
@@ -61219,7 +61648,9 @@
       "short": "649941d04"
     },
     "arguments": [],
-    "baseline": "openjk",
+    "baselines": [
+      "basejka"
+    ],
     "category": "Engine & diagnostics",
     "cheat_protected": false,
     "confidence": "medium",
@@ -61658,7 +62089,10 @@
       "short": "20755a5d4"
     },
     "arguments": [],
-    "baseline": "openjk",
+    "baselines": [
+      "openjk",
+      "basejka"
+    ],
     "category": "Engine & diagnostics",
     "cheat_protected": false,
     "confidence": "medium",
@@ -61943,7 +62377,7 @@
       "short": "14cea1563"
     },
     "arguments": [],
-    "baseline": null,
+    "baselines": [],
     "category": "Files & downloads",
     "cheat_protected": false,
     "confidence": "high",
@@ -62085,7 +62519,10 @@
       "short": "ad634ee5d"
     },
     "arguments": [],
-    "baseline": "openjk",
+    "baselines": [
+      "openjk",
+      "basejka"
+    ],
     "category": "Gameplay & combat",
     "cheat_protected": false,
     "confidence": "medium",
@@ -62418,7 +62855,11 @@
       "short": "9b57ee1b8"
     },
     "arguments": [],
-    "baseline": "openjk",
+    "baselines": [
+      "eternaljk",
+      "openjk",
+      "basejka"
+    ],
     "category": "Demos & media",
     "cheat_protected": false,
     "confidence": "high",
@@ -62586,7 +63027,10 @@
       "short": "bdcd618c6"
     },
     "arguments": [],
-    "baseline": "openjk",
+    "baselines": [
+      "openjk",
+      "basejka"
+    ],
     "category": "Administration",
     "cheat_protected": false,
     "confidence": "medium",
@@ -62845,7 +63289,7 @@
       "short": "14cea1563"
     },
     "arguments": [],
-    "baseline": null,
+    "baselines": [],
     "category": "Engine & diagnostics",
     "cheat_protected": false,
     "confidence": "high",
@@ -63012,7 +63456,7 @@
       "short": "14cea1563"
     },
     "arguments": [],
-    "baseline": null,
+    "baselines": [],
     "category": "Gameplay & combat",
     "cheat_protected": false,
     "confidence": "high",
@@ -63340,7 +63784,10 @@
       "short": "bdcd618c6"
     },
     "arguments": [],
-    "baseline": "openjk",
+    "baselines": [
+      "openjk",
+      "basejka"
+    ],
     "category": "Gameplay & combat",
     "cheat_protected": false,
     "confidence": "medium",
@@ -63587,7 +64034,10 @@
       "short": "bdcd618c6"
     },
     "arguments": [],
-    "baseline": "openjk",
+    "baselines": [
+      "openjk",
+      "basejka"
+    ],
     "category": "Gameplay & combat",
     "cheat_protected": false,
     "confidence": "medium",
@@ -63889,7 +64339,9 @@
       "short": "14cea1563"
     },
     "arguments": [],
-    "baseline": "basejka",
+    "baselines": [
+      "basejka"
+    ],
     "category": "Gameplay & combat",
     "cheat_protected": false,
     "confidence": "medium",
@@ -64322,7 +64774,9 @@
       "short": "14cea1563"
     },
     "arguments": [],
-    "baseline": "basejka",
+    "baselines": [
+      "basejka"
+    ],
     "category": "Gameplay & combat",
     "cheat_protected": false,
     "confidence": "medium",
@@ -64755,7 +65209,10 @@
       "short": "bdcd618c6"
     },
     "arguments": [],
-    "baseline": "openjk",
+    "baselines": [
+      "openjk",
+      "basejka"
+    ],
     "category": "Gameplay & combat",
     "cheat_protected": false,
     "confidence": "medium",
@@ -65002,7 +65459,9 @@
       "short": "333d0ace7"
     },
     "arguments": [],
-    "baseline": "basejka",
+    "baselines": [
+      "basejka"
+    ],
     "category": "Graphics & rendering",
     "cheat_protected": false,
     "confidence": "medium",
@@ -65592,7 +66051,7 @@
       "short": "14cea1563"
     },
     "arguments": [],
-    "baseline": null,
+    "baselines": [],
     "category": "Gameplay & combat",
     "cheat_protected": false,
     "confidence": "high",
@@ -65778,7 +66237,7 @@
       "short": "14cea1563"
     },
     "arguments": [],
-    "baseline": null,
+    "baselines": [],
     "category": "Gameplay & combat",
     "cheat_protected": false,
     "confidence": "high",
@@ -65983,7 +66442,7 @@
       "short": "14cea1563"
     },
     "arguments": [],
-    "baseline": null,
+    "baselines": [],
     "category": "Gameplay & combat",
     "cheat_protected": false,
     "confidence": "high",
@@ -66115,7 +66574,7 @@
       "short": "14cea1563"
     },
     "arguments": [],
-    "baseline": null,
+    "baselines": [],
     "category": "Gameplay & combat",
     "cheat_protected": false,
     "confidence": "high",
@@ -66320,7 +66779,7 @@
       "short": "14cea1563"
     },
     "arguments": [],
-    "baseline": null,
+    "baselines": [],
     "category": "Gameplay & combat",
     "cheat_protected": false,
     "confidence": "high",
@@ -66452,7 +66911,7 @@
       "short": "14cea1563"
     },
     "arguments": [],
-    "baseline": null,
+    "baselines": [],
     "category": "Administration",
     "cheat_protected": false,
     "confidence": "high",
@@ -66638,7 +67097,7 @@
       "short": "14cea1563"
     },
     "arguments": [],
-    "baseline": null,
+    "baselines": [],
     "category": "Gameplay & combat",
     "cheat_protected": false,
     "confidence": "high",
@@ -66843,7 +67302,7 @@
       "short": "14cea1563"
     },
     "arguments": [],
-    "baseline": null,
+    "baselines": [],
     "category": "Gameplay & combat",
     "cheat_protected": false,
     "confidence": "high",
@@ -67029,7 +67488,7 @@
       "short": "14cea1563"
     },
     "arguments": [],
-    "baseline": null,
+    "baselines": [],
     "category": "Gameplay & combat",
     "cheat_protected": false,
     "confidence": "high",
@@ -67161,7 +67620,7 @@
       "short": "14cea1563"
     },
     "arguments": [],
-    "baseline": null,
+    "baselines": [],
     "category": "Gameplay & combat",
     "cheat_protected": false,
     "confidence": "high",
@@ -67366,7 +67825,7 @@
       "short": "14cea1563"
     },
     "arguments": [],
-    "baseline": null,
+    "baselines": [],
     "category": "Gameplay & combat",
     "cheat_protected": false,
     "confidence": "high",
@@ -67571,7 +68030,7 @@
       "short": "14cea1563"
     },
     "arguments": [],
-    "baseline": null,
+    "baselines": [],
     "category": "Gameplay & combat",
     "cheat_protected": false,
     "confidence": "high",
@@ -67762,7 +68221,7 @@
       "short": "14cea1563"
     },
     "arguments": [],
-    "baseline": null,
+    "baselines": [],
     "category": "Gameplay & combat",
     "cheat_protected": false,
     "confidence": "high",
@@ -68092,7 +68551,7 @@
       "short": "14cea1563"
     },
     "arguments": [],
-    "baseline": null,
+    "baselines": [],
     "category": "Gameplay & combat",
     "cheat_protected": false,
     "confidence": "high",
@@ -68233,7 +68692,7 @@
       "short": "14cea1563"
     },
     "arguments": [],
-    "baseline": null,
+    "baselines": [],
     "category": "Gameplay & combat",
     "cheat_protected": false,
     "confidence": "high",
@@ -68599,7 +69058,9 @@
       "short": "14cea1563"
     },
     "arguments": [],
-    "baseline": "basejka",
+    "baselines": [
+      "basejka"
+    ],
     "category": "Gameplay & combat",
     "cheat_protected": false,
     "confidence": "medium",
@@ -69056,7 +69517,7 @@
       "short": "14cea1563"
     },
     "arguments": [],
-    "baseline": null,
+    "baselines": [],
     "category": "Gameplay & combat",
     "cheat_protected": false,
     "confidence": "high",
@@ -69233,7 +69694,7 @@
       "short": "14cea1563"
     },
     "arguments": [],
-    "baseline": null,
+    "baselines": [],
     "category": "Administration",
     "cheat_protected": false,
     "confidence": "high",
@@ -69356,7 +69817,7 @@
       "short": "14cea1563"
     },
     "arguments": [],
-    "baseline": null,
+    "baselines": [],
     "category": "Files & downloads",
     "cheat_protected": false,
     "confidence": "high",
@@ -69461,7 +69922,7 @@
       "short": "14cea1563"
     },
     "arguments": [],
-    "baseline": null,
+    "baselines": [],
     "category": "Files & downloads",
     "cheat_protected": false,
     "confidence": "high",
@@ -69566,7 +70027,9 @@
       "short": "97745ce28"
     },
     "arguments": [],
-    "baseline": "openjk",
+    "baselines": [
+      "basejka"
+    ],
     "category": "Files & downloads",
     "cheat_protected": false,
     "confidence": "medium",
@@ -70006,7 +70469,9 @@
       "short": "14cea1563"
     },
     "arguments": [],
-    "baseline": "basejka",
+    "baselines": [
+      "basejka"
+    ],
     "category": "Engine & diagnostics",
     "cheat_protected": false,
     "confidence": "medium",
@@ -70482,7 +70947,10 @@
       "short": "d9d510063"
     },
     "arguments": [],
-    "baseline": "openjk",
+    "baselines": [
+      "openjk",
+      "basejka"
+    ],
     "category": "Gameplay & combat",
     "cheat_protected": false,
     "confidence": "medium",
@@ -70803,7 +71271,9 @@
       "short": "b319c52fd"
     },
     "arguments": [],
-    "baseline": "basejka",
+    "baselines": [
+      "basejka"
+    ],
     "category": "Gameplay & combat",
     "cheat_protected": false,
     "confidence": "medium",
@@ -71262,7 +71732,7 @@
       "short": "14cea1563"
     },
     "arguments": [],
-    "baseline": null,
+    "baselines": [],
     "category": "Graphics & rendering",
     "cheat_protected": false,
     "confidence": "high",
@@ -71827,7 +72297,10 @@
       "short": "86c075638"
     },
     "arguments": [],
-    "baseline": "eternaljk",
+    "baselines": [
+      "eternaljk",
+      "basejka"
+    ],
     "category": "Graphics & rendering",
     "cheat_protected": false,
     "confidence": "high",
@@ -72137,7 +72610,7 @@
       "short": "14cea1563"
     },
     "arguments": [],
-    "baseline": null,
+    "baselines": [],
     "category": "Gameplay & combat",
     "cheat_protected": true,
     "confidence": "high",
@@ -72370,7 +72843,9 @@
       "short": "b319c52fd"
     },
     "arguments": [],
-    "baseline": "basejka",
+    "baselines": [
+      "basejka"
+    ],
     "category": "Gameplay & combat",
     "cheat_protected": true,
     "confidence": "medium",
@@ -72796,7 +73271,7 @@
       "short": "14cea1563"
     },
     "arguments": [],
-    "baseline": null,
+    "baselines": [],
     "category": "Engine & diagnostics",
     "cheat_protected": false,
     "confidence": "high",
@@ -72963,7 +73438,7 @@
       "short": "14cea1563"
     },
     "arguments": [],
-    "baseline": null,
+    "baselines": [],
     "category": "Server & networking",
     "cheat_protected": false,
     "confidence": "high",
@@ -73248,7 +73723,7 @@
       "short": "14cea1563"
     },
     "arguments": [],
-    "baseline": null,
+    "baselines": [],
     "category": "Gameplay & combat",
     "cheat_protected": true,
     "confidence": "high",
@@ -73476,7 +73951,11 @@
       "short": "9b57ee1b8"
     },
     "arguments": [],
-    "baseline": "openjk",
+    "baselines": [
+      "eternaljk",
+      "openjk",
+      "basejka"
+    ],
     "category": "Gameplay & combat",
     "cheat_protected": false,
     "confidence": "high",
@@ -73645,7 +74124,7 @@
       "short": "14cea1563"
     },
     "arguments": [],
-    "baseline": null,
+    "baselines": [],
     "category": "Server & networking",
     "cheat_protected": false,
     "confidence": "high",
@@ -73804,7 +74283,9 @@
       "short": "c9c6ab99f"
     },
     "arguments": [],
-    "baseline": "basejka",
+    "baselines": [
+      "basejka"
+    ],
     "category": "Gameplay & combat",
     "cheat_protected": false,
     "confidence": "high",
@@ -74188,7 +74669,10 @@
       "short": "d9d510063"
     },
     "arguments": [],
-    "baseline": "openjk",
+    "baselines": [
+      "openjk",
+      "basejka"
+    ],
     "category": "Gameplay & combat",
     "cheat_protected": false,
     "confidence": "medium",
@@ -74566,7 +75050,11 @@
       "command",
       "..."
     ],
-    "baseline": "eternaljk",
+    "baselines": [
+      "eternaljk",
+      "openjk",
+      "basejka"
+    ],
     "category": "Engine & diagnostics",
     "cheat_protected": false,
     "confidence": "medium",
@@ -74726,7 +75214,10 @@
       "short": "d9d510063"
     },
     "arguments": [],
-    "baseline": "openjk",
+    "baselines": [
+      "openjk",
+      "basejka"
+    ],
     "category": "Chat & social",
     "cheat_protected": false,
     "confidence": "high",
@@ -75016,7 +75507,10 @@
       "short": "bdcd618c6"
     },
     "arguments": [],
-    "baseline": "openjk",
+    "baselines": [
+      "openjk",
+      "basejka"
+    ],
     "category": "Chat & social",
     "cheat_protected": false,
     "confidence": "medium",
@@ -75277,7 +75771,7 @@
       "short": "14cea1563"
     },
     "arguments": [],
-    "baseline": null,
+    "baselines": [],
     "category": "Graphics & rendering",
     "cheat_protected": false,
     "confidence": "high",
@@ -75590,7 +76084,7 @@
       "short": "14cea1563"
     },
     "arguments": [],
-    "baseline": null,
+    "baselines": [],
     "category": "Graphics & rendering",
     "cheat_protected": false,
     "confidence": "high",
@@ -76047,7 +76541,7 @@
       "short": "14cea1563"
     },
     "arguments": [],
-    "baseline": null,
+    "baselines": [],
     "category": "Input & controls",
     "cheat_protected": false,
     "confidence": "high",
@@ -76331,7 +76825,11 @@
       "short": "baa02905f"
     },
     "arguments": [],
-    "baseline": "openjk",
+    "baselines": [
+      "eternaljk",
+      "openjk",
+      "basejka"
+    ],
     "category": "Gameplay & combat",
     "cheat_protected": false,
     "confidence": "high",
@@ -76497,7 +76995,7 @@
       "short": "14cea1563"
     },
     "arguments": [],
-    "baseline": null,
+    "baselines": [],
     "category": "Gameplay & combat",
     "cheat_protected": false,
     "confidence": "high",
@@ -76701,7 +77199,7 @@
       "short": "14cea1563"
     },
     "arguments": [],
-    "baseline": null,
+    "baselines": [],
     "category": "Gameplay & combat",
     "cheat_protected": false,
     "confidence": "high",
@@ -76942,7 +77440,10 @@
       "short": "d9d510063"
     },
     "arguments": [],
-    "baseline": "openjk",
+    "baselines": [
+      "openjk",
+      "basejka"
+    ],
     "category": "Gameplay & combat",
     "cheat_protected": false,
     "confidence": "medium",
@@ -77231,7 +77732,10 @@
       "short": "d9d510063"
     },
     "arguments": [],
-    "baseline": "openjk",
+    "baselines": [
+      "openjk",
+      "basejka"
+    ],
     "category": "Gameplay & combat",
     "cheat_protected": false,
     "confidence": "medium",
@@ -77656,7 +78160,7 @@
       "short": "14cea1563"
     },
     "arguments": [],
-    "baseline": null,
+    "baselines": [],
     "category": "Administration",
     "cheat_protected": false,
     "confidence": "high",
@@ -77858,7 +78362,9 @@
       "short": "9344b45fc"
     },
     "arguments": [],
-    "baseline": "basejka",
+    "baselines": [
+      "basejka"
+    ],
     "category": "Administration",
     "cheat_protected": false,
     "confidence": "medium",
@@ -78242,7 +78748,9 @@
       "short": "9344b45fc"
     },
     "arguments": [],
-    "baseline": "basejka",
+    "baselines": [
+      "basejka"
+    ],
     "category": "Administration",
     "cheat_protected": false,
     "confidence": "medium",
@@ -78626,7 +79134,9 @@
       "short": "9344b45fc"
     },
     "arguments": [],
-    "baseline": "basejka",
+    "baselines": [
+      "basejka"
+    ],
     "category": "Administration",
     "cheat_protected": false,
     "confidence": "medium",
@@ -79065,7 +79575,7 @@
       "short": "14cea1563"
     },
     "arguments": [],
-    "baseline": null,
+    "baselines": [],
     "category": "Gameplay & combat",
     "cheat_protected": false,
     "confidence": "high",
@@ -79386,7 +79896,9 @@
       "short": "b319c52fd"
     },
     "arguments": [],
-    "baseline": "basejka",
+    "baselines": [
+      "basejka"
+    ],
     "category": "Gameplay & combat",
     "cheat_protected": true,
     "confidence": "medium",
@@ -79847,7 +80359,7 @@
       "short": "14cea1563"
     },
     "arguments": [],
-    "baseline": null,
+    "baselines": [],
     "category": "Server & networking",
     "cheat_protected": false,
     "confidence": "high",
@@ -80006,7 +80518,10 @@
       "short": "d9d510063"
     },
     "arguments": [],
-    "baseline": "openjk",
+    "baselines": [
+      "openjk",
+      "basejka"
+    ],
     "category": "Gameplay & combat",
     "cheat_protected": false,
     "confidence": "medium",
@@ -80352,7 +80867,7 @@
       "short": "14cea1563"
     },
     "arguments": [],
-    "baseline": null,
+    "baselines": [],
     "category": "Demos & media",
     "cheat_protected": true,
     "confidence": "high",
@@ -80543,7 +81058,10 @@
       "short": "96eedd5ac"
     },
     "arguments": [],
-    "baseline": "openjk",
+    "baselines": [
+      "openjk",
+      "basejka"
+    ],
     "category": "Administration",
     "cheat_protected": false,
     "confidence": "medium",
@@ -80858,7 +81376,10 @@
       "short": "bdcd618c6"
     },
     "arguments": [],
-    "baseline": "openjk",
+    "baselines": [
+      "openjk",
+      "basejka"
+    ],
     "category": "Movement & race",
     "cheat_protected": false,
     "confidence": "medium",
@@ -81100,7 +81621,10 @@
       "short": "0d34eb5a1"
     },
     "arguments": [],
-    "baseline": "openjk",
+    "baselines": [
+      "openjk",
+      "basejka"
+    ],
     "category": "Gameplay & combat",
     "cheat_protected": false,
     "confidence": "medium",
@@ -81342,7 +81866,9 @@
       "short": "14cea1563"
     },
     "arguments": [],
-    "baseline": "basejka",
+    "baselines": [
+      "basejka"
+    ],
     "category": "Gameplay & combat",
     "cheat_protected": false,
     "confidence": "medium",
@@ -81763,7 +82289,10 @@
       "short": "bdcd618c6"
     },
     "arguments": [],
-    "baseline": "openjk",
+    "baselines": [
+      "openjk",
+      "basejka"
+    ],
     "category": "Gameplay & combat",
     "cheat_protected": false,
     "confidence": "medium",
@@ -82024,7 +82553,10 @@
       "short": "bdcd618c6"
     },
     "arguments": [],
-    "baseline": "openjk",
+    "baselines": [
+      "openjk",
+      "basejka"
+    ],
     "category": "Audio & music",
     "cheat_protected": false,
     "confidence": "medium",
@@ -82266,7 +82798,7 @@
       "short": "14cea1563"
     },
     "arguments": [],
-    "baseline": null,
+    "baselines": [],
     "category": "Gameplay & combat",
     "cheat_protected": false,
     "confidence": "high",
@@ -82364,7 +82896,7 @@
       "short": "14cea1563"
     },
     "arguments": [],
-    "baseline": null,
+    "baselines": [],
     "category": "Gameplay & combat",
     "cheat_protected": false,
     "confidence": "high",
@@ -82470,7 +83002,7 @@
       "short": "14cea1563"
     },
     "arguments": [],
-    "baseline": null,
+    "baselines": [],
     "category": "HUD & interface",
     "cheat_protected": false,
     "confidence": "high",
@@ -82739,7 +83271,10 @@
       "short": "04db4f373"
     },
     "arguments": [],
-    "baseline": "openjk",
+    "baselines": [
+      "openjk",
+      "basejka"
+    ],
     "category": "Engine & diagnostics",
     "cheat_protected": false,
     "confidence": "medium",
@@ -82986,7 +83521,10 @@
       "short": "bdcd618c6"
     },
     "arguments": [],
-    "baseline": "openjk",
+    "baselines": [
+      "openjk",
+      "basejka"
+    ],
     "category": "Gameplay & combat",
     "cheat_protected": false,
     "confidence": "medium",
@@ -83222,7 +83760,7 @@
       "short": "14cea1563"
     },
     "arguments": [],
-    "baseline": null,
+    "baselines": [],
     "category": "Server & networking",
     "cheat_protected": false,
     "confidence": "high",
@@ -83381,7 +83919,10 @@
       "short": "d9d510063"
     },
     "arguments": [],
-    "baseline": "openjk",
+    "baselines": [
+      "openjk",
+      "basejka"
+    ],
     "category": "Gameplay & combat",
     "cheat_protected": false,
     "confidence": "medium",
@@ -84011,7 +84552,10 @@
       "short": "d9d510063"
     },
     "arguments": [],
-    "baseline": "openjk",
+    "baselines": [
+      "openjk",
+      "basejka"
+    ],
     "category": "Gameplay & combat",
     "cheat_protected": false,
     "confidence": "medium",
@@ -84445,7 +84989,10 @@
       "short": "bdcd618c6"
     },
     "arguments": [],
-    "baseline": "openjk",
+    "baselines": [
+      "openjk",
+      "basejka"
+    ],
     "category": "Gameplay & combat",
     "cheat_protected": false,
     "confidence": "medium",
@@ -84769,7 +85316,7 @@
       "short": "14cea1563"
     },
     "arguments": [],
-    "baseline": null,
+    "baselines": [],
     "category": "Server & networking",
     "cheat_protected": false,
     "confidence": "high",
@@ -84990,7 +85537,7 @@
       "short": "14cea1563"
     },
     "arguments": [],
-    "baseline": null,
+    "baselines": [],
     "category": "Server & networking",
     "cheat_protected": false,
     "confidence": "high",
@@ -85302,7 +85849,10 @@
       "short": "d9d510063"
     },
     "arguments": [],
-    "baseline": "openjk",
+    "baselines": [
+      "openjk",
+      "basejka"
+    ],
     "category": "Gameplay & combat",
     "cheat_protected": true,
     "confidence": "medium",
@@ -85566,7 +86116,10 @@
       "short": "50d84d540"
     },
     "arguments": [],
-    "baseline": "openjk",
+    "baselines": [
+      "openjk",
+      "basejka"
+    ],
     "category": "Server & networking",
     "cheat_protected": false,
     "confidence": "high",
@@ -85893,7 +86446,10 @@
       "short": "50d84d540"
     },
     "arguments": [],
-    "baseline": "openjk",
+    "baselines": [
+      "openjk",
+      "basejka"
+    ],
     "category": "Server & networking",
     "cheat_protected": false,
     "confidence": "medium",
@@ -86202,7 +86758,7 @@
       "short": "14cea1563"
     },
     "arguments": [],
-    "baseline": null,
+    "baselines": [],
     "category": "Engine & diagnostics",
     "cheat_protected": false,
     "confidence": "high",
@@ -86369,7 +86925,7 @@
       "short": "14cea1563"
     },
     "arguments": [],
-    "baseline": null,
+    "baselines": [],
     "category": "Chat & social",
     "cheat_protected": false,
     "confidence": "high",
@@ -86609,7 +87165,7 @@
       "short": "14cea1563"
     },
     "arguments": [],
-    "baseline": null,
+    "baselines": [],
     "category": "Chat & social",
     "cheat_protected": false,
     "confidence": "high",
@@ -86831,7 +87387,7 @@
       "short": "14cea1563"
     },
     "arguments": [],
-    "baseline": null,
+    "baselines": [],
     "category": "Chat & social",
     "cheat_protected": false,
     "confidence": "high",
@@ -87098,7 +87654,7 @@
       "short": "14cea1563"
     },
     "arguments": [],
-    "baseline": null,
+    "baselines": [],
     "category": "Chat & social",
     "cheat_protected": false,
     "confidence": "high",
@@ -87329,7 +87885,11 @@
       "short": "8294d8bc3"
     },
     "arguments": [],
-    "baseline": "openjk",
+    "baselines": [
+      "eternaljk",
+      "openjk",
+      "basejka"
+    ],
     "category": "Movement & race",
     "cheat_protected": false,
     "confidence": "high",
@@ -87425,7 +87985,9 @@
       "short": "a7c43677a"
     },
     "arguments": [],
-    "baseline": "basejka",
+    "baselines": [
+      "basejka"
+    ],
     "category": "Engine & diagnostics",
     "cheat_protected": false,
     "confidence": "medium",
@@ -87868,7 +88430,11 @@
       "short": "1dd571383"
     },
     "arguments": [],
-    "baseline": "eternaljk",
+    "baselines": [
+      "eternaljk",
+      "openjk",
+      "basejka"
+    ],
     "category": "Engine & diagnostics",
     "cheat_protected": false,
     "confidence": "high",
@@ -88089,7 +88655,7 @@
       "short": "14cea1563"
     },
     "arguments": [],
-    "baseline": null,
+    "baselines": [],
     "category": "Engine & diagnostics",
     "cheat_protected": false,
     "confidence": "high",
@@ -88255,7 +88821,7 @@
       "short": "14cea1563"
     },
     "arguments": [],
-    "baseline": null,
+    "baselines": [],
     "category": "Graphics & rendering",
     "cheat_protected": false,
     "confidence": "high",
@@ -88595,7 +89161,7 @@
       "short": "14cea1563"
     },
     "arguments": [],
-    "baseline": null,
+    "baselines": [],
     "category": "Engine & diagnostics",
     "cheat_protected": false,
     "confidence": "high",
@@ -88791,7 +89357,7 @@
       "short": "14cea1563"
     },
     "arguments": [],
-    "baseline": null,
+    "baselines": [],
     "category": "Graphics & rendering",
     "cheat_protected": false,
     "confidence": "high",
@@ -89202,7 +89768,10 @@
       "short": "d9d510063"
     },
     "arguments": [],
-    "baseline": "openjk",
+    "baselines": [
+      "openjk",
+      "basejka"
+    ],
     "category": "Engine & diagnostics",
     "cheat_protected": false,
     "confidence": "medium",
@@ -89535,7 +90104,10 @@
       "short": "d9d510063"
     },
     "arguments": [],
-    "baseline": "openjk",
+    "baselines": [
+      "openjk",
+      "basejka"
+    ],
     "category": "Gameplay & combat",
     "cheat_protected": false,
     "confidence": "medium",
@@ -90050,7 +90622,7 @@
       "short": "14cea1563"
     },
     "arguments": [],
-    "baseline": null,
+    "baselines": [],
     "category": "Engine & diagnostics",
     "cheat_protected": false,
     "confidence": "high",
@@ -90172,7 +90744,11 @@
       "short": "1dd571383"
     },
     "arguments": [],
-    "baseline": "eternaljk",
+    "baselines": [
+      "eternaljk",
+      "openjk",
+      "basejka"
+    ],
     "category": "Engine & diagnostics",
     "cheat_protected": false,
     "confidence": "high",
@@ -90393,7 +90969,11 @@
       "short": "1dd571383"
     },
     "arguments": [],
-    "baseline": "eternaljk",
+    "baselines": [
+      "eternaljk",
+      "openjk",
+      "basejka"
+    ],
     "category": "Engine & diagnostics",
     "cheat_protected": false,
     "confidence": "high",
@@ -90614,7 +91194,11 @@
       "short": "1dd571383"
     },
     "arguments": [],
-    "baseline": "eternaljk",
+    "baselines": [
+      "eternaljk",
+      "openjk",
+      "basejka"
+    ],
     "category": "Engine & diagnostics",
     "cheat_protected": false,
     "confidence": "high",
@@ -90835,7 +91419,7 @@
       "short": "14cea1563"
     },
     "arguments": [],
-    "baseline": null,
+    "baselines": [],
     "category": "Audio & music",
     "cheat_protected": false,
     "confidence": "high",
@@ -91018,7 +91602,11 @@
       "short": "9b57ee1b8"
     },
     "arguments": [],
-    "baseline": "openjk",
+    "baselines": [
+      "eternaljk",
+      "openjk",
+      "basejka"
+    ],
     "category": "Gameplay & combat",
     "cheat_protected": false,
     "confidence": "high",
@@ -91186,7 +91774,7 @@
       "short": "14cea1563"
     },
     "arguments": [],
-    "baseline": null,
+    "baselines": [],
     "category": "Server & networking",
     "cheat_protected": false,
     "confidence": "high",
@@ -91384,7 +91972,7 @@
       "short": "14cea1563"
     },
     "arguments": [],
-    "baseline": null,
+    "baselines": [],
     "category": "Gameplay & combat",
     "cheat_protected": false,
     "confidence": "high",
@@ -91561,7 +92149,7 @@
       "short": "14cea1563"
     },
     "arguments": [],
-    "baseline": null,
+    "baselines": [],
     "category": "Gameplay & combat",
     "cheat_protected": false,
     "confidence": "high",
@@ -91738,7 +92326,7 @@
       "short": "14cea1563"
     },
     "arguments": [],
-    "baseline": null,
+    "baselines": [],
     "category": "Gameplay & combat",
     "cheat_protected": false,
     "confidence": "high",
@@ -92091,7 +92679,7 @@
       "short": "14cea1563"
     },
     "arguments": [],
-    "baseline": null,
+    "baselines": [],
     "category": "Gameplay & combat",
     "cheat_protected": true,
     "confidence": "high",
@@ -92320,7 +92908,10 @@
       "short": "bdcd618c6"
     },
     "arguments": [],
-    "baseline": "openjk",
+    "baselines": [
+      "openjk",
+      "basejka"
+    ],
     "category": "Gameplay & combat",
     "cheat_protected": false,
     "confidence": "medium",
@@ -92556,7 +93147,9 @@
       "short": "14cea1563"
     },
     "arguments": [],
-    "baseline": "basejka",
+    "baselines": [
+      "basejka"
+    ],
     "category": "Bots & AI",
     "cheat_protected": false,
     "confidence": "medium",
@@ -93235,7 +93828,10 @@
       "short": "d9d510063"
     },
     "arguments": [],
-    "baseline": "openjk",
+    "baselines": [
+      "openjk",
+      "basejka"
+    ],
     "category": "Gameplay & combat",
     "cheat_protected": true,
     "confidence": "medium",
@@ -93516,7 +94112,10 @@
       "short": "bdcd618c6"
     },
     "arguments": [],
-    "baseline": "openjk",
+    "baselines": [
+      "openjk",
+      "basejka"
+    ],
     "category": "Gameplay & combat",
     "cheat_protected": false,
     "confidence": "medium",
@@ -93752,7 +94351,11 @@
       "short": "cd07288a3"
     },
     "arguments": [],
-    "baseline": "openjk",
+    "baselines": [
+      "eternaljk",
+      "openjk",
+      "basejka"
+    ],
     "category": "Gameplay & combat",
     "cheat_protected": false,
     "confidence": "high",
@@ -93960,7 +94563,7 @@
       "short": "14cea1563"
     },
     "arguments": [],
-    "baseline": null,
+    "baselines": [],
     "category": "Files & downloads",
     "cheat_protected": false,
     "confidence": "high",
@@ -94138,7 +94741,10 @@
       "short": "d9d510063"
     },
     "arguments": [],
-    "baseline": "openjk",
+    "baselines": [
+      "openjk",
+      "basejka"
+    ],
     "category": "Gameplay & combat",
     "cheat_protected": false,
     "confidence": "medium",
@@ -94386,7 +94992,7 @@
       "short": "14cea1563"
     },
     "arguments": [],
-    "baseline": null,
+    "baselines": [],
     "category": "Server & networking",
     "cheat_protected": false,
     "confidence": "high",
@@ -94570,7 +95176,7 @@
       "short": "14cea1563"
     },
     "arguments": [],
-    "baseline": null,
+    "baselines": [],
     "category": "Engine & diagnostics",
     "cheat_protected": false,
     "confidence": "high",
@@ -94755,7 +95361,10 @@
       "short": "6107f5fbc"
     },
     "arguments": [],
-    "baseline": "openjk",
+    "baselines": [
+      "openjk",
+      "basejka"
+    ],
     "category": "Demos & media",
     "cheat_protected": false,
     "confidence": "medium",
@@ -95052,7 +95661,10 @@
       "short": "bdcd618c6"
     },
     "arguments": [],
-    "baseline": "openjk",
+    "baselines": [
+      "openjk",
+      "basejka"
+    ],
     "category": "Gameplay & combat",
     "cheat_protected": false,
     "confidence": "medium",
@@ -95288,7 +95900,10 @@
       "short": "bdcd618c6"
     },
     "arguments": [],
-    "baseline": "openjk",
+    "baselines": [
+      "openjk",
+      "basejka"
+    ],
     "category": "Gameplay & combat",
     "cheat_protected": false,
     "confidence": "medium",
@@ -95524,7 +96139,10 @@
       "short": "bdcd618c6"
     },
     "arguments": [],
-    "baseline": "openjk",
+    "baselines": [
+      "openjk",
+      "basejka"
+    ],
     "category": "Gameplay & combat",
     "cheat_protected": false,
     "confidence": "medium",
@@ -95803,7 +96421,10 @@
       "short": "bdcd618c6"
     },
     "arguments": [],
-    "baseline": "openjk",
+    "baselines": [
+      "openjk",
+      "basejka"
+    ],
     "category": "Gameplay & combat",
     "cheat_protected": false,
     "confidence": "medium",
@@ -96082,7 +96703,10 @@
       "short": "d9d510063"
     },
     "arguments": [],
-    "baseline": "openjk",
+    "baselines": [
+      "openjk",
+      "basejka"
+    ],
     "category": "Gameplay & combat",
     "cheat_protected": false,
     "confidence": "medium",
@@ -96436,7 +97060,7 @@
       "short": "14cea1563"
     },
     "arguments": [],
-    "baseline": null,
+    "baselines": [],
     "category": "Gameplay & combat",
     "cheat_protected": false,
     "confidence": "high",
@@ -96631,7 +97255,7 @@
       "short": "14cea1563"
     },
     "arguments": [],
-    "baseline": null,
+    "baselines": [],
     "category": "Gameplay & combat",
     "cheat_protected": false,
     "confidence": "high",
@@ -96826,7 +97450,9 @@
       "short": "3b9054288"
     },
     "arguments": [],
-    "baseline": "basejka",
+    "baselines": [
+      "basejka"
+    ],
     "category": "Engine & diagnostics",
     "cheat_protected": false,
     "confidence": "medium",
@@ -97341,7 +97967,10 @@
       "short": "d9d510063"
     },
     "arguments": [],
-    "baseline": "openjk",
+    "baselines": [
+      "openjk",
+      "basejka"
+    ],
     "category": "Gameplay & combat",
     "cheat_protected": false,
     "confidence": "medium",
@@ -97650,7 +98279,10 @@
       "short": "bdcd618c6"
     },
     "arguments": [],
-    "baseline": "openjk",
+    "baselines": [
+      "openjk",
+      "basejka"
+    ],
     "category": "Gameplay & combat",
     "cheat_protected": false,
     "confidence": "medium",
@@ -97892,7 +98524,10 @@
       "short": "bdcd618c6"
     },
     "arguments": [],
-    "baseline": "openjk",
+    "baselines": [
+      "openjk",
+      "basejka"
+    ],
     "category": "Gameplay & combat",
     "cheat_protected": false,
     "confidence": "medium",
@@ -98134,7 +98769,7 @@
       "short": "14cea1563"
     },
     "arguments": [],
-    "baseline": null,
+    "baselines": [],
     "category": "Engine & diagnostics",
     "cheat_protected": false,
     "confidence": "high",
@@ -98348,7 +98983,7 @@
       "short": "14cea1563"
     },
     "arguments": [],
-    "baseline": null,
+    "baselines": [],
     "category": "Graphics & rendering",
     "cheat_protected": false,
     "confidence": "high",
@@ -98618,7 +99253,10 @@
       "short": "58c7d66ab"
     },
     "arguments": [],
-    "baseline": "openjk",
+    "baselines": [
+      "openjk",
+      "basejka"
+    ],
     "category": "Graphics & rendering",
     "cheat_protected": false,
     "confidence": "medium",
@@ -98999,7 +99637,7 @@
       "short": "14cea1563"
     },
     "arguments": [],
-    "baseline": null,
+    "baselines": [],
     "category": "Graphics & rendering",
     "cheat_protected": false,
     "confidence": "high",
@@ -99332,7 +99970,10 @@
       "short": "d9d510063"
     },
     "arguments": [],
-    "baseline": "openjk",
+    "baselines": [
+      "openjk",
+      "basejka"
+    ],
     "category": "Gameplay & combat",
     "cheat_protected": false,
     "confidence": "medium",
@@ -99757,7 +100398,11 @@
       "short": "90d3c68f2"
     },
     "arguments": [],
-    "baseline": "openjk",
+    "baselines": [
+      "eternaljk",
+      "openjk",
+      "basejka"
+    ],
     "category": "Gameplay & combat",
     "cheat_protected": false,
     "confidence": "high",
@@ -99980,7 +100625,7 @@
       "short": "14cea1563"
     },
     "arguments": [],
-    "baseline": null,
+    "baselines": [],
     "category": "Server & networking",
     "cheat_protected": false,
     "confidence": "high",
@@ -100193,7 +100838,10 @@
       "short": "d9d510063"
     },
     "arguments": [],
-    "baseline": "openjk",
+    "baselines": [
+      "openjk",
+      "basejka"
+    ],
     "category": "Gameplay & combat",
     "cheat_protected": false,
     "confidence": "medium",
@@ -100496,7 +101144,10 @@
       "short": "d9d510063"
     },
     "arguments": [],
-    "baseline": "openjk",
+    "baselines": [
+      "openjk",
+      "basejka"
+    ],
     "category": "Gameplay & combat",
     "cheat_protected": false,
     "confidence": "medium",
@@ -100921,7 +101572,10 @@
       "short": "239adf14f"
     },
     "arguments": [],
-    "baseline": "openjk",
+    "baselines": [
+      "openjk",
+      "basejka"
+    ],
     "category": "Gameplay & combat",
     "cheat_protected": false,
     "confidence": "medium",
@@ -101254,7 +101908,7 @@
       "short": "14cea1563"
     },
     "arguments": [],
-    "baseline": null,
+    "baselines": [],
     "category": "Server & networking",
     "cheat_protected": false,
     "confidence": "high",
@@ -101395,7 +102049,7 @@
       "short": "14cea1563"
     },
     "arguments": [],
-    "baseline": null,
+    "baselines": [],
     "category": "Demos & media",
     "cheat_protected": false,
     "confidence": "high",
@@ -101643,7 +102297,10 @@
       "short": "d9d510063"
     },
     "arguments": [],
-    "baseline": "openjk",
+    "baselines": [
+      "openjk",
+      "basejka"
+    ],
     "category": "Gameplay & combat",
     "cheat_protected": false,
     "confidence": "medium",
@@ -102122,7 +102779,10 @@
       "short": "bdcd618c6"
     },
     "arguments": [],
-    "baseline": "openjk",
+    "baselines": [
+      "openjk",
+      "basejka"
+    ],
     "category": "Gameplay & combat",
     "cheat_protected": false,
     "confidence": "medium",
@@ -102383,7 +103043,10 @@
       "short": "9e7eaec5c"
     },
     "arguments": [],
-    "baseline": "openjk",
+    "baselines": [
+      "openjk",
+      "basejka"
+    ],
     "category": "Graphics & rendering",
     "cheat_protected": false,
     "confidence": "medium",
@@ -102761,7 +103424,9 @@
       "short": "14cea1563"
     },
     "arguments": [],
-    "baseline": "basejka",
+    "baselines": [
+      "basejka"
+    ],
     "category": "Gameplay & combat",
     "cheat_protected": false,
     "confidence": "medium",
@@ -103182,7 +103847,10 @@
       "short": "d9d510063"
     },
     "arguments": [],
-    "baseline": "openjk",
+    "baselines": [
+      "openjk",
+      "basejka"
+    ],
     "category": "Gameplay & combat",
     "cheat_protected": false,
     "confidence": "medium",
@@ -103569,7 +104237,7 @@
       "short": "14cea1563"
     },
     "arguments": [],
-    "baseline": null,
+    "baselines": [],
     "category": "Engine & diagnostics",
     "cheat_protected": false,
     "confidence": "high",
@@ -103789,7 +104457,10 @@
       "short": "d9d510063"
     },
     "arguments": [],
-    "baseline": "openjk",
+    "baselines": [
+      "openjk",
+      "basejka"
+    ],
     "category": "Gameplay & combat",
     "cheat_protected": false,
     "confidence": "medium",
@@ -104058,7 +104729,10 @@
       "short": "fa2b5ba68"
     },
     "arguments": [],
-    "baseline": "openjk",
+    "baselines": [
+      "openjk",
+      "basejka"
+    ],
     "category": "Gameplay & combat",
     "cheat_protected": false,
     "confidence": "medium",
@@ -104385,7 +105059,10 @@
       "short": "675e97128"
     },
     "arguments": [],
-    "baseline": "openjk",
+    "baselines": [
+      "openjk",
+      "basejka"
+    ],
     "category": "Gameplay & combat",
     "cheat_protected": false,
     "confidence": "medium",
@@ -104748,7 +105425,10 @@
       "short": "675e97128"
     },
     "arguments": [],
-    "baseline": "openjk",
+    "baselines": [
+      "openjk",
+      "basejka"
+    ],
     "category": "Gameplay & combat",
     "cheat_protected": false,
     "confidence": "medium",
@@ -105201,7 +105881,10 @@
       "short": "d9d510063"
     },
     "arguments": [],
-    "baseline": "openjk",
+    "baselines": [
+      "openjk",
+      "basejka"
+    ],
     "category": "Gameplay & combat",
     "cheat_protected": false,
     "confidence": "medium",
@@ -105502,7 +106185,10 @@
       "short": "fae0fd307"
     },
     "arguments": [],
-    "baseline": "openjk",
+    "baselines": [
+      "openjk",
+      "basejka"
+    ],
     "category": "Gameplay & combat",
     "cheat_protected": false,
     "confidence": "medium",
@@ -105811,7 +106497,10 @@
       "short": "675e97128"
     },
     "arguments": [],
-    "baseline": "openjk",
+    "baselines": [
+      "openjk",
+      "basejka"
+    ],
     "category": "Gameplay & combat",
     "cheat_protected": false,
     "confidence": "medium",
@@ -106175,7 +106864,10 @@
       "short": "675e97128"
     },
     "arguments": [],
-    "baseline": "openjk",
+    "baselines": [
+      "openjk",
+      "basejka"
+    ],
     "category": "Gameplay & combat",
     "cheat_protected": false,
     "confidence": "medium",
@@ -106700,7 +107392,10 @@
       "short": "675e97128"
     },
     "arguments": [],
-    "baseline": "openjk",
+    "baselines": [
+      "openjk",
+      "basejka"
+    ],
     "category": "Gameplay & combat",
     "cheat_protected": false,
     "confidence": "medium",
@@ -107081,7 +107776,7 @@
       "short": "14cea1563"
     },
     "arguments": [],
-    "baseline": null,
+    "baselines": [],
     "category": "Engine & diagnostics",
     "cheat_protected": false,
     "confidence": "high",
@@ -107239,7 +107934,9 @@
       "short": "d9d510063"
     },
     "arguments": [],
-    "baseline": "basejka",
+    "baselines": [
+      "basejka"
+    ],
     "category": "Gameplay & combat",
     "cheat_protected": false,
     "confidence": "medium",
@@ -107844,7 +108541,7 @@
       "short": "14cea1563"
     },
     "arguments": [],
-    "baseline": null,
+    "baselines": [],
     "category": "Gameplay & combat",
     "cheat_protected": false,
     "confidence": "high",
@@ -108105,7 +108802,9 @@
       "short": "bdcd618c6"
     },
     "arguments": [],
-    "baseline": "openjk",
+    "baselines": [
+      "basejka"
+    ],
     "category": "Gameplay & combat",
     "cheat_protected": false,
     "confidence": "medium",
@@ -108480,7 +109179,10 @@
       "short": "d9d510063"
     },
     "arguments": [],
-    "baseline": "openjk",
+    "baselines": [
+      "openjk",
+      "basejka"
+    ],
     "category": "Gameplay & combat",
     "cheat_protected": false,
     "confidence": "medium",
@@ -108722,7 +109424,7 @@
       "short": "14cea1563"
     },
     "arguments": [],
-    "baseline": null,
+    "baselines": [],
     "category": "Chat & social",
     "cheat_protected": false,
     "confidence": "high",
@@ -109091,7 +109793,7 @@
       "short": "14cea1563"
     },
     "arguments": [],
-    "baseline": null,
+    "baselines": [],
     "category": "Chat & social",
     "cheat_protected": false,
     "confidence": "high",
@@ -109442,7 +110144,10 @@
       "short": "d9d510063"
     },
     "arguments": [],
-    "baseline": "openjk",
+    "baselines": [
+      "openjk",
+      "basejka"
+    ],
     "category": "Chat & social",
     "cheat_protected": false,
     "confidence": "medium",
@@ -109726,7 +110431,9 @@
       "short": "14cea1563"
     },
     "arguments": [],
-    "baseline": "basejka",
+    "baselines": [
+      "basejka"
+    ],
     "category": "Gameplay & combat",
     "cheat_protected": false,
     "confidence": "medium",
@@ -110138,7 +110845,7 @@
       "short": "14cea1563"
     },
     "arguments": [],
-    "baseline": null,
+    "baselines": [],
     "category": "Demos & media",
     "cheat_protected": false,
     "confidence": "high",
@@ -110553,7 +111260,9 @@
       "short": "333d0ace7"
     },
     "arguments": [],
-    "baseline": "basejka",
+    "baselines": [
+      "basejka"
+    ],
     "category": "Demos & media",
     "cheat_protected": false,
     "confidence": "medium",
@@ -111221,7 +111930,7 @@
       "short": "14cea1563"
     },
     "arguments": [],
-    "baseline": null,
+    "baselines": [],
     "category": "Demos & media",
     "cheat_protected": false,
     "confidence": "high",
@@ -111629,7 +112338,7 @@
       "short": "14cea1563"
     },
     "arguments": [],
-    "baseline": null,
+    "baselines": [],
     "category": "Server & networking",
     "cheat_protected": false,
     "confidence": "high",
@@ -111734,7 +112443,11 @@
       "short": "baa02905f"
     },
     "arguments": [],
-    "baseline": "openjk",
+    "baselines": [
+      "eternaljk",
+      "openjk",
+      "basejka"
+    ],
     "category": "Gameplay & combat",
     "cheat_protected": false,
     "confidence": "high",
@@ -111900,7 +112613,10 @@
       "short": "d9d510063"
     },
     "arguments": [],
-    "baseline": "openjk",
+    "baselines": [
+      "openjk",
+      "basejka"
+    ],
     "category": "Server & networking",
     "cheat_protected": false,
     "confidence": "medium",
@@ -112388,7 +113104,7 @@
       "short": "14cea1563"
     },
     "arguments": [],
-    "baseline": null,
+    "baselines": [],
     "category": "Server & networking",
     "cheat_protected": false,
     "confidence": "high",
@@ -112552,7 +113268,7 @@
       "short": "14cea1563"
     },
     "arguments": [],
-    "baseline": null,
+    "baselines": [],
     "category": "Server & networking",
     "cheat_protected": false,
     "confidence": "high",
@@ -112746,7 +113462,7 @@
       "short": "14cea1563"
     },
     "arguments": [],
-    "baseline": null,
+    "baselines": [],
     "category": "Engine & diagnostics",
     "cheat_protected": false,
     "confidence": "high",
@@ -112960,7 +113676,7 @@
       "short": "14cea1563"
     },
     "arguments": [],
-    "baseline": null,
+    "baselines": [],
     "category": "Engine & diagnostics",
     "cheat_protected": false,
     "confidence": "high",
@@ -113176,7 +113892,7 @@
       "short": "14cea1563"
     },
     "arguments": [],
-    "baseline": null,
+    "baselines": [],
     "category": "Engine & diagnostics",
     "cheat_protected": false,
     "confidence": "high",
@@ -113392,7 +114108,7 @@
       "short": "14cea1563"
     },
     "arguments": [],
-    "baseline": null,
+    "baselines": [],
     "category": "Engine & diagnostics",
     "cheat_protected": false,
     "confidence": "high",
@@ -113608,7 +114324,7 @@
       "short": "14cea1563"
     },
     "arguments": [],
-    "baseline": null,
+    "baselines": [],
     "category": "Gameplay & combat",
     "cheat_protected": true,
     "confidence": "high",
@@ -113854,7 +114570,7 @@
       "short": "14cea1563"
     },
     "arguments": [],
-    "baseline": null,
+    "baselines": [],
     "category": "Graphics & rendering",
     "cheat_protected": false,
     "confidence": "high",
@@ -114241,7 +114957,7 @@
       "short": "14cea1563"
     },
     "arguments": [],
-    "baseline": null,
+    "baselines": [],
     "category": "Engine & diagnostics",
     "cheat_protected": false,
     "confidence": "high",
@@ -114400,7 +115116,10 @@
       "short": "d9d510063"
     },
     "arguments": [],
-    "baseline": "openjk",
+    "baselines": [
+      "openjk",
+      "basejka"
+    ],
     "category": "Gameplay & combat",
     "cheat_protected": false,
     "confidence": "medium",
@@ -114798,7 +115517,10 @@
       "short": "bdcd618c6"
     },
     "arguments": [],
-    "baseline": "openjk",
+    "baselines": [
+      "openjk",
+      "basejka"
+    ],
     "category": "Gameplay & combat",
     "cheat_protected": false,
     "confidence": "medium",
@@ -115040,7 +115762,9 @@
       "short": "14cea1563"
     },
     "arguments": [],
-    "baseline": "basejka",
+    "baselines": [
+      "basejka"
+    ],
     "category": "Gameplay & combat",
     "cheat_protected": false,
     "confidence": "medium",
@@ -115510,7 +116234,7 @@
       "short": "14cea1563"
     },
     "arguments": [],
-    "baseline": null,
+    "baselines": [],
     "category": "Engine & diagnostics",
     "cheat_protected": false,
     "confidence": "high",
@@ -115722,7 +116446,7 @@
       "short": "14cea1563"
     },
     "arguments": [],
-    "baseline": null,
+    "baselines": [],
     "category": "Engine & diagnostics",
     "cheat_protected": false,
     "confidence": "high",
@@ -115844,7 +116568,7 @@
       "short": "14cea1563"
     },
     "arguments": [],
-    "baseline": null,
+    "baselines": [],
     "category": "Gameplay & combat",
     "cheat_protected": false,
     "confidence": "high",
@@ -116020,7 +116744,7 @@
       "short": "14cea1563"
     },
     "arguments": [],
-    "baseline": null,
+    "baselines": [],
     "category": "Gameplay & combat",
     "cheat_protected": false,
     "confidence": "high",
@@ -116196,7 +116920,7 @@
       "short": "14cea1563"
     },
     "arguments": [],
-    "baseline": null,
+    "baselines": [],
     "category": "Graphics & rendering",
     "cheat_protected": false,
     "confidence": "high",
@@ -116580,7 +117304,11 @@
       "short": "baa02905f"
     },
     "arguments": [],
-    "baseline": "eternaljk",
+    "baselines": [
+      "eternaljk",
+      "openjk",
+      "basejka"
+    ],
     "category": "Gameplay & combat",
     "cheat_protected": false,
     "confidence": "high",
@@ -116765,7 +117493,11 @@
       "short": "baa02905f"
     },
     "arguments": [],
-    "baseline": "eternaljk",
+    "baselines": [
+      "eternaljk",
+      "openjk",
+      "basejka"
+    ],
     "category": "Gameplay & combat",
     "cheat_protected": false,
     "confidence": "high",
@@ -116931,7 +117663,11 @@
       "short": "baa02905f"
     },
     "arguments": [],
-    "baseline": "eternaljk",
+    "baselines": [
+      "eternaljk",
+      "openjk",
+      "basejka"
+    ],
     "category": "Gameplay & combat",
     "cheat_protected": false,
     "confidence": "high",
@@ -117097,7 +117833,7 @@
       "short": "14cea1563"
     },
     "arguments": [],
-    "baseline": null,
+    "baselines": [],
     "category": "Engine & diagnostics",
     "cheat_protected": false,
     "confidence": "high",
@@ -117229,7 +117965,7 @@
       "short": "14cea1563"
     },
     "arguments": [],
-    "baseline": null,
+    "baselines": [],
     "category": "Audio & music",
     "cheat_protected": false,
     "confidence": "high",
@@ -117515,7 +118251,7 @@
       "short": "14cea1563"
     },
     "arguments": [],
-    "baseline": null,
+    "baselines": [],
     "category": "Audio & music",
     "cheat_protected": false,
     "confidence": "high",
@@ -117747,7 +118483,7 @@
       "short": "14cea1563"
     },
     "arguments": [],
-    "baseline": null,
+    "baselines": [],
     "category": "Audio & music",
     "cheat_protected": false,
     "confidence": "high",
@@ -117907,7 +118643,10 @@
       "short": "bdcd618c6"
     },
     "arguments": [],
-    "baseline": "openjk",
+    "baselines": [
+      "openjk",
+      "basejka"
+    ],
     "category": "Movement & race",
     "cheat_protected": false,
     "confidence": "medium",
@@ -118260,7 +118999,10 @@
       "short": "d9d510063"
     },
     "arguments": [],
-    "baseline": "openjk",
+    "baselines": [
+      "openjk",
+      "basejka"
+    ],
     "category": "Gameplay & combat",
     "cheat_protected": false,
     "confidence": "medium",
@@ -118605,7 +119347,10 @@
       "short": "d9d510063"
     },
     "arguments": [],
-    "baseline": "openjk",
+    "baselines": [
+      "openjk",
+      "basejka"
+    ],
     "category": "Gameplay & combat",
     "cheat_protected": false,
     "confidence": "medium",
@@ -118847,7 +119592,10 @@
       "short": "d9d510063"
     },
     "arguments": [],
-    "baseline": "openjk",
+    "baselines": [
+      "openjk",
+      "basejka"
+    ],
     "category": "Gameplay & combat",
     "cheat_protected": false,
     "confidence": "medium",
@@ -119126,7 +119874,7 @@
       "short": "14cea1563"
     },
     "arguments": [],
-    "baseline": null,
+    "baselines": [],
     "category": "Gameplay & combat",
     "cheat_protected": false,
     "confidence": "high",
@@ -119248,7 +119996,7 @@
       "short": "14cea1563"
     },
     "arguments": [],
-    "baseline": null,
+    "baselines": [],
     "category": "Gameplay & combat",
     "cheat_protected": false,
     "confidence": "high",
@@ -119456,7 +120204,7 @@
       "short": "14cea1563"
     },
     "arguments": [],
-    "baseline": null,
+    "baselines": [],
     "category": "Server & networking",
     "cheat_protected": false,
     "confidence": "high",
@@ -119849,7 +120597,9 @@
       "short": "6af6b30a2"
     },
     "arguments": [],
-    "baseline": "basejka",
+    "baselines": [
+      "basejka"
+    ],
     "category": "Audio & music",
     "cheat_protected": false,
     "confidence": "medium",
@@ -120269,7 +121019,7 @@
       "short": "14cea1563"
     },
     "arguments": [],
-    "baseline": null,
+    "baselines": [],
     "category": "Demos & media",
     "cheat_protected": false,
     "confidence": "high",
@@ -120410,7 +121160,9 @@
       "short": "66642f7cd"
     },
     "arguments": [],
-    "baseline": "basejka",
+    "baselines": [
+      "basejka"
+    ],
     "category": "Demos & media",
     "cheat_protected": false,
     "confidence": "medium",
@@ -120871,7 +121623,10 @@
       "short": "bdcd618c6"
     },
     "arguments": [],
-    "baseline": "openjk",
+    "baselines": [
+      "openjk",
+      "basejka"
+    ],
     "category": "Movement & race",
     "cheat_protected": false,
     "confidence": "medium",
@@ -121193,7 +121948,10 @@
       "short": "bdcd618c6"
     },
     "arguments": [],
-    "baseline": "openjk",
+    "baselines": [
+      "openjk",
+      "basejka"
+    ],
     "category": "Movement & race",
     "cheat_protected": false,
     "confidence": "medium",
@@ -121456,7 +122214,11 @@
     "arguments": [
       "command"
     ],
-    "baseline": "eternaljk",
+    "baselines": [
+      "eternaljk",
+      "openjk",
+      "basejka"
+    ],
     "category": "Engine & diagnostics",
     "cheat_protected": false,
     "confidence": "medium",
@@ -121616,7 +122378,10 @@
       "short": "bdcd618c6"
     },
     "arguments": [],
-    "baseline": "openjk",
+    "baselines": [
+      "openjk",
+      "basejka"
+    ],
     "category": "Gameplay & combat",
     "cheat_protected": false,
     "confidence": "medium",
@@ -121969,7 +122734,9 @@
       "short": "9c68d9f36"
     },
     "arguments": [],
-    "baseline": "basejka",
+    "baselines": [
+      "basejka"
+    ],
     "category": "Server & networking",
     "cheat_protected": false,
     "confidence": "medium",
@@ -122353,7 +123120,9 @@
       "short": "9c68d9f36"
     },
     "arguments": [],
-    "baseline": "basejka",
+    "baselines": [
+      "basejka"
+    ],
     "category": "Server & networking",
     "cheat_protected": false,
     "confidence": "medium",
@@ -122737,7 +123506,9 @@
       "short": "9c68d9f36"
     },
     "arguments": [],
-    "baseline": "basejka",
+    "baselines": [
+      "basejka"
+    ],
     "category": "Server & networking",
     "cheat_protected": false,
     "confidence": "medium",
@@ -123121,7 +123892,9 @@
       "short": "9c68d9f36"
     },
     "arguments": [],
-    "baseline": "basejka",
+    "baselines": [
+      "basejka"
+    ],
     "category": "Server & networking",
     "cheat_protected": false,
     "confidence": "medium",
@@ -123523,7 +124296,9 @@
       "short": "9c68d9f36"
     },
     "arguments": [],
-    "baseline": "basejka",
+    "baselines": [
+      "basejka"
+    ],
     "category": "Server & networking",
     "cheat_protected": false,
     "confidence": "medium",
@@ -123907,7 +124682,9 @@
       "short": "9c68d9f36"
     },
     "arguments": [],
-    "baseline": "basejka",
+    "baselines": [
+      "basejka"
+    ],
     "category": "Server & networking",
     "cheat_protected": false,
     "confidence": "medium",
@@ -124309,7 +125086,10 @@
       "short": "724b58ba6"
     },
     "arguments": [],
-    "baseline": "openjk",
+    "baselines": [
+      "openjk",
+      "basejka"
+    ],
     "category": "Demos & media",
     "cheat_protected": false,
     "confidence": "medium",
@@ -124570,7 +125350,9 @@
       "short": "9c68d9f36"
     },
     "arguments": [],
-    "baseline": "basejka",
+    "baselines": [
+      "basejka"
+    ],
     "category": "Server & networking",
     "cheat_protected": false,
     "confidence": "medium",
@@ -124954,7 +125736,7 @@
       "short": "14cea1563"
     },
     "arguments": [],
-    "baseline": null,
+    "baselines": [],
     "category": "Server & networking",
     "cheat_protected": false,
     "confidence": "high",
@@ -125077,7 +125859,11 @@
       "short": "64b8343c8"
     },
     "arguments": [],
-    "baseline": "openjk",
+    "baselines": [
+      "eternaljk",
+      "openjk",
+      "basejka"
+    ],
     "category": "Demos & media",
     "cheat_protected": false,
     "confidence": "high",
@@ -125220,7 +126006,11 @@
       "short": "64b8343c8"
     },
     "arguments": [],
-    "baseline": "openjk",
+    "baselines": [
+      "eternaljk",
+      "openjk",
+      "basejka"
+    ],
     "category": "Demos & media",
     "cheat_protected": false,
     "confidence": "high",
@@ -125363,7 +126153,11 @@
       "short": "64b8343c8"
     },
     "arguments": [],
-    "baseline": "openjk",
+    "baselines": [
+      "eternaljk",
+      "openjk",
+      "basejka"
+    ],
     "category": "Demos & media",
     "cheat_protected": false,
     "confidence": "high",
@@ -125506,7 +126300,9 @@
       "short": "44d566687"
     },
     "arguments": [],
-    "baseline": "basejka",
+    "baselines": [
+      "basejka"
+    ],
     "category": "Demos & media",
     "cheat_protected": false,
     "confidence": "medium",
@@ -126058,7 +126854,10 @@
       "short": "668821b03"
     },
     "arguments": [],
-    "baseline": "openjk",
+    "baselines": [
+      "openjk",
+      "basejka"
+    ],
     "category": "Demos & media",
     "cheat_protected": false,
     "confidence": "medium",
@@ -126379,7 +127178,7 @@
       "short": "14cea1563"
     },
     "arguments": [],
-    "baseline": null,
+    "baselines": [],
     "category": "Chat & social",
     "cheat_protected": false,
     "confidence": "high",
@@ -126628,7 +127427,9 @@
       "short": "44d566687"
     },
     "arguments": [],
-    "baseline": "basejka",
+    "baselines": [
+      "basejka"
+    ],
     "category": "Demos & media",
     "cheat_protected": false,
     "confidence": "medium",
@@ -127090,7 +127891,9 @@
       "short": "03bba2122"
     },
     "arguments": [],
-    "baseline": "basejka",
+    "baselines": [
+      "basejka"
+    ],
     "category": "Chat & social",
     "cheat_protected": false,
     "confidence": "medium",
@@ -127492,7 +128295,7 @@
       "short": "14cea1563"
     },
     "arguments": [],
-    "baseline": null,
+    "baselines": [],
     "category": "Server & networking",
     "cheat_protected": false,
     "confidence": "high",
@@ -127651,7 +128454,9 @@
       "short": "b319c52fd"
     },
     "arguments": [],
-    "baseline": "basejka",
+    "baselines": [
+      "basejka"
+    ],
     "category": "Gameplay & combat",
     "cheat_protected": true,
     "confidence": "medium",
@@ -128075,7 +128880,7 @@
       "short": "14cea1563"
     },
     "arguments": [],
-    "baseline": null,
+    "baselines": [],
     "category": "Engine & diagnostics",
     "cheat_protected": false,
     "confidence": "high",
@@ -128273,7 +129078,7 @@
       "short": "14cea1563"
     },
     "arguments": [],
-    "baseline": null,
+    "baselines": [],
     "category": "Gameplay & combat",
     "cheat_protected": false,
     "confidence": "high",
@@ -128504,7 +129309,7 @@
       "short": "14cea1563"
     },
     "arguments": [],
-    "baseline": null,
+    "baselines": [],
     "category": "Gameplay & combat",
     "cheat_protected": false,
     "confidence": "high",
@@ -128755,7 +129560,7 @@
       "short": "14cea1563"
     },
     "arguments": [],
-    "baseline": null,
+    "baselines": [],
     "category": "Gameplay & combat",
     "cheat_protected": false,
     "confidence": "high",
@@ -128853,7 +129658,7 @@
       "short": "14cea1563"
     },
     "arguments": [],
-    "baseline": null,
+    "baselines": [],
     "category": "Gameplay & combat",
     "cheat_protected": false,
     "confidence": "high",
@@ -129080,7 +129885,10 @@
       "short": "bdcd618c6"
     },
     "arguments": [],
-    "baseline": "openjk",
+    "baselines": [
+      "openjk",
+      "basejka"
+    ],
     "category": "Movement & race",
     "cheat_protected": false,
     "confidence": "medium",
@@ -129322,7 +130130,7 @@
       "short": "14cea1563"
     },
     "arguments": [],
-    "baseline": null,
+    "baselines": [],
     "category": "Chat & social",
     "cheat_protected": false,
     "confidence": "high",
@@ -129671,7 +130479,7 @@
       "short": "14cea1563"
     },
     "arguments": [],
-    "baseline": null,
+    "baselines": [],
     "category": "Chat & social",
     "cheat_protected": false,
     "confidence": "high",
@@ -129829,7 +130637,7 @@
       "short": "14cea1563"
     },
     "arguments": [],
-    "baseline": null,
+    "baselines": [],
     "category": "Chat & social",
     "cheat_protected": false,
     "confidence": "high",
@@ -129969,7 +130777,10 @@
       "short": "d9d510063"
     },
     "arguments": [],
-    "baseline": "openjk",
+    "baselines": [
+      "openjk",
+      "basejka"
+    ],
     "category": "Gameplay & combat",
     "cheat_protected": true,
     "confidence": "medium",
@@ -130233,7 +131044,7 @@
       "short": "14cea1563"
     },
     "arguments": [],
-    "baseline": null,
+    "baselines": [],
     "category": "Gameplay & combat",
     "cheat_protected": false,
     "confidence": "high",
@@ -130391,7 +131202,7 @@
       "short": "14cea1563"
     },
     "arguments": [],
-    "baseline": null,
+    "baselines": [],
     "category": "Gameplay & combat",
     "cheat_protected": false,
     "confidence": "high",
@@ -130586,7 +131397,9 @@
       "short": "b319c52fd"
     },
     "arguments": [],
-    "baseline": "basejka",
+    "baselines": [
+      "basejka"
+    ],
     "category": "Gameplay & combat",
     "cheat_protected": true,
     "confidence": "medium",
@@ -130973,7 +131786,10 @@
       "short": "d9d510063"
     },
     "arguments": [],
-    "baseline": "openjk",
+    "baselines": [
+      "openjk",
+      "basejka"
+    ],
     "category": "Gameplay & combat",
     "cheat_protected": false,
     "confidence": "medium",
@@ -131282,7 +132098,11 @@
       "short": "7dce9a576"
     },
     "arguments": [],
-    "baseline": "openjk",
+    "baselines": [
+      "eternaljk",
+      "openjk",
+      "basejka"
+    ],
     "category": "Gameplay & combat",
     "cheat_protected": false,
     "confidence": "high",
@@ -131488,7 +132308,7 @@
       "short": "14cea1563"
     },
     "arguments": [],
-    "baseline": null,
+    "baselines": [],
     "category": "Engine & diagnostics",
     "cheat_protected": false,
     "confidence": "high",
@@ -131708,7 +132528,10 @@
       "short": "d9d510063"
     },
     "arguments": [],
-    "baseline": "openjk",
+    "baselines": [
+      "openjk",
+      "basejka"
+    ],
     "category": "Administration",
     "cheat_protected": false,
     "confidence": "medium",
@@ -131969,7 +132792,9 @@
       "short": "bb3ed393a"
     },
     "arguments": [],
-    "baseline": "basejka",
+    "baselines": [
+      "basejka"
+    ],
     "category": "Gameplay & combat",
     "cheat_protected": false,
     "confidence": "medium",
@@ -132371,7 +133196,7 @@
       "short": "14cea1563"
     },
     "arguments": [],
-    "baseline": null,
+    "baselines": [],
     "category": "Engine & diagnostics",
     "cheat_protected": false,
     "confidence": "high",
@@ -132676,7 +133501,10 @@
       "short": "d9d510063"
     },
     "arguments": [],
-    "baseline": "openjk",
+    "baselines": [
+      "openjk",
+      "basejka"
+    ],
     "category": "Gameplay & combat",
     "cheat_protected": false,
     "confidence": "medium",
@@ -132918,7 +133746,9 @@
       "short": "b276c56dd"
     },
     "arguments": [],
-    "baseline": "basejka",
+    "baselines": [
+      "basejka"
+    ],
     "category": "HUD & interface",
     "cheat_protected": false,
     "confidence": "medium",
@@ -133320,7 +134150,9 @@
       "short": "f6cadd34c"
     },
     "arguments": [],
-    "baseline": "basejka",
+    "baselines": [
+      "basejka"
+    ],
     "category": "Gameplay & combat",
     "cheat_protected": false,
     "confidence": "medium",
@@ -133813,7 +134645,10 @@
       "short": "d9d510063"
     },
     "arguments": [],
-    "baseline": "openjk",
+    "baselines": [
+      "openjk",
+      "basejka"
+    ],
     "category": "Gameplay & combat",
     "cheat_protected": false,
     "confidence": "medium",
@@ -134055,7 +134890,10 @@
       "short": "675e97128"
     },
     "arguments": [],
-    "baseline": "openjk",
+    "baselines": [
+      "openjk",
+      "basejka"
+    ],
     "category": "Gameplay & combat",
     "cheat_protected": false,
     "confidence": "medium",
@@ -134401,7 +135239,7 @@
       "short": "14cea1563"
     },
     "arguments": [],
-    "baseline": null,
+    "baselines": [],
     "category": "Engine & diagnostics",
     "cheat_protected": false,
     "confidence": "high",
@@ -134579,7 +135417,11 @@
       "short": "9b57ee1b8"
     },
     "arguments": [],
-    "baseline": "openjk",
+    "baselines": [
+      "eternaljk",
+      "openjk",
+      "basejka"
+    ],
     "category": "Gameplay & combat",
     "cheat_protected": false,
     "confidence": "high",
@@ -134747,7 +135589,10 @@
       "short": "d9d510063"
     },
     "arguments": [],
-    "baseline": "openjk",
+    "baselines": [
+      "openjk",
+      "basejka"
+    ],
     "category": "Gameplay & combat",
     "cheat_protected": false,
     "confidence": "medium",
@@ -134989,7 +135834,10 @@
       "short": "d9d510063"
     },
     "arguments": [],
-    "baseline": "openjk",
+    "baselines": [
+      "openjk",
+      "basejka"
+    ],
     "category": "Gameplay & combat",
     "cheat_protected": false,
     "confidence": "medium",
@@ -135231,7 +136079,10 @@
       "short": "d9d510063"
     },
     "arguments": [],
-    "baseline": "openjk",
+    "baselines": [
+      "openjk",
+      "basejka"
+    ],
     "category": "Gameplay & combat",
     "cheat_protected": false,
     "confidence": "medium",
@@ -135473,7 +136324,10 @@
       "short": "d9d510063"
     },
     "arguments": [],
-    "baseline": "openjk",
+    "baselines": [
+      "openjk",
+      "basejka"
+    ],
     "category": "Gameplay & combat",
     "cheat_protected": false,
     "confidence": "medium",
@@ -135788,7 +136642,9 @@
       "short": "14cea1563"
     },
     "arguments": [],
-    "baseline": "basejka",
+    "baselines": [
+      "basejka"
+    ],
     "category": "HUD & interface",
     "cheat_protected": false,
     "confidence": "medium",
@@ -136227,7 +137083,9 @@
       "short": "14cea1563"
     },
     "arguments": [],
-    "baseline": "basejka",
+    "baselines": [
+      "basejka"
+    ],
     "category": "HUD & interface",
     "cheat_protected": false,
     "confidence": "medium",
@@ -136748,7 +137606,10 @@
       "short": "561b84ebe"
     },
     "arguments": [],
-    "baseline": "openjk",
+    "baselines": [
+      "openjk",
+      "basejka"
+    ],
     "category": "HUD & interface",
     "cheat_protected": false,
     "confidence": "medium",
@@ -137027,7 +137888,9 @@
       "short": "f5c1b2ceb"
     },
     "arguments": [],
-    "baseline": "basejka",
+    "baselines": [
+      "basejka"
+    ],
     "category": "HUD & interface",
     "cheat_protected": false,
     "confidence": "medium",
@@ -137392,7 +138255,9 @@
       "short": "f5c1b2ceb"
     },
     "arguments": [],
-    "baseline": "basejka",
+    "baselines": [
+      "basejka"
+    ],
     "category": "HUD & interface",
     "cheat_protected": false,
     "confidence": "medium",
@@ -137812,7 +138677,9 @@
       "short": "14cea1563"
     },
     "arguments": [],
-    "baseline": "basejka",
+    "baselines": [
+      "basejka"
+    ],
     "category": "HUD & interface",
     "cheat_protected": false,
     "confidence": "medium",
@@ -138234,7 +139101,7 @@
       "short": "14cea1563"
     },
     "arguments": [],
-    "baseline": null,
+    "baselines": [],
     "category": "Input & controls",
     "cheat_protected": false,
     "confidence": "high",
@@ -138430,7 +139297,7 @@
       "short": "14cea1563"
     },
     "arguments": [],
-    "baseline": null,
+    "baselines": [],
     "category": "Input & controls",
     "cheat_protected": false,
     "confidence": "high",
@@ -138608,7 +139475,9 @@
       "short": "3b9054288"
     },
     "arguments": [],
-    "baseline": "basejka",
+    "baselines": [
+      "basejka"
+    ],
     "category": "Engine & diagnostics",
     "cheat_protected": false,
     "confidence": "medium",
@@ -139082,7 +139951,9 @@
       "short": "913e3cc57"
     },
     "arguments": [],
-    "baseline": "basejka",
+    "baselines": [
+      "basejka"
+    ],
     "category": "Engine & diagnostics",
     "cheat_protected": false,
     "confidence": "medium",
@@ -139406,7 +140277,7 @@
       "short": "14cea1563"
     },
     "arguments": [],
-    "baseline": null,
+    "baselines": [],
     "category": "Engine & diagnostics",
     "cheat_protected": false,
     "confidence": "high",
@@ -139510,7 +140381,7 @@
       "short": "14cea1563"
     },
     "arguments": [],
-    "baseline": null,
+    "baselines": [],
     "category": "Engine & diagnostics",
     "cheat_protected": false,
     "confidence": "high",
@@ -139706,7 +140577,7 @@
       "short": "14cea1563"
     },
     "arguments": [],
-    "baseline": null,
+    "baselines": [],
     "category": "Engine & diagnostics",
     "cheat_protected": false,
     "confidence": "high",
@@ -139810,7 +140681,7 @@
       "short": "14cea1563"
     },
     "arguments": [],
-    "baseline": null,
+    "baselines": [],
     "category": "Engine & diagnostics",
     "cheat_protected": false,
     "confidence": "high",
@@ -139914,7 +140785,7 @@
       "short": "14cea1563"
     },
     "arguments": [],
-    "baseline": null,
+    "baselines": [],
     "category": "Engine & diagnostics",
     "cheat_protected": false,
     "confidence": "high",
@@ -140110,7 +140981,7 @@
       "short": "14cea1563"
     },
     "arguments": [],
-    "baseline": null,
+    "baselines": [],
     "category": "Engine & diagnostics",
     "cheat_protected": false,
     "confidence": "high",
@@ -140214,7 +141085,7 @@
       "short": "14cea1563"
     },
     "arguments": [],
-    "baseline": null,
+    "baselines": [],
     "category": "Engine & diagnostics",
     "cheat_protected": false,
     "confidence": "high",
@@ -140337,7 +141208,7 @@
       "short": "14cea1563"
     },
     "arguments": [],
-    "baseline": null,
+    "baselines": [],
     "category": "Gameplay & combat",
     "cheat_protected": false,
     "confidence": "high",
@@ -140479,7 +141350,7 @@
       "short": "14cea1563"
     },
     "arguments": [],
-    "baseline": null,
+    "baselines": [],
     "category": "Engine & diagnostics",
     "cheat_protected": false,
     "confidence": "high",
@@ -140583,7 +141454,7 @@
       "short": "14cea1563"
     },
     "arguments": [],
-    "baseline": null,
+    "baselines": [],
     "category": "Engine & diagnostics",
     "cheat_protected": false,
     "confidence": "high",
@@ -140779,7 +141650,7 @@
       "short": "14cea1563"
     },
     "arguments": [],
-    "baseline": null,
+    "baselines": [],
     "category": "Engine & diagnostics",
     "cheat_protected": false,
     "confidence": "high",
@@ -140975,7 +141846,7 @@
       "short": "14cea1563"
     },
     "arguments": [],
-    "baseline": null,
+    "baselines": [],
     "category": "Gameplay & combat",
     "cheat_protected": false,
     "confidence": "high",
@@ -141097,7 +141968,10 @@
       "short": "14cea1563"
     },
     "arguments": [],
-    "baseline": "openjk",
+    "baselines": [
+      "openjk",
+      "basejka"
+    ],
     "category": "Engine & diagnostics",
     "cheat_protected": false,
     "confidence": "medium",
@@ -141376,7 +142250,10 @@
       "short": "86c075638"
     },
     "arguments": [],
-    "baseline": "eternaljk",
+    "baselines": [
+      "eternaljk",
+      "basejka"
+    ],
     "category": "Graphics & rendering",
     "cheat_protected": false,
     "confidence": "high",
@@ -141705,7 +142582,10 @@
       "short": "d9d510063"
     },
     "arguments": [],
-    "baseline": "openjk",
+    "baselines": [
+      "openjk",
+      "basejka"
+    ],
     "category": "Chat & social",
     "cheat_protected": false,
     "confidence": "medium",
@@ -142059,7 +142939,7 @@
       "short": "14cea1563"
     },
     "arguments": [],
-    "baseline": null,
+    "baselines": [],
     "category": "Graphics & rendering",
     "cheat_protected": false,
     "confidence": "high",
@@ -142326,7 +143206,9 @@
       "short": "66642f7cd"
     },
     "arguments": [],
-    "baseline": "basejka",
+    "baselines": [
+      "basejka"
+    ],
     "category": "Demos & media",
     "cheat_protected": false,
     "confidence": "medium",
@@ -142812,7 +143694,7 @@
       "short": "14cea1563"
     },
     "arguments": [],
-    "baseline": null,
+    "baselines": [],
     "category": "Gameplay & combat",
     "cheat_protected": false,
     "confidence": "high",
@@ -143043,7 +143925,11 @@
       "short": "bd3a458a8"
     },
     "arguments": [],
-    "baseline": "eternaljk",
+    "baselines": [
+      "eternaljk",
+      "openjk",
+      "basejka"
+    ],
     "category": "Graphics & rendering",
     "cheat_protected": false,
     "confidence": "high",
@@ -143360,7 +144246,9 @@
       "short": "14cea1563"
     },
     "arguments": [],
-    "baseline": "basejka",
+    "baselines": [
+      "basejka"
+    ],
     "category": "Gameplay & combat",
     "cheat_protected": false,
     "confidence": "medium",
@@ -143890,7 +144778,7 @@
       "short": "14cea1563"
     },
     "arguments": [],
-    "baseline": null,
+    "baselines": [],
     "category": "Chat & social",
     "cheat_protected": false,
     "confidence": "high",
@@ -144021,7 +144909,7 @@
       "short": "14cea1563"
     },
     "arguments": [],
-    "baseline": null,
+    "baselines": [],
     "category": "Gameplay & combat",
     "cheat_protected": false,
     "confidence": "high",
@@ -144362,7 +145250,7 @@
       "short": "14cea1563"
     },
     "arguments": [],
-    "baseline": null,
+    "baselines": [],
     "category": "Engine & diagnostics",
     "cheat_protected": false,
     "confidence": "high",
@@ -144495,7 +145383,7 @@
       "short": "14cea1563"
     },
     "arguments": [],
-    "baseline": null,
+    "baselines": [],
     "category": "Engine & diagnostics",
     "cheat_protected": false,
     "confidence": "high",
@@ -144657,7 +145545,11 @@
       "frames",
       "commands"
     ],
-    "baseline": "eternaljk",
+    "baselines": [
+      "eternaljk",
+      "openjk",
+      "basejka"
+    ],
     "category": "Engine & diagnostics",
     "cheat_protected": false,
     "confidence": "high",
@@ -144860,7 +145752,11 @@
     "arguments": [
       "text"
     ],
-    "baseline": "eternaljk",
+    "baselines": [
+      "eternaljk",
+      "openjk",
+      "basejka"
+    ],
     "category": "Engine & diagnostics",
     "cheat_protected": false,
     "confidence": "high",
@@ -145061,7 +145957,10 @@
       "short": "d9d510063"
     },
     "arguments": [],
-    "baseline": "openjk",
+    "baselines": [
+      "openjk",
+      "basejka"
+    ],
     "category": "Gameplay & combat",
     "cheat_protected": false,
     "confidence": "medium",
@@ -145407,7 +146306,10 @@
       "short": "d9d510063"
     },
     "arguments": [],
-    "baseline": "openjk",
+    "baselines": [
+      "openjk",
+      "basejka"
+    ],
     "category": "Gameplay & combat",
     "cheat_protected": false,
     "confidence": "medium",
@@ -145698,7 +146600,10 @@
       "short": "bdcd618c6"
     },
     "arguments": [],
-    "baseline": "openjk",
+    "baselines": [
+      "openjk",
+      "basejka"
+    ],
     "category": "Gameplay & combat",
     "cheat_protected": false,
     "confidence": "medium",
@@ -145971,7 +146876,7 @@
       "short": "14cea1563"
     },
     "arguments": [],
-    "baseline": null,
+    "baselines": [],
     "category": "Gameplay & combat",
     "cheat_protected": false,
     "confidence": "high",
@@ -146175,7 +147080,7 @@
       "short": "14cea1563"
     },
     "arguments": [],
-    "baseline": null,
+    "baselines": [],
     "category": "Gameplay & combat",
     "cheat_protected": false,
     "confidence": "high",
@@ -146468,7 +147373,7 @@
       "short": "14cea1563"
     },
     "arguments": [],
-    "baseline": null,
+    "baselines": [],
     "category": "Gameplay & combat",
     "cheat_protected": false,
     "confidence": "high",
@@ -146645,7 +147550,9 @@
       "short": "5ef5d7214"
     },
     "arguments": [],
-    "baseline": "basejka",
+    "baselines": [
+      "basejka"
+    ],
     "category": "Gameplay & combat",
     "cheat_protected": false,
     "confidence": "medium",
@@ -147029,7 +147936,7 @@
       "short": "14cea1563"
     },
     "arguments": [],
-    "baseline": null,
+    "baselines": [],
     "category": "Gameplay & combat",
     "cheat_protected": false,
     "confidence": "high",
@@ -147251,7 +148158,9 @@
       "short": "14cea1563"
     },
     "arguments": [],
-    "baseline": "basejka",
+    "baselines": [
+      "basejka"
+    ],
     "category": "Gameplay & combat",
     "cheat_protected": false,
     "confidence": "medium",
@@ -147729,7 +148638,9 @@
       "short": "924f4bc4f"
     },
     "arguments": [],
-    "baseline": "basejka",
+    "baselines": [
+      "basejka"
+    ],
     "category": "Engine & diagnostics",
     "cheat_protected": false,
     "confidence": "medium",
@@ -148267,7 +149178,9 @@
       "short": "fffc00dab"
     },
     "arguments": [],
-    "baseline": "eternaljk",
+    "baselines": [
+      "basejka"
+    ],
     "category": "Server & networking",
     "cheat_protected": false,
     "confidence": "high",
@@ -148651,7 +149564,10 @@
       "short": "d9d510063"
     },
     "arguments": [],
-    "baseline": "openjk",
+    "baselines": [
+      "openjk",
+      "basejka"
+    ],
     "category": "Administration",
     "cheat_protected": false,
     "confidence": "medium",
@@ -149139,7 +150055,10 @@
       "short": "4ff81d3be"
     },
     "arguments": [],
-    "baseline": "openjk",
+    "baselines": [
+      "openjk",
+      "basejka"
+    ],
     "category": "Engine & diagnostics",
     "cheat_protected": false,
     "confidence": "medium",
@@ -149381,7 +150300,7 @@
       "short": "14cea1563"
     },
     "arguments": [],
-    "baseline": null,
+    "baselines": [],
     "category": "Engine & diagnostics",
     "cheat_protected": false,
     "confidence": "high",
@@ -149576,7 +150495,10 @@
       "short": "2af38213b"
     },
     "arguments": [],
-    "baseline": "openjk",
+    "baselines": [
+      "openjk",
+      "basejka"
+    ],
     "category": "Gameplay & combat",
     "cheat_protected": false,
     "confidence": "medium",
@@ -149931,7 +150853,7 @@
       "short": "14cea1563"
     },
     "arguments": [],
-    "baseline": null,
+    "baselines": [],
     "category": "Engine & diagnostics",
     "cheat_protected": false,
     "confidence": "high",
@@ -150090,7 +151012,7 @@
       "short": "14cea1563"
     },
     "arguments": [],
-    "baseline": null,
+    "baselines": [],
     "category": "Engine & diagnostics",
     "cheat_protected": false,
     "confidence": "high",
@@ -150213,7 +151135,7 @@
       "short": "14cea1563"
     },
     "arguments": [],
-    "baseline": null,
+    "baselines": [],
     "category": "Engine & diagnostics",
     "cheat_protected": false,
     "confidence": "high",
@@ -150372,7 +151294,7 @@
       "short": "14cea1563"
     },
     "arguments": [],
-    "baseline": null,
+    "baselines": [],
     "category": "Gameplay & combat",
     "cheat_protected": false,
     "confidence": "high",

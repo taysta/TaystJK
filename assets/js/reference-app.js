@@ -558,6 +558,31 @@
     return detectPlatform(platformText);
   }
 
+  // A search result or shared heading link can target an initially hidden tab.
+  // Resolve after the initial selection and again for same-page fragment links.
+  function bindPanelFragment(panels, key, select) {
+    function reveal() {
+      var id;
+      try { id = decodeURIComponent(global.location.hash.slice(1)); }
+      catch (error) { return; }
+      var target = id && document.getElementById(id);
+      if (!target) return;
+      var panel = panels.find(function (candidate) { return candidate.contains(target); });
+      if (!panel) return;
+      select(panel.dataset[key], false);
+      target.scrollIntoView();
+    }
+    global.addEventListener("hashchange", reveal);
+    reveal();
+  }
+
+  function clearHiddenPanelFragment(url, panels) {
+    var target = document.getElementById(decodeURIComponent(url.hash.slice(1)));
+    if (target && panels.some(function (panel) { return panel.hidden && panel.contains(target); })) {
+      url.hash = "";
+    }
+  }
+
   function bindPlatformGuide(root) {
     var storageKey = "taystjk-install-platform";
     var choices = Array.prototype.slice.call(root.querySelectorAll("[data-platform-choice]"));
@@ -605,6 +630,7 @@
       try {
         var url = new global.URL(global.location.href);
         url.searchParams.set("platform", platform);
+        clearHiddenPanelFragment(url, panels);
         global.history.replaceState(null, "", url.pathname + url.search + url.hash);
       } catch (error) {
         // URL updates are optional; selecting a panel is not.
@@ -630,6 +656,7 @@
     });
 
     selectPlatform(choosePlatform(queryPlatform, storedPlatform, navigatorInfo), false);
+    bindPanelFragment(panels, "platformPanel", selectPlatform);
   }
 
   function isBaseline(value) {
@@ -687,6 +714,7 @@
       try {
         var url = new global.URL(global.location.href);
         url.searchParams.set("baseline", baseline);
+        clearHiddenPanelFragment(url, panels);
         global.history.replaceState(null, "", url.pathname + url.search + url.hash);
       } catch (error) {
         // URL updates are optional; selecting a panel is not.
@@ -712,6 +740,7 @@
     });
 
     selectBaseline(chooseBaseline(queryBaseline, storedBaseline), false);
+    bindPanelFragment(panels, "baselinePanel", selectBaseline);
   }
 
   function boot() {

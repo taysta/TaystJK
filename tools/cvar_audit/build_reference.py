@@ -12,7 +12,7 @@ from pathlib import Path
 from typing import Any, Iterable
 
 from extract import mask_comments, source_files, split_fields, string_literal
-from provenance import BASEJKA_REF, CURRENT_REF, EXTRACTOR_VERSION, UPSTREAM_REFS
+from provenance import BASEJKA_REF, CURRENT_REF, EXTRACTOR_VERSION, UPSTREAM_REFS, extract_ref
 
 
 MODULE_ORDER = (
@@ -530,19 +530,9 @@ def infer_values(
     return values
 
 
-# Which fork a reader is upgrading *from*, which is not the same question as
-# where an entry first appeared.  rend2, Vulkan, JK2MV and NewJK work reached
-# players through TaystJK rather than through EternalJK, so it is all new to
-# someone arriving from EternalJK and belongs in the narrowest bucket.  The
-# buckets are cumulative: each one also contains everything above it.
-#
-#   vs EternalJK : taystjk, rend2, vulkan, jk2mv, newjk
-#   vs OpenJK    : the above + japro, eternaljk
-#   vs base JKA  : the above + openjk
-#
-# An entry that originates in base JKA itself is not new against any baseline
-# and carries no bucket.  Resolved here rather than at render time so the
-# mapping is one reviewable decision instead of a rule repeated per page.
+# Editorial defaults for handwritten features without registration inventories.
+# Cvars and commands use registration_baselines instead: origin does not prove
+# whether another project currently ships an identifier.
 BASELINE_BUCKETS: tuple[tuple[str, frozenset[str]], ...] = (
     ("eternaljk", frozenset({"taystjk", "rend2", "vulkan", "jk2mv", "newjk"})),
     ("openjk", frozenset({"japro", "eternaljk"})),
@@ -601,11 +591,16 @@ def added_on_for(
 
 
 def baseline_for(source: str | None) -> str | None:
-    """The narrowest baseline an entry is new against, or None."""
+    """The default baseline bucket for an editorial feature, or None."""
     for name, sources in BASELINE_BUCKETS:
         if source in sources:
             return name
     return None
+
+
+def registration_baselines(name: str, inventories: dict[str, set[str]]) -> list[str]:
+    """Compare each client independently; their inventories need not be nested."""
+    return [baseline for baseline, names in inventories.items() if name.casefold() not in names]
 
 
 CONSTANT_BOUND = re.compile(r"[+-]?(?:0[xX][0-9a-fA-F]+|\d+\.?\d*(?:[eE][+-]?\d+)?)[uUlLfF]*")
@@ -731,20 +726,33 @@ def command_syntax(name: str, body: str | None) -> tuple[str, str | None]:
 
 
 def main() -> None:
+    global CURRENT_REF
     parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--ref", default=CURRENT_REF, help="TaystJK source snapshot to assemble")
     parser.add_argument("--cache", default=".cvar-audit/cache")
     parser.add_argument("--provenance", default=".cvar-audit/provenance.json")
     parser.add_argument("--overrides", default="tools/cvar_audit/overrides.json")
     parser.add_argument("--output-dir", default="_data")
     args = parser.parse_args()
+    CURRENT_REF = args.ref
 
-    cache = Path(args.cache) / "extract"
-    current_cvars = load(cache / f"origin_master.v{EXTRACTOR_VERSION}.cvars.json")
-    current_commands = load(cache / f"origin_master.v{EXTRACTOR_VERSION}.commands.json")
+    cache = Path(args.cache)
+    current_cvars = extract_ref(CURRENT_REF, "cvars", cache, False)
+    current_commands = extract_ref(CURRENT_REF, "commands", cache, False)
     provenance = load(Path(args.provenance))
     overrides = load(Path(args.overrides)) if Path(args.overrides).exists() else {"cvars": {}, "commands": {}}
     files = list(source_files(CURRENT_REF, ".", None))
     current_sha = git("rev-parse", CURRENT_REF).strip()
+    upstream_commits = {ref: git("rev-parse", ref).strip() for ref in UPSTREAM_REFS.values()}
+    upstream_commits["origin/master"] = current_sha
+    upstream_commits[BASEJKA_REF] = BASEJKA_REF
+    baseline_refs = {"eternaljk": UPSTREAM_REFS["eternaljk"],
+                     "openjk": UPSTREAM_REFS["openjk"], "basejka": BASEJKA_REF}
+    baseline_inventories = {
+        kind: {name: set(group(extract_ref(upstream_commits[ref], kind, cache, False)))
+               for name, ref in baseline_refs.items()}
+        for kind in ("cvars", "commands")
+    }
     docs = parse_japro_docs()
     jk2mv_docs = parse_jk2mv_docs()
     xdoc_cvars, xdoc_commands = parse_xdocs()
@@ -912,7 +920,7 @@ def main() -> None:
             "derivation": override.get("derivation", derivation), "network": network,
             "requires_restart": "CVAR_LATCH" in flags, "cheat_protected": "CVAR_CHEAT" in flags,
             "origin": {key2: value for key2, value in origin.items() if key2 != "modified_by"},
-            "baseline": baseline_for(origin.get("source")),
+            "baselines": registration_baselines(name, baseline_inventories["cvars"]),
             "added_on": added_on_for(origin, first_commit_dates),
             "modified_by": origin.get("modified_by", []), "evidence": evidence + behavior_evidence,
             "confidence": origin.get("confidence", "low"), "status": status,
@@ -988,7 +996,7 @@ def main() -> None:
             "network": network, "cheat_protected": "CMD_CHEAT" in gating,
             "gating": gating, "handlers": handlers,
             "origin": {key2: value for key2, value in origin.items() if key2 != "modified_by"},
-            "baseline": baseline_for(origin.get("source")),
+            "baselines": registration_baselines(name, baseline_inventories["commands"]),
             "added_on": added_on_for(origin, first_commit_dates),
             "modified_by": origin.get("modified_by", []), "evidence": evidence,
             "confidence": origin.get("confidence", "low"), "status": status,
@@ -1009,6 +1017,7 @@ def main() -> None:
         "basejka_commit": BASEJKA_REF,
         "counts": {"cvars": len(cvars), "commands": len(commands)},
         "extractor_version": EXTRACTOR_VERSION,
+        "upstream_commits": upstream_commits,
     })
     print(f"wrote {len(cvars)} cvars and {len(commands)} commands to {output}")
 

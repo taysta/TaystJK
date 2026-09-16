@@ -30,8 +30,10 @@ run() {
 
 run "extractor tests"        python3 tools/cvar_audit/test_extract.py
 run "provenance tests"       python3 tools/cvar_audit/test_provenance.py
+run "reference pipeline"     python3 tools/cvar_audit/test_reference_pipeline.py
 run "reference app tests"    node    tools/cvar_audit/test_reference_app.js
 run "site search tests"      node    tools/cvar_audit/test_site_search.js
+run "navigation interactions" node   tools/cvar_audit/test_navigation.js
 run "on-this-page tests"     node    tools/cvar_audit/test_toc.js
 run "liquid templates"       python3 tools/cvar_audit/test_liquid.py
 run "record validation"      python3 tools/cvar_audit/validate.py

@@ -27,7 +27,7 @@ permalink: /devlog/feed.xml
     {%- if post.description %}
     <summary>{{ post.description | escape }}</summary>
     {%- endif %}
-    <content type="html">{{ post.content | strip_newlines }}</content>
+    <content type="html">{{ post.content | escape }}</content>
   </entry>
   {%- endfor %}
 </feed>

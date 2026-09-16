@@ -197,9 +197,8 @@ def generated_from(sha: str) -> str:
     )
 
 
-# Presentation only.  The origin-to-baseline decision lives in
-# build_reference.BASELINE_BUCKETS and is materialised onto each entry as
-# `baseline`; this just says which buckets each panel shows, cumulatively.
+# Registrations carry independent inventory comparisons in `baselines`.
+# The cumulative buckets below apply only to editorial feature defaults.
 BASELINE_PANELS: tuple[tuple[str, str, tuple[str, ...]], ...] = (
     ("eternaljk", "EternalJK", ("eternaljk",)),
     ("openjk", "OpenJK", ("eternaljk", "openjk")),
@@ -400,10 +399,10 @@ def export_emoji_assets(ref: str, filenames: list[str]) -> dict[str, str]:
     return published
 
 
-def emoji_page(ref: str, sha: str) -> tuple[str, list[str]]:
+def emoji_page(sha: str) -> tuple[str, list[str]]:
     """The shipped chat emoji, with the token that produces each one."""
-    filenames = emoji_files(ref)
-    published = export_emoji_assets(ref, filenames)
+    filenames = emoji_files(sha)
+    published = export_emoji_assets(sha, filenames)
     warnings: list[str] = []
     if len(filenames) > MAX_LOADABLE_EMOJIS:
         warnings.append(
@@ -534,14 +533,14 @@ def whats_new_rows(
     tuning: dict[str, Any],
 ) -> list[str]:
     """Rows grouped by topic; promoted entries lead, then alphabetical."""
-    grouped: dict[str, list[tuple[int, str, str]]] = {}
+    grouped: dict[str, list[tuple[float, str, str]]] = {}
     for entry in entries:
         override = tuning.get(entry["name"], {})
         category = override.get("group") or entry["category"]
         summary = override.get("summary") or entry["summary"]
         rank = override.get("promote")
         grouped.setdefault(category, []).append((
-            rank if isinstance(rank, int) else 0,
+            rank if isinstance(rank, int) else float("inf"),
             entry["name"].casefold(),
             f"- [{code(entry['name'])}]({detail_url(entry)}) "
             f"{badge(entry['origin']['source'])}{added_on_cell(entry)} — {esc(summary)}",
@@ -550,7 +549,7 @@ def whats_new_rows(
         grouped.setdefault(feature.get("group") or "Other", []).append(
             # Hand-written features lead their topic: they are the additions a
             # reader cannot discover from a cvar list.
-            (-1, str(feature["title"]).casefold(), feature_row(feature))
+            (float("-inf"), str(feature["title"]).casefold(), feature_row(feature))
         )
     lines: list[str] = []
     for category in sorted(grouped):
@@ -599,7 +598,7 @@ def whats_new_page(entries: list[dict[str, Any]]) -> tuple[str, list[str], list[
 
     totals = {
         name: (
-            sum(1 for entry in entries if entry.get("baseline") in buckets)
+            sum(1 for entry in entries if name in entry["baselines"])
             + sum(1 for feature in features if baseline_for(feature["origin"]) in buckets)
         )
         for name, _label, buckets in BASELINE_PANELS
@@ -619,7 +618,7 @@ def whats_new_page(entries: list[dict[str, Any]]) -> tuple[str, list[str], list[
 
 # What's new
 
-<p class="page-lede">What TaystJK adds over the client you already know. Pick that client below; the list is everything the reference records as first appearing after it.</p>
+<p class="page-lede">What TaystJK adds over the client you already know. Pick that client below to compare console entries against its recorded source snapshot, alongside the documented feature additions.</p>
 
 {generated_from(entries[0]["source_commit"])}
 </div>
@@ -639,7 +638,7 @@ def whats_new_page(entries: list[dict[str, Any]]) -> tuple[str, list[str], list[
     ]
     body = ["    </div>", "  </div>", ""]
     for name, label, buckets in BASELINE_PANELS:
-        members = [entry for entry in entries if entry.get("baseline") in buckets]
+        members = [entry for entry in entries if name in entry["baselines"]]
         panel_features = [
             feature for feature in features if baseline_for(feature["origin"]) in buckets
         ]
@@ -1496,14 +1495,10 @@ def main() -> None:
     cvars = load(args.cvars)
     commands = load(args.commands)
     entries = cvars + commands
-    refs = {ref: git("rev-parse", ref) for ref in ["origin/master", *[
-        "openjk/master", "eternaljk/master", "japro/main", "jk2mv/master", "newjk/master",
-        "somaz/rend2-unified-wip", "Sunny/master",
-    ]]}
-    refs["14cea1563762076974bee277afadbd5bf234c494"] = "14cea1563762076974bee277afadbd5bf234c494"
+    refs = load(Path("_data/reference-meta.json"))["upstream_commits"]
 
     write(Path("index.md"), home_page(cvars, commands))
-    emoji, emoji_warnings = emoji_page(CURRENT_REF, cvars[0]["source_commit"])
+    emoji, emoji_warnings = emoji_page(cvars[0]["source_commit"])
     write(Path("features/emoji.md"), emoji)
     for warning in emoji_warnings:
         print(f"warning: {warning}")

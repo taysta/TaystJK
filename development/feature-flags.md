@@ -60,13 +60,17 @@ tests them from 3 downwards and takes the first that matches
 
 ## How the client uses a flag
 
-Each gated feature accepts the flag as an alternative to recognising the mod. The grapple
+Each feature listed in the bit table accepts its flag in the client check. The grapple
 check is representative
 ([`bg_pmove.c`](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/bg_pmove.c#L15402)) — JA+, or jaPRO with its own grapple
 option set, or your flag.
 
-That means the flag is additive: setting it never turns a feature off, and on a server the
-client already recognises as JA+ or jaPRO it changes nothing.
+Flags can also change behaviour on recognised JA+ and jaPRO servers. For example, the
+grapple flag enables the client path even when jaPRO's own grapple option is off. In the
+roll selection above, `FIXROLL_3` is tested before the server's roll-2 or roll-1 option, so
+advertising it takes precedence over either lower mode
+([`bg_pmove.c`](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/bg_pmove.c#L314)).
+Keep the advertised flags consistent with the server's actual movement rules and options.
 
 ## Verifying it
 

@@ -48,8 +48,8 @@ Rationale, one line each:
 - `wide` — opt-in, because prose reads badly at 1180px but tables and grids need it.
 - `reference_app` — loads a search app that only one page uses.
 - `parent` — breadcrumbs and section sequencing; `nav_exclude` controls the reference breadcrumb fallback.
-- `origin` — lets a hand-written feature page be grouped into the same baseline buckets as
-  reference entries, so non-cvar features are not invisible.
+- `origin` — supplies the default baseline grouping for a hand-written feature page,
+  so non-cvar features are not invisible; confirm the comparison when adding the page.
 - `status` — marks a feature that a reader should not assume is finished or supported.
 - `added_on` — the only way to express availability, because there are no version tags.
 
@@ -365,7 +365,10 @@ title: "Cosmetics custom offsets"
 description: "One sentence; this becomes the row's summary."
 ```
 
-`origin` decides which baseline panel it lands in, via the same mapping the reference uses.
+For these handwritten features, `origin` supplies the default baseline grouping; confirm
+that the feature is absent from the clients it is compared against. Generated cvars and
+commands instead compare registrations independently against each upstream snapshot,
+recorded in `_data/reference-meta.json`; origin attribution does not decide membership.
 An origin of `basejka` is rejected — it is not new against any baseline.
 
 **Before that page exists**, seed it in the `features` array instead:

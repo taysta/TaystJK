@@ -78,12 +78,14 @@ they must download or already have. See
 and owns the rules; `cgame` runs on the client and decides what you see; `ui` draws the
 menus. The console reference labels every entry with the module that registers it.
 
-**QVM versus native module** — a module ships either as bytecode (`cgame.qvm`, `ui.qvm`)
-run by the engine's virtual machine, or as a native library for your platform. `vm_legacy`
-is a per-slot bitmask selecting the legacy bytecode path
-([`vm.cpp`](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/qcommon/vm.cpp#L153)).
-Native modules are platform-specific, which is why a 32-bit mod directory can break a
-64-bit client.
+**QVM versus native module** — QVM files contain bytecode; native modules are libraries
+compiled for a particular platform and architecture. TaystJK's module loaders use native
+libraries. `vm_legacy` is a per-slot bitmask selecting the older `dllEntry`/`vmMain` API
+instead of `GetModuleAPI`; it does not enable QVM bytecode support
+([legacy loader](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/qcommon/vm.cpp#L110),
+[native API loader](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/qcommon/vm.cpp#L150)).
+A native module must match the client's architecture, so a 32-bit mod library cannot be
+loaded by a 64-bit client.
 
 **Serverinfo** — the small set of values a server publishes about itself, visible in the
 server browser before you connect. A cvar registered `CVAR_SERVERINFO` is part of it.

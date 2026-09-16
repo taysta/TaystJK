@@ -25,15 +25,10 @@ from extract import extract_commands, extract_cvars, source_files
 
 BASEJKA_REF = "14cea1563762076974bee277afadbd5bf234c494"
 CURRENT_REF = "origin/master"
-# Deliberately still 6 after the macro-resolution change in extract.py.  Bumping
-# it discards the resolved provenance in .cvar-audit/provenance.json and forces a
-# full re-resolve, and PR metadata only ever reaches the resolver through
-# --pr-json at invocation -- it is neither cached nor persisted.  Those exports
-# are no longer available, so a re-resolve would silently lose the PR-dated
-# evidence behind `authored-pr-chronology+cross-project-pr-link`.  Origin
-# resolution does not read default values, so the existing provenance stays
-# valid.  Bump this once the PR JSON exports can be supplied again.
-EXTRACTOR_VERSION = 6
+# Extraction changes must refresh inventories without discarding resolved PR
+# evidence. Bump the provenance schema separately when origin inputs change.
+EXTRACTOR_VERSION = 7
+PROVENANCE_SCHEMA_VERSION = 6
 RESOLVER_VERSION = 31
 UPSTREAM_REFS = {
     "openjk": "openjk/master",
@@ -137,10 +132,11 @@ def cache_key(prefix: str, value: str) -> str:
 
 def extract_ref(ref: str, kind: str, cache: Path, refresh: bool) -> list[dict[str, Any]]:
     safe = re.sub(r"[^A-Za-z0-9_.-]+", "_", ref)
-    path = cache / "extract" / f"{safe}.v{EXTRACTOR_VERSION}.{kind}.json"
+    sha = git("rev-parse", ref).strip()
+    path = cache / "extract" / f"{safe}.{sha}.v{EXTRACTOR_VERSION}.{kind}.json"
     if path.exists() and not refresh:
         return json.loads(path.read_text())
-    files = list(source_files(ref, ".", None))
+    files = list(source_files(sha, ".", None))
     records = extract_cvars(files) if kind == "cvars" else extract_commands(files)
     rendered = [asdict(record) for record in records]
     write_json(path, rendered)
@@ -1512,8 +1508,17 @@ def resolve_one(
     }
 
 
+def reusable_provenance(candidate: dict[str, Any]) -> bool:
+    meta = candidate.get("meta", {})
+    # v6 reports predate the independent provenance schema field.
+    schema = meta.get("provenance_schema_version", meta.get("extractor_version"))
+    return schema == PROVENANCE_SCHEMA_VERSION and meta.get("resolver_version") == RESOLVER_VERSION
+
+
 def main() -> None:
+    global CURRENT_REF
     parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--ref", default=CURRENT_REF, help="TaystJK source snapshot to audit")
     parser.add_argument("--cache", default=".cvar-audit/cache")
     parser.add_argument("--output", default=".cvar-audit/provenance.json")
     parser.add_argument("--state", default=".cvar-audit/state.json")
@@ -1523,6 +1528,7 @@ def main() -> None:
                         help="run exact-name history across all remotes for every non-base entry")
     parser.add_argument("--limit", type=int, help="resolve only the first N pending identifiers")
     args = parser.parse_args()
+    CURRENT_REF = args.ref
 
     cache = Path(args.cache)
     prs = load_prs(args.pr_json)
@@ -1537,13 +1543,11 @@ def main() -> None:
     output_path = Path(args.output)
     if output_path.exists() and not args.refresh:
         candidate = json.loads(output_path.read_text())
-        if (
-            candidate.get("meta", {}).get("extractor_version") == EXTRACTOR_VERSION
-            and candidate.get("meta", {}).get("resolver_version") == RESOLVER_VERSION
-        ):
+        if reusable_provenance(candidate):
             previous = candidate
     result = {"meta": {"current_ref": CURRENT_REF, "basejka_ref": BASEJKA_REF,
                         "extractor_version": EXTRACTOR_VERSION,
+                        "provenance_schema_version": PROVENANCE_SCHEMA_VERSION,
                         "resolver_version": RESOLVER_VERSION}, "cvars": {}, "commands": {}}
 
     non_base_records: dict[str, list[dict[str, Any]]] = {}

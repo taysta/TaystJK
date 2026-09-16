@@ -394163,8 +394163,9 @@
   },
   "meta": {
     "basejka_ref": "14cea1563762076974bee277afadbd5bf234c494",
-    "current_ref": "origin/master",
-    "extractor_version": 6,
+    "current_ref": "6ff04c0baf588a89e5ec9361ad7a0992941d7655",
+    "extractor_version": 7,
+    "provenance_schema_version": 6,
     "resolver_version": 31
   }
 }

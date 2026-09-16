@@ -144,27 +144,28 @@ def validate(path: Path, expected_kind: str) -> list[str]:
 
 
 BASELINES = ("eternaljk", "openjk", "basejka")
-# The what's-new page is generated from these buckets, so a data change that
-# silently reshuffles origins must fail rather than quietly restate the totals.
-# Update deliberately, alongside the numbers quoted in the documentation.
-EXPECTED_BASELINE_TOTALS = {"eternaljk": 217, "openjk": 823, "basejka": 990}
+# Counts compare independent inventories, pinned in reference-meta.json.
+# Update deliberately when those snapshots or extracted registrations change.
+EXPECTED_BASELINE_TOTALS = {"eternaljk": 261, "openjk": 746, "basejka": 990}
 
 
 def validate_baselines(entries: list[dict[str, Any]]) -> list[str]:
-    """Check the cumulative baseline bucket totals."""
+    """Check independent baseline membership and totals."""
     errors: list[str] = []
     for entry in entries:
-        value = entry.get("baseline")
-        if value is not None and value not in BASELINES:
-            errors.append(f"{entry['name']}: unknown baseline {value!r}")
-    running = 0
+        values = entry.get("baselines")
+        if not isinstance(values, list) or any(value not in BASELINES for value in values):
+            errors.append(f"{entry['name']}: invalid baselines {values!r}")
+        elif len(values) != len(set(values)):
+            errors.append(f"{entry['name']}: duplicate baselines {values!r}")
     for name in BASELINES:
-        running += sum(1 for entry in entries if entry.get("baseline") == name)
+        total = sum(1 for entry in entries
+                    if isinstance(entry.get("baselines"), list) and name in entry["baselines"])
         expected = EXPECTED_BASELINE_TOTALS[name]
-        if running != expected:
+        if total != expected:
             errors.append(
-                f"baseline total for {name}: expected {expected}, found {running}. "
-                "Origins changed; confirm the shift is intended, then update "
+                f"baseline total for {name}: expected {expected}, found {total}. "
+                "Inventory comparisons changed; confirm the shift is intended, then update "
                 "EXPECTED_BASELINE_TOTALS and the documented counts."
             )
     return errors

@@ -29,7 +29,7 @@
       link.addEventListener("click", function (event) {
         if (event.metaKey || event.ctrlKey || event.shiftKey || !global.navigator.clipboard) return;
         event.preventDefault();
-        var url = global.location.origin + global.location.pathname + "#" + heading.id;
+        var url = global.location.origin + global.location.pathname + global.location.search + "#" + heading.id;
         global.navigator.clipboard.writeText(url).then(function () {
           global.history.replaceState(null, "", "#" + heading.id);
           heading.classList.add("heading-copied");
@@ -317,8 +317,11 @@
 
     var base = form.dataset.baseurl || "";
     var active = -1;
+    var restoringFocus = false;
+    var searchRun = 0;
 
     function close() {
+      searchRun += 1;
       list.hidden = true;
       active = -1;
       announce("");
@@ -331,8 +334,9 @@
     function runSearch() {
       var query = normalize(input.value).trim();
       if (query.length < 2) { close(); return; }
+      var run = ++searchRun;
       loadIndex(base).then(function (items) {
-        if (normalize(input.value).trim() !== query) return;
+        if (run !== searchRun || normalize(input.value).trim() !== query) return;
         var results = rank(items, query);
         render(list, results, base);
         active = -1;
@@ -343,14 +347,24 @@
     }
 
     input.addEventListener("input", runSearch);
-    input.addEventListener("focus", function () { if (input.value.trim().length >= 2) runSearch(); });
+    input.addEventListener("focus", function () {
+      if (!restoringFocus && input.value.trim().length >= 2) runSearch();
+    });
 
-    input.addEventListener("keydown", function (event) {
+    form.addEventListener("keydown", function (event) {
       var links = currentLinks();
-      if (event.key === "Escape") { close(); input.blur(); return; }
-      if (!links.length) return;
+      if (event.key === "Escape") {
+        event.preventDefault();
+        restoringFocus = true;
+        input.focus();
+        restoringFocus = false;
+        close();
+        return;
+      }
+      if (list.hidden || !links.length) return;
       if (event.key === "ArrowDown" || event.key === "ArrowUp") {
         event.preventDefault();
+        active = Array.prototype.indexOf.call(links, doc.activeElement);
         active += event.key === "ArrowDown" ? 1 : -1;
         if (active < 0) active = links.length - 1;
         if (active >= links.length) active = 0;
@@ -358,9 +372,6 @@
           link.classList.toggle("is-active", i === active);
         });
         links[active].focus();
-      } else if (event.key === "Enter" && active >= 0) {
-        event.preventDefault();
-        links[active].click();
       }
     });
 

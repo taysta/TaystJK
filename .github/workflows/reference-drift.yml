@@ -47,3 +47,5 @@ jobs:
           bundler-cache: true
       - name: Build the site
         run: bundle exec jekyll build
+      - name: Check the rendered Atom feed
+        run: python3 tools/cvar_audit/check_feed.py

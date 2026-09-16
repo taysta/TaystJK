@@ -13,7 +13,7 @@ description: "Every cvar and console command TaystJK adds, grouped by topic and 
 
 # What's new
 
-<p class="page-lede">What TaystJK adds over the client you already know. Pick that client below; the list is everything the reference records as first appearing after it.</p>
+<p class="page-lede">What TaystJK adds over the client you already know. Pick that client below to compare console entries against its recorded source snapshot, alongside the documented feature additions.</p>
 
 <p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/6ff04c0baf588a89e5ec9361ad7a0992941d7655"><code>6ff04c0baf58</code></a> on 2026-09-09. Anything merged after that is not reflected here.</p>
 </div>
@@ -42,19 +42,24 @@ entry is real; treat the date as approximate.
   <div class="baseline-selector-shell platform-selector-shell">
     <p class="platform-selector-label">Coming from</p>
     <div class="baseline-selector platform-selector" role="tablist" aria-label="Baseline client">
-      <button type="button" id="baseline-tab-eternaljk" role="tab" aria-controls="baseline-panel-eternaljk" aria-selected="false" tabindex="-1" data-baseline-choice="eternaljk">EternalJK (222)</button>
-      <button type="button" id="baseline-tab-openjk" role="tab" aria-controls="baseline-panel-openjk" aria-selected="false" tabindex="-1" data-baseline-choice="openjk">OpenJK (829)</button>
+      <button type="button" id="baseline-tab-eternaljk" role="tab" aria-controls="baseline-panel-eternaljk" aria-selected="false" tabindex="-1" data-baseline-choice="eternaljk">EternalJK (266)</button>
+      <button type="button" id="baseline-tab-openjk" role="tab" aria-controls="baseline-panel-openjk" aria-selected="false" tabindex="-1" data-baseline-choice="openjk">OpenJK (752)</button>
       <button type="button" id="baseline-tab-basejka" role="tab" aria-controls="baseline-panel-basejka" aria-selected="false" tabindex="-1" data-baseline-choice="basejka">base Jedi Academy (996)</button>
     </div>
   </div>
 
   <section class="baseline-panel platform-panel" id="baseline-panel-eternaljk" role="tabpanel" aria-labelledby="baseline-tab-eternaljk" tabindex="0" data-baseline-panel="eternaljk" markdown="1">
 
-## New since EternalJK (222)
+## New since EternalJK (266)
 
-### Audio & music (1)
+### Audio & music (2)
 
 - [`cg_ambientSounds`](/TaystJK/reference/cvars/cg_ambientsounds-00fb29b/) <span class="label ref-origin ref-origin-taystjk">TaystJK</span> <span class="status-chip">2022-04-20 · needs review</span> — Play ambient sounds
+- [`cg_killSounds`](/TaystJK/reference/cvars/cg_killsounds-7a11d7f/) <span class="label ref-origin ref-origin-japro">jaPRO</span> <span class="meta-chip">2024-03-06</span> — Play a sound when you kill someone
+
+### Bots & AI (1)
+
+- [`bot_team`](/TaystJK/reference/cvars/bot_team-6042a35/) <span class="label ref-origin ref-origin-japro">jaPRO</span> <span class="meta-chip">2023-12-11</span> — Controls `bot_team` in the game module.
 
 ### Chat & social (3)
 
@@ -62,14 +67,23 @@ entry is real; treat the date as approximate.
 - [`cl_chatBubbleUnfocused`](/TaystJK/reference/cvars/cl_chatbubbleunfocused-45667c5/) <span class="label ref-origin ref-origin-taystjk">TaystJK</span> <span class="meta-chip">2026-04-19</span> — Controls `cl_chatBubbleUnfocused` in the engine-client module.
 - [`r_ignoreDstAlpha`](/TaystJK/reference/cvars/r_ignoredstalpha-bad37b1/) <span class="label ref-origin ref-origin-rend2">rend2</span> <span class="meta-chip">2023-10-03</span> — Controls `r_ignoreDstAlpha` in the renderer module.
 
-### Crosshair & aiming (1)
+### Crosshair & aiming (3)
 
 - [`cg_crossHairScope`](/TaystJK/reference/cvars/cg_crosshairscope-93d2076/) <span class="label ref-origin ref-origin-taystjk">TaystJK</span> <span class="status-chip">2022-04-20 · needs review</span> — Minimalist crosshair disruptor scope replacement
+- [`cg_drawCrosshairNamesColours`](/TaystJK/reference/cvars/cg_drawcrosshairnamescolours-50bbb18/) <span class="label ref-origin ref-origin-eternaljk">EternalJK</span> <span class="meta-chip">2025-12-11</span> — Choose team-aware or player-name crosshair colors.
+- [`cg_drawCrosshairNamesOpacity`](/TaystJK/reference/cvars/cg_drawcrosshairnamesopacity-c578144/) <span class="label ref-origin ref-origin-eternaljk">EternalJK</span> <span class="meta-chip">2025-12-11</span> — Set crosshair target-name opacity from 0 to 1.
 
-### Demos & media (2)
+### Demos & media (9)
 
-- [`demo_restart`](/TaystJK/reference/commands/demo_restart-af89885/) <span class="label ref-origin ref-origin-newjk">NewJK / NewMod</span> <span class="meta-chip">2019-07-26</span> — Restarts the current or last-played demo
+- [`flagRecord`](/TaystJK/reference/commands/flagrecord-015800d/) <span class="label ref-origin ref-origin-japro">jaPRO</span> <span class="meta-chip">2023-12-11</span> — Runs `Cmd_InvalidateRace_f` in the game module.
+- [`sv_demoPreRecord`](/TaystJK/reference/cvars/sv_demoprerecord-e5a95c8/) <span class="label ref-origin ref-origin-eternaljk">EternalJK</span> <span class="meta-chip">2023-06-23</span> — Activate server demo pre-recording so demos can be retroactively recorded for duration sv_demoPreRecordTime (seconds)
 - [`sv_demoPreRecordBots`](/TaystJK/reference/cvars/sv_demoprerecordbots-4548856/) <span class="label ref-origin ref-origin-taystjk">TaystJK</span> <span class="meta-chip">2024-01-14</span> — Do demo pre-recording for bots as well
+- [`sv_demoPreRecordKeyframeDistance`](/TaystJK/reference/cvars/sv_demoprerecordkeyframedistance-bd24c86/) <span class="label ref-origin ref-origin-eternaljk">EternalJK</span> <span class="meta-chip">2023-06-23</span> — A demo can only start with a gamestate and full non-delta snapshot. How often should we save such a gamestate message? The shorter the distance, the more precisely the pre-record duration will be kept, but also the higher the RAM usage and regularity of non-delta frames being sent to the clients.
+- [`sv_demoPreRecordTime`](/TaystJK/reference/cvars/sv_demoprerecordtime-66cfbf8/) <span class="label ref-origin ref-origin-eternaljk">EternalJK</span> <span class="meta-chip">2023-06-23</span> — How many seconds of past packets should be stored for server demo pre-recording?
+- [`sv_demoWriteMeta`](/TaystJK/reference/cvars/sv_demowritemeta-340942e/) <span class="label ref-origin ref-origin-eternaljk">EternalJK</span> <span class="meta-chip">2023-06-23</span> — Enables writing metadata to demos, which can be set by the server/game. This is invisible to normal clients and can be used for storing information about when the demo was recorded, start of the recording, and so on.
+- [`svdemoclearmeta`](/TaystJK/reference/commands/svdemoclearmeta-0b51781/) <span class="label ref-origin ref-origin-eternaljk">EternalJK</span> <span class="meta-chip">2023-06-23</span> — Clears metadata for server-side demos for one player. Call with clientnum.
+- [`svdemoclearprerecord`](/TaystJK/reference/commands/svdemoclearprerecord-4d3a794/) <span class="label ref-origin ref-origin-eternaljk">EternalJK</span> <span class="meta-chip">2023-06-23</span> — Clears pre-record data for a particular client. Call with clientnum.
+- [`svdemometa`](/TaystJK/reference/commands/svdemometa-0715ee6/) <span class="label ref-origin ref-origin-eternaljk">EternalJK</span> <span class="meta-chip">2023-06-23</span> — Sets a new metadata entry for server-side demos for one player. Call with clientnum, metakey, [data]
 
 ### Engine & diagnostics (20)
 
@@ -77,9 +91,9 @@ entry is real; treat the date as approximate.
 - [`cl_exitCommand`](/TaystJK/reference/cvars/cl_exitcommand-0f11b0a/) <span class="label ref-origin ref-origin-taystjk">TaystJK</span> <span class="meta-chip">2024-02-28</span> — Enables the /exit command
 - [`cl_filterGames`](/TaystJK/reference/cvars/cl_filtergames-7e85224/) <span class="label ref-origin ref-origin-taystjk">TaystJK</span> <span class="meta-chip">2023-11-28</span> — List of fs_game to filter (space separated)
 - [`com_timestamps`](/TaystJK/reference/cvars/com_timestamps-e16da1a/) <span class="label ref-origin ref-origin-jk2mv">JK2MV</span> <span class="status-chip">2024-02-27 · needs review</span> — Show timestamps in terminal and qconsole.log
+- [`com_unpackLibraries`](/TaystJK/reference/cvars/com_unpacklibraries-27a5b09/) <span class="label ref-origin ref-origin-eternaljk">EternalJK</span> <span class="meta-chip">2023-11-29</span> — Controls `com_unpackLibraries` in the engine-shared module.
 - [`con_datetime`](/TaystJK/reference/cvars/con_datetime-fb79998/) <span class="label ref-origin ref-origin-taystjk">TaystJK</span> <span class="meta-chip">2026-06-02</span> — Display human readable date/time in console
 - [`con_height`](/TaystJK/reference/cvars/con_height-41c46da/) <span class="label ref-origin ref-origin-taystjk">TaystJK</span> <span class="meta-chip">2024-02-19</span> — Adjust the height of the console
-- [`con_scale`](/TaystJK/reference/cvars/con_scale-d334b5a/) <span class="label ref-origin ref-origin-jk2mv">JK2MV</span> <span class="meta-chip">2018-02-05</span> — Console character scale
 - [`con_timestamps`](/TaystJK/reference/cvars/con_timestamps-2b4f0eb/) <span class="label ref-origin ref-origin-jk2mv">JK2MV</span> <span class="status-chip">2024-02-27 · needs review</span> — Display timestamps infront of console lines
 - [`delay`](/TaystJK/reference/commands/delay-ab464f0/) <span class="label ref-origin ref-origin-newjk">NewJK / NewMod</span> <span class="meta-chip">2022-04-20</span> — Run following commands after a millisecond delay.
 - [`delaycancel`](/TaystJK/reference/commands/delaycancel-8b62c65/) <span class="label ref-origin ref-origin-newjk">NewJK / NewMod</span> <span class="meta-chip">2022-04-20</span> — Cancel matching pending delay entries.
@@ -89,20 +103,25 @@ entry is real; treat the date as approximate.
 - [`mpause`](/TaystJK/reference/commands/mpause-640e429/) <span class="label ref-origin ref-origin-newjk">NewJK / NewMod</span> <span class="meta-chip">2022-04-20</span> — Send the play/pause media key on Windows.
 - [`mprev`](/TaystJK/reference/commands/mprev-28fb883/) <span class="label ref-origin ref-origin-newjk">NewJK / NewMod</span> <span class="meta-chip">2022-04-20</span> — Send the previous-track media key on Windows.
 - [`mstop`](/TaystJK/reference/commands/mstop-67745cd/) <span class="label ref-origin ref-origin-newjk">NewJK / NewMod</span> <span class="meta-chip">2022-04-20</span> — Send the stop-media key on Windows.
-- [`protocolswitch`](/TaystJK/reference/cvars/protocolswitch-9a313ea/) <span class="label ref-origin ref-origin-jk2mv">JK2MV</span> <span class="status-chip">2018-04-26 · needs review</span> — Sets protocol based on server info response
+- [`s_sdlDriver`](/TaystJK/reference/cvars/s_sdldriver-b485ab9/) <span class="label ref-origin ref-origin-openjk">OpenJK</span> <span class="status-chip">2025-04-26 · needs review</span> — Controls `s_sdlDriver` in the engine-shared module.
 - [`strSub`](/TaystJK/reference/commands/strsub-25a3e39/) <span class="label ref-origin ref-origin-taystjk">TaystJK</span> <span class="status-chip">2022-04-20 · needs review</span> — Execute a command with $cvar$ value substitution.
 - [`waitf`](/TaystJK/reference/commands/waitf-1b1b6e3/) <span class="label ref-origin ref-origin-newjk">NewJK / NewMod</span> <span class="meta-chip">2022-04-20</span> — Run following commands after a frame-count delay.
 - [`waitfcancel`](/TaystJK/reference/commands/waitfcancel-4f1a371/) <span class="label ref-origin ref-origin-newjk">NewJK / NewMod</span> <span class="meta-chip">2022-04-20</span> — Cancel matching pending waitf entries.
 
-### Files & downloads (3)
+### Files & downloads (5)
 
+- [`cl_downloadOverlay`](/TaystJK/reference/cvars/cl_downloadoverlay-ee4a68a/) <span class="label ref-origin ref-origin-openjk">OpenJK</span> <span class="meta-chip">2023-11-29</span> — Draw download info overlay
+- [`cl_downloadPrompt`](/TaystJK/reference/cvars/cl_downloadprompt-2444b92/) <span class="label ref-origin ref-origin-openjk">OpenJK</span> <span class="meta-chip">2023-11-29</span> — Confirm pk3 downloads from the server
 - [`cl_downloadProtocol`](/TaystJK/reference/cvars/cl_downloadprotocol-a36f359/) <span class="label ref-origin ref-origin-jk2mv">JK2MV</span> <span class="status-chip">2024-03-21 · needs review</span> — Report whether the active download uses HTTP or UDP.
-- [`fs_portable`](/TaystJK/reference/cvars/fs_portable-b325657/) <span class="label ref-origin ref-origin-newjk">NewJK / NewMod</span> <span class="meta-chip">2018-07-22</span> — Disable fs_homepath and use only one folder for all game files
+- [`fs_forcegame`](/TaystJK/reference/cvars/fs_forcegame-3547288/) <span class="label ref-origin ref-origin-eternaljk">EternalJK</span> <span class="meta-chip">2023-11-29</span> — Folder to use for overriding of fs_game (can not be set by the server).
 - [`sv_httpDownloads`](/TaystJK/reference/cvars/sv_httpdownloads-f79d64e/) <span class="label ref-origin ref-origin-jk2mv">JK2MV</span> <span class="meta-chip">2024-03-21</span> — Enable the server&#x27;s JK2MV-derived HTTP auto-download path.
 
-### Gameplay & combat (32)
+### Gameplay & combat (59)
 
 - [Cosmetics custom offsets](/TaystJK/features/cosmetics/) <span class="label ref-origin ref-origin-taystjk">TaystJK</span> <span class="meta-chip">feature</span> — Per-model and per-skin position offsets for hats and capes, described by a JSON file shipped alongside the cosmetic.
+- [`+singlefire`](/TaystJK/reference/commands/plusminus-singlefire-e166917/) <span class="label ref-origin ref-origin-japro">jaPRO</span> <span class="meta-chip">2024-02-28</span> — Runs `CG_SingleFireDown_f` in the cgame module.
+- [`-singlefire`](/TaystJK/reference/commands/minus-singlefire-9763ac0/) <span class="label ref-origin ref-origin-japro">jaPRO</span> <span class="meta-chip">2024-02-28</span> — Runs `CG_SingleFireUp_f` in the cgame module.
+- [`cg_antiAmKiss`](/TaystJK/reference/cvars/cg_antiamkiss-1a82d9c/) <span class="label ref-origin ref-origin-eternaljk">EternalJK</span> <span class="meta-chip">2023-11-02</span> — Controls `cg_antiAmKiss` in the cgame module.
 - [`cg_disruptorAltTime`](/TaystJK/reference/cvars/cg_disruptoralttime-265b925/) <span class="label ref-origin ref-origin-taystjk">TaystJK</span> <span class="status-chip">2022-04-20 · needs review</span> — Amount of time to display disruptor alt fire
 - [`cg_disruptorCoreColor`](/TaystJK/reference/cvars/cg_disruptorcorecolor-9319cd0/) <span class="label ref-origin ref-origin-taystjk">TaystJK</span> <span class="status-chip">2022-04-20 · needs review</span> — Changes disruptor line color (accepts hexcode eg. xffffff)
 - [`cg_disruptorMainTime`](/TaystJK/reference/cvars/cg_disruptormaintime-3ae961c/) <span class="label ref-origin ref-origin-taystjk">TaystJK</span> <span class="status-chip">2022-04-20 · needs review</span> — Amount of time to display disruptor primary fire
@@ -117,11 +136,30 @@ entry is real; treat the date as approximate.
 - [`cg_drawTeamOverlayScale`](/TaystJK/reference/cvars/cg_drawteamoverlayscale-e2436e7/) <span class="label ref-origin ref-origin-taystjk">TaystJK</span> <span class="meta-chip">2026-08-06</span> — Size of the team overlay. Only applies to cg_drawTeamOverlay 5 and 6, clamped between 0.5 and 2.5
 - [`cg_drawTeamOverlayWeapons`](/TaystJK/reference/cvars/cg_drawteamoverlayweapons-864b183/) <span class="label ref-origin ref-origin-taystjk">TaystJK</span> <span class="status-chip">2022-05-12 · needs review</span> — Draw each player&#x27;s current weapon on the team overlay
 - [`cg_forceCosmetics`](/TaystJK/reference/cvars/cg_forcecosmetics-598fb8d/) <span class="label ref-origin ref-origin-taystjk">TaystJK</span> <span class="status-chip">2022-04-20 · needs review</span> — Forces all players to have your cosmetics on non-japro servers
+- [`cg_saberIgnitionFlare`](/TaystJK/reference/cvars/cg_saberignitionflare-bf8696a/) <span class="label ref-origin ref-origin-eternaljk">EternalJK</span> <span class="meta-chip">2023-11-04</span> — Controls `cg_saberIgnitionFlare` in the cgame module.
+- [`cg_saberStaffMultiColor`](/TaystJK/reference/cvars/cg_saberstaffmulticolor-c4f7d05/) <span class="label ref-origin ref-origin-eternaljk">EternalJK</span> <span class="meta-chip">2023-11-02</span> — Controls `cg_saberStaffMultiColor` in the cgame module.
 - [`cg_scoreboardTime`](/TaystJK/reference/cvars/cg_scoreboardtime-c017d2f/) <span class="label ref-origin ref-origin-taystjk">TaystJK</span> <span class="status-chip">2022-04-20 · needs review</span> — Displays the local time on the scoreboard
+- [`cg_smoothClients`](/TaystJK/reference/cvars/cg_smoothclients-baf7386/) <span class="label ref-origin ref-origin-basejka">Base Jedi Academy</span> <span class="meta-chip">2013-04-08</span> — Controls `cg_smoothClients` in the cgame module.
+- [`cg_spotIconPlums`](/TaystJK/reference/cvars/cg_spoticonplums-79f0979/) <span class="label ref-origin ref-origin-japro">jaPRO</span> <span class="meta-chip">2024-04-15</span> — Controls `cg_spotIconPlums` in the cgame module.
 - [`cg_vehicleRange`](/TaystJK/reference/cvars/cg_vehiclerange-987b56f/) <span class="label ref-origin ref-origin-taystjk">TaystJK</span> <span class="meta-chip">2025-11-28</span> — Offset vehicle camera ranges (useful for ultrawide monitors)
 - [`cg_weaponCycleAmmo`](/TaystJK/reference/cvars/cg_weaponcycleammo-3286c8e/) <span class="label ref-origin ref-origin-taystjk">TaystJK</span> <span class="status-chip">2022-04-21 · needs review</span> — Controls `cg_weaponCycleAmmo` in the cgame module.
+- [`crouchjump`](/TaystJK/reference/commands/crouchjump-c7353d9/) <span class="label ref-origin ref-origin-japro">jaPRO</span> <span class="meta-chip">2023-12-11</span> — Runs `Cmd_ToggleCrouchJump_f` in the game module.
+- [`g_fixRunWalkAnims`](/TaystJK/reference/cvars/g_fixrunwalkanims-47abdcb/) <span class="label ref-origin ref-origin-openjk">OpenJK</span> <span class="meta-chip">2024-02-26</span> — Controls `g_fixRunWalkAnims` in the game module.
 - [`g_fixSaberDisarmBonus`](/TaystJK/reference/cvars/g_fixsaberdisarmbonus-d84721a/) <span class="label ref-origin ref-origin-taystjk">TaystJK</span> <span class="meta-chip">2023-10-29</span> — Controls `g_fixSaberDisarmBonus` in the game module.
 - [`g_fixSaberMoveData`](/TaystJK/reference/cvars/g_fixsabermovedata-4619480/) <span class="label ref-origin ref-origin-taystjk">TaystJK</span> <span class="meta-chip">2023-10-29</span> — Controls `g_fixSaberMoveData` in the game module.
+- [`g_fixWeaponAttackAnim`](/TaystJK/reference/cvars/g_fixweaponattackanim-fc108b3/) <span class="label ref-origin ref-origin-openjk">OpenJK</span> <span class="meta-chip">2024-02-26</span> — Controls `g_fixWeaponAttackAnim` in the game module.
+- [`g_gunGame`](/TaystJK/reference/cvars/g_gungame-0b95542/) <span class="label ref-origin ref-origin-japro">jaPRO</span> <span class="meta-chip">2023-12-11</span> — Controls `g_gunGame` in the game module.
+- [`g_neutralFlag`](/TaystJK/reference/cvars/g_neutralflag-55bb88d/) <span class="label ref-origin ref-origin-japro">jaPRO</span> <span class="meta-chip">2024-01-03</span> — Controls `g_neutralFlag` in the game module.
+- [`g_neutralFlagTimer`](/TaystJK/reference/cvars/g_neutralflagtimer-8ada420/) <span class="label ref-origin ref-origin-japro">jaPRO</span> <span class="meta-chip">2024-01-03</span> — Controls `g_neutralFlagTimer` in the game module.
+- [`g_newVehicleDamageScale`](/TaystJK/reference/cvars/g_newvehicledamagescale-1f63b01/) <span class="label ref-origin ref-origin-japro">jaPRO</span> <span class="meta-chip">2023-12-28</span> — Controls `g_newVehicleDamageScale` in the game module.
+- [`g_reducesaberblock`](/TaystJK/reference/cvars/g_reducesaberblock-47691e4/) <span class="label ref-origin ref-origin-japro">jaPRO</span> <span class="meta-chip">2026-06-03</span> — Percent chance to deny a valid MP saber block/clash. 0=off, 100=always.
+- [`g_splashDamageScale`](/TaystJK/reference/cvars/g_splashdamagescale-562c534/) <span class="label ref-origin ref-origin-japro">jaPRO</span> <span class="meta-chip">2023-12-11</span> — Controls `g_splashDamageScale` in the game module.
+- [`g_tribesMode`](/TaystJK/reference/cvars/g_tribesmode-2e2993b/) <span class="label ref-origin ref-origin-japro">jaPRO</span> <span class="meta-chip">2024-01-15</span> — Controls `g_tribesMode` in the game module.
+- [`g_unlaggedProjectileTolerance`](/TaystJK/reference/cvars/g_unlaggedprojectiletolerance-4f622f0/) <span class="label ref-origin ref-origin-japro">jaPRO</span> <span class="meta-chip">2023-12-21</span> — Controls `g_unlaggedProjectileTolerance` in the game module.
+- [`haste`](/TaystJK/reference/commands/haste-08a06a9/) <span class="label ref-origin ref-origin-japro">jaPRO</span> <span class="meta-chip">2023-12-11</span> — Runs `Cmd_Haste_f` in the game module.
+- [`invfree`](/TaystJK/reference/commands/invfree-4c191c5/) <span class="label ref-origin ref-origin-japro">jaPRO</span> <span class="meta-chip">2024-02-28</span> — Runs `CG_InvUseAvailable` in the cgame module.
+- [`nearby`](/TaystJK/reference/commands/nearby-8809020/) <span class="label ref-origin ref-origin-japro">jaPRO</span> <span class="meta-chip">2023-12-11</span> — Runs `Cmd_Nearby_f` in the game module.
+- [`pack`](/TaystJK/reference/commands/pack-6acd621/) <span class="label ref-origin ref-origin-japro">jaPRO</span> <span class="meta-chip">2024-01-26</span> — Runs `Cmd_TribesPack_f` in the game module.
 - [`r_forceParallaxBias`](/TaystJK/reference/cvars/r_forceparallaxbias-f673013/) <span class="label ref-origin ref-origin-rend2">rend2</span> <span class="meta-chip">2023-10-03</span> — Controls `r_forceParallaxBias` in the renderer module.
 - [`r_forceSun`](/TaystJK/reference/cvars/r_forcesun-b623af1/) <span class="label ref-origin ref-origin-rend2">rend2</span> <span class="meta-chip">2023-10-03</span> — Controls `r_forceSun` in the renderer module.
 - [`r_forceSunAmbientScale`](/TaystJK/reference/cvars/r_forcesunambientscale-2bb57dd/) <span class="label ref-origin ref-origin-rend2">rend2</span> <span class="meta-chip">2023-10-03</span> — Controls `r_forceSunAmbientScale` in the renderer module.
@@ -131,16 +169,22 @@ entry is real; treat the date as approximate.
 - [`r_forceToneMapAvg`](/TaystJK/reference/cvars/r_forcetonemapavg-df906d3/) <span class="label ref-origin ref-origin-rend2">rend2</span> <span class="meta-chip">2023-10-03</span> — Controls `r_forceToneMapAvg` in the renderer module.
 - [`r_forceToneMapMax`](/TaystJK/reference/cvars/r_forcetonemapmax-996cd1f/) <span class="label ref-origin ref-origin-rend2">rend2</span> <span class="meta-chip">2023-10-03</span> — Controls `r_forceToneMapMax` in the renderer module.
 - [`r_forceToneMapMin`](/TaystJK/reference/cvars/r_forcetonemapmin-b011396/) <span class="label ref-origin ref-origin-rend2">rend2</span> <span class="meta-chip">2023-10-03</span> — Controls `r_forceToneMapMin` in the renderer module.
+- [`rCompare`](/TaystJK/reference/commands/rcompare-e6c9345/) <span class="label ref-origin ref-origin-japro">jaPRO</span> <span class="meta-chip">2024-01-10</span> — Runs `Cmd_DFCompare_f` in the game module.
+- [`selectfiremode`](/TaystJK/reference/commands/selectfiremode-bb9939e/) <span class="label ref-origin ref-origin-japro">jaPRO</span> <span class="meta-chip">2024-02-28</span> — Runs `CG_ToggleSingleFire_f` in the cgame module.
 - [`slot`](/TaystJK/reference/commands/slot-462854f/) <span class="label ref-origin ref-origin-taystjk">TaystJK</span> <span class="meta-chip">2024-02-28</span> — Runs `CG_WeaponSlot_f` in the cgame module.
 - [`slotnext`](/TaystJK/reference/commands/slotnext-3dbba08/) <span class="label ref-origin ref-origin-taystjk">TaystJK</span> <span class="meta-chip">2024-02-28</span> — Runs `CG_PrevWeaponSlot_f` in the cgame module.
 - [`slotprev`](/TaystJK/reference/commands/slotprev-4fb55f3/) <span class="label ref-origin ref-origin-taystjk">TaystJK</span> <span class="meta-chip">2024-02-28</span> — Runs `CG_NextWeaponSlot_f` in the cgame module.
+- [`thrownade`](/TaystJK/reference/commands/thrownade-ab0fd85/) <span class="label ref-origin ref-origin-japro">jaPRO</span> <span class="meta-chip">2024-02-06</span> — Runs `Cmd_ThrowNade_f` in the game module.
+- [`trace`](/TaystJK/reference/commands/trace-d0fa554/) <span class="label ref-origin ref-origin-japro">jaPRO</span> <span class="meta-chip">2023-12-11</span> — Runs `Cmd_Trace_f` in the game module.
+- [`ui_dualforcepower`](/TaystJK/reference/cvars/ui_dualforcepower-60e193b/) <span class="label ref-origin ref-origin-basejka">Base Jedi Academy</span> <span class="meta-chip">2013-04-08</span> — Controls `ui_dualforcepower` in the ui module.
 
-### Graphics & rendering (103)
+### Graphics & rendering (108)
 
 - [.oshader override shaders](/TaystJK/features/client-behaviour/) <span class="label ref-origin ref-origin-taystjk">TaystJK</span> <span class="meta-chip">feature</span> — Shader overrides loaded from shaders/*.oshader, parsed after every .shader file so they win without editing the originals.
 - [Widescreen levelshots](/TaystJK/features/client-behaviour/) <span class="label ref-origin ref-origin-taystjk">TaystJK</span> <span class="meta-chip">feature</span> — Levelshots authored for widescreen displays, loaded from levelshots_16_9 in preference to the 4:3 originals.
 - [`capframes`](/TaystJK/reference/commands/capframes-e2a1440/) <span class="label ref-origin ref-origin-rend2">rend2</span> <span class="meta-chip">2023-10-03</span> — Runs `R_CaptureFrameData_f` in the renderer module.
 - [`gfxmeminfo`](/TaystJK/reference/commands/gfxmeminfo-491be17/) <span class="label ref-origin ref-origin-rend2">rend2</span> <span class="meta-chip">2023-10-03</span> — Runs `GfxMemInfo_f` in the renderer module.
+- [`r_allowScreenSaver`](/TaystJK/reference/cvars/r_allowscreensaver-9058284/) <span class="label ref-origin ref-origin-openjk">OpenJK</span> <span class="status-chip">2025-04-26 · needs review</span> — Controls `r_allowScreenSaver` in the engine-shared module.
 - [`r_anaglyphMode`](/TaystJK/reference/cvars/r_anaglyphmode-756890b/) <span class="label ref-origin ref-origin-rend2">rend2</span> <span class="meta-chip">2023-10-03</span> — Controls `r_anaglyphMode` in the renderer module.
 - [`r_arb_buffer_storage`](/TaystJK/reference/cvars/r_arb_buffer_storage-ac1e1c0/) <span class="label ref-origin ref-origin-rend2">rend2</span> <span class="meta-chip">2023-10-03</span> — Disable/enable buffer storage GL extension
 - [`r_arb_half_float_pixel`](/TaystJK/reference/cvars/r_arb_half_float_pixel-6ad3bad/) <span class="label ref-origin ref-origin-rend2">rend2</span> <span class="meta-chip">2023-10-03</span> — Disable/enable ARB_half_float GL extension
@@ -162,6 +206,7 @@ entry is real; treat the date as approximate.
 - [`r_defaultImage`](/TaystJK/reference/cvars/r_defaultimage-48ebde4/) <span class="label ref-origin ref-origin-vulkan">Vulkan</span> <span class="status-chip">2021-05-25 · needs review</span> — Controls `r_defaultImage` in the renderer module.
 - [`r_deluxeSpecular`](/TaystJK/reference/cvars/r_deluxespecular-b2f4cf3/) <span class="label ref-origin ref-origin-rend2">rend2</span> <span class="meta-chip">2023-10-03</span> — Disable/enable/scale the specular response from deluxemaps
 - [`r_depthPrepass`](/TaystJK/reference/cvars/r_depthprepass-3fbd4eb/) <span class="label ref-origin ref-origin-rend2">rend2</span> <span class="meta-chip">2023-10-03</span> — Controls `r_depthPrepass` in the renderer module.
+- [`r_device`](/TaystJK/reference/cvars/r_device-8238fc4/) <span class="label ref-origin ref-origin-basejka">Base Jedi Academy</span> <span class="meta-chip">2013-04-08</span> — Select physical device to render: 0+ - use explicit device index -1 - first discrete GPU -2 - first integrated GPU
 - [`r_dither`](/TaystJK/reference/cvars/r_dither-aea5dc5/) <span class="label ref-origin ref-origin-vulkan">Vulkan</span> <span class="status-chip">2021-05-25 · needs review</span> — Set dithering mode: 0 - disabled 1 - ordered Requires \\r_fbo 1
 - [`r_dlightIntensity`](/TaystJK/reference/cvars/r_dlightintensity-d6b49d6/) <span class="label ref-origin ref-origin-vulkan">Vulkan</span> <span class="status-chip">2021-05-25 · needs review</span> — Controls `r_dlightIntensity` in the renderer module.
 - [`r_dlightMode`](/TaystJK/reference/cvars/r_dlightmode-f87fa68/) <span class="label ref-origin ref-origin-rend2">rend2</span> <span class="meta-chip">2021-05-25</span> — Controls `r_dlightMode` in the renderer module.
@@ -173,6 +218,7 @@ entry is real; treat the date as approximate.
 - [`r_dynamicGlowBloom`](/TaystJK/reference/cvars/r_dynamicglowbloom-d4ab76d/) <span class="label ref-origin ref-origin-rend2">rend2</span> <span class="status-chip">2025-04-15 · needs review</span> — Set rend2 dynamic-glow bloom strength from 0 through 2.
 - [`r_ext_alpha_to_coverage`](/TaystJK/reference/cvars/r_ext_alpha_to_coverage-5cfb4fd/) <span class="label ref-origin ref-origin-vulkan">Vulkan</span> <span class="status-chip">2021-05-25 · needs review</span> — Controls `r_ext_alpha_to_coverage` in the renderer module.
 - [`r_ext_draw_range_elements`](/TaystJK/reference/cvars/r_ext_draw_range_elements-17a8b5e/) <span class="label ref-origin ref-origin-rend2">rend2</span> <span class="meta-chip">2023-10-03</span> — Unused
+- [`r_ext_framebuffer_multisample`](/TaystJK/reference/cvars/r_ext_framebuffer_multisample-0dd78ce/) <span class="label ref-origin ref-origin-openjk">OpenJK</span> <span class="status-chip">2024-02-04 · needs review</span> — Controls `r_ext_framebuffer_multisample` in the renderer module.
 - [`r_ext_max_anisotropy`](/TaystJK/reference/cvars/r_ext_max_anisotropy-ae414a3/) <span class="label ref-origin ref-origin-vulkan">Vulkan</span> <span class="status-chip">2021-05-25 · needs review</span> — Controls `r_ext_max_anisotropy` in the renderer module.
 - [`r_ext_multi_draw_arrays`](/TaystJK/reference/cvars/r_ext_multi_draw_arrays-47cef48/) <span class="label ref-origin ref-origin-rend2">rend2</span> <span class="meta-chip">2023-10-03</span> — Unused
 - [`r_ext_multisample_default_fb`](/TaystJK/reference/cvars/r_ext_multisample_default_fb-d2e37d5/) <span class="label ref-origin ref-origin-rend2">rend2</span> <span class="status-chip">2025-04-15 · needs review</span> — Controls `r_ext_multisample_default_fb` in the engine-shared module.
@@ -194,7 +240,9 @@ entry is real; treat the date as approximate.
 - [`r_mapGreyScale`](/TaystJK/reference/cvars/r_mapgreyscale-691d968/) <span class="label ref-origin ref-origin-vulkan">Vulkan</span> <span class="status-chip">2021-05-25 · needs review</span> — Controls `r_mapGreyScale` in the renderer module.
 - [`r_mergeLeafSurfaces`](/TaystJK/reference/cvars/r_mergeleafsurfaces-9631d20/) <span class="label ref-origin ref-origin-rend2">rend2</span> <span class="meta-chip">2023-10-03</span> — Controls `r_mergeLeafSurfaces` in the renderer module.
 - [`r_mergeMultidraws`](/TaystJK/reference/cvars/r_mergemultidraws-471d2aa/) <span class="label ref-origin ref-origin-rend2">rend2</span> <span class="meta-chip">2023-10-03</span> — Controls `r_mergeMultidraws` in the renderer module.
+- [`r_noghoul2`](/TaystJK/reference/cvars/r_noghoul2-182f730/) <span class="label ref-origin ref-origin-basejka">Base Jedi Academy</span> <span class="meta-chip">2013-04-08</span> — Controls `r_noServerGhoul2` in the renderer module.
 - [`r_nomip`](/TaystJK/reference/cvars/r_nomip-784a698/) <span class="label ref-origin ref-origin-vulkan">Vulkan</span> <span class="status-chip">2021-05-25 · needs review</span> — Apply picmip only on worldspawn textures
+- [`r_patchStitching`](/TaystJK/reference/cvars/r_patchstitching-1b7ebad/) <span class="label ref-origin ref-origin-openjk">OpenJK</span> <span class="meta-chip">2024-02-10</span> — Enable stitching of neighbouring patch surfaces
 - [`r_presentBits`](/TaystJK/reference/cvars/r_presentbits-b73a39a/) <span class="label ref-origin ref-origin-vulkan">Vulkan</span> <span class="status-chip">2021-05-25 · needs review</span> — Select color bits used for presentation surfaces Requires \\r_fbo 1
 - [`r_printShaders`](/TaystJK/reference/cvars/r_printshaders-de38905/) <span class="label ref-origin ref-origin-rend2">rend2</span> <span class="meta-chip">2023-10-03</span> — Controls `r_printShaders` in the renderer module.
 - [`r_pshadowDist`](/TaystJK/reference/cvars/r_pshadowdist-c0c9961/) <span class="label ref-origin ref-origin-rend2">rend2</span> <span class="meta-chip">2023-10-03</span> — Controls `r_pshadowDist` in the renderer module.
@@ -243,7 +291,6 @@ entry is real; treat the date as approximate.
 
 ### HUD & interface (10)
 
-- [`cg_cameraFPS`](/TaystJK/reference/cvars/cg_camerafps-62ac0e1/) <span class="label ref-origin ref-origin-jk2mv">JK2MV</span> <span class="meta-chip">2019-01-14</span> — Set the reference frame rate for third-person camera damping.
 - [`cg_drawTimerCountdown`](/TaystJK/reference/cvars/cg_drawtimercountdown-26c13db/) <span class="label ref-origin ref-origin-taystjk">TaystJK</span> <span class="status-chip">2022-10-05 · needs review</span> — Controls `cg_drawTimerCountdown` in the cgame module.
 - [`cg_killfeed`](/TaystJK/reference/cvars/cg_killfeed-020f6f8/) <span class="label ref-origin ref-origin-taystjk">TaystJK</span> <span class="meta-chip">2023-10-05</span> — Draw a killfeed on the HUD
 - [`cg_killfeedAlignment`](/TaystJK/reference/cvars/cg_killfeedalignment-10e367a/) <span class="label ref-origin ref-origin-taystjk">TaystJK</span> <span class="meta-chip">2023-10-05</span> — Align the killfeed
@@ -253,13 +300,14 @@ entry is real; treat the date as approximate.
 - [`cg_killfeedTextSize`](/TaystJK/reference/cvars/cg_killfeedtextsize-1f948df/) <span class="label ref-origin ref-origin-taystjk">TaystJK</span> <span class="meta-chip">2023-10-05</span> — Resize the killfeed
 - [`cg_killfeedX`](/TaystJK/reference/cvars/cg_killfeedx-32eb04e/) <span class="label ref-origin ref-origin-taystjk">TaystJK</span> <span class="meta-chip">2023-10-05</span> — Offset the killfeed&#x27;s horizontal position from its current position
 - [`cg_killfeedY`](/TaystJK/reference/cvars/cg_killfeedy-e14002d/) <span class="label ref-origin ref-origin-taystjk">TaystJK</span> <span class="meta-chip">2023-10-05</span> — Offset the killfeed&#x27;s vertical position from its current position
+- [`ui_tribesMode`](/TaystJK/reference/cvars/ui_tribesmode-cc54205/) <span class="label ref-origin ref-origin-japro">jaPRO</span> <span class="meta-chip">2024-02-28</span> — Registered by the current source, but no user-facing behavior description has been verified.
 
 ### Input & controls (2)
 
 - [Modifier and side-specific binds](/TaystJK/features/client-behaviour/) <span class="label ref-origin ref-origin-newjk">NewJK / NewMod</span> <span class="meta-chip">feature</span> — Bind ctrl/alt/shift key combinations, and bind the right-side modifier keys separately from the left.
 - [`com_waitingForKey`](/TaystJK/reference/cvars/com_waitingforkey-4980251/) <span class="label ref-origin ref-origin-taystjk">TaystJK</span> <span class="meta-chip">2025-04-26</span> — Controls `com_waitingForKey` in the engine-shared module.
 
-### Movement & race (29)
+### Movement & race (31)
 
 - [`cg_jumpGoal`](/TaystJK/reference/cvars/cg_jumpgoal-829a115/) <span class="label ref-origin ref-origin-taystjk">TaystJK</span> <span class="status-chip">2022-04-20 · needs review</span> — Set a first jump speed goal speed, if first jump speed is above your goal speed, the pre-speed text will be green. Requires /speedometer 1 enabled
 - [`cg_movementKeysWalk`](/TaystJK/reference/cvars/cg_movementkeyswalk-c84f8f4/) <span class="label ref-origin ref-origin-taystjk">TaystJK</span> <span class="meta-chip">2026-06-07</span> — Display walk movement key input
@@ -290,31 +338,30 @@ entry is real; treat the date as approximate.
 - [`cg_speedometerJumpsX`](/TaystJK/reference/cvars/cg_speedometerjumpsx-29e18d5/) <span class="label ref-origin ref-origin-taystjk">TaystJK</span> <span class="status-chip">2022-04-20 · needs review</span> — Horizontal location of the jumps array
 - [`cg_speedometerJumpsY`](/TaystJK/reference/cvars/cg_speedometerjumpsy-8a40b94/) <span class="label ref-origin ref-origin-taystjk">TaystJK</span> <span class="status-chip">2022-04-20 · needs review</span> — Vertical location of the jumps array
 - [`cg_startGoal`](/TaystJK/reference/cvars/cg_startgoal-086db11/) <span class="label ref-origin ref-origin-taystjk">TaystJK</span> <span class="status-chip">2022-04-20 · needs review</span> — Start speed goal, if your start speed is above your goal speed, the text will be green, requires /cg_raceStart 1
+- [`cg_strafeTrailPlums`](/TaystJK/reference/cvars/cg_strafetrailplums-0f0679d/) <span class="label ref-origin ref-origin-japro">jaPRO</span> <span class="meta-chip">2024-04-15</span> — Controls `cg_strafeTrailPlums` in the cgame module.
+- [`migrateCheckpoints`](/TaystJK/reference/commands/migratecheckpoints-2796a98/) <span class="label ref-origin ref-origin-japro">jaPRO</span> <span class="meta-chip">2026-07-30</span> — Runs `SV_MigrateCheckpoints_f` in the game module.
 
-### Server & networking (16)
+### Server & networking (13)
 
 - [taystJKinfo feature flags](/TaystJK/development/feature-flags/) <span class="label ref-origin ref-origin-taystjk">TaystJK</span> <span class="meta-chip">feature</span> — A serverinfo key letting any server mod advertise which TaystJK client features it supports.
+- [`cl_reconnectArgs`](/TaystJK/reference/cvars/cl_reconnectargs-fbdecc0/) <span class="label ref-origin ref-origin-openjk">OpenJK</span> <span class="status-chip">2026-06-01 · needs review</span> — Arguments provided when last connecting to a server
 - [`r_cubeMapping`](/TaystJK/reference/cvars/r_cubemapping-86bf3af/) <span class="label ref-origin ref-origin-rend2">rend2</span> <span class="meta-chip">2023-10-03</span> — Disable/enable cubemapping
 - [`r_cubeMappingBounces`](/TaystJK/reference/cvars/r_cubemappingbounces-e20074f/) <span class="label ref-origin ref-origin-rend2">rend2</span> <span class="meta-chip">2023-10-03</span> — Renders cubemaps multiple times to get reflections in reflections
 - [`r_deluxeMapping`](/TaystJK/reference/cvars/r_deluxemapping-a9c1e61/) <span class="label ref-origin ref-origin-rend2">rend2</span> <span class="meta-chip">2023-10-03</span> — Disable/enable reading deluxemaps when compiled with q3map2
 - [`r_normalMapping`](/TaystJK/reference/cvars/r_normalmapping-01198ee/) <span class="label ref-origin ref-origin-rend2">rend2</span> <span class="meta-chip">2023-10-03</span> — Disable/enable normal mapping
 - [`r_parallaxMapping`](/TaystJK/reference/cvars/r_parallaxmapping-2354566/) <span class="label ref-origin ref-origin-rend2">rend2</span> <span class="meta-chip">2023-10-03</span> — Disable/enable parallax mapping
 - [`r_specularMapping`](/TaystJK/reference/cvars/r_specularmapping-271a30a/) <span class="label ref-origin ref-origin-rend2">rend2</span> <span class="meta-chip">2023-10-03</span> — Disable/enable specular mapping
-- [`sv_autoWhitelist`](/TaystJK/reference/cvars/sv_autowhitelist-7017003/) <span class="label ref-origin ref-origin-jk2mv">JK2MV</span> <span class="meta-chip">2020-05-15</span> — Save player IPs to allow them using server during DOS attack
-- [`sv_hibernateFPS`](/TaystJK/reference/cvars/sv_hibernatefps-4c1b1a1/) <span class="label ref-origin ref-origin-jk2mv">JK2MV</span> <span class="meta-chip">2018-10-14</span> — FPS during hibernation mode
 - [`sv_httpServerPort`](/TaystJK/reference/cvars/sv_httpserverport-a8fe9d8/) <span class="label ref-origin ref-origin-jk2mv">JK2MV</span> <span class="meta-chip">2024-03-21</span> — Set the built-in HTTP download port or an external HTTP URL.
-- [`sv_maxOOBRate`](/TaystJK/reference/cvars/sv_maxoobrate-bbcc5ef/) <span class="label ref-origin ref-origin-jk2mv">JK2MV</span> <span class="meta-chip">2020-05-15</span> — Maximum rate of handling incoming server commands
 - [`ui_r_cubemapping`](/TaystJK/reference/cvars/ui_r_cubemapping-fce2f9f/) <span class="label ref-origin ref-origin-rend2">rend2</span> <span class="meta-chip">2023-10-14</span> — Controls `ui_r_cubemapping` in the ui module.
 - [`ui_r_cubemappingBounces`](/TaystJK/reference/cvars/ui_r_cubemappingbounces-7eddb9f/) <span class="label ref-origin ref-origin-rend2">rend2</span> <span class="meta-chip">2023-10-14</span> — Controls `ui_r_cubemappingBounces` in the ui module.
 - [`ui_r_deluxemapping`](/TaystJK/reference/cvars/ui_r_deluxemapping-52635ff/) <span class="label ref-origin ref-origin-rend2">rend2</span> <span class="meta-chip">2023-10-14</span> — Controls `ui_r_deluxemapping` in the ui module.
 - [`ui_r_parallaxmapping`](/TaystJK/reference/cvars/ui_r_parallaxmapping-5756301/) <span class="label ref-origin ref-origin-rend2">rend2</span> <span class="meta-chip">2023-10-14</span> — Controls `ui_r_parallaxmapping` in the ui module.
-- [`whitelistip`](/TaystJK/reference/commands/whitelistip-d79fc84/) <span class="label ref-origin ref-origin-jk2mv">JK2MV</span> <span class="meta-chip">2020-05-15</span> — Add IP to the whitelist
 
 </section>
 
   <section class="baseline-panel platform-panel" id="baseline-panel-openjk" role="tabpanel" aria-labelledby="baseline-tab-openjk" tabindex="0" data-baseline-panel="openjk" markdown="1">
 
-## New since OpenJK (829)
+## New since OpenJK (752)
 
 ### Administration (34)
 
@@ -382,7 +429,7 @@ entry is real; treat the date as approximate.
 - [`g_newBotAITarget`](/TaystJK/reference/cvars/g_newbotaitarget-9625e4f/) <span class="label ref-origin ref-origin-japro">jaPRO</span> <span class="status-chip">2018-01-01 · needs review</span> — -2=Target closest excluding otherbots. -1=target closest. 0-31=target clientnum.
 - [`g_scoreNPCs`](/TaystJK/reference/cvars/g_scorenpcs-6ccb95d/) <span class="label ref-origin ref-origin-japro">jaPRO</span> <span class="status-chip">2018-10-02 · needs review</span> — Controls `g_scoreNPCs` in the game module.
 
-### Chat & social (40)
+### Chat & social (39)
 
 - [`amMotd`](/TaystJK/reference/commands/ammotd-5b85bc2/) <span class="label ref-origin ref-origin-japro">jaPRO</span> <span class="status-chip">2018-01-01 · needs review</span> — Forwards this command to the connected game server.
 - [`ampSay`](/TaystJK/reference/commands/ampsay-c91ed51/) <span class="label ref-origin ref-origin-japro">jaPRO</span> <span class="status-chip">2018-01-01 · needs review</span> — Forwards this command to the connected game server.
@@ -420,12 +467,11 @@ entry is real; treat the date as approximate.
 - [`g_godChat`](/TaystJK/reference/cvars/g_godchat-b1ca3c4/) <span class="label ref-origin ref-origin-japro">jaPRO</span> <span class="status-chip">2018-01-01 · needs review</span> — Controls `g_godChat` in the game module.
 - [`ignore`](/TaystJK/reference/commands/ignore-8ccbde8/) <span class="label ref-origin ref-origin-japro">jaPRO</span> <span class="meta-chip">2018-01-01</span> — [JAPRO - Serverside - All - Ignore]
 - [`ignoreVGS`](/TaystJK/reference/commands/ignorevgs-46dc77b/) <span class="label ref-origin ref-origin-japro">jaPRO</span> <span class="status-chip">2018-09-03 · needs review</span> — Runs `CG_IgnoreVGS_f` in the cgame module.
-- [`r_ignoreDstAlpha`](/TaystJK/reference/cvars/r_ignoredstalpha-bad37b1/) <span class="label ref-origin ref-origin-rend2">rend2</span> <span class="meta-chip">2023-10-03</span> — Controls `r_ignoreDstAlpha` in the renderer module.
 - [`say_team_mod`](/TaystJK/reference/commands/say_team_mod-1d67bc8/) <span class="label ref-origin ref-origin-japro">jaPRO</span> <span class="status-chip">2018-01-01 · needs review</span> — Forwards this command to the connected game server.
 - [`ui_vgs`](/TaystJK/reference/cvars/ui_vgs-6f63532/) <span class="label ref-origin ref-origin-eternaljk">EternalJK</span> <span class="status-chip">2018-02-06 · needs review</span> — Controls `ui_vgs` in the ui module.
 - [`vgs_cmd`](/TaystJK/reference/commands/vgs_cmd-98de8a4/) <span class="label ref-origin ref-origin-japro">jaPRO</span> <span class="status-chip">2018-01-01 · needs review</span> — Vgs
 
-### Crosshair & aiming (7)
+### Crosshair & aiming (8)
 
 - [`cg_crosshairColor`](/TaystJK/reference/cvars/cg_crosshaircolor-a61b771/) <span class="label ref-origin ref-origin-eternaljk">EternalJK</span> <span class="status-chip">2018-12-18 · needs review</span> — Controls `cg_crosshairColor` in the cgame module.
 - [`cg_crosshairSaberStyleColor`](/TaystJK/reference/cvars/cg_crosshairsaberstylecolor-14bed3a/) <span class="label ref-origin ref-origin-eternaljk">EternalJK</span> <span class="status-chip">2018-12-18 · needs review</span> — Controls `cg_crosshairSaberStyleColor` in the cgame module.
@@ -434,6 +480,7 @@ entry is real; treat the date as approximate.
 - [`cg_drawCrosshairNamesColours`](/TaystJK/reference/cvars/cg_drawcrosshairnamescolours-50bbb18/) <span class="label ref-origin ref-origin-eternaljk">EternalJK</span> <span class="meta-chip">2025-12-11</span> — Choose team-aware or player-name crosshair colors.
 - [`cg_drawCrosshairNamesOpacity`](/TaystJK/reference/cvars/cg_drawcrosshairnamesopacity-c578144/) <span class="label ref-origin ref-origin-eternaljk">EternalJK</span> <span class="meta-chip">2025-12-11</span> — Set crosshair target-name opacity from 0 to 1.
 - [`cg_thirdPersonCrosshairCenter`](/TaystJK/reference/cvars/cg_thirdpersoncrosshaircenter-a54cbd8/) <span class="label ref-origin ref-origin-japro">jaPRO</span> <span class="status-chip">2018-09-03 · needs review</span> — 1 is old third person static crosshair behavior
+- [`cg_zoomFov`](/TaystJK/reference/cvars/cg_zoomfov-c976ef9/) <span class="label ref-origin ref-origin-basejka">Base Jedi Academy</span> <span class="meta-chip">2013-04-08</span> — The field of view when using +zoom
 
 ### Demos & media (18)
 
@@ -456,7 +503,7 @@ entry is real; treat the date as approximate.
 - [`svdemometa`](/TaystJK/reference/commands/svdemometa-0715ee6/) <span class="label ref-origin ref-origin-eternaljk">EternalJK</span> <span class="meta-chip">2023-06-23</span> — Sets a new metadata entry for server-side demos for one player. Call with clientnum, metakey, [data]
 - [`svrenamedemo`](/TaystJK/reference/commands/svrenamedemo-6d02cec/) <span class="label ref-origin ref-origin-eternaljk">EternalJK</span> <span class="status-chip">2017-12-28 · needs review</span> — Rename a server-side demo
 
-### Engine & diagnostics (52)
+### Engine & diagnostics (44)
 
 - [`afk`](/TaystJK/reference/commands/afk-aec4e2a/) <span class="label ref-origin ref-origin-eternaljk">EternalJK</span> <span class="status-chip">2016-03-05 · needs review</span> — Rename to or from afk
 - [`cl_afkPrefix`](/TaystJK/reference/cvars/cl_afkprefix-de26080/) <span class="label ref-origin ref-origin-eternaljk">EternalJK</span> <span class="status-chip">2020-05-15 · needs review</span> — Prefix to add to player name when AFK
@@ -466,11 +513,9 @@ entry is real; treat the date as approximate.
 - [`cl_colorString`](/TaystJK/reference/cvars/cl_colorstring-dfaadba/) <span class="label ref-origin ref-origin-eternaljk">EternalJK</span> <span class="status-chip">2016-03-21 · needs review</span> — Bit value of selected colors in colorString, configure chat colors with /colorstring
 - [`cl_colorStringCount`](/TaystJK/reference/cvars/cl_colorstringcount-5e55bbd/) <span class="label ref-origin ref-origin-eternaljk">EternalJK</span> <span class="status-chip">2016-03-21 · needs review</span> — Controls `cl_colorStringCount` in the engine-client module.
 - [`cl_colorStringRandom`](/TaystJK/reference/cvars/cl_colorstringrandom-d3b1d9a/) <span class="label ref-origin ref-origin-eternaljk">EternalJK</span> <span class="status-chip">2016-03-21 · needs review</span> — Randomness of the colors changing, higher numbers are less random
-- [`cl_consoleShiftRequirement`](/TaystJK/reference/cvars/cl_consoleshiftrequirement-95eb4a1/) <span class="label ref-origin ref-origin-jk2mv">JK2MV</span> <span class="meta-chip">2024-02-19</span> — Require shift key to be pressed for native console key detection
 - [`cl_discordRichPresence`](/TaystJK/reference/cvars/cl_discordrichpresence-c4b29a5/) <span class="label ref-origin ref-origin-eternaljk">EternalJK</span> <span class="status-chip">2019-03-19 · needs review</span> — Allow/disallow sharing current game information on Discord profile status
 - [`cl_discordRichPresenceSharePassword`](/TaystJK/reference/cvars/cl_discordrichpresencesharepassword-79479cd/) <span class="label ref-origin ref-origin-eternaljk">EternalJK</span> <span class="status-chip">2019-03-20 · needs review</span> — If set, sends password to Discord friends who request to join your game
 - [`cl_exitCommand`](/TaystJK/reference/cvars/cl_exitcommand-0f11b0a/) <span class="label ref-origin ref-origin-taystjk">TaystJK</span> <span class="meta-chip">2024-02-28</span> — Enables the /exit command
-- [`cl_filterGames`](/TaystJK/reference/cvars/cl_filtergames-7e85224/) <span class="label ref-origin ref-origin-taystjk">TaystJK</span> <span class="meta-chip">2023-11-28</span> — List of fs_game to filter (space separated)
 - [`cl_idrive`](/TaystJK/reference/cvars/cl_idrive-a66b0b8/) <span class="label ref-origin ref-origin-japro">jaPRO</span> <span class="meta-chip">2017-12-04</span> — Controls `cl_idrive` in the engine-client module.
 - [`cl_ratioFix`](/TaystJK/reference/cvars/cl_ratiofix-67440df/) <span class="label ref-origin ref-origin-japro">jaPRO</span> <span class="status-chip">2017-12-03 · needs review</span> — Widescreen aspect ratio correction
 - [`colorname`](/TaystJK/reference/commands/colorname-eccdd14/) <span class="label ref-origin ref-origin-eternaljk">EternalJK</span> <span class="status-chip">2016-03-11 · needs review</span> — Color name
@@ -478,21 +523,14 @@ entry is real; treat the date as approximate.
 - [`com_legacyprotocol`](/TaystJK/reference/cvars/com_legacyprotocol-f7ec076/) <span class="label ref-origin ref-origin-eternaljk">EternalJK</span> <span class="status-chip">2018-04-26 · needs review</span> — 1.00 protocol
 - [`com_priority`](/TaystJK/reference/cvars/com_priority-cac1576/) <span class="label ref-origin ref-origin-eternaljk">EternalJK</span> <span class="status-chip">2018-11-27 · needs review</span> — Duno, -1 = do nothing, 1 = low priority, 2 = normal priority, 3 = high priority? i guess??
 - [`com_protocol`](/TaystJK/reference/cvars/com_protocol-2cc2e0a/) <span class="label ref-origin ref-origin-eternaljk">EternalJK</span> <span class="status-chip">2018-04-26 · needs review</span> — 1.01 protocol
-- [`com_timestamps`](/TaystJK/reference/cvars/com_timestamps-e16da1a/) <span class="label ref-origin ref-origin-jk2mv">JK2MV</span> <span class="status-chip">2024-02-27 · needs review</span> — Show timestamps in terminal and qconsole.log
-- [`com_unpackLibraries`](/TaystJK/reference/cvars/com_unpacklibraries-27a5b09/) <span class="label ref-origin ref-origin-eternaljk">EternalJK</span> <span class="meta-chip">2023-11-29</span> — Controls `com_unpackLibraries` in the engine-shared module.
 - [`con_datetime`](/TaystJK/reference/cvars/con_datetime-fb79998/) <span class="label ref-origin ref-origin-taystjk">TaystJK</span> <span class="meta-chip">2026-06-02</span> — Display human readable date/time in console
-- [`con_height`](/TaystJK/reference/cvars/con_height-41c46da/) <span class="label ref-origin ref-origin-taystjk">TaystJK</span> <span class="meta-chip">2024-02-19</span> — Adjust the height of the console
 - [`con_notifyconnect`](/TaystJK/reference/cvars/con_notifyconnect-0a48d2d/) <span class="label ref-origin ref-origin-eternaljk">EternalJK</span> <span class="status-chip">2016-04-14 · needs review</span> — Notifies you when someone connects to the server
 - [`con_notifylines`](/TaystJK/reference/cvars/con_notifylines-6373d07/) <span class="label ref-origin ref-origin-eternaljk">EternalJK</span> <span class="status-chip">2018-09-10 · needs review</span> — Max number of console lines to print in top left
 - [`con_notifyvote`](/TaystJK/reference/cvars/con_notifyvote-05d6ee1/) <span class="label ref-origin ref-origin-eternaljk">EternalJK</span> <span class="status-chip">2018-02-24 · needs review</span> — Notifies you when someone calls a vote
 - [`con_notifywords`](/TaystJK/reference/cvars/con_notifywords-97dfc24/) <span class="label ref-origin ref-origin-eternaljk">EternalJK</span> <span class="status-chip">2018-02-24 · needs review</span> — Notifies you when defined words are mentioned
-- [`con_opacity`](/TaystJK/reference/cvars/con_opacity-d0e065e/) <span class="label ref-origin ref-origin-eternaljk">EternalJK</span> <span class="status-chip">2014-03-30 · needs review</span> — Opacity of console background
 - [`con_ratioFix`](/TaystJK/reference/cvars/con_ratiofix-64c8547/) <span class="label ref-origin ref-origin-eternaljk">EternalJK</span> <span class="status-chip">2018-10-20 · needs review</span> — Correct console background height, should probably disable for custom console backgrounds.
-- [`con_scale`](/TaystJK/reference/cvars/con_scale-d334b5a/) <span class="label ref-origin ref-origin-jk2mv">JK2MV</span> <span class="meta-chip">2018-02-05</span> — Console character scale
-- [`con_timestamps`](/TaystJK/reference/cvars/con_timestamps-2b4f0eb/) <span class="label ref-origin ref-origin-jk2mv">JK2MV</span> <span class="status-chip">2024-02-27 · needs review</span> — Display timestamps infront of console lines
 - [`delay`](/TaystJK/reference/commands/delay-ab464f0/) <span class="label ref-origin ref-origin-newjk">NewJK / NewMod</span> <span class="meta-chip">2022-04-20</span> — Run following commands after a millisecond delay.
 - [`delaycancel`](/TaystJK/reference/commands/delaycancel-8b62c65/) <span class="label ref-origin ref-origin-newjk">NewJK / NewMod</span> <span class="meta-chip">2022-04-20</span> — Cancel matching pending delay entries.
-- [`execq`](/TaystJK/reference/commands/execq-48c51d3/) <span class="label ref-origin ref-origin-eternaljk">EternalJK</span> <span class="status-chip">2014-01-20 · needs review</span> — Execute a script file without displaying a message
 - [`exit`](/TaystJK/reference/commands/exit-de3ac21/) <span class="label ref-origin ref-origin-eternaljk">EternalJK</span> <span class="status-chip">2018-11-27 · needs review</span> — Exits the game
 - [`fx_jk2`](/TaystJK/reference/cvars/fx_jk2-16a4fc2/) <span class="label ref-origin ref-origin-taystjk">TaystJK</span> <span class="meta-chip">2025-04-15</span> — Displays jk2 style projectile fx - 0: Disabled - 1: Enabled
 - [`fx_physics`](/TaystJK/reference/cvars/fx_physics-6ce403e/) <span class="label ref-origin ref-origin-japro">jaPRO</span> <span class="status-chip">2018-01-01 · needs review</span> — Controls physics applied to FX system particles - 0: Disable all FX physics - 1: use non-expensive physics only - 2: Use flags in the fx file (Default behavior) - 3: Force expensive physics on all particles
@@ -504,6 +542,7 @@ entry is real; treat the date as approximate.
 - [`mprev`](/TaystJK/reference/commands/mprev-28fb883/) <span class="label ref-origin ref-origin-newjk">NewJK / NewMod</span> <span class="meta-chip">2022-04-20</span> — Send the previous-track media key on Windows.
 - [`mstop`](/TaystJK/reference/commands/mstop-67745cd/) <span class="label ref-origin ref-origin-newjk">NewJK / NewMod</span> <span class="meta-chip">2022-04-20</span> — Send the stop-media key on Windows.
 - [`protocolswitch`](/TaystJK/reference/cvars/protocolswitch-9a313ea/) <span class="label ref-origin ref-origin-jk2mv">JK2MV</span> <span class="status-chip">2018-04-26 · needs review</span> — Sets protocol based on server info response
+- [`s_sdlDriver`](/TaystJK/reference/cvars/s_sdldriver-b485ab9/) <span class="label ref-origin ref-origin-openjk">OpenJK</span> <span class="status-chip">2025-04-26 · needs review</span> — Controls `s_sdlDriver` in the engine-shared module.
 - [`snd_mute_losefocus`](/TaystJK/reference/cvars/snd_mute_losefocus-56dc974/) <span class="label ref-origin ref-origin-eternaljk">EternalJK</span> <span class="status-chip">2019-03-21 · needs review</span> — Mute sound when game window is unfocused/minimized
 - [`strSub`](/TaystJK/reference/commands/strsub-25a3e39/) <span class="label ref-origin ref-origin-taystjk">TaystJK</span> <span class="status-chip">2022-04-20 · needs review</span> — Execute a command with $cvar$ value substitution.
 - [`userinfo`](/TaystJK/reference/commands/userinfo-c0214b8/) <span class="label ref-origin ref-origin-eternaljk">EternalJK</span> <span class="status-chip">2013-04-08 · needs review</span> — Runs `CL_Clientinfo_f` in the engine-client module.
@@ -511,15 +550,13 @@ entry is real; treat the date as approximate.
 - [`waitfcancel`](/TaystJK/reference/commands/waitfcancel-4f1a371/) <span class="label ref-origin ref-origin-newjk">NewJK / NewMod</span> <span class="meta-chip">2022-04-20</span> — Cancel matching pending waitf entries.
 - [`write`](/TaystJK/reference/commands/write-e1d0c6c/) <span class="label ref-origin ref-origin-eternaljk">EternalJK</span> <span class="status-chip">2019-03-21 · needs review</span> — Write the configuration to file
 
-### Files & downloads (5)
+### Files & downloads (3)
 
 - [`cl_downloadProtocol`](/TaystJK/reference/cvars/cl_downloadprotocol-a36f359/) <span class="label ref-origin ref-origin-jk2mv">JK2MV</span> <span class="status-chip">2024-03-21 · needs review</span> — Report whether the active download uses HTTP or UDP.
-- [`fs_forcegame`](/TaystJK/reference/cvars/fs_forcegame-3547288/) <span class="label ref-origin ref-origin-eternaljk">EternalJK</span> <span class="meta-chip">2023-11-29</span> — Folder to use for overriding of fs_game (can not be set by the server).
 - [`fs_portable`](/TaystJK/reference/cvars/fs_portable-b325657/) <span class="label ref-origin ref-origin-newjk">NewJK / NewMod</span> <span class="meta-chip">2018-07-22</span> — Disable fs_homepath and use only one folder for all game files
-- [`fs_restart`](/TaystJK/reference/commands/fs_restart-205ee49/) <span class="label ref-origin ref-origin-eternaljk">EternalJK</span> <span class="status-chip">2019-05-06 · needs review</span> — Restarts the filesystem if no module is currently using files from a pk3
 - [`sv_httpDownloads`](/TaystJK/reference/cvars/sv_httpdownloads-f79d64e/) <span class="label ref-origin ref-origin-jk2mv">JK2MV</span> <span class="meta-chip">2024-03-21</span> — Enable the server&#x27;s JK2MV-derived HTTP auto-download path.
 
-### Gameplay & combat (370)
+### Gameplay & combat (359)
 
 - [Cosmetics custom offsets](/TaystJK/features/cosmetics/) <span class="label ref-origin ref-origin-taystjk">TaystJK</span> <span class="meta-chip">feature</span> — Per-model and per-skin position offsets for hats and capes, described by a JSON file shipped alongside the cosmetic.
 - [`+duck`](/TaystJK/reference/commands/plusminus-duck-1aea248/) <span class="label ref-origin ref-origin-japro">jaPRO</span> <span class="status-chip">2018-09-03 · needs review</span> — Runs `CG_NorollDown_f` in the cgame module.
@@ -627,6 +664,7 @@ entry is real; treat the date as approximate.
 - [`cg_forceCosmetics`](/TaystJK/reference/cvars/cg_forcecosmetics-598fb8d/) <span class="label ref-origin ref-origin-taystjk">TaystJK</span> <span class="status-chip">2022-04-20 · needs review</span> — Forces all players to have your cosmetics on non-japro servers
 - [`cg_forceEnemyModel`](/TaystJK/reference/cvars/cg_forceenemymodel-d577813/) <span class="label ref-origin ref-origin-japro">jaPRO</span> <span class="status-chip">2018-09-03 · needs review</span> — Controls `cg_forceEnemyModel` in the cgame module.
 - [`cg_forceOwnSaber`](/TaystJK/reference/cvars/cg_forceownsaber-6523482/) <span class="label ref-origin ref-origin-eternaljk">EternalJK</span> <span class="status-chip">2019-06-12 · needs review</span> — Controls `cg_forceOwnSaber` in the cgame module.
+- [`cg_fpls`](/TaystJK/reference/cvars/cg_fpls-c3e3b71/) <span class="label ref-origin ref-origin-basejka">Base Jedi Academy</span> <span class="meta-chip">2013-04-08</span> — Controls `cg_fpls` in the cgame module.
 - [`cg_gunAlpha`](/TaystJK/reference/cvars/cg_gunalpha-82a9df0/) <span class="label ref-origin ref-origin-japro">jaPRO</span> <span class="status-chip">2018-09-03 · needs review</span> — Controls `cg_gunAlpha` in the cgame module.
 - [`cg_headTurn`](/TaystJK/reference/cvars/cg_headturn-2d5b44b/) <span class="label ref-origin ref-origin-japro">jaPRO</span> <span class="status-chip">2018-09-03 · needs review</span> — Controls `cg_headTurn` in the cgame module.
 - [`cg_instantDuck`](/TaystJK/reference/cvars/cg_instantduck-ee7bc95/) <span class="label ref-origin ref-origin-japro">jaPRO</span> <span class="status-chip">2018-09-03 · needs review</span> — Controls `cg_instantDuck` in the cgame module.
@@ -727,9 +765,7 @@ entry is real; treat the date as approximate.
 - [`g_fixKillCredit`](/TaystJK/reference/cvars/g_fixkillcredit-250953f/) <span class="label ref-origin ref-origin-japro">jaPRO</span> <span class="status-chip">2018-01-01 · needs review</span> — 1=Award kill credit after target suicides/spectates. 2=Also for disconnects/reconnects.
 - [`g_fixPlayerCollision`](/TaystJK/reference/cvars/g_fixplayercollision-c0ccf93/) <span class="label ref-origin ref-origin-japro">jaPRO</span> <span class="status-chip">2020-06-14 · needs review</span> — Controls `g_fixPlayerCollision` in the game module.
 - [`g_fixRoll`](/TaystJK/reference/cvars/g_fixroll-09a4b25/) <span class="label ref-origin ref-origin-japro">jaPRO</span> <span class="status-chip">2018-01-01 · needs review</span> — 1=JA+ style base roll. //2=Chainable roll. //3=JK2 style roll.
-- [`g_fixSaberDisarmBonus`](/TaystJK/reference/cvars/g_fixsaberdisarmbonus-d84721a/) <span class="label ref-origin ref-origin-taystjk">TaystJK</span> <span class="meta-chip">2023-10-29</span> — Controls `g_fixSaberDisarmBonus` in the game module.
 - [`g_fixSaberInGrip`](/TaystJK/reference/cvars/g_fixsaberingrip-b95f6ac/) <span class="label ref-origin ref-origin-japro">jaPRO</span> <span class="status-chip">2018-01-01 · needs review</span> — 1=Grip does not turn off lightsaber. 2=Same as 1 and also target can toggle lightsaber in grip. 3=Same as 2 and also target can switch saberstyle in grip.
-- [`g_fixSaberMoveData`](/TaystJK/reference/cvars/g_fixsabermovedata-4619480/) <span class="label ref-origin ref-origin-taystjk">TaystJK</span> <span class="meta-chip">2023-10-29</span> — Controls `g_fixSaberMoveData` in the game module.
 - [`g_fixSlidePhysics`](/TaystJK/reference/cvars/g_fixslidephysics-b4eea18/) <span class="label ref-origin ref-origin-japro">jaPRO</span> <span class="status-chip">2018-01-01 · needs review</span> — 1=Fixed slide physics for NPCS. 2=Fixed slide physics for NPCs and players.
 - [`g_fixTimerOOB`](/TaystJK/reference/cvars/g_fixtimeroob-b9f687d/) <span class="label ref-origin ref-origin-japro">jaPRO</span> <span class="status-chip">2020-05-15 · needs review</span> — Controls `g_fixTimerOOB` in the game module.
 - [`g_flagDrag`](/TaystJK/reference/cvars/g_flagdrag-88dcb4b/) <span class="label ref-origin ref-origin-japro">jaPRO</span> <span class="status-chip">2018-01-01 · needs review</span> — Add air friction to flag carrier.
@@ -832,15 +868,6 @@ entry is real; treat the date as approximate.
 - [`printStats`](/TaystJK/reference/commands/printstats-482f44d/) <span class="label ref-origin ref-origin-japro">jaPRO</span> <span class="status-chip">2018-01-01 · needs review</span> — Forwards this command to the connected game server.
 - [`PTele`](/TaystJK/reference/commands/ptele-fb0f4da/) <span class="label ref-origin ref-origin-japro">jaPRO</span> <span class="status-chip">2018-09-03 · needs review</span> — Runs `CG_PTele_f` in the cgame module.
 - [`PTelemark`](/TaystJK/reference/commands/ptelemark-8fcd18e/) <span class="label ref-origin ref-origin-japro">jaPRO</span> <span class="status-chip">2018-09-03 · needs review</span> — Runs `CG_PTelemark_f` in the cgame module.
-- [`r_forceParallaxBias`](/TaystJK/reference/cvars/r_forceparallaxbias-f673013/) <span class="label ref-origin ref-origin-rend2">rend2</span> <span class="meta-chip">2023-10-03</span> — Controls `r_forceParallaxBias` in the renderer module.
-- [`r_forceSun`](/TaystJK/reference/cvars/r_forcesun-b623af1/) <span class="label ref-origin ref-origin-rend2">rend2</span> <span class="meta-chip">2023-10-03</span> — Controls `r_forceSun` in the renderer module.
-- [`r_forceSunAmbientScale`](/TaystJK/reference/cvars/r_forcesunambientscale-2bb57dd/) <span class="label ref-origin ref-origin-rend2">rend2</span> <span class="meta-chip">2023-10-03</span> — Controls `r_forceSunAmbientScale` in the renderer module.
-- [`r_forceSunLightScale`](/TaystJK/reference/cvars/r_forcesunlightscale-9f32ff8/) <span class="label ref-origin ref-origin-rend2">rend2</span> <span class="meta-chip">2023-10-03</span> — Controls `r_forceSunLightScale` in the renderer module.
-- [`r_forceSunMapLightScale`](/TaystJK/reference/cvars/r_forcesunmaplightscale-c3ba4de/) <span class="label ref-origin ref-origin-rend2">rend2</span> <span class="meta-chip">2023-10-03</span> — Controls `r_forceSunMapLightScale` in the renderer module.
-- [`r_forceToneMap`](/TaystJK/reference/cvars/r_forcetonemap-aaa4054/) <span class="label ref-origin ref-origin-rend2">rend2</span> <span class="meta-chip">2023-10-03</span> — Controls `r_forceToneMap` in the renderer module.
-- [`r_forceToneMapAvg`](/TaystJK/reference/cvars/r_forcetonemapavg-df906d3/) <span class="label ref-origin ref-origin-rend2">rend2</span> <span class="meta-chip">2023-10-03</span> — Controls `r_forceToneMapAvg` in the renderer module.
-- [`r_forceToneMapMax`](/TaystJK/reference/cvars/r_forcetonemapmax-996cd1f/) <span class="label ref-origin ref-origin-rend2">rend2</span> <span class="meta-chip">2023-10-03</span> — Controls `r_forceToneMapMax` in the renderer module.
-- [`r_forceToneMapMin`](/TaystJK/reference/cvars/r_forcetonemapmin-b011396/) <span class="label ref-origin ref-origin-rend2">rend2</span> <span class="meta-chip">2023-10-03</span> — Controls `r_forceToneMapMin` in the renderer module.
 - [`race`](/TaystJK/reference/commands/race-de4bedc/) <span class="label ref-origin ref-origin-japro">jaPRO</span> <span class="status-chip">2018-01-01 · needs review</span> — Forwards this command to the connected game server.
 - [`rCompare`](/TaystJK/reference/commands/rcompare-e6c9345/) <span class="label ref-origin ref-origin-japro">jaPRO</span> <span class="meta-chip">2024-01-10</span> — Runs `Cmd_DFCompare_f` in the game module.
 - [`rebuildElo`](/TaystJK/reference/commands/rebuildelo-eed7ec9/) <span class="label ref-origin ref-origin-japro">jaPRO</span> <span class="status-chip">2018-01-01 · needs review</span> — Delete all Elo records and rebuild them from the duel records in the database.
@@ -859,7 +886,6 @@ entry is real; treat the date as approximate.
 - [`rRank`](/TaystJK/reference/commands/rrank-4a8ddea/) <span class="label ref-origin ref-origin-eternaljk">EternalJK</span> <span class="status-chip">2018-02-04 · needs review</span> — Forwards this command to the connected game server.
 - [`rTop`](/TaystJK/reference/commands/rtop-56f7fba/) <span class="label ref-origin ref-origin-eternaljk">EternalJK</span> <span class="status-chip">2018-02-04 · needs review</span> — Forwards this command to the connected game server.
 - [`rWorst`](/TaystJK/reference/commands/rworst-00fab73/) <span class="label ref-origin ref-origin-eternaljk">EternalJK</span> <span class="status-chip">2018-02-04 · needs review</span> — Forwards this command to the connected game server.
-- [`saberColor`](/TaystJK/reference/commands/sabercolor-78e6a36/) <span class="label ref-origin ref-origin-japro">jaPRO</span> <span class="status-chip">2018-09-03 · needs review</span> — Forwards this command to the connected game server.
 - [`saberDisable`](/TaystJK/reference/commands/saberdisable-cf2b094/) <span class="label ref-origin ref-origin-japro">jaPRO</span> <span class="status-chip">2018-01-01 · needs review</span> — Runs `Svcmd_ToggleSaberDisable_f` in the game module.
 - [`selectfiremode`](/TaystJK/reference/commands/selectfiremode-bb9939e/) <span class="label ref-origin ref-origin-japro">jaPRO</span> <span class="meta-chip">2024-02-28</span> — Runs `CG_ToggleSingleFire_f` in the cgame module.
 - [`showNet`](/TaystJK/reference/commands/shownet-4d0ae0e/) <span class="label ref-origin ref-origin-japro">jaPRO</span> <span class="status-chip">2018-01-01 · needs review</span> — Forwards this command to the connected game server.
@@ -892,77 +918,41 @@ entry is real; treat the date as approximate.
 - [`weaplast`](/TaystJK/reference/commands/weaplast-837fa67/) <span class="label ref-origin ref-origin-japro">jaPRO</span> <span class="status-chip">2018-09-03 · needs review</span> — Runs `CG_LastWeapon_f` in the cgame module.
 - [`ysal`](/TaystJK/reference/commands/ysal-49fb494/) <span class="label ref-origin ref-origin-eternaljk">EternalJK</span> <span class="status-chip">2018-10-10 · needs review</span> — Forwards this command to the connected game server.
 
-### Graphics & rendering (121)
+### Graphics & rendering (71)
 
 - [.oshader override shaders](/TaystJK/features/client-behaviour/) <span class="label ref-origin ref-origin-taystjk">TaystJK</span> <span class="meta-chip">feature</span> — Shader overrides loaded from shaders/*.oshader, parsed after every .shader file so they win without editing the originals.
 - [Widescreen levelshots](/TaystJK/features/client-behaviour/) <span class="label ref-origin ref-origin-taystjk">TaystJK</span> <span class="meta-chip">feature</span> — Levelshots authored for widescreen displays, loaded from levelshots_16_9 in preference to the 4:3 originals.
 - [`amSurrender`](/TaystJK/reference/commands/amsurrender-6e03fd5/) <span class="label ref-origin ref-origin-japro">jaPRO</span> <span class="status-chip">2018-01-01 · needs review</span> — EMOTE
-- [`capframes`](/TaystJK/reference/commands/capframes-e2a1440/) <span class="label ref-origin ref-origin-rend2">rend2</span> <span class="meta-chip">2023-10-03</span> — Runs `R_CaptureFrameData_f` in the renderer module.
 - [`cl_coloredTextShadows`](/TaystJK/reference/cvars/cl_coloredtextshadows-e3b625f/) <span class="label ref-origin ref-origin-eternaljk">EternalJK</span> <span class="status-chip">2017-12-03 · needs review</span> — Toggle JK2 1.02-style colored text shadows
 - [`clearRemaps`](/TaystJK/reference/commands/clearremaps-10c3c32/) <span class="label ref-origin ref-origin-eternaljk">EternalJK</span> <span class="status-chip">2019-03-21 · needs review</span> — Runs `R_ClearRemaps_f` in the renderer module.
 - [`com_renderfps`](/TaystJK/reference/cvars/com_renderfps-485cbcb/) <span class="label ref-origin ref-origin-eternaljk">EternalJK</span> <span class="status-chip">2017-12-05 · needs review</span> — Controls `com_renderfps` in the engine-shared module.
 - [`g_fixLightning`](/TaystJK/reference/cvars/g_fixlightning-a145552/) <span class="label ref-origin ref-origin-japro">jaPRO</span> <span class="status-chip">2018-01-01 · needs review</span> — 1=Lightning gives forcepoints to target. 2=Same as 1 with reduced damage. 3=Same as 2 with no melee bonus.
-- [`gfxmeminfo`](/TaystJK/reference/commands/gfxmeminfo-491be17/) <span class="label ref-origin ref-origin-rend2">rend2</span> <span class="meta-chip">2023-10-03</span> — Runs `GfxMemInfo_f` in the renderer module.
-- [`r_anaglyphMode`](/TaystJK/reference/cvars/r_anaglyphmode-756890b/) <span class="label ref-origin ref-origin-rend2">rend2</span> <span class="meta-chip">2023-10-03</span> — Controls `r_anaglyphMode` in the renderer module.
-- [`r_arb_buffer_storage`](/TaystJK/reference/cvars/r_arb_buffer_storage-ac1e1c0/) <span class="label ref-origin ref-origin-rend2">rend2</span> <span class="meta-chip">2023-10-03</span> — Disable/enable buffer storage GL extension
-- [`r_arb_half_float_pixel`](/TaystJK/reference/cvars/r_arb_half_float_pixel-6ad3bad/) <span class="label ref-origin ref-origin-rend2">rend2</span> <span class="meta-chip">2023-10-03</span> — Disable/enable ARB_half_float GL extension
-- [`r_arb_seamless_cube_map`](/TaystJK/reference/cvars/r_arb_seamless_cube_map-c3396c7/) <span class="label ref-origin ref-origin-rend2">rend2</span> <span class="meta-chip">2023-10-03</span> — Disable/enable seamless cube map filtering GL extension
-- [`r_arb_vertex_type_2_10_10_10_rev`](/TaystJK/reference/cvars/r_arb_vertex_type_2_10_10_10_rev-6fa9dbe/) <span class="label ref-origin ref-origin-rend2">rend2</span> <span class="meta-chip">2023-10-03</span> — Disable/enable 1010102 UI data type
-- [`r_autoExposure`](/TaystJK/reference/cvars/r_autoexposure-bbfaf39/) <span class="label ref-origin ref-origin-rend2">rend2</span> <span class="meta-chip">2023-10-03</span> — Disable/enable auto exposure
-- [`r_baseNormalX`](/TaystJK/reference/cvars/r_basenormalx-132f822/) <span class="label ref-origin ref-origin-rend2">rend2</span> <span class="meta-chip">2023-10-03</span> — Controls `r_baseNormalX` in the renderer module.
-- [`r_baseNormalY`](/TaystJK/reference/cvars/r_basenormaly-f7f7006/) <span class="label ref-origin ref-origin-rend2">rend2</span> <span class="meta-chip">2023-10-03</span> — Controls `r_baseNormalY` in the renderer module.
-- [`r_baseParallax`](/TaystJK/reference/cvars/r_baseparallax-6459a61/) <span class="label ref-origin ref-origin-rend2">rend2</span> <span class="meta-chip">2023-10-03</span> — Controls `r_baseParallax` in the renderer module.
-- [`r_baseSpecular`](/TaystJK/reference/cvars/r_basespecular-24a3c96/) <span class="label ref-origin ref-origin-rend2">rend2</span> <span class="meta-chip">2023-10-03</span> — Controls `r_baseSpecular` in the renderer module.
+- [`r_allowScreenSaver`](/TaystJK/reference/cvars/r_allowscreensaver-9058284/) <span class="label ref-origin ref-origin-openjk">OpenJK</span> <span class="status-chip">2025-04-26 · needs review</span> — Controls `r_allowScreenSaver` in the engine-shared module.
 - [`r_bloom`](/TaystJK/reference/cvars/r_bloom-656b99d/) <span class="label ref-origin ref-origin-vulkan">Vulkan</span> <span class="status-chip">2021-05-25 · needs review</span> — Enable bloom effect Requires \\r_fbo 1
 - [`r_bloom_intensity`](/TaystJK/reference/cvars/r_bloom_intensity-78b7afa/) <span class="label ref-origin ref-origin-vulkan">Vulkan</span> <span class="status-chip">2021-05-25 · needs review</span> — Final bloom blend factor, default is 0.15
 - [`r_bloom_modulate`](/TaystJK/reference/cvars/r_bloom_modulate-4a65776/) <span class="label ref-origin ref-origin-vulkan">Vulkan</span> <span class="meta-chip">2023-10-28</span> — Modulate extracted color: 0: off (color = color, i.e. no changes) 1: by itself (color = color * color) 2: by intensity (color = color * luma(color))
 - [`r_bloom_threshold`](/TaystJK/reference/cvars/r_bloom_threshold-76fa432/) <span class="label ref-origin ref-origin-vulkan">Vulkan</span> <span class="status-chip">2021-05-25 · needs review</span> — Color level to extract to bloom texture, default is 0.05
 - [`r_bloom_threshold_mode`](/TaystJK/reference/cvars/r_bloom_threshold_mode-93978ba/) <span class="label ref-origin ref-origin-vulkan">Vulkan</span> <span class="meta-chip">2023-10-28</span> — Color extraction mode: 0: (r|g|b) &gt;= threshold 1: (r + g + b ) / 3 &gt;= threshold 2: luma(r, g, b) &gt;= threshold
-- [`r_cameraExposure`](/TaystJK/reference/cvars/r_cameraexposure-7f22094/) <span class="label ref-origin ref-origin-rend2">rend2</span> <span class="meta-chip">2023-10-03</span> — Controls `r_cameraExposure` in the renderer module.
 - [`r_cleardecals`](/TaystJK/reference/commands/r_cleardecals-243dbd7/) <span class="label ref-origin ref-origin-eternaljk">EternalJK</span> <span class="status-chip">2018-11-29 · needs review</span> — Runs `RE_ClearDecals` in the renderer module.
-- [`r_debugContext`](/TaystJK/reference/cvars/r_debugcontext-c9977dd/) <span class="label ref-origin ref-origin-rend2">rend2</span> <span class="meta-chip">2023-10-03</span> — Controls `r_debugContext` in the renderer module.
-- [`r_debugWeather`](/TaystJK/reference/cvars/r_debugweather-5e519c7/) <span class="label ref-origin ref-origin-rend2">rend2</span> <span class="meta-chip">2023-10-03</span> — Controls `r_debugWeather` in the renderer module.
 - [`r_defaultImage`](/TaystJK/reference/cvars/r_defaultimage-48ebde4/) <span class="label ref-origin ref-origin-vulkan">Vulkan</span> <span class="status-chip">2021-05-25 · needs review</span> — Controls `r_defaultImage` in the renderer module.
-- [`r_deluxeSpecular`](/TaystJK/reference/cvars/r_deluxespecular-b2f4cf3/) <span class="label ref-origin ref-origin-rend2">rend2</span> <span class="meta-chip">2023-10-03</span> — Disable/enable/scale the specular response from deluxemaps
-- [`r_depthPrepass`](/TaystJK/reference/cvars/r_depthprepass-3fbd4eb/) <span class="label ref-origin ref-origin-rend2">rend2</span> <span class="meta-chip">2023-10-03</span> — Controls `r_depthPrepass` in the renderer module.
+- [`r_device`](/TaystJK/reference/cvars/r_device-8238fc4/) <span class="label ref-origin ref-origin-basejka">Base Jedi Academy</span> <span class="meta-chip">2013-04-08</span> — Select physical device to render: 0+ - use explicit device index -1 - first discrete GPU -2 - first integrated GPU
 - [`r_distanceCull`](/TaystJK/reference/cvars/r_distancecull-9ac0a11/) <span class="label ref-origin ref-origin-japro">jaPRO</span> <span class="status-chip">2018-01-01 · needs review</span> — Controls `r_distanceCull` in the renderer module.
 - [`r_dither`](/TaystJK/reference/cvars/r_dither-aea5dc5/) <span class="label ref-origin ref-origin-vulkan">Vulkan</span> <span class="status-chip">2021-05-25 · needs review</span> — Set dithering mode: 0 - disabled 1 - ordered Requires \\r_fbo 1
+- [`r_dlightBacks`](/TaystJK/reference/cvars/r_dlightbacks-6e40190/) <span class="label ref-origin ref-origin-basejka">Base Jedi Academy</span> <span class="meta-chip">2013-04-08</span> — Dlight non-facing surfaces for continuity
 - [`r_dlightIntensity`](/TaystJK/reference/cvars/r_dlightintensity-d6b49d6/) <span class="label ref-origin ref-origin-vulkan">Vulkan</span> <span class="status-chip">2021-05-25 · needs review</span> — Controls `r_dlightIntensity` in the renderer module.
-- [`r_dlightMode`](/TaystJK/reference/cvars/r_dlightmode-f87fa68/) <span class="label ref-origin ref-origin-rend2">rend2</span> <span class="meta-chip">2021-05-25</span> — Controls `r_dlightMode` in the renderer module.
 - [`r_dlightSaturation`](/TaystJK/reference/cvars/r_dlightsaturation-5f6800c/) <span class="label ref-origin ref-origin-vulkan">Vulkan</span> <span class="status-chip">2021-05-25 · needs review</span> — Controls `r_dlightSaturation` in the renderer module.
 - [`r_dlightScale`](/TaystJK/reference/cvars/r_dlightscale-cc85dd5/) <span class="label ref-origin ref-origin-vulkan">Vulkan</span> <span class="status-chip">2021-05-25 · needs review</span> — Controls `r_dlightScale` in the renderer module.
-- [`r_drawBuffer`](/TaystJK/reference/cvars/r_drawbuffer-a1f545a/) <span class="label ref-origin ref-origin-rend2">rend2</span> <span class="meta-chip">2023-10-03</span> — Controls `r_drawBuffer` in the renderer module.
-- [`r_drawSunRays`](/TaystJK/reference/cvars/r_drawsunrays-f84fc82/) <span class="label ref-origin ref-origin-rend2">rend2</span> <span class="meta-chip">2023-10-03</span> — Controls `r_drawSunRays` in the renderer module.
 - [`r_DynamicGlowAllStages`](/TaystJK/reference/cvars/r_dynamicglowallstages-5c8622e/) <span class="label ref-origin ref-origin-vulkan">Vulkan</span> <span class="meta-chip">2023-09-24</span> — In Vanilla certain glow stages are skipped, render those anyway
 - [`r_dynamicGlowBloom`](/TaystJK/reference/cvars/r_dynamicglowbloom-d4ab76d/) <span class="label ref-origin ref-origin-rend2">rend2</span> <span class="status-chip">2025-04-15 · needs review</span> — Set rend2 dynamic-glow bloom strength from 0 through 2.
 - [`r_DynamicGlowScale`](/TaystJK/reference/cvars/r_dynamicglowscale-62e93d2/) <span class="label ref-origin ref-origin-eternaljk">EternalJK</span> <span class="status-chip">2018-03-29 · needs review</span> — Controls `r_DynamicGlowScale` in the renderer module.
 - [`r_ext_alpha_to_coverage`](/TaystJK/reference/cvars/r_ext_alpha_to_coverage-5cfb4fd/) <span class="label ref-origin ref-origin-vulkan">Vulkan</span> <span class="status-chip">2021-05-25 · needs review</span> — Controls `r_ext_alpha_to_coverage` in the renderer module.
-- [`r_ext_draw_range_elements`](/TaystJK/reference/cvars/r_ext_draw_range_elements-17a8b5e/) <span class="label ref-origin ref-origin-rend2">rend2</span> <span class="meta-chip">2023-10-03</span> — Unused
 - [`r_ext_max_anisotropy`](/TaystJK/reference/cvars/r_ext_max_anisotropy-ae414a3/) <span class="label ref-origin ref-origin-vulkan">Vulkan</span> <span class="status-chip">2021-05-25 · needs review</span> — Controls `r_ext_max_anisotropy` in the renderer module.
-- [`r_ext_multi_draw_arrays`](/TaystJK/reference/cvars/r_ext_multi_draw_arrays-47cef48/) <span class="label ref-origin ref-origin-rend2">rend2</span> <span class="meta-chip">2023-10-03</span> — Unused
 - [`r_ext_multisample_default_fb`](/TaystJK/reference/cvars/r_ext_multisample_default_fb-d2e37d5/) <span class="label ref-origin ref-origin-rend2">rend2</span> <span class="status-chip">2025-04-15 · needs review</span> — Controls `r_ext_multisample_default_fb` in the engine-shared module.
 - [`r_ext_supersample`](/TaystJK/reference/cvars/r_ext_supersample-75d1107/) <span class="label ref-origin ref-origin-vulkan">Vulkan</span> <span class="status-chip">2021-05-25 · needs review</span> — Controls `r_ext_supersample` in the renderer module.
-- [`r_ext_texture_float`](/TaystJK/reference/cvars/r_ext_texture_float-f4a8764/) <span class="label ref-origin ref-origin-rend2">rend2</span> <span class="meta-chip">2023-10-03</span> — Disable/enable floating-point textures
-- [`r_externalGLSL`](/TaystJK/reference/cvars/r_externalglsl-5987fc7/) <span class="label ref-origin ref-origin-rend2">rend2</span> <span class="meta-chip">2023-10-03</span> — Controls `r_externalGLSL` in the renderer module.
 - [`r_fbo`](/TaystJK/reference/cvars/r_fbo-022d66e/) <span class="label ref-origin ref-origin-vulkan">Vulkan</span> <span class="status-chip">2021-05-25 · needs review</span> — Controls `r_fbo` in the renderer module.
-- [`r_floatLightmap`](/TaystJK/reference/cvars/r_floatlightmap-fe575c7/) <span class="label ref-origin ref-origin-rend2">rend2</span> <span class="meta-chip">2023-10-03</span> — Disable/enable HDR lightmap support
-- [`r_fontSharpness`](/TaystJK/reference/cvars/r_fontsharpness-50394a7/) <span class="label ref-origin ref-origin-jk2mv">JK2MV</span> <span class="meta-chip">2023-11-29</span> — Relative font sharpness (doesn&#x27;t affect console font).
-- [`r_forceAutoExposure`](/TaystJK/reference/cvars/r_forceautoexposure-d663377/) <span class="label ref-origin ref-origin-rend2">rend2</span> <span class="meta-chip">2023-10-03</span> — Controls `r_forceAutoExposure` in the renderer module.
-- [`r_forceAutoExposureMax`](/TaystJK/reference/cvars/r_forceautoexposuremax-8cdd87f/) <span class="label ref-origin ref-origin-rend2">rend2</span> <span class="meta-chip">2023-10-03</span> — Controls `r_forceAutoExposureMax` in the renderer module.
-- [`r_forceAutoExposureMin`](/TaystJK/reference/cvars/r_forceautoexposuremin-662d327/) <span class="label ref-origin ref-origin-rend2">rend2</span> <span class="meta-chip">2023-10-03</span> — Controls `r_forceAutoExposureMin` in the renderer module.
-- [`r_genNormalMaps`](/TaystJK/reference/cvars/r_gennormalmaps-3da13c7/) <span class="label ref-origin ref-origin-rend2">rend2</span> <span class="meta-chip">2023-10-03</span> — Disable/enable generating normal maps from diffuse maps
-- [`r_greyscale`](/TaystJK/reference/cvars/r_greyscale-442b35b/) <span class="label ref-origin ref-origin-rend2">rend2</span> <span class="meta-chip">2021-05-25</span> — Controls `r_greyscale` in the renderer module.
-- [`r_hdr`](/TaystJK/reference/cvars/r_hdr-806f3ee/) <span class="label ref-origin ref-origin-rend2">rend2</span> <span class="meta-chip">2021-05-25</span> — Disable/enable rendering in HDR
-- [`r_imageUpsample`](/TaystJK/reference/cvars/r_imageupsample-45922fb/) <span class="label ref-origin ref-origin-rend2">rend2</span> <span class="meta-chip">2023-10-03</span> — Controls `r_imageUpsample` in the renderer module.
-- [`r_imageUpsampleMaxSize`](/TaystJK/reference/cvars/r_imageupsamplemaxsize-a554326/) <span class="label ref-origin ref-origin-rend2">rend2</span> <span class="meta-chip">2023-10-03</span> — Controls `r_imageUpsampleMaxSize` in the renderer module.
-- [`r_imageUpsampleType`](/TaystJK/reference/cvars/r_imageupsampletype-7553076/) <span class="label ref-origin ref-origin-rend2">rend2</span> <span class="meta-chip">2023-10-03</span> — Controls `r_imageUpsampleType` in the renderer module.
 - [`r_mapGreyScale`](/TaystJK/reference/cvars/r_mapgreyscale-691d968/) <span class="label ref-origin ref-origin-vulkan">Vulkan</span> <span class="status-chip">2021-05-25 · needs review</span> — Controls `r_mapGreyScale` in the renderer module.
-- [`r_mergeLeafSurfaces`](/TaystJK/reference/cvars/r_mergeleafsurfaces-9631d20/) <span class="label ref-origin ref-origin-rend2">rend2</span> <span class="meta-chip">2023-10-03</span> — Controls `r_mergeLeafSurfaces` in the renderer module.
-- [`r_mergeMultidraws`](/TaystJK/reference/cvars/r_mergemultidraws-471d2aa/) <span class="label ref-origin ref-origin-rend2">rend2</span> <span class="meta-chip">2023-10-03</span> — Controls `r_mergeMultidraws` in the renderer module.
 - [`r_nomip`](/TaystJK/reference/cvars/r_nomip-784a698/) <span class="label ref-origin ref-origin-vulkan">Vulkan</span> <span class="status-chip">2021-05-25 · needs review</span> — Apply picmip only on worldspawn textures
 - [`r_presentBits`](/TaystJK/reference/cvars/r_presentbits-b73a39a/) <span class="label ref-origin ref-origin-vulkan">Vulkan</span> <span class="status-chip">2021-05-25 · needs review</span> — Select color bits used for presentation surfaces Requires \\r_fbo 1
-- [`r_printShaders`](/TaystJK/reference/cvars/r_printshaders-de38905/) <span class="label ref-origin ref-origin-rend2">rend2</span> <span class="meta-chip">2023-10-03</span> — Controls `r_printShaders` in the renderer module.
-- [`r_pshadowDist`](/TaystJK/reference/cvars/r_pshadowdist-c0c9961/) <span class="label ref-origin ref-origin-rend2">rend2</span> <span class="meta-chip">2023-10-03</span> — Controls `r_pshadowDist` in the renderer module.
 - [`r_refractionChromaticAberration`](/TaystJK/reference/cvars/r_refractionchromaticaberration-ef62fde/) <span class="label ref-origin ref-origin-rend2">rend2</span> <span class="status-chip">2026-07-30 · needs review</span> — Controls `r_refractionChromaticAberration` in the renderer module.
 - [`r_renderClipBrushes`](/TaystJK/reference/cvars/r_renderclipbrushes-2dbcbc3/) <span class="label ref-origin ref-origin-taystjk">TaystJK</span> <span class="status-chip">2022-04-20 · needs review</span> — Render clip brushes
 - [`r_renderClipBrushesShader`](/TaystJK/reference/cvars/r_renderclipbrushesshader-28b5110/) <span class="label ref-origin ref-origin-taystjk">TaystJK</span> <span class="status-chip">2022-04-20 · needs review</span> — Shader for clip brush rendering
@@ -973,30 +963,15 @@ entry is real; treat the date as approximate.
 - [`r_renderTriggerBrushes`](/TaystJK/reference/cvars/r_rendertriggerbrushes-127cbfb/) <span class="label ref-origin ref-origin-taystjk">TaystJK</span> <span class="status-chip">2022-04-20 · needs review</span> — Render trigger brushes
 - [`r_renderTriggerBrushesShader`](/TaystJK/reference/cvars/r_rendertriggerbrushesshader-98cc4d1/) <span class="label ref-origin ref-origin-taystjk">TaystJK</span> <span class="status-chip">2022-04-20 · needs review</span> — The shader for trigger brushes
 - [`r_renderWidth`](/TaystJK/reference/cvars/r_renderwidth-4a7db81/) <span class="label ref-origin ref-origin-vulkan">Vulkan</span> <span class="status-chip">2021-05-25 · needs review</span> — Controls `r_renderWidth` in the renderer module.
-- [`r_roundImagesDown`](/TaystJK/reference/cvars/r_roundimagesdown-b41f9fd/) <span class="label ref-origin ref-origin-rend2">rend2</span> <span class="meta-chip">2021-05-25</span> — Controls `r_roundImagesDown` in the renderer module.
-- [`r_saveFontData`](/TaystJK/reference/cvars/r_savefontdata-afb35a8/) <span class="label ref-origin ref-origin-rend2">rend2</span> <span class="meta-chip">2023-10-03</span> — Registered by the current source, but no user-facing behavior description has been verified.
-- [`r_shadowCascadeZBias`](/TaystJK/reference/cvars/r_shadowcascadezbias-3a4ebe3/) <span class="label ref-origin ref-origin-rend2">rend2</span> <span class="meta-chip">2023-10-03</span> — Controls `r_shadowCascadeZBias` in the renderer module.
-- [`r_shadowCascadeZFar`](/TaystJK/reference/cvars/r_shadowcascadezfar-70c7318/) <span class="label ref-origin ref-origin-rend2">rend2</span> <span class="meta-chip">2023-10-03</span> — Controls `r_shadowCascadeZFar` in the renderer module.
-- [`r_shadowCascadeZNear`](/TaystJK/reference/cvars/r_shadowcascadeznear-3d8bcc7/) <span class="label ref-origin ref-origin-rend2">rend2</span> <span class="meta-chip">2023-10-03</span> — Controls `r_shadowCascadeZNear` in the renderer module.
-- [`r_shadowFilter`](/TaystJK/reference/cvars/r_shadowfilter-bd830f4/) <span class="label ref-origin ref-origin-rend2">rend2</span> <span class="meta-chip">2023-10-03</span> — Controls `r_shadowFilter` in the renderer module.
-- [`r_shadowMapSize`](/TaystJK/reference/cvars/r_shadowmapsize-f27fc20/) <span class="label ref-origin ref-origin-rend2">rend2</span> <span class="meta-chip">2023-10-03</span> — Controls `r_shadowMapSize` in the renderer module.
-- [`r_shadowOffsetFactor`](/TaystJK/reference/cvars/r_shadowoffsetfactor-ed2b85f/) <span class="label ref-origin ref-origin-rend2">rend2</span> <span class="meta-chip">2023-10-03</span> — Controls `r_shadowOffsetFactor` in the renderer module.
-- [`r_shadowOffsetUnits`](/TaystJK/reference/cvars/r_shadowoffsetunits-f883d48/) <span class="label ref-origin ref-origin-rend2">rend2</span> <span class="meta-chip">2023-10-03</span> — Controls `r_shadowOffsetUnits` in the renderer module.
 - [`r_smaa`](/TaystJK/reference/cvars/r_smaa-0ca3ef0/) <span class="label ref-origin ref-origin-rend2">rend2</span> <span class="status-chip">2025-04-15 · needs review</span> — Disable/enable SMAA
 - [`r_smaa_quality`](/TaystJK/reference/cvars/r_smaa_quality-af9853a/) <span class="label ref-origin ref-origin-rend2">rend2</span> <span class="status-chip">2025-04-15 · needs review</span> — 0: LOW | 1: MEDIUM | 2: HIGH | 3: ULTRA
 - [`r_smartpicmip`](/TaystJK/reference/cvars/r_smartpicmip-88bba35/) <span class="label ref-origin ref-origin-eternaljk">EternalJK</span> <span class="status-chip">2017-12-28 · needs review</span> — Applies r_picmip setting to map textures only.
-- [`r_ssao`](/TaystJK/reference/cvars/r_ssao-5b8c581/) <span class="label ref-origin ref-origin-rend2">rend2</span> <span class="meta-chip">2023-10-03</span> — Controls `r_ssao` in the renderer module.
-- [`r_stereoSeparation`](/TaystJK/reference/cvars/r_stereoseparation-2be8daa/) <span class="label ref-origin ref-origin-rend2">rend2</span> <span class="meta-chip">2023-10-03</span> — Controls `r_stereoSeparation` in the renderer module.
-- [`r_sunlightMode`](/TaystJK/reference/cvars/r_sunlightmode-1355059/) <span class="label ref-origin ref-origin-rend2">rend2</span> <span class="meta-chip">2023-10-03</span> — Controls `r_sunlightMode` in the renderer module.
-- [`r_sunShadows`](/TaystJK/reference/cvars/r_sunshadows-ffe0a50/) <span class="label ref-origin ref-origin-rend2">rend2</span> <span class="meta-chip">2023-10-03</span> — Controls `r_sunShadows` in the renderer module.
-- [`r_toneMap`](/TaystJK/reference/cvars/r_tonemap-27c4829/) <span class="label ref-origin ref-origin-rend2">rend2</span> <span class="meta-chip">2023-10-03</span> — Disable/enable tonemapping
 - [`r_vbo`](/TaystJK/reference/cvars/r_vbo-8ee14c4/) <span class="label ref-origin ref-origin-vulkan">Vulkan</span> <span class="status-chip">2021-05-25 · needs review</span> — Cache static world surfaces
 - [`r_vbo_models`](/TaystJK/reference/cvars/r_vbo_models-8579ecd/) <span class="label ref-origin ref-origin-vulkan">Vulkan</span> <span class="status-chip">2025-08-08 · needs review</span> — Cache ghoul2 and md3 model surfaces
 - [`r_volumetricFog`](/TaystJK/reference/cvars/r_volumetricfog-bb8267b/) <span class="label ref-origin ref-origin-rend2">rend2</span> <span class="status-chip">2025-04-15 · needs review</span> — Disable/enable lightgrid lighting on fog volumes
 - [`r_volumetricFogDefaultScale`](/TaystJK/reference/cvars/r_volumetricfogdefaultscale-2014496/) <span class="label ref-origin ref-origin-rend2">rend2</span> <span class="status-chip">2025-04-15 · needs review</span> — Scales volumetric fog density unless scale has been explicitly defined
 - [`r_volumetricFogSamples`](/TaystJK/reference/cvars/r_volumetricfogsamples-c2f3eaa/) <span class="label ref-origin ref-origin-rend2">rend2</span> <span class="status-chip">2025-04-15 · needs review</span> — How many ray samples to take
 - [`r_volumetricFogScale`](/TaystJK/reference/cvars/r_volumetricfogscale-e8d339c/) <span class="label ref-origin ref-origin-rend2">rend2</span> <span class="status-chip">2025-04-15 · needs review</span> — Temporarily scales volumetric fog density
-- [`r_zproj`](/TaystJK/reference/cvars/r_zproj-3cfee13/) <span class="label ref-origin ref-origin-rend2">rend2</span> <span class="meta-chip">2021-05-25</span> — Controls `r_zproj` in the renderer module.
 - [`remapSky`](/TaystJK/reference/commands/remapsky-55c2535/) <span class="label ref-origin ref-origin-eternaljk">EternalJK</span> <span class="status-chip">2019-03-21 · needs review</span> — Runs `R_RemapSkyShader_f` in the renderer module.
 - [`ui_cl_renderer`](/TaystJK/reference/cvars/ui_cl_renderer-955b72c/) <span class="label ref-origin ref-origin-rend2">rend2</span> <span class="meta-chip">2023-10-14</span> — Controls `ui_cl_renderer` in the ui module.
 - [`ui_r_autoexposure`](/TaystJK/reference/cvars/ui_r_autoexposure-b83e601/) <span class="label ref-origin ref-origin-rend2">rend2</span> <span class="meta-chip">2023-10-14</span> — Controls `ui_r_autoexposure` in the ui module.
@@ -1013,7 +988,8 @@ entry is real; treat the date as approximate.
 - [`ui_r_tonemap`](/TaystJK/reference/cvars/ui_r_tonemap-22bf8a3/) <span class="label ref-origin ref-origin-rend2">rend2</span> <span class="meta-chip">2023-10-14</span> — Controls `ui_r_tonemap` in the ui module.
 - [`ui_r_vertexLight`](/TaystJK/reference/cvars/ui_r_vertexlight-78fd857/) <span class="label ref-origin ref-origin-eternaljk">EternalJK</span> <span class="status-chip">2015-06-17 · needs review</span> — Controls `ui_r_vertexLight` in the ui module.
 - [`ui_resolution`](/TaystJK/reference/cvars/ui_resolution-97111d4/) <span class="label ref-origin ref-origin-eternaljk">EternalJK</span> <span class="status-chip">2015-06-21 · needs review</span> — Controls `ui_resolution` in the ui module.
-- [`vbolist`](/TaystJK/reference/commands/vbolist-fe10c4e/) <span class="label ref-origin ref-origin-rend2">rend2</span> <span class="meta-chip">2023-10-03</span> — Runs `R_VBOList_f` in the renderer module.
+- [`vid_xpos`](/TaystJK/reference/cvars/vid_xpos-617b8c0/) <span class="label ref-origin ref-origin-basejka">Base Jedi Academy</span> <span class="meta-chip">2013-04-08</span> — Controls `vid_xpos` in the engine-shared module.
+- [`vid_ypos`](/TaystJK/reference/cvars/vid_ypos-a66867d/) <span class="label ref-origin ref-origin-basejka">Base Jedi Academy</span> <span class="meta-chip">2013-04-08</span> — Controls `vid_ypos` in the engine-shared module.
 - [`vkinfo`](/TaystJK/reference/commands/vkinfo-a9a6314/) <span class="label ref-origin ref-origin-vulkan">Vulkan</span> <span class="meta-chip">2021-10-24</span> — Runs `vk_info_f` in the renderer module.
 
 ### HUD & interface (55)
@@ -1152,7 +1128,7 @@ entry is real; treat the date as approximate.
 - [`strafeTrail`](/TaystJK/reference/commands/strafetrail-dddd025/) <span class="label ref-origin ref-origin-japro">jaPRO</span> <span class="status-chip">2018-09-03 · needs review</span> — Runs `CG_AddStrafeTrail_f` in the cgame module.
 - [`teleToCheckpoint`](/TaystJK/reference/commands/teletocheckpoint-7aa58eb/) <span class="label ref-origin ref-origin-japro">jaPRO</span> <span class="status-chip">2018-09-03 · needs review</span> — Runs `CG_TeleToCheckpoint_f` in the cgame module.
 
-### Server & networking (32)
+### Server & networking (26)
 
 - [taystJKinfo feature flags](/TaystJK/development/feature-flags/) <span class="label ref-origin ref-origin-taystjk">TaystJK</span> <span class="meta-chip">feature</span> — A serverinfo key letting any server mod advertise which TaystJK client features it supports.
 - [`cg_autoLoginServer1`](/TaystJK/reference/cvars/cg_autologinserver1-0ca4073/) <span class="label ref-origin ref-origin-japro">jaPRO</span> <span class="status-chip">2018-09-03 · needs review</span> — IP of server to try to autologin on, used with /autologin command. If you are not on the right server, the password will not be sent to the server.
@@ -1160,19 +1136,14 @@ entry is real; treat the date as approximate.
 - [`cg_autoLoginServer3`](/TaystJK/reference/cvars/cg_autologinserver3-66a3457/) <span class="label ref-origin ref-origin-japro">jaPRO</span> <span class="status-chip">2018-09-03 · needs review</span> — Controls `cg_autoLoginServer3` in the cgame module.
 - [`master`](/TaystJK/reference/commands/master-4f26aea/) <span class="label ref-origin ref-origin-japro">jaPRO</span> <span class="meta-chip">2018-09-26</span> — Forwards this command to the connected game server.
 - [`masterlist`](/TaystJK/reference/commands/masterlist-96e0292/) <span class="label ref-origin ref-origin-japro">jaPRO</span> <span class="status-chip">2018-09-26 · needs review</span> — Forwards this command to the connected game server.
-- [`r_cubeMapping`](/TaystJK/reference/cvars/r_cubemapping-86bf3af/) <span class="label ref-origin ref-origin-rend2">rend2</span> <span class="meta-chip">2023-10-03</span> — Disable/enable cubemapping
-- [`r_cubeMappingBounces`](/TaystJK/reference/cvars/r_cubemappingbounces-e20074f/) <span class="label ref-origin ref-origin-rend2">rend2</span> <span class="meta-chip">2023-10-03</span> — Renders cubemaps multiple times to get reflections in reflections
-- [`r_deluxeMapping`](/TaystJK/reference/cvars/r_deluxemapping-a9c1e61/) <span class="label ref-origin ref-origin-rend2">rend2</span> <span class="meta-chip">2023-10-03</span> — Disable/enable reading deluxemaps when compiled with q3map2
-- [`r_normalMapping`](/TaystJK/reference/cvars/r_normalmapping-01198ee/) <span class="label ref-origin ref-origin-rend2">rend2</span> <span class="meta-chip">2023-10-03</span> — Disable/enable normal mapping
-- [`r_parallaxMapping`](/TaystJK/reference/cvars/r_parallaxmapping-2354566/) <span class="label ref-origin ref-origin-rend2">rend2</span> <span class="meta-chip">2023-10-03</span> — Disable/enable parallax mapping
-- [`r_specularMapping`](/TaystJK/reference/cvars/r_specularmapping-271a30a/) <span class="label ref-origin ref-origin-rend2">rend2</span> <span class="meta-chip">2023-10-03</span> — Disable/enable specular mapping
 - [`serverconfig`](/TaystJK/reference/commands/serverconfig-ee5ed61/) <span class="label ref-origin ref-origin-japro">jaPRO</span> <span class="status-chip">2018-01-01 · needs review</span> — Runs `CG_ServerConfig_f` in the cgame module.
 - [`sv_antiDST`](/TaystJK/reference/cvars/sv_antidst-09f18d9/) <span class="label ref-origin ref-origin-eternaljk">EternalJK</span> <span class="status-chip">2019-05-03 · needs review</span> — Attempts to detect and kick players injecting or using DST
-- [`sv_autoWhitelist`](/TaystJK/reference/cvars/sv_autowhitelist-7017003/) <span class="label ref-origin ref-origin-jk2mv">JK2MV</span> <span class="meta-chip">2020-05-15</span> — Save player IPs to allow them using server during DOS attack
 - [`sv_hibernateFPS`](/TaystJK/reference/cvars/sv_hibernatefps-4c1b1a1/) <span class="label ref-origin ref-origin-jk2mv">JK2MV</span> <span class="meta-chip">2018-10-14</span> — FPS during hibernation mode
+- [`sv_hibernateTime`](/TaystJK/reference/cvars/sv_hibernatetime-940437b/) <span class="label ref-origin ref-origin-openjk">OpenJK</span> <span class="status-chip">2018-10-11 · needs review</span> — Time after which server will enter hibernation mode
 - [`sv_httpServerPort`](/TaystJK/reference/cvars/sv_httpserverport-a8fe9d8/) <span class="label ref-origin ref-origin-jk2mv">JK2MV</span> <span class="meta-chip">2024-03-21</span> — Set the built-in HTTP download port or an external HTTP URL.
-- [`sv_maxOOBRate`](/TaystJK/reference/cvars/sv_maxoobrate-bbcc5ef/) <span class="label ref-origin ref-origin-jk2mv">JK2MV</span> <span class="meta-chip">2020-05-15</span> — Maximum rate of handling incoming server commands
-- [`sv_maxOOBRateIP`](/TaystJK/reference/cvars/sv_maxoobrateip-21dc800/) <span class="label ref-origin ref-origin-eternaljk">EternalJK</span> <span class="status-chip">2020-05-15 · needs review</span> — Maximum rate of handling incoming server commands per IP address
+- [`sv_master3`](/TaystJK/reference/cvars/sv_master3-14c7d89/) <span class="label ref-origin ref-origin-basejka">Base Jedi Academy</span> <span class="meta-chip">2013-04-08</span> — Registered by the current source, but no user-facing behavior description has been verified.
+- [`sv_master4`](/TaystJK/reference/cvars/sv_master4-1ef6bb9/) <span class="label ref-origin ref-origin-basejka">Base Jedi Academy</span> <span class="meta-chip">2013-04-08</span> — Registered by the current source, but no user-facing behavior description has been verified.
+- [`sv_master5`](/TaystJK/reference/cvars/sv_master5-79a049a/) <span class="label ref-origin ref-origin-basejka">Base Jedi Academy</span> <span class="meta-chip">2013-04-08</span> — Registered by the current source, but no user-facing behavior description has been verified.
 - [`sv_maxTeamSize`](/TaystJK/reference/cvars/sv_maxteamsize-8db6a18/) <span class="label ref-origin ref-origin-japro">jaPRO</span> <span class="status-chip">2018-01-01 · needs review</span> — Controls `sv_maxTeamSize` in the game module.
 - [`sv_newfloodProtect`](/TaystJK/reference/cvars/sv_newfloodprotect-e4e33fe/) <span class="label ref-origin ref-origin-japro">jaPRO</span> <span class="status-chip">2018-01-01 · needs review</span> — Use new method of delaying commands with flood protection
 - [`sv_pingFix`](/TaystJK/reference/cvars/sv_pingfix-3f9f4cd/) <span class="label ref-origin ref-origin-eternaljk">EternalJK</span> <span class="status-chip">2018-10-15 · needs review</span> — Improved scoreboard client ping calculation
@@ -1185,7 +1156,6 @@ entry is real; treat the date as approximate.
 - [`ui_r_deluxemapping`](/TaystJK/reference/cvars/ui_r_deluxemapping-52635ff/) <span class="label ref-origin ref-origin-rend2">rend2</span> <span class="meta-chip">2023-10-14</span> — Controls `ui_r_deluxemapping` in the ui module.
 - [`ui_r_parallaxmapping`](/TaystJK/reference/cvars/ui_r_parallaxmapping-5756301/) <span class="label ref-origin ref-origin-rend2">rend2</span> <span class="meta-chip">2023-10-14</span> — Controls `ui_r_parallaxmapping` in the ui module.
 - [`ui_sv_pure`](/TaystJK/reference/cvars/ui_sv_pure-05aa09d/) <span class="label ref-origin ref-origin-eternaljk">EternalJK</span> <span class="status-chip">2019-06-12 · needs review</span> — Controls `ui_sv_pure` in the ui module.
-- [`whitelistip`](/TaystJK/reference/commands/whitelistip-d79fc84/) <span class="label ref-origin ref-origin-jk2mv">JK2MV</span> <span class="meta-chip">2020-05-15</span> — Add IP to the whitelist
 
 </section>
 

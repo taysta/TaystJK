@@ -77,7 +77,7 @@ You can instead open the generated `TaystJK.sln`, select `RelWithDebInfo` and `x
 ### Generating the solution with the bundled script
 
 The repository ships a script that asks the questions and runs CMake for you
-([`build/build-windows-msvc.bat`](%(B)s/build/build-windows-msvc.bat)). Run it from the
+([`build/build-windows-msvc.bat`](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/build/build-windows-msvc.bat#L1)). Run it from the
 `build` directory. It **generates the solution only** — it does not compile anything, so
 open the `.sln` afterwards and build from Visual Studio.
 
