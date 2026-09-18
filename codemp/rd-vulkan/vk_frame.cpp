@@ -316,59 +316,41 @@ void vk_create_framebuffers()
     
 }
 
+static void vk_destroy_framebuffer( VkFramebuffer *framebuffer )
+{
+    if ( framebuffer && *framebuffer != VK_NULL_HANDLE ) {
+        qvkDestroyFramebuffer( vk.device, *framebuffer, NULL );
+        *framebuffer = VK_NULL_HANDLE;
+    }
+}
+
 void vk_destroy_framebuffers( void )
 {
     uint32_t i;
 
     vk_debug("Destroy vk.framebuffers\n");
 
-    for ( i = 0; i < vk.swapchain_image_count; i++ )
-    {
+    for ( i = 0; i < vk.swapchain_image_count; i++ ) {
         if ( vk.framebuffers.main[i] != VK_NULL_HANDLE ) {
-            if ( !vk.fboActive || i == 0 ) {
-                qvkDestroyFramebuffer( vk.device, vk.framebuffers.main[i], NULL );
-            }
-            vk.framebuffers.main[i] = VK_NULL_HANDLE;
+            if ( !vk.fboActive || i == 0 )
+                vk_destroy_framebuffer( &vk.framebuffers.main[i] );
+            else
+                vk.framebuffers.main[i] = VK_NULL_HANDLE;
         }
-        if ( vk.framebuffers.gamma[i] != VK_NULL_HANDLE ) {
-            qvkDestroyFramebuffer( vk.device, vk.framebuffers.gamma[i], NULL );
-            vk.framebuffers.gamma[i] = VK_NULL_HANDLE;
-        }
+
+        vk_destroy_framebuffer( &vk.framebuffers.gamma[i] );
     }
 
-    if ( vk.framebuffers.bloom.extract != VK_NULL_HANDLE ) {
-        qvkDestroyFramebuffer( vk.device, vk.framebuffers.bloom.extract, NULL );
-        vk.framebuffers.bloom.extract = VK_NULL_HANDLE;
-    }
+    vk_destroy_framebuffer( &vk.framebuffers.screenmap );
+    vk_destroy_framebuffer( &vk.framebuffers.capture );
+    vk_destroy_framebuffer( &vk.framebuffers.bloom.extract );
+    vk_destroy_framebuffer( &vk.framebuffers.dglow.extract );
 
-    if ( vk.framebuffers.screenmap != VK_NULL_HANDLE ) {
-        qvkDestroyFramebuffer(vk.device, vk.framebuffers.screenmap, NULL);
-        vk.framebuffers.screenmap = VK_NULL_HANDLE;
-    }
+    for ( i = 0; i < ARRAY_LEN( vk.framebuffers.bloom.blur ); i++ )
+        vk_destroy_framebuffer( &vk.framebuffers.bloom.blur[i] );
 
-    if ( vk.framebuffers.capture != VK_NULL_HANDLE ) {
-        qvkDestroyFramebuffer( vk.device, vk.framebuffers.capture, NULL );
-        vk.framebuffers.capture = VK_NULL_HANDLE;
-    }
-
-    for ( i = 0; i < ARRAY_LEN( vk.framebuffers.bloom.blur ); i++ ) {
-        if ( vk.framebuffers.bloom.blur[i] != VK_NULL_HANDLE ) {
-            qvkDestroyFramebuffer( vk.device, vk.framebuffers.bloom.blur[i], NULL );
-            vk.framebuffers.bloom.blur[i] = VK_NULL_HANDLE;
-        }
-    }
-
-    if ( vk.framebuffers.dglow.extract != VK_NULL_HANDLE ) {
-        qvkDestroyFramebuffer( vk.device, vk.framebuffers.dglow.extract, NULL );
-        vk.framebuffers.dglow.extract = VK_NULL_HANDLE;
-    }
-
-    for ( i = 0; i < ARRAY_LEN( vk.framebuffers.dglow.blur ); i++ ) {
-        if ( vk.framebuffers.dglow.blur[i] != VK_NULL_HANDLE ) {
-            qvkDestroyFramebuffer( vk.device, vk.framebuffers.dglow.blur[i], NULL );
-            vk.framebuffers.dglow.blur[i] = VK_NULL_HANDLE;
-        }
-    }
+    for ( i = 0; i < ARRAY_LEN( vk.framebuffers.dglow.blur ); i++ )
+        vk_destroy_framebuffer( &vk.framebuffers.dglow.blur[i] );
 }
 
 static qboolean vk_find_screenmap_drawsurfs( void )
