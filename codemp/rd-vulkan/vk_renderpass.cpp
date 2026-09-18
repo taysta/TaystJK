@@ -632,70 +632,35 @@ void vk_create_render_passes()
         vk_create_capture_renderpass();
 }
 
+static void vk_destroy_render_pass( vkRenderPass_t *render_pass )
+{
+    if ( render_pass && render_pass->handle != VK_NULL_HANDLE ) {
+        qvkDestroyRenderPass( vk.device, render_pass->handle, NULL );
+        render_pass->handle = VK_NULL_HANDLE;
+    }
+}
+
 void vk_destroy_render_passes( void )
 {
     uint32_t i;
 
     vk_debug("Destroy vk.render_pass\n");
 
-    if ( vk.render_pass.main.handle != VK_NULL_HANDLE ) {
-        qvkDestroyRenderPass( vk.device, vk.render_pass.main.handle, NULL );
-        vk.render_pass.main.handle = VK_NULL_HANDLE;
-    }
+    vk_destroy_render_pass( &vk.render_pass.main );
+    vk_destroy_render_pass( &vk.render_pass.bloom.extract );
+    vk_destroy_render_pass( &vk.render_pass.bloom.blend );
+    vk_destroy_render_pass( &vk.render_pass.screenmap );
+    vk_destroy_render_pass( &vk.render_pass.gamma );
+    vk_destroy_render_pass( &vk.render_pass.refraction.extract );
+    vk_destroy_render_pass( &vk.render_pass.capture );
+    vk_destroy_render_pass( &vk.render_pass.dglow.extract );
+    vk_destroy_render_pass( &vk.render_pass.dglow.blend );
 
-    if ( vk.render_pass.bloom.extract.handle != VK_NULL_HANDLE ) {
-        qvkDestroyRenderPass( vk.device, vk.render_pass.bloom.extract.handle, NULL );
-        vk.render_pass.bloom.extract.handle = VK_NULL_HANDLE;
-    }
+    for ( i = 0; i < ARRAY_LEN( vk.render_pass.bloom.blur ); i++ )
+        vk_destroy_render_pass( &vk.render_pass.bloom.blur[i] );
 
-    for ( i = 0; i < ARRAY_LEN( vk.render_pass.bloom.blur ); i++) {
-        if ( vk.render_pass.bloom.blur[i].handle != VK_NULL_HANDLE ) {
-            qvkDestroyRenderPass( vk.device, vk.render_pass.bloom.blur[i].handle, NULL );
-            vk.render_pass.bloom.blur[i].handle = VK_NULL_HANDLE;
-        }
-    }
-
-    if ( vk.render_pass.bloom.blend.handle != VK_NULL_HANDLE ) {
-        qvkDestroyRenderPass( vk.device, vk.render_pass.bloom.blend.handle, NULL );
-        vk.render_pass.bloom.blend.handle = VK_NULL_HANDLE;
-    }
-
-    if ( vk.render_pass.screenmap.handle != VK_NULL_HANDLE ) {
-        qvkDestroyRenderPass( vk.device, vk.render_pass.screenmap.handle, NULL );
-        vk.render_pass.screenmap.handle = VK_NULL_HANDLE;
-    }
-
-    if ( vk.render_pass.gamma.handle != VK_NULL_HANDLE ) {
-        qvkDestroyRenderPass( vk.device, vk.render_pass.gamma.handle, NULL );
-        vk.render_pass.gamma.handle = VK_NULL_HANDLE;
-    }
-
-    if ( vk.render_pass.refraction.extract.handle != VK_NULL_HANDLE ) {
-        qvkDestroyRenderPass( vk.device, vk.render_pass.refraction.extract.handle, NULL );
-        vk.render_pass.refraction.extract.handle = VK_NULL_HANDLE;
-    }
-
-    if ( vk.render_pass.capture.handle != VK_NULL_HANDLE ) {
-        qvkDestroyRenderPass( vk.device, vk.render_pass.capture.handle, NULL );
-        vk.render_pass.capture.handle = VK_NULL_HANDLE;
-    }
-
-    if ( vk.render_pass.dglow.extract.handle != VK_NULL_HANDLE ) {
-        qvkDestroyRenderPass( vk.device, vk.render_pass.dglow.extract.handle, NULL );
-        vk.render_pass.dglow.extract.handle = VK_NULL_HANDLE;
-    }
-
-    for ( i = 0; i < ARRAY_LEN( vk.render_pass.dglow.blur ); i++ ) {
-        if ( vk.render_pass.dglow.blur[i].handle != VK_NULL_HANDLE ) {
-            qvkDestroyRenderPass( vk.device, vk.render_pass.dglow.blur[i].handle, NULL );
-            vk.render_pass.dglow.blur[i].handle = VK_NULL_HANDLE;
-        }
-    }
-
-    if ( vk.render_pass.dglow.blend.handle != VK_NULL_HANDLE ) {
-        qvkDestroyRenderPass( vk.device, vk.render_pass.dglow.blend.handle, NULL );
-        vk.render_pass.dglow.blend.handle = VK_NULL_HANDLE;
-    }
+    for ( i = 0; i < ARRAY_LEN( vk.render_pass.dglow.blur ); i++ )
+        vk_destroy_render_pass( &vk.render_pass.dglow.blur[i] );
 }
 
 //
