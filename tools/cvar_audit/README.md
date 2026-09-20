@@ -42,6 +42,12 @@ TaystJK while still open upstream remains OpenJK-originated. PR dates are used
 comparatively only when metadata exists for at least two candidates; an explicit
 cross-project import link remains direct evidence. Shared commits remain
 reviewable ties when authorship, submission, and integration cannot resolve them.
+An import link identifies an intermediate port when another project has older
+authorship; for example, `fs_forcegame` reached TaystJK through OpenJK but
+originated in JK2MV. Installation paths and cvar default values are not project
+credits. Content history stops at a complete removal of the identifier, so a
+reverted, same-named setting cannot supply the current implementation's author
+date; reducing duplicate occurrences during a refactor does not break history.
 
 After resolving origin, the pipeline scans TaystJK's inherited first-parent
 history again for post-origin changes. It records exact registration edits,

@@ -29,7 +29,7 @@ CURRENT_REF = "origin/master"
 # evidence. Bump the provenance schema separately when origin inputs change.
 EXTRACTOR_VERSION = 7
 PROVENANCE_SCHEMA_VERSION = 6
-RESOLVER_VERSION = 31
+RESOLVER_VERSION = 34
 UPSTREAM_REFS = {
     "openjk": "openjk/master",
     "eternaljk": "eternaljk/master",
@@ -575,10 +575,36 @@ def introduction_content_event(
         return None
     line_sha = match.group(1)
     history = git(
-        "log", "--follow", "--format=%H%x09%at%x09%ct%x09%an%x09%ae%x09%s",
+        "log", "--follow", "-p", "--unified=0", "--no-color",
+        "--format=@@@CONTENT@@@%H%x09%at%x09%ct%x09%an%x09%ae%x09%s",
         f"-S{history_search}", line_sha, "--", path,
     )
-    history_lines = [item for item in history.splitlines() if item.count("\t") >= 5]
+    # Stop at a removal: a reverted, same-named setting is not the ancestry of
+    # the current registration. Pickaxe alone also returns those older uses.
+    history_lines = []
+    for block in history.split("@@@CONTENT@@@")[1:]:
+        header, _, patch = block.partition("\n")
+        additions = sum(
+            item[1:].count(history_search) for item in patch.splitlines()
+            if item.startswith("+") and not item.startswith("+++")
+        )
+        removals = sum(
+            item[1:].count(history_search) for item in patch.splitlines()
+            if item.startswith("-") and not item.startswith("---")
+        )
+        if removals > additions:
+            # Fewer occurrences can also mean a cleanup (for example moving
+            # AddCommand/RemoveCommand into one table). Only a full removal
+            # breaks the name's history. A whole-file deletion in --follow
+            # output can be part of a move, so it is not sufficient evidence.
+            new_path = re.search(r"^\+\+\+ b/(.+)$", patch, re.M)
+            history_sha = header.split("\t", 1)[0]
+            if new_path and history_search not in git(
+                "show", f"{history_sha}:{new_path.group(1)}",
+            ):
+                break
+        if additions > removals and header.count("\t") >= 5:
+            history_lines.append(header)
     fields = (
         history_lines[-1].split("\t", 5) if history_lines
         else git(
@@ -638,6 +664,7 @@ def developer_lineage_sources(text: str) -> list[str]:
 
 
 def text_credits_source(text: str, source: str) -> bool:
+    text = attribution_text(text)
     project_pattern = SOURCE_PATTERNS.get(source)
     developer_pattern = DEVELOPER_LINEAGE_PATTERNS.get(source)
     return bool(
@@ -784,6 +811,9 @@ def select_dated_origin(
         for source, event in candidates.items()
         for linked in event.get("linked_upstream_pr_sources", [])
         if linked != source and linked in candidates
+        # A downstream import link identifies the port route, not an origin
+        # older than the linked project's own authored implementation.
+        and introduction_rank(candidates[linked])[0] == earliest_rank[0]
     }
     if len(linked_sources) == 1:
         linked = next(iter(linked_sources))
@@ -992,7 +1022,33 @@ def current_source(path: str) -> str:
     return git("show", f"{CURRENT_REF}:{path}")
 
 
+def attribution_text(text: str) -> str:
+    """Exclude installation paths and cvar values from project-name credit."""
+    text = re.sub(r'(?:^|(?<=[\s`"\'(=]))(?:[A-Za-z]:)?[/\\][^\s`"\'<>]*', "", text)
+    text = re.sub(
+        r'\bdefault(?:\s+value)?\s*(?:to|is|=|:)\s*"(?:\\.|[^"\\])*"',
+        "", text, flags=re.I,
+    )
+    lines = []
+    for line in text.splitlines():
+        code, separator, comment = line.partition("//")
+        # Mask the default argument only; a description or trailing comment
+        # can contain real attribution such as "from jaPRO".
+        literal = r'"(?:\\.|[^"\\])*"'
+        code = re.sub(
+            rf'(\b(?:Cvar_Get|XCVAR_DEF)\s*\(\s*(?:{literal}|\w+)\s*,\s*){literal}',
+            r'\1""', code,
+        )
+        code = re.sub(
+            rf'(\b(?:trap_)?Cvar_Register\s*\([^,\n]+,\s*{literal}\s*,\s*){literal}',
+            r'\1""', code,
+        )
+        lines.append(code + separator + comment)
+    return "\n".join(lines)
+
+
 def credited_sources(text: str) -> list[str]:
+    text = attribution_text(text)
     return [source for source, pattern in SOURCE_PATTERNS.items() if pattern.search(text)]
 
 
@@ -1326,6 +1382,18 @@ def resolve_one(
             ]
             if len(credit_lines) == 1:
                 credited_bullet = credit_lines[0]
+
+        for linked in sorted(linked_upstream_pr_sources(pr)):
+            if (
+                linked != source and linked not in ported_via
+                and linked in events and source in events
+                and introduction_rank(events[linked])[0] > introduction_rank(events[source])[0]
+            ):
+                ported_via.append(linked)
+                notes.append(
+                    f"The integration PR links {linked} as the immediate port source; "
+                    f"{source} has an earlier authored introduction and retains origin."
+                )
 
         if source == "unknown" and first:
             source = "taystjk"

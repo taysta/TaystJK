@@ -9,6 +9,7 @@ from unittest.mock import patch
 
 from provenance import (
     attribute_change,
+    credited_sources,
     enrich_introduction_events,
     developer_lineage_sources,
     integration_subject_sources,
@@ -44,8 +45,8 @@ class DatedOriginTests(unittest.TestCase):
         git.side_effect = [
             f"{line_sha} 1 1 1\nauthor Example\n\tregistration line\n",
             (
-                f"{later_sha}\t200\t210\tLater\tlater@example.test\tEdit registration\n"
-                f"{first_sha}\t100\t110\tFirst\tfirst@example.test\tAdd registration\n"
+                f'@@@CONTENT@@@{later_sha}\t200\t210\tLater\tlater@example.test\tEdit registration\n+"example_cvar"\n'
+                f'@@@CONTENT@@@{first_sha}\t100\t110\tFirst\tfirst@example.test\tAdd registration\n+"example_cvar"\n'
             ),
         ]
         introduction_content_event.cache_clear()
@@ -55,6 +56,116 @@ class DatedOriginTests(unittest.TestCase):
         self.assertEqual(result["content_sha"], first_sha)
         self.assertEqual(result["content_author_timestamp"], 100)
         self.assertEqual(result["line_commit_sha"], line_sha)
+
+    @patch("provenance.git")
+    def test_content_history_stops_at_reverted_same_named_setting(self, git: object) -> None:
+        current_sha, removed_sha, old_sha = "a" * 40, "b" * 40, "c" * 40
+        git.side_effect = [
+            f'{current_sha} 1 1 1\n\tcon_height = Cvar_Get("con_height", "0.5", 0);\n',
+            (
+                f'@@@CONTENT@@@{current_sha}\t300\t300\tNew\tnew@example.test\tAdd console height\n+"con_height"\n'
+                f'@@@CONTENT@@@{removed_sha}\t200\t200\tOld\told@example.test\tRevert old setting\n+++ b/console.cpp\n-"con_height"\n'
+                f'@@@CONTENT@@@{old_sha}\t100\t100\tOld\told@example.test\tOld setting\n+"con_height"\n'
+            ),
+            '// the old setting was reverted\n',
+        ]
+        introduction_content_event.cache_clear()
+        result = introduction_content_event(current_sha, "console.cpp", 1, '"con_height"')
+        self.assertEqual(result["content_sha"], current_sha)
+        self.assertEqual(result["content_author_timestamp"], 300)
+
+    def test_paths_and_default_values_are_not_project_credit(self) -> None:
+        for text in (
+            'com_unpackLibraries enabled; install dlls to the /EternalJK/ directory.',
+            'Set fs_forcegame default to "EternalJK "to retain previous behaviour.',
+            'fs_forcegame = Cvar_Get("fs_forcegame", "EternalJK", CVAR_INIT);',
+            'fs_forcegame = Cvar_Get("fs_forcegame", "EternalJK", CVAR_INIT); // install /EternalJK/',
+            'Install com_unpackLibraries dlls in "C:\\EternalJK\\".',
+        ):
+            with self.subTest(text=text):
+                self.assertEqual(credited_sources(text), [])
+        self.assertEqual(credited_sources(
+            'fs_forcegame = Cvar_Get("fs_forcegame", "EternalJK", 0); // from jk2mv'
+        ), ["jk2mv"])
+        self.assertEqual(credited_sources('Port fs_forcegame from jk2mv.'), ["jk2mv"])
+        self.assertEqual(credited_sources(
+            'cl_idrive = Cvar_Get("cl_idrive", "0", 0, "From jaPRO");'
+        ), ["japro"])
+        self.assertEqual(credited_sources('Serverside duel isolation (JA+/jaPRO)'), ["japro"])
+
+    @patch("provenance.git")
+    def test_command_table_cleanup_does_not_break_content_history(self, git: object) -> None:
+        current_sha, first_sha = "a" * 40, "b" * 40
+        git.side_effect = [
+            f'{current_sha} 1 1 1\n\t{{"fontlist", R_FontList_f}},\n',
+            (
+                f'@@@CONTENT@@@{current_sha}\t200\t200\tNew\tnew@example.test\tUse command table\n'
+                '+++ b/renderer.cpp\n'
+                '-Cmd_AddCommand("fontlist", R_FontList_f);\n'
+                '-Cmd_RemoveCommand("fontlist");\n'
+                '+{"fontlist", R_FontList_f},\n'
+                f'@@@CONTENT@@@{"c" * 40}\t150\t150\tMove\tmove@example.test\tMove renderer\n'
+                '--- a/old/renderer.cpp\n+++ /dev/null\n-Cmd_AddCommand("fontlist", R_FontList_f);\n'
+                f'@@@CONTENT@@@{first_sha}\t100\t100\tFirst\tfirst@example.test\tAdd command\n'
+                '+Cmd_AddCommand("fontlist", R_FontList_f);\n'
+                '+Cmd_RemoveCommand("fontlist");\n'
+            ),
+            '{"fontlist", R_FontList_f},\n',
+        ]
+        introduction_content_event.cache_clear()
+        result = introduction_content_event(current_sha, "renderer.cpp", 1, '"fontlist"')
+        self.assertEqual(result["content_sha"], first_sha)
+
+    def test_openjk_import_link_keeps_older_jk2mv_origin(self) -> None:
+        source, _, _, _ = select_dated_origin({
+            "jk2mv": event(100, "jk2mv", content_author_timestamp=100),
+            "openjk": event(500, "openjk", content_author_timestamp=200),
+            "taystjk": event(300, "tayst", content_author_timestamp=200,
+                             linked_upstream_pr_sources=["openjk"]),
+        })
+        self.assertEqual(source, "jk2mv")
+
+    @patch("provenance.source_context", return_value="")
+    @patch("provenance.commit_body", return_value="Merge pull request #52\nFS Features")
+    def test_fs_pr_values_do_not_override_origin_and_port_route(
+        self, _body: object, _context: object,
+    ) -> None:
+        # The misleading literals and the upstream link are from TaystJK #52.
+        prs = [{
+            "number": 52, "merge_commit_sha": "a" * 40,
+            "html_url": "https://github.com/taysta/TaystJK/pull/52",
+            "_source": "taystjk",
+            "body": (
+                "Merge @Daggolin's FS featured PR from https://github.com/JACoders/OpenJK/pull/1185\n"
+                '- Set fs_forcegame default to "EternalJK "to retain previous behaviour.\n'
+                "- With com_unpackLibraries enabled, install dlls to the /EternalJK/ directory."
+            ),
+        }]
+        for name, expected in (("com_unpackLibraries", "openjk"), ("fs_forcegame", "jk2mv")):
+            with self.subTest(name=name):
+                key = name.casefold()
+                registration = {
+                    "name": name, "kind": "Cvar_Get", "path": "code.cpp", "line": 1,
+                    "module": "engine-shared", "renderer": None,
+                }
+                introductions = {
+                    "taystjk": {key: event(300, "a" * 40, content_author_timestamp=200)},
+                    "openjk": {key: event(500, "b" * 40, content_author_timestamp=200)},
+                }
+                if expected == "jk2mv":
+                    introductions["jk2mv"] = {key: event(100, "c" * 40, content_author_timestamp=100)}
+                upstream = {
+                    source: {key: [registration]}
+                    for source in introductions if source != "taystjk"
+                }
+                result = resolve_one(
+                    key, [registration], set(), upstream, prs, Path("."), False,
+                    introductions, {}, {}, {}, False,
+                )
+                self.assertEqual(result["source"], expected)
+                self.assertEqual(result["origin_introduction"]["source"], expected)
+                self.assertEqual(result["ported_via"], ["openjk"] if expected == "jk2mv" else [])
+                self.assertNotIn("explicitly credits eternaljk", result["notes"])
 
     def test_later_newjk_import_does_not_claim_rend2_origin(self) -> None:
         source, confidence, method, _ = select_dated_origin({
