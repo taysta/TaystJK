@@ -3,7 +3,7 @@ title: "Cosmetics"
 layout: reference
 nav_order: 3
 parent: "Features"
-description: "Hats and capes: how the cosmetics system works, how to add one, and the offsets format that positions it per model and per skin."
+description: "Hats, capes, and masks: jaPRO's fixed set with optional account unlocks and the separate global cosmetics available on other servers."
 toc: true
 origin: taystjk
 ---
@@ -13,10 +13,39 @@ origin: taystjk
 
 # Cosmetics
 
-<p class="page-lede">Hats and capes drawn on player models, selected per player and positioned per model and skin by a small JSON file.</p>
+<p class="page-lede">TaystJK uses jaPRO's fixed cosmetics, including server-configured account unlocks, on jaPRO servers and a separate global system everywhere else.</p>
 </div>
 
-## Choosing one
+## jaPRO cosmetics
+
+On a jaPRO server, run `cosmetics` with no arguments to see a numbered list. `[X]` marks
+a selected item, and cosmetics with configured unlock tasks show their requirement:
+complete the named race course in the stated movement style, sometimes under a target time
+([`CG_Cosmetics_JaPRO`](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_consolecmds.c#L1628)).
+Use `cosmetics <number>` to toggle an item. Hats, capes, and masks are separate groups,
+with at most one item enabled in each group.
+
+These unlocks belong to your account on that server. Completing a qualifying course adds
+the unlock to the account
+([`G_UpdateUnlocks`](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_account.c#L1735)),
+and the server removes a selected locked item when the account has not earned it
+([`G_ValidateCosmetics`](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_client.c#L2240)).
+
+The jaPRO set is fixed in the client: each model is registered by name and drawn for a
+particular `cp_cosmetics` bit
+([`cg_main.c`](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_main.c#L1633),
+[`cg_players.c`](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_players.c#L13212)).
+Placing another `.md3` in a cosmetics directory does not add it to this list. A new
+jaPRO cosmetic requires client code changes, a rebuilt client, and the model assets; a
+server can then configure an unlock task for its bit in `cosmetics.cfg`
+([`G_SpawnCosmeticUnlocks`](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_account.c#L1775)).
+
+## Global cosmetics
+
+Here, **global cosmetics** means TaystJK's name-based system used on every server except
+jaPRO. They are client-side and are not tied to a server account or unlock task.
+
+### Choosing one
 
 `cosmetics` with no arguments prints its usage and the available categories
 ([`cg_consolecmds.c`](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_consolecmds.c#L1770)):
@@ -34,43 +63,16 @@ limited to 14 characters
 ([`cg_local.h`](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_local.h#L323)).
 A longer name is skipped with a warning.
 
-On a jaPRO server the command is handed to the server instead of being handled locally
-([`CG_Cosmetics_f`](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_consolecmds.c#L1902)),
-so what is available there is the server's business, not your client's.
-
-## Seeing other players' cosmetics
-
-Two settings change what you see, and neither affects what anyone else sees.
+### Seeing other players' cosmetics
 
 [`cg_forceCosmetics`](/TaystJK/reference/) has two states. Left at `0`, every player shows
 the cosmetics they chose. Set to anything non-zero, **your** hat and cape are drawn on
 everybody
 ([`cg_players.c`](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_players.c#L13195)).
-There is no third mode; any non-zero value behaves the same way.
+There is no third mode; any non-zero value behaves the same way. This setting affects only
+global cosmetics: the jaPRO rendering path reads its fixed bitmask instead.
 
-To hide cosmetics altogether, use bit 16 of `cg_stylePlayer`, "Hide player cosmetics".
-Configure it with `stylePlayer`, which prints the full list of bits.
-
-## Seasonal cosmetics
-
-Seasonal cosmetics are not a separate system: they are bit 20 of the same `cg_stylePlayer`
-bitmask, listed as "Seasonal Cosmetics"
-([`cg_consolecmds.c`](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_consolecmds.c#L1429)).
-Turn the bit on with `stylePlayer` to opt in.
-
-With it on, the client checks the date and may put a hat on players who have none
-([`cg_players.c`](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_players.c#L13198)):
-
-| Season | Dates | Hat |
-|:--|:--|:--|
-| Christmas | 22 November to 7 January | `santahat` |
-| Halloween | **31 October** only | `pumpkin` |
-
-The dates are fixed in the client and read from **your own clock**, not the server's, so a
-player in another timezone can briefly see something different. A seasonal hat only appears
-on players wearing nothing already — your own choice is never replaced.
-
-## Adding a cosmetic
+### Adding a cosmetic
 
 A cosmetic is an `.md3` placed in one of two directories, with the file name becoming the
 name you select
@@ -93,7 +95,7 @@ and
 [`japro_capes.shader`](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/assets/japro/shaders/japro_capes.shader);
 follow those when writing your own.
 
-## Positioning: the `.cosmetic` file
+### Positioning: the `.cosmetic` file
 
 One model does not wear a hat the same way another does. An optional JSON file gives a
 cosmetic different offsets per player model, and per skin within a model:
@@ -140,7 +142,7 @@ Reading it key by key:
   to **false**, so writing it out is only necessary to turn it on.
 - **Nested keys are skin names** — `default`, `red`, `blue`.
 
-### How a match is chosen
+**How a match is chosen.**
 
 Both levels resolve the same way
 ([`CG_LoadCustomCosmeticOffsets`](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_players.c#L1811)):
@@ -158,10 +160,35 @@ Two details worth knowing. All three offsets must be present and numeric or the 
 is rejected with a console warning and treated as zero — there is no partial application.
 And the values are read as whole numbers, so a fractional offset is truncated.
 
-### Testing without restarting
+**Testing without restarting.**
 
 The file is read when the client parses a player's info
 ([`cg_players.c`](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_players.c#L2322)),
 not once at startup. Re-issuing your `model` cvar makes the client re-read it, so you can
 edit offsets and see the result without reconnecting. Watch the console: a malformed file
 says so by name.
+
+## Settings shared by both systems
+
+To hide cosmetics altogether, use bit 16 of `cg_stylePlayer`, "Hide player cosmetics".
+Configure it with `stylePlayer`, which prints the full list of bits. This affects both the
+jaPRO and global rendering paths.
+
+### Seasonal cosmetics
+
+Seasonal cosmetics are bit 20 of the same `cg_stylePlayer` bitmask, listed as "Seasonal
+Cosmetics"
+([`cg_consolecmds.c`](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_consolecmds.c#L1429)).
+Turn the bit on with `stylePlayer` to opt in.
+
+With it on, the client checks the date and may put a hat on players who have none
+([`cg_players.c`](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_players.c#L13198)):
+
+| Season | Dates | Hat |
+|:--|:--|:--|
+| Christmas | 22 November to 7 January | `santahat` |
+| Halloween | **31 October** only | `pumpkin` |
+
+The dates are fixed in the client and read from **your own clock**, not the server's, so a
+player in another timezone can briefly see something different. A seasonal hat only appears
+on players wearing nothing already — your own choice is never replaced.
