@@ -1,9 +1,33 @@
 #ifndef SHADER_COLOR_GLSL
 #define SHADER_COLOR_GLSL
 
+#define CGEN_BAD                        0
+#define CGEN_IDENTITY_LIGHTING			1
+#define CGEN_IDENTITY					2
+#define CGEN_ENTITY						3
+#define CGEN_ONE_MINUS_ENTITY			4
+#define CGEN_EXACT_VERTEX				5
+#define CGEN_VERTEX						6
+#define CGEN_ONE_MINUS_VERTEX			7
+#define CGEN_WAVEFORM					8
+#define CGEN_LIGHTING_DIFFUSE			9
+#define CGEN_LIGHTING_DIFFUSE_ENTITY	10
+#define CGEN_FOG						11
+#define CGEN_CONST						12
+#define CGEN_LIGHTMAPSTYLE				13
+#define CGEN_DISINTEGRATION_1			14
+#define CGEN_DISINTEGRATION_2			15
+
+#define AGEN_LIGHTING_SPECULAR			6
+#define AGEN_PORTAL						8
+
 #if defined(SHADER_FRAG) && defined(USE_VBO_MODEL)
-	bool needsShading( in int rgbType ) {
-		return ( rgbType >= 9 && rgbType != 11 && rgbType != 12 && rgbType != 13 ) ? true : false;
+	bool needsShading( in int rgbType ) 
+	{
+		return rgbType >= CGEN_LIGHTING_DIFFUSE &&
+			   rgbType != CGEN_FOG &&
+			   rgbType != CGEN_CONST &&
+			   rgbType != CGEN_LIGHTMAPSTYLE;
 	}
 
 	float CalcLightAttenuation(float point, float normDist)
@@ -16,11 +40,28 @@
 #endif
 
 #if defined(SHADER_VERT) && defined(USE_VBO_MODEL)
-	vec4 CalcColor( int index, in vec3 position, in vec3 normal ) {
-		vec4 color = ( u_global.bundle[index].vertColor * vec4( 0.0 ) ) + u_global.bundle[index].baseColor;		// skip vertColor?
+	vec4 CalcColor( in int index, in vec3 position, in vec3 normal ) 
+	{
+		vec4 color = u_global.bundle[index].baseColor;
+		// ~sunny, tess.vertexColors is not uploaded to GPU for VBO models.
+		// eventually this might be required, unless for VBO models its always identity ..
+		//
+		// previous behaivior:
+		// vec3 _in_color = vec3(0.0); // unused vertColor
+	    // vec4 color = u_global.bundle[index].vertColor * _in_color + u_global.bundle[index].baseColor;
 
-		switch ( u_global.bundle[index].rgbGen ) {
-			case 14:// CGEN_DISINTEGRATION_1
+		switch ( u_global.bundle[index].rgbGen ) 
+		{
+			case CGEN_EXACT_VERTEX:
+				color = u_global.bundle[index].vertColor; // vec4(1.0)
+				break;
+			case CGEN_VERTEX:
+				color = u_global.bundle[index].vertColor; // tr.identityLight
+				break;
+			case CGEN_ONE_MINUS_VERTEX:
+				color += u_global.bundle[index].vertColor;
+				break;
+			case CGEN_DISINTEGRATION_1:
 			{
 				vec3 delta = u_global.disintegration.origin - position;
 				float sqrDistance = dot( delta, delta );
@@ -36,7 +77,7 @@
 
 				return color;
 			}
-			case 15:// CGEN_DISINTEGRATION_2
+			case CGEN_DISINTEGRATION_2:
 			{
 				vec3 delta = u_global.disintegration.origin - position;
 				float sqrDistance = dot( delta, delta );
@@ -49,7 +90,7 @@
 		}
 
 		switch ( u_global.bundle[index].alphaGen ) {
-			case 6: // AGEN_LIGHTING_SPECULAR
+			case AGEN_LIGHTING_SPECULAR:
 			{
 				vec3 viewer = normalize( u_entity.localViewOrigin.xyz - position );
 				vec3 lightDirection = ( transpose(u_entity.modelMatrix) * vec4( u_entity.localLightOrigin.xyz, 0.0 ) ).xyz;
@@ -59,7 +100,7 @@
 				color.a *= color.a;
 				break;
 			}
-			case 8: // AGEN_PORTAL
+			case AGEN_PORTAL:
 			{
 				vec3 viewer = normalize( u_entity.localViewOrigin.xyz - position );
 				color.a = clamp( length( viewer ) / u_global.portalRange, 0.0, 1.0 );
