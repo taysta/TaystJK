@@ -32,4 +32,5 @@ these pages. Nothing here restates a table the reference already generates; it l
   <a class="browse-card" href="/TaystJK/features/emoji/"><span class="browse-icon">09</span><h3>Chat emoji</h3><p>Every emoji the client ships, and the text you type to send it.</p><b>Emoji index →</b></a>
   <a class="browse-card" href="/TaystJK/features/platform-support/"><span class="browse-icon">10</span><h3>Platform support</h3><p>Features whose availability depends on your operating system or architecture.</p><b>Support matrix →</b></a>
   <a class="browse-card" href="/TaystJK/features/builds-and-versioning/"><span class="browse-icon">11</span><h3>Builds and versioning</h3><p>How releases are numbered, what your build reports, and how to read it.</p><b>Build identifiers →</b></a>
+  <a class="browse-card" href="/TaystJK/features/console-scripting/"><span class="browse-icon">12</span><h3>Console scripting</h3><p>Nested quotes, conditional commands, cvar substitution, and command timers.</p><b>Scripting guide →</b></a>
 </div>

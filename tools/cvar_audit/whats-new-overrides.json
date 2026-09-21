@@ -55,6 +55,13 @@
       "group": "Server & networking",
       "summary": "A serverinfo key letting any server mod advertise which TaystJK client features it supports.",
       "page": "/TaystJK/development/feature-flags/"
+    },
+    {
+      "title": "Nested quotation marks",
+      "origin": "newjk",
+      "group": "Engine & diagnostics",
+      "summary": "Quoted strings can contain quoted strings, so a bind can set another bind and a semicolon inside quotes no longer splits the command.",
+      "page": "/TaystJK/features/console-scripting/"
     }
   ]
 }
