@@ -42,7 +42,7 @@ entry is real; treat the date as approximate.
   <div class="baseline-selector-shell platform-selector-shell">
     <p class="platform-selector-label">Coming from</p>
     <div class="baseline-selector platform-selector" role="tablist" aria-label="Baseline client">
-      <button type="button" id="baseline-tab-eternaljk" role="tab" aria-controls="baseline-panel-eternaljk" aria-selected="false" tabindex="-1" data-baseline-choice="eternaljk">EternalJK (266)</button>
+      <button type="button" id="baseline-tab-eternaljk" role="tab" aria-controls="baseline-panel-eternaljk" aria-selected="false" tabindex="-1" data-baseline-choice="eternaljk">EternalJK (265)</button>
       <button type="button" id="baseline-tab-openjk" role="tab" aria-controls="baseline-panel-openjk" aria-selected="false" tabindex="-1" data-baseline-choice="openjk">OpenJK (752)</button>
       <button type="button" id="baseline-tab-basejka" role="tab" aria-controls="baseline-panel-basejka" aria-selected="false" tabindex="-1" data-baseline-choice="basejka">base Jedi Academy (996)</button>
     </div>
@@ -50,7 +50,7 @@ entry is real; treat the date as approximate.
 
   <section class="baseline-panel platform-panel" id="baseline-panel-eternaljk" role="tabpanel" aria-labelledby="baseline-tab-eternaljk" tabindex="0" data-baseline-panel="eternaljk" markdown="1">
 
-## New since EternalJK (266)
+## New since EternalJK (265)
 
 ### Audio & music (2)
 
@@ -89,22 +89,22 @@ entry is real; treat the date as approximate.
 
 - [`cl_consoleShiftRequirement`](/TaystJK/reference/cvars/cl_consoleshiftrequirement-95eb4a1/) <span class="label ref-origin ref-origin-jk2mv">JK2MV</span> <span class="meta-chip">2024-02-19</span> — Require shift key to be pressed for native console key detection
 - [`cl_exitCommand`](/TaystJK/reference/cvars/cl_exitcommand-0f11b0a/) <span class="label ref-origin ref-origin-taystjk">TaystJK</span> <span class="meta-chip">2024-02-28</span> — Enables the /exit command
-- [`cl_filterGames`](/TaystJK/reference/cvars/cl_filtergames-7e85224/) <span class="label ref-origin ref-origin-taystjk">TaystJK</span> <span class="meta-chip">2023-11-28</span> — List of fs_game to filter (space separated)
+- [`cl_filterGames`](/TaystJK/reference/cvars/cl_filtergames-7e85224/) <span class="label ref-origin ref-origin-openjk">OpenJK</span> <span class="meta-chip">2023-11-28</span> — List of fs_game to filter (space separated)
 - [`com_timestamps`](/TaystJK/reference/cvars/com_timestamps-e16da1a/) <span class="label ref-origin ref-origin-jk2mv">JK2MV</span> <span class="status-chip">2024-02-27 · needs review</span> — Show timestamps in terminal and qconsole.log
-- [`com_unpackLibraries`](/TaystJK/reference/cvars/com_unpacklibraries-27a5b09/) <span class="label ref-origin ref-origin-eternaljk">EternalJK</span> <span class="meta-chip">2023-11-29</span> — Controls `com_unpackLibraries` in the engine-shared module.
+- [`com_unpackLibraries`](/TaystJK/reference/cvars/com_unpacklibraries-27a5b09/) <span class="label ref-origin ref-origin-openjk">OpenJK</span> <span class="meta-chip">2023-11-29</span> — Controls `com_unpackLibraries` in the engine-shared module.
 - [`con_datetime`](/TaystJK/reference/cvars/con_datetime-fb79998/) <span class="label ref-origin ref-origin-taystjk">TaystJK</span> <span class="meta-chip">2026-06-02</span> — Display human readable date/time in console
-- [`con_height`](/TaystJK/reference/cvars/con_height-41c46da/) <span class="label ref-origin ref-origin-taystjk">TaystJK</span> <span class="meta-chip">2024-02-19</span> — Adjust the height of the console
+- [`con_height`](/TaystJK/reference/cvars/con_height-41c46da/) <span class="label ref-origin ref-origin-jk2mv">JK2MV</span> <span class="meta-chip">2024-02-19</span> — Adjust the height of the console
 - [`con_timestamps`](/TaystJK/reference/cvars/con_timestamps-2b4f0eb/) <span class="label ref-origin ref-origin-jk2mv">JK2MV</span> <span class="status-chip">2024-02-27 · needs review</span> — Display timestamps infront of console lines
 - [`delay`](/TaystJK/reference/commands/delay-ab464f0/) <span class="label ref-origin ref-origin-newjk">NewJK / NewMod</span> <span class="meta-chip">2022-04-20</span> — Run following commands after a millisecond delay.
 - [`delaycancel`](/TaystJK/reference/commands/delaycancel-8b62c65/) <span class="label ref-origin ref-origin-newjk">NewJK / NewMod</span> <span class="meta-chip">2022-04-20</span> — Cancel matching pending delay entries.
 - [`fx_jk2`](/TaystJK/reference/cvars/fx_jk2-16a4fc2/) <span class="label ref-origin ref-origin-taystjk">TaystJK</span> <span class="meta-chip">2025-04-15</span> — Displays jk2 style projectile fx - 0: Disabled - 1: Enabled
-- [`ifCvar`](/TaystJK/reference/commands/ifcvar-a68f57c/) <span class="label ref-origin ref-origin-taystjk">TaystJK</span> <span class="status-chip">2022-04-20 · needs review</span> — Execute a command selected by comparisons against a cvar.
+- [`ifCvar`](/TaystJK/reference/commands/ifcvar-a68f57c/) <span class="label ref-origin ref-origin-newjk">NewJK / NewMod</span> <span class="meta-chip">2022-04-20</span> — Execute a command selected by comparisons against a cvar.
 - [`mnext`](/TaystJK/reference/commands/mnext-858b638/) <span class="label ref-origin ref-origin-newjk">NewJK / NewMod</span> <span class="meta-chip">2022-04-20</span> — Send the next-track media key on Windows.
 - [`mpause`](/TaystJK/reference/commands/mpause-640e429/) <span class="label ref-origin ref-origin-newjk">NewJK / NewMod</span> <span class="meta-chip">2022-04-20</span> — Send the play/pause media key on Windows.
 - [`mprev`](/TaystJK/reference/commands/mprev-28fb883/) <span class="label ref-origin ref-origin-newjk">NewJK / NewMod</span> <span class="meta-chip">2022-04-20</span> — Send the previous-track media key on Windows.
 - [`mstop`](/TaystJK/reference/commands/mstop-67745cd/) <span class="label ref-origin ref-origin-newjk">NewJK / NewMod</span> <span class="meta-chip">2022-04-20</span> — Send the stop-media key on Windows.
 - [`s_sdlDriver`](/TaystJK/reference/cvars/s_sdldriver-b485ab9/) <span class="label ref-origin ref-origin-openjk">OpenJK</span> <span class="status-chip">2025-04-26 · needs review</span> — Controls `s_sdlDriver` in the engine-shared module.
-- [`strSub`](/TaystJK/reference/commands/strsub-25a3e39/) <span class="label ref-origin ref-origin-taystjk">TaystJK</span> <span class="status-chip">2022-04-20 · needs review</span> — Execute a command with $cvar$ value substitution.
+- [`strSub`](/TaystJK/reference/commands/strsub-25a3e39/) <span class="label ref-origin ref-origin-newjk">NewJK / NewMod</span> <span class="meta-chip">2022-04-20</span> — Execute a command with $cvar$ value substitution.
 - [`waitf`](/TaystJK/reference/commands/waitf-1b1b6e3/) <span class="label ref-origin ref-origin-newjk">NewJK / NewMod</span> <span class="meta-chip">2022-04-20</span> — Run following commands after a frame-count delay.
 - [`waitfcancel`](/TaystJK/reference/commands/waitfcancel-4f1a371/) <span class="label ref-origin ref-origin-newjk">NewJK / NewMod</span> <span class="meta-chip">2022-04-20</span> — Cancel matching pending waitf entries.
 
@@ -113,10 +113,10 @@ entry is real; treat the date as approximate.
 - [`cl_downloadOverlay`](/TaystJK/reference/cvars/cl_downloadoverlay-ee4a68a/) <span class="label ref-origin ref-origin-openjk">OpenJK</span> <span class="meta-chip">2023-11-29</span> — Draw download info overlay
 - [`cl_downloadPrompt`](/TaystJK/reference/cvars/cl_downloadprompt-2444b92/) <span class="label ref-origin ref-origin-openjk">OpenJK</span> <span class="meta-chip">2023-11-29</span> — Confirm pk3 downloads from the server
 - [`cl_downloadProtocol`](/TaystJK/reference/cvars/cl_downloadprotocol-a36f359/) <span class="label ref-origin ref-origin-jk2mv">JK2MV</span> <span class="status-chip">2024-03-21 · needs review</span> — Report whether the active download uses HTTP or UDP.
-- [`fs_forcegame`](/TaystJK/reference/cvars/fs_forcegame-3547288/) <span class="label ref-origin ref-origin-eternaljk">EternalJK</span> <span class="meta-chip">2023-11-29</span> — Folder to use for overriding of fs_game (can not be set by the server).
+- [`fs_forcegame`](/TaystJK/reference/cvars/fs_forcegame-3547288/) <span class="label ref-origin ref-origin-jk2mv">JK2MV</span> <span class="meta-chip">2023-11-29</span> — Folder to use for overriding of fs_game (can not be set by the server).
 - [`sv_httpDownloads`](/TaystJK/reference/cvars/sv_httpdownloads-f79d64e/) <span class="label ref-origin ref-origin-jk2mv">JK2MV</span> <span class="meta-chip">2024-03-21</span> — Enable the server&#x27;s JK2MV-derived HTTP auto-download path.
 
-### Gameplay & combat (59)
+### Gameplay & combat (58)
 
 - [Cosmetics custom offsets](/TaystJK/features/cosmetics/) <span class="label ref-origin ref-origin-taystjk">TaystJK</span> <span class="meta-chip">feature</span> — Per-model and per-skin position offsets for hats and capes, described by a JSON file shipped alongside the cosmetic.
 - [`+singlefire`](/TaystJK/reference/commands/plusminus-singlefire-e166917/) <span class="label ref-origin ref-origin-japro">jaPRO</span> <span class="meta-chip">2024-02-28</span> — Runs `CG_SingleFireDown_f` in the cgame module.
@@ -139,7 +139,6 @@ entry is real; treat the date as approximate.
 - [`cg_saberIgnitionFlare`](/TaystJK/reference/cvars/cg_saberignitionflare-bf8696a/) <span class="label ref-origin ref-origin-eternaljk">EternalJK</span> <span class="meta-chip">2023-11-04</span> — Controls `cg_saberIgnitionFlare` in the cgame module.
 - [`cg_saberStaffMultiColor`](/TaystJK/reference/cvars/cg_saberstaffmulticolor-c4f7d05/) <span class="label ref-origin ref-origin-eternaljk">EternalJK</span> <span class="meta-chip">2023-11-02</span> — Controls `cg_saberStaffMultiColor` in the cgame module.
 - [`cg_scoreboardTime`](/TaystJK/reference/cvars/cg_scoreboardtime-c017d2f/) <span class="label ref-origin ref-origin-taystjk">TaystJK</span> <span class="status-chip">2022-04-20 · needs review</span> — Displays the local time on the scoreboard
-- [`cg_smoothClients`](/TaystJK/reference/cvars/cg_smoothclients-baf7386/) <span class="label ref-origin ref-origin-basejka">Base Jedi Academy</span> <span class="meta-chip">2013-04-08</span> — Controls `cg_smoothClients` in the cgame module.
 - [`cg_spotIconPlums`](/TaystJK/reference/cvars/cg_spoticonplums-79f0979/) <span class="label ref-origin ref-origin-japro">jaPRO</span> <span class="meta-chip">2024-04-15</span> — Controls `cg_spotIconPlums` in the cgame module.
 - [`cg_vehicleRange`](/TaystJK/reference/cvars/cg_vehiclerange-987b56f/) <span class="label ref-origin ref-origin-taystjk">TaystJK</span> <span class="meta-chip">2025-11-28</span> — Offset vehicle camera ranges (useful for ultrawide monitors)
 - [`cg_weaponCycleAmmo`](/TaystJK/reference/cvars/cg_weaponcycleammo-3286c8e/) <span class="label ref-origin ref-origin-taystjk">TaystJK</span> <span class="status-chip">2022-04-21 · needs review</span> — Controls `cg_weaponCycleAmmo` in the cgame module.
@@ -534,7 +533,7 @@ entry is real; treat the date as approximate.
 - [`exit`](/TaystJK/reference/commands/exit-de3ac21/) <span class="label ref-origin ref-origin-eternaljk">EternalJK</span> <span class="status-chip">2018-11-27 · needs review</span> — Exits the game
 - [`fx_jk2`](/TaystJK/reference/cvars/fx_jk2-16a4fc2/) <span class="label ref-origin ref-origin-taystjk">TaystJK</span> <span class="meta-chip">2025-04-15</span> — Displays jk2 style projectile fx - 0: Disabled - 1: Enabled
 - [`fx_physics`](/TaystJK/reference/cvars/fx_physics-6ce403e/) <span class="label ref-origin ref-origin-japro">jaPRO</span> <span class="status-chip">2018-01-01 · needs review</span> — Controls physics applied to FX system particles - 0: Disable all FX physics - 1: use non-expensive physics only - 2: Use flags in the fx file (Default behavior) - 3: Force expensive physics on all particles
-- [`ifCvar`](/TaystJK/reference/commands/ifcvar-a68f57c/) <span class="label ref-origin ref-origin-taystjk">TaystJK</span> <span class="status-chip">2022-04-20 · needs review</span> — Execute a command selected by comparisons against a cvar.
+- [`ifCvar`](/TaystJK/reference/commands/ifcvar-a68f57c/) <span class="label ref-origin ref-origin-newjk">NewJK / NewMod</span> <span class="meta-chip">2022-04-20</span> — Execute a command selected by comparisons against a cvar.
 - [`loadmod`](/TaystJK/reference/commands/loadmod-ab292a3/) <span class="label ref-origin ref-origin-eternaljk">EternalJK</span> <span class="status-chip">2018-02-24 · needs review</span> — Restart the renderer (with specified mod folder) - or change the resolution
 - [`mnext`](/TaystJK/reference/commands/mnext-858b638/) <span class="label ref-origin ref-origin-newjk">NewJK / NewMod</span> <span class="meta-chip">2022-04-20</span> — Send the next-track media key on Windows.
 - [`modversion`](/TaystJK/reference/commands/modversion-73dac73/) <span class="label ref-origin ref-origin-japro">jaPRO</span> <span class="status-chip">2018-01-01 · needs review</span> — Runs `CG_ModVersion_f` in the cgame module.
@@ -544,7 +543,7 @@ entry is real; treat the date as approximate.
 - [`protocolswitch`](/TaystJK/reference/cvars/protocolswitch-9a313ea/) <span class="label ref-origin ref-origin-jk2mv">JK2MV</span> <span class="status-chip">2018-04-26 · needs review</span> — Sets protocol based on server info response
 - [`s_sdlDriver`](/TaystJK/reference/cvars/s_sdldriver-b485ab9/) <span class="label ref-origin ref-origin-openjk">OpenJK</span> <span class="status-chip">2025-04-26 · needs review</span> — Controls `s_sdlDriver` in the engine-shared module.
 - [`snd_mute_losefocus`](/TaystJK/reference/cvars/snd_mute_losefocus-56dc974/) <span class="label ref-origin ref-origin-eternaljk">EternalJK</span> <span class="status-chip">2019-03-21 · needs review</span> — Mute sound when game window is unfocused/minimized
-- [`strSub`](/TaystJK/reference/commands/strsub-25a3e39/) <span class="label ref-origin ref-origin-taystjk">TaystJK</span> <span class="status-chip">2022-04-20 · needs review</span> — Execute a command with $cvar$ value substitution.
+- [`strSub`](/TaystJK/reference/commands/strsub-25a3e39/) <span class="label ref-origin ref-origin-newjk">NewJK / NewMod</span> <span class="meta-chip">2022-04-20</span> — Execute a command with $cvar$ value substitution.
 - [`userinfo`](/TaystJK/reference/commands/userinfo-c0214b8/) <span class="label ref-origin ref-origin-eternaljk">EternalJK</span> <span class="status-chip">2013-04-08 · needs review</span> — Runs `CL_Clientinfo_f` in the engine-client module.
 - [`waitf`](/TaystJK/reference/commands/waitf-1b1b6e3/) <span class="label ref-origin ref-origin-newjk">NewJK / NewMod</span> <span class="meta-chip">2022-04-20</span> — Run following commands after a frame-count delay.
 - [`waitfcancel`](/TaystJK/reference/commands/waitfcancel-4f1a371/) <span class="label ref-origin ref-origin-newjk">NewJK / NewMod</span> <span class="meta-chip">2022-04-20</span> — Cancel matching pending waitf entries.
@@ -631,7 +630,7 @@ entry is real; treat the date as approximate.
 - [`cg_autoLoginPass1`](/TaystJK/reference/cvars/cg_autologinpass1-d618f6e/) <span class="label ref-origin ref-origin-japro">jaPRO</span> <span class="status-chip">2018-09-03 · needs review</span> — Password to use.
 - [`cg_autoLoginPass2`](/TaystJK/reference/cvars/cg_autologinpass2-b2b6380/) <span class="label ref-origin ref-origin-japro">jaPRO</span> <span class="status-chip">2018-09-03 · needs review</span> — Controls `cg_autoLoginPass2` in the cgame module.
 - [`cg_autoLoginPass3`](/TaystJK/reference/cvars/cg_autologinpass3-2065bc1/) <span class="label ref-origin ref-origin-japro">jaPRO</span> <span class="status-chip">2018-09-03 · needs review</span> — Controls `cg_autoLoginPass3` in the cgame module.
-- [`cg_blood`](/TaystJK/reference/cvars/cg_blood-cc15687/) <span class="label ref-origin ref-origin-japro">jaPRO</span> <span class="meta-chip">2018-09-03</span> — JAPRO - Clientside - re add cg_blood
+- [`cg_blood`](/TaystJK/reference/cvars/cg_blood-cc15687/) <span class="label ref-origin ref-origin-japro">jaPRO</span> <span class="status-chip">2018-09-03 · needs review</span> — JAPRO - Clientside - re add cg_blood
 - [`cg_centerHeight`](/TaystJK/reference/cvars/cg_centerheight-bbab188/) <span class="label ref-origin ref-origin-japro">jaPRO</span> <span class="status-chip">2018-09-03 · needs review</span> — Controls `cg_centerHeight` in the cgame module.
 - [`cg_centerSize`](/TaystJK/reference/cvars/cg_centersize-615dcaa/) <span class="label ref-origin ref-origin-japro">jaPRO</span> <span class="status-chip">2018-09-03 · needs review</span> — Controls `cg_centerSize` in the cgame module.
 - [`cg_defaultFemaleModel`](/TaystJK/reference/cvars/cg_defaultfemalemodel-2d9b8bf/) <span class="label ref-origin ref-origin-japro">jaPRO</span> <span class="status-chip">2018-09-03 · needs review</span> — Controls `cg_defaultFemaleModel` in the cgame module.
@@ -1347,7 +1346,7 @@ entry is real; treat the date as approximate.
 - [`cl_discordRichPresenceSharePassword`](/TaystJK/reference/cvars/cl_discordrichpresencesharepassword-79479cd/) <span class="label ref-origin ref-origin-eternaljk">EternalJK</span> <span class="status-chip">2019-03-20 · needs review</span> — If set, sends password to Discord friends who request to join your game
 - [`cl_enableGuid`](/TaystJK/reference/cvars/cl_enableguid-d5d42ac/) <span class="label ref-origin ref-origin-openjk">OpenJK</span> <span class="status-chip">2015-11-24 · needs review</span> — Enable GUID userinfo identifier
 - [`cl_exitCommand`](/TaystJK/reference/cvars/cl_exitcommand-0f11b0a/) <span class="label ref-origin ref-origin-taystjk">TaystJK</span> <span class="meta-chip">2024-02-28</span> — Enables the /exit command
-- [`cl_filterGames`](/TaystJK/reference/cvars/cl_filtergames-7e85224/) <span class="label ref-origin ref-origin-taystjk">TaystJK</span> <span class="meta-chip">2023-11-28</span> — List of fs_game to filter (space separated)
+- [`cl_filterGames`](/TaystJK/reference/cvars/cl_filtergames-7e85224/) <span class="label ref-origin ref-origin-openjk">OpenJK</span> <span class="meta-chip">2023-11-28</span> — List of fs_game to filter (space separated)
 - [`cl_idrive`](/TaystJK/reference/cvars/cl_idrive-a66b0b8/) <span class="label ref-origin ref-origin-japro">jaPRO</span> <span class="meta-chip">2017-12-04</span> — Controls `cl_idrive` in the engine-client module.
 - [`cl_ratioFix`](/TaystJK/reference/cvars/cl_ratiofix-67440df/) <span class="label ref-origin ref-origin-japro">jaPRO</span> <span class="status-chip">2017-12-03 · needs review</span> — Widescreen aspect ratio correction
 - [`cm_extraVerbose`](/TaystJK/reference/cvars/cm_extraverbose-f870864/) <span class="label ref-origin ref-origin-openjk">OpenJK</span> <span class="status-chip">2014-02-05 · needs review</span> — Controls `cm_extraVerbose` in the engine-shared module.
@@ -1365,15 +1364,15 @@ entry is real; treat the date as approximate.
 - [`com_protocol`](/TaystJK/reference/cvars/com_protocol-2cc2e0a/) <span class="label ref-origin ref-origin-eternaljk">EternalJK</span> <span class="status-chip">2018-04-26 · needs review</span> — 1.01 protocol
 - [`com_timestamps`](/TaystJK/reference/cvars/com_timestamps-e16da1a/) <span class="label ref-origin ref-origin-jk2mv">JK2MV</span> <span class="status-chip">2024-02-27 · needs review</span> — Show timestamps in terminal and qconsole.log
 - [`com_unfocused`](/TaystJK/reference/cvars/com_unfocused-804c4c7/) <span class="label ref-origin ref-origin-openjk">OpenJK</span> <span class="status-chip">2015-02-07 · needs review</span> — Controls `com_unfocused` in the engine-shared module.
-- [`com_unpackLibraries`](/TaystJK/reference/cvars/com_unpacklibraries-27a5b09/) <span class="label ref-origin ref-origin-eternaljk">EternalJK</span> <span class="meta-chip">2023-11-29</span> — Controls `com_unpackLibraries` in the engine-shared module.
+- [`com_unpackLibraries`](/TaystJK/reference/cvars/com_unpacklibraries-27a5b09/) <span class="label ref-origin ref-origin-openjk">OpenJK</span> <span class="meta-chip">2023-11-29</span> — Controls `com_unpackLibraries` in the engine-shared module.
 - [`con_autoclear`](/TaystJK/reference/cvars/con_autoclear-ff60e4c/) <span class="label ref-origin ref-origin-openjk">OpenJK</span> <span class="status-chip">2013-09-01 · needs review</span> — Automatically clear console input on close
 - [`con_datetime`](/TaystJK/reference/cvars/con_datetime-fb79998/) <span class="label ref-origin ref-origin-taystjk">TaystJK</span> <span class="meta-chip">2026-06-02</span> — Display human readable date/time in console
-- [`con_height`](/TaystJK/reference/cvars/con_height-41c46da/) <span class="label ref-origin ref-origin-taystjk">TaystJK</span> <span class="meta-chip">2024-02-19</span> — Adjust the height of the console
+- [`con_height`](/TaystJK/reference/cvars/con_height-41c46da/) <span class="label ref-origin ref-origin-jk2mv">JK2MV</span> <span class="meta-chip">2024-02-19</span> — Adjust the height of the console
 - [`con_notifyconnect`](/TaystJK/reference/cvars/con_notifyconnect-0a48d2d/) <span class="label ref-origin ref-origin-eternaljk">EternalJK</span> <span class="status-chip">2016-04-14 · needs review</span> — Notifies you when someone connects to the server
 - [`con_notifylines`](/TaystJK/reference/cvars/con_notifylines-6373d07/) <span class="label ref-origin ref-origin-eternaljk">EternalJK</span> <span class="status-chip">2018-09-10 · needs review</span> — Max number of console lines to print in top left
 - [`con_notifyvote`](/TaystJK/reference/cvars/con_notifyvote-05d6ee1/) <span class="label ref-origin ref-origin-eternaljk">EternalJK</span> <span class="status-chip">2018-02-24 · needs review</span> — Notifies you when someone calls a vote
 - [`con_notifywords`](/TaystJK/reference/cvars/con_notifywords-97dfc24/) <span class="label ref-origin ref-origin-eternaljk">EternalJK</span> <span class="status-chip">2018-02-24 · needs review</span> — Notifies you when defined words are mentioned
-- [`con_opacity`](/TaystJK/reference/cvars/con_opacity-d0e065e/) <span class="label ref-origin ref-origin-eternaljk">EternalJK</span> <span class="status-chip">2014-03-30 · needs review</span> — Opacity of console background
+- [`con_opacity`](/TaystJK/reference/cvars/con_opacity-d0e065e/) <span class="label ref-origin ref-origin-openjk">OpenJK</span> <span class="status-chip">2014-03-30 · needs review</span> — Opacity of console background
 - [`con_ratioFix`](/TaystJK/reference/cvars/con_ratiofix-64c8547/) <span class="label ref-origin ref-origin-eternaljk">EternalJK</span> <span class="status-chip">2018-10-20 · needs review</span> — Correct console background height, should probably disable for custom console backgrounds.
 - [`con_scale`](/TaystJK/reference/cvars/con_scale-d334b5a/) <span class="label ref-origin ref-origin-jk2mv">JK2MV</span> <span class="meta-chip">2018-02-05</span> — Console character scale
 - [`con_timestamps`](/TaystJK/reference/cvars/con_timestamps-2b4f0eb/) <span class="label ref-origin ref-origin-jk2mv">JK2MV</span> <span class="status-chip">2024-02-27 · needs review</span> — Display timestamps infront of console lines
@@ -1394,7 +1393,7 @@ entry is real; treat the date as approximate.
 - [`fx_jk2`](/TaystJK/reference/cvars/fx_jk2-16a4fc2/) <span class="label ref-origin ref-origin-taystjk">TaystJK</span> <span class="meta-chip">2025-04-15</span> — Displays jk2 style projectile fx - 0: Disabled - 1: Enabled
 - [`fx_physics`](/TaystJK/reference/cvars/fx_physics-6ce403e/) <span class="label ref-origin ref-origin-japro">jaPRO</span> <span class="status-chip">2018-01-01 · needs review</span> — Controls physics applied to FX system particles - 0: Disable all FX physics - 1: use non-expensive physics only - 2: Use flags in the fx file (Default behavior) - 3: Force expensive physics on all particles
 - [`game_memory`](/TaystJK/reference/commands/game_memory-84c83cc/) <span class="label ref-origin ref-origin-openjk">OpenJK</span> <span class="status-chip">2013-04-08 · needs review</span> — Runs `Svcmd_GameMem_f` in the game module.
-- [`ifCvar`](/TaystJK/reference/commands/ifcvar-a68f57c/) <span class="label ref-origin ref-origin-taystjk">TaystJK</span> <span class="status-chip">2022-04-20 · needs review</span> — Execute a command selected by comparisons against a cvar.
+- [`ifCvar`](/TaystJK/reference/commands/ifcvar-a68f57c/) <span class="label ref-origin ref-origin-newjk">NewJK / NewMod</span> <span class="meta-chip">2022-04-20</span> — Execute a command selected by comparisons against a cvar.
 - [`ja_guid`](/TaystJK/reference/cvars/ja_guid-ea397d3/) <span class="label ref-origin ref-origin-openjk">OpenJK</span> <span class="status-chip">2013-07-16 · needs review</span> — Client GUID
 - [`loadmod`](/TaystJK/reference/commands/loadmod-ab292a3/) <span class="label ref-origin ref-origin-eternaljk">EternalJK</span> <span class="status-chip">2018-02-24 · needs review</span> — Restart the renderer (with specified mod folder) - or change the resolution
 - [`minimize`](/TaystJK/reference/commands/minimize-0c3639c/) <span class="label ref-origin ref-origin-openjk">OpenJK</span> <span class="status-chip">2015-02-07 · needs review</span> — Runs `GLimp_Minimize` in the engine-shared module.
@@ -1411,7 +1410,7 @@ entry is real; treat the date as approximate.
 - [`s_sdlDriver`](/TaystJK/reference/cvars/s_sdldriver-b485ab9/) <span class="label ref-origin ref-origin-openjk">OpenJK</span> <span class="status-chip">2025-04-26 · needs review</span> — Controls `s_sdlDriver` in the engine-shared module.
 - [`s_sdlMixSamps`](/TaystJK/reference/cvars/s_sdlmixsamps-d909425/) <span class="label ref-origin ref-origin-openjk">OpenJK</span> <span class="status-chip">2015-02-07 · needs review</span> — Controls `s_sdlMixSamps` in the engine-shared module.
 - [`snd_mute_losefocus`](/TaystJK/reference/cvars/snd_mute_losefocus-56dc974/) <span class="label ref-origin ref-origin-eternaljk">EternalJK</span> <span class="status-chip">2019-03-21 · needs review</span> — Mute sound when game window is unfocused/minimized
-- [`strSub`](/TaystJK/reference/commands/strsub-25a3e39/) <span class="label ref-origin ref-origin-taystjk">TaystJK</span> <span class="status-chip">2022-04-20 · needs review</span> — Execute a command with $cvar$ value substitution.
+- [`strSub`](/TaystJK/reference/commands/strsub-25a3e39/) <span class="label ref-origin ref-origin-newjk">NewJK / NewMod</span> <span class="meta-chip">2022-04-20</span> — Execute a command with $cvar$ value substitution.
 - [`unset`](/TaystJK/reference/commands/unset-fff210f/) <span class="label ref-origin ref-origin-openjk">OpenJK</span> <span class="status-chip">2013-04-08 · needs review</span> — Unset a user generated cvar
 - [`unset_usercreated`](/TaystJK/reference/commands/unset_usercreated-9632483/) <span class="label ref-origin ref-origin-openjk">OpenJK</span> <span class="status-chip">2017-08-31 · needs review</span> — Unset all user generated cvars Use with caution!
 - [`userinfo`](/TaystJK/reference/commands/userinfo-c0214b8/) <span class="label ref-origin ref-origin-eternaljk">EternalJK</span> <span class="status-chip">2013-04-08 · needs review</span> — Runs `CL_Clientinfo_f` in the engine-client module.
@@ -1428,7 +1427,7 @@ entry is real; treat the date as approximate.
 - [`cl_downloadProtocol`](/TaystJK/reference/cvars/cl_downloadprotocol-a36f359/) <span class="label ref-origin ref-origin-jk2mv">JK2MV</span> <span class="status-chip">2024-03-21 · needs review</span> — Report whether the active download uses HTTP or UDP.
 - [`com_homepath`](/TaystJK/reference/cvars/com_homepath-79625df/) <span class="label ref-origin ref-origin-openjk">OpenJK</span> <span class="status-chip">2013-04-24 · needs review</span> — Controls `com_homepath` in the engine-shared module.
 - [`fs_apppath`](/TaystJK/reference/cvars/fs_apppath-eaa658c/) <span class="label ref-origin ref-origin-openjk">OpenJK</span> <span class="status-chip">2013-11-11 · needs review</span> — (Read Only) Location of OSX .app bundle
-- [`fs_forcegame`](/TaystJK/reference/cvars/fs_forcegame-3547288/) <span class="label ref-origin ref-origin-eternaljk">EternalJK</span> <span class="meta-chip">2023-11-29</span> — Folder to use for overriding of fs_game (can not be set by the server).
+- [`fs_forcegame`](/TaystJK/reference/cvars/fs_forcegame-3547288/) <span class="label ref-origin ref-origin-jk2mv">JK2MV</span> <span class="meta-chip">2023-11-29</span> — Folder to use for overriding of fs_game (can not be set by the server).
 - [`fs_portable`](/TaystJK/reference/cvars/fs_portable-b325657/) <span class="label ref-origin ref-origin-newjk">NewJK / NewMod</span> <span class="meta-chip">2018-07-22</span> — Disable fs_homepath and use only one folder for all game files
 - [`fs_restart`](/TaystJK/reference/commands/fs_restart-205ee49/) <span class="label ref-origin ref-origin-eternaljk">EternalJK</span> <span class="status-chip">2019-05-06 · needs review</span> — Restarts the filesystem if no module is currently using files from a pk3
 - [`sv_httpDownloads`](/TaystJK/reference/cvars/sv_httpdownloads-f79d64e/) <span class="label ref-origin ref-origin-jk2mv">JK2MV</span> <span class="meta-chip">2024-03-21</span> — Enable the server&#x27;s JK2MV-derived HTTP auto-download path.
@@ -1509,7 +1508,7 @@ entry is real; treat the date as approximate.
 - [`cg_autoLoginPass1`](/TaystJK/reference/cvars/cg_autologinpass1-d618f6e/) <span class="label ref-origin ref-origin-japro">jaPRO</span> <span class="status-chip">2018-09-03 · needs review</span> — Password to use.
 - [`cg_autoLoginPass2`](/TaystJK/reference/cvars/cg_autologinpass2-b2b6380/) <span class="label ref-origin ref-origin-japro">jaPRO</span> <span class="status-chip">2018-09-03 · needs review</span> — Controls `cg_autoLoginPass2` in the cgame module.
 - [`cg_autoLoginPass3`](/TaystJK/reference/cvars/cg_autologinpass3-2065bc1/) <span class="label ref-origin ref-origin-japro">jaPRO</span> <span class="status-chip">2018-09-03 · needs review</span> — Controls `cg_autoLoginPass3` in the cgame module.
-- [`cg_blood`](/TaystJK/reference/cvars/cg_blood-cc15687/) <span class="label ref-origin ref-origin-japro">jaPRO</span> <span class="meta-chip">2018-09-03</span> — JAPRO - Clientside - re add cg_blood
+- [`cg_blood`](/TaystJK/reference/cvars/cg_blood-cc15687/) <span class="label ref-origin ref-origin-japro">jaPRO</span> <span class="status-chip">2018-09-03 · needs review</span> — JAPRO - Clientside - re add cg_blood
 - [`cg_centerHeight`](/TaystJK/reference/cvars/cg_centerheight-bbab188/) <span class="label ref-origin ref-origin-japro">jaPRO</span> <span class="status-chip">2018-09-03 · needs review</span> — Controls `cg_centerHeight` in the cgame module.
 - [`cg_centerSize`](/TaystJK/reference/cvars/cg_centersize-615dcaa/) <span class="label ref-origin ref-origin-japro">jaPRO</span> <span class="status-chip">2018-09-03 · needs review</span> — Controls `cg_centerSize` in the cgame module.
 - [`cg_defaultFemaleModel`](/TaystJK/reference/cvars/cg_defaultfemalemodel-2d9b8bf/) <span class="label ref-origin ref-origin-japro">jaPRO</span> <span class="status-chip">2018-09-03 · needs review</span> — Controls `cg_defaultFemaleModel` in the cgame module.

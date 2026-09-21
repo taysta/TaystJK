@@ -71,6 +71,14 @@ Authored dates come from the exact registration's first content commit, PR dates
 | <span class="label ref-origin ref-origin-vulkan">Vulkan</span> | `2021-05-25` | — | `2021-05-25` | [`c4a9c87ef0e3`](https://github.com/JKSunny/EternalJK/commit/c4a9c87ef0e3171c80fd8c4e24df94e0fa1bcbe4) | Ultimate origin |
 | <span class="label ref-origin ref-origin-newjk">NewJK / NewMod</span> | `2026-08-09` | — | `2026-08-09` | [`686cbf9b649b`](https://github.com/jkanewmod/NewJK/commit/686cbf9b649bccf8d1a88df3b0ff72b0fc9ad177) | Other project appearance |
 
+### Later changes
+
+These commits occur after the ultimate-origin introduction on TaystJK's inherited first-parent lineage. Registration evidence is exact; behavior evidence requires a changed bound cvar reference or a changed registered command-handler hunk.
+
+| Date | Change source | Commit / subject | Evidence | Confidence |
+|:--|:--|:--|:--|:--|
+| `2022-03-19` | <span class="label ref-origin ref-origin-vulkan">Vulkan</span> | [`c1ffdd4281a4`](https://github.com/JKSunny/EternalJK/commit/c1ffdd4281a44040caf78e4b1793a907ec6e2b73)<br>Vulkan: Refactoring on pipeline creation methods | Changed an exact bound cvar-variable reference. `codemp/rd-vulkan/vk_pipelines.cpp` | `high` |
+
 ## Evidence
 
 - registration: [codemp/rd-vulkan/tr_init.cpp:924](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-vulkan/tr_init.cpp#L924) (Cvar_Get)

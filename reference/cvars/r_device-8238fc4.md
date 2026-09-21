@@ -65,7 +65,8 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 | Date | Change source | Commit / subject | Evidence | Confidence |
 |:--|:--|:--|:--|:--|
 | `2013-04-24` | <span class="label ref-origin ref-origin-openjk">OpenJK</span> | [`f6cadd34c6ab`](https://github.com/JACoders/OpenJK/commit/f6cadd34c6ab5788140aa01552ea87b5b4b7cec1)<br>Merge branch 'master' of https://github.com/Razish/OpenJK into modrender-port | Changed registration, default, flags, module, renderer scope, handler, or gating. `code/mac/mac_glimp.c` | `high` |
-| `2021-05-25` | <span class="label ref-origin ref-origin-vulkan">Vulkan</span> | [`c4a9c87ef0e3`](https://github.com/JKSunny/EternalJK/commit/c4a9c87ef0e3171c80fd8c4e24df94e0fa1bcbe4)<br>Added vulkan renderer | Changed registration, default, flags, module, renderer scope, handler, or gating. `codemp/rd-vulkan/tr_init.cpp` | `high` |
+| `2021-05-25` | <span class="label ref-origin ref-origin-vulkan">Vulkan</span> | [`c4a9c87ef0e3`](https://github.com/JKSunny/EternalJK/commit/c4a9c87ef0e3171c80fd8c4e24df94e0fa1bcbe4)<br>Added vulkan renderer | Changed registration, default, flags, module, renderer scope, handler, or gating; and an exact bound cvar-variable reference. `codemp/rd-vulkan/tr_init.cpp`, `codemp/rd-vulkan/tr_local.h`, `codemp/rd-vulkan/vk_instance.cpp` | `high` |
+| `2022-02-16` | <span class="label ref-origin ref-origin-vulkan">Vulkan</span> | [`5ce497f25666`](https://github.com/JKSunny/EternalJK/commit/5ce497f2566623286479896ff9c01952cf0eb146)<br>Vulkan: linux & mac compiler warnings/errors cleanup. | Changed an exact bound cvar-variable reference. `codemp/rd-vulkan/tr_init.cpp` | `high` |
 
 ## Evidence
 

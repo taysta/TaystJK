@@ -8,9 +8,9 @@ search_exclude: false
 
 # `fs_forcegame`
 
-<span class="label ref-origin ref-origin-eternaljk">EternalJK</span>
+<span class="label ref-origin ref-origin-jk2mv">JK2MV</span>
 
-Folder to use for overriding of fs_game (can not be set by the server).
+Overrides the active folder, allowing a server/client to store configs and other data in a specific folder independent of the active mod (`fs_game`). All new configs, screenshots, demos, etc. stored by the game end up in the specified folder. This folder may also be "base". Load order: | `base` | `fs_basegame cvar` | `fs_game cvar` | `fs_forcegame cvar`
 
 ## At a glance
 
@@ -48,13 +48,15 @@ No discrete value list is enforced or documented in the inspected source.
 
 ## Provenance
 
-Origin: <span class="label ref-origin ref-origin-eternaljk">EternalJK</span>
+Origin: <span class="label ref-origin ref-origin-jk2mv">JK2MV</span>
 
+- Ultimate-origin introduction: [`d99db29e816a`](https://github.com/mvdevs/jk2mv/commit/d99db29e816a526986efe41769ee56fb3557fad5) in <span class="label ref-origin ref-origin-jk2mv">JK2MV</span> (content authored `2019-02-17`, integrated `2020-01-01`)
 - TaystJK integration evidence: [`596ae40cc9aa`](https://github.com/taysta/TaystJK/commit/596ae40cc9aa24600f282fdac79b79b2ebef0be0)
 - Origin pull request: [#52](https://github.com/taysta/TaystJK/pull/52)
-- Attribution method: `identifier-adjacent-explicit-credit`
+- Upstream registration evidence: [src/qcommon/files.cpp:3442](https://github.com/mvdevs/jk2mv/blame/7d601454c3db68492289d4d4e3dc30bff39e4246/src/qcommon/files.cpp#L3442)
+- Attribution method: `earliest-authored-project-introduction`
 - Attribution confidence: `high`
-- Notes: openjk retains origin because content authorship and PR submission predate the project that merged the work first. An identifier-adjacent source/commit/PR line explicitly credits eternaljk.
+- Notes: jk2mv retains origin because content authorship and PR submission predate the project that merged the work first. The integration PR links openjk as the immediate port source; jk2mv has an earlier authored introduction and retains origin. Dated commit evidence identifies later registration changes relative to the origin snapshot.
 
 ### Dated project introductions
 
@@ -62,12 +64,14 @@ Authored dates come from the exact registration's first content commit, PR dates
 
 | Project | Authored | PR opened | Integrated | Commit | Relationship |
 |:--|:--|:--|:--|:--|:--|
-| <span class="label ref-origin ref-origin-jk2mv">JK2MV</span> | `2019-02-17` | — | `2020-01-01` | [`d99db29e816a`](https://github.com/mvdevs/jk2mv/commit/d99db29e816a526986efe41769ee56fb3557fad5) | Other project appearance |
+| <span class="label ref-origin ref-origin-jk2mv">JK2MV</span> | `2019-02-17` | — | `2020-01-01` | [`d99db29e816a`](https://github.com/mvdevs/jk2mv/commit/d99db29e816a526986efe41769ee56fb3557fad5) | Ultimate origin |
 | <span class="label ref-origin ref-origin-newjk">NewJK / NewMod</span> | `2019-10-18` | — | `2019-10-18` | [`ca19cb761e35`](https://github.com/jkanewmod/NewJK/commit/ca19cb761e35a040fac8b4992c6221c4d5a1127b) | Other project appearance |
 | <span class="label ref-origin ref-origin-openjk">OpenJK</span> | `2023-11-06` | [2023-11-07](https://github.com/JACoders/OpenJK/pull/1185) | `2024-04-07` | [`065d32955f56`](https://github.com/JACoders/OpenJK/commit/065d32955f56f595c93498a102c16a1d5a051672) | Other project appearance |
 | <span class="label ref-origin ref-origin-taystjk">TaystJK</span> | `2023-11-06` | [2023-11-27](https://github.com/taysta/TaystJK/pull/52) | `2023-11-28` | [`596ae40cc9aa`](https://github.com/taysta/TaystJK/commit/596ae40cc9aa24600f282fdac79b79b2ebef0be0) | Other project appearance |
 | <span class="label ref-origin ref-origin-japro">jaPRO</span> | `2023-11-06` | — | `2023-11-28` | [`596ae40cc9aa`](https://github.com/videoP/jaPRO/commit/596ae40cc9aa24600f282fdac79b79b2ebef0be0) | Other project appearance |
 | <span class="label ref-origin ref-origin-rend2">rend2</span> | `2023-11-06` | — | `2024-04-09` | [`b688bdf3ea00`](https://github.com/SomaZ/OpenJK/commit/b688bdf3ea00319185f6b027ef61c6d7f506d36f) | Other project appearance |
+
+Immediate port-source credit: <span class="label ref-origin ref-origin-openjk">OpenJK</span>. The earlier dated project remains the ultimate origin.
 
 ### Later changes
 
@@ -75,6 +79,7 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 | Date | Change source | Commit / subject | Evidence | Confidence |
 |:--|:--|:--|:--|:--|
+| `2023-11-28` | <span class="label ref-origin ref-origin-taystjk">TaystJK</span> | [`596ae40cc9aa`](https://github.com/taysta/TaystJK/commit/596ae40cc9aa24600f282fdac79b79b2ebef0be0) · [PR #52](https://github.com/taysta/TaystJK/pull/52)<br>Merge pull request #52 from taysta/daggo-fs | Changed registration, default, flags, module, renderer scope, handler, or gating. `codemp/qcommon/files.cpp` | `medium` |
 | `2024-01-17` | <span class="label ref-origin ref-origin-eternaljk">EternalJK</span> | [`0da288606eb0`](https://github.com/taysta/TaystJK/commit/0da288606eb0ef10bc481321a3265faa0fdf1f71) · [PR #98](https://github.com/taysta/TaystJK/pull/98)<br>Make fs_forcegame and fs_basegame default to empty for dedicated servers. (#98) | Changed registration, default, flags, module, renderer scope, handler, or gating. `codemp/qcommon/files.cpp` | `medium` |
 | `2024-02-27` | <span class="label ref-origin ref-origin-taystjk">TaystJK</span> | [`dbbea6b8a0bf`](https://github.com/taysta/TaystJK/commit/dbbea6b8a0bfb65a68e4e38c818bcfb0b49f929e) · [PR #31](https://github.com/taysta/TaystJK/pull/31)<br>Rename to TaystJK (#31) | Changed registration, default, flags, module, renderer scope, handler, or gating. `codemp/qcommon/files.cpp` | `high` |
 | `2026-06-16` | <span class="label ref-origin ref-origin-taystjk">TaystJK</span> | [`07c65a6f01a8`](https://github.com/taysta/TaystJK/commit/07c65a6f01a8023f2977bc1255f62a08d6154e3a) · [PR #341](https://github.com/taysta/TaystJK/pull/341)<br>Merge pull request #341 from taysta/basegame | Changed registration, default, flags, module, renderer scope, handler, or gating; and an exact bound cvar-variable reference. `codemp/qcommon/files.cpp` | `high` |
@@ -88,5 +93,6 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 - behavior: [codemp/qcommon/files.cpp:3988](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/qcommon/files.cpp#L3988)
 - behavior: [codemp/qcommon/files.cpp:3989](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/qcommon/files.cpp#L3989)
 - behavior: [codemp/qcommon/files.cpp:4480](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/qcommon/files.cpp#L4480)
+- upstream-documentation: [CVARS.rst:36](https://github.com/mvdevs/jk2mv/blame/7d601454c3db68492289d4d4e3dc30bff39e4246/CVARS.rst#L36)
 
 <p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/6ff04c0baf588a89e5ec9361ad7a0992941d7655"><code>6ff04c0baf58</code></a> on 2026-09-09. Anything merged after that is not reflected here.</p>

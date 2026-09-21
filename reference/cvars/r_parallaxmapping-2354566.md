@@ -71,7 +71,8 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 | Date | Change source | Commit / subject | Evidence | Confidence |
 |:--|:--|:--|:--|:--|
-| `2025-07-05` | <span class="label ref-origin ref-origin-rend2">rend2</span> | [`80ee9361579f`](https://github.com/taysta/TaystJK/commit/80ee9361579f32063f0399d631f532d9e0b255d4) · [PR #249](https://github.com/taysta/TaystJK/pull/249)<br>Merge pull request #249 from taysta/rend2-update | Changed registration, default, flags, module, renderer scope, handler, or gating. `codemp/rd-rend2/tr_init.cpp` | `medium` |
+| `2024-02-03` | <span class="label ref-origin ref-origin-taystjk">TaystJK</span> | [`0c789787f79c`](https://github.com/taysta/TaystJK/commit/0c789787f79c23c977ebb59cc96a6d4d97815f69) · [PR #110](https://github.com/taysta/TaystJK/pull/110)<br>Rend2 updates (#110) | Changed an exact bound cvar-variable reference. `shared/rd-rend2/tr_local.h` | `medium` |
+| `2025-07-05` | <span class="label ref-origin ref-origin-rend2">rend2</span> | [`80ee9361579f`](https://github.com/taysta/TaystJK/commit/80ee9361579f32063f0399d631f532d9e0b255d4) · [PR #249](https://github.com/taysta/TaystJK/pull/249)<br>Merge pull request #249 from taysta/rend2-update | Changed registration, default, flags, module, renderer scope, handler, or gating; and an exact bound cvar-variable reference. `codemp/rd-rend2/tr_init.cpp`, `shared/rd-rend2/tr_shade.cpp` | `medium` |
 
 ## Evidence
 

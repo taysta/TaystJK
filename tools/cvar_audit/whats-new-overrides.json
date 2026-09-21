@@ -7,9 +7,12 @@
     "A feature moves out of this file once its page exists and declares whats_new in",
     "front matter; until then the build warns about the unresolved destination.",
     "Seed summaries are provisional and must be verified against source when the page",
-    "that documents them is written."
+    "that documents them is written.",
+    "cg_smoothClients is a base-game cvar; hide its EternalJK comparison row so it is not presented as a new feature."
   ],
-  "entries": {},
+  "entries": {
+    "cg_smoothClients": { "hide": true }
+  },
   "features": [
     {
       "title": ".oshader override shaders",

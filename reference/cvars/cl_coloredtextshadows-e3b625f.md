@@ -71,7 +71,9 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 | Date | Change source | Commit / subject | Evidence | Confidence |
 |:--|:--|:--|:--|:--|
-| `2018-11-30` | <span class="label ref-origin ref-origin-eternaljk">EternalJK</span> | [`b02278460a3d`](https://github.com/eternalcodes/EternalJK/commit/b02278460a3dad1b378a0b24994958c621172848)<br>Register cl_coloredTextShadows in R_InitFonts | Changed registration, default, flags, module, renderer scope, handler, or gating. `codemp/rd-common/tr_font.cpp` | `medium` |
+| `2017-12-29` | <span class="label ref-origin ref-origin-eternaljk">EternalJK</span> | [`77d8c46887a4`](https://github.com/eternalcodes/EternalJK/commit/77d8c46887a48609c39e0a70652acecf1ccc1d9d)<br>Change ri to value type for cl_coloredTextShadows | Changed an exact bound cvar-variable reference. `codemp/rd-common/tr_font.cpp` | `medium` |
+| `2018-09-03` | <span class="label ref-origin ref-origin-japro">jaPRO</span> | [`bdcd618c6771`](https://github.com/videoP/jaPRO/commit/bdcd618c67713b86946b720d791c382d3908d97c)<br>Import japro cgame | Changed an exact bound cvar-variable reference. `codemp/rd-common/tr_font.cpp` | `high` |
+| `2018-11-30` | <span class="label ref-origin ref-origin-eternaljk">EternalJK</span> | [`b02278460a3d`](https://github.com/eternalcodes/EternalJK/commit/b02278460a3dad1b378a0b24994958c621172848)<br>Register cl_coloredTextShadows in R_InitFonts | Changed registration, default, flags, module, renderer scope, handler, or gating; and an exact bound cvar-variable reference. `codemp/rd-common/tr_font.cpp` | `medium` |
 
 ## Evidence
 

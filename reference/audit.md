@@ -17,14 +17,21 @@ This is the deliberately untidy review queue behind the published reference. `un
 | Group | Count |
 |:--|--:|
 | Base Jedi Academy | 1024 |
-| EternalJK | 148 |
-| JK2MV | 14 |
-| NewJK / NewMod | 10 |
-| OpenJK | 167 |
-| TaystJK | 79 |
+| EternalJK | 145 |
+| JK2MV | 16 |
+| NewJK / NewMod | 12 |
+| OpenJK | 170 |
+| TaystJK | 75 |
 | Vulkan | 24 |
 | jaPRO | 458 |
 | rend2 | 90 |
+
+## Runtime reconciliation
+## Hidden from the what's-new page (1)
+
+Suppressed by `tools/cvar_audit/whats-new-overrides.json`. Each still has a detail page and still appears in the reference.
+
+- `cg_smoothClients`
 
 ## Runtime reconciliation
 
@@ -43,7 +50,7 @@ Runtime-only commands: none.
 
 The dump was captured from stdout after loading `mp/ffa3`; stdout does not use the client console scrollback buffer. Cvars and commands were dumped in separate launches so neither list could displace the other.
 
-## Provenance needing review (775)
+## Provenance needing review (774)
 
 | Name | Kind | Module | Summary |
 |:--|:--|:--|:--|
@@ -68,6 +75,7 @@ The dump was captured from stdout after loading `mp/ffa3`; stdout does not use t
 | [`cg_autoRecordDemo`](/TaystJK/reference/cvars/cg_autorecorddemo-fad7d88/) | cvar | cgame | Controls `cg_autoRecordDemo` in the cgame module. |
 | [`cg_autoRecordRaceDemo`](/TaystJK/reference/cvars/cg_autorecordracedemo-7ac473c/) | cvar | cgame | Controls `cg_autoRecordRaceDemo` in the cgame module. |
 | [`cg_autoScreenshot`](/TaystJK/reference/cvars/cg_autoscreenshot-34930f2/) | cvar | cgame | Automatically take a screenshot at end of round. |
+| [`cg_blood`](/TaystJK/reference/cvars/cg_blood-cc15687/) | cvar | cgame | JAPRO - Clientside - re add cg_blood |
 | [`cg_centerHeight`](/TaystJK/reference/cvars/cg_centerheight-bbab188/) | cvar | cgame | Controls `cg_centerHeight` in the cgame module. |
 | [`cg_centerSize`](/TaystJK/reference/cvars/cg_centersize-615dcaa/) | cvar | cgame | Controls `cg_centerSize` in the cgame module. |
 | [`cg_chatBoxCutOffLength`](/TaystJK/reference/cvars/cg_chatboxcutofflength-abf6a17/) | cvar | cgame | Width of a line in the chatbox before breaking to a new one |
@@ -694,7 +702,6 @@ The dump was captured from stdout after loading `mp/ffa3`; stdout does not use t
 | [`gc`](/TaystJK/reference/commands/gc-ec6d908/) | command | game | Runs `Cmd_GameCommand_f` in the game module. |
 | [`giveother`](/TaystJK/reference/commands/giveother-c475c5c/) | command | game | Runs `Cmd_GiveOther_f` in the game module. |
 | [`hide`](/TaystJK/reference/commands/hide-93c8c96/) | command | cgame | Forwards this command to the connected game server. |
-| [`ifCvar`](/TaystJK/reference/commands/ifcvar-a68f57c/) | command | engine-shared | Execute a command selected by comparisons against a cvar. |
 | [`ignoreVGS`](/TaystJK/reference/commands/ignorevgs-46dc77b/) | command | cgame | Runs `CG_IgnoreVGS_f` in the cgame module. |
 | [`jetpack`](/TaystJK/reference/commands/jetpack-806aec3/) | command | game | Runs `Cmd_Jetpack_f` in the game module. |
 | [`jump`](/TaystJK/reference/commands/jump-271e9a5/) | command | cgame | Cmd_alive not needed but i think it resets on joingame cuz forcepoints? |
@@ -771,7 +778,6 @@ The dump was captured from stdout after loading `mp/ffa3`; stdout does not use t
 | [`stopvideo`](/TaystJK/reference/commands/stopvideo-db7ecec/) | command | engine-client | Stop avi recording |
 | [`strafeHelper`](/TaystJK/reference/commands/strafehelper-bdb34b4/) | command | cgame | Runs `CG_StrafeHelper_f` in the cgame module. |
 | [`strafeTrail`](/TaystJK/reference/commands/strafetrail-dddd025/) | command | cgame | Runs `CG_AddStrafeTrail_f` in the cgame module. |
-| [`strSub`](/TaystJK/reference/commands/strsub-25a3e39/) | command | engine-shared | Execute a command with $cvar$ value substitution. |
 | [`stylePlayer`](/TaystJK/reference/commands/styleplayer-33ef966/) | command | cgame | Runs `CG_StylePlayer_f` in the cgame module. |
 | [`sv_banaddr`](/TaystJK/reference/commands/sv_banaddr-5213a27/) | command | engine-server | Bans a user |
 | [`sv_bandel`](/TaystJK/reference/commands/sv_bandel-d30e97f/) | command | engine-server | Removes a ban |
@@ -823,7 +829,7 @@ The dump was captured from stdout after loading `mp/ffa3`; stdout does not use t
 | [`write`](/TaystJK/reference/commands/write-e1d0c6c/) | command | engine-shared | Write the configuration to file |
 | [`ysal`](/TaystJK/reference/commands/ysal-49fb494/) | command | cgame | Forwards this command to the connected game server. |
 
-## Semantics or options needing review (1653)
+## Semantics or options needing review (1652)
 
 | Name | Kind | Module | Summary |
 |:--|:--|:--|:--|
@@ -885,6 +891,7 @@ The dump was captured from stdout after loading `mp/ffa3`; stdout does not use t
 | [`cg_autoRecordRaceDemo`](/TaystJK/reference/cvars/cg_autorecordracedemo-7ac473c/) | cvar | cgame | Controls `cg_autoRecordRaceDemo` in the cgame module. |
 | [`cg_autoScreenshot`](/TaystJK/reference/cvars/cg_autoscreenshot-34930f2/) | cvar | cgame | Automatically take a screenshot at end of round. |
 | [`cg_autoSwitch`](/TaystJK/reference/cvars/cg_autoswitch-5936261/) | cvar | cgame | Controls `cg_autoSwitch` in the cgame module. |
+| [`cg_blood`](/TaystJK/reference/cvars/cg_blood-cc15687/) | cvar | cgame | JAPRO - Clientside - re add cg_blood |
 | [`cg_bobPitch`](/TaystJK/reference/cvars/cg_bobpitch-6c78935/) | cvar | cgame | Controls `cg_bobPitch` in the cgame module. |
 | [`cg_bobRoll`](/TaystJK/reference/cvars/cg_bobroll-3321473/) | cvar | cgame | Controls `cg_bobRoll` in the cgame module. |
 | [`cg_bobUp`](/TaystJK/reference/cvars/cg_bobup-5e07470/) | cvar | cgame | Controls `cg_bobUp` in the cgame module. |
@@ -2289,7 +2296,6 @@ The dump was captured from stdout after loading `mp/ffa3`; stdout does not use t
 | [`god`](/TaystJK/reference/commands/god-21298df/) | command | cgame | Forwards this command to the connected game server. |
 | [`haste`](/TaystJK/reference/commands/haste-08a06a9/) | command | game | Runs `Cmd_Haste_f` in the game module. |
 | [`hide`](/TaystJK/reference/commands/hide-93c8c96/) | command | cgame | Forwards this command to the connected game server. |
-| [`ifCvar`](/TaystJK/reference/commands/ifcvar-a68f57c/) | command | engine-shared | Execute a command selected by comparisons against a cvar. |
 | [`ignoreVGS`](/TaystJK/reference/commands/ignorevgs-46dc77b/) | command | cgame | Runs `CG_IgnoreVGS_f` in the cgame module. |
 | [`imagecacheinfo`](/TaystJK/reference/commands/imagecacheinfo-a198210/) | command | renderer | Runs `RE_RegisterImages_Info_f` in the renderer module. |
 | [`imagelist`](/TaystJK/reference/commands/imagelist-4c06ba7/) | command | renderer | Runs `R_ImageList_f` in the renderer module. |
@@ -2409,7 +2415,6 @@ The dump was captured from stdout after loading `mp/ffa3`; stdout does not use t
 | [`stopvideo`](/TaystJK/reference/commands/stopvideo-db7ecec/) | command | engine-client | Stop avi recording |
 | [`strafeHelper`](/TaystJK/reference/commands/strafehelper-bdb34b4/) | command | cgame | Runs `CG_StrafeHelper_f` in the cgame module. |
 | [`strafeTrail`](/TaystJK/reference/commands/strafetrail-dddd025/) | command | cgame | Runs `CG_AddStrafeTrail_f` in the cgame module. |
-| [`strSub`](/TaystJK/reference/commands/strsub-25a3e39/) | command | engine-shared | Execute a command with $cvar$ value substitution. |
 | [`stylePlayer`](/TaystJK/reference/commands/styleplayer-33ef966/) | command | cgame | Runs `CG_StylePlayer_f` in the cgame module. |
 | [`sv_banaddr`](/TaystJK/reference/commands/sv_banaddr-5213a27/) | command | engine-server | Bans a user |
 | [`sv_bandel`](/TaystJK/reference/commands/sv_bandel-d30e97f/) | command | engine-server | Removes a ban |
@@ -2481,7 +2486,7 @@ The dump was captured from stdout after loading `mp/ffa3`; stdout does not use t
 | [`ysal`](/TaystJK/reference/commands/ysal-49fb494/) | command | cgame | Forwards this command to the connected game server. |
 | [`zone_memrecovertest`](/TaystJK/reference/commands/zone_memrecovertest-0999822/) | command | engine-shared | Runs `Z_MemRecoverTest_f` in the engine-shared module. |
 
-## Post-origin change history (1531 entries; 8272 events)
+## Post-origin change history (1597 entries; 8409 events)
 
 These entries have dated post-origin registration or behavior evidence on TaystJK's inherited first-parent history. Each detail page links the exact commit and records whether attribution comes from explicit credit, a unique project mainline, shared lineage, or an unresolved registration difference.
 
@@ -3129,7 +3134,13 @@ These entries have dated post-origin registration or behavior evidence on TaystJ
 | [`r_allowExtensions`](/TaystJK/reference/cvars/r_allowextensions-57dba23/) | cvar | renderer | Allow GL extensions |
 | [`r_allowSoftwareGL`](/TaystJK/reference/cvars/r_allowsoftwaregl-fab7aac/) | cvar | engine-shared | Controls `r_allowSoftwareGL` in the engine-shared module. |
 | [`r_ambientScale`](/TaystJK/reference/cvars/r_ambientscale-2aa83ee/) | cvar | renderer | Controls `r_ambientScale` in the renderer module. |
+| [`r_anaglyphMode`](/TaystJK/reference/cvars/r_anaglyphmode-756890b/) | cvar | renderer | Controls `r_anaglyphMode` in the renderer module. |
+| [`r_arb_buffer_storage`](/TaystJK/reference/cvars/r_arb_buffer_storage-ac1e1c0/) | cvar | renderer | Disable/enable buffer storage GL extension |
+| [`r_arb_half_float_pixel`](/TaystJK/reference/cvars/r_arb_half_float_pixel-6ad3bad/) | cvar | renderer | Disable/enable ARB_half_float GL extension |
+| [`r_arb_seamless_cube_map`](/TaystJK/reference/cvars/r_arb_seamless_cube_map-c3396c7/) | cvar | renderer | Disable/enable seamless cube map filtering GL extension |
+| [`r_arb_vertex_type_2_10_10_10_rev`](/TaystJK/reference/cvars/r_arb_vertex_type_2_10_10_10_rev-6fa9dbe/) | cvar | renderer | Disable/enable 1010102 UI data type |
 | [`r_aspectCorrectFonts`](/TaystJK/reference/cvars/r_aspectcorrectfonts-be7251d/) | cvar | renderer | Controls `r_aspectCorrectFonts` in the renderer module. |
+| [`r_autoExposure`](/TaystJK/reference/cvars/r_autoexposure-bbfaf39/) | cvar | renderer | Disable/enable auto exposure |
 | [`r_autolodscalevalue`](/TaystJK/reference/cvars/r_autolodscalevalue-ea276af/) | cvar | renderer | Controls `r_autolodscalevalue` in the renderer module. |
 | [`r_autoMap`](/TaystJK/reference/cvars/r_automap-3176cbc/) | cvar | renderer | Controls `r_autoMap` in the renderer module. |
 | [`r_autoMapBackAlpha`](/TaystJK/reference/cvars/r_automapbackalpha-9645661/) | cvar | renderer | Controls `r_autoMapBackAlpha` in the renderer module. |
@@ -3140,33 +3151,47 @@ These entries have dated post-origin registration or behavior evidence on TaystJ
 | [`r_autoMapY`](/TaystJK/reference/cvars/r_automapy-0791303/) | cvar | cgame | Controls `r_autoMapY` in the cgame module. |
 | [`r_availableModes`](/TaystJK/reference/cvars/r_availablemodes-bd904ae/) | cvar | engine-shared | Controls `r_availableModes` in the engine-shared module. |
 | [`r_aviMotionJpegQuality`](/TaystJK/reference/cvars/r_avimotionjpegquality-108e51f/) | cvar | renderer | Controls `r_aviMotionJpegQuality` in the renderer module. |
+| [`r_baseNormalX`](/TaystJK/reference/cvars/r_basenormalx-132f822/) | cvar | renderer | Controls `r_baseNormalX` in the renderer module. |
+| [`r_baseNormalY`](/TaystJK/reference/cvars/r_basenormaly-f7f7006/) | cvar | renderer | Controls `r_baseNormalY` in the renderer module. |
+| [`r_baseParallax`](/TaystJK/reference/cvars/r_baseparallax-6459a61/) | cvar | renderer | Controls `r_baseParallax` in the renderer module. |
 | [`r_baseSpecular`](/TaystJK/reference/cvars/r_basespecular-24a3c96/) | cvar | renderer | Controls `r_baseSpecular` in the renderer module. |
 | [`r_bloom`](/TaystJK/reference/cvars/r_bloom-656b99d/) | cvar | renderer | Enable bloom effect Requires \\r_fbo 1 |
 | [`r_bloom_intensity`](/TaystJK/reference/cvars/r_bloom_intensity-78b7afa/) | cvar | renderer | Final bloom blend factor, default is 0.15 |
 | [`r_bloom_threshold`](/TaystJK/reference/cvars/r_bloom_threshold-76fa432/) | cvar | renderer | Color level to extract to bloom texture, default is 0.05 |
+| [`r_cameraExposure`](/TaystJK/reference/cvars/r_cameraexposure-7f22094/) | cvar | renderer | Controls `r_cameraExposure` in the renderer module. |
 | [`r_centerWindow`](/TaystJK/reference/cvars/r_centerwindow-5f0b845/) | cvar | renderer | Controls `r_centerWindow` in the renderer module. |
 | [`r_clear`](/TaystJK/reference/cvars/r_clear-b558454/) | cvar | renderer | Controls `r_clear` in the renderer module. |
 | [`r_colorbits`](/TaystJK/reference/cvars/r_colorbits-4da06ec/) | cvar | renderer | Controls `r_colorbits` in the renderer module. |
 | [`r_colorMipLevels`](/TaystJK/reference/cvars/r_colormiplevels-3b94fc7/) | cvar | renderer | Controls `r_colorMipLevels` in the renderer module. |
+| [`r_cubeMapping`](/TaystJK/reference/cvars/r_cubemapping-86bf3af/) | cvar | renderer | Disable/enable cubemapping |
+| [`r_cubeMappingBounces`](/TaystJK/reference/cvars/r_cubemappingbounces-e20074f/) | cvar | renderer | Renders cubemaps multiple times to get reflections in reflections |
 | [`r_cullRoofFaces`](/TaystJK/reference/cvars/r_cullrooffaces-6bb0064/) | cvar | renderer | Controls `r_cullRoofFaces` in the renderer module. |
 | [`r_customheight`](/TaystJK/reference/cvars/r_customheight-380d198/) | cvar | renderer | Controls `r_customheight` in the renderer module. |
 | [`r_customwidth`](/TaystJK/reference/cvars/r_customwidth-40fe778/) | cvar | renderer | Controls `r_customwidth` in the renderer module. |
+| [`r_debugContext`](/TaystJK/reference/cvars/r_debugcontext-c9977dd/) | cvar | renderer | Controls `r_debugContext` in the renderer module. |
 | [`r_debuglight`](/TaystJK/reference/cvars/r_debuglight-b8d0433/) | cvar | renderer | Controls `r_debugLight` in the renderer module. |
 | [`r_debugSort`](/TaystJK/reference/cvars/r_debugsort-3e4fd35/) | cvar | renderer | Controls `r_debugSort` in the renderer module. |
 | [`r_debugSurface`](/TaystJK/reference/cvars/r_debugsurface-abe21fc/) | cvar | renderer | Controls `cv2` in the renderer module. |
 | [`r_debugSurfaceUpdate`](/TaystJK/reference/cvars/r_debugsurfaceupdate-3194b25/) | cvar | engine-shared | Controls `cv` in the engine-shared module. |
+| [`r_debugWeather`](/TaystJK/reference/cvars/r_debugweather-5e519c7/) | cvar | renderer | Controls `r_debugWeather` in the renderer module. |
+| [`r_deluxeMapping`](/TaystJK/reference/cvars/r_deluxemapping-a9c1e61/) | cvar | renderer | Disable/enable reading deluxemaps when compiled with q3map2 |
+| [`r_deluxeSpecular`](/TaystJK/reference/cvars/r_deluxespecular-b2f4cf3/) | cvar | renderer | Disable/enable/scale the specular response from deluxemaps |
 | [`r_depthbits`](/TaystJK/reference/cvars/r_depthbits-16d7986/) | cvar | renderer | Controls `r_depthbits` in the renderer module. |
+| [`r_depthPrepass`](/TaystJK/reference/cvars/r_depthprepass-3fbd4eb/) | cvar | renderer | Controls `r_depthPrepass` in the renderer module. |
 | [`r_detailtextures`](/TaystJK/reference/cvars/r_detailtextures-a15c8ff/) | cvar | renderer | Controls `r_detailTextures` in the renderer module. |
 | [`r_device`](/TaystJK/reference/cvars/r_device-8238fc4/) | cvar | renderer | Select physical device to render: 0+ - use explicit device index -1 - first discrete GPU -2 - first integrated GPU |
 | [`r_directedScale`](/TaystJK/reference/cvars/r_directedscale-6aee8ad/) | cvar | renderer | Controls `r_directedScale` in the renderer module. |
 | [`r_displayRefresh`](/TaystJK/reference/cvars/r_displayrefresh-59d8e1d/) | cvar | renderer | Controls `r_displayRefresh` in the renderer module. |
 | [`r_distanceCull`](/TaystJK/reference/cvars/r_distancecull-9ac0a11/) | cvar | renderer | Controls `r_distanceCull` in the renderer module. |
+| [`r_dither`](/TaystJK/reference/cvars/r_dither-aea5dc5/) | cvar | renderer | Set dithering mode: 0 - disabled 1 - ordered Requires \\r_fbo 1 |
 | [`r_dlightBacks`](/TaystJK/reference/cvars/r_dlightbacks-6e40190/) | cvar | renderer | Dlight non-facing surfaces for continuity |
 | [`r_dlightMode`](/TaystJK/reference/cvars/r_dlightmode-f87fa68/) | cvar | renderer | Controls `r_dlightMode` in the renderer module. |
 | [`r_dlightStyle`](/TaystJK/reference/cvars/r_dlightstyle-fcbcb83/) | cvar | renderer | Controls `r_dlightStyle` in the renderer module. |
+| [`r_drawBuffer`](/TaystJK/reference/cvars/r_drawbuffer-a1f545a/) | cvar | renderer | Controls `r_drawBuffer` in the renderer module. |
 | [`r_drawentities`](/TaystJK/reference/cvars/r_drawentities-ea638d1/) | cvar | renderer | Controls `r_drawentities` in the renderer module. |
 | [`r_drawfog`](/TaystJK/reference/cvars/r_drawfog-89ae687/) | cvar | renderer | Select disabled, software, or hardware fog rendering. |
 | [`r_drawSun`](/TaystJK/reference/cvars/r_drawsun-4ed1bcb/) | cvar | renderer | Controls `r_drawSun` in the renderer module. |
+| [`r_drawSunRays`](/TaystJK/reference/cvars/r_drawsunrays-f84fc82/) | cvar | renderer | Controls `r_drawSunRays` in the renderer module. |
 | [`r_drawTerrain`](/TaystJK/reference/cvars/r_drawterrain-7e74ebd/) | cvar | renderer | Controls `r_drawTerrain` in the renderer module. |
 | [`r_drawworld`](/TaystJK/reference/cvars/r_drawworld-f118f2d/) | cvar | renderer | Controls `r_drawworld` in the renderer module. |
 | [`r_DynamicGlow`](/TaystJK/reference/cvars/r_dynamicglow-e23bada/) | cvar | renderer | Enable dynamic glow effect Requires \\r_fbo 1 |
@@ -3179,34 +3204,57 @@ These entries have dated post-origin registration or behavior evidence on TaystJ
 | [`r_DynamicGlowWidth`](/TaystJK/reference/cvars/r_dynamicglowwidth-7d73e61/) | cvar | renderer | Controls `r_DynamicGlowWidth` in the renderer module. |
 | [`r_dynamiclight`](/TaystJK/reference/cvars/r_dynamiclight-917a4f5/) | cvar | renderer | Controls `r_dynamiclight` in the renderer module. |
 | [`r_environmentMapping`](/TaystJK/reference/cvars/r_environmentmapping-4bbfdcf/) | cvar | renderer | Controls `r_environmentMapping` in the renderer module. |
+| [`r_ext_alpha_to_coverage`](/TaystJK/reference/cvars/r_ext_alpha_to_coverage-5cfb4fd/) | cvar | renderer | Controls `r_ext_alpha_to_coverage` in the renderer module. |
 | [`r_ext_compiled_vertex_array`](/TaystJK/reference/cvars/r_ext_compiled_vertex_array-d6b2813/) | cvar | renderer | Unused |
 | [`r_ext_compress_lightmaps`](/TaystJK/reference/cvars/r_ext_compress_lightmaps-1ddfa36/) | cvar | renderer | Controls `r_ext_compressed_lightmaps` in the renderer module. |
 | [`r_ext_compress_textures`](/TaystJK/reference/cvars/r_ext_compress_textures-f9b3b78/) | cvar | renderer | Disable/enable texture compression |
+| [`r_ext_draw_range_elements`](/TaystJK/reference/cvars/r_ext_draw_range_elements-17a8b5e/) | cvar | renderer | Unused |
 | [`r_ext_gamma_control`](/TaystJK/reference/cvars/r_ext_gamma_control-8e482d7/) | cvar | renderer | Registered by the current source, but no user-facing behavior description has been verified. |
+| [`r_ext_max_anisotropy`](/TaystJK/reference/cvars/r_ext_max_anisotropy-ae414a3/) | cvar | renderer | Controls `r_ext_max_anisotropy` in the renderer module. |
+| [`r_ext_multi_draw_arrays`](/TaystJK/reference/cvars/r_ext_multi_draw_arrays-47cef48/) | cvar | renderer | Unused |
 | [`r_ext_multisample`](/TaystJK/reference/cvars/r_ext_multisample-9b2ea2a/) | cvar | renderer | Disable/enable framebuffer MSAA |
 | [`r_ext_multitexture`](/TaystJK/reference/cvars/r_ext_multitexture-7dae98e/) | cvar | renderer | Unused |
 | [`r_ext_preferred_tc_method`](/TaystJK/reference/cvars/r_ext_preferred_tc_method-cbfcdd9/) | cvar | renderer | Preferred texture compression method |
+| [`r_ext_supersample`](/TaystJK/reference/cvars/r_ext_supersample-75d1107/) | cvar | renderer | Controls `r_ext_supersample` in the renderer module. |
 | [`r_ext_texture_env_add`](/TaystJK/reference/cvars/r_ext_texture_env_add-40420dc/) | cvar | renderer | Unused |
 | [`r_ext_texture_filter_anisotropic`](/TaystJK/reference/cvars/r_ext_texture_filter_anisotropic-19cfe9c/) | cvar | renderer | Disable/enable anisotropic texture filtering |
+| [`r_ext_texture_float`](/TaystJK/reference/cvars/r_ext_texture_float-f4a8764/) | cvar | renderer | Disable/enable floating-point textures |
+| [`r_externalGLSL`](/TaystJK/reference/cvars/r_externalglsl-5987fc7/) | cvar | renderer | Controls `r_externalGLSL` in the renderer module. |
 | [`r_facePlaneCull`](/TaystJK/reference/cvars/r_faceplanecull-527e83b/) | cvar | renderer | Controls `r_facePlaneCull` in the renderer module. |
 | [`r_fastsky`](/TaystJK/reference/cvars/r_fastsky-24089fb/) | cvar | renderer | Controls `r_fastsky` in the renderer module. |
+| [`r_fbo`](/TaystJK/reference/cvars/r_fbo-022d66e/) | cvar | renderer | Controls `r_fbo` in the renderer module. |
 | [`r_finish`](/TaystJK/reference/cvars/r_finish-9b66ed8/) | cvar | renderer | Controls `r_finish` in the renderer module. |
 | [`r_flares`](/TaystJK/reference/cvars/r_flares-675003d/) | cvar | renderer | Controls `r_flares` in the renderer module. |
+| [`r_floatLightmap`](/TaystJK/reference/cvars/r_floatlightmap-fe575c7/) | cvar | renderer | Disable/enable HDR lightmap support |
 | [`r_fontSharpness`](/TaystJK/reference/cvars/r_fontsharpness-50394a7/) | cvar | renderer | Relative font sharpness (doesn't affect console font). |
+| [`r_forceAutoExposure`](/TaystJK/reference/cvars/r_forceautoexposure-d663377/) | cvar | renderer | Controls `r_forceAutoExposure` in the renderer module. |
 | [`r_forceAutoExposureMax`](/TaystJK/reference/cvars/r_forceautoexposuremax-8cdd87f/) | cvar | renderer | Controls `r_forceAutoExposureMax` in the renderer module. |
 | [`r_forceAutoExposureMin`](/TaystJK/reference/cvars/r_forceautoexposuremin-662d327/) | cvar | renderer | Controls `r_forceAutoExposureMin` in the renderer module. |
+| [`r_forceParallaxBias`](/TaystJK/reference/cvars/r_forceparallaxbias-f673013/) | cvar | renderer | Controls `r_forceParallaxBias` in the renderer module. |
+| [`r_forceSun`](/TaystJK/reference/cvars/r_forcesun-b623af1/) | cvar | renderer | Controls `r_forceSun` in the renderer module. |
+| [`r_forceSunAmbientScale`](/TaystJK/reference/cvars/r_forcesunambientscale-2bb57dd/) | cvar | renderer | Controls `r_forceSunAmbientScale` in the renderer module. |
+| [`r_forceSunLightScale`](/TaystJK/reference/cvars/r_forcesunlightscale-9f32ff8/) | cvar | renderer | Controls `r_forceSunLightScale` in the renderer module. |
+| [`r_forceSunMapLightScale`](/TaystJK/reference/cvars/r_forcesunmaplightscale-c3ba4de/) | cvar | renderer | Controls `r_forceSunMapLightScale` in the renderer module. |
+| [`r_forceToneMap`](/TaystJK/reference/cvars/r_forcetonemap-aaa4054/) | cvar | renderer | Controls `r_forceToneMap` in the renderer module. |
 | [`r_forceToneMapAvg`](/TaystJK/reference/cvars/r_forcetonemapavg-df906d3/) | cvar | renderer | Controls `r_forceToneMapAvg` in the renderer module. |
+| [`r_forceToneMapMax`](/TaystJK/reference/cvars/r_forcetonemapmax-996cd1f/) | cvar | renderer | Controls `r_forceToneMapMax` in the renderer module. |
+| [`r_forceToneMapMin`](/TaystJK/reference/cvars/r_forcetonemapmin-b011396/) | cvar | renderer | Controls `r_forceToneMapMin` in the renderer module. |
 | [`r_fullbright`](/TaystJK/reference/cvars/r_fullbright-4d2b005/) | cvar | renderer | Controls `r_fullbright` in the renderer module. |
 | [`r_fullscreen`](/TaystJK/reference/cvars/r_fullscreen-3ecab87/) | cvar | renderer | Controls `r_fullscreen` in the renderer module. |
 | [`r_gamma`](/TaystJK/reference/cvars/r_gamma-9954e45/) | cvar | renderer | Controls `r_gamma` in the renderer module. |
 | [`r_gammaShaders`](/TaystJK/reference/cvars/r_gammashaders-f8fed87/) | cvar | renderer | Set gamma using pixel shaders inside the game window only. |
+| [`r_genNormalMaps`](/TaystJK/reference/cvars/r_gennormalmaps-3da13c7/) | cvar | renderer | Disable/enable generating normal maps from diffuse maps |
 | [`r_ghoul2animsmooth`](/TaystJK/reference/cvars/r_ghoul2animsmooth-475e6c7/) | cvar | renderer | Controls `r_Ghoul2AnimSmooth` in the renderer module. |
 | [`r_ghoul2unsqashaftersmooth`](/TaystJK/reference/cvars/r_ghoul2unsqashaftersmooth-8ec055c/) | cvar | renderer | Controls `r_Ghoul2UnSqashAfterSmooth` in the renderer module. |
 | [`r_greyscale`](/TaystJK/reference/cvars/r_greyscale-442b35b/) | cvar | renderer | Controls `r_greyscale` in the renderer module. |
 | [`r_hdr`](/TaystJK/reference/cvars/r_hdr-806f3ee/) | cvar | renderer | Disable/enable rendering in HDR |
 | [`r_ignore`](/TaystJK/reference/cvars/r_ignore-737663a/) | cvar | renderer | Registered by the current source, but no user-facing behavior description has been verified. |
+| [`r_ignoreDstAlpha`](/TaystJK/reference/cvars/r_ignoredstalpha-bad37b1/) | cvar | renderer | Controls `r_ignoreDstAlpha` in the renderer module. |
 | [`r_ignoreGLErrors`](/TaystJK/reference/cvars/r_ignoreglerrors-af91e54/) | cvar | renderer | Controls `r_ignoreGLErrors` in the renderer module. |
 | [`r_ignorehwgamma`](/TaystJK/reference/cvars/r_ignorehwgamma-1ebcc68/) | cvar | renderer | Overrides hardware gamma capabilities |
+| [`r_imageUpsample`](/TaystJK/reference/cvars/r_imageupsample-45922fb/) | cvar | renderer | Controls `r_imageUpsample` in the renderer module. |
+| [`r_imageUpsampleMaxSize`](/TaystJK/reference/cvars/r_imageupsamplemaxsize-a554326/) | cvar | renderer | Controls `r_imageUpsampleMaxSize` in the renderer module. |
+| [`r_imageUpsampleType`](/TaystJK/reference/cvars/r_imageupsampletype-7553076/) | cvar | renderer | Controls `r_imageUpsampleType` in the renderer module. |
 | [`r_inGameVideo`](/TaystJK/reference/cvars/r_ingamevideo-af33e5e/) | cvar | renderer | Controls `cl_inGameVideo` in the renderer module. |
 | [`r_intensity`](/TaystJK/reference/cvars/r_intensity-b48f8d7/) | cvar | renderer | Controls `r_intensity` in the renderer module. |
 | [`r_lightmap`](/TaystJK/reference/cvars/r_lightmap-0095642/) | cvar | renderer | Controls `r_lightmap` in the renderer module. |
@@ -3215,12 +3263,15 @@ These entries have dated post-origin registration or behavior evidence on TaystJ
 | [`r_lodCurveError`](/TaystJK/reference/cvars/r_lodcurveerror-a26d1cc/) | cvar | renderer | Controls `r_lodCurveError` in the renderer module. |
 | [`r_lodscale`](/TaystJK/reference/cvars/r_lodscale-8715415/) | cvar | renderer | Controls `r_lodscale` in the renderer module. |
 | [`r_logFile`](/TaystJK/reference/cvars/r_logfile-6b6703b/) | cvar | renderer | Controls `r_logFile` in the renderer module. |
+| [`r_mapGreyScale`](/TaystJK/reference/cvars/r_mapgreyscale-691d968/) | cvar | renderer | Controls `r_mapGreyScale` in the renderer module. |
 | [`r_mapOverBrightBits`](/TaystJK/reference/cvars/r_mapoverbrightbits-f8fd76d/) | cvar | renderer | Controls `r_mapOverBrightBits` in the renderer module. |
 | [`r_markcount`](/TaystJK/reference/cvars/r_markcount-98ade6f/) | cvar | renderer | Controls `r_markcount` in the renderer module. |
 | [`r_marksOnTriangleMeshes`](/TaystJK/reference/cvars/r_marksontrianglemeshes-3c9d053/) | cvar | renderer | Controls `r_marksOnTriangleMeshes` in the renderer module. |
 | [`r_maxpolys`](/TaystJK/reference/cvars/r_maxpolys-653618a/) | cvar | renderer | Controls `r_maxpolys` in the renderer module. |
 | [`r_maxpolyverts`](/TaystJK/reference/cvars/r_maxpolyverts-976a4f2/) | cvar | renderer | Controls `r_maxpolyverts` in the renderer module. |
 | [`r_measureOverdraw`](/TaystJK/reference/cvars/r_measureoverdraw-0cef375/) | cvar | renderer | Controls `r_measureOverdraw` in the renderer module. |
+| [`r_mergeLeafSurfaces`](/TaystJK/reference/cvars/r_mergeleafsurfaces-9631d20/) | cvar | renderer | Controls `r_mergeLeafSurfaces` in the renderer module. |
+| [`r_mergeMultidraws`](/TaystJK/reference/cvars/r_mergemultidraws-471d2aa/) | cvar | renderer | Controls `r_mergeMultidraws` in the renderer module. |
 | [`r_mode`](/TaystJK/reference/cvars/r_mode-ab69328/) | cvar | renderer | Controls `r_mode` in the renderer module. |
 | [`r_modelpoolmegs`](/TaystJK/reference/cvars/r_modelpoolmegs-72aef0d/) | cvar | renderer | Controls `r_modelpoolmegs` in the renderer module. |
 | [`r_nobind`](/TaystJK/reference/cvars/r_nobind-468736a/) | cvar | renderer | Controls `r_nobind` in the renderer module. |
@@ -3228,9 +3279,11 @@ These entries have dated post-origin registration or behavior evidence on TaystJ
 | [`r_nocull`](/TaystJK/reference/cvars/r_nocull-45c5f6a/) | cvar | renderer | Controls `r_nocull` in the renderer module. |
 | [`r_nocurves`](/TaystJK/reference/cvars/r_nocurves-cdabcba/) | cvar | renderer | Controls `r_nocurves` in the renderer module. |
 | [`r_noghoul2`](/TaystJK/reference/cvars/r_noghoul2-182f730/) | cvar | renderer | Controls `r_noServerGhoul2` in the renderer module. |
+| [`r_nomip`](/TaystJK/reference/cvars/r_nomip-784a698/) | cvar | renderer | Apply picmip only on worldspawn textures |
 | [`r_noportals`](/TaystJK/reference/cvars/r_noportals-b716e20/) | cvar | renderer | Controls `r_noportals` in the renderer module. |
 | [`r_noPrecacheGLA`](/TaystJK/reference/cvars/r_noprecachegla-754f482/) | cvar | renderer | Controls `r_noPrecacheGLA` in the renderer module. |
 | [`r_norefresh`](/TaystJK/reference/cvars/r_norefresh-8502c24/) | cvar | renderer | Controls `r_norefresh` in the renderer module. |
+| [`r_normalMapping`](/TaystJK/reference/cvars/r_normalmapping-01198ee/) | cvar | renderer | Disable/enable normal mapping |
 | [`r_noserverghoul2`](/TaystJK/reference/cvars/r_noserverghoul2-13e2e0d/) | cvar | renderer | Controls `r_noServerGhoul2` in the renderer module. |
 | [`r_novis`](/TaystJK/reference/cvars/r_novis-2bb6ab2/) | cvar | renderer | Controls `r_novis` in the renderer module. |
 | [`r_offsetfactor`](/TaystJK/reference/cvars/r_offsetfactor-349c509/) | cvar | renderer | Controls `r_offsetFactor` in the renderer module. |
@@ -3241,11 +3294,23 @@ These entries have dated post-origin registration or behavior evidence on TaystJ
 | [`r_picmip`](/TaystJK/reference/cvars/r_picmip-94fef1f/) | cvar | renderer | Controls `r_picmip` in the renderer module. |
 | [`r_portalOnly`](/TaystJK/reference/cvars/r_portalonly-119fda0/) | cvar | renderer | Controls `r_portalOnly` in the renderer module. |
 | [`r_primitives`](/TaystJK/reference/cvars/r_primitives-ee344cc/) | cvar | renderer | Controls `r_primitives` in the renderer module. |
+| [`r_printShaders`](/TaystJK/reference/cvars/r_printshaders-de38905/) | cvar | renderer | Controls `r_printShaders` in the renderer module. |
+| [`r_pshadowDist`](/TaystJK/reference/cvars/r_pshadowdist-c0c9961/) | cvar | renderer | Controls `r_pshadowDist` in the renderer module. |
+| [`r_renderHeight`](/TaystJK/reference/cvars/r_renderheight-77676c4/) | cvar | renderer | Controls `r_renderHeight` in the renderer module. |
+| [`r_renderWidth`](/TaystJK/reference/cvars/r_renderwidth-4a7db81/) | cvar | renderer | Controls `r_renderWidth` in the renderer module. |
 | [`r_roofCeilFloorDist`](/TaystJK/reference/cvars/r_roofceilfloordist-8324544/) | cvar | renderer | Registered by the current source, but no user-facing behavior description has been verified. |
 | [`r_roofCullCeilDist`](/TaystJK/reference/cvars/r_roofcullceildist-923eb04/) | cvar | renderer | Controls `r_roofCullCeilDist` in the renderer module. |
 | [`r_roundImagesDown`](/TaystJK/reference/cvars/r_roundimagesdown-b41f9fd/) | cvar | renderer | Controls `r_roundImagesDown` in the renderer module. |
+| [`r_saveFontData`](/TaystJK/reference/cvars/r_savefontdata-afb35a8/) | cvar | renderer | Registered by the current source, but no user-facing behavior description has been verified. |
 | [`r_screenshotJpegQuality`](/TaystJK/reference/cvars/r_screenshotjpegquality-b8e56fb/) | cvar | renderer | Controls `r_screenshotJpegQuality` in the renderer module. |
 | [`r_sdlDriver`](/TaystJK/reference/cvars/r_sdldriver-c79955e/) | cvar | engine-shared | Controls `r_sdlDriver` in the engine-shared module. |
+| [`r_shadowCascadeZBias`](/TaystJK/reference/cvars/r_shadowcascadezbias-3a4ebe3/) | cvar | renderer | Controls `r_shadowCascadeZBias` in the renderer module. |
+| [`r_shadowCascadeZFar`](/TaystJK/reference/cvars/r_shadowcascadezfar-70c7318/) | cvar | renderer | Controls `r_shadowCascadeZFar` in the renderer module. |
+| [`r_shadowCascadeZNear`](/TaystJK/reference/cvars/r_shadowcascadeznear-3d8bcc7/) | cvar | renderer | Controls `r_shadowCascadeZNear` in the renderer module. |
+| [`r_shadowFilter`](/TaystJK/reference/cvars/r_shadowfilter-bd830f4/) | cvar | renderer | Controls `r_shadowFilter` in the renderer module. |
+| [`r_shadowMapSize`](/TaystJK/reference/cvars/r_shadowmapsize-f27fc20/) | cvar | renderer | Controls `r_shadowMapSize` in the renderer module. |
+| [`r_shadowOffsetFactor`](/TaystJK/reference/cvars/r_shadowoffsetfactor-ed2b85f/) | cvar | renderer | Controls `r_shadowOffsetFactor` in the renderer module. |
+| [`r_shadowOffsetUnits`](/TaystJK/reference/cvars/r_shadowoffsetunits-f883d48/) | cvar | renderer | Controls `r_shadowOffsetUnits` in the renderer module. |
 | [`r_shadowRange`](/TaystJK/reference/cvars/r_shadowrange-944ff5a/) | cvar | renderer | Controls `r_shadowRange` in the renderer module. |
 | [`r_showcluster`](/TaystJK/reference/cvars/r_showcluster-3f0fbb6/) | cvar | renderer | Controls `r_showcluster` in the renderer module. |
 | [`r_showFrameVariance`](/TaystJK/reference/cvars/r_showframevariance-a2a515e/) | cvar | renderer | Registered by the current source, but no user-facing behavior description has been verified. |
@@ -3257,10 +3322,15 @@ These entries have dated post-origin registration or behavior evidence on TaystJ
 | [`r_singleShader`](/TaystJK/reference/cvars/r_singleshader-e4e6862/) | cvar | renderer | Controls `r_singleShader` in the renderer module. |
 | [`r_skipBackEnd`](/TaystJK/reference/cvars/r_skipbackend-0e7b613/) | cvar | renderer | Controls `r_skipBackEnd` in the renderer module. |
 | [`r_smartpicmip`](/TaystJK/reference/cvars/r_smartpicmip-88bba35/) | cvar | renderer | Applies r_picmip setting to map textures only. |
+| [`r_specularMapping`](/TaystJK/reference/cvars/r_specularmapping-271a30a/) | cvar | renderer | Disable/enable specular mapping |
 | [`r_speeds`](/TaystJK/reference/cvars/r_speeds-707e8db/) | cvar | renderer | Controls `r_speeds` in the renderer module. |
+| [`r_ssao`](/TaystJK/reference/cvars/r_ssao-5b8c581/) | cvar | renderer | Controls `r_ssao` in the renderer module. |
 | [`r_stencilbits`](/TaystJK/reference/cvars/r_stencilbits-f1960ea/) | cvar | renderer | Controls `r_stencilbits` in the renderer module. |
 | [`r_stereo`](/TaystJK/reference/cvars/r_stereo-899040b/) | cvar | renderer | Controls `r_stereo` in the renderer module. |
+| [`r_stereoSeparation`](/TaystJK/reference/cvars/r_stereoseparation-2be8daa/) | cvar | renderer | Controls `r_stereoSeparation` in the renderer module. |
 | [`r_subdivisions`](/TaystJK/reference/cvars/r_subdivisions-217daa3/) | cvar | renderer | Controls `r_subdivisions` in the renderer module. |
+| [`r_sunlightMode`](/TaystJK/reference/cvars/r_sunlightmode-1355059/) | cvar | renderer | Controls `r_sunlightMode` in the renderer module. |
+| [`r_sunShadows`](/TaystJK/reference/cvars/r_sunshadows-ffe0a50/) | cvar | renderer | Controls `r_sunShadows` in the renderer module. |
 | [`r_surfaceSprites`](/TaystJK/reference/cvars/r_surfacesprites-19c6bde/) | cvar | renderer | Controls `r_surfaceSprites` in the renderer module. |
 | [`r_surfaceWeather`](/TaystJK/reference/cvars/r_surfaceweather-42e08bb/) | cvar | renderer | Controls `r_surfaceWeather` in the renderer module. |
 | [`r_swapInterval`](/TaystJK/reference/cvars/r_swapinterval-f4d114e/) | cvar | renderer | Controls `r_swapInterval` in the renderer module. |
@@ -3269,6 +3339,7 @@ These entries have dated post-origin registration or behavior evidence on TaystJ
 | [`r_texturebits`](/TaystJK/reference/cvars/r_texturebits-10d2b90/) | cvar | renderer | Controls `r_texturebits` in the renderer module. |
 | [`r_texturebitslm`](/TaystJK/reference/cvars/r_texturebitslm-a3e9dd1/) | cvar | renderer | Controls `r_texturebitslm` in the renderer module. |
 | [`r_textureMode`](/TaystJK/reference/cvars/r_texturemode-e53a999/) | cvar | renderer | Controls `r_textureMode` in the renderer module. |
+| [`r_toneMap`](/TaystJK/reference/cvars/r_tonemap-27c4829/) | cvar | renderer | Disable/enable tonemapping |
 | [`r_uifullscreen`](/TaystJK/reference/cvars/r_uifullscreen-9c735db/) | cvar | renderer | Controls `r_uiFullScreen` in the renderer module. |
 | [`r_vbo`](/TaystJK/reference/cvars/r_vbo-8ee14c4/) | cvar | renderer | Cache static world surfaces |
 | [`r_vbo_models`](/TaystJK/reference/cvars/r_vbo_models-8579ecd/) | cvar | renderer | Cache ghoul2 and md3 model surfaces |

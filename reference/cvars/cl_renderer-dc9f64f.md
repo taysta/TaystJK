@@ -50,7 +50,7 @@ Origin: <span class="label ref-origin ref-origin-openjk">OpenJK</span>
 - Upstream registration evidence: [code/client/cl_main.cpp:1091](https://github.com/JACoders/OpenJK/blame/1a6a643427aa347553e9073dac5570b33337c4d9/code/client/cl_main.cpp#L1091)
 - Attribution method: `squash-feature-group-explicit-credit`
 - Attribution confidence: `medium`
-- Notes: The identifier's single-prefix squash feature group explicitly credits openjk.
+- Notes: The identifier's single-prefix squash feature group explicitly credits openjk. Dated commit evidence identifies later registration changes relative to the origin snapshot.
 
 ### Dated project introductions
 

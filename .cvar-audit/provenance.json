@@ -57437,29 +57437,8 @@
       ]
     },
     "ifcvar": {
-      "confidence": "medium",
-      "downstream_introductions": [
-        {
-          "author": "taysta",
-          "author_timestamp": 1650470179,
-          "content_author": "taysta",
-          "content_author_timestamp": 1649002344,
-          "content_email": "taylor.brough13@gmail.com",
-          "content_sha": "fe25979e3fb58eb466ef4ba82680bb684588bf0f",
-          "content_subject": "import strSub, ifCvar, delay and waitf from NewJK/NewMod",
-          "content_timestamp": 1649002418,
-          "email": "taylor.brough13@gmail.com",
-          "history_search": "\"ifCvar\"",
-          "line": 1390,
-          "line_commit_sha": "fe25979e3fb58eb466ef4ba82680bb684588bf0f",
-          "path": "codemp/qcommon/common.cpp",
-          "ref": "japro/main",
-          "sha": "1dd571383a0d16520e69ce209f8a2d21b2943a62",
-          "source": "japro",
-          "subject": "Merge remote-tracking branch 'origin/master'",
-          "timestamp": 1650470179
-        }
-      ],
+      "confidence": "high",
+      "downstream_introductions": [],
       "first_commit": "1dd571383a0d16520e69ce209f8a2d21b2943a62",
       "first_ref": "origin/master",
       "integration_pr": null,
@@ -57506,41 +57485,17 @@
           "timestamp": 1650470179
         }
       ],
-      "method": "shared-earliest-commit-lineage-order",
+      "method": "introduction-commit-explicit-credit",
       "modified_by": [],
-      "notes": "The earliest authored/submitted introduction is shared by taystjk, japro; fork-lineage order selects taystjk.",
-      "origin_evidence": {
-        "kind": "Cmd_AddCommand",
-        "line": 1426,
-        "path": "codemp/qcommon/common.cpp",
-        "ref": "6ff04c0baf588a89e5ec9361ad7a0992941d7655"
-      },
-      "origin_introduction": {
-        "author": "taysta",
-        "author_timestamp": 1650470179,
-        "content_author": "taysta",
-        "content_author_timestamp": 1649002344,
-        "content_email": "taylor.brough13@gmail.com",
-        "content_sha": "fe25979e3fb58eb466ef4ba82680bb684588bf0f",
-        "content_subject": "import strSub, ifCvar, delay and waitf from NewJK/NewMod",
-        "content_timestamp": 1649002418,
-        "email": "taylor.brough13@gmail.com",
-        "history_search": "\"ifCvar\"",
-        "line": 1390,
-        "line_commit_sha": "fe25979e3fb58eb466ef4ba82680bb684588bf0f",
-        "path": "codemp/qcommon/common.cpp",
-        "ref": "origin/master",
-        "sha": "1dd571383a0d16520e69ce209f8a2d21b2943a62",
-        "source": "taystjk",
-        "subject": "Merge remote-tracking branch 'origin/master'",
-        "timestamp": 1650470179
-      },
+      "notes": "The exact registration's introduction commit explicitly imports it from newjk; the identifier is absent from that project's configured public snapshot.",
+      "origin_evidence": null,
+      "origin_introduction": null,
       "ported_via": [],
       "pr": null,
       "pr_url": null,
-      "source": "taystjk",
+      "source": "newjk",
       "squash_bullet": null,
-      "status": "needs-review",
+      "status": "documented",
       "upstream_presence": [
         "japro"
       ]
@@ -94593,29 +94548,8 @@
       ]
     },
     "strsub": {
-      "confidence": "medium",
-      "downstream_introductions": [
-        {
-          "author": "taysta",
-          "author_timestamp": 1650470179,
-          "content_author": "taysta",
-          "content_author_timestamp": 1649002344,
-          "content_email": "taylor.brough13@gmail.com",
-          "content_sha": "fe25979e3fb58eb466ef4ba82680bb684588bf0f",
-          "content_subject": "import strSub, ifCvar, delay and waitf from NewJK/NewMod",
-          "content_timestamp": 1649002418,
-          "email": "taylor.brough13@gmail.com",
-          "history_search": "\"strSub\"",
-          "line": 1389,
-          "line_commit_sha": "fe25979e3fb58eb466ef4ba82680bb684588bf0f",
-          "path": "codemp/qcommon/common.cpp",
-          "ref": "japro/main",
-          "sha": "1dd571383a0d16520e69ce209f8a2d21b2943a62",
-          "source": "japro",
-          "subject": "Merge remote-tracking branch 'origin/master'",
-          "timestamp": 1650470179
-        }
-      ],
+      "confidence": "high",
+      "downstream_introductions": [],
       "first_commit": "1dd571383a0d16520e69ce209f8a2d21b2943a62",
       "first_ref": "origin/master",
       "integration_pr": null,
@@ -94662,41 +94596,17 @@
           "timestamp": 1650470179
         }
       ],
-      "method": "shared-earliest-commit-lineage-order",
+      "method": "introduction-commit-explicit-credit",
       "modified_by": [],
-      "notes": "The earliest authored/submitted introduction is shared by taystjk, japro; fork-lineage order selects taystjk.",
-      "origin_evidence": {
-        "kind": "Cmd_AddCommand",
-        "line": 1425,
-        "path": "codemp/qcommon/common.cpp",
-        "ref": "6ff04c0baf588a89e5ec9361ad7a0992941d7655"
-      },
-      "origin_introduction": {
-        "author": "taysta",
-        "author_timestamp": 1650470179,
-        "content_author": "taysta",
-        "content_author_timestamp": 1649002344,
-        "content_email": "taylor.brough13@gmail.com",
-        "content_sha": "fe25979e3fb58eb466ef4ba82680bb684588bf0f",
-        "content_subject": "import strSub, ifCvar, delay and waitf from NewJK/NewMod",
-        "content_timestamp": 1649002418,
-        "email": "taylor.brough13@gmail.com",
-        "history_search": "\"strSub\"",
-        "line": 1389,
-        "line_commit_sha": "fe25979e3fb58eb466ef4ba82680bb684588bf0f",
-        "path": "codemp/qcommon/common.cpp",
-        "ref": "origin/master",
-        "sha": "1dd571383a0d16520e69ce209f8a2d21b2943a62",
-        "source": "taystjk",
-        "subject": "Merge remote-tracking branch 'origin/master'",
-        "timestamp": 1650470179
-      },
+      "notes": "The exact registration's introduction commit explicitly imports it from newjk; the identifier is absent from that project's configured public snapshot.",
+      "origin_evidence": null,
+      "origin_introduction": null,
       "ported_via": [],
       "pr": null,
       "pr_url": null,
-      "source": "taystjk",
+      "source": "newjk",
       "squash_bullet": null,
-      "status": "needs-review",
+      "status": "documented",
       "upstream_presence": [
         "japro"
       ]
@@ -128737,7 +128647,7 @@
           "timestamp": 1555890888
         }
       ],
-      "notes": "The earliest authored/submitted introduction is shared by eternaljk, taystjk, japro, vulkan; fork-lineage order selects eternaljk. An identifier-adjacent source/commit/PR line explicitly credits jk2mv.",
+      "notes": "The exact registration's introduction commit explicitly imports it from jk2mv; the identifier is absent from that project's configured public snapshot. An identifier-adjacent source/commit/PR line explicitly credits jk2mv.",
       "origin_evidence": null,
       "origin_introduction": null,
       "ported_via": [],
@@ -184818,31 +184728,34 @@
           "line": 3326,
           "line_commit_sha": "6b7ae3b364450cdc56a2b75e062034cf3de64800",
           "path": "codemp/client/cl_main.cpp",
+          "pr": 53,
+          "pr_created_timestamp": 1701186595,
+          "pr_url": "https://github.com/taysta/TaystJK/pull/53",
+          "ref": "origin/master",
+          "sha": "47e33dfb6fd55a1ae75888b7a33f056a8aba91ae",
+          "source": "taystjk",
+          "subject": "Merge pull request #53 from taysta/daggo-misc",
+          "timestamp": 1701187046
+        },
+        {
+          "author": "tayst",
+          "author_timestamp": 1701187046,
+          "content_author": "Daggolin",
+          "content_author_timestamp": 1699559619,
+          "content_email": "Daggolin@Gmx.de",
+          "content_sha": "765295786d85ae6f1b655455b15ff95dd89b8cca",
+          "content_subject": "[MP] Add cl_filterGames cvar to discard servers that use an fs_game matching one listed in the cvar (separated by spaces).",
+          "content_timestamp": 1699559619,
+          "email": "taylor.brough13@gmail.com",
+          "history_search": "\"cl_filterGames\"",
+          "line": 3326,
+          "line_commit_sha": "6b7ae3b364450cdc56a2b75e062034cf3de64800",
+          "path": "codemp/client/cl_main.cpp",
           "ref": "japro/main",
           "sha": "47e33dfb6fd55a1ae75888b7a33f056a8aba91ae",
           "source": "japro",
           "subject": "Merge pull request #53 from taysta/daggo-misc",
           "timestamp": 1701187046
-        },
-        {
-          "author": "Daggolin",
-          "author_timestamp": 1707388889,
-          "content_author": "Daggolin",
-          "content_author_timestamp": 1707388889,
-          "content_email": "Daggolin@Gmx.de",
-          "content_sha": "58ad339799e46a1ba2ee7b3218d6937f6582f29a",
-          "content_subject": "A few small changes (cl_filterGames + MAX_PATCH_PLANES increase) (#1188)",
-          "content_timestamp": 1707388889,
-          "email": "Daggolin@Gmx.de",
-          "history_search": "\"cl_filterGames\"",
-          "line": 2779,
-          "line_commit_sha": "58ad339799e46a1ba2ee7b3218d6937f6582f29a",
-          "path": "codemp/client/cl_main.cpp",
-          "ref": "openjk/master",
-          "sha": "58ad339799e46a1ba2ee7b3218d6937f6582f29a",
-          "source": "openjk",
-          "subject": "A few small changes (cl_filterGames + MAX_PATCH_PLANES increase) (#1188)",
-          "timestamp": 1707388889
         },
         {
           "author": "SomaZ",
@@ -184927,6 +184840,9 @@
           "line": 2779,
           "line_commit_sha": "58ad339799e46a1ba2ee7b3218d6937f6582f29a",
           "path": "codemp/client/cl_main.cpp",
+          "pr": 1188,
+          "pr_created_timestamp": 1699793984,
+          "pr_url": "https://github.com/JACoders/OpenJK/pull/1188",
           "ref": "openjk/master",
           "sha": "58ad339799e46a1ba2ee7b3218d6937f6582f29a",
           "source": "openjk",
@@ -184954,7 +184870,7 @@
           "timestamp": 1708302829
         }
       ],
-      "method": "earliest-authored-project-introduction",
+      "method": "curated-historical-attribution",
       "modified_by": [
         {
           "categories": [
@@ -184993,42 +184909,40 @@
           "timestamp": 1715415415
         }
       ],
-      "notes": "The TaystJK integration evidence credits openjk as an immediate port source, but taystjk has an earlier dated introduction and remains the ultimate origin.",
+      "notes": "Daggolin authored cl_filterGames for OpenJK PR #1188, linked by TaystJK integration PR #53. OpenJK's later squash commit does not make the earlier TaystJK import the origin.",
       "origin_evidence": {
         "kind": "Cvar_Get",
-        "line": 3409,
+        "line": 2830,
         "path": "codemp/client/cl_main.cpp",
-        "ref": "6ff04c0baf588a89e5ec9361ad7a0992941d7655"
+        "ref": "openjk/master"
       },
       "origin_introduction": {
-        "author": "tayst",
-        "author_timestamp": 1701187046,
+        "author": "Daggolin",
+        "author_timestamp": 1707388889,
         "content_author": "Daggolin",
-        "content_author_timestamp": 1699559619,
+        "content_author_timestamp": 1707388889,
         "content_email": "Daggolin@Gmx.de",
-        "content_sha": "765295786d85ae6f1b655455b15ff95dd89b8cca",
-        "content_subject": "[MP] Add cl_filterGames cvar to discard servers that use an fs_game matching one listed in the cvar (separated by spaces).",
-        "content_timestamp": 1699559619,
-        "email": "taylor.brough13@gmail.com",
+        "content_sha": "58ad339799e46a1ba2ee7b3218d6937f6582f29a",
+        "content_subject": "A few small changes (cl_filterGames + MAX_PATCH_PLANES increase) (#1188)",
+        "content_timestamp": 1707388889,
+        "email": "Daggolin@Gmx.de",
         "history_search": "\"cl_filterGames\"",
-        "line": 3326,
-        "line_commit_sha": "6b7ae3b364450cdc56a2b75e062034cf3de64800",
+        "line": 2779,
+        "line_commit_sha": "58ad339799e46a1ba2ee7b3218d6937f6582f29a",
         "path": "codemp/client/cl_main.cpp",
-        "pr": 53,
-        "pr_created_timestamp": 1701186595,
-        "pr_url": "https://github.com/taysta/TaystJK/pull/53",
-        "ref": "origin/master",
-        "sha": "47e33dfb6fd55a1ae75888b7a33f056a8aba91ae",
-        "source": "taystjk",
-        "subject": "Merge pull request #53 from taysta/daggo-misc",
-        "timestamp": 1701187046
+        "pr": 1188,
+        "pr_created_timestamp": 1699793984,
+        "pr_url": "https://github.com/JACoders/OpenJK/pull/1188",
+        "ref": "openjk/master",
+        "sha": "58ad339799e46a1ba2ee7b3218d6937f6582f29a",
+        "source": "openjk",
+        "subject": "A few small changes (cl_filterGames + MAX_PATCH_PLANES increase) (#1188)",
+        "timestamp": 1707388889
       },
-      "ported_via": [
-        "openjk"
-      ],
-      "pr": 53,
-      "pr_url": "https://github.com/taysta/TaystJK/pull/53",
-      "source": "taystjk",
+      "ported_via": [],
+      "pr": 1188,
+      "pr_url": "https://github.com/JACoders/OpenJK/pull/1188",
+      "source": "openjk",
       "squash_bullet": null,
       "status": "documented",
       "upstream_presence": [
@@ -397179,6 +397093,6 @@
     "current_ref": "6ff04c0baf588a89e5ec9361ad7a0992941d7655",
     "extractor_version": 7,
     "provenance_schema_version": 6,
-    "resolver_version": 34
+    "resolver_version": 36
   }
 }

@@ -10,6 +10,8 @@ search_exclude: false
 
 <span class="label ref-origin ref-origin-japro">jaPRO</span>
 
+<p class="ref-warning"><strong>Needs review.</strong> The inventory/provenance evidence is recorded, but some behavior, options, or attribution still lacks a direct user-facing source.</p>
+
 JAPRO - Clientside - re add cg_blood
 
 ## At a glance
@@ -22,8 +24,8 @@ JAPRO - Clientside - re add cg_blood
 | Renderer | All / not renderer-specific |
 | Network scope | `client-only` — Local to the client/UI/renderer. |
 | Derivation | `documented` |
-| Confidence | `high` |
-| Added | 2018-09-03 in [`bdcd618c6`](https://github.com/taysta/TaystJK/commit/bdcd618c67713b86946b720d791c382d3908d97c) — [how to compare this against your build](/TaystJK/features/whats-new/#how-to-tell-what-your-build-has) |
+| Confidence | `medium` |
+| Added | 2018-09-03 in [`bdcd618c6`](https://github.com/taysta/TaystJK/commit/bdcd618c67713b86946b720d791c382d3908d97c) <span class="status-chip">needs review</span> — [how to compare this against your build](/TaystJK/features/whats-new/#how-to-tell-what-your-build-has) |
 | In-game xdocs | Yes — [codemp/ui/ui_xdocs.h:454](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/ui/ui_xdocs.h#L454) |
 | In-game menu | Yes — [ingame_setup.menu:3007](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/assets/japro/ui/jamp/ingame_setup.menu#L3007) |
 | Default | `0` |
@@ -49,9 +51,9 @@ Origin: <span class="label ref-origin ref-origin-japro">jaPRO</span>
 
 - Ultimate-origin introduction: [`bdcd618c6771`](https://github.com/videoP/jaPRO/commit/bdcd618c67713b86946b720d791c382d3908d97c) in <span class="label ref-origin ref-origin-japro">jaPRO</span> (content authored `2018-09-03`, integrated `2018-09-03`)
 - Upstream registration evidence: [codemp/cgame/cg_xcvar.h:131](https://github.com/videoP/jaPRO/blame/33d1f1e22ac6db0c17beedbcc419ffef98bbe3c3/codemp/cgame/cg_xcvar.h#L131)
-- Attribution method: `identifier-adjacent-explicit-credit`
-- Attribution confidence: `high`
-- Notes: An identifier-adjacent source/commit/PR line explicitly credits japro.
+- Attribution method: `squash-feature-group-explicit-credit`
+- Attribution confidence: `medium`
+- Notes: The identifier's single-prefix squash feature group explicitly credits japro.
 
 ### Dated project introductions
 

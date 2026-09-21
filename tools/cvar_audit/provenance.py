@@ -29,7 +29,7 @@ CURRENT_REF = "origin/master"
 # evidence. Bump the provenance schema separately when origin inputs change.
 EXTRACTOR_VERSION = 7
 PROVENANCE_SCHEMA_VERSION = 6
-RESOLVER_VERSION = 34
+RESOLVER_VERSION = 36
 UPSTREAM_REFS = {
     "openjk": "openjk/master",
     "eternaljk": "eternaljk/master",
@@ -87,6 +87,16 @@ DEVELOPER_LINEAGE_NOTES = {
 # support for EternalJK before beginning the Vulkan fork, so the JKSunny branch
 # name in the integration commit is contributor credit, not Vulkan lineage.
 ORIGIN_EXCEPTIONS = {
+    "cl_filtergames": {
+        "source": "openjk",
+        "confidence": "high",
+        "method": "curated-historical-attribution",
+        "note": (
+            "Daggolin authored cl_filterGames for OpenJK PR #1188, linked by "
+            "TaystJK integration PR #53. OpenJK's later squash commit does not "
+            "make the earlier TaystJK import the origin."
+        ),
+    },
     "cg_chatboxemojis": {
         "source": "eternaljk",
         "confidence": "high",
@@ -752,9 +762,19 @@ def select_dated_origin(
     if len(developer_sources) == 1:
         source = developer_sources[0]
         return source, "high", "introduction-commit-developer-lineage-credit", [source]
+    import_sources = {
+        source
+        for match in re.finditer(
+            r"\b(?:from|import(?:ed|ing)?|port(?:ed|ing)?|sync(?:ed|ing)?)\b([^\n]+)",
+            authored_credit_text, re.I,
+        )
+        for source in credited_sources(match.group(1))
+    }
     explicit_sources = [
         source for source in credited_sources(authored_credit_text)
-        if source in events
+        # Explicit imports can credit unpublished work or a registration later
+        # removed upstream. Head presence is not required for that evidence.
+        if source in events or source in import_sources
     ]
     if len(explicit_sources) == 1:
         source = explicit_sources[0]
@@ -1250,6 +1270,11 @@ def resolve_one(
                 developer_note = DEVELOPER_LINEAGE_NOTES.get(source)
                 if developer_note:
                     notes.append(developer_note)
+            elif method == "introduction-commit-explicit-credit" and not selected_event:
+                notes.append(
+                    f"The exact registration's introduction commit explicitly imports it from {source}; "
+                    "the identifier is absent from that project's configured public snapshot."
+                )
             if len(earliest_sources) > 1:
                 notes.append(
                     "The earliest authored/submitted introduction is shared by "

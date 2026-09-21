@@ -167,6 +167,51 @@ class DatedOriginTests(unittest.TestCase):
                 self.assertEqual(result["ported_via"], ["openjk"] if expected == "jk2mv" else [])
                 self.assertNotIn("explicitly credits eternaljk", result["notes"])
 
+    def test_explicit_newjk_import_does_not_require_public_head_presence(self) -> None:
+        subject = "import strSub, ifCvar, delay and waitf from NewJK/NewMod"
+        source, confidence, method, _ = select_dated_origin({
+            "taystjk": event(200, "shared", content_subject=subject),
+            "japro": event(200, "shared", content_subject=subject),
+        })
+        self.assertEqual((source, confidence, method), (
+            "newjk", "high", "introduction-commit-explicit-credit",
+        ))
+
+    def test_generic_project_mention_without_import_is_not_missing_origin(self) -> None:
+        for subject in (
+            "NewJK compatibility adjustment",
+            "Mouse repeat https://github.com/JACoders/OpenJK/issues/474",
+            "Hibernation inspired by a patch for openjk https://github.com/JACoders/OpenJK/pull/826/files",
+        ):
+            with self.subTest(subject=subject):
+                source, _, _, _ = select_dated_origin({
+                    "taystjk": event(200, "shared", content_subject=subject),
+                })
+                self.assertEqual(source, "taystjk")
+
+    @patch("provenance.source_context", return_value="")
+    @patch("provenance.commit_body", return_value="Merge pull request #53 from taysta/daggo-misc")
+    def test_daggo_filtergames_upstream_squash_does_not_claim_taystjk_origin(
+        self, _body: object, _context: object,
+    ) -> None:
+        registration = {
+            "name": "cl_filterGames", "kind": "Cvar_Get", "path": "client.cpp", "line": 1,
+            "module": "engine-client", "renderer": None,
+        }
+        introductions = {
+            "taystjk": {"cl_filtergames": event(200, "a" * 40, content_author_timestamp=100)},
+            "openjk": {"cl_filtergames": event(300, "b" * 40, content_author_timestamp=300)},
+        }
+        result = resolve_one(
+            "cl_filtergames", [registration], set(),
+            {"openjk": {"cl_filtergames": [registration]}}, [], Path("."), False,
+            introductions, {}, {}, {}, False,
+        )
+        self.assertEqual(result["source"], "openjk")
+        self.assertEqual(result["ported_via"], [])
+        self.assertIn("Daggolin", result["notes"])
+        self.assertEqual(result["origin_introduction"]["source"], "openjk")
+
     def test_later_newjk_import_does_not_claim_rend2_origin(self) -> None:
         source, confidence, method, _ = select_dated_origin({
             "rend2": event(100, "rend2"),

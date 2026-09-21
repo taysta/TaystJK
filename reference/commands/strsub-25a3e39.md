@@ -8,9 +8,7 @@ search_exclude: false
 
 # `strSub`
 
-<span class="label ref-origin ref-origin-taystjk">TaystJK</span>
-
-<p class="ref-warning"><strong>Needs review.</strong> The inventory/provenance evidence is recorded, but some behavior, options, or attribution still lacks a direct user-facing source.</p>
+<span class="label ref-origin ref-origin-newjk">NewJK / NewMod</span>
 
 Executes a command after replacing text surrounded by dollar signs with the value of that cvar. A doubled dollar sign emits one literal dollar sign.
 
@@ -24,8 +22,8 @@ Executes a command after replacing text surrounded by dollar signs with the valu
 | Renderer | All / not renderer-specific |
 | Network scope | `client-only` — Local to the client/UI/renderer. |
 | Derivation | `documented` |
-| Confidence | `medium` |
-| Added | 2022-04-20 in [`1dd571383`](https://github.com/taysta/TaystJK/commit/1dd571383a0d16520e69ce209f8a2d21b2943a62) <span class="status-chip">needs review</span> — [how to compare this against your build](/TaystJK/features/whats-new/#how-to-tell-what-your-build-has) |
+| Confidence | `high` |
+| Added | 2022-04-20 in [`1dd571383`](https://github.com/taysta/TaystJK/commit/1dd571383a0d16520e69ce209f8a2d21b2943a62) — [how to compare this against your build](/TaystJK/features/whats-new/#how-to-tell-what-your-build-has) |
 | In-game xdocs | No |
 | In-game menu | No |
 | Syntax | `strSub <command...>` |
@@ -37,13 +35,12 @@ Arguments: `command`.
 
 ## Provenance
 
-Origin: <span class="label ref-origin ref-origin-taystjk">TaystJK</span>
+Origin: <span class="label ref-origin ref-origin-newjk">NewJK / NewMod</span>
 
-- Ultimate-origin introduction: [`1dd571383a0d`](https://github.com/taysta/TaystJK/commit/1dd571383a0d16520e69ce209f8a2d21b2943a62) in <span class="label ref-origin ref-origin-taystjk">TaystJK</span> (content authored `2022-04-03`, integrated `2022-04-20`)
-- Upstream registration evidence: [codemp/qcommon/common.cpp:1425](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/qcommon/common.cpp#L1425)
-- Attribution method: `shared-earliest-commit-lineage-order`
-- Attribution confidence: `medium`
-- Notes: The earliest authored/submitted introduction is shared by taystjk, japro; fork-lineage order selects taystjk.
+- TaystJK integration evidence: [`1dd571383a0d`](https://github.com/taysta/TaystJK/commit/1dd571383a0d16520e69ce209f8a2d21b2943a62)
+- Attribution method: `introduction-commit-explicit-credit`
+- Attribution confidence: `high`
+- Notes: The exact registration's introduction commit explicitly imports it from newjk; the identifier is absent from that project's configured public snapshot.
 
 ### Dated project introductions
 
@@ -51,8 +48,8 @@ Authored dates come from the exact registration's first content commit, PR dates
 
 | Project | Authored | PR opened | Integrated | Commit | Relationship |
 |:--|:--|:--|:--|:--|:--|
-| <span class="label ref-origin ref-origin-taystjk">TaystJK</span> | `2022-04-03` | — | `2022-04-20` | [`1dd571383a0d`](https://github.com/taysta/TaystJK/commit/1dd571383a0d16520e69ce209f8a2d21b2943a62) | Ultimate origin |
-| <span class="label ref-origin ref-origin-japro">jaPRO</span> | `2022-04-03` | — | `2022-04-20` | [`1dd571383a0d`](https://github.com/videoP/jaPRO/commit/1dd571383a0d16520e69ce209f8a2d21b2943a62) | Shared integration commit |
+| <span class="label ref-origin ref-origin-taystjk">TaystJK</span> | `2022-04-03` | — | `2022-04-20` | [`1dd571383a0d`](https://github.com/taysta/TaystJK/commit/1dd571383a0d16520e69ce209f8a2d21b2943a62) | Other project appearance |
+| <span class="label ref-origin ref-origin-japro">jaPRO</span> | `2022-04-03` | — | `2022-04-20` | [`1dd571383a0d`](https://github.com/videoP/jaPRO/commit/1dd571383a0d16520e69ce209f8a2d21b2943a62) | Other project appearance |
 
 ## Evidence
 

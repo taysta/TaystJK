@@ -33,6 +33,11 @@ used and the identifier is absent from EternalJK's public repository.
 Contributor identity is not treated as permanent project identity:
 `cg_chatBoxEmojis` is a curated exception because Sunny contributed that
 feature to EternalJK before starting work on Vulkan.
+`cl_filterGames` is another curated exception: Daggolin's OpenJK PR #1188
+was imported by TaystJK PR #53 before its upstream squash merge. The import
+commit for `ifCvar`, `strSub`, `delay`, and `waitf` explicitly credits
+NewJK/NewMod; such explicit import credit does not require the identifier to
+remain registered in the configured public upstream snapshot.
 
 For every non-base identifier, the resolver records the first mainline
 registration in every project. It distinguishes the exact registration's first

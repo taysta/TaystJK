@@ -77,7 +77,7 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 | Date | Change source | Commit / subject | Evidence | Confidence |
 |:--|:--|:--|:--|:--|
-| `2022-04-25` | <span class="label ref-origin ref-origin-taystjk">TaystJK</span> | [`cb18555d35ea`](https://github.com/taysta/TaystJK/commit/cb18555d35eaf2bf83961026c37ff7c92731edba)<br>Merge branch 'master' of https://github.com/JKSunny/EternalJK | Changed registration, default, flags, module, renderer scope, handler, or gating. `codemp/rd-vulkan/tr_init.cpp` | `medium` |
+| `2022-04-25` | <span class="label ref-origin ref-origin-taystjk">TaystJK</span> | [`cb18555d35ea`](https://github.com/taysta/TaystJK/commit/cb18555d35eaf2bf83961026c37ff7c92731edba)<br>Merge branch 'master' of https://github.com/JKSunny/EternalJK | Changed registration, default, flags, module, renderer scope, handler, or gating; and an exact bound cvar-variable reference. `codemp/rd-vulkan/tr_init.cpp`, `codemp/rd-vulkan/vk_init.cpp` | `medium` |
 
 ## Evidence
 

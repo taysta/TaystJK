@@ -8,7 +8,7 @@ search_exclude: false
 
 # `cl_filterGames`
 
-<span class="label ref-origin ref-origin-taystjk">TaystJK</span>
+<span class="label ref-origin ref-origin-openjk">OpenJK</span>
 
 List of fs_game to filter (space separated)
 
@@ -41,14 +41,16 @@ No discrete value list is enforced or documented in the inspected source.
 
 ## Provenance
 
-Origin: <span class="label ref-origin ref-origin-taystjk">TaystJK</span>
+Origin: <span class="label ref-origin ref-origin-openjk">OpenJK</span>
 
-- Ultimate-origin introduction: [`47e33dfb6fd5`](https://github.com/taysta/TaystJK/commit/47e33dfb6fd55a1ae75888b7a33f056a8aba91ae) in <span class="label ref-origin ref-origin-taystjk">TaystJK</span> (content authored `2023-11-09`, PR opened `2023-11-28`, integrated `2023-11-28`)
-- Origin pull request: [#53](https://github.com/taysta/TaystJK/pull/53)
-- Upstream registration evidence: [codemp/client/cl_main.cpp:3409](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/cl_main.cpp#L3409)
-- Attribution method: `earliest-authored-project-introduction`
+- Ultimate-origin introduction: [`58ad339799e4`](https://github.com/JACoders/OpenJK/commit/58ad339799e46a1ba2ee7b3218d6937f6582f29a) in <span class="label ref-origin ref-origin-openjk">OpenJK</span> (content authored `2024-02-08`, PR opened `2023-11-12`, integrated `2024-02-08`)
+- TaystJK integration evidence: [`47e33dfb6fd5`](https://github.com/taysta/TaystJK/commit/47e33dfb6fd55a1ae75888b7a33f056a8aba91ae)
+- Origin pull request: [#1188](https://github.com/JACoders/OpenJK/pull/1188)
+- TaystJK integration pull request: [#53](https://github.com/taysta/TaystJK/pull/53)
+- Upstream registration evidence: [codemp/client/cl_main.cpp:2830](https://github.com/JACoders/OpenJK/blame/1a6a643427aa347553e9073dac5570b33337c4d9/codemp/client/cl_main.cpp#L2830)
+- Attribution method: `curated-historical-attribution`
 - Attribution confidence: `high`
-- Notes: The TaystJK integration evidence credits openjk as an immediate port source, but taystjk has an earlier dated introduction and remains the ultimate origin.
+- Notes: Daggolin authored cl_filterGames for OpenJK PR #1188, linked by TaystJK integration PR #53. OpenJK's later squash commit does not make the earlier TaystJK import the origin.
 
 ### Dated project introductions
 
@@ -56,12 +58,10 @@ Authored dates come from the exact registration's first content commit, PR dates
 
 | Project | Authored | PR opened | Integrated | Commit | Relationship |
 |:--|:--|:--|:--|:--|:--|
-| <span class="label ref-origin ref-origin-taystjk">TaystJK</span> | `2023-11-09` | [2023-11-28](https://github.com/taysta/TaystJK/pull/53) | `2023-11-28` | [`47e33dfb6fd5`](https://github.com/taysta/TaystJK/commit/47e33dfb6fd55a1ae75888b7a33f056a8aba91ae) | Ultimate origin |
-| <span class="label ref-origin ref-origin-japro">jaPRO</span> | `2023-11-09` | — | `2023-11-28` | [`47e33dfb6fd5`](https://github.com/videoP/jaPRO/commit/47e33dfb6fd55a1ae75888b7a33f056a8aba91ae) | Shared integration commit |
-| <span class="label ref-origin ref-origin-openjk">OpenJK</span> | `2024-02-08` | — | `2024-02-08` | [`58ad339799e4`](https://github.com/JACoders/OpenJK/commit/58ad339799e46a1ba2ee7b3218d6937f6582f29a) | Other project appearance |
+| <span class="label ref-origin ref-origin-taystjk">TaystJK</span> | `2023-11-09` | [2023-11-28](https://github.com/taysta/TaystJK/pull/53) | `2023-11-28` | [`47e33dfb6fd5`](https://github.com/taysta/TaystJK/commit/47e33dfb6fd55a1ae75888b7a33f056a8aba91ae) | Other project appearance |
+| <span class="label ref-origin ref-origin-japro">jaPRO</span> | `2023-11-09` | — | `2023-11-28` | [`47e33dfb6fd5`](https://github.com/videoP/jaPRO/commit/47e33dfb6fd55a1ae75888b7a33f056a8aba91ae) | Other project appearance |
+| <span class="label ref-origin ref-origin-openjk">OpenJK</span> | `2024-02-08` | [2023-11-12](https://github.com/JACoders/OpenJK/pull/1188) | `2024-02-08` | [`58ad339799e4`](https://github.com/JACoders/OpenJK/commit/58ad339799e46a1ba2ee7b3218d6937f6582f29a) | Ultimate origin |
 | <span class="label ref-origin ref-origin-rend2">rend2</span> | `2024-02-08` | — | `2024-02-19` | [`49adb7447c9f`](https://github.com/SomaZ/OpenJK/commit/49adb7447c9f4766a9024f55ad44bb5bf8a21b07) | Other project appearance |
-
-Immediate port-source credit: <span class="label ref-origin ref-origin-openjk">OpenJK</span>. The earlier dated project remains the ultimate origin.
 
 ### Later changes
 

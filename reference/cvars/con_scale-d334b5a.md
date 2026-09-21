@@ -73,7 +73,7 @@ Authored dates come from the exact registration's first content commit, PR dates
 | <span class="label ref-origin ref-origin-taystjk">TaystJK</span> | `2018-02-05` | — | `2018-02-05` | [`135f109285cb`](https://github.com/taysta/TaystJK/commit/135f109285cbe2e07bbfd4ef2dbe0ef5b492af1a) | Other project appearance |
 | <span class="label ref-origin ref-origin-japro">jaPRO</span> | `2018-02-05` | — | `2018-02-05` | [`135f109285cb`](https://github.com/videoP/jaPRO/commit/135f109285cbe2e07bbfd4ef2dbe0ef5b492af1a) | Other project appearance |
 | <span class="label ref-origin ref-origin-vulkan">Vulkan</span> | `2018-02-05` | — | `2018-02-05` | [`135f109285cb`](https://github.com/JKSunny/EternalJK/commit/135f109285cbe2e07bbfd4ef2dbe0ef5b492af1a) | Other project appearance |
-| <span class="label ref-origin ref-origin-openjk">OpenJK</span> | `2023-11-09` | — | `2024-02-08` | [`01697e61fe58`](https://github.com/JACoders/OpenJK/commit/01697e61fe586e31591dd236e1d4441c92f41a8a) | Other project appearance |
+| <span class="label ref-origin ref-origin-openjk">OpenJK</span> | `2023-11-09` | [2023-11-06](https://github.com/JACoders/OpenJK/pull/1184) | `2024-02-08` | [`01697e61fe58`](https://github.com/JACoders/OpenJK/commit/01697e61fe586e31591dd236e1d4441c92f41a8a) | Other project appearance |
 | <span class="label ref-origin ref-origin-rend2">rend2</span> | `2023-11-09` | — | `2024-02-19` | [`49adb7447c9f`](https://github.com/SomaZ/OpenJK/commit/49adb7447c9f4766a9024f55ad44bb5bf8a21b07) | Other project appearance |
 
 ### Later changes

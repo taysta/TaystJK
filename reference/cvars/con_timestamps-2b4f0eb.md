@@ -65,7 +65,7 @@ Authored dates come from the exact registration's first content commit, PR dates
 | Project | Authored | PR opened | Integrated | Commit | Relationship |
 |:--|:--|:--|:--|:--|:--|
 | <span class="label ref-origin ref-origin-jk2mv">JK2MV</span> | `2016-06-01` | — | `2016-06-12` | [`20de49f4fe92`](https://github.com/mvdevs/jk2mv/commit/20de49f4fe92499c5efd12bcbb785c8ac7179f1d) | Ultimate origin |
-| <span class="label ref-origin ref-origin-openjk">OpenJK</span> | `2023-11-09` | — | `2024-02-08` | [`01697e61fe58`](https://github.com/JACoders/OpenJK/commit/01697e61fe586e31591dd236e1d4441c92f41a8a) | Other project appearance |
+| <span class="label ref-origin ref-origin-openjk">OpenJK</span> | `2023-11-09` | [2023-11-06](https://github.com/JACoders/OpenJK/pull/1184) | `2024-02-08` | [`01697e61fe58`](https://github.com/JACoders/OpenJK/commit/01697e61fe586e31591dd236e1d4441c92f41a8a) | Other project appearance |
 | <span class="label ref-origin ref-origin-rend2">rend2</span> | `2023-11-09` | — | `2024-02-19` | [`49adb7447c9f`](https://github.com/SomaZ/OpenJK/commit/49adb7447c9f4766a9024f55ad44bb5bf8a21b07) | Other project appearance |
 | <span class="label ref-origin ref-origin-taystjk">TaystJK</span> | `2024-02-27` | [2024-02-19](https://github.com/taysta/TaystJK/pull/155) | `2024-02-27` | [`61b1b328accf`](https://github.com/taysta/TaystJK/commit/61b1b328accf2f186b1f97d363b3888873f9dbe3) | Other project appearance |
 | <span class="label ref-origin ref-origin-japro">jaPRO</span> | `2024-02-27` | — | `2024-02-27` | [`61b1b328accf`](https://github.com/videoP/jaPRO/commit/61b1b328accf2f186b1f97d363b3888873f9dbe3) | Other project appearance |

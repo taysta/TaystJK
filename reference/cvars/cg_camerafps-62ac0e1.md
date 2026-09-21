@@ -49,7 +49,7 @@ Origin: <span class="label ref-origin ref-origin-jk2mv">JK2MV</span>
 - TaystJK integration evidence: [`18a8e8c9a528`](https://github.com/taysta/TaystJK/commit/18a8e8c9a528dd540dddee52ae2376a7c05a5e47)
 - Attribution method: `identifier-adjacent-explicit-credit`
 - Attribution confidence: `high`
-- Notes: The earliest authored/submitted introduction is shared by eternaljk, taystjk, japro, vulkan; fork-lineage order selects eternaljk. An identifier-adjacent source/commit/PR line explicitly credits jk2mv.
+- Notes: The exact registration's introduction commit explicitly imports it from jk2mv; the identifier is absent from that project's configured public snapshot. An identifier-adjacent source/commit/PR line explicitly credits jk2mv.
 
 ### Dated project introductions
 

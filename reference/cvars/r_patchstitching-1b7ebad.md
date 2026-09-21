@@ -83,8 +83,8 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 | Date | Change source | Commit / subject | Evidence | Confidence |
 |:--|:--|:--|:--|:--|
-| `2024-02-10` | <span class="label ref-origin ref-origin-taystjk">TaystJK</span> | [`ea0478621b05`](https://github.com/taysta/TaystJK/commit/ea0478621b0535dc6a6e5a22036237942e98c417) · [PR #141](https://github.com/taysta/TaystJK/pull/141)<br>Patch stitching (#141) | Changed registration, default, flags, module, renderer scope, handler, or gating. `codemp/rd-dedicated/tr_init.cpp`, `codemp/rd-rend2/tr_init.cpp`, `codemp/rd-vanilla/tr_init.cpp` and 1 more | `medium` |
-| `2024-04-24` | <span class="label ref-origin ref-origin-taystjk">TaystJK</span> | [`c7590dfd5fd2`](https://github.com/taysta/TaystJK/commit/c7590dfd5fd2f09108ad4d14d370cf7bafc0c9b2) · [PR #190](https://github.com/taysta/TaystJK/pull/190)<br>Upstream vulkan updates (#190) | Changed registration, default, flags, module, renderer scope, handler, or gating. `codemp/rd-vulkan/tr_init.cpp` | `medium` |
+| `2024-02-10` | <span class="label ref-origin ref-origin-taystjk">TaystJK</span> | [`ea0478621b05`](https://github.com/taysta/TaystJK/commit/ea0478621b0535dc6a6e5a22036237942e98c417) · [PR #141](https://github.com/taysta/TaystJK/pull/141)<br>Patch stitching (#141) | Changed registration, default, flags, module, renderer scope, handler, or gating. `codemp/rd-dedicated/tr_init.cpp`, `codemp/rd-dedicated/tr_local.h`, `codemp/rd-rend2/tr_init.cpp` and 8 more | `medium` |
+| `2024-04-24` | <span class="label ref-origin ref-origin-taystjk">TaystJK</span> | [`c7590dfd5fd2`](https://github.com/taysta/TaystJK/commit/c7590dfd5fd2f09108ad4d14d370cf7bafc0c9b2) · [PR #190](https://github.com/taysta/TaystJK/pull/190)<br>Upstream vulkan updates (#190) | Changed registration, default, flags, module, renderer scope, handler, or gating; and an exact bound cvar-variable reference. `codemp/rd-dedicated/tr_init.cpp`, `codemp/rd-vanilla/tr_init.cpp`, `codemp/rd-vanilla/tr_local.h` and 2 more | `medium` |
 
 ## Evidence
 
