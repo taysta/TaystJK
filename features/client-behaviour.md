@@ -65,12 +65,44 @@ found.
 
 ### Precedence between `.shader` files
 
-Among ordinary `.shader` files, the one found **later** in the file list wins. The buffers
-are concatenated in reverse list order
-([`tr_shader.cpp`](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-vanilla/tr_shader.cpp#L4147)),
-which puts the later file earlier in the text, and first match wins. If
-`gfx/2d/charsgrid_med` is defined in both `shaders/original.shader` and
-`shaders/fonts.shader`, only one of them is used. An `.oshader` file beats both.
+`.oshader` does not change the ordering described here; it sits in front of it. The
+ordinary rules are unchanged, and they are worth knowing, because they are what the
+override extension works around.
+
+Two pk3s shipping the **same filename** — both carrying their own `shaders/gfx.shader` —
+resolve the ordinary way. The file list is uniqued by name
+([`FS_AddFileToList`](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/qcommon/files.cpp#L2636)),
+so the name is listed once and the renderer reads whichever pk3 has priority. This is why
+mods ship a whole copy of a file to change one shader in it, and why installing two such
+mods loses one of them.
+
+The case that surprises people is one shader **name** defined in two **differently named**
+files. That is settled by position in the concatenated text, and the order comes out
+inverted relative to normal file precedence:
+
+- `FS_ListFiles` walks the search paths from highest priority to lowest
+  ([`FS_ListFilteredFiles`](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/qcommon/files.cpp#L2691)).
+  Pk3s are mounted in ascending name order
+  ([`paksort`](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/qcommon/files.cpp#L3422))
+  and each one is pushed onto the front of the search path
+  ([`FS_AddGameDirectory`](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/qcommon/files.cpp#L3482)),
+  so `zzz.pk3`'s shader files are listed first and `assets0.pk3`'s last.
+- The `.shader` buffers are then concatenated in **reverse** list order
+  ([`tr_shader.cpp`](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-vanilla/tr_shader.cpp#L4147)),
+  which puts the lowest-priority file at the front of the text.
+- First match wins.
+
+So if `gfx/2d/charsgrid_med` is defined in `shaders/original.shader` inside the base assets
+and again in `shaders/fonts.shader` inside your pk3, the base assets definition is the one
+used. Naming your pk3 to load later does not change it. Within a single pk3 the order is
+just the order of the entries in the archive, so do not rely on it either.
+
+`.oshader` sidesteps all of this rather than reordering it: override buffers are placed
+ahead of every `.shader` buffer, so they win regardless of which pk3 they came from. Among
+`.oshader` files themselves the order is **forward**
+([`tr_shader.cpp`](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-vanilla/tr_shader.cpp#L4135)),
+so between two overrides of the same shader the higher-priority pk3 wins — the normal
+precedence, restored.
 
 ## Binds
 
