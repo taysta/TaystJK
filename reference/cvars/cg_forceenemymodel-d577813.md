@@ -32,6 +32,7 @@ Controls `cg_forceEnemyModel` in the cgame module. Consult the cited behavior re
 | Value type | `string` |
 | Restart | No latch flag is registered. |
 | Cheat protected | No |
+| Player-settable | Yes |
 
 ## Values
 

@@ -32,6 +32,7 @@ IP of server to try to autologin on, used with /autologin command. If you are no
 | Value type | `string` |
 | Restart | No latch flag is registered. |
 | Cheat protected | No |
+| Player-settable | Yes |
 
 ## Values
 

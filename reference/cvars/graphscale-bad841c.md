@@ -32,6 +32,7 @@ Controls `cl_graphscale` in the engine-client module. Consult the cited behavior
 | Value type | `bool` |
 | Restart | No latch flag is registered. |
 | Cheat protected | Yes |
+| Player-settable | Yes |
 
 ## Values
 

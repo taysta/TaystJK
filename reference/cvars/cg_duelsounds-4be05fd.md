@@ -32,6 +32,7 @@ Enables/disables announcer/center print at the start of private duels
 | Value type | `enum` |
 | Restart | No latch flag is registered. |
 | Cheat protected | No |
+| Player-settable | Yes |
 
 ## Values
 

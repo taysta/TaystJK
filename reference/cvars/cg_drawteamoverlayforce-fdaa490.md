@@ -30,6 +30,7 @@ Draw force points on the team overlay. Only has an effect on jaPRO servers, wher
 | Value type | `bool` |
 | Restart | No latch flag is registered. |
 | Cheat protected | No |
+| Player-settable | Yes |
 
 ## Values
 

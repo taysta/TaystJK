@@ -12,6 +12,8 @@ search_exclude: false
 
 <p class="ref-warning"><strong>Needs review.</strong> The inventory/provenance evidence is recorded, but some behavior, options, or attribution still lacks a direct user-facing source.</p>
 
+<p class="ref-notice"><strong>Set with <code>startingItems</code>.</strong> Each bit is a separate option, so the command toggles one of them per use and leaves the rest alone. Setting a raw value by hand replaces every option at once.</p>
+
 Configured with /startingItems command.
 
 ## At a glance
@@ -32,11 +34,30 @@ Configured with /startingItems command.
 | Value type | `bitmask` |
 | Restart | No latch flag is registered. |
 | Cheat protected | No |
+| Player-settable | Yes |
+| Configure with | [`startingItems`](/TaystJK/reference/commands/startingitems-2ed82fa/) |
 
-## Values
+## Bits
 
-No discrete value list is enforced or documented in the inspected source.
+Toggle one with [`startingItems`](/TaystJK/reference/commands/startingitems-2ed82fa/) followed by the bit number. The value column is that bit on its own — [the labels come from the source table](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_svcmds.c#L1188).
 
+| Bit | Value | Meaning | Read by |
+|:--|:--|:--|:--|
+| 1 | `2` | Seeker | — |
+| 2 | `4` | Shield | — |
+| 3 | `8` | Bacta | — |
+| 4 | `16` | Big Bacta | — |
+| 5 | `32` | Binoculars | — |
+| 6 | `64` | Sentry Gun | — |
+| 7 | `128` | Jetpack | — |
+| 8 | `256` | Health Dispenser | — |
+| 9 | `512` | Ammo Dispenser | — |
+| 10 | `1024` | E-WEB | — |
+| 11 | `2048` | Cloak | — |
+| 12 | `4096` | Ability to toggle /jetpack | — |
+| 13 | `8192` | Start with armor in duel gametype | — |
+| 14 | `16384` | Start with full armor in FFA | — |
+| 15 | `32768` | Start with full health after each kill | — |
 ## Flags
 
 - `CVAR_ARCHIVE` — saved to the user configuration

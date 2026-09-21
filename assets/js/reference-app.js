@@ -2,7 +2,7 @@
   "use strict";
 
   var PAGE_SIZE = 48;
-  var FILTER_KEYS = ["origin", "module", "category", "feature", "renderer", "status", "network", "coverage", "flag"];
+  var FILTER_KEYS = ["origin", "module", "category", "feature", "renderer", "status", "network", "coverage", "audience", "flag"];
   var FILTER_DEFAULTS = {
     origin: "Any origin",
     module: "Any module",
@@ -12,6 +12,7 @@
     status: "Any status",
     network: "Any scope",
     coverage: "Any coverage",
+    audience: "Any cvar",
     flag: "Any flag"
   };
   var DEFAULT_SORT = "origin";
@@ -100,6 +101,7 @@
     var statuses = selectedValues(state, "status");
     var networks = selectedValues(state, "network");
     var coverage = selectedValues(state, "coverage");
+    var audience = selectedValues(state, "audience");
     var flags = selectedValues(state, "flag");
     var renderers = selectedValues(state, "renderer");
     if (origins.length && origins.indexOf(entry.origin) === -1) return false;
@@ -113,6 +115,11 @@
       if (value === "menu") return Boolean(entry.menu);
       if (value === "no-xdocs") return !entry.xdocs;
       if (value === "no-menu") return !entry.menu;
+      return false;
+    })) return false;
+    if (audience.length && !audience.some(function (value) {
+      if (value === "engine-managed") return Boolean(entry.engine_managed);
+      if (value === "settable") return entry.kind === "cvar" && !entry.engine_managed;
       return false;
     })) return false;
     if (flags.length && !flags.some(function (flag) { return (entry.flags || []).indexOf(flag) !== -1; })) return false;
@@ -255,6 +262,7 @@
     if (entry.menu) meta += '<span class="coverage-chip">menu</span>';
     if (entry.cheat_protected) meta += '<span class="meta-chip">Cheat protected</span>';
     if (entry.requires_restart) meta += '<span class="meta-chip">Restart required</span>';
+    if (entry.engine_managed) meta += '<span class="status-chip">Engine-managed</span>';
     (entry.flags || []).slice(0, 2).forEach(function (flag) { meta += '<span class="meta-chip">' + escapeHtml(flag) + '</span>'; });
 
     return '<article class="reference-card">' +
@@ -281,6 +289,7 @@
     if (key === "network") return NETWORK_LABELS[value] || value;
     if (key === "status") return value === "documented" ? "Documented" : "Needs review";
     if (key === "coverage") return { xdocs: "Has xdocs entry", menu: "Has menu entry", "no-xdocs": "Missing from xdocs", "no-menu": "Missing from menus" }[value] || value;
+    if (key === "audience") return value === "engine-managed" ? "Engine-managed" : "Player-settable";
     if (key === "renderer" && value === "renderer-specific") return "Renderer-specific only";
     if (key === "renderer" && value === "none") return "Not renderer-specific";
     return value;
@@ -310,12 +319,16 @@
       status: paramValues(params, "status"),
       network: paramValues(params, "network"),
       coverage: paramValues(params, "coverage"),
+      audience: paramValues(params, "audience"),
       flag: paramValues(params, "flag"),
       sort: ["relevance", "name", "category", "feature", "origin", "module"].indexOf(params.get("sort")) !== -1 ? params.get("sort") : DEFAULT_SORT,
       limit: PAGE_SIZE,
       presets: presets
     };
-    if (kind === "command") state.flag = [];
+    if (kind === "command") {
+      state.flag = [];
+      state.audience = [];
+    }
     return state;
   }
 
@@ -376,13 +389,18 @@
       button.classList.toggle("active", active);
       button.setAttribute("aria-pressed", active ? "true" : "false");
     });
-    root.querySelector("[data-cvar-filter]").hidden = state.kind === "command";
-    if (state.kind === "command") closeDropdown(root, "flag");
+    Array.prototype.forEach.call(root.querySelectorAll("[data-cvar-filter]"), function (filter) {
+      filter.hidden = state.kind === "command";
+    });
+    if (state.kind === "command") {
+      closeDropdown(root, "flag");
+      closeDropdown(root, "audience");
+    }
   }
 
   function syncUrl(state) {
     var params = new URLSearchParams(global.location.search);
-    ["q", "kind", "origin", "module", "category", "feature", "renderer", "status", "network", "coverage", "flag", "sort"].forEach(function (key) { params.delete(key); });
+    ["q", "kind", "origin", "module", "category", "feature", "renderer", "status", "network", "coverage", "audience", "flag", "sort"].forEach(function (key) { params.delete(key); });
     if (state.query) params.set("q", state.query);
     if (state.mode === "all" && state.kind !== "all") params.set("kind", state.kind);
     FILTER_KEYS.forEach(function (key) {
@@ -396,7 +414,7 @@
 
   function activeFilterText(state) {
     var values = [];
-    var groupLabels = { origin: "Origin", module: "Module", category: "Topic", feature: "Feature", renderer: "Renderer", status: "Documentation", network: "Network", coverage: "In game", flag: "Flag" };
+    var groupLabels = { origin: "Origin", module: "Module", category: "Topic", feature: "Feature", renderer: "Renderer", status: "Documentation", network: "Network", coverage: "In game", audience: "Settable", flag: "Flag" };
     FILTER_KEYS.forEach(function (key) {
       var selected = selectedValues(state, key);
       if (selected.length) values.push(groupLabels[key] + ": " + selected.map(function (value) { return valueLabel(key, value); }).join(", "));
@@ -506,6 +524,7 @@
       state.status = [];
       state.network = [];
       state.coverage = [];
+      state.audience = [];
       state.flag = [];
       state.sort = DEFAULT_SORT;
       state.limit = PAGE_SIZE;

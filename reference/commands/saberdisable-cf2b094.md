@@ -30,6 +30,7 @@ Runs `Svcmd_ToggleSaberDisable_f` in the game module.
 | In-game menu | No |
 | Syntax | `saberDisable [arguments]` |
 | Cheat protected | No |
+| Configures | [`g_saberDisable`](/TaystJK/reference/cvars/g_saberdisable-8b0544d/) |
 
 ## Arguments and gating
 

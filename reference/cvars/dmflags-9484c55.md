@@ -32,6 +32,7 @@ Controls `dmflags` in the game module. Consult the cited behavior reads before r
 | Value type | `bitmask` |
 | Restart | No latch flag is registered. |
 | Cheat protected | No |
+| Player-settable | Yes |
 
 ## Values
 

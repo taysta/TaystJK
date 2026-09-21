@@ -31,6 +31,7 @@ Disable/enable texture compression
 | Value type | `float` |
 | Restart | Yes; the value is latched. |
 | Cheat protected | No |
+| Player-settable | Yes |
 
 ## Values
 

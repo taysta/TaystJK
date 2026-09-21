@@ -32,6 +32,7 @@ Forces all players to have your cosmetics on non-japro servers
 | Value type | `bool` |
 | Restart | No latch flag is registered. |
 | Cheat protected | No |
+| Player-settable | Yes |
 
 ## Values
 

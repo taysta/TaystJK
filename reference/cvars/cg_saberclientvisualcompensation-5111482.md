@@ -32,6 +32,7 @@ Controls `cg_saberClientVisualCompensation` in the cgame module. Consult the cit
 | Value type | `bool` |
 | Restart | No latch flag is registered. |
 | Cheat protected | No |
+| Player-settable | Yes |
 
 ## Values
 

@@ -32,6 +32,7 @@ Controls `cg_renderToTextureFX` in the cgame module. Consult the cited behavior 
 | Value type | `enum` |
 | Restart | No latch flag is registered. |
 | Cheat protected | No |
+| Player-settable | Yes |
 
 ## Values
 

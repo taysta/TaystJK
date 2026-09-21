@@ -32,6 +32,7 @@ Use a unique guid value per server
 | Value type | `bool` |
 | Restart | No latch flag is registered. |
 | Cheat protected | No |
+| Player-settable | Yes |
 
 ## Values
 

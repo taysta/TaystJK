@@ -30,6 +30,7 @@ Runs `Svcmd_ToggleEmotes_f` in the game module.
 | In-game menu | No |
 | Syntax | `toggleEmotes [arguments]` |
 | Cheat protected | No |
+| Configures | [`g_emotesDisable`](/TaystJK/reference/cvars/g_emotesdisable-8df1bb9/) |
 
 ## Arguments and gating
 

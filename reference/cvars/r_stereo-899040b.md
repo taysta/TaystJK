@@ -32,6 +32,7 @@ Controls `r_stereo` in the renderer module. Consult the cited behavior reads bef
 | Value type | `bool` |
 | Restart | Yes; the value is latched. |
 | Cheat protected | No |
+| Player-settable | Yes |
 
 ## Values
 

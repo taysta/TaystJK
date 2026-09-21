@@ -32,6 +32,7 @@ Controls `r_texturebits` in the renderer module. Consult the cited behavior read
 | Value type | `enum` |
 | Restart | Yes; the value is latched. |
 | Cheat protected | No |
+| Player-settable | Yes |
 
 ## Values
 

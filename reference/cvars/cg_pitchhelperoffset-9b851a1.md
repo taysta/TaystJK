@@ -33,6 +33,7 @@ Offset the green range up or down (eg. range 30, offset 10 = +25 to -5)
 | Value type | `float` |
 | Restart | No latch flag is registered. |
 | Cheat protected | No |
+| Player-settable | Yes |
 
 ## Values
 

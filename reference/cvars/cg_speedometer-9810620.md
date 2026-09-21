@@ -10,6 +10,8 @@ search_exclude: false
 
 <span class="label ref-origin ref-origin-japro">jaPRO</span>
 
+<p class="ref-notice"><strong>Set with <code>speedometer</code>.</strong> Each bit is a separate option, so the command toggles one of them per use and leaves the rest alone. Setting a raw value by hand replaces every option at once.</p>
+
 Configure with the /speedometer command
 
 ## At a glance
@@ -31,16 +33,31 @@ Configure with the /speedometer command
 | Value type | `bitmask` |
 | Restart | No latch flag is registered. |
 | Cheat protected | No |
+| Player-settable | Yes |
+| Configure with | [`speedometer`](/TaystJK/reference/commands/speedometer-b0e26e4/) |
 
-## Values
+## Bits
 
-| Value | Meaning | Evidence |
-|:--|:--|:--|
-| `64` | Enables the `SPEEDOMETER_ACCELMETER` code path. | [codemp/cgame/hud_strafehelper.h:90](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/hud_strafehelper.h#L90) |
-| `1` | Enables the `SPEEDOMETER_ENABLE` code path. | [codemp/cgame/hud_strafehelper.h:84](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/hud_strafehelper.h#L84) |
-| `8` | Enables the `SPEEDOMETER_JUMPDISTANCE` code path. | [codemp/cgame/hud_strafehelper.h:87](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/hud_strafehelper.h#L87) |
-| `4` | Enables the `SPEEDOMETER_JUMPHEIGHT` code path. | [codemp/cgame/hud_strafehelper.h:86](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/hud_strafehelper.h#L86) |
+Toggle one with [`speedometer`](/TaystJK/reference/commands/speedometer-b0e26e4/) followed by the bit number. The value column is that bit on its own — [the labels come from the source table](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_consolecmds.c#L1509).
 
+| Bit | Value | Meaning | Read by |
+|:--|:--|:--|:--|
+| 0 | `1` | Enable speedometer | [codemp/cgame/hud_strafehelper.h:84](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/hud_strafehelper.h#L84) |
+| 1 | `2` | Pre-speed display | — |
+| 2 | `4` | Jump height display | [codemp/cgame/hud_strafehelper.h:86](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/hud_strafehelper.h#L86) |
+| 3 | `8` | Jump distance display | [codemp/cgame/hud_strafehelper.h:87](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/hud_strafehelper.h#L87) |
+| 4 | `16` | Vertical speed indicator | — |
+| 5 | `32` | Yaw speed indicator | — |
+| 6 | `64` | Accel meter | [codemp/cgame/hud_strafehelper.h:90](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/hud_strafehelper.h#L90) |
+| 7 | `128` | Speed graph | — |
+| 8 | `256` | Display speed in kilometers instead of units | — |
+| 9 | `512` | Display speed in imperial miles instead of units | — |
+| 10 | `1024` | Pre-speed jumps array | — |
+| 11 | `2048` | Disable speedometer colors | — |
+| 12 | `4096` | Array Colors 1 | — |
+| 13 | `8192` | Array Colors 2 | — |
+| 14 | `16384` | Old Speedgraph | — |
+| 15 | `32768` | XYZ Speed | — |
 ## Flags
 
 - `CVAR_ARCHIVE` — saved to the user configuration

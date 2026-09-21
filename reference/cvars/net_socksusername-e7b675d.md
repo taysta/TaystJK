@@ -32,6 +32,7 @@ Controls `net_socksUsername` in the engine-shared module. Consult the cited beha
 | Value type | `string` |
 | Restart | Yes; the value is latched. |
 | Cheat protected | No |
+| Player-settable | Yes |
 
 ## Values
 

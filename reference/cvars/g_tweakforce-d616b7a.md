@@ -12,6 +12,8 @@ search_exclude: false
 
 <p class="ref-warning"><strong>Needs review.</strong> The inventory/provenance evidence is recorded, but some behavior, options, or attribution still lacks a direct user-facing source.</p>
 
+<p class="ref-notice"><strong>Set with <code>tweakForce</code>.</strong> Each bit is a separate option, so the command toggles one of them per use and leaves the rest alone. Setting a raw value by hand replaces every option at once.</p>
+
 Configured with /tweakForce command.
 
 ## At a glance
@@ -32,16 +34,39 @@ Configured with /tweakForce command.
 | Value type | `bitmask` |
 | Restart | No latch flag is registered. |
 | Cheat protected | No |
+| Player-settable | Yes |
+| Configure with | [`tweakForce`](/TaystJK/reference/commands/tweakforce-05bb9d3/) |
 
-## Values
+## Bits
 
-| Value | Meaning | Evidence |
-|:--|:--|:--|
-| `1048576` | Not really a forcetweak but no room in weapon tweaks! | [codemp/game/g_local.h:267](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_local.h#L267) |
-| `128` | Enables the `FT_FASTGRIP` code path. | [codemp/game/g_local.h:254](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_local.h#L254) |
-| `16` | Enables the `FT_FORCECOMBO` code path. | [codemp/game/g_local.h:251](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_local.h#L251) |
-| `262144` | Enables the `FT_NORAGEFIRERATE` code path. | [codemp/game/g_local.h:265](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_local.h#L265) |
+Toggle one with [`tweakForce`](/TaystJK/reference/commands/tweakforce-05bb9d3/) followed by the bit number. The value column is that bit on its own — [the labels come from the source table](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_svcmds.c#L987).
 
+| Bit | Value | Meaning | Read by |
+|:--|:--|:--|:--|
+| 0 | `1` | No forcepower drain for crouch attack | — |
+| 1 | `2` | Fix projectile force push dir | — |
+| 2 | `4` | Can push/pull knocked down players | — |
+| 3 | `8` | Fix grip absorb | — |
+| 4 | `16` | Allow force combo | [codemp/game/g_local.h:251](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_local.h#L251) |
+| 5 | `32` | Fix pull strength | — |
+| 6 | `64` | JK2 grip | — |
+| 7 | `128` | Fast grip runspeed | [codemp/game/g_local.h:254](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_local.h#L254) |
+| 8 | `256` | Push/pull items | — |
+| 9 | `512` | Smaller Drain COF | — |
+| 10 | `1024` | JK2 push/pull knockdown | — |
+| 11 | `2048` | JK2 style knockdown getup | — |
+| 12 | `4096` | Allow push/pull during roll like JK2 | — |
+| 13 | `8192` | Force drain does not give forcepoints to players using force absorb | — |
+| 14 | `16384` | Allow grip during roll | — |
+| 15 | `32768` | Weak force pull | — |
+| 16 | `65536` | Nerfed weapon pull distance | — |
+| 17 | `131072` | Force resistance while firing/charging weapon | — |
+| 18 | `262144` | Stop rage from affecting firerate of weapons | [codemp/game/g_local.h:265](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_local.h#L265) |
+| 19 | `524288` | Don't break mindtrick on attack unless trickee is looking at you | — |
+| 20 | `1048576` | Stronger / different Melee attack | [codemp/game/g_local.h:267](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_local.h#L267) |
+| 21 | `2097152` | Drain takes 25% less force from target | — |
+| 22 | `4194304` | Regen force while being gripped if mid jump | — |
+| 23 | `8388608` | Drain level 3 is a line | — |
 ## Flags
 
 - `CVAR_ARCHIVE` — saved to the user configuration

@@ -30,6 +30,7 @@ Automatically add IPs of players to a whitelist. Whitelisted IPs are can still a
 | Value type | `bool` |
 | Restart | No latch flag is registered. |
 | Cheat protected | No |
+| Player-settable | Yes |
 
 ## Values
 

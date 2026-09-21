@@ -30,6 +30,7 @@ Disable/enable reading deluxemaps when compiled with q3map2
 | Value type | `bool` |
 | Restart | Yes; the value is latched. |
 | Cheat protected | No |
+| Player-settable | Yes |
 
 ## Values
 

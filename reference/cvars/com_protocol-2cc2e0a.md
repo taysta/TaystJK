@@ -12,6 +12,8 @@ search_exclude: false
 
 <p class="ref-warning"><strong>Needs review.</strong> The inventory/provenance evidence is recorded, but some behavior, options, or attribution still lacks a direct user-facing source.</p>
 
+<p class="ref-notice"><strong>Engine-managed.</strong> The game maintains this value itself, so it is not a setting to change by hand: it is read-only after registration (<code>CVAR_ROM</code>).</p>
+
 1.01 protocol
 
 ## At a glance
@@ -32,6 +34,7 @@ search_exclude: false
 | Value type | `int` |
 | Restart | No latch flag is registered. |
 | Cheat protected | No |
+| Player-settable | No — the game writes this value. |
 
 ## Values
 

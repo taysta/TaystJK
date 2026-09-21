@@ -32,6 +32,7 @@ Controls `r_debugContext` in the renderer module. Consult the cited behavior rea
 | Value type | `bool` |
 | Restart | Yes; the value is latched. |
 | Cheat protected | No |
+| Player-settable | Yes |
 
 ## Values
 

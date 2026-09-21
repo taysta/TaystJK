@@ -32,6 +32,7 @@ Controls `r_DynamicGlowHeight` in the renderer module. Consult the cited behavio
 | Value type | `int` |
 | Restart | Yes; the value is latched. |
 | Cheat protected | No |
+| Player-settable | Yes |
 
 ## Values
 

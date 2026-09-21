@@ -30,6 +30,7 @@ Renders cubemaps multiple times to get reflections in reflections
 | Value type | `int` |
 | Restart | Yes; the value is latched. |
 | Cheat protected | No |
+| Player-settable | Yes |
 
 ## Values
 

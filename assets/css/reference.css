@@ -1149,6 +1149,17 @@ kbd { padding: .15rem .42rem; color: var(--text-soft); background: var(--surface
   font-size: .86rem;
 }
 
+.ref-notice {
+  margin: 1.2rem 0;
+  padding: .85rem 1rem;
+  color: var(--text-soft);
+  background: color-mix(in srgb, var(--blue) 7%, transparent);
+  border: 1px solid color-mix(in srgb, var(--blue) 22%, transparent);
+  border-left: 3px solid var(--blue);
+  border-radius: var(--radius);
+  font-size: .86rem;
+}
+
 .breadcrumbs {
   display: flex;
   flex-wrap: wrap;

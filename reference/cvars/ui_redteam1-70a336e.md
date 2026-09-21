@@ -10,6 +10,8 @@ search_exclude: false
 
 <span class="label ref-origin ref-origin-basejka">Base Jedi Academy</span>
 
+<p class="ref-notice"><strong>Engine-managed.</strong> The game maintains this value itself, so it is not a setting to change by hand: it is internal UI/engine state, hidden from every cvar listing (<code>CVAR_INTERNAL</code>).</p>
+
 Rww - these used to all default to 0 (closed).. I changed them to 1 (human)
 
 ## At a glance
@@ -30,6 +32,7 @@ Rww - these used to all default to 0 (closed).. I changed them to 1 (human)
 | Value type | `int` |
 | Restart | No latch flag is registered. |
 | Cheat protected | No |
+| Player-settable | No — the game writes this value. |
 
 ## Values
 

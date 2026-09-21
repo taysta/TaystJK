@@ -30,6 +30,7 @@ Bot interbreeding cycle
 | Value type | `int` |
 | Restart | No latch flag is registered. |
 | Cheat protected | Yes |
+| Player-settable | Yes |
 
 ## Values
 

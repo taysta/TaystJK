@@ -31,6 +31,7 @@ How many seconds notify messages should be shown before they fade away
 | Value type | `float` |
 | Restart | No latch flag is registered. |
 | Cheat protected | No |
+| Player-settable | Yes |
 
 ## Values
 

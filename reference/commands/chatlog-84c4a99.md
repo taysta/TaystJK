@@ -30,6 +30,7 @@ Runs `CG_ChatLogSettings_f` in the cgame module.
 | In-game menu | No |
 | Syntax | `chatlog [arguments]` |
 | Cheat protected | No |
+| Configures | [`cg_logChat`](/TaystJK/reference/cvars/cg_logchat-b9bd889/) |
 
 ## Arguments and gating
 

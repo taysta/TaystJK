@@ -31,6 +31,7 @@ Runs `CG_StrafeHelper_f` in the cgame module.
 | In-game menu | Yes — [ingame.menu:972](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/assets/japro/ui/jamp/ingame.menu#L972), [ingame_strafehelper.menu:32](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/assets/japro/ui/jamp/ingame_strafehelper.menu#L32), [ingame_strafehelper.menu:52](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/assets/japro/ui/jamp/ingame_strafehelper.menu#L52) |
 | Syntax | `strafeHelper [arguments]` |
 | Cheat protected | No |
+| Configures | [`cg_strafeHelper`](/TaystJK/reference/cvars/cg_strafehelper-4850985/) |
 
 ## Arguments and gating
 

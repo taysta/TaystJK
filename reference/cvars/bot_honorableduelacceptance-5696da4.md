@@ -32,6 +32,7 @@ Controls `bot_honorableduelacceptance` in the game module. Consult the cited beh
 | Value type | `bool` |
 | Restart | No latch flag is registered. |
 | Cheat protected | No |
+| Player-settable | Yes |
 
 ## Values
 

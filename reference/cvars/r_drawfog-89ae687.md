@@ -30,6 +30,7 @@ Controls fog rendering. The Vulkan registration documents 0 as disabled, 1 as so
 | Value type | `enum` |
 | Restart | Yes; the value is latched. |
 | Cheat protected | No |
+| Player-settable | Yes |
 
 ## Values
 

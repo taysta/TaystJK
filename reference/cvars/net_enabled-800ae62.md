@@ -32,6 +32,7 @@ Controls `net_enabled` in the engine-shared module. Consult the cited behavior r
 | Value type | `bitmask` |
 | Restart | Yes; the value is latched. |
 | Cheat protected | No |
+| Player-settable | Yes |
 
 ## Values
 

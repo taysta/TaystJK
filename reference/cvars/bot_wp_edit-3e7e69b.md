@@ -32,6 +32,7 @@ Controls `bot_wp_edit` in the game module. Consult the cited behavior reads befo
 | Value type | `float` |
 | Restart | No latch flag is registered. |
 | Cheat protected | Yes |
+| Player-settable | Yes |
 
 ## Values
 

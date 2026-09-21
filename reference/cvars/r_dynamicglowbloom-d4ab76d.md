@@ -32,6 +32,7 @@ Controls the rend2 dynamic-glow bloom strength. Zero skips the bloom pass; posit
 | Value type | `float` |
 | Restart | No latch flag is registered. |
 | Cheat protected | No |
+| Player-settable | Yes |
 
 ## Values
 

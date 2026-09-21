@@ -32,6 +32,7 @@ Controls `r_allowScreenSaver` in the engine-shared module. Consult the cited beh
 | Value type | `bool` |
 | Restart | Yes; the value is latched. |
 | Cheat protected | No |
+| Player-settable | Yes |
 
 ## Values
 

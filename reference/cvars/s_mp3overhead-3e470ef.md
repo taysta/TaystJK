@@ -32,6 +32,7 @@ Controls `cv_MP3overhead` in the engine-client module. Consult the cited behavio
 | Value type | `int` |
 | Restart | No latch flag is registered. |
 | Cheat protected | No |
+| Player-settable | Yes |
 
 ## Values
 

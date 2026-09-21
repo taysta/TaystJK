@@ -12,6 +12,8 @@ search_exclude: false
 
 <p class="ref-warning"><strong>Needs review.</strong> The inventory/provenance evidence is recorded, but some behavior, options, or attribution still lacks a direct user-facing source.</p>
 
+<p class="ref-notice"><strong>Set with <code>stylePlayer</code>.</strong> Each bit is a separate option, so the command toggles one of them per use and leaves the rest alone. Setting a raw value by hand replaces every option at once.</p>
+
 Configure with the /stylePlayer command
 
 ## At a glance
@@ -32,15 +34,38 @@ Configure with the /stylePlayer command
 | Value type | `bitmask` |
 | Restart | No latch flag is registered. |
 | Cheat protected | No |
+| Player-settable | Yes |
+| Configure with | [`stylePlayer`](/TaystJK/reference/commands/styleplayer-33ef966/) |
 
-## Values
+## Bits
 
-| Value | Meaning | Evidence |
-|:--|:--|:--|
-| `4` | Enables the `JAPRO_STYLE_HIDEDUELERS1` code path. | [codemp/cgame/cg_local.h:133](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_local.h#L133) |
-| `1024` | Base | [codemp/cgame/cg_local.h:141](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_local.h#L141) |
-| `2048` | Enables the `JAPRO_STYLE_HIDEYSALSHELL` code path. | [codemp/cgame/cg_local.h:142](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_local.h#L142) |
+Toggle one with [`stylePlayer`](/TaystJK/reference/commands/styleplayer-33ef966/) followed by the bit number. The value column is that bit on its own — [the labels come from the source table](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_consolecmds.c#L1408).
 
+| Bit | Value | Meaning | Read by |
+|:--|:--|:--|:--|
+| 0 | `1` | Fullbright skins | — |
+| 1 | `2` | Private duel shell | — |
+| 2 | `4` | Hide duelers in FFA | [codemp/cgame/cg_local.h:133](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_local.h#L133) |
+| 3 | `8` | Hide racers in FFA | — |
+| 4 | `16` | Hide non-racers in race mode | — |
+| 5 | `32` | Hide racers in race mode | — |
+| 6 | `64` | Disable racer VFX | — |
+| 7 | `128` | Disable non-racer VFX in race mode | — |
+| 8 | `256` | VFX duelers 1 | — |
+| 9 | `512` | VFX am alt dim 1 | — |
+| 10 | `1024` | Hide non duelers | [codemp/cgame/cg_local.h:141](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_local.h#L141) |
+| 11 | `2048` | Hide ysal shell | [codemp/cgame/cg_local.h:142](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_local.h#L142) |
+| 12 | `4096` | LOD player model | — |
+| 13 | `8192` | Fade corpses immediately | — |
+| 14 | `16384` | Disable corpse fading SFX | — |
+| 15 | `32768` | Color respawn bubbles by team | — |
+| 16 | `65536` | Hide player cosmetics | — |
+| 17 | `131072` | Disable breathing effects | — |
+| 18 | `262144` | Old JA+ style grapple line | — |
+| 19 | `524288` | New FFA respawn bubble | — |
+| 20 | `1048576` | Seasonal Cosmetics | — |
+| 21 | `2097152` | Alternate Standing Animation | — |
+| 22 | `4194304` | Tribes Clientside (Requires assets) | — |
 ## Flags
 
 - `CVAR_ARCHIVE` — saved to the user configuration

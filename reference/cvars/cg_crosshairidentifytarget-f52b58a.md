@@ -33,6 +33,7 @@ Controls `cg_crosshairIdentifyTarget` in the cgame module. Consult the cited beh
 | Value type | `bool` |
 | Restart | No latch flag is registered. |
 | Cheat protected | No |
+| Player-settable | Yes |
 
 ## Values
 

@@ -32,6 +32,7 @@ Controls `d_altRoutes` in the game module. Consult the cited behavior reads befo
 | Value type | `enum` |
 | Restart | No latch flag is registered. |
 | Cheat protected | Yes |
+| Player-settable | Yes |
 
 ## Values
 

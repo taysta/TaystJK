@@ -32,6 +32,7 @@ Controls `g_weaponDisable` in the game module. Consult the cited behavior reads 
 | Value type | `bitmask` |
 | Restart | No latch flag is registered. |
 | Cheat protected | No |
+| Player-settable | Yes |
 
 ## Values
 

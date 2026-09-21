@@ -30,6 +30,7 @@ Runs `CG_StylePlayer_f` in the cgame module.
 | In-game menu | No |
 | Syntax | `stylePlayer [arguments]` |
 | Cheat protected | No |
+| Configures | [`cg_stylePlayer`](/TaystJK/reference/cvars/cg_styleplayer-c35894d/) |
 
 ## Arguments and gating
 

@@ -32,6 +32,7 @@ Controls `m_forward` in the engine-client module. Consult the cited behavior rea
 | Value type | `float` |
 | Restart | No latch flag is registered. |
 | Cheat protected | No |
+| Player-settable | Yes |
 
 ## Values
 

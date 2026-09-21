@@ -32,6 +32,7 @@ Controls `se_language` in the engine-shared module. Consult the cited behavior r
 | Value type | `string` |
 | Restart | No latch flag is registered. |
 | Cheat protected | No |
+| Player-settable | Yes |
 
 ## Values
 

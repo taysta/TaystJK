@@ -32,6 +32,7 @@ Controls `s_doppler` in the engine-client module. Consult the cited behavior rea
 | Value type | `bool` |
 | Restart | No latch flag is registered. |
 | Cheat protected | No |
+| Player-settable | Yes |
 
 ## Values
 

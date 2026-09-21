@@ -30,6 +30,7 @@ Disable/enable specular mapping
 | Value type | `bool` |
 | Restart | Yes; the value is latched. |
 | Cheat protected | No |
+| Player-settable | Yes |
 
 ## Values
 

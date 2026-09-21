@@ -30,6 +30,7 @@ Minimum players in a team or the game
 | Value type | `bool` |
 | Restart | No latch flag is registered. |
 | Cheat protected | No |
+| Player-settable | Yes |
 
 ## Values
 

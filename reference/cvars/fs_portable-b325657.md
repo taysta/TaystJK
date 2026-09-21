@@ -30,6 +30,7 @@ Disable fs_homepath and use only one folder for all game files
 | Value type | `int` |
 | Restart | No latch flag is registered. |
 | Cheat protected | No |
+| Player-settable | Yes |
 
 ## Values
 

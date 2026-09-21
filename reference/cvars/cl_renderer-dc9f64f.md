@@ -32,6 +32,7 @@ Which renderer library to use
 | Value type | `string` |
 | Restart | Yes; the value is latched. |
 | Cheat protected | No |
+| Player-settable | Yes |
 
 ## Values
 

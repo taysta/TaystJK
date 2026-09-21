@@ -30,6 +30,7 @@ Runs `Svcmd_ToggleVote_f` in the game module.
 | In-game menu | No |
 | Syntax | `toggleVote [arguments]` |
 | Cheat protected | No |
+| Configures | [`g_allowVote`](/TaystJK/reference/cvars/g_allowvote-fdda916/) |
 
 ## Arguments and gating
 

@@ -33,6 +33,7 @@ Controls `cg_crosshairHealth` in the cgame module. Consult the cited behavior re
 | Value type | `bool` |
 | Restart | No latch flag is registered. |
 | Cheat protected | No |
+| Player-settable | Yes |
 
 ## Values
 

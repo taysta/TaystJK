@@ -31,6 +31,7 @@ Fraction of a screen which should be occupied by in-game console.
 | Value type | `float` |
 | Restart | No latch flag is registered. |
 | Cheat protected | No |
+| Player-settable | Yes |
 
 ## Values
 

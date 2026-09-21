@@ -312,8 +312,19 @@ stable is the assumed default and a badge on every page carries no information.
 Do not introduce new colours. The palette is the custom properties on `:root`
 (`--warning`, `--danger`, `--accent`, `--violet`, …).
 
-The `needs review`, `xdocs`, and `menu` badges belong to the generated reference and are
-emitted by `generate_docs.py`. Do not hand-write them onto guide pages.
+The `needs review`, `xdocs`, `menu`, and `engine-managed` badges belong to the generated
+reference and are emitted by `generate_docs.py`. Do not hand-write them onto guide pages.
+
+A bitmask cvar whose options are toggled by a console command carries a "Set with" callout, a
+`Configure with` row, and a generated `Bits` section in place of the inferred value list; the
+command page links back through `Configures`. Write guide prose in terms of that command —
+`strafeHelper 4`, not a raw bitmask value.
+
+A cvar the engine writes for itself is not a setting, and the reference says so rather than
+leaving a reader to infer it from a flag row. `generate_docs.py` renders an engine-managed
+callout and a `Player-settable` row on those detail pages from the `engine_managed` field the
+reference pipeline derives; the audit guide describes how that field is decided and how to
+override it. Guide prose should not present one of those cvars as something to set.
 
 ## 9. The what's-new page
 

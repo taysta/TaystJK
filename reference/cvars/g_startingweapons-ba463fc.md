@@ -12,6 +12,8 @@ search_exclude: false
 
 <p class="ref-warning"><strong>Needs review.</strong> The inventory/provenance evidence is recorded, but some behavior, options, or attribution still lacks a direct user-facing source.</p>
 
+<p class="ref-notice"><strong>Set with <code>startingWeapons</code>.</strong> Each bit is a separate option, so the command toggles one of them per use and leaves the rest alone. Setting a raw value by hand replaces every option at once.</p>
+
 Start with saber only default, fall back to melee if no saberattack
 
 ## At a glance
@@ -32,11 +34,31 @@ Start with saber only default, fall back to melee if no saberattack
 | Value type | `bitmask` |
 | Restart | No latch flag is registered. |
 | Cheat protected | No |
+| Player-settable | Yes |
+| Configure with | [`startingWeapons`](/TaystJK/reference/commands/startingweapons-7252a71/) |
 
-## Values
+## Bits
 
-No discrete value list is enforced or documented in the inspected source.
+Toggle one with [`startingWeapons`](/TaystJK/reference/commands/startingweapons-7252a71/) followed by the bit number. The value column is that bit on its own — [the labels come from the source table](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_svcmds.c#L1120).
 
+| Bit | Value | Meaning | Read by |
+|:--|:--|:--|:--|
+| 1 | `2` | Stun Baton | — |
+| 2 | `4` | Melee | — |
+| 3 | `8` | Saber | — |
+| 4 | `16` | Bryar Pistol | — |
+| 5 | `32` | Blaster | — |
+| 6 | `64` | Disruptor | — |
+| 7 | `128` | Bowcaster | — |
+| 8 | `256` | Repeater | — |
+| 9 | `512` | Demp2 | — |
+| 10 | `1024` | Flechette | — |
+| 11 | `2048` | Rocket Launcher | — |
+| 12 | `4096` | Thermal | — |
+| 13 | `8192` | Trip Mine | — |
+| 14 | `16384` | Det Pack | — |
+| 15 | `32768` | Concussion Rifle | — |
+| 16 | `65536` | Old Bryar Pistol | — |
 ## Flags
 
 - `CVAR_ARCHIVE` — saved to the user configuration

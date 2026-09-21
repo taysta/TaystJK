@@ -32,6 +32,7 @@ Controls `r_aspectCorrectFonts` in the renderer module. Consult the cited behavi
 | Value type | `enum` |
 | Restart | No latch flag is registered. |
 | Cheat protected | No |
+| Player-settable | Yes |
 
 ## Values
 

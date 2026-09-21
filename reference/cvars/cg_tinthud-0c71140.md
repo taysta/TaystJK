@@ -32,6 +32,7 @@ Changes the color of the HUD based on team color
 | Value type | `enum` |
 | Restart | No latch flag is registered. |
 | Cheat protected | No |
+| Player-settable | Yes |
 
 ## Values
 

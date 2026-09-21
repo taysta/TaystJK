@@ -32,6 +32,7 @@ Controls `g_consoleMOTD` in the game module. Consult the cited behavior reads be
 | Value type | `string` |
 | Restart | No latch flag is registered. |
 | Cheat protected | No |
+| Player-settable | Yes |
 
 ## Values
 

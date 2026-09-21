@@ -32,6 +32,7 @@ Controls `broadsword_waitforshot` in the renderer module. Consult the cited beha
 | Value type | `enum` |
 | Restart | No latch flag is registered. |
 | Cheat protected | No |
+| Player-settable | Yes |
 
 ## Values
 

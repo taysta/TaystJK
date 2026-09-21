@@ -32,6 +32,7 @@ Set dithering mode: 0 - disabled 1 - ordered Requires \\r_fbo 1
 | Value type | `bool` |
 | Restart | No latch flag is registered. |
 | Cheat protected | No |
+| Player-settable | Yes |
 
 ## Values
 

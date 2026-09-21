@@ -33,6 +33,7 @@ Registered by the current source, but no user-facing behavior description has be
 | Value type | `int` |
 | Restart | Yes; the value is latched. |
 | Cheat protected | No |
+| Player-settable | Yes |
 
 ## Values
 

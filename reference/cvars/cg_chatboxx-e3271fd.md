@@ -33,6 +33,7 @@ Controls `cg_chatBoxX` in the cgame module. Consult the cited behavior reads bef
 | Value type | `float` |
 | Restart | No latch flag is registered. |
 | Cheat protected | No |
+| Player-settable | Yes |
 
 ## Values
 

@@ -32,6 +32,7 @@ Controls `cg_debugEvents` in the cgame module. Consult the cited behavior reads 
 | Value type | `enum` |
 | Restart | No latch flag is registered. |
 | Cheat protected | Yes |
+| Player-settable | Yes |
 
 ## Values
 

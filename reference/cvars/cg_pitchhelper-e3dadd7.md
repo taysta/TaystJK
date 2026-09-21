@@ -33,6 +33,7 @@ Draw pitch angle independently from /cg_showpos
 | Value type | `float` |
 | Restart | No latch flag is registered. |
 | Cheat protected | No |
+| Player-settable | Yes |
 
 ## Values
 

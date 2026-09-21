@@ -32,6 +32,7 @@ Controls `r_vertexLight` in the renderer module. Consult the cited behavior read
 | Value type | `bool` |
 | Restart | Yes; the value is latched. |
 | Cheat protected | No |
+| Player-settable | Yes |
 
 ## Values
 

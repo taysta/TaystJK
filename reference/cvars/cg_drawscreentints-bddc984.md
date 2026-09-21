@@ -32,6 +32,7 @@ Turn the tint from water on or off
 | Value type | `bool` |
 | Restart | No latch flag is registered. |
 | Cheat protected | No |
+| Player-settable | Yes |
 
 ## Values
 

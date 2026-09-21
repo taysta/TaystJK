@@ -32,6 +32,7 @@ Controls `r_DynamicGlowPasses` in the renderer module. Consult the cited behavio
 | Value type | `int` |
 | Restart | No latch flag is registered. |
 | Cheat protected | No |
+| Player-settable | Yes |
 
 ## Values
 

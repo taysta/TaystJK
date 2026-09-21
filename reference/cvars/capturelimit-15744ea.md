@@ -30,6 +30,7 @@ Fixme init'd to 8 in game module
 | Value type | `bool` |
 | Restart | No latch flag is registered. |
 | Cheat protected | No |
+| Player-settable | Yes |
 
 ## Values
 

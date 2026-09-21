@@ -12,6 +12,8 @@ search_exclude: false
 
 <p class="ref-warning"><strong>Needs review.</strong> The inventory/provenance evidence is recorded, but some behavior, options, or attribution still lacks a direct user-facing source.</p>
 
+<p class="ref-notice"><strong>Set with <code>chatlog</code>.</strong> Each bit is a separate option, so the command toggles one of them per use and leaves the rest alone. Setting a raw value by hand replaces every option at once.</p>
+
 Controls `cg_logChat` in the cgame module. Consult the cited behavior reads before relying on values not listed here.
 
 ## At a glance
@@ -32,15 +34,20 @@ Controls `cg_logChat` in the cgame module. Consult the cited behavior reads befo
 | Value type | `bitmask` |
 | Restart | No latch flag is registered. |
 | Cheat protected | No |
+| Player-settable | Yes |
+| Configure with | [`chatlog`](/TaystJK/reference/commands/chatlog-84c4a99/) |
 
-## Values
+## Bits
 
-| Value | Meaning | Evidence |
-|:--|:--|:--|
-| `8` | Enables the `JAPRO_CHATLOG_CENTERPRINT` code path. | [codemp/cgame/cg_local.h:163](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_local.h#L163) |
-| `1` | Enables the `JAPRO_CHATLOG_ENABLE` code path. | [codemp/cgame/cg_local.h:159](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_local.h#L159) |
-| `4` | Enables the `JAPRO_CHATLOG_OLDTIMESTAMP` code path. | [codemp/cgame/cg_local.h:161](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_local.h#L161) |
+Toggle one with [`chatlog`](/TaystJK/reference/commands/chatlog-84c4a99/) followed by the bit number. The value column is that bit on its own — [the labels come from the source table](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_consolecmds.c#L1914).
 
+| Bit | Value | Meaning | Read by |
+|:--|:--|:--|:--|
+| 0 | `1` | Enable | [codemp/cgame/cg_local.h:159](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_local.h#L159) |
+| 1 | `2` | Log Sync | — |
+| 2 | `4` | Legacy Timestamps | [codemp/cgame/cg_local.h:161](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_local.h#L161) |
+| 3 | `8` | Log Console Prints | [codemp/cgame/cg_local.h:163](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_local.h#L163) |
+| 4 | `16` | Log Center Prints | — |
 ## Flags
 
 - `CVAR_ARCHIVE` — saved to the user configuration

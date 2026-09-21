@@ -30,6 +30,7 @@ Disable/enable 1010102 UI data type
 | Value type | `int` |
 | Restart | Yes; the value is latched. |
 | Cheat protected | No |
+| Player-settable | Yes |
 
 ## Values
 

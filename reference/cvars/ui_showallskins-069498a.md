@@ -32,6 +32,7 @@ Controls `ui_showAllSkins` in the ui module. Consult the cited behavior reads be
 | Value type | `bool` |
 | Restart | No latch flag is registered. |
 | Cheat protected | No |
+| Player-settable | Yes |
 
 ## Values
 

@@ -32,6 +32,7 @@ search_exclude: false
 | Value type | `enum` |
 | Restart | Yes; the value is latched. |
 | Cheat protected | No |
+| Player-settable | Yes |
 
 ## Values
 

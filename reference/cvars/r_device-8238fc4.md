@@ -30,6 +30,7 @@ Select physical device to render: 0+ - use explicit device index -1 - first disc
 | Value type | `enum` |
 | Restart | Yes; the value is latched. |
 | Cheat protected | No |
+| Player-settable | Yes |
 
 ## Values
 

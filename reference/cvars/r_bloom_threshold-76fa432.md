@@ -33,6 +33,7 @@ Color level to extract to bloom texture, default is 0.05
 | Value type | `float` |
 | Restart | Yes; the value is latched. |
 | Cheat protected | No |
+| Player-settable | Yes |
 
 ## Values
 

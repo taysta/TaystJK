@@ -30,6 +30,7 @@ Overrides the active folder, allowing a server/client to store configs and other
 | Value type | `string` |
 | Restart | No latch flag is registered. |
 | Cheat protected | No |
+| Player-settable | Yes |
 
 ## Values
 

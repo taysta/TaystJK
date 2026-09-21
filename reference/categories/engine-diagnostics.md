@@ -48,6 +48,7 @@ description: "Browse 137 cvars, 115 commands in the TaystJK console reference."
       <label><span>Documentation</span><select name="status" data-filter="status"><option value="">Any status</option><option value="documented">Documented</option><option value="needs-review">Needs review</option></select></label>
       <label><span>Network scope</span><select name="network" data-filter="network"><option value="">Any scope</option></select></label>
       <label><span>In game</span><select name="coverage" data-filter="coverage"><option value="">Any coverage</option><option value="xdocs">Has xdocs entry</option><option value="menu">Has menu entry</option><option value="no-xdocs">Missing from xdocs</option><option value="no-menu">Missing from menus</option></select></label>
+      <label data-cvar-filter><span>Settable</span><select name="audience" data-filter="audience"><option value="">Any cvar</option><option value="settable">Player-settable</option><option value="engine-managed">Engine-managed</option></select></label>
       <label data-cvar-filter><span>Cvar flag</span><select name="flag" data-filter="flag"><option value="">Any flag</option></select></label>
     </div>
 

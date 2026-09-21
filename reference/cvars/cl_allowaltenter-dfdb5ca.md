@@ -30,6 +30,7 @@ Enables use of ALT+ENTER keyboard combo to toggle fullscreen
 | Value type | `bool` |
 | Restart | No latch flag is registered. |
 | Cheat protected | No |
+| Player-settable | Yes |
 
 ## Values
 

@@ -32,6 +32,7 @@ Controls `g_forceDrainRestartDelay` in the game module. Consult the cited behavi
 | Value type | `int` |
 | Restart | No latch flag is registered. |
 | Cheat protected | No |
+| Player-settable | Yes |
 
 ## Values
 

@@ -30,6 +30,7 @@ Max bandwidth rate allowed on server. Use 0 for unlimited.
 | Value type | `int` |
 | Restart | No latch flag is registered. |
 | Cheat protected | No |
+| Player-settable | Yes |
 
 ## Values
 

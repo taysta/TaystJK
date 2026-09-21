@@ -31,6 +31,7 @@ Color for two keys pressed
 | Value type | `color` |
 | Restart | No latch flag is registered. |
 | Cheat protected | No |
+| Player-settable | Yes |
 
 ## Values
 

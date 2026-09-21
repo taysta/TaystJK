@@ -30,6 +30,7 @@ Runs `CG_Cosmetics_f` in the cgame module.
 | In-game menu | No |
 | Syntax | `cosmetics` |
 | Cheat protected | No |
+| Configures | [`cp_cosmetics`](/TaystJK/reference/cvars/cp_cosmetics-488f751/) |
 
 ## Arguments and gating
 

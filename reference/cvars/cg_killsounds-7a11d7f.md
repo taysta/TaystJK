@@ -30,6 +30,7 @@ Play a sound when you kill someone
 | Value type | `enum` |
 | Restart | No latch flag is registered. |
 | Cheat protected | No |
+| Player-settable | Yes |
 
 ## Values
 

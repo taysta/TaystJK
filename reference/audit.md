@@ -507,8 +507,8 @@ The dump was captured from stdout after loading `mp/ffa3`; stdout does not use t
 | [`sv_snapsMax`](/TaystJK/reference/cvars/sv_snapsmax-b20336c/) | cvar | engine-server | Sv_snapsMin <=> sv_fps |
 | [`sv_snapsMin`](/TaystJK/reference/cvars/sv_snapsmin-7fe81b5/) | cvar | engine-server | 1 <=> sv_snapsMax |
 | [`sv_snapsPolicy`](/TaystJK/reference/cvars/sv_snapspolicy-385ae5d/) | cvar | engine-server | Determines which policy of enforcement is used for client's \"snaps\" cvar |
-| [`ui_allowRegistration`](/TaystJK/reference/cvars/ui_allowregistration-713df1d/) | cvar | ui | Registered by the current source, but no user-facing behavior description has been verified. |
-| [`ui_allowSaberSwitch`](/TaystJK/reference/cvars/ui_allowsaberswitch-6b40886/) | cvar | ui | Controls `ui_allowSaberSwitch` in the ui module. |
+| [`ui_allowRegistration`](/TaystJK/reference/cvars/ui_allowregistration-713df1d/) | cvar | ui | Report whether the connected jaPRO server accepts account registration. |
+| [`ui_allowSaberSwitch`](/TaystJK/reference/cvars/ui_allowsaberswitch-6b40886/) | cvar | ui | Report whether the connected server offers the saber-switch command. |
 | [`ui_aspectratio`](/TaystJK/reference/cvars/ui_aspectratio-1403db8/) | cvar | ui | Controls `ui_aspectratio` in the ui module. |
 | [`ui_browserFilterInvalidInfo`](/TaystJK/reference/cvars/ui_browserfilterinvalidinfo-7ee2364/) | cvar | ui | Controls `ui_browserFilterInvalidInfo` in the ui module. |
 | [`ui_browserShowPasswordProtected`](/TaystJK/reference/cvars/ui_browsershowpasswordprotected-204880a/) | cvar | ui | Controls `ui_browserShowPasswordProtected` in the ui module. |
@@ -517,7 +517,7 @@ The dump was captured from stdout after loading `mp/ffa3`; stdout does not use t
 | [`ui_duel_timelimit`](/TaystJK/reference/cvars/ui_duel_timelimit-5f8e8ad/) | cvar | ui | Controls `ui_duel_timelimit` in the ui module. |
 | [`ui_geometricdetail`](/TaystJK/reference/cvars/ui_geometricdetail-21121ee/) | cvar | ui | Controls `ui_geometricdetail` in the ui module. |
 | [`ui_headCount`](/TaystJK/reference/cvars/ui_headcount-384f251/) | cvar | ui | Controls `ui_headCount` in the ui module. |
-| [`ui_isJAPro`](/TaystJK/reference/cvars/ui_isjapro-9265944/) | cvar | ui | Controls `ui_isJAPro` in the ui module. |
+| [`ui_isJAPro`](/TaystJK/reference/cvars/ui_isjapro-9265944/) | cvar | ui | Report whether the connected server identifies as jaPRO. |
 | [`ui_lastServerRefresh_4`](/TaystJK/reference/cvars/ui_lastserverrefresh_4-d0bcc90/) | cvar | ui | Registered by the current source, but no user-facing behavior description has been verified. |
 | [`ui_lastServerRefresh_5`](/TaystJK/reference/cvars/ui_lastserverrefresh_5-2c6c262/) | cvar | ui | Registered by the current source, but no user-facing behavior description has been verified. |
 | [`ui_lastServerRefresh_6`](/TaystJK/reference/cvars/ui_lastserverrefresh_6-fba4ec6/) | cvar | ui | Registered by the current source, but no user-facing behavior description has been verified. |
@@ -529,7 +529,7 @@ The dump was captured from stdout after loading `mp/ffa3`; stdout does not use t
 | [`ui_r_lightMap`](/TaystJK/reference/cvars/ui_r_lightmap-97c7b14/) | cvar | ui | Controls `ui_r_lightMap` in the ui module. |
 | [`ui_r_picmip_custom`](/TaystJK/reference/cvars/ui_r_picmip_custom-fe590f2/) | cvar | ui | Controls `ui_r_picmip_custom` in the ui module. |
 | [`ui_r_vertexLight`](/TaystJK/reference/cvars/ui_r_vertexlight-78fd857/) | cvar | ui | Controls `ui_r_vertexLight` in the ui module. |
-| [`ui_raceMode`](/TaystJK/reference/cvars/ui_racemode-0db81ac/) | cvar | ui | Registered by the current source, but no user-facing behavior description has been verified. |
+| [`ui_raceMode`](/TaystJK/reference/cvars/ui_racemode-0db81ac/) | cvar | ui | Report whether the connected jaPRO server runs race mode. |
 | [`ui_resolution`](/TaystJK/reference/cvars/ui_resolution-97111d4/) | cvar | ui | Controls `ui_resolution` in the ui module. |
 | [`ui_RGBSkin`](/TaystJK/reference/cvars/ui_rgbskin-9bfb7fc/) | cvar | ui | Controls `ui_RGBSkin` in the ui module. |
 | [`ui_sab1_b`](/TaystJK/reference/cvars/ui_sab1_b-3ba84b3/) | cvar | ui | Controls `ui_sab1_b` in the ui module. |
@@ -545,7 +545,7 @@ The dump was captured from stdout after loading `mp/ffa3`; stdout does not use t
 | [`ui_sha_g`](/TaystJK/reference/cvars/ui_sha_g-ac3139d/) | cvar | ui | Controls `ui_sha_g` in the ui module. |
 | [`ui_sha_r`](/TaystJK/reference/cvars/ui_sha_r-2be1fbe/) | cvar | ui | Controls `ui_sha_r` in the ui module. |
 | [`ui_showAllSkins`](/TaystJK/reference/cvars/ui_showallskins-069498a/) | cvar | ui | Controls `ui_showAllSkins` in the ui module. |
-| [`ui_sv_pure`](/TaystJK/reference/cvars/ui_sv_pure-05aa09d/) | cvar | ui | Controls `ui_sv_pure` in the ui module. |
+| [`ui_sv_pure`](/TaystJK/reference/cvars/ui_sv_pure-05aa09d/) | cvar | ui | Mirror the connected server's pure-server setting for the menus. |
 | [`ui_teamSize`](/TaystJK/reference/cvars/ui_teamsize-7d2c5d8/) | cvar | ui | Controls `ui_teamSize` in the ui module. |
 | [`ui_username`](/TaystJK/reference/cvars/ui_username-1211939/) | cvar | ui | Controls `ui_username` in the ui module. |
 | [`ui_version`](/TaystJK/reference/cvars/ui_version-b1d5a5a/) | cvar | cgame | Used by UI in the in-game "about" menu |
@@ -829,7 +829,7 @@ The dump was captured from stdout after loading `mp/ffa3`; stdout does not use t
 | [`write`](/TaystJK/reference/commands/write-e1d0c6c/) | command | engine-shared | Write the configuration to file |
 | [`ysal`](/TaystJK/reference/commands/ysal-49fb494/) | command | cgame | Forwards this command to the connected game server. |
 
-## Semantics or options needing review (1652)
+## Semantics or options needing review (1651)
 
 | Name | Kind | Module | Summary |
 |:--|:--|:--|:--|
@@ -1871,8 +1871,8 @@ The dump was captured from stdout after loading `mp/ffa3`; stdout does not use t
 | [`ui_about_needpass`](/TaystJK/reference/cvars/ui_about_needpass-578f7b4/) | cvar | cgame | Controls `ui_about_needpass` in the cgame module. |
 | [`ui_about_timelimit`](/TaystJK/reference/cvars/ui_about_timelimit-182983b/) | cvar | cgame | Controls `ui_about_timelimit` in the cgame module. |
 | [`ui_actualNetGametype`](/TaystJK/reference/cvars/ui_actualnetgametype-70fb097/) | cvar | ui | Controls `ui_actualNetGametype` in the ui module. |
-| [`ui_allowRegistration`](/TaystJK/reference/cvars/ui_allowregistration-713df1d/) | cvar | ui | Registered by the current source, but no user-facing behavior description has been verified. |
-| [`ui_allowSaberSwitch`](/TaystJK/reference/cvars/ui_allowsaberswitch-6b40886/) | cvar | ui | Controls `ui_allowSaberSwitch` in the ui module. |
+| [`ui_allowRegistration`](/TaystJK/reference/cvars/ui_allowregistration-713df1d/) | cvar | ui | Report whether the connected jaPRO server accepts account registration. |
+| [`ui_allowSaberSwitch`](/TaystJK/reference/cvars/ui_allowsaberswitch-6b40886/) | cvar | ui | Report whether the connected server offers the saber-switch command. |
 | [`ui_aspectratio`](/TaystJK/reference/cvars/ui_aspectratio-1403db8/) | cvar | ui | Controls `ui_aspectratio` in the ui module. |
 | [`ui_blueteam`](/TaystJK/reference/cvars/ui_blueteam-17a25d6/) | cvar | ui | Controls `ui_blueteam` in the ui module. |
 | [`ui_blueteam1`](/TaystJK/reference/cvars/ui_blueteam1-340fe0d/) | cvar | ui | Controls `ui_blueteam1` in the ui module. |
@@ -1933,7 +1933,7 @@ The dump was captured from stdout after loading `mp/ffa3`; stdout does not use t
 | [`ui_heavy_cnt`](/TaystJK/reference/cvars/ui_heavy_cnt-020d02c/) | cvar | ui | Registered by the current source, but no user-facing behavior description has been verified. |
 | [`ui_holdteam`](/TaystJK/reference/cvars/ui_holdteam-6816b79/) | cvar | ui | Controls `ui_holdteam` in the ui module. |
 | [`ui_infantry_cnt`](/TaystJK/reference/cvars/ui_infantry_cnt-414d93d/) | cvar | ui | Registered by the current source, but no user-facing behavior description has been verified. |
-| [`ui_isJAPro`](/TaystJK/reference/cvars/ui_isjapro-9265944/) | cvar | ui | Controls `ui_isJAPro` in the ui module. |
+| [`ui_isJAPro`](/TaystJK/reference/cvars/ui_isjapro-9265944/) | cvar | ui | Report whether the connected server identifies as jaPRO. |
 | [`ui_itemforceinvdesc`](/TaystJK/reference/cvars/ui_itemforceinvdesc-d6588bb/) | cvar | ui | Controls `ui_itemforceinvdesc` in the ui module. |
 | [`ui_jedi_cnt`](/TaystJK/reference/cvars/ui_jedi_cnt-8c23f9b/) | cvar | ui | Registered by the current source, but no user-facing behavior description has been verified. |
 | [`ui_joinGametype`](/TaystJK/reference/cvars/ui_joingametype-71f7a60/) | cvar | ui | Controls `ui_joinGametype` in the ui module. |
@@ -1993,7 +1993,7 @@ The dump was captured from stdout after loading `mp/ffa3`; stdout does not use t
 | [`ui_r_texturemode`](/TaystJK/reference/cvars/ui_r_texturemode-a7e1e5d/) | cvar | ui | Controls `ui_r_texturemode` in the ui module. |
 | [`ui_r_tonemap`](/TaystJK/reference/cvars/ui_r_tonemap-22bf8a3/) | cvar | ui | Controls `ui_r_tonemap` in the ui module. |
 | [`ui_r_vertexLight`](/TaystJK/reference/cvars/ui_r_vertexlight-78fd857/) | cvar | ui | Controls `ui_r_vertexLight` in the ui module. |
-| [`ui_raceMode`](/TaystJK/reference/cvars/ui_racemode-0db81ac/) | cvar | ui | Registered by the current source, but no user-facing behavior description has been verified. |
+| [`ui_raceMode`](/TaystJK/reference/cvars/ui_racemode-0db81ac/) | cvar | ui | Report whether the connected jaPRO server runs race mode. |
 | [`ui_rankChange`](/TaystJK/reference/cvars/ui_rankchange-ccf6b2b/) | cvar | ui | Controls `ui_rankChange` in the ui module. |
 | [`ui_recordSPDemo`](/TaystJK/reference/cvars/ui_recordspdemo-44187ba/) | cvar | ui | Controls `ui_recordSPDemo` in the ui module. |
 | [`ui_recordSPDemoName`](/TaystJK/reference/cvars/ui_recordspdemoname-ee64901/) | cvar | ui | Registered by the current source, but no user-facing behavior description has been verified. |
@@ -2052,7 +2052,7 @@ The dump was captured from stdout after loading `mp/ffa3`; stdout does not use t
 | [`ui_startsiegeclass`](/TaystJK/reference/cvars/ui_startsiegeclass-69ac34c/) | cvar | ui | Controls `ui_startsiegeclass` in the ui module. |
 | [`ui_startsiegeteam`](/TaystJK/reference/cvars/ui_startsiegeteam-a546d1c/) | cvar | ui | Controls `ui_startsiegeteam` in the ui module. |
 | [`ui_support_cnt`](/TaystJK/reference/cvars/ui_support_cnt-dc2cd26/) | cvar | ui | Registered by the current source, but no user-facing behavior description has been verified. |
-| [`ui_sv_pure`](/TaystJK/reference/cvars/ui_sv_pure-05aa09d/) | cvar | ui | Controls `ui_sv_pure` in the ui module. |
+| [`ui_sv_pure`](/TaystJK/reference/cvars/ui_sv_pure-05aa09d/) | cvar | ui | Mirror the connected server's pure-server setting for the menus. |
 | [`ui_team`](/TaystJK/reference/cvars/ui_team-9c61cf2/) | cvar | ui | Controls `ui_team` in the ui module. |
 | [`ui_team_fraglimit`](/TaystJK/reference/cvars/ui_team_fraglimit-91b6e91/) | cvar | ui | Controls `ui_team_fraglimit` in the ui module. |
 | [`ui_team_friendly`](/TaystJK/reference/cvars/ui_team_friendly-a4d19b4/) | cvar | ui | Registered by the current source, but no user-facing behavior description has been verified. |
@@ -2073,7 +2073,6 @@ The dump was captured from stdout after loading `mp/ffa3`; stdout does not use t
 | [`ui_tm2_c5_cnt`](/TaystJK/reference/cvars/ui_tm2_c5_cnt-57587a0/) | cvar | cgame | Controls `ui_tm2_c5_cnt` in the cgame module. |
 | [`ui_tm2_cnt`](/TaystJK/reference/cvars/ui_tm2_cnt-abb217e/) | cvar | cgame | Controls `ui_tm2_cnt` in the cgame module. |
 | [`ui_tm3_cnt`](/TaystJK/reference/cvars/ui_tm3_cnt-f359456/) | cvar | cgame | Controls `ui_tm3_cnt` in the cgame module. |
-| [`ui_tribesMode`](/TaystJK/reference/cvars/ui_tribesmode-cc54205/) | cvar | ui | Registered by the current source, but no user-facing behavior description has been verified. |
 | [`ui_username`](/TaystJK/reference/cvars/ui_username-1211939/) | cvar | ui | Controls `ui_username` in the ui module. |
 | [`ui_vanguard_cnt`](/TaystJK/reference/cvars/ui_vanguard_cnt-41c56e2/) | cvar | ui | Registered by the current source, but no user-facing behavior description has been verified. |
 | [`ui_version`](/TaystJK/reference/cvars/ui_version-b1d5a5a/) | cvar | cgame | Used by UI in the in-game "about" menu |
@@ -3466,7 +3465,7 @@ These entries have dated post-origin registration or behavior evidence on TaystJ
 | [`ui_about_needpass`](/TaystJK/reference/cvars/ui_about_needpass-578f7b4/) | cvar | cgame | Controls `ui_about_needpass` in the cgame module. |
 | [`ui_about_timelimit`](/TaystJK/reference/cvars/ui_about_timelimit-182983b/) | cvar | cgame | Controls `ui_about_timelimit` in the cgame module. |
 | [`ui_actualNetGametype`](/TaystJK/reference/cvars/ui_actualnetgametype-70fb097/) | cvar | ui | Controls `ui_actualNetGametype` in the ui module. |
-| [`ui_allowSaberSwitch`](/TaystJK/reference/cvars/ui_allowsaberswitch-6b40886/) | cvar | ui | Controls `ui_allowSaberSwitch` in the ui module. |
+| [`ui_allowSaberSwitch`](/TaystJK/reference/cvars/ui_allowsaberswitch-6b40886/) | cvar | ui | Report whether the connected server offers the saber-switch command. |
 | [`ui_blueteam`](/TaystJK/reference/cvars/ui_blueteam-17a25d6/) | cvar | ui | Controls `ui_blueteam` in the ui module. |
 | [`ui_blueteam1`](/TaystJK/reference/cvars/ui_blueteam1-340fe0d/) | cvar | ui | Controls `ui_blueteam1` in the ui module. |
 | [`ui_blueteam2`](/TaystJK/reference/cvars/ui_blueteam2-ee938fb/) | cvar | ui | Controls `ui_blueteam2` in the ui module. |
@@ -3506,7 +3505,7 @@ These entries have dated post-origin registration or behavior evidence on TaystJ
 | [`ui_freeSaber`](/TaystJK/reference/cvars/ui_freesaber-c23f8d2/) | cvar | ui | Controls `ui_freeSaber` in the ui module. |
 | [`ui_gametype`](/TaystJK/reference/cvars/ui_gametype-a49b5f0/) | cvar | ui | Controls `ui_gametype` in the ui module. |
 | [`ui_headCount`](/TaystJK/reference/cvars/ui_headcount-384f251/) | cvar | ui | Controls `ui_headCount` in the ui module. |
-| [`ui_isJAPro`](/TaystJK/reference/cvars/ui_isjapro-9265944/) | cvar | ui | Controls `ui_isJAPro` in the ui module. |
+| [`ui_isJAPro`](/TaystJK/reference/cvars/ui_isjapro-9265944/) | cvar | ui | Report whether the connected server identifies as jaPRO. |
 | [`ui_joinGametype`](/TaystJK/reference/cvars/ui_joingametype-71f7a60/) | cvar | ui | Controls `ui_joinGametype` in the ui module. |
 | [`ui_lastServerRefresh_0`](/TaystJK/reference/cvars/ui_lastserverrefresh_0-be69301/) | cvar | ui | Registered by the current source, but no user-facing behavior description has been verified. |
 | [`ui_lastServerRefresh_1`](/TaystJK/reference/cvars/ui_lastserverrefresh_1-14bcea1/) | cvar | ui | Registered by the current source, but no user-facing behavior description has been verified. |

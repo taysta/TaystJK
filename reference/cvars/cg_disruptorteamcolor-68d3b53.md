@@ -32,6 +32,7 @@ Changes disruptor effects colors according to team
 | Value type | `bool` |
 | Restart | No latch flag is registered. |
 | Cheat protected | No |
+| Player-settable | Yes |
 
 ## Values
 

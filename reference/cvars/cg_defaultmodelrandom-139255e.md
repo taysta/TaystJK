@@ -32,6 +32,7 @@ Controls `cg_defaultModelRandom` in the cgame module. Consult the cited behavior
 | Value type | `bool` |
 | Restart | No latch flag is registered. |
 | Cheat protected | No |
+| Player-settable | Yes |
 
 ## Values
 

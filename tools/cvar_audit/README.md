@@ -61,6 +61,82 @@ registered command handler. Each event retains its date, commit, paths, PR,
 attribution method, and confidence. This distinguishes “introduced by OpenJK”
 from a later jaPRO, EternalJK, TaystJK, rend2, Vulkan, JK2MV, or NewJK change.
 
+## Engine-managed cvars
+
+Not every registered cvar is a setting. `build_reference.py` marks one as
+`engine_managed` when the source says the engine owns the value, and records the
+basis alongside it so the generated callout can name its own evidence:
+
+| Basis | Meaning |
+|:--|:--|
+| `CVAR_ROM` | Read-only after registration. |
+| `CVAR_INTERNAL` | Internal UI/engine state, kept out of every cvar listing. |
+| `implicit-write` | No registration at all; every cited site only writes the name with `Cvar_Set`, so a value the player sets is replaced the next time that code runs. |
+| `menu-mirror` | A menu staging copy that exists to augment another cvar. |
+| `editorial` | Asserted by an override with no matching flag or registration shape. |
+
+`ui_tribesMode` is the `implicit-write` case: `UI_UpdateCurrentServerInfo` clears it
+and the other jaPRO server-info mirrors on every refresh, then sets them from the
+server's `jcinfo2` key. Nothing declares them, so nothing on the page would
+otherwise distinguish them from a setting.
+
+A menu mirror is paired from the source, not guessed from its name:
+`Cvar_Set("r_picmip", UI_Cvar_VariableString("ui_r_picmip"))` in
+`UI_UpdateVideoSetup` writes the staged value through when the player accepts the
+change, and `UI_GetVideoSetup` reads the real value back the other way. The pair
+is recorded as `menu_mirror` with the line for each direction, so the mirror's
+page names and links the setting it stands in for. Comments are masked first: a
+commented-out pair is not a pair. Every mirror found so far is already
+engine-managed through its flags, so this basis adds the reason rather than new
+entries. `ui_r_picmip_custom` shows why the pairing comes from the source —
+its counterpart is `r_picmip`, which no name-prefix rule would find.
+
+Both directions are wrong sometimes — a hand-written mirror the code never flags, a
+menu setting that happens to carry `CVAR_INTERNAL`. Settle either with an
+`engine_managed` boolean in that entry's `tools/cvar_audit/overrides.json` record,
+next to its `summary` and `description`, and regenerate. An override that asserts
+the marker keeps whichever basis the source already supports.
+
+## Bitmask cvars and the commands that own them
+
+Several bitmask cvars are meant to be changed with a console command rather than
+by typing a value: `strafeHelper 4` toggles one option and leaves the rest alone,
+where `cg_strafeHelper 16` would replace all of them. jaPRO's game module uses the
+same arrangement for its server tweaks.
+
+The pairing is read from the source. A `bitInfo_T` table names each bit in array
+order, and the handler that follows it toggles one bit per invocation:
+
+```c
+static bitInfo_T strafeTweaks[] = { {"Original style"}, {"Updated style"}, ... };
+void CG_StrafeHelper_f( void ) {
+        trap->Cvar_Set( "cg_strafeHelper", va( "%i", (1 << index) ^ ... ) );
+}
+```
+
+`build_reference.py` records the labels as `bits.options` on the cvar and the
+registered command names as `bits.commands`, and lists the cvars back on the
+command as `configures`. `validate.py` checks the two agree. The bit table
+replaces the inferred value list on those pages, keeping any traced read site
+beside the source's own label.
+
+Four details the scan has to get right:
+
+- The search is bounded by the handler's own body. Bounding it by the next table
+  instead lets a file's last table absorb every function after it.
+- Bit order is the array position. The trailing comments in these tables number
+  from 0 in some and from 1 in others; the code shifts by the array index.
+- One table can drive several cvars — `toggleAdmin` writes `g_juniorAdminLevel`
+  or `g_fullAdminLevel` depending on its first argument — and one handler can
+  carry several registered names, as `plugin` and `pluginDisable` do.
+- A command may reach the table through a dispatcher: `cosmetics` registers
+  `CG_Cosmetics_f`, which forwards to the jaPRO variant, so an unregistered
+  handler is resolved one hop to its caller.
+
+Comments are masked first, which is why the commented-out `weaponDisable` table
+in `g_svcmds.c` is not published, and `accountFlags` is skipped because no cvar
+stands behind it.
+
 ## Regenerate
 
 Run from the repository root:

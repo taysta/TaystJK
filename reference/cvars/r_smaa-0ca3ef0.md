@@ -32,6 +32,7 @@ Disable/enable SMAA
 | Value type | `enum` |
 | Restart | Yes; the value is latched. |
 | Cheat protected | No |
+| Player-settable | Yes |
 
 ## Values
 

@@ -32,6 +32,7 @@ Controls `r_noborder` in the renderer module. Consult the cited behavior reads b
 | Value type | `bool` |
 | Restart | Yes; the value is latched. |
 | Cheat protected | No |
+| Player-settable | Yes |
 
 ## Values
 

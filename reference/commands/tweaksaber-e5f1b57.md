@@ -30,6 +30,7 @@ Runs `Svcmd_ToggleTweakSaber_f` in the game module.
 | In-game menu | No |
 | Syntax | `tweakSaber [arguments]` |
 | Cheat protected | No |
+| Configures | [`g_tweakSaber`](/TaystJK/reference/cvars/g_tweaksaber-7ff08dd/) |
 
 ## Arguments and gating
 

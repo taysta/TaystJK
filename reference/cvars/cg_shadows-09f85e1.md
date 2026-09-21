@@ -32,6 +32,7 @@ Controls `cg_shadows` in the cgame module. Consult the cited behavior reads befo
 | Value type | `enum` |
 | Restart | No latch flag is registered. |
 | Cheat protected | No |
+| Player-settable | Yes |
 
 ## Values
 

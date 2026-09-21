@@ -32,6 +32,7 @@ Controls `cl_nodelta` in the engine-client module. Consult the cited behavior re
 | Value type | `bool` |
 | Restart | No latch flag is registered. |
 | Cheat protected | No |
+| Player-settable | Yes |
 
 ## Values
 

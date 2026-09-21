@@ -31,6 +31,7 @@ Color of the pitch HUD
 | Value type | `color` |
 | Restart | No latch flag is registered. |
 | Cheat protected | No |
+| Player-settable | Yes |
 
 ## Values
 

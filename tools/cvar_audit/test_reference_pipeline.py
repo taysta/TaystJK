@@ -7,8 +7,13 @@ import unittest
 from pathlib import Path
 from unittest.mock import patch
 
-from build_reference import registration_baselines
-from generate_docs import emoji_page, whats_new_rows, whats_new_page
+from build_reference import (
+    bit_option_index, calling_handler, engine_managed_basis, menu_mirror_index,
+    registration_baselines,
+)
+from generate_docs import (
+    bit_table, emoji_page, engine_managed_notice, mirror_row, whats_new_rows, whats_new_page,
+)
 from provenance import extract_ref, reusable_provenance, RESOLVER_VERSION
 
 
@@ -51,6 +56,149 @@ r = ri.Cvar_Get("cl_renderer", DEFAULT_RENDER_LIBRARY, CVAR_ARCHIVE);
         inventories = {"eternaljk": {"cg_camerafps"}, "openjk": {"removed_upstream"}, "basejka": set()}
         self.assertEqual(registration_baselines("cg_cameraFPS", inventories), ["openjk", "basejka"])
         self.assertEqual(registration_baselines("removed_upstream", inventories), ["eternaljk", "basejka"])
+
+    def test_engine_state_is_separated_from_a_settable_cvar(self):
+        registered = [{"kind": "Cvar_Get"}]
+        self.assertEqual(engine_managed_basis([], registered), [])
+        self.assertEqual(engine_managed_basis(["CVAR_ARCHIVE"], registered), [])
+        self.assertEqual(
+            engine_managed_basis(["CVAR_INTERNAL", "CVAR_ROM"], registered),
+            ["CVAR_ROM", "CVAR_INTERNAL"],
+        )
+        # ui_tribesMode's shape: written by the UI, never registered anywhere.
+        self.assertEqual(
+            engine_managed_basis([], [{"kind": "implicit Cvar_Set"}, {"kind": "implicit Cvar_Set"}]),
+            ["implicit-write"],
+        )
+        # One real registration is enough to keep it a setting players own.
+        self.assertEqual(
+            engine_managed_basis([], [{"kind": "XCVAR_DEF"}, {"kind": "implicit Cvar_Set"}]),
+            [],
+        )
+
+    def test_menu_mirror_pairs_a_staging_copy_with_its_setting(self):
+        mirrors = menu_mirror_index([("codemp/ui/ui_main.c", """
+void UI_UpdateVideoSetup ( void ) {
+	trap->Cvar_Set ( "r_picmip", UI_Cvar_VariableString ( "ui_r_picmip" ) );
+}
+void UI_GetVideoSetup ( void ) {
+	trap->Cvar_Set ( "ui_r_picmip", UI_Cvar_VariableString ( "r_picmip" ) );
+	// trap->Cvar_Set ( "g_redTeam", UI_Cvar_VariableString ( "ui_teamName" ) );
+}
+""")])
+        self.assertEqual(sorted(mirrors), ["ui_r_picmip"])
+        mirror = mirrors["ui_r_picmip"]
+        self.assertEqual(mirror["target"], "r_picmip")
+        # Both directions are recorded, and a commented-out pair is not a pair.
+        self.assertEqual(mirror["apply"]["line"], 3)
+        self.assertEqual(mirror["read"]["line"], 6)
+        self.assertNotIn("ui_teamname", mirrors)
+        self.assertEqual(engine_managed_basis([], [{"kind": "Cvar_Get"}], mirror), ["menu-mirror"])
+
+    def test_mirror_row_links_only_a_target_that_has_a_page(self):
+        entry = {"menu_mirror": {"target": "r_picmip", "apply": {"url": "u", "path": "p", "line": 1}, "read": None}}
+        row = mirror_row(entry, {"r_picmip": "r_picmip"})
+        self.assertIn("/TaystJK/reference/cvars/r_picmip-", row)
+        self.assertIn("written through", row)
+        self.assertNotIn("read back", row)
+        # A target the source writes but never registers is named, not linked.
+        unlinked = mirror_row(entry, {})
+        self.assertNotIn("[`r_picmip`](", unlinked)
+        self.assertIn("`r_picmip`", unlinked)
+
+    BIT_SOURCE = """
+static bitInfo_T strafeTweaks[] = {
+	{"Original style"},
+	{"Sound"}
+};
+static const int MAX_STRAFEHELPER_TWEAKS = ARRAY_LEN( strafeTweaks );
+void CG_StrafeHelper_f( void ) {
+	trap->Cvar_Set("cg_strafeHelper", va("%i", (1 << index) ^ cg_strafeHelper.integer));
+	CG_Print(strafeTweaks[index].string);
+}
+static bitInfo_T adminOptions[] = {
+	{"Kick"}
+};
+void Svcmd_ToggleAdmin_f( void ) {
+	trap->Cvar_Set( "g_juniorAdminLevel", va( "%i", value ) );
+	trap->Cvar_Set( "g_fullAdminLevel", va( "%i", value ) );
+	trap->Print( "%s", adminOptions[index].string );
+}
+"""
+
+    def test_bit_tables_pair_with_every_cvar_their_handler_sets(self):
+        index = bit_option_index([("codemp/cgame/cg_consolecmds.c", self.BIT_SOURCE)])
+        self.assertEqual(
+            sorted(index), ["cg_strafehelper", "g_fulladminlevel", "g_junioradminlevel"],
+        )
+        options = index["cg_strafehelper"]["options"]
+        # Bit order is the array position, and the value is that bit alone.
+        self.assertEqual(
+            options, [{"bit": 0, "value": "1", "meaning": "Original style"},
+                      {"bit": 1, "value": "2", "meaning": "Sound"}],
+        )
+        self.assertEqual(index["cg_strafehelper"]["handler"], "CG_StrafeHelper_f")
+        # One table drives both admin levels, so neither is dropped.
+        self.assertEqual(index["g_fulladminlevel"]["options"], [{"bit": 0, "value": "1", "meaning": "Kick"}])
+
+    def test_a_handler_is_bounded_by_its_own_body(self):
+        # The last table in a file must not absorb every function after it.
+        source = self.BIT_SOURCE + """
+void CG_Unrelated_f( void ) {
+	trap->Cvar_Set("cg_somethingElse", "1");
+}
+"""
+        index = bit_option_index([("codemp/cgame/cg_consolecmds.c", source)])
+        self.assertNotIn("cg_somethingelse", index)
+
+    def test_commented_out_table_is_not_a_bit_table(self):
+        source = "/*" + self.BIT_SOURCE + "*/\n"
+        self.assertEqual(bit_option_index([("codemp/game/g_svcmds.c", source)]), {})
+
+    def test_dispatcher_resolves_to_the_registered_handler(self):
+        source = """
+void CG_Cosmetics_JaPRO( void ) {
+	trap->Cvar_Set("cp_cosmetics", "1");
+}
+void CG_Cosmetics_f( void ) {
+	CG_Cosmetics_JaPRO();
+}
+"""
+        files = [("codemp/cgame/cg_consolecmds.c", source)]
+        self.assertEqual(calling_handler(files, "CG_Cosmetics_JaPRO"), "CG_Cosmetics_f")
+        self.assertIsNone(calling_handler(files, "CG_Missing_f"))
+
+    def test_bit_table_keeps_a_traced_read_beside_the_label(self):
+        entry = {
+            "source_commit": "a" * 40,
+            "values": [{"value": "2", "meaning": "ignored", "evidence": {"path": "cg.h", "line": 63}}],
+            "bits": {
+                "commands": ["strafeHelper", "sh"],
+                "options": [{"bit": 0, "value": "1", "meaning": "Original style"},
+                            {"bit": 1, "value": "2", "meaning": "Sound"}],
+                "evidence": {"path": "cg_consolecmds.c", "line": 1108, "url": "u"},
+            },
+        }
+        rendered = "\n".join(bit_table(entry))
+        self.assertIn("strafeHelper", rendered)
+        self.assertIn("or", rendered.split("followed by")[0])
+        self.assertIn("| 1 | `2` | Sound | [cg.h:63](", rendered)
+        self.assertIn("| 0 | `1` | Original style | — |", rendered)
+        self.assertEqual(bit_table({"bits": None}), [])
+
+    def test_engine_managed_notice_names_each_basis(self):
+        notice = engine_managed_notice({"engine_managed_basis": ["CVAR_ROM", "implicit-write"]})
+        self.assertIn("CVAR_ROM", notice)
+        self.assertIn("Cvar_Set", notice)
+        self.assertIsNone(engine_managed_notice({"engine_managed_basis": []}))
+        self.assertIsNone(engine_managed_notice({}))
+        mirrored = engine_managed_notice(
+            {"engine_managed_basis": ["menu-mirror"],
+             "menu_mirror": {"target": "r_picmip", "apply": None, "read": None}},
+            {"r_picmip": "r_picmip"},
+        )
+        self.assertIn("staging copy", mirrored)
+        self.assertIn("/TaystJK/reference/cvars/r_picmip-", mirrored)
 
     @patch("generate_docs.export_emoji_assets", return_value={"#smile.png": "smile.png"})
     @patch("generate_docs.emoji_files", return_value=["#smile.png"])

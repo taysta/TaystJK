@@ -32,6 +32,7 @@ Controls `s_soundpoolmegs` in the engine-client module. Consult the cited behavi
 | Value type | `int` |
 | Restart | No latch flag is registered. |
 | Cheat protected | No |
+| Player-settable | Yes |
 
 ## Values
 

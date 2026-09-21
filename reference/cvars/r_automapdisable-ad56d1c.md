@@ -33,6 +33,7 @@ Controls `r_autoMapDisable` in the renderer module. Consult the cited behavior r
 | Value type | `bool` |
 | Restart | No latch flag is registered. |
 | Cheat protected | No |
+| Player-settable | Yes |
 
 ## Values
 

@@ -32,6 +32,7 @@ Controls `r_singleShader` in the renderer module. Consult the cited behavior rea
 | Value type | `bool` |
 | Restart | Yes; the value is latched. |
 | Cheat protected | Yes |
+| Player-settable | Yes |
 
 ## Values
 

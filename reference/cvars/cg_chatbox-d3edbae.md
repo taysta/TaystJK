@@ -33,6 +33,7 @@ Controls `cg_chatBox` in the cgame module. Consult the cited behavior reads befo
 | Value type | `int` |
 | Restart | No latch flag is registered. |
 | Cheat protected | No |
+| Player-settable | Yes |
 
 ## Values
 

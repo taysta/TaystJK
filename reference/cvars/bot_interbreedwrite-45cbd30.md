@@ -30,6 +30,7 @@ Write interbreeded bots to this file
 | Value type | `string` |
 | Restart | No latch flag is registered. |
 | Cheat protected | Yes |
+| Player-settable | Yes |
 
 ## Values
 

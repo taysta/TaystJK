@@ -32,6 +32,7 @@ Arguments provided when last connecting to a server
 | Value type | `string` |
 | Restart | No latch flag is registered. |
 | Cheat protected | No |
+| Player-settable | Yes |
 
 ## Values
 

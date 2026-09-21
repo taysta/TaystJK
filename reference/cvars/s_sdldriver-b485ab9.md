@@ -32,6 +32,7 @@ Controls `s_sdlDriver` in the engine-shared module. Consult the cited behavior r
 | Value type | `string` |
 | Restart | Yes; the value is latched. |
 | Cheat protected | No |
+| Player-settable | Yes |
 
 ## Values
 

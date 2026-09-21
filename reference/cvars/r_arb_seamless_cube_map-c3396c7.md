@@ -30,6 +30,7 @@ Disable/enable seamless cube map filtering GL extension
 | Value type | `int` |
 | Restart | Yes; the value is latched. |
 | Cheat protected | No |
+| Player-settable | Yes |
 
 ## Values
 

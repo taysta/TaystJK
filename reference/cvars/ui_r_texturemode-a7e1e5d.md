@@ -12,6 +12,8 @@ search_exclude: false
 
 <p class="ref-warning"><strong>Needs review.</strong> The inventory/provenance evidence is recorded, but some behavior, options, or attribution still lacks a direct user-facing source.</p>
 
+<p class="ref-notice"><strong>Engine-managed.</strong> The game maintains this value itself, so it is not a setting to change by hand: it is read-only after registration (<code>CVAR_ROM</code>); it is internal UI/engine state, hidden from every cvar listing (<code>CVAR_INTERNAL</code>); it is the menu's staging copy of <a href="/TaystJK/reference/cvars/r_texturemode-e53a999/"><code>r_textureMode</code></a>, which the menu writes through when the change is applied and reads back when it is opened.</p>
+
 Controls `ui_r_texturemode` in the ui module. Consult the cited behavior reads before relying on values not listed here.
 
 ## At a glance
@@ -32,6 +34,8 @@ Controls `ui_r_texturemode` in the ui module. Consult the cited behavior reads b
 | Value type | `int` |
 | Restart | No latch flag is registered. |
 | Cheat protected | No |
+| Player-settable | No — the game writes this value. |
+| Staging copy of | [`r_textureMode`](/TaystJK/reference/cvars/r_texturemode-e53a999/) — [written through](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/ui/ui_main.c#L6227), [read back](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/ui/ui_main.c#L6399) |
 
 ## Values
 

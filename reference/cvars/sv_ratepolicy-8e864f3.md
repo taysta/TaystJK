@@ -32,6 +32,7 @@ Determines which policy of enforcement is used for client's \"rate\" cvar
 | Value type | `enum` |
 | Restart | No latch flag is registered. |
 | Cheat protected | No |
+| Player-settable | Yes |
 
 ## Values
 

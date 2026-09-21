@@ -32,6 +32,7 @@ Controls `r_offsetFactor` in the renderer module. Consult the cited behavior rea
 | Value type | `float` |
 | Restart | No latch flag is registered. |
 | Cheat protected | Yes |
+| Player-settable | Yes |
 
 ## Values
 

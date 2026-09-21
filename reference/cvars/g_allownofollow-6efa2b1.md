@@ -32,6 +32,7 @@ Allow players to hide themselves and not be spectated/seen in racemode.
 | Value type | `bool` |
 | Restart | No latch flag is registered. |
 | Cheat protected | No |
+| Player-settable | Yes |
 
 ## Values
 

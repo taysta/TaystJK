@@ -32,6 +32,7 @@ Controls `g_siegeTeam1` in the game module. Consult the cited behavior reads bef
 | Value type | `string` |
 | Restart | No latch flag is registered. |
 | Cheat protected | No |
+| Player-settable | Yes |
 
 ## Values
 

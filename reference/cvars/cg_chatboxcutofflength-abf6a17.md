@@ -33,6 +33,7 @@ Width of a line in the chatbox before breaking to a new one
 | Value type | `float` |
 | Restart | No latch flag is registered. |
 | Cheat protected | No |
+| Player-settable | Yes |
 
 ## Values
 

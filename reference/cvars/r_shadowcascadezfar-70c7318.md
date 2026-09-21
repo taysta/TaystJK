@@ -33,6 +33,7 @@ Controls `r_shadowCascadeZFar` in the renderer module. Consult the cited behavio
 | Value type | `float` |
 | Restart | Yes; the value is latched. |
 | Cheat protected | No |
+| Player-settable | Yes |
 
 ## Values
 

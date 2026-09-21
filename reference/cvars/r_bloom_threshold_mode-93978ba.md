@@ -31,6 +31,7 @@ Color extraction mode: 0: (r|g|b) >= threshold 1: (r + g + b ) / 3 >= threshold 
 | Value type | `enum` |
 | Restart | No latch flag is registered. |
 | Cheat protected | No |
+| Player-settable | Yes |
 
 ## Values
 

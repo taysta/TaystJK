@@ -32,6 +32,7 @@ Controls `r_imageUpsample` in the renderer module. Consult the cited behavior re
 | Value type | `bool` |
 | Restart | Yes; the value is latched. |
 | Cheat protected | No |
+| Player-settable | Yes |
 
 ## Values
 

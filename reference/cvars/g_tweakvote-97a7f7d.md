@@ -12,6 +12,8 @@ search_exclude: false
 
 <p class="ref-warning"><strong>Needs review.</strong> The inventory/provenance evidence is recorded, but some behavior, options, or attribution still lacks a direct user-facing source.</p>
 
+<p class="ref-notice"><strong>Set with <code>tweakVote</code>.</strong> Each bit is a separate option, so the command toggles one of them per use and leaves the rest alone. Setting a raw value by hand replaces every option at once.</p>
+
 Latch cuz of calculateRanks? not sure man
 
 ## At a glance
@@ -32,16 +34,27 @@ Latch cuz of calculateRanks? not sure man
 | Value type | `bitmask` |
 | Restart | Yes; the value is latched. |
 | Cheat protected | No |
+| Player-settable | Yes |
+| Configure with | [`tweakVote`](/TaystJK/reference/commands/tweakvote-97236e2/) |
 
-## Values
+## Bits
 
-| Value | Meaning | Evidence |
-|:--|:--|:--|
-| `1` | Enables the `TV_ALLOW_SIEGESPECVOTE` code path. | [codemp/game/g_local.h:333](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_local.h#L333) |
-| `4` | Enables the `TV_CLEAR_SPEC_VOTES` code path. | [codemp/game/g_local.h:335](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_local.h#L335) |
-| `2048` | Enables the `TV_IGNOREMAPARENAS` code path. | [codemp/game/g_local.h:344](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_local.h#L344) |
-| `8` | Enables the `TV_MAPLOADTIMEOUT` code path. | [codemp/game/g_local.h:336](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_local.h#L336) |
+Toggle one with [`tweakVote`](/TaystJK/reference/commands/tweakvote-97236e2/) followed by the bit number. The value column is that bit on its own — [the labels come from the source table](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_svcmds.c#L1473).
 
+| Bit | Value | Meaning | Read by |
+|:--|:--|:--|:--|
+| 0 | `1` | Allow spec callvote in siege gametype | [codemp/game/g_local.h:333](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_local.h#L333) |
+| 1 | `2` | Allow spec callvote in CTF/TFFA gametypes | — |
+| 2 | `4` | Clear vote when going to spectate | [codemp/game/g_local.h:335](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_local.h#L335) |
+| 3 | `8` | Dont allow callvote for 30s after mapload | [codemp/game/g_local.h:336](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_local.h#L336) |
+| 4 | `16` | Floodprotect callvotes by IP | — |
+| 5 | `32` | Dont allow map callvotes for 10 minutes at start of each map | — |
+| 6 | `64` | Add vote delay for map callvotes only | — |
+| 7 | `128` | Allow voting from spectate | — |
+| 8 | `256` | Show votes in console | — |
+| 9 | `512` | Only count voters in pass/fail calculation | — |
+| 10 | `1024` | Fix mapchange after gametype vote | — |
+| 11 | `2048` | Ignore gametype restrictions for map callvote | [codemp/game/g_local.h:344](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_local.h#L344) |
 ## Flags
 
 - `CVAR_ARCHIVE` — saved to the user configuration

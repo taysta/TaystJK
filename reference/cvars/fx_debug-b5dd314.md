@@ -32,6 +32,7 @@ Controls `fx_debug` in the engine-client module. Consult the cited behavior read
 | Value type | `enum` |
 | Restart | No latch flag is registered. |
 | Cheat protected | No |
+| Player-settable | Yes |
 
 ## Values
 

@@ -30,6 +30,7 @@ Runs `Svcmd_ToggleTweakWeapons_f` in the game module.
 | In-game menu | No |
 | Syntax | `tweakWeapons [arguments]` |
 | Cheat protected | No |
+| Configures | [`g_tweakWeapons`](/TaystJK/reference/cvars/g_tweakweapons-7f0cd05/) |
 
 ## Arguments and gating
 

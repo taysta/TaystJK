@@ -32,6 +32,7 @@ Controls `g_forceDodge` in the game module. Consult the cited behavior reads bef
 | Value type | `enum` |
 | Restart | No latch flag is registered. |
 | Cheat protected | No |
+| Player-settable | Yes |
 
 ## Values
 

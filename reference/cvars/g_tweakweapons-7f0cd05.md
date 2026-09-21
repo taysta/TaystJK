@@ -12,6 +12,8 @@ search_exclude: false
 
 <p class="ref-warning"><strong>Needs review.</strong> The inventory/provenance evidence is recorded, but some behavior, options, or attribution still lacks a direct user-facing source.</p>
 
+<p class="ref-notice"><strong>Set with <code>tweakWeapons</code>.</strong> Each bit is a separate option, so the command toggles one of them per use and leaves the rest alone. Setting a raw value by hand replaces every option at once.</p>
+
 Configured with /tweakWeapons command
 
 ## At a glance
@@ -32,15 +34,46 @@ Configured with /tweakWeapons command
 | Value type | `bitmask` |
 | Restart | No latch flag is registered. |
 | Cheat protected | No |
+| Player-settable | Yes |
+| Configure with | [`tweakWeapons`](/TaystJK/reference/commands/tweakweapons-fd5860d/) |
 
-## Values
+## Bits
 
-| Value | Meaning | Evidence |
-|:--|:--|:--|
-| `524288` | Enables the `WT_ANTI_VEHICLE` code path. | [codemp/game/g_local.h:213](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_local.h#L213) |
-| `67108864` | Enables the `WT_PROJ_SNIPER` code path. | [codemp/game/g_local.h:220](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_local.h#L220) |
-| `134217728` | Move this into g_tribesmode surely..? | [codemp/game/g_local.h:221](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_local.h#L221) |
+Toggle one with [`tweakWeapons`](/TaystJK/reference/commands/tweakweapons-fd5860d/) followed by the bit number. The value column is that bit on its own — [the labels come from the source table](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_svcmds.c#L843).
 
+| Bit | Value | Meaning | Read by |
+|:--|:--|:--|:--|
+| 0 | `1` | Nonrandom DEMP2 | — |
+| 1 | `2` | Increased DEMP2 primary damage | — |
+| 2 | `4` | Decreased disruptor alt damage | — |
+| 3 | `8` | Nonrandom bowcaster spread | — |
+| 4 | `16` | Increased repeater alt damage | — |
+| 5 | `32` | Nonrandom flechette primary spread | — |
+| 6 | `64` | Decreased flechette alt damage | — |
+| 7 | `128` | Nonrandom flechette alt spread | — |
+| 8 | `256` | Increased concussion rifle alt damage | — |
+| 9 | `512` | Removed projectile knockback | — |
+| 10 | `1024` | Stun baton lightning gun | — |
+| 11 | `2048` | Stun baton shocklance | — |
+| 12 | `4096` | Projectile gravity | — |
+| 13 | `8192` | Allow center muzzle | — |
+| 14 | `16384` | Pseudo random weapon spread | — |
+| 15 | `32768` | Fix explosive hitbox | — |
+| 16 | `65536` | Rocket alt fire redeemer | — |
+| 17 | `131072` | Infinite ammo | — |
+| 18 | `262144` | Stun baton heal gun | — |
+| 19 | `524288` | Weapons can damage vehicles | [codemp/game/g_local.h:213](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_local.h#L213) |
+| 20 | `1048576` | Allow gunroll | — |
+| 21 | `2097152` | Fast weaponswitch | — |
+| 22 | `4194304` | Impact nitrons | — |
+| 23 | `8388608` | Flechette stake gun | — |
+| 24 | `16777216` | Fix dropped mine ammo count | — |
+| 25 | `33554432` | JK2 Style Alt Tripmine | — |
+| 26 | `67108864` | Projectile Sniper | [codemp/game/g_local.h:220](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_local.h#L220) |
+| 27 | `134217728` | Tribes tweaks | [codemp/game/g_local.h:221](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_local.h#L221) |
+| 28 | `268435456` | Slow sniper fire rate | — |
+| 29 | `536870912` | Make rockets solid for their owners | — |
+| 30 | `1073741824` | Lower max damage for pistol alt fire | — |
 ## Flags
 
 - `CVAR_ARCHIVE` — saved to the user configuration

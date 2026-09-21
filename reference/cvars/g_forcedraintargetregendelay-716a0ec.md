@@ -32,6 +32,7 @@ Controls `g_forceDrainTargetRegenDelay` in the game module. Consult the cited be
 | Value type | `int` |
 | Restart | No latch flag is registered. |
 | Cheat protected | No |
+| Player-settable | Yes |
 
 ## Values
 

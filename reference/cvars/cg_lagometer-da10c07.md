@@ -32,6 +32,7 @@ Controls `cg_lagometer` in the cgame module. Consult the cited behavior reads be
 | Value type | `enum` |
 | Restart | No latch flag is registered. |
 | Cheat protected | No |
+| Player-settable | Yes |
 
 ## Values
 

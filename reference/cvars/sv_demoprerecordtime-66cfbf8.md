@@ -30,6 +30,7 @@ How many seconds of past packets should be stored for server demo pre-recording?
 | Value type | `int` |
 | Restart | No latch flag is registered. |
 | Cheat protected | No |
+| Player-settable | Yes |
 
 ## Values
 

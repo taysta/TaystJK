@@ -33,6 +33,7 @@ This would be called chatBoxHeight if baseJKA didn't use that
 | Value type | `int` |
 | Restart | No latch flag is registered. |
 | Cheat protected | No |
+| Player-settable | Yes |
 
 ## Values
 

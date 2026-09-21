@@ -32,6 +32,7 @@ Controls `cv` in the engine-client module. Consult the cited behavior reads befo
 | Value type | `float` |
 | Restart | Yes; the value is latched. |
 | Cheat protected | No |
+| Player-settable | Yes |
 
 ## Values
 

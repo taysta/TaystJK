@@ -33,6 +33,7 @@ Controls `r_dlightMode` in the renderer module. Consult the cited behavior reads
 | Value type | `enum` |
 | Restart | Yes; the value is latched. |
 | Cheat protected | No |
+| Player-settable | Yes |
 
 ## Values
 

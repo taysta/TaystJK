@@ -33,6 +33,7 @@ Enable race timer start speed separately from the race timer
 | Value type | `bool` |
 | Restart | No latch flag is registered. |
 | Cheat protected | No |
+| Player-settable | Yes |
 
 ## Values
 

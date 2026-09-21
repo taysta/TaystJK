@@ -30,6 +30,7 @@ Percent chance to deny a valid MP saber block/clash. 0=off, 100=always.
 | Value type | `enum` |
 | Restart | No latch flag is registered. |
 | Cheat protected | No |
+| Player-settable | Yes |
 
 ## Values
 

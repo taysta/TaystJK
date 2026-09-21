@@ -110,6 +110,16 @@ description: "Search and filter every cvar and console command available in Tays
           <button class="filter-clear" type="button" data-clear-filter="coverage">Clear in-game coverage</button>
         </div>
       </div>
+      <div class="filter-dropdown" data-filter-dropdown="audience" data-cvar-filter>
+        <button class="filter-toggle" type="button" data-filter-toggle="audience" aria-expanded="false"><span>Settable</span><strong data-filter-summary="audience">Any cvar</strong><span class="filter-chevron" aria-hidden="true"></span></button>
+        <div class="filter-popover" data-filter-popover="audience" hidden>
+          <div class="filter-options">
+            <label class="filter-checkbox"><input type="checkbox" name="audience" value="settable" data-filter="audience"><span>Player-settable</span></label>
+            <label class="filter-checkbox"><input type="checkbox" name="audience" value="engine-managed" data-filter="audience"><span>Engine-managed</span></label>
+          </div>
+          <button class="filter-clear" type="button" data-clear-filter="audience">Clear settable</button>
+        </div>
+      </div>
       <div class="filter-dropdown" data-filter-dropdown="flag" data-cvar-filter>
         <button class="filter-toggle" type="button" data-filter-toggle="flag" aria-expanded="false"><span>Cvar flag</span><strong data-filter-summary="flag">Any flag</strong><span class="filter-chevron" aria-hidden="true"></span></button>
         <div class="filter-popover" data-filter-popover="flag" hidden>

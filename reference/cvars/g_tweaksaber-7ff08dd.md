@@ -12,6 +12,8 @@ search_exclude: false
 
 <p class="ref-warning"><strong>Needs review.</strong> The inventory/provenance evidence is recorded, but some behavior, options, or attribution still lacks a direct user-facing source.</p>
 
+<p class="ref-notice"><strong>Set with <code>tweakSaber</code>.</strong> Each bit is a separate option, so the command toggles one of them per use and leaves the rest alone. Setting a raw value by hand replaces every option at once.</p>
+
 Configured with /tweakSaber command.
 
 ## At a glance
@@ -32,18 +34,36 @@ Configured with /tweakSaber command.
 | Value type | `bitmask` |
 | Restart | No latch flag is registered. |
 | Cheat protected | No |
+| Player-settable | Yes |
+| Configure with | [`tweakSaber`](/TaystJK/reference/commands/tweaksaber-e5f1b57/) |
 
-## Values
+## Bits
 
-| Value | Meaning | Evidence |
-|:--|:--|:--|
-| `16` | CLIENT - also remove backwards run slowdown like jk2 | [codemp/game/g_local.h:277](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_local.h#L277) |
-| `128` | Enables the `ST_EASYBACKSLASH` code path. | [codemp/game/g_local.h:280](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_local.h#L280) |
-| `64` | Enables the `ST_FIXED_SABERSWITCH` code path. | [codemp/game/g_local.h:279](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_local.h#L279) |
-| `256` | Enables the `ST_JK2RDFA` code path. | [codemp/game/g_local.h:281](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_local.h#L281) |
-| `32` | Enables the `ST_NO_REDCHAIN` code path. | [codemp/game/g_local.h:278](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_local.h#L278) |
-| `2048` | Enables the `ST_SPINBACKSLASH` code path. | [codemp/game/g_local.h:284](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_local.h#L284) |
+Toggle one with [`tweakSaber`](/TaystJK/reference/commands/tweaksaber-e5f1b57/) followed by the bit number. The value column is that bit on its own — [the labels come from the source table](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_svcmds.c#L915).
 
+| Bit | Value | Meaning | Read by |
+|:--|:--|:--|:--|
+| 0 | `1` | Skip saber interpolate for MP dmgs | — |
+| 1 | `2` | JK2 1.02 style damage system | — |
+| 2 | `4` | Reduced saberblock for MP damages | — |
+| 3 | `8` | Reduce saberdrops for MP damages | — |
+| 4 | `16` | Allow rollcancel for saber swings | [codemp/game/g_local.h:277](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_local.h#L277) |
+| 5 | `32` | JK2 1.02 style swings | [codemp/game/g_local.h:278](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_local.h#L278) |
+| 6 | `64` | Fixed saberswitch | [codemp/game/g_local.h:279](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_local.h#L279) |
+| 7 | `128` | No aim backslash | [codemp/game/g_local.h:280](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_local.h#L280) |
+| 8 | `256` | JK2 red DFA | [codemp/game/g_local.h:281](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_local.h#L281) |
+| 9 | `512` | Fix yellow DFA | — |
+| 10 | `1024` | Spin red DFA | — |
+| 11 | `2048` | Spin backslash | [codemp/game/g_local.h:284](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_local.h#L284) |
+| 12 | `4096` | JK2 lunge | — |
+| 13 | `8192` | Remove red DFA Boost | — |
+| 14 | `16384` | Make red DFA cost 0 forcepoints | — |
+| 15 | `32768` | Remove all backslash restrictions | — |
+| 16 | `65536` | Allow sabergun | — |
+| 17 | `131072` | Allow fast style change for single saber | — |
+| 18 | `262144` | New dmg calculation for SP damage (no vel dmg) | — |
+| 19 | `524288` | The slow blade penetrates the sheild | — |
+| 20 | `1048576` | New dmg calculation for SP damage (capped vel dmg) | — |
 ## Flags
 
 - `CVAR_ARCHIVE` — saved to the user configuration

@@ -32,6 +32,7 @@ Controls `com_G2Report` in the engine-shared module. Consult the cited behavior 
 | Value type | `bool` |
 | Restart | No latch flag is registered. |
 | Cheat protected | No |
+| Player-settable | Yes |
 
 ## Values
 

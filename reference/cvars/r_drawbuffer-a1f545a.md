@@ -32,6 +32,7 @@ Controls `r_drawBuffer` in the renderer module. Consult the cited behavior reads
 | Value type | `string` |
 | Restart | No latch flag is registered. |
 | Cheat protected | Yes |
+| Player-settable | Yes |
 
 ## Values
 

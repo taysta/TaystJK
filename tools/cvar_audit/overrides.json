@@ -158,6 +158,60 @@
         {"evidence": {"line": 871, "path": "codemp/rd-vulkan/tr_init.cpp"}, "meaning": "Use software fog.", "value": "1"},
         {"evidence": {"line": 871, "path": "codemp/rd-vulkan/tr_init.cpp"}, "meaning": "Use hardware fog.", "value": "2"}
       ]
+    },
+    "ui_isjapro": {
+      "description": "Menu-only state the UI keeps while reading server info. `UI_UpdateCurrentServerInfo` clears it on every refresh and sets it to 1 when the connected server's `gamename` begins with `japro`, so menu files can show or hide jaPRO-specific pages.",
+      "derivation": "code-trace",
+      "engine_managed": true,
+      "summary": "Report whether the connected server identifies as jaPRO.",
+      "value_type": "bool"
+    },
+    "ui_racemode": {
+      "description": "Menu-only state the UI keeps while reading server info. `UI_UpdateCurrentServerInfo` clears it on every refresh and sets it to 1 when a jaPRO server advertises `JAPRO_CINFO2_RACEMODE` in its `jcinfo2` key. A value set by hand is replaced at the next refresh.",
+      "derivation": "code-trace",
+      "engine_managed": true,
+      "summary": "Report whether the connected jaPRO server runs race mode.",
+      "value_type": "bool",
+      "values": [
+        {"evidence": {"line": 629, "path": "codemp/ui/ui_main.c"}, "meaning": "The server does not advertise race mode, or its info has not been read yet.", "value": "0"},
+        {"evidence": {"line": 656, "path": "codemp/ui/ui_main.c"}, "meaning": "The connected jaPRO server advertises race mode.", "value": "1"}
+      ]
+    },
+    "ui_tribesmode": {
+      "description": "Menu-only state the UI keeps while reading server info. `UI_UpdateCurrentServerInfo` clears it on every refresh and sets it to 1 when a jaPRO server advertises `JAPRO_CINFO2_WTTRIBES` in its `jcinfo2` key; the in-game tribes menu reads it to offer the class and pack pages. A value set by hand is replaced at the next refresh.",
+      "derivation": "code-trace",
+      "engine_managed": true,
+      "summary": "Report whether the connected jaPRO server runs tribes mode.",
+      "value_type": "bool",
+      "values": [
+        {"evidence": {"line": 630, "path": "codemp/ui/ui_main.c"}, "meaning": "The server does not advertise tribes mode, or its info has not been read yet.", "value": "0"},
+        {"evidence": {"line": 659, "path": "codemp/ui/ui_main.c"}, "meaning": "The connected jaPRO server advertises tribes mode.", "value": "1"}
+      ]
+    },
+    "ui_allowregistration": {
+      "description": "Menu-only state the UI keeps while reading server info. `UI_UpdateCurrentServerInfo` clears it on every refresh and sets it to 1 when a jaPRO server advertises `JAPRO_CINFO2_REGISTRATION` in its `jcinfo2` key, which is what offers account registration in the menus.",
+      "derivation": "code-trace",
+      "engine_managed": true,
+      "summary": "Report whether the connected jaPRO server accepts account registration.",
+      "value_type": "bool",
+      "values": [
+        {"evidence": {"line": 631, "path": "codemp/ui/ui_main.c"}, "meaning": "The server does not advertise account registration, or its info has not been read yet.", "value": "0"},
+        {"evidence": {"line": 662, "path": "codemp/ui/ui_main.c"}, "meaning": "The connected jaPRO server accepts account registration.", "value": "1"}
+      ]
+    },
+    "ui_allowsaberswitch": {
+      "description": "Menu-only state the UI keeps while reading server info. `UI_UpdateCurrentServerInfo` clears it on every refresh, then sets it to 1 for a JA+, UAGalaxy or AbyssMod server, and for a jaPRO server below the team gametypes that advertises `JAPRO_CINFO2_SABERSWITCH`.",
+      "derivation": "code-trace",
+      "engine_managed": true,
+      "summary": "Report whether the connected server offers the saber-switch command.",
+      "value_type": "bool"
+    },
+    "ui_sv_pure": {
+      "description": "Menu-only mirror of the connected server's `sv_pure` systeminfo value, refreshed by `UI_UpdateCurrentServerInfo` and rewritten only when it changes so the cvar update function runs on the following frame.",
+      "derivation": "code-trace",
+      "engine_managed": true,
+      "summary": "Mirror the connected server's pure-server setting for the menus.",
+      "value_type": "bool"
     }
   }
 }

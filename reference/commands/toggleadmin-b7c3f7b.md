@@ -30,6 +30,7 @@ Runs `Svcmd_ToggleAdmin_f` in the game module.
 | In-game menu | No |
 | Syntax | `toggleAdmin <admin level (full or junior)> <admin option>` |
 | Cheat protected | No |
+| Configures | [`g_fullAdminLevel`](/TaystJK/reference/cvars/g_fulladminlevel-baac21c/), [`g_juniorAdminLevel`](/TaystJK/reference/cvars/g_junioradminlevel-0881d19/) |
 
 ## Arguments and gating
 

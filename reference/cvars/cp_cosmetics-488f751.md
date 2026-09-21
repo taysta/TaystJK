@@ -12,6 +12,8 @@ search_exclude: false
 
 <p class="ref-warning"><strong>Needs review.</strong> The inventory/provenance evidence is recorded, but some behavior, options, or attribution still lacks a direct user-facing source.</p>
 
+<p class="ref-notice"><strong>Set with <code>cosmetics</code>.</strong> Each bit is a separate option, so the command toggles one of them per use and leaves the rest alone. Setting a raw value by hand replaces every option at once.</p>
+
 Controls `cp_cosmetics` in the cgame module. Consult the cited behavior reads before relying on values not listed here.
 
 ## At a glance
@@ -32,11 +34,47 @@ Controls `cp_cosmetics` in the cgame module. Consult the cited behavior reads be
 | Value type | `bitmask` |
 | Restart | No latch flag is registered. |
 | Cheat protected | No |
+| Player-settable | Yes |
+| Configure with | [`cosmetics`](/TaystJK/reference/commands/cosmetics-01c96cf/) |
 
-## Values
+## Bits
 
-No discrete value list is enforced or documented in the inspected source.
+Toggle one with [`cosmetics`](/TaystJK/reference/commands/cosmetics-01c96cf/) followed by the bit number. The value column is that bit on its own — [the labels come from the source table](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_consolecmds.c#L1591).
 
+| Bit | Value | Meaning | Read by |
+|:--|:--|:--|:--|
+| 0 | `1` | Santa hat | — |
+| 1 | `2` | Jack-o'-lantern | — |
+| 2 | `4` | Bass Pro Shops baseball cap | — |
+| 3 | `8` | Indiana Jones | — |
+| 4 | `16` | Kane's Kringe Kap | — |
+| 5 | `32` | Sombrero | — |
+| 6 | `64` | Top hat | — |
+| 7 | `128` | Mask | — |
+| 8 | `256` | Graduation cap | — |
+| 9 | `512` | Goose | — |
+| 10 | `1024` | Black fedora | — |
+| 11 | `2048` | Blue fedora | — |
+| 12 | `4096` | Pimp hat | — |
+| 13 | `8192` | Headcrab | — |
+| 14 | `16384` | Vader Cape | — |
+| 15 | `32768` | Shoulder Yoda | — |
+| 16 | `65536` | Horns | — |
+| 17 | `131072` | Metal Helm | — |
+| 18 | `262144` | Afro | — |
+| 19 | `524288` | AK47 | — |
+| 20 | `1048576` | Bucket | — |
+| 21 | `2097152` | Crowbar | — |
+| 22 | `4194304` | Crown | — |
+| 23 | `8388608` | Royal Cape | — |
+| 24 | `16777216` | Beard | — |
+| 25 | `33554432` | Grogu | — |
+| 26 | `67108864` | Plague Mask | — |
+| 27 | `134217728` | Glasses | — |
+| 28 | `268435456` | Mario | — |
+| 29 | `536870912` | Rocket Launcher | — |
+| 30 | `1073741824` | Predator | — |
+| 31 | `2147483648` | Super Saiyan | — |
 ## Flags
 
 - `CVAR_ARCHIVE` — saved to the user configuration

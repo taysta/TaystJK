@@ -17,6 +17,7 @@ NETWORK = {"client-only", "needs-server-support", "server-authoritative", "featu
 DERIVATION = {"documented", "code-trace", "mixed"}
 RENDERERS = {"rd-vanilla", "rd-rend2", "rd-vulkan", "rd-dedicated"}
 CHANGE_CATEGORIES = {"registration", "behavior-reference", "handler"}
+ENGINE_MANAGED_BASIS = {"CVAR_ROM", "CVAR_INTERNAL", "implicit-write", "menu-mirror", "editorial"}
 COMMON = {
     "name", "kind", "module", "modules", "renderer", "summary", "description",
     "derivation", "network", "origin", "modified_by", "evidence", "confidence",
@@ -130,14 +131,40 @@ def validate(path: Path, expected_kind: str) -> list[str]:
             if change.get("repository") not in ORIGINS:
                 errors.append(f"{label}: invalid later-change repository")
         if expected_kind == "cvar":
-            for field in ("default", "flags", "value_type", "range", "values", "requires_restart"):
+            for field in (
+                "default", "flags", "value_type", "range", "values", "requires_restart",
+                "engine_managed", "engine_managed_basis", "menu_mirror", "bits",
+            ):
                 if field not in entry:
                     errors.append(f"{label}: missing cvar field {field}")
+            basis = entry.get("engine_managed_basis", [])
+            if not isinstance(basis, list) or set(basis) - ENGINE_MANAGED_BASIS:
+                errors.append(f"{label}: invalid engine-managed basis {basis!r}")
+            elif bool(basis) != bool(entry.get("engine_managed")):
+                errors.append(f"{label}: engine-managed flag does not match its basis")
+            mirror = entry.get("menu_mirror")
+            if mirror is not None and (
+                not mirror.get("target") or not (mirror.get("apply") or mirror.get("read"))
+            ):
+                errors.append(f"{label}: menu mirror has no target or no evidence")
+            if bool(mirror) != ("menu-mirror" in basis if isinstance(basis, list) else False):
+                errors.append(f"{label}: menu mirror does not match its engine-managed basis")
+            bits = entry.get("bits")
+            if bits is not None:
+                options = bits.get("options") or []
+                if not options or not bits.get("evidence"):
+                    errors.append(f"{label}: bit table has no options or no evidence")
+                if [option.get("bit") for option in options] != sorted(
+                    option.get("bit") for option in options
+                ):
+                    errors.append(f"{label}: bit options are not in bit order")
+                if any(not option.get("meaning") for option in options):
+                    errors.append(f"{label}: unnamed bit option")
             for option in entry.get("values", []):
                 if not option.get("evidence"):
                     errors.append(f"{label}: option {option.get('value')} has no evidence")
         else:
-            for field in ("syntax", "arguments", "gating", "handlers"):
+            for field in ("syntax", "arguments", "gating", "handlers", "configures"):
                 if field not in entry:
                     errors.append(f"{label}: missing command field {field}")
     return errors
@@ -171,6 +198,25 @@ def validate_baselines(entries: list[dict[str, Any]]) -> list[str]:
     return errors
 
 
+def validate_bit_pairing(entries: list[dict[str, Any]]) -> list[str]:
+    """Each command's configured cvars must name that command back."""
+    errors: list[str] = []
+    owner = {
+        entry["name"]: (entry.get("bits") or {}).get("commands")
+        for entry in entries if entry.get("kind") == "cvar"
+    }
+    for entry in entries:
+        for name in entry.get("configures", []):
+            if name not in owner:
+                errors.append(f"{entry['name']}: configures unknown cvar {name}")
+            elif entry["name"] not in (owner[name] or []):
+                errors.append(
+                    f"{entry['name']}: configures {name}, which names "
+                    f"{owner[name]!r} as its commands"
+                )
+    return errors
+
+
 def main() -> None:
     errors = validate(Path("_data/cvars.json"), "cvar")
     errors += validate(Path("_data/commands.json"), "command")
@@ -179,6 +225,7 @@ def main() -> None:
         + json.loads(Path("_data/commands.json").read_text())
     )
     errors += validate_baselines(entries)
+    errors += validate_bit_pairing(entries)
     # Checked here as well as at generation time so CI catches a hand-tuning
     # file that has rotted against renamed entries, without regenerating.
     errors += validate_whats_new_overrides(entries, load_whats_new_overrides())

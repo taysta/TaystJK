@@ -12,6 +12,7 @@
     "category": "Gameplay & combat",
     "cheat_protected": false,
     "confidence": "high",
+    "configures": [],
     "derivation": "documented",
     "description": "Alternate Attack",
     "evidence": [
@@ -163,6 +164,7 @@
     "category": "Gameplay & combat",
     "cheat_protected": false,
     "confidence": "high",
+    "configures": [],
     "derivation": "documented",
     "description": "Primary Attack",
     "evidence": [
@@ -314,6 +316,7 @@
     "category": "Engine & diagnostics",
     "cheat_protected": false,
     "confidence": "high",
+    "configures": [],
     "derivation": "documented",
     "description": "Move backward",
     "evidence": [
@@ -446,6 +449,7 @@
     "category": "Input & controls",
     "cheat_protected": false,
     "confidence": "high",
+    "configures": [],
     "derivation": "documented",
     "description": "Button 0",
     "evidence": [
@@ -606,6 +610,7 @@
     "category": "Input & controls",
     "cheat_protected": false,
     "confidence": "high",
+    "configures": [],
     "derivation": "documented",
     "description": "Button 1",
     "evidence": [
@@ -748,6 +753,7 @@
     "category": "Input & controls",
     "cheat_protected": false,
     "confidence": "high",
+    "configures": [],
     "derivation": "documented",
     "description": "Button 10",
     "evidence": [
@@ -890,6 +896,7 @@
     "category": "Input & controls",
     "cheat_protected": false,
     "confidence": "high",
+    "configures": [],
     "derivation": "documented",
     "description": "Button 11",
     "evidence": [
@@ -1032,6 +1039,7 @@
     "category": "Input & controls",
     "cheat_protected": false,
     "confidence": "high",
+    "configures": [],
     "derivation": "documented",
     "description": "Button 12",
     "evidence": [
@@ -1178,6 +1186,7 @@
     "category": "Input & controls",
     "cheat_protected": false,
     "confidence": "high",
+    "configures": [],
     "derivation": "documented",
     "description": "Button 13",
     "evidence": [
@@ -1328,6 +1337,7 @@
     "category": "Input & controls",
     "cheat_protected": false,
     "confidence": "high",
+    "configures": [],
     "derivation": "documented",
     "description": "Button 14",
     "evidence": [
@@ -1476,6 +1486,7 @@
     "category": "Input & controls",
     "cheat_protected": false,
     "confidence": "high",
+    "configures": [],
     "derivation": "documented",
     "description": "Button 15",
     "evidence": [
@@ -1896,6 +1907,7 @@
     "category": "Input & controls",
     "cheat_protected": false,
     "confidence": "high",
+    "configures": [],
     "derivation": "documented",
     "description": "Button 2",
     "evidence": [
@@ -2046,6 +2058,7 @@
     "category": "Input & controls",
     "cheat_protected": false,
     "confidence": "high",
+    "configures": [],
     "derivation": "documented",
     "description": "Button 3",
     "evidence": [
@@ -2188,6 +2201,7 @@
     "category": "Input & controls",
     "cheat_protected": false,
     "confidence": "high",
+    "configures": [],
     "derivation": "documented",
     "description": "Button 4",
     "evidence": [
@@ -2329,6 +2343,7 @@
     "category": "Input & controls",
     "cheat_protected": false,
     "confidence": "high",
+    "configures": [],
     "derivation": "documented",
     "description": "Button 5",
     "evidence": [
@@ -2471,6 +2486,7 @@
     "category": "Input & controls",
     "cheat_protected": false,
     "confidence": "high",
+    "configures": [],
     "derivation": "documented",
     "description": "Button 6",
     "evidence": [
@@ -2613,6 +2629,7 @@
     "category": "Input & controls",
     "cheat_protected": false,
     "confidence": "high",
+    "configures": [],
     "derivation": "documented",
     "description": "Button 7",
     "evidence": [
@@ -2773,6 +2790,7 @@
     "category": "Input & controls",
     "cheat_protected": false,
     "confidence": "high",
+    "configures": [],
     "derivation": "documented",
     "description": "Button 8",
     "evidence": [
@@ -2914,6 +2932,7 @@
     "category": "Input & controls",
     "cheat_protected": false,
     "confidence": "high",
+    "configures": [],
     "derivation": "documented",
     "description": "Button 9",
     "evidence": [
@@ -3059,6 +3078,7 @@
     "category": "Gameplay & combat",
     "cheat_protected": false,
     "confidence": "medium",
+    "configures": [],
     "derivation": "code-trace",
     "description": "Runs `CG_NorollDown_f` in the cgame module.",
     "evidence": [
@@ -3392,6 +3412,7 @@
     "category": "Gameplay & combat",
     "cheat_protected": false,
     "confidence": "high",
+    "configures": [],
     "derivation": "documented",
     "description": "Hold to use drain force power",
     "evidence": [
@@ -3561,6 +3582,7 @@
     "category": "Gameplay & combat",
     "cheat_protected": false,
     "confidence": "high",
+    "configures": [],
     "derivation": "documented",
     "description": "Hold to use grip force power",
     "evidence": [
@@ -3694,6 +3716,7 @@
     "category": "Gameplay & combat",
     "cheat_protected": false,
     "confidence": "high",
+    "configures": [],
     "derivation": "documented",
     "description": "Hold to use lightning force power",
     "evidence": [
@@ -3827,6 +3850,7 @@
     "category": "Engine & diagnostics",
     "cheat_protected": false,
     "confidence": "high",
+    "configures": [],
     "derivation": "documented",
     "description": "Move forward",
     "evidence": [
@@ -3962,6 +3986,7 @@
     "category": "Gameplay & combat",
     "cheat_protected": false,
     "confidence": "medium",
+    "configures": [],
     "derivation": "code-trace",
     "description": "Runs `CG_GrappleDown_f` in the cgame module.",
     "evidence": [
@@ -4204,6 +4229,7 @@
     "category": "Engine & diagnostics",
     "cheat_protected": false,
     "confidence": "high",
+    "configures": [],
     "derivation": "documented",
     "description": "Rotate camera left",
     "evidence": [
@@ -4336,6 +4362,7 @@
     "category": "Engine & diagnostics",
     "cheat_protected": false,
     "confidence": "high",
+    "configures": [],
     "derivation": "documented",
     "description": "Tilt camera down",
     "evidence": [
@@ -4468,6 +4495,7 @@
     "category": "Engine & diagnostics",
     "cheat_protected": false,
     "confidence": "high",
+    "configures": [],
     "derivation": "documented",
     "description": "Tilt camera up",
     "evidence": [
@@ -4600,6 +4628,7 @@
     "category": "Engine & diagnostics",
     "cheat_protected": false,
     "confidence": "high",
+    "configures": [],
     "derivation": "documented",
     "description": "Hold to use mouse look",
     "evidence": [
@@ -4733,6 +4762,7 @@
     "category": "Engine & diagnostics",
     "cheat_protected": false,
     "confidence": "high",
+    "configures": [],
     "derivation": "documented",
     "description": "Crouch",
     "evidence": [
@@ -4865,6 +4895,7 @@
     "category": "Engine & diagnostics",
     "cheat_protected": false,
     "confidence": "high",
+    "configures": [],
     "derivation": "documented",
     "description": "Strafe left",
     "evidence": [
@@ -4997,6 +5028,7 @@
     "category": "Engine & diagnostics",
     "cheat_protected": false,
     "confidence": "high",
+    "configures": [],
     "derivation": "documented",
     "description": "Strafe right",
     "evidence": [
@@ -5129,6 +5161,7 @@
     "category": "Engine & diagnostics",
     "cheat_protected": false,
     "confidence": "high",
+    "configures": [],
     "derivation": "documented",
     "description": "Jump",
     "evidence": [
@@ -5279,6 +5312,7 @@
     "category": "Engine & diagnostics",
     "cheat_protected": false,
     "confidence": "high",
+    "configures": [],
     "derivation": "documented",
     "description": "Rotate camera right",
     "evidence": [
@@ -5411,6 +5445,7 @@
     "category": "Gameplay & combat",
     "cheat_protected": false,
     "confidence": "high",
+    "configures": [],
     "derivation": "code-trace",
     "description": "Runs `CG_ScoresDown_f` in the cgame module.",
     "evidence": [
@@ -5582,6 +5617,7 @@
     "category": "Gameplay & combat",
     "cheat_protected": false,
     "confidence": "high",
+    "configures": [],
     "derivation": "code-trace",
     "description": "Runs `CG_SingleFireDown_f` in the cgame module.",
     "evidence": [
@@ -5748,6 +5784,7 @@
     "category": "Engine & diagnostics",
     "cheat_protected": false,
     "confidence": "high",
+    "configures": [],
     "derivation": "documented",
     "description": "Walk or run",
     "evidence": [
@@ -5880,6 +5917,7 @@
     "category": "Movement & race",
     "cheat_protected": false,
     "confidence": "high",
+    "configures": [],
     "derivation": "documented",
     "description": "Hold to strafe",
     "evidence": [
@@ -6012,6 +6050,7 @@
     "category": "Engine & diagnostics",
     "cheat_protected": false,
     "confidence": "high",
+    "configures": [],
     "derivation": "documented",
     "description": "Use item",
     "evidence": [
@@ -6145,6 +6184,7 @@
     "category": "Gameplay & combat",
     "cheat_protected": false,
     "confidence": "high",
+    "configures": [],
     "derivation": "documented",
     "description": "Use selected force power",
     "evidence": [
@@ -6281,6 +6321,7 @@
     "category": "Gameplay & combat",
     "cheat_protected": false,
     "confidence": "medium",
+    "configures": [],
     "derivation": "code-trace",
     "description": "Runs `CG_ZoomDown_f` in the cgame module.",
     "evidence": [
@@ -6571,6 +6612,7 @@
     "category": "Gameplay & combat",
     "cheat_protected": false,
     "confidence": "high",
+    "configures": [],
     "derivation": "code-trace",
     "description": "Runs `IN_Button7Up` in the engine-client module.",
     "evidence": [
@@ -6731,6 +6773,7 @@
     "category": "Gameplay & combat",
     "cheat_protected": false,
     "confidence": "high",
+    "configures": [],
     "derivation": "code-trace",
     "description": "Runs `IN_Button0Up` in the engine-client module.",
     "evidence": [
@@ -6891,6 +6934,7 @@
     "category": "Engine & diagnostics",
     "cheat_protected": false,
     "confidence": "high",
+    "configures": [],
     "derivation": "code-trace",
     "description": "Runs `IN_BackUp` in the engine-client module.",
     "evidence": [
@@ -7014,6 +7058,7 @@
     "category": "Input & controls",
     "cheat_protected": false,
     "confidence": "high",
+    "configures": [],
     "derivation": "code-trace",
     "description": "Runs `IN_Button0Up` in the engine-client module.",
     "evidence": [
@@ -7192,6 +7237,7 @@
     "category": "Input & controls",
     "cheat_protected": false,
     "confidence": "high",
+    "configures": [],
     "derivation": "code-trace",
     "description": "Runs `IN_Button1Up` in the engine-client module.",
     "evidence": [
@@ -7334,6 +7380,7 @@
     "category": "Input & controls",
     "cheat_protected": false,
     "confidence": "high",
+    "configures": [],
     "derivation": "code-trace",
     "description": "Runs `IN_Button10Up` in the engine-client module.",
     "evidence": [
@@ -7476,6 +7523,7 @@
     "category": "Input & controls",
     "cheat_protected": false,
     "confidence": "high",
+    "configures": [],
     "derivation": "code-trace",
     "description": "Runs `IN_Button11Up` in the engine-client module.",
     "evidence": [
@@ -7618,6 +7666,7 @@
     "category": "Input & controls",
     "cheat_protected": false,
     "confidence": "high",
+    "configures": [],
     "derivation": "code-trace",
     "description": "Runs `IN_Button12Up` in the engine-client module.",
     "evidence": [
@@ -7759,6 +7808,7 @@
     "category": "Input & controls",
     "cheat_protected": false,
     "confidence": "high",
+    "configures": [],
     "derivation": "code-trace",
     "description": "Runs `IN_Button13Up` in the engine-client module.",
     "evidence": [
@@ -7900,6 +7950,7 @@
     "category": "Input & controls",
     "cheat_protected": false,
     "confidence": "high",
+    "configures": [],
     "derivation": "code-trace",
     "description": "Runs `IN_Button14Up` in the engine-client module.",
     "evidence": [
@@ -8043,6 +8094,7 @@
     "category": "Input & controls",
     "cheat_protected": false,
     "confidence": "high",
+    "configures": [],
     "derivation": "code-trace",
     "description": "Runs `IN_Button15Up` in the engine-client module.",
     "evidence": [
@@ -8463,6 +8515,7 @@
     "category": "Input & controls",
     "cheat_protected": false,
     "confidence": "high",
+    "configures": [],
     "derivation": "code-trace",
     "description": "Runs `IN_Button2Up` in the engine-client module.",
     "evidence": [
@@ -8604,6 +8657,7 @@
     "category": "Input & controls",
     "cheat_protected": false,
     "confidence": "high",
+    "configures": [],
     "derivation": "code-trace",
     "description": "Runs `IN_Button3Up` in the engine-client module.",
     "evidence": [
@@ -8746,6 +8800,7 @@
     "category": "Input & controls",
     "cheat_protected": false,
     "confidence": "high",
+    "configures": [],
     "derivation": "code-trace",
     "description": "Runs `IN_Button4Up` in the engine-client module.",
     "evidence": [
@@ -8887,6 +8942,7 @@
     "category": "Input & controls",
     "cheat_protected": false,
     "confidence": "high",
+    "configures": [],
     "derivation": "code-trace",
     "description": "Runs `IN_Button5Up` in the engine-client module.",
     "evidence": [
@@ -9029,6 +9085,7 @@
     "category": "Input & controls",
     "cheat_protected": false,
     "confidence": "high",
+    "configures": [],
     "derivation": "code-trace",
     "description": "Runs `IN_Button6Up` in the engine-client module.",
     "evidence": [
@@ -9171,6 +9228,7 @@
     "category": "Input & controls",
     "cheat_protected": false,
     "confidence": "high",
+    "configures": [],
     "derivation": "code-trace",
     "description": "Runs `IN_Button7Up` in the engine-client module.",
     "evidence": [
@@ -9349,6 +9407,7 @@
     "category": "Input & controls",
     "cheat_protected": false,
     "confidence": "high",
+    "configures": [],
     "derivation": "code-trace",
     "description": "Runs `IN_Button8Up` in the engine-client module.",
     "evidence": [
@@ -9490,6 +9549,7 @@
     "category": "Input & controls",
     "cheat_protected": false,
     "confidence": "high",
+    "configures": [],
     "derivation": "code-trace",
     "description": "Runs `IN_Button9Up` in the engine-client module.",
     "evidence": [
@@ -9635,6 +9695,7 @@
     "category": "Gameplay & combat",
     "cheat_protected": false,
     "confidence": "medium",
+    "configures": [],
     "derivation": "code-trace",
     "description": "Runs `CG_NorollUp_f` in the cgame module.",
     "evidence": [
@@ -9932,6 +9993,7 @@
     "category": "Gameplay & combat",
     "cheat_protected": false,
     "confidence": "high",
+    "configures": [],
     "derivation": "code-trace",
     "description": "Runs `IN_Button11Up` in the engine-client module.",
     "evidence": [
@@ -10092,6 +10154,7 @@
     "category": "Gameplay & combat",
     "cheat_protected": false,
     "confidence": "high",
+    "configures": [],
     "derivation": "code-trace",
     "description": "Runs `IN_Button6Up` in the engine-client module.",
     "evidence": [
@@ -10216,6 +10279,7 @@
     "category": "Gameplay & combat",
     "cheat_protected": false,
     "confidence": "high",
+    "configures": [],
     "derivation": "code-trace",
     "description": "Runs `IN_Button10Up` in the engine-client module.",
     "evidence": [
@@ -10340,6 +10404,7 @@
     "category": "Engine & diagnostics",
     "cheat_protected": false,
     "confidence": "high",
+    "configures": [],
     "derivation": "code-trace",
     "description": "Runs `IN_ForwardUp` in the engine-client module.",
     "evidence": [
@@ -10466,6 +10531,7 @@
     "category": "Gameplay & combat",
     "cheat_protected": false,
     "confidence": "medium",
+    "configures": [],
     "derivation": "code-trace",
     "description": "Runs `CG_GrappleUp_f` in the cgame module.",
     "evidence": [
@@ -10727,6 +10793,7 @@
     "category": "Engine & diagnostics",
     "cheat_protected": false,
     "confidence": "high",
+    "configures": [],
     "derivation": "code-trace",
     "description": "Runs `IN_LeftUp` in the engine-client module.",
     "evidence": [
@@ -10850,6 +10917,7 @@
     "category": "Engine & diagnostics",
     "cheat_protected": false,
     "confidence": "high",
+    "configures": [],
     "derivation": "code-trace",
     "description": "Runs `IN_LookdownUp` in the engine-client module.",
     "evidence": [
@@ -10973,6 +11041,7 @@
     "category": "Engine & diagnostics",
     "cheat_protected": false,
     "confidence": "high",
+    "configures": [],
     "derivation": "code-trace",
     "description": "Runs `IN_LookupUp` in the engine-client module.",
     "evidence": [
@@ -11096,6 +11165,7 @@
     "category": "Engine & diagnostics",
     "cheat_protected": false,
     "confidence": "high",
+    "configures": [],
     "derivation": "code-trace",
     "description": "Runs `IN_MLookUp` in the engine-client module.",
     "evidence": [
@@ -11219,6 +11289,7 @@
     "category": "Engine & diagnostics",
     "cheat_protected": false,
     "confidence": "high",
+    "configures": [],
     "derivation": "code-trace",
     "description": "Runs `IN_DownUp` in the engine-client module.",
     "evidence": [
@@ -11342,6 +11413,7 @@
     "category": "Engine & diagnostics",
     "cheat_protected": false,
     "confidence": "high",
+    "configures": [],
     "derivation": "code-trace",
     "description": "Runs `IN_MoveleftUp` in the engine-client module.",
     "evidence": [
@@ -11465,6 +11537,7 @@
     "category": "Engine & diagnostics",
     "cheat_protected": false,
     "confidence": "high",
+    "configures": [],
     "derivation": "code-trace",
     "description": "Runs `IN_MoverightUp` in the engine-client module.",
     "evidence": [
@@ -11606,6 +11679,7 @@
     "category": "Engine & diagnostics",
     "cheat_protected": false,
     "confidence": "high",
+    "configures": [],
     "derivation": "code-trace",
     "description": "Runs `IN_UpUp` in the engine-client module.",
     "evidence": [
@@ -11747,6 +11821,7 @@
     "category": "Engine & diagnostics",
     "cheat_protected": false,
     "confidence": "high",
+    "configures": [],
     "derivation": "code-trace",
     "description": "Runs `IN_RightUp` in the engine-client module.",
     "evidence": [
@@ -11870,6 +11945,7 @@
     "category": "Gameplay & combat",
     "cheat_protected": false,
     "confidence": "high",
+    "configures": [],
     "derivation": "code-trace",
     "description": "Runs `CG_ScoresUp_f` in the cgame module.",
     "evidence": [
@@ -12014,6 +12090,7 @@
     "category": "Gameplay & combat",
     "cheat_protected": false,
     "confidence": "high",
+    "configures": [],
     "derivation": "code-trace",
     "description": "Runs `CG_SingleFireUp_f` in the cgame module.",
     "evidence": [
@@ -12180,6 +12257,7 @@
     "category": "Engine & diagnostics",
     "cheat_protected": false,
     "confidence": "high",
+    "configures": [],
     "derivation": "code-trace",
     "description": "Runs `IN_SpeedUp` in the engine-client module.",
     "evidence": [
@@ -12303,6 +12381,7 @@
     "category": "Movement & race",
     "cheat_protected": false,
     "confidence": "high",
+    "configures": [],
     "derivation": "code-trace",
     "description": "Runs `IN_StrafeUp` in the engine-client module.",
     "evidence": [
@@ -12426,6 +12505,7 @@
     "category": "Engine & diagnostics",
     "cheat_protected": false,
     "confidence": "high",
+    "configures": [],
     "derivation": "code-trace",
     "description": "Runs `IN_Button5Up` in the engine-client module.",
     "evidence": [
@@ -12550,6 +12630,7 @@
     "category": "Gameplay & combat",
     "cheat_protected": false,
     "confidence": "high",
+    "configures": [],
     "derivation": "code-trace",
     "description": "Runs `IN_Button9Up` in the engine-client module.",
     "evidence": [
@@ -12677,6 +12758,7 @@
     "category": "Gameplay & combat",
     "cheat_protected": false,
     "confidence": "medium",
+    "configures": [],
     "derivation": "code-trace",
     "description": "Runs `CG_ZoomUp_f` in the cgame module.",
     "evidence": [
@@ -12961,6 +13043,7 @@
     "category": "Gameplay & combat",
     "cheat_protected": false,
     "confidence": "medium",
+    "configures": [],
     "derivation": "documented",
     "description": "Runs `Svcmd_AccountInfo_f` in the game module.",
     "evidence": [
@@ -13348,6 +13431,7 @@
     "category": "Bots & AI",
     "cheat_protected": false,
     "confidence": "high",
+    "configures": [],
     "derivation": "code-trace",
     "description": "Forwards this command to the connected game server.",
     "evidence": [
@@ -13564,6 +13648,7 @@
     "category": "Movement & race",
     "cheat_protected": false,
     "confidence": "medium",
+    "configures": [],
     "derivation": "documented",
     "description": "Runs `CG_AddCheckpoint_f` in the cgame module.",
     "evidence": [
@@ -13808,6 +13893,7 @@
     "category": "Engine & diagnostics",
     "cheat_protected": false,
     "confidence": "medium",
+    "configures": [],
     "derivation": "documented",
     "description": "Add server to favorites",
     "evidence": [
@@ -14265,6 +14351,7 @@
     "category": "Gameplay & combat",
     "cheat_protected": false,
     "confidence": "medium",
+    "configures": [],
     "derivation": "documented",
     "description": "Runs `Svcmd_AddIP_f` in the game module.",
     "evidence": [
@@ -14689,6 +14776,7 @@
     "category": "Audio & music",
     "cheat_protected": false,
     "confidence": "medium",
+    "configures": [],
     "derivation": "documented",
     "description": "Runs `CG_AddSpeedpoint_f` in the cgame module.",
     "evidence": [
@@ -14934,6 +15022,7 @@
     "category": "Gameplay & combat",
     "cheat_protected": false,
     "confidence": "medium",
+    "configures": [],
     "derivation": "code-trace",
     "description": "Forwards this command to the connected game server.",
     "evidence": [
@@ -15173,6 +15262,7 @@
     "category": "Gameplay & combat",
     "cheat_protected": false,
     "confidence": "medium",
+    "configures": [],
     "derivation": "code-trace",
     "description": "Forwards this command to the connected game server.",
     "evidence": [
@@ -15412,6 +15502,7 @@
     "category": "Gameplay & combat",
     "cheat_protected": false,
     "confidence": "medium",
+    "configures": [],
     "derivation": "code-trace",
     "description": "Forwards this command to the connected game server.",
     "evidence": [
@@ -15651,6 +15742,7 @@
     "category": "Engine & diagnostics",
     "cheat_protected": false,
     "confidence": "medium",
+    "configures": [],
     "derivation": "documented",
     "description": "Rename to or from afk",
     "evidence": [
@@ -16116,6 +16208,7 @@
     "category": "Gameplay & combat",
     "cheat_protected": false,
     "confidence": "medium",
+    "configures": [],
     "derivation": "code-trace",
     "description": "Forwards this command to the connected game server.",
     "evidence": [
@@ -16355,6 +16448,7 @@
     "category": "Administration",
     "cheat_protected": false,
     "confidence": "medium",
+    "configures": [],
     "derivation": "documented",
     "description": "Forwards this command to the connected game server.",
     "evidence": [
@@ -16700,6 +16794,7 @@
     "category": "Gameplay & combat",
     "cheat_protected": false,
     "confidence": "medium",
+    "configures": [],
     "derivation": "documented",
     "description": "EMOTE",
     "evidence": [
@@ -16977,6 +17072,7 @@
     "category": "Gameplay & combat",
     "cheat_protected": false,
     "confidence": "medium",
+    "configures": [],
     "derivation": "documented",
     "description": "EMOTE",
     "evidence": [
@@ -17254,6 +17350,7 @@
     "category": "Gameplay & combat",
     "cheat_protected": false,
     "confidence": "medium",
+    "configures": [],
     "derivation": "documented",
     "description": "EMOTE",
     "evidence": [
@@ -17502,6 +17599,7 @@
     "category": "Gameplay & combat",
     "cheat_protected": false,
     "confidence": "medium",
+    "configures": [],
     "derivation": "documented",
     "description": "EMOTE",
     "evidence": [
@@ -17779,6 +17877,7 @@
     "category": "Gameplay & combat",
     "cheat_protected": false,
     "confidence": "medium",
+    "configures": [],
     "derivation": "documented",
     "description": "EMOTE",
     "evidence": [
@@ -18056,6 +18155,7 @@
     "category": "Gameplay & combat",
     "cheat_protected": false,
     "confidence": "medium",
+    "configures": [],
     "derivation": "documented",
     "description": "EMOTE",
     "evidence": [
@@ -18333,6 +18433,7 @@
     "category": "Gameplay & combat",
     "cheat_protected": false,
     "confidence": "medium",
+    "configures": [],
     "derivation": "documented",
     "description": "EMOTE",
     "evidence": [
@@ -18610,6 +18711,7 @@
     "category": "Gameplay & combat",
     "cheat_protected": false,
     "confidence": "medium",
+    "configures": [],
     "derivation": "documented",
     "description": "EMOTE",
     "evidence": [
@@ -18887,6 +18989,7 @@
     "category": "Gameplay & combat",
     "cheat_protected": false,
     "confidence": "medium",
+    "configures": [],
     "derivation": "documented",
     "description": "Forwards this command to the connected game server.",
     "evidence": [
@@ -19179,6 +19282,7 @@
     "category": "Gameplay & combat",
     "cheat_protected": false,
     "confidence": "medium",
+    "configures": [],
     "derivation": "documented",
     "description": "EMOTE",
     "evidence": [
@@ -19456,6 +19560,7 @@
     "category": "Gameplay & combat",
     "cheat_protected": false,
     "confidence": "medium",
+    "configures": [],
     "derivation": "documented",
     "description": "EMOTE",
     "evidence": [
@@ -19733,6 +19838,7 @@
     "category": "Gameplay & combat",
     "cheat_protected": false,
     "confidence": "medium",
+    "configures": [],
     "derivation": "code-trace",
     "description": "Forwards this command to the connected game server.",
     "evidence": [
@@ -19972,6 +20078,7 @@
     "category": "Gameplay & combat",
     "cheat_protected": false,
     "confidence": "medium",
+    "configures": [],
     "derivation": "code-trace",
     "description": "Forwards this command to the connected game server.",
     "evidence": [
@@ -20211,6 +20318,7 @@
     "category": "Administration",
     "cheat_protected": false,
     "confidence": "medium",
+    "configures": [],
     "derivation": "code-trace",
     "description": "Forwards this command to the connected game server.",
     "evidence": [
@@ -20450,6 +20558,7 @@
     "category": "Gameplay & combat",
     "cheat_protected": false,
     "confidence": "medium",
+    "configures": [],
     "derivation": "documented",
     "description": "EMOTE",
     "evidence": [
@@ -20698,6 +20807,7 @@
     "category": "Gameplay & combat",
     "cheat_protected": false,
     "confidence": "medium",
+    "configures": [],
     "derivation": "code-trace",
     "description": "Forwards this command to the connected game server.",
     "evidence": [
@@ -20937,6 +21047,7 @@
     "category": "Gameplay & combat",
     "cheat_protected": false,
     "confidence": "medium",
+    "configures": [],
     "derivation": "documented",
     "description": "Forwards this command to the connected game server.",
     "evidence": [
@@ -21268,6 +21379,7 @@
     "category": "Administration",
     "cheat_protected": false,
     "confidence": "medium",
+    "configures": [],
     "derivation": "documented",
     "description": "Forwards this command to the connected game server.",
     "evidence": [
@@ -21635,6 +21747,7 @@
     "category": "Gameplay & combat",
     "cheat_protected": false,
     "confidence": "medium",
+    "configures": [],
     "derivation": "code-trace",
     "description": "Forwards this command to the connected game server.",
     "evidence": [
@@ -21874,6 +21987,7 @@
     "category": "Administration",
     "cheat_protected": false,
     "confidence": "medium",
+    "configures": [],
     "derivation": "documented",
     "description": "Forwards this command to the connected game server.",
     "evidence": [
@@ -22240,6 +22354,7 @@
     "category": "Gameplay & combat",
     "cheat_protected": false,
     "confidence": "medium",
+    "configures": [],
     "derivation": "documented",
     "description": "EMOTE",
     "evidence": [
@@ -22517,6 +22632,7 @@
     "category": "Gameplay & combat",
     "cheat_protected": false,
     "confidence": "medium",
+    "configures": [],
     "derivation": "code-trace",
     "description": "Forwards this command to the connected game server.",
     "evidence": [
@@ -23044,6 +23160,7 @@
     "category": "Administration",
     "cheat_protected": false,
     "confidence": "medium",
+    "configures": [],
     "derivation": "documented",
     "description": "Forwards this command to the connected game server.",
     "evidence": [
@@ -23389,6 +23506,7 @@
     "category": "Gameplay & combat",
     "cheat_protected": false,
     "confidence": "medium",
+    "configures": [],
     "derivation": "code-trace",
     "description": "Forwards this command to the connected game server.",
     "evidence": [
@@ -23682,6 +23800,7 @@
     "category": "Gameplay & combat",
     "cheat_protected": false,
     "confidence": "medium",
+    "configures": [],
     "derivation": "code-trace",
     "description": "Forwards this command to the connected game server.",
     "evidence": [
@@ -24012,6 +24131,7 @@
     "category": "Gameplay & combat",
     "cheat_protected": false,
     "confidence": "medium",
+    "configures": [],
     "derivation": "documented",
     "description": "Forwards this command to the connected game server.",
     "evidence": [
@@ -24325,6 +24445,7 @@
     "category": "Administration",
     "cheat_protected": false,
     "confidence": "medium",
+    "configures": [],
     "derivation": "documented",
     "description": "Forwards this command to the connected game server.",
     "evidence": [
@@ -24690,6 +24811,7 @@
     "category": "Administration",
     "cheat_protected": false,
     "confidence": "medium",
+    "configures": [],
     "derivation": "code-trace",
     "description": "Forwards this command to the connected game server.",
     "evidence": [
@@ -25037,6 +25159,7 @@
     "category": "Gameplay & combat",
     "cheat_protected": false,
     "confidence": "medium",
+    "configures": [],
     "derivation": "documented",
     "description": "Forwards this command to the connected game server.",
     "evidence": [
@@ -25348,6 +25471,7 @@
     "category": "Administration",
     "cheat_protected": false,
     "confidence": "medium",
+    "configures": [],
     "derivation": "documented",
     "description": "Forwards this command to the connected game server.",
     "evidence": [
@@ -25678,6 +25802,7 @@
     "category": "Gameplay & combat",
     "cheat_protected": false,
     "confidence": "medium",
+    "configures": [],
     "derivation": "code-trace",
     "description": "Forwards this command to the connected game server.",
     "evidence": [
@@ -25917,6 +26042,7 @@
     "category": "Gameplay & combat",
     "cheat_protected": false,
     "confidence": "medium",
+    "configures": [],
     "derivation": "code-trace",
     "description": "Forwards this command to the connected game server.",
     "evidence": [
@@ -26156,6 +26282,7 @@
     "category": "Chat & social",
     "cheat_protected": false,
     "confidence": "medium",
+    "configures": [],
     "derivation": "code-trace",
     "description": "Forwards this command to the connected game server.",
     "evidence": [
@@ -26450,6 +26577,7 @@
     "category": "Gameplay & combat",
     "cheat_protected": false,
     "confidence": "medium",
+    "configures": [],
     "derivation": "code-trace",
     "description": "Forwards this command to the connected game server.",
     "evidence": [
@@ -26689,6 +26817,7 @@
     "category": "Gameplay & combat",
     "cheat_protected": false,
     "confidence": "medium",
+    "configures": [],
     "derivation": "documented",
     "description": "EMOTE",
     "evidence": [
@@ -26966,6 +27095,7 @@
     "category": "Gameplay & combat",
     "cheat_protected": false,
     "confidence": "medium",
+    "configures": [],
     "derivation": "documented",
     "description": "EMOTE",
     "evidence": [
@@ -27261,6 +27391,7 @@
     "category": "Gameplay & combat",
     "cheat_protected": false,
     "confidence": "medium",
+    "configures": [],
     "derivation": "code-trace",
     "description": "Forwards this command to the connected game server.",
     "evidence": [
@@ -27500,6 +27631,7 @@
     "category": "Administration",
     "cheat_protected": false,
     "confidence": "medium",
+    "configures": [],
     "derivation": "code-trace",
     "description": "Forwards this command to the connected game server.",
     "evidence": [
@@ -27739,6 +27871,7 @@
     "category": "Chat & social",
     "cheat_protected": false,
     "confidence": "medium",
+    "configures": [],
     "derivation": "documented",
     "description": "Forwards this command to the connected game server.",
     "evidence": [
@@ -28051,6 +28184,7 @@
     "category": "Gameplay & combat",
     "cheat_protected": false,
     "confidence": "medium",
+    "configures": [],
     "derivation": "documented",
     "description": "EMOTE",
     "evidence": [
@@ -28328,6 +28462,7 @@
     "category": "Administration",
     "cheat_protected": false,
     "confidence": "medium",
+    "configures": [],
     "derivation": "documented",
     "description": "Forwards this command to the connected game server.",
     "evidence": [
@@ -28659,6 +28794,7 @@
     "category": "Gameplay & combat",
     "cheat_protected": false,
     "confidence": "medium",
+    "configures": [],
     "derivation": "documented",
     "description": "EMOTE",
     "evidence": [
@@ -28960,6 +29096,7 @@
     "category": "Chat & social",
     "cheat_protected": false,
     "confidence": "medium",
+    "configures": [],
     "derivation": "code-trace",
     "description": "Forwards this command to the connected game server.",
     "evidence": [
@@ -29235,6 +29372,7 @@
     "category": "Gameplay & combat",
     "cheat_protected": false,
     "confidence": "medium",
+    "configures": [],
     "derivation": "code-trace",
     "description": "Forwards this command to the connected game server.",
     "evidence": [
@@ -29474,6 +29612,7 @@
     "category": "Chat & social",
     "cheat_protected": false,
     "confidence": "medium",
+    "configures": [],
     "derivation": "code-trace",
     "description": "Forwards this command to the connected game server.",
     "evidence": [
@@ -29713,6 +29852,7 @@
     "category": "Gameplay & combat",
     "cheat_protected": false,
     "confidence": "medium",
+    "configures": [],
     "derivation": "documented",
     "description": "EMOTE",
     "evidence": [
@@ -29961,6 +30101,7 @@
     "category": "Gameplay & combat",
     "cheat_protected": false,
     "confidence": "medium",
+    "configures": [],
     "derivation": "documented",
     "description": "EMOTE",
     "evidence": [
@@ -30209,6 +30350,7 @@
     "category": "Gameplay & combat",
     "cheat_protected": false,
     "confidence": "medium",
+    "configures": [],
     "derivation": "documented",
     "description": "EMOTE",
     "evidence": [
@@ -30457,6 +30599,7 @@
     "category": "Gameplay & combat",
     "cheat_protected": false,
     "confidence": "medium",
+    "configures": [],
     "derivation": "documented",
     "description": "EMOTE",
     "evidence": [
@@ -30705,6 +30848,7 @@
     "category": "Administration",
     "cheat_protected": false,
     "confidence": "medium",
+    "configures": [],
     "derivation": "code-trace",
     "description": "Forwards this command to the connected game server.",
     "evidence": [
@@ -30944,6 +31088,7 @@
     "category": "Gameplay & combat",
     "cheat_protected": false,
     "confidence": "medium",
+    "configures": [],
     "derivation": "documented",
     "description": "EMOTE",
     "evidence": [
@@ -31221,6 +31366,7 @@
     "category": "Gameplay & combat",
     "cheat_protected": false,
     "confidence": "medium",
+    "configures": [],
     "derivation": "documented",
     "description": "EMOTE",
     "evidence": [
@@ -31498,6 +31644,7 @@
     "category": "Gameplay & combat",
     "cheat_protected": false,
     "confidence": "medium",
+    "configures": [],
     "derivation": "documented",
     "description": "EMOTE",
     "evidence": [
@@ -31775,6 +31922,7 @@
     "category": "Gameplay & combat",
     "cheat_protected": false,
     "confidence": "medium",
+    "configures": [],
     "derivation": "documented",
     "description": "EMOTE",
     "evidence": [
@@ -32052,6 +32200,7 @@
     "category": "Gameplay & combat",
     "cheat_protected": false,
     "confidence": "medium",
+    "configures": [],
     "derivation": "documented",
     "description": "EMOTE",
     "evidence": [
@@ -32329,6 +32478,7 @@
     "category": "Administration",
     "cheat_protected": false,
     "confidence": "medium",
+    "configures": [],
     "derivation": "documented",
     "description": "EMOTE",
     "evidence": [
@@ -32606,6 +32756,7 @@
     "category": "Administration",
     "cheat_protected": false,
     "confidence": "medium",
+    "configures": [],
     "derivation": "documented",
     "description": "EMOTE",
     "evidence": [
@@ -32883,6 +33034,7 @@
     "category": "Gameplay & combat",
     "cheat_protected": false,
     "confidence": "medium",
+    "configures": [],
     "derivation": "documented",
     "description": "EMOTE",
     "evidence": [
@@ -33160,6 +33312,7 @@
     "category": "Gameplay & combat",
     "cheat_protected": false,
     "confidence": "medium",
+    "configures": [],
     "derivation": "code-trace",
     "description": "Forwards this command to the connected game server.",
     "evidence": [
@@ -33399,6 +33552,7 @@
     "category": "Graphics & rendering",
     "cheat_protected": false,
     "confidence": "medium",
+    "configures": [],
     "derivation": "documented",
     "description": "EMOTE",
     "evidence": [
@@ -33676,6 +33830,7 @@
     "category": "Gameplay & combat",
     "cheat_protected": false,
     "confidence": "medium",
+    "configures": [],
     "derivation": "documented",
     "description": "EMOTE",
     "evidence": [
@@ -33953,6 +34108,7 @@
     "category": "Gameplay & combat",
     "cheat_protected": false,
     "confidence": "medium",
+    "configures": [],
     "derivation": "documented",
     "description": "EMOTE",
     "evidence": [
@@ -34230,6 +34386,7 @@
     "category": "Administration",
     "cheat_protected": false,
     "confidence": "medium",
+    "configures": [],
     "derivation": "documented",
     "description": "Forwards this command to the connected game server.",
     "evidence": [
@@ -34642,6 +34799,7 @@
     "category": "Administration",
     "cheat_protected": false,
     "confidence": "medium",
+    "configures": [],
     "derivation": "code-trace",
     "description": "Forwards this command to the connected game server.",
     "evidence": [
@@ -35018,6 +35176,7 @@
     "category": "Gameplay & combat",
     "cheat_protected": false,
     "confidence": "medium",
+    "configures": [],
     "derivation": "code-trace",
     "description": "Forwards this command to the connected game server.",
     "evidence": [
@@ -35257,6 +35416,7 @@
     "category": "Gameplay & combat",
     "cheat_protected": false,
     "confidence": "medium",
+    "configures": [],
     "derivation": "documented",
     "description": "EMOTE",
     "evidence": [
@@ -35534,6 +35694,7 @@
     "category": "Gameplay & combat",
     "cheat_protected": false,
     "confidence": "medium",
+    "configures": [],
     "derivation": "documented",
     "description": "Forwards this command to the connected game server.",
     "evidence": [
@@ -35846,6 +36007,7 @@
     "category": "Gameplay & combat",
     "cheat_protected": false,
     "confidence": "medium",
+    "configures": [],
     "derivation": "code-trace",
     "description": "Forwards this command to the connected game server.",
     "evidence": [
@@ -36104,6 +36266,7 @@
     "category": "Administration",
     "cheat_protected": false,
     "confidence": "medium",
+    "configures": [],
     "derivation": "code-trace",
     "description": "Forwards this command to the connected game server.",
     "evidence": [
@@ -36343,6 +36506,7 @@
     "category": "Gameplay & combat",
     "cheat_protected": false,
     "confidence": "medium",
+    "configures": [],
     "derivation": "code-trace",
     "description": "Forwards this command to the connected game server.",
     "evidence": [
@@ -36582,6 +36746,7 @@
     "category": "Administration",
     "cheat_protected": false,
     "confidence": "medium",
+    "configures": [],
     "derivation": "code-trace",
     "description": "Forwards this command to the connected game server.",
     "evidence": [
@@ -36821,6 +36986,7 @@
     "category": "Gameplay & combat",
     "cheat_protected": false,
     "confidence": "medium",
+    "configures": [],
     "derivation": "code-trace",
     "description": "Runs `CG_Autologin_f` in the cgame module.",
     "evidence": [
@@ -37100,6 +37266,7 @@
     "category": "HUD & interface",
     "cheat_protected": false,
     "confidence": "high",
+    "configures": [],
     "derivation": "documented",
     "description": "Show/hide automap",
     "evidence": [
@@ -37204,6 +37371,7 @@
     "category": "HUD & interface",
     "cheat_protected": false,
     "confidence": "high",
+    "configures": [],
     "derivation": "documented",
     "description": "Show/hide radar",
     "evidence": [
@@ -37338,6 +37506,7 @@
     "category": "Gameplay & combat",
     "cheat_protected": false,
     "confidence": "medium",
+    "configures": [],
     "derivation": "code-trace",
     "description": "Forwards this command to the connected game server.",
     "evidence": [
@@ -37579,6 +37748,7 @@
     "category": "Input & controls",
     "cheat_protected": false,
     "confidence": "high",
+    "configures": [],
     "derivation": "documented",
     "description": "Bind a key to a console command",
     "evidence": [
@@ -37865,6 +38035,7 @@
     "category": "Input & controls",
     "cheat_protected": false,
     "confidence": "high",
+    "configures": [],
     "derivation": "documented",
     "description": "Show all bindings in the console",
     "evidence": [
@@ -38136,6 +38307,7 @@
     "category": "Gameplay & combat",
     "cheat_protected": false,
     "confidence": "medium",
+    "configures": [],
     "derivation": "documented",
     "description": "Change for admin?",
     "evidence": [
@@ -38465,6 +38637,7 @@
     "category": "Bots & AI",
     "cheat_protected": false,
     "confidence": "medium",
+    "configures": [],
     "derivation": "code-trace",
     "description": "Runs `Svcmd_BotList_f` in the game module.",
     "evidence": [
@@ -38922,6 +39095,7 @@
     "category": "Engine & diagnostics",
     "cheat_protected": false,
     "confidence": "high",
+    "configures": [],
     "derivation": "documented",
     "description": "Bow",
     "evidence": [
@@ -39089,6 +39263,7 @@
     "category": "Gameplay & combat",
     "cheat_protected": false,
     "confidence": "high",
+    "configures": [],
     "derivation": "code-trace",
     "description": "Runs `CG_SiegeBriefing_f` in the cgame module.",
     "evidence": [
@@ -39193,6 +39368,7 @@
     "category": "Gameplay & combat",
     "cheat_protected": false,
     "confidence": "high",
+    "configures": [],
     "derivation": "code-trace",
     "description": "Forwards this command to the connected game server.",
     "evidence": [
@@ -39492,6 +39668,7 @@
     "category": "Gameplay & combat",
     "cheat_protected": false,
     "confidence": "high",
+    "configures": [],
     "derivation": "code-trace",
     "description": "Forwards this command to the connected game server.",
     "evidence": [
@@ -40038,6 +40215,7 @@
     "category": "HUD & interface",
     "cheat_protected": false,
     "confidence": "medium",
+    "configures": [],
     "derivation": "code-trace",
     "description": "Runs `CG_ShowSpecCamera_f` in the cgame module.",
     "evidence": [
@@ -40283,6 +40461,7 @@
     "category": "Graphics & rendering",
     "cheat_protected": false,
     "confidence": "high",
+    "configures": [],
     "derivation": "documented",
     "description": "Runs `R_CaptureFrameData_f` in the renderer module.",
     "evidence": [
@@ -40574,6 +40753,7 @@
     "category": "Engine & diagnostics",
     "cheat_protected": false,
     "confidence": "high",
+    "configures": [],
     "derivation": "documented",
     "description": "Centers view on screen",
     "evidence": [
@@ -40728,6 +40908,7 @@
     "category": "Gameplay & combat",
     "cheat_protected": false,
     "confidence": "medium",
+    "configures": [],
     "derivation": "documented",
     "description": "Forwards this command to the connected game server.",
     "evidence": [
@@ -41106,6 +41287,7 @@
     "category": "Engine & diagnostics",
     "cheat_protected": false,
     "confidence": "high",
+    "configures": [],
     "derivation": "code-trace",
     "description": "Runs `MSG_ReportChangeVectors_f` in the engine-shared module.",
     "evidence": [
@@ -41269,6 +41451,9 @@
     "category": "Chat & social",
     "cheat_protected": false,
     "confidence": "medium",
+    "configures": [
+      "cg_logChat"
+    ],
     "derivation": "code-trace",
     "description": "Runs `CG_ChatLogSettings_f` in the cgame module.",
     "evidence": [
@@ -41511,6 +41696,7 @@
     "category": "Engine & diagnostics",
     "cheat_protected": false,
     "confidence": "high",
+    "configures": [],
     "derivation": "documented",
     "description": "Play a cinematic video",
     "evidence": [
@@ -41675,6 +41861,7 @@
     "category": "Administration",
     "cheat_protected": false,
     "confidence": "medium",
+    "configures": [],
     "derivation": "documented",
     "description": "Forwards this command to the connected game server.",
     "evidence": [
@@ -41988,6 +42175,7 @@
     "category": "Chat & social",
     "cheat_protected": false,
     "confidence": "medium",
+    "configures": [],
     "derivation": "documented",
     "description": "Forwards this command to the connected game server.",
     "evidence": [
@@ -42297,6 +42485,7 @@
     "category": "Chat & social",
     "cheat_protected": false,
     "confidence": "medium",
+    "configures": [],
     "derivation": "documented",
     "description": "Runs `Svcmd_ClanDelete_f` in the game module.",
     "evidence": [
@@ -42561,6 +42750,7 @@
     "category": "Chat & social",
     "cheat_protected": false,
     "confidence": "medium",
+    "configures": [],
     "derivation": "documented",
     "description": "Forwards this command to the connected game server.",
     "evidence": [
@@ -42855,6 +43045,7 @@
     "category": "Chat & social",
     "cheat_protected": false,
     "confidence": "medium",
+    "configures": [],
     "derivation": "documented",
     "description": "Forwards this command to the connected game server.",
     "evidence": [
@@ -43149,6 +43340,7 @@
     "category": "Chat & social",
     "cheat_protected": false,
     "confidence": "medium",
+    "configures": [],
     "derivation": "documented",
     "description": "Forwards this command to the connected game server.",
     "evidence": [
@@ -43494,6 +43686,7 @@
     "category": "Administration",
     "cheat_protected": false,
     "confidence": "medium",
+    "configures": [],
     "derivation": "documented",
     "description": "Runs `Svcmd_ClanKick_f` in the game module.",
     "evidence": [
@@ -43758,6 +43951,7 @@
     "category": "Chat & social",
     "cheat_protected": false,
     "confidence": "medium",
+    "configures": [],
     "derivation": "documented",
     "description": "Forwards this command to the connected game server.",
     "evidence": [
@@ -44053,6 +44247,7 @@
     "category": "Chat & social",
     "cheat_protected": false,
     "confidence": "medium",
+    "configures": [],
     "derivation": "documented",
     "description": "Forwards this command to the connected game server.",
     "evidence": [
@@ -44347,6 +44542,7 @@
     "category": "Chat & social",
     "cheat_protected": false,
     "confidence": "medium",
+    "configures": [],
     "derivation": "documented",
     "description": "Forwards this command to the connected game server.",
     "evidence": [
@@ -44641,6 +44837,7 @@
     "category": "Chat & social",
     "cheat_protected": false,
     "confidence": "medium",
+    "configures": [],
     "derivation": "code-trace",
     "description": "Forwards this command to the connected game server.",
     "evidence": [
@@ -44916,6 +45113,7 @@
     "category": "Administration",
     "cheat_protected": false,
     "confidence": "medium",
+    "configures": [],
     "derivation": "code-trace",
     "description": "Forwards this command to the connected game server.",
     "evidence": [
@@ -45206,6 +45404,7 @@
     "category": "Engine & diagnostics",
     "cheat_protected": false,
     "confidence": "high",
+    "configures": [],
     "derivation": "documented",
     "description": "Clear console text",
     "evidence": [
@@ -45409,6 +45608,7 @@
     "category": "Gameplay & combat",
     "cheat_protected": false,
     "confidence": "medium",
+    "configures": [],
     "derivation": "documented",
     "description": "Runs `Svcmd_ClearIP_f` in the game module.",
     "evidence": [
@@ -45709,6 +45909,7 @@
     "category": "Graphics & rendering",
     "cheat_protected": false,
     "confidence": "medium",
+    "configures": [],
     "derivation": "code-trace",
     "description": "Runs `R_ClearRemaps_f` in the renderer module.",
     "evidence": [
@@ -46090,6 +46291,7 @@
     "category": "Gameplay & combat",
     "cheat_protected": false,
     "confidence": "medium",
+    "configures": [],
     "derivation": "documented",
     "description": "Runs `CG_DeleteStrafeTrail_f` in the cgame module.",
     "evidence": [
@@ -46332,6 +46534,7 @@
     "category": "Engine & diagnostics",
     "cheat_protected": false,
     "confidence": "high",
+    "configures": [],
     "derivation": "documented",
     "description": "Prints the userinfo variables",
     "evidence": [
@@ -46473,6 +46676,7 @@
     "category": "Administration",
     "cheat_protected": false,
     "confidence": "high",
+    "configures": [],
     "derivation": "documented",
     "description": "Kick a user from the server by userid",
     "evidence": [
@@ -46635,6 +46839,7 @@
     "category": "Gameplay & combat",
     "cheat_protected": false,
     "confidence": "medium",
+    "configures": [],
     "derivation": "documented",
     "description": "Displays a list of all connected clients and their real client numbers",
     "evidence": [
@@ -47082,6 +47287,7 @@
     "category": "Engine & diagnostics",
     "cheat_protected": false,
     "confidence": "high",
+    "configures": [],
     "derivation": "documented",
     "description": "Forward command to server",
     "evidence": [
@@ -47284,6 +47490,7 @@
     "category": "Engine & diagnostics",
     "cheat_protected": false,
     "confidence": "high",
+    "configures": [],
     "derivation": "documented",
     "description": "List all commands to console",
     "evidence": [
@@ -47483,6 +47690,7 @@
     "category": "Engine & diagnostics",
     "cheat_protected": false,
     "confidence": "medium",
+    "configures": [],
     "derivation": "documented",
     "description": "Color name",
     "evidence": [
@@ -47783,6 +47991,7 @@
     "category": "Engine & diagnostics",
     "cheat_protected": false,
     "confidence": "medium",
+    "configures": [],
     "derivation": "documented",
     "description": "Color say text",
     "evidence": [
@@ -48170,6 +48379,7 @@
     "category": "Engine & diagnostics",
     "cheat_protected": false,
     "confidence": "high",
+    "configures": [],
     "derivation": "documented",
     "description": "Dump console text to file",
     "evidence": [
@@ -48401,6 +48611,7 @@
     "category": "Engine & diagnostics",
     "cheat_protected": false,
     "confidence": "high",
+    "configures": [],
     "derivation": "documented",
     "description": "Prints the configstrings list",
     "evidence": [
@@ -48524,6 +48735,7 @@
     "category": "Server & networking",
     "cheat_protected": false,
     "confidence": "high",
+    "configures": [],
     "derivation": "documented",
     "description": "Connect to a server",
     "evidence": [
@@ -48884,6 +49096,7 @@
     "category": "Gameplay & combat",
     "cheat_protected": false,
     "confidence": "medium",
+    "configures": [],
     "derivation": "code-trace",
     "description": "Runs `Cmd_Coop_f` in the game module.",
     "evidence": [
@@ -49162,6 +49375,9 @@
     "category": "Gameplay & combat",
     "cheat_protected": false,
     "confidence": "medium",
+    "configures": [
+      "cp_cosmetics"
+    ],
     "derivation": "code-trace",
     "description": "Runs `CG_Cosmetics_f` in the cgame module.",
     "evidence": [
@@ -49568,6 +49784,7 @@
     "category": "Engine & diagnostics",
     "cheat_protected": false,
     "confidence": "high",
+    "configures": [],
     "derivation": "code-trace",
     "description": "Runs `Com_Crash_f` in the engine-shared module.",
     "evidence": [
@@ -49838,6 +50055,7 @@
     "category": "Gameplay & combat",
     "cheat_protected": false,
     "confidence": "high",
+    "configures": [],
     "derivation": "documented",
     "description": "Runs `Cmd_ToggleCrouchJump_f` in the game module.",
     "evidence": [
@@ -50008,6 +50226,7 @@
     "category": "Graphics & rendering",
     "cheat_protected": false,
     "confidence": "medium",
+    "configures": [],
     "derivation": "documented",
     "description": "Show all modified cvars",
     "evidence": [
@@ -50501,6 +50720,7 @@
     "category": "Graphics & rendering",
     "cheat_protected": false,
     "confidence": "high",
+    "configures": [],
     "derivation": "documented",
     "description": "Resetart the cvar sub-system",
     "evidence": [
@@ -50698,6 +50918,7 @@
     "category": "Graphics & rendering",
     "cheat_protected": false,
     "confidence": "medium",
+    "configures": [],
     "derivation": "documented",
     "description": "Show all user created cvars",
     "evidence": [
@@ -51024,6 +51245,7 @@
     "category": "Engine & diagnostics",
     "cheat_protected": false,
     "confidence": "high",
+    "configures": [],
     "derivation": "documented",
     "description": "Add a value to a cvar",
     "evidence": [
@@ -51391,6 +51613,7 @@
     "category": "Engine & diagnostics",
     "cheat_protected": false,
     "confidence": "high",
+    "configures": [],
     "derivation": "documented",
     "description": "Divide a value from a cvar",
     "evidence": [
@@ -51756,6 +51979,7 @@
     "category": "Engine & diagnostics",
     "cheat_protected": false,
     "confidence": "high",
+    "configures": [],
     "derivation": "documented",
     "description": "Show all cvars",
     "evidence": [
@@ -52063,6 +52287,7 @@
     "category": "Engine & diagnostics",
     "cheat_protected": false,
     "confidence": "high",
+    "configures": [],
     "derivation": "documented",
     "description": "Apply a modulo on a cvar",
     "evidence": [
@@ -52430,6 +52655,7 @@
     "category": "Engine & diagnostics",
     "cheat_protected": false,
     "confidence": "high",
+    "configures": [],
     "derivation": "documented",
     "description": "Multiply a value to a cvar",
     "evidence": [
@@ -52797,6 +53023,7 @@
     "category": "Engine & diagnostics",
     "cheat_protected": false,
     "confidence": "high",
+    "configures": [],
     "derivation": "documented",
     "description": "Subtract a value from a cvar",
     "evidence": [
@@ -53165,6 +53392,7 @@
     "category": "Gameplay & combat",
     "cheat_protected": false,
     "confidence": "medium",
+    "configures": [],
     "derivation": "code-trace",
     "description": "Runs `Svcmd_DBInfo_f` in the game module.",
     "evidence": [
@@ -53483,6 +53711,7 @@
     "category": "Engine & diagnostics",
     "cheat_protected": true,
     "confidence": "medium",
+    "configures": [],
     "derivation": "code-trace",
     "description": "Runs `Cmd_BotMoveBack_f` in the game module.",
     "evidence": [
@@ -53890,6 +54119,7 @@
     "category": "Engine & diagnostics",
     "cheat_protected": true,
     "confidence": "medium",
+    "configures": [],
     "derivation": "code-trace",
     "description": "Runs `Cmd_BotMoveForward_f` in the game module.",
     "evidence": [
@@ -54297,6 +54527,7 @@
     "category": "Engine & diagnostics",
     "cheat_protected": true,
     "confidence": "medium",
+    "configures": [],
     "derivation": "code-trace",
     "description": "Runs `Cmd_BotMoveLeft_f` in the game module.",
     "evidence": [
@@ -54704,6 +54935,7 @@
     "category": "Engine & diagnostics",
     "cheat_protected": true,
     "confidence": "medium",
+    "configures": [],
     "derivation": "code-trace",
     "description": "Runs `Cmd_BotMoveRight_f` in the game module.",
     "evidence": [
@@ -55111,6 +55343,7 @@
     "category": "Engine & diagnostics",
     "cheat_protected": true,
     "confidence": "medium",
+    "configures": [],
     "derivation": "code-trace",
     "description": "Runs `Cmd_BotMoveUp_f` in the game module.",
     "evidence": [
@@ -55523,6 +55756,7 @@
     "category": "Engine & diagnostics",
     "cheat_protected": false,
     "confidence": "high",
+    "configures": [],
     "derivation": "documented",
     "description": "Queues the commands after the semicolon to run after the requested number of milliseconds without pausing unrelated command-buffer work.",
     "evidence": [
@@ -55730,6 +55964,7 @@
     "category": "Engine & diagnostics",
     "cheat_protected": false,
     "confidence": "high",
+    "configures": [],
     "derivation": "documented",
     "description": "Cancels pending millisecond-based delay entries whose command text contains the supplied text. An empty string matches every pending delay.",
     "evidence": [
@@ -55934,6 +56169,7 @@
     "category": "Gameplay & combat",
     "cheat_protected": false,
     "confidence": "medium",
+    "configures": [],
     "derivation": "documented",
     "description": "Runs `Svcmd_DeleteAccount_f` in the game module.",
     "evidence": [
@@ -56252,6 +56488,7 @@
     "category": "Movement & race",
     "cheat_protected": false,
     "confidence": "medium",
+    "configures": [],
     "derivation": "code-trace",
     "description": "Runs `CG_DeleteCheckpoint_f` in the cgame module.",
     "evidence": [
@@ -56491,6 +56728,7 @@
     "category": "Demos & media",
     "cheat_protected": false,
     "confidence": "medium",
+    "configures": [],
     "derivation": "documented",
     "description": "Delete a demo",
     "evidence": [
@@ -56796,6 +57034,7 @@
     "category": "Audio & music",
     "cheat_protected": false,
     "confidence": "medium",
+    "configures": [],
     "derivation": "code-trace",
     "description": "Runs `CG_DeleteSpeedpoint_f` in the cgame module.",
     "evidence": [
@@ -57032,6 +57271,7 @@
     "category": "Demos & media",
     "cheat_protected": false,
     "confidence": "high",
+    "configures": [],
     "derivation": "documented",
     "description": "Playback a demo",
     "evidence": [
@@ -57327,6 +57567,7 @@
     "category": "Demos & media",
     "cheat_protected": false,
     "confidence": "high",
+    "configures": [],
     "derivation": "documented",
     "description": "Restarts the current or last-played demo",
     "evidence": [
@@ -57683,6 +57924,7 @@
     "category": "Server & networking",
     "cheat_protected": false,
     "confidence": "high",
+    "configures": [],
     "derivation": "documented",
     "description": "Load a new map with cheats enabled",
     "evidence": [
@@ -57879,6 +58121,7 @@
     "category": "Server & networking",
     "cheat_protected": false,
     "confidence": "high",
+    "configures": [],
     "derivation": "documented",
     "description": "Load a new map with cheats enabled",
     "evidence": [
@@ -58075,6 +58318,7 @@
     "category": "Server & networking",
     "cheat_protected": false,
     "confidence": "high",
+    "configures": [],
     "derivation": "documented",
     "description": "Load a new map with cheats enabled",
     "evidence": [
@@ -58271,6 +58515,7 @@
     "category": "Files & downloads",
     "cheat_protected": false,
     "confidence": "high",
+    "configures": [],
     "derivation": "documented",
     "description": "Lists a folder",
     "evidence": [
@@ -58413,6 +58658,7 @@
     "category": "Server & networking",
     "cheat_protected": false,
     "confidence": "high",
+    "configures": [],
     "derivation": "documented",
     "description": "Disconnect from current server",
     "evidence": [
@@ -58557,6 +58803,7 @@
     "category": "Gameplay & combat",
     "cheat_protected": false,
     "confidence": "medium",
+    "configures": [],
     "derivation": "code-trace",
     "description": "Runs `CG_Do_f` in the cgame module.",
     "evidence": [
@@ -58837,6 +59084,7 @@
     "category": "Gameplay & combat",
     "cheat_protected": false,
     "confidence": "medium",
+    "configures": [],
     "derivation": "code-trace",
     "description": "Forwards this command to the connected game server.",
     "evidence": [
@@ -59326,6 +59574,7 @@
     "category": "Administration",
     "cheat_protected": false,
     "confidence": "medium",
+    "configures": [],
     "derivation": "code-trace",
     "description": "Forwards this command to the connected game server.",
     "evidence": [
@@ -59562,6 +59811,7 @@
     "category": "Server & networking",
     "cheat_protected": false,
     "confidence": "high",
+    "configures": [],
     "derivation": "documented",
     "description": "Prints the userinfo for a given userid",
     "evidence": [
@@ -59721,6 +59971,7 @@
     "category": "Engine & diagnostics",
     "cheat_protected": false,
     "confidence": "high",
+    "configures": [],
     "derivation": "documented",
     "description": "Print message to console",
     "evidence": [
@@ -59863,6 +60114,7 @@
     "category": "Gameplay & combat",
     "cheat_protected": false,
     "confidence": "high",
+    "configures": [],
     "derivation": "documented",
     "description": "Engage private duel",
     "evidence": [
@@ -59998,6 +60250,7 @@
     "category": "Gameplay & combat",
     "cheat_protected": false,
     "confidence": "high",
+    "configures": [],
     "derivation": "documented",
     "description": "JAPRO - Serverside - Fullforce Duels",
     "evidence": [
@@ -60283,6 +60536,7 @@
     "category": "Gameplay & combat",
     "cheat_protected": false,
     "confidence": "high",
+    "configures": [],
     "derivation": "documented",
     "description": "JAPRO - Serverside - Fullforce Duels",
     "evidence": [
@@ -60568,6 +60822,7 @@
     "category": "Gameplay & combat",
     "cheat_protected": false,
     "confidence": "medium",
+    "configures": [],
     "derivation": "code-trace",
     "description": "Runs `Svcmd_EntityInfo_f` in the game module.",
     "evidence": [
@@ -60812,6 +61067,7 @@
     "category": "Gameplay & combat",
     "cheat_protected": false,
     "confidence": "medium",
+    "configures": [],
     "derivation": "code-trace",
     "description": "Runs `Svcmd_EntityList_f` in the game module.",
     "evidence": [
@@ -61326,6 +61582,7 @@
     "category": "Engine & diagnostics",
     "cheat_protected": false,
     "confidence": "high",
+    "configures": [],
     "derivation": "code-trace",
     "description": "Runs `Com_Error_f` in the engine-shared module.",
     "evidence": [
@@ -61467,6 +61724,7 @@
     "category": "Engine & diagnostics",
     "cheat_protected": false,
     "confidence": "high",
+    "configures": [],
     "derivation": "documented",
     "description": "Execute a script file",
     "evidence": [
@@ -61654,6 +61912,7 @@
     "category": "Engine & diagnostics",
     "cheat_protected": false,
     "confidence": "medium",
+    "configures": [],
     "derivation": "documented",
     "description": "Execute a script file without displaying a message",
     "evidence": [
@@ -62096,6 +62355,7 @@
     "category": "Engine & diagnostics",
     "cheat_protected": false,
     "confidence": "medium",
+    "configures": [],
     "derivation": "documented",
     "description": "Exits the game",
     "evidence": [
@@ -62381,6 +62641,7 @@
     "category": "Files & downloads",
     "cheat_protected": false,
     "confidence": "high",
+    "configures": [],
     "derivation": "documented",
     "description": "Lists a folder with filters",
     "evidence": [
@@ -62526,6 +62787,7 @@
     "category": "Gameplay & combat",
     "cheat_protected": false,
     "confidence": "medium",
+    "configures": [],
     "derivation": "documented",
     "description": "Runs `Svcmd_FlagAccount_f` in the game module.",
     "evidence": [
@@ -62863,6 +63125,7 @@
     "category": "Demos & media",
     "cheat_protected": false,
     "confidence": "high",
+    "configures": [],
     "derivation": "documented",
     "description": "Runs `Cmd_InvalidateRace_f` in the game module.",
     "evidence": [
@@ -63034,6 +63297,7 @@
     "category": "Administration",
     "cheat_protected": false,
     "confidence": "medium",
+    "configures": [],
     "derivation": "code-trace",
     "description": "Runs `CG_Flipkick_f` in the cgame module.",
     "evidence": [
@@ -63293,6 +63557,7 @@
     "category": "Engine & diagnostics",
     "cheat_protected": false,
     "confidence": "high",
+    "configures": [],
     "derivation": "documented",
     "description": "Flourish",
     "evidence": [
@@ -63460,6 +63725,7 @@
     "category": "Gameplay & combat",
     "cheat_protected": false,
     "confidence": "high",
+    "configures": [],
     "derivation": "code-trace",
     "description": "Forwards this command to the connected game server.",
     "evidence": [
@@ -63791,6 +64057,7 @@
     "category": "Gameplay & combat",
     "cheat_protected": false,
     "confidence": "medium",
+    "configures": [],
     "derivation": "code-trace",
     "description": "Runs `CG_FollowBlueFlag_f` in the cgame module.",
     "evidence": [
@@ -64041,6 +64308,7 @@
     "category": "Gameplay & combat",
     "cheat_protected": false,
     "confidence": "medium",
+    "configures": [],
     "derivation": "code-trace",
     "description": "Runs `CG_FollowFastest_f` in the cgame module.",
     "evidence": [
@@ -64345,6 +64613,7 @@
     "category": "Gameplay & combat",
     "cheat_protected": false,
     "confidence": "medium",
+    "configures": [],
     "derivation": "code-trace",
     "description": "Forwards this command to the connected game server.",
     "evidence": [
@@ -64780,6 +65049,7 @@
     "category": "Gameplay & combat",
     "cheat_protected": false,
     "confidence": "medium",
+    "configures": [],
     "derivation": "code-trace",
     "description": "Forwards this command to the connected game server.",
     "evidence": [
@@ -65216,6 +65486,7 @@
     "category": "Gameplay & combat",
     "cheat_protected": false,
     "confidence": "medium",
+    "configures": [],
     "derivation": "code-trace",
     "description": "Runs `CG_FollowRedFlag_f` in the cgame module.",
     "evidence": [
@@ -65465,6 +65736,7 @@
     "category": "Graphics & rendering",
     "cheat_protected": false,
     "confidence": "medium",
+    "configures": [],
     "derivation": "code-trace",
     "description": "Runs `R_FontList_f` in the renderer module.",
     "evidence": [
@@ -66055,6 +66327,7 @@
     "category": "Gameplay & combat",
     "cheat_protected": false,
     "confidence": "high",
+    "configures": [],
     "derivation": "documented",
     "description": "Activate absorb force power",
     "evidence": [
@@ -66241,6 +66514,7 @@
     "category": "Gameplay & combat",
     "cheat_protected": false,
     "confidence": "high",
+    "configures": [],
     "derivation": "documented",
     "description": "Activate mind trick force power",
     "evidence": [
@@ -66446,6 +66720,7 @@
     "category": "Gameplay & combat",
     "cheat_protected": false,
     "confidence": "high",
+    "configures": [],
     "derivation": "documented",
     "description": "Use team energize force power",
     "evidence": [
@@ -66578,6 +66853,7 @@
     "category": "Gameplay & combat",
     "cheat_protected": false,
     "confidence": "high",
+    "configures": [],
     "derivation": "documented",
     "description": "Use heal force power",
     "evidence": [
@@ -66783,6 +67059,7 @@
     "category": "Gameplay & combat",
     "cheat_protected": false,
     "confidence": "high",
+    "configures": [],
     "derivation": "documented",
     "description": "Use team heal force power",
     "evidence": [
@@ -66915,6 +67192,7 @@
     "category": "Administration",
     "cheat_protected": false,
     "confidence": "high",
+    "configures": [],
     "derivation": "documented",
     "description": "Activate protect force power",
     "evidence": [
@@ -67101,6 +67379,7 @@
     "category": "Gameplay & combat",
     "cheat_protected": false,
     "confidence": "high",
+    "configures": [],
     "derivation": "documented",
     "description": "Use pull force power",
     "evidence": [
@@ -67306,6 +67585,7 @@
     "category": "Gameplay & combat",
     "cheat_protected": false,
     "confidence": "high",
+    "configures": [],
     "derivation": "documented",
     "description": "Activate rage force power",
     "evidence": [
@@ -67492,6 +67772,7 @@
     "category": "Gameplay & combat",
     "cheat_protected": false,
     "confidence": "high",
+    "configures": [],
     "derivation": "documented",
     "description": "Activate seeing force power",
     "evidence": [
@@ -67624,6 +67905,7 @@
     "category": "Gameplay & combat",
     "cheat_protected": false,
     "confidence": "high",
+    "configures": [],
     "derivation": "documented",
     "description": "Activate speed force power",
     "evidence": [
@@ -67829,6 +68111,7 @@
     "category": "Gameplay & combat",
     "cheat_protected": false,
     "confidence": "high",
+    "configures": [],
     "derivation": "documented",
     "description": "Use push force power",
     "evidence": [
@@ -68034,6 +68317,7 @@
     "category": "Gameplay & combat",
     "cheat_protected": false,
     "confidence": "high",
+    "configures": [],
     "derivation": "code-trace",
     "description": "Forwards this command to the connected game server.",
     "evidence": [
@@ -68225,6 +68509,7 @@
     "category": "Gameplay & combat",
     "cheat_protected": false,
     "confidence": "high",
+    "configures": [],
     "derivation": "code-trace",
     "description": "Runs `CG_NextForcePower_f` in the cgame module.",
     "evidence": [
@@ -68555,6 +68840,7 @@
     "category": "Gameplay & combat",
     "cheat_protected": false,
     "confidence": "high",
+    "configures": [],
     "derivation": "code-trace",
     "description": "Runs `CL_SetForcePowers_f` in the engine-client module.",
     "evidence": [
@@ -68696,6 +68982,7 @@
     "category": "Gameplay & combat",
     "cheat_protected": false,
     "confidence": "high",
+    "configures": [],
     "derivation": "code-trace",
     "description": "Runs `CG_PrevForcePower_f` in the cgame module.",
     "evidence": [
@@ -69064,6 +69351,7 @@
     "category": "Gameplay & combat",
     "cheat_protected": false,
     "confidence": "medium",
+    "configures": [],
     "derivation": "documented",
     "description": "Runs `Svcmd_ForceTeam_f` in the game module.",
     "evidence": [
@@ -69521,6 +69809,7 @@
     "category": "Gameplay & combat",
     "cheat_protected": false,
     "confidence": "high",
+    "configures": [],
     "derivation": "documented",
     "description": "Toggle g_forcePowerDisable bits",
     "evidence": [
@@ -69698,6 +69987,7 @@
     "category": "Administration",
     "cheat_protected": false,
     "confidence": "high",
+    "configures": [],
     "derivation": "code-trace",
     "description": "Runs `Com_Freeze_f` in the engine-shared module.",
     "evidence": [
@@ -69821,6 +70111,7 @@
     "category": "Files & downloads",
     "cheat_protected": false,
     "confidence": "high",
+    "configures": [],
     "derivation": "documented",
     "description": "Lists open pak files",
     "evidence": [
@@ -69926,6 +70217,7 @@
     "category": "Files & downloads",
     "cheat_protected": false,
     "confidence": "high",
+    "configures": [],
     "derivation": "documented",
     "description": "Lists referenced pak files",
     "evidence": [
@@ -70033,6 +70325,7 @@
     "category": "Files & downloads",
     "cheat_protected": false,
     "confidence": "medium",
+    "configures": [],
     "derivation": "documented",
     "description": "Restarts the filesystem if no module is currently using files from a pk3",
     "evidence": [
@@ -70475,6 +70768,7 @@
     "category": "Engine & diagnostics",
     "cheat_protected": false,
     "confidence": "medium",
+    "configures": [],
     "derivation": "code-trace",
     "description": "Runs `Svcmd_GameMem_f` in the game module.",
     "evidence": [
@@ -70954,6 +71248,7 @@
     "category": "Gameplay & combat",
     "cheat_protected": false,
     "confidence": "medium",
+    "configures": [],
     "derivation": "documented",
     "description": "Instantly changethe gametype of the server without having to reload the map",
     "evidence": [
@@ -71277,6 +71572,7 @@
     "category": "Gameplay & combat",
     "cheat_protected": false,
     "confidence": "medium",
+    "configures": [],
     "derivation": "documented",
     "description": "Runs `Cmd_GameCommand_f` in the game module.",
     "evidence": [
@@ -71736,6 +72032,7 @@
     "category": "Graphics & rendering",
     "cheat_protected": false,
     "confidence": "high",
+    "configures": [],
     "derivation": "code-trace",
     "description": "Runs `GfxInfo_f` in the renderer module.",
     "evidence": [
@@ -72304,6 +72601,7 @@
     "category": "Graphics & rendering",
     "cheat_protected": false,
     "confidence": "high",
+    "configures": [],
     "derivation": "code-trace",
     "description": "Runs `GfxMemInfo_f` in the renderer module.",
     "evidence": [
@@ -72614,6 +72912,7 @@
     "category": "Gameplay & combat",
     "cheat_protected": true,
     "confidence": "high",
+    "configures": [],
     "derivation": "code-trace",
     "description": "Forwards this command to the connected game server.",
     "evidence": [
@@ -72849,6 +73148,7 @@
     "category": "Gameplay & combat",
     "cheat_protected": true,
     "confidence": "medium",
+    "configures": [],
     "derivation": "documented",
     "description": "Runs `Cmd_GiveOther_f` in the game module.",
     "evidence": [
@@ -73275,6 +73575,7 @@
     "category": "Engine & diagnostics",
     "cheat_protected": false,
     "confidence": "high",
+    "configures": [],
     "derivation": "documented",
     "description": "Gloat",
     "evidence": [
@@ -73442,6 +73743,7 @@
     "category": "Server & networking",
     "cheat_protected": false,
     "confidence": "high",
+    "configures": [],
     "derivation": "documented",
     "description": "Query the masterserver for serverlist",
     "evidence": [
@@ -73727,6 +74029,7 @@
     "category": "Gameplay & combat",
     "cheat_protected": true,
     "confidence": "high",
+    "configures": [],
     "derivation": "code-trace",
     "description": "Forwards this command to the connected game server.",
     "evidence": [
@@ -73959,6 +74262,7 @@
     "category": "Gameplay & combat",
     "cheat_protected": false,
     "confidence": "high",
+    "configures": [],
     "derivation": "documented",
     "description": "Runs `Cmd_Haste_f` in the game module.",
     "evidence": [
@@ -74128,6 +74432,7 @@
     "category": "Server & networking",
     "cheat_protected": false,
     "confidence": "high",
+    "configures": [],
     "derivation": "documented",
     "description": "Sends a heartbeat to the masterserver",
     "evidence": [
@@ -74289,6 +74594,7 @@
     "category": "Gameplay & combat",
     "cheat_protected": false,
     "confidence": "high",
+    "configures": [],
     "derivation": "documented",
     "description": "Print command help",
     "evidence": [
@@ -74676,6 +74982,7 @@
     "category": "Gameplay & combat",
     "cheat_protected": false,
     "confidence": "medium",
+    "configures": [],
     "derivation": "documented",
     "description": "Forwards this command to the connected game server.",
     "evidence": [
@@ -75058,6 +75365,7 @@
     "category": "Engine & diagnostics",
     "cheat_protected": false,
     "confidence": "high",
+    "configures": [],
     "derivation": "documented",
     "description": "Tests a cvar against conditions in order and executes the command belonging to the first match. Conditions support literal string equality; numeric $=, $!=, $>, $<, $>= and $<= comparisons; $contains; $beginswith/$startswith; $endswith; $else; and values read from another cvar with a leading $. The argument count includes the command itself.",
     "evidence": [
@@ -75176,6 +75484,7 @@
     "category": "Chat & social",
     "cheat_protected": false,
     "confidence": "high",
+    "configures": [],
     "derivation": "documented",
     "description": "[JAPRO - Serverside - All - Ignore]",
     "evidence": [
@@ -75469,6 +75778,7 @@
     "category": "Chat & social",
     "cheat_protected": false,
     "confidence": "medium",
+    "configures": [],
     "derivation": "code-trace",
     "description": "Runs `CG_IgnoreVGS_f` in the cgame module.",
     "evidence": [
@@ -75730,6 +76040,7 @@
     "category": "Graphics & rendering",
     "cheat_protected": false,
     "confidence": "high",
+    "configures": [],
     "derivation": "code-trace",
     "description": "Runs `RE_RegisterImages_Info_f` in the renderer module.",
     "evidence": [
@@ -76043,6 +76354,7 @@
     "category": "Graphics & rendering",
     "cheat_protected": false,
     "confidence": "high",
+    "configures": [],
     "derivation": "code-trace",
     "description": "Runs `R_ImageList_f` in the renderer module.",
     "evidence": [
@@ -76500,6 +76812,7 @@
     "category": "Input & controls",
     "cheat_protected": false,
     "confidence": "high",
+    "configures": [],
     "derivation": "code-trace",
     "description": "Runs `IN_Restart` in the engine-shared module.",
     "evidence": [
@@ -76788,6 +77101,7 @@
     "category": "Gameplay & combat",
     "cheat_protected": false,
     "confidence": "high",
+    "configures": [],
     "derivation": "code-trace",
     "description": "Runs `CG_InvUseAvailable` in the cgame module.",
     "evidence": [
@@ -76954,6 +77268,7 @@
     "category": "Gameplay & combat",
     "cheat_protected": false,
     "confidence": "high",
+    "configures": [],
     "derivation": "code-trace",
     "description": "Runs `CG_NextInventory_f` in the cgame module.",
     "evidence": [
@@ -77158,6 +77473,7 @@
     "category": "Gameplay & combat",
     "cheat_protected": false,
     "confidence": "high",
+    "configures": [],
     "derivation": "code-trace",
     "description": "Runs `CG_PrevInventory_f` in the cgame module.",
     "evidence": [
@@ -77402,6 +77718,7 @@
     "category": "Gameplay & combat",
     "cheat_protected": false,
     "confidence": "medium",
+    "configures": [],
     "derivation": "code-trace",
     "description": "Runs `Cmd_Jetpack_f` in the game module.",
     "evidence": [
@@ -77694,6 +78011,7 @@
     "category": "Gameplay & combat",
     "cheat_protected": false,
     "confidence": "medium",
+    "configures": [],
     "derivation": "documented",
     "description": "Cmd_alive not needed but i think it resets on joingame cuz forcepoints?",
     "evidence": [
@@ -78119,6 +78437,7 @@
     "category": "Administration",
     "cheat_protected": false,
     "confidence": "high",
+    "configures": [],
     "derivation": "documented",
     "description": "Kick a user from the server",
     "evidence": [
@@ -78323,6 +78642,7 @@
     "category": "Administration",
     "cheat_protected": false,
     "confidence": "medium",
+    "configures": [],
     "derivation": "documented",
     "description": "Kick all users from the server",
     "evidence": [
@@ -78709,6 +79029,7 @@
     "category": "Administration",
     "cheat_protected": false,
     "confidence": "medium",
+    "configures": [],
     "derivation": "documented",
     "description": "Kick all bots from the server",
     "evidence": [
@@ -79095,6 +79416,7 @@
     "category": "Administration",
     "cheat_protected": false,
     "confidence": "medium",
+    "configures": [],
     "derivation": "documented",
     "description": "Kick a user from the server by userid",
     "evidence": [
@@ -79534,6 +79856,7 @@
     "category": "Gameplay & combat",
     "cheat_protected": false,
     "confidence": "high",
+    "configures": [],
     "derivation": "code-trace",
     "description": "Forwards this command to the connected game server.",
     "evidence": [
@@ -79857,6 +80180,7 @@
     "category": "Gameplay & combat",
     "cheat_protected": true,
     "confidence": "medium",
+    "configures": [],
     "derivation": "documented",
     "description": "Runs `Cmd_KillOther_f` in the game module.",
     "evidence": [
@@ -80318,6 +80642,7 @@
     "category": "Server & networking",
     "cheat_protected": false,
     "confidence": "high",
+    "configures": [],
     "derivation": "documented",
     "description": "Shuts the server down and disconnects all clients",
     "evidence": [
@@ -80480,6 +80805,7 @@
     "category": "Gameplay & combat",
     "cheat_protected": false,
     "confidence": "medium",
+    "configures": [],
     "derivation": "documented",
     "description": "Forwards this command to the connected game server.",
     "evidence": [
@@ -80826,6 +81152,7 @@
     "category": "Demos & media",
     "cheat_protected": true,
     "confidence": "high",
+    "configures": [],
     "derivation": "code-trace",
     "description": "Forwards this command to the connected game server.",
     "evidence": [
@@ -81020,6 +81347,7 @@
     "category": "Administration",
     "cheat_protected": false,
     "confidence": "medium",
+    "configures": [],
     "derivation": "documented",
     "description": "Runs `Svcmd_ListAdmins_f` in the game module.",
     "evidence": [
@@ -81338,6 +81666,7 @@
     "category": "Movement & race",
     "cheat_protected": false,
     "confidence": "medium",
+    "configures": [],
     "derivation": "documented",
     "description": "Runs `CG_ListCheckpoints_f` in the cgame module.",
     "evidence": [
@@ -81583,6 +81912,7 @@
     "category": "Gameplay & combat",
     "cheat_protected": false,
     "confidence": "medium",
+    "configures": [],
     "derivation": "code-trace",
     "description": "Runs `CG_ListEmojis_f` in the cgame module.",
     "evidence": [
@@ -81827,6 +82157,7 @@
     "category": "Gameplay & combat",
     "cheat_protected": false,
     "confidence": "medium",
+    "configures": [],
     "derivation": "code-trace",
     "description": "Runs `Svcmd_ListIP_f` in the game module.",
     "evidence": [
@@ -82251,6 +82582,7 @@
     "category": "Gameplay & combat",
     "cheat_protected": false,
     "confidence": "medium",
+    "configures": [],
     "derivation": "code-trace",
     "description": "Runs `CG_ListRemaps_f` in the cgame module.",
     "evidence": [
@@ -82515,6 +82847,7 @@
     "category": "Audio & music",
     "cheat_protected": false,
     "confidence": "medium",
+    "configures": [],
     "derivation": "documented",
     "description": "Runs `CG_ListSpeedpoints_f` in the cgame module.",
     "evidence": [
@@ -82757,6 +83090,7 @@
     "category": "Gameplay & combat",
     "cheat_protected": false,
     "confidence": "high",
+    "configures": [],
     "derivation": "code-trace",
     "description": "Forwards this command to the connected game server.",
     "evidence": [
@@ -82855,6 +83189,7 @@
     "category": "Gameplay & combat",
     "cheat_protected": false,
     "confidence": "high",
+    "configures": [],
     "derivation": "code-trace",
     "description": "Runs `CG_LoadDeferredPlayers` in the cgame module.",
     "evidence": [
@@ -82961,6 +83296,7 @@
     "category": "HUD & interface",
     "cheat_protected": false,
     "confidence": "high",
+    "configures": [],
     "derivation": "code-trace",
     "description": "Runs `CG_LoadHud_f` in the cgame module.",
     "evidence": [
@@ -83233,6 +83569,7 @@
     "category": "Engine & diagnostics",
     "cheat_protected": false,
     "confidence": "medium",
+    "configures": [],
     "derivation": "documented",
     "description": "Restart the renderer (with specified mod folder) - or change the resolution",
     "evidence": [
@@ -83483,6 +83820,7 @@
     "category": "Gameplay & combat",
     "cheat_protected": false,
     "confidence": "medium",
+    "configures": [],
     "derivation": "code-trace",
     "description": "Runs `CG_SpawnStrafeTrailFromCFG_f` in the cgame module.",
     "evidence": [
@@ -83719,6 +84057,7 @@
     "category": "Server & networking",
     "cheat_protected": false,
     "confidence": "high",
+    "configures": [],
     "derivation": "documented",
     "description": "Query LAN for local servers",
     "evidence": [
@@ -83881,6 +84220,7 @@
     "category": "Gameplay & combat",
     "cheat_protected": false,
     "confidence": "medium",
+    "configures": [],
     "derivation": "code-trace",
     "description": "Forwards this command to the connected game server.",
     "evidence": [
@@ -84514,6 +84854,7 @@
     "category": "Gameplay & combat",
     "cheat_protected": false,
     "confidence": "medium",
+    "configures": [],
     "derivation": "code-trace",
     "description": "Forwards this command to the connected game server.",
     "evidence": [
@@ -84951,6 +85292,7 @@
     "category": "Gameplay & combat",
     "cheat_protected": false,
     "confidence": "medium",
+    "configures": [],
     "derivation": "code-trace",
     "description": "Runs `CG_Lowjump_f` in the cgame module.",
     "evidence": [
@@ -85275,6 +85617,7 @@
     "category": "Server & networking",
     "cheat_protected": false,
     "confidence": "high",
+    "configures": [],
     "derivation": "documented",
     "description": "Load a new map with cheats disabled",
     "evidence": [
@@ -85496,6 +85839,7 @@
     "category": "Server & networking",
     "cheat_protected": false,
     "confidence": "high",
+    "configures": [],
     "derivation": "documented",
     "description": "Restart the current map",
     "evidence": [
@@ -85811,6 +86155,7 @@
     "category": "Gameplay & combat",
     "cheat_protected": true,
     "confidence": "medium",
+    "configures": [],
     "derivation": "documented",
     "description": "Runs `Cmd_MapEnts_f` in the game module.",
     "evidence": [
@@ -86078,6 +86423,7 @@
     "category": "Server & networking",
     "cheat_protected": false,
     "confidence": "high",
+    "configures": [],
     "derivation": "documented",
     "description": "Forwards this command to the connected game server.",
     "evidence": [
@@ -86408,6 +86754,7 @@
     "category": "Server & networking",
     "cheat_protected": false,
     "confidence": "medium",
+    "configures": [],
     "derivation": "documented",
     "description": "Forwards this command to the connected game server.",
     "evidence": [
@@ -86717,6 +87064,7 @@
     "category": "Engine & diagnostics",
     "cheat_protected": false,
     "confidence": "high",
+    "configures": [],
     "derivation": "documented",
     "description": "Meditate",
     "evidence": [
@@ -86884,6 +87232,7 @@
     "category": "Chat & social",
     "cheat_protected": false,
     "confidence": "high",
+    "configures": [],
     "derivation": "documented",
     "description": "Global Chat",
     "evidence": [
@@ -87124,6 +87473,7 @@
     "category": "Chat & social",
     "cheat_protected": false,
     "confidence": "high",
+    "configures": [],
     "derivation": "documented",
     "description": "Team Chat",
     "evidence": [
@@ -87346,6 +87696,7 @@
     "category": "Chat & social",
     "cheat_protected": false,
     "confidence": "high",
+    "configures": [],
     "derivation": "documented",
     "description": "Private Chat with Target Player",
     "evidence": [
@@ -87613,6 +87964,7 @@
     "category": "Chat & social",
     "cheat_protected": false,
     "confidence": "high",
+    "configures": [],
     "derivation": "documented",
     "description": "Private Chat with Last Attacker",
     "evidence": [
@@ -87848,6 +88200,7 @@
     "category": "Movement & race",
     "cheat_protected": false,
     "confidence": "high",
+    "configures": [],
     "derivation": "code-trace",
     "description": "Runs `SV_MigrateCheckpoints_f` in the game module.",
     "evidence": [
@@ -87946,6 +88299,7 @@
     "category": "Engine & diagnostics",
     "cheat_protected": false,
     "confidence": "medium",
+    "configures": [],
     "derivation": "code-trace",
     "description": "Runs `GLimp_Minimize` in the engine-shared module.",
     "evidence": [
@@ -88393,6 +88747,7 @@
     "category": "Engine & diagnostics",
     "cheat_protected": false,
     "confidence": "high",
+    "configures": [],
     "derivation": "documented",
     "description": "Simulates the operating system next-track media key. Registered only in Windows builds.",
     "evidence": [
@@ -88614,6 +88969,7 @@
     "category": "Engine & diagnostics",
     "cheat_protected": false,
     "confidence": "high",
+    "configures": [],
     "derivation": "documented",
     "description": "Set the player model",
     "evidence": [
@@ -88780,6 +89136,7 @@
     "category": "Graphics & rendering",
     "cheat_protected": false,
     "confidence": "high",
+    "configures": [],
     "derivation": "code-trace",
     "description": "Runs `RE_RegisterModels_Info_f` in the renderer module.",
     "evidence": [
@@ -89120,6 +89477,7 @@
     "category": "Engine & diagnostics",
     "cheat_protected": false,
     "confidence": "high",
+    "configures": [],
     "derivation": "code-trace",
     "description": "Runs `R_ModeList_f` in the engine-shared module.",
     "evidence": [
@@ -89316,6 +89674,7 @@
     "category": "Graphics & rendering",
     "cheat_protected": false,
     "confidence": "high",
+    "configures": [],
     "derivation": "code-trace",
     "description": "Runs `R_Modellist_f` in the renderer module.",
     "evidence": [
@@ -89730,6 +90089,7 @@
     "category": "Engine & diagnostics",
     "cheat_protected": false,
     "confidence": "medium",
+    "configures": [],
     "derivation": "code-trace",
     "description": "Runs `CG_ModVersion_f` in the cgame module.",
     "evidence": [
@@ -90066,6 +90426,7 @@
     "category": "Gameplay & combat",
     "cheat_protected": false,
     "confidence": "medium",
+    "configures": [],
     "derivation": "documented",
     "description": "Forwards this command to the connected game server.",
     "evidence": [
@@ -90581,6 +90942,7 @@
     "category": "Engine & diagnostics",
     "cheat_protected": false,
     "confidence": "high",
+    "configures": [],
     "derivation": "documented",
     "description": "Runs `S_MP3_CalcVols_f` in the engine-client module.",
     "evidence": [
@@ -90707,6 +91069,7 @@
     "category": "Engine & diagnostics",
     "cheat_protected": false,
     "confidence": "high",
+    "configures": [],
     "derivation": "documented",
     "description": "Simulates the operating system play/pause media key. Registered only in Windows builds.",
     "evidence": [
@@ -90932,6 +91295,7 @@
     "category": "Engine & diagnostics",
     "cheat_protected": false,
     "confidence": "high",
+    "configures": [],
     "derivation": "documented",
     "description": "Simulates the operating system previous-track media key. Registered only in Windows builds.",
     "evidence": [
@@ -91157,6 +91521,7 @@
     "category": "Engine & diagnostics",
     "cheat_protected": false,
     "confidence": "high",
+    "configures": [],
     "derivation": "documented",
     "description": "Simulates the operating system stop-media key. Registered only in Windows builds.",
     "evidence": [
@@ -91378,6 +91743,7 @@
     "category": "Audio & music",
     "cheat_protected": false,
     "confidence": "high",
+    "configures": [],
     "derivation": "documented",
     "description": "Plays a music file",
     "evidence": [
@@ -91565,6 +91931,7 @@
     "category": "Gameplay & combat",
     "cheat_protected": false,
     "confidence": "high",
+    "configures": [],
     "derivation": "code-trace",
     "description": "Runs `Cmd_Nearby_f` in the game module.",
     "evidence": [
@@ -91733,6 +92100,7 @@
     "category": "Server & networking",
     "cheat_protected": false,
     "confidence": "high",
+    "configures": [],
     "derivation": "documented",
     "description": "Restart the networking sub-system",
     "evidence": [
@@ -91931,6 +92299,7 @@
     "category": "Gameplay & combat",
     "cheat_protected": false,
     "confidence": "high",
+    "configures": [],
     "derivation": "code-trace",
     "description": "Runs `CG_TestModelNextFrame_f` in the cgame module.",
     "evidence": [
@@ -92108,6 +92477,7 @@
     "category": "Gameplay & combat",
     "cheat_protected": false,
     "confidence": "high",
+    "configures": [],
     "derivation": "code-trace",
     "description": "Runs `CG_TestModelNextSkin_f` in the cgame module.",
     "evidence": [
@@ -92285,6 +92655,7 @@
     "category": "Gameplay & combat",
     "cheat_protected": false,
     "confidence": "high",
+    "configures": [],
     "derivation": "documented",
     "description": "Change for admin?",
     "evidence": [
@@ -92638,6 +93009,7 @@
     "category": "Gameplay & combat",
     "cheat_protected": true,
     "confidence": "high",
+    "configures": [],
     "derivation": "code-trace",
     "description": "Forwards this command to the connected game server.",
     "evidence": [
@@ -92870,6 +93242,7 @@
     "category": "Gameplay & combat",
     "cheat_protected": false,
     "confidence": "medium",
+    "configures": [],
     "derivation": "code-trace",
     "description": "Forwards this command to the connected game server.",
     "evidence": [
@@ -93108,6 +93481,7 @@
     "category": "Bots & AI",
     "cheat_protected": false,
     "confidence": "medium",
+    "configures": [],
     "derivation": "documented",
     "description": "Removed cheat for admin //meh let us npc kill all from spec",
     "evidence": [
@@ -93790,6 +94164,7 @@
     "category": "Gameplay & combat",
     "cheat_protected": true,
     "confidence": "medium",
+    "configures": [],
     "derivation": "code-trace",
     "description": "Runs `Cmd_Nudge_f` in the game module.",
     "evidence": [
@@ -94074,6 +94449,7 @@
     "category": "Gameplay & combat",
     "cheat_protected": false,
     "confidence": "medium",
+    "configures": [],
     "derivation": "code-trace",
     "description": "Forwards this command to the connected game server.",
     "evidence": [
@@ -94314,6 +94690,7 @@
     "category": "Gameplay & combat",
     "cheat_protected": false,
     "confidence": "high",
+    "configures": [],
     "derivation": "documented",
     "description": "Runs `Cmd_TribesPack_f` in the game module.",
     "evidence": [
@@ -94522,6 +94899,7 @@
     "category": "Files & downloads",
     "cheat_protected": false,
     "confidence": "high",
+    "configures": [],
     "derivation": "documented",
     "description": "Lists search paths",
     "evidence": [
@@ -94703,6 +95081,7 @@
     "category": "Gameplay & combat",
     "cheat_protected": false,
     "confidence": "medium",
+    "configures": [],
     "derivation": "documented",
     "description": "Pause/unpause the game",
     "evidence": [
@@ -94951,6 +95330,7 @@
     "category": "Server & networking",
     "cheat_protected": false,
     "confidence": "high",
+    "configures": [],
     "derivation": "documented",
     "description": "Ping a server for info response",
     "evidence": [
@@ -95135,6 +95515,7 @@
     "category": "Engine & diagnostics",
     "cheat_protected": false,
     "confidence": "high",
+    "configures": [],
     "derivation": "documented",
     "description": "Plays a sound fx file",
     "evidence": [
@@ -95323,6 +95704,7 @@
     "category": "Demos & media",
     "cheat_protected": false,
     "confidence": "medium",
+    "configures": [],
     "derivation": "documented",
     "description": "Playback a demo",
     "evidence": [
@@ -95623,6 +96005,7 @@
     "category": "Gameplay & combat",
     "cheat_protected": false,
     "confidence": "medium",
+    "configures": [],
     "derivation": "code-trace",
     "description": "Forwards this command to the connected game server.",
     "evidence": [
@@ -95862,6 +96245,7 @@
     "category": "Gameplay & combat",
     "cheat_protected": false,
     "confidence": "medium",
+    "configures": [],
     "derivation": "code-trace",
     "description": "Forwards this command to the connected game server.",
     "evidence": [
@@ -96101,6 +96485,9 @@
     "category": "Gameplay & combat",
     "cheat_protected": false,
     "confidence": "medium",
+    "configures": [
+      "cp_pluginDisable"
+    ],
     "derivation": "code-trace",
     "description": "Runs `CG_PluginDisable_f` in the cgame module.",
     "evidence": [
@@ -96383,6 +96770,9 @@
     "category": "Gameplay & combat",
     "cheat_protected": false,
     "confidence": "medium",
+    "configures": [
+      "cp_pluginDisable"
+    ],
     "derivation": "code-trace",
     "description": "Runs `CG_PluginDisable_f` in the cgame module.",
     "evidence": [
@@ -96665,6 +97055,7 @@
     "category": "Gameplay & combat",
     "cheat_protected": false,
     "confidence": "medium",
+    "configures": [],
     "derivation": "documented",
     "description": "Forwards this command to the connected game server.",
     "evidence": [
@@ -97019,6 +97410,7 @@
     "category": "Gameplay & combat",
     "cheat_protected": false,
     "confidence": "high",
+    "configures": [],
     "derivation": "code-trace",
     "description": "Runs `CG_TestModelPrevFrame_f` in the cgame module.",
     "evidence": [
@@ -97214,6 +97606,7 @@
     "category": "Gameplay & combat",
     "cheat_protected": false,
     "confidence": "high",
+    "configures": [],
     "derivation": "code-trace",
     "description": "Runs `CG_TestModelPrevSkin_f` in the cgame module.",
     "evidence": [
@@ -97411,6 +97804,7 @@
     "category": "Engine & diagnostics",
     "cheat_protected": false,
     "confidence": "medium",
+    "configures": [],
     "derivation": "documented",
     "description": "Print cvar help",
     "evidence": [
@@ -97929,6 +98323,7 @@
     "category": "Gameplay & combat",
     "cheat_protected": false,
     "confidence": "medium",
+    "configures": [],
     "derivation": "code-trace",
     "description": "Forwards this command to the connected game server.",
     "evidence": [
@@ -98241,6 +98636,7 @@
     "category": "Gameplay & combat",
     "cheat_protected": false,
     "confidence": "medium",
+    "configures": [],
     "derivation": "code-trace",
     "description": "Runs `CG_PTele_f` in the cgame module.",
     "evidence": [
@@ -98486,6 +98882,7 @@
     "category": "Gameplay & combat",
     "cheat_protected": false,
     "confidence": "medium",
+    "configures": [],
     "derivation": "code-trace",
     "description": "Runs `CG_PTelemark_f` in the cgame module.",
     "evidence": [
@@ -98728,6 +99125,7 @@
     "category": "Engine & diagnostics",
     "cheat_protected": false,
     "confidence": "high",
+    "configures": [],
     "derivation": "documented",
     "description": "Quits the game",
     "evidence": [
@@ -98942,6 +99340,7 @@
     "category": "Graphics & rendering",
     "cheat_protected": false,
     "confidence": "high",
+    "configures": [],
     "derivation": "code-trace",
     "description": "Runs `R_AtiHackToggle_f` in the renderer module.",
     "evidence": [
@@ -99215,6 +99614,7 @@
     "category": "Graphics & rendering",
     "cheat_protected": false,
     "confidence": "medium",
+    "configures": [],
     "derivation": "code-trace",
     "description": "Runs `RE_ClearDecals` in the renderer module.",
     "evidence": [
@@ -99596,6 +99996,7 @@
     "category": "Graphics & rendering",
     "cheat_protected": false,
     "confidence": "high",
+    "configures": [],
     "derivation": "code-trace",
     "description": "Runs `R_WorldEffect_f` in the renderer module.",
     "evidence": [
@@ -99932,6 +100333,7 @@
     "category": "Gameplay & combat",
     "cheat_protected": false,
     "confidence": "medium",
+    "configures": [],
     "derivation": "code-trace",
     "description": "Forwards this command to the connected game server.",
     "evidence": [
@@ -100361,6 +100763,7 @@
     "category": "Gameplay & combat",
     "cheat_protected": false,
     "confidence": "high",
+    "configures": [],
     "derivation": "documented",
     "description": "Runs `Cmd_DFCompare_f` in the game module.",
     "evidence": [
@@ -100584,6 +100987,7 @@
     "category": "Server & networking",
     "cheat_protected": false,
     "confidence": "high",
+    "configures": [],
     "derivation": "documented",
     "description": "Execute commands remotely to a server",
     "evidence": [
@@ -100800,6 +101204,7 @@
     "category": "Gameplay & combat",
     "cheat_protected": false,
     "confidence": "medium",
+    "configures": [],
     "derivation": "documented",
     "description": "Delete all Elo records and rebuild them from the duel records in the database.",
     "evidence": [
@@ -101106,6 +101511,7 @@
     "category": "Gameplay & combat",
     "cheat_protected": false,
     "confidence": "medium",
+    "configures": [],
     "derivation": "code-trace",
     "description": "Runs `SV_RebuildRaceRanks_f` in the game module.",
     "evidence": [
@@ -101534,6 +101940,7 @@
     "category": "Gameplay & combat",
     "cheat_protected": false,
     "confidence": "medium",
+    "configures": [],
     "derivation": "code-trace",
     "description": "Runs `SV_RebuildUnlocks_f` in the game module.",
     "evidence": [
@@ -101867,6 +102274,7 @@
     "category": "Server & networking",
     "cheat_protected": false,
     "confidence": "high",
+    "configures": [],
     "derivation": "documented",
     "description": "Reconnect to current server",
     "evidence": [
@@ -102008,6 +102416,7 @@
     "category": "Demos & media",
     "cheat_protected": false,
     "confidence": "high",
+    "configures": [],
     "derivation": "documented",
     "description": "Record a demo",
     "evidence": [
@@ -102259,6 +102668,7 @@
     "category": "Gameplay & combat",
     "cheat_protected": false,
     "confidence": "medium",
+    "configures": [],
     "derivation": "documented",
     "description": "Forwards this command to the connected game server.",
     "evidence": [
@@ -102741,6 +103151,7 @@
     "category": "Gameplay & combat",
     "cheat_protected": false,
     "confidence": "medium",
+    "configures": [],
     "derivation": "documented",
     "description": "Runs `CG_RemapShader_f` in the cgame module.",
     "evidence": [
@@ -103005,6 +103416,7 @@
     "category": "Graphics & rendering",
     "cheat_protected": false,
     "confidence": "medium",
+    "configures": [],
     "derivation": "documented",
     "description": "Runs `R_RemapSkyShader_f` in the renderer module.",
     "evidence": [
@@ -103385,6 +103797,7 @@
     "category": "Gameplay & combat",
     "cheat_protected": false,
     "confidence": "medium",
+    "configures": [],
     "derivation": "documented",
     "description": "Runs `Svcmd_RemoveIP_f` in the game module.",
     "evidence": [
@@ -103809,6 +104222,7 @@
     "category": "Gameplay & combat",
     "cheat_protected": false,
     "confidence": "medium",
+    "configures": [],
     "derivation": "documented",
     "description": "Runs `Svcmd_RenameAccount_f` in the game module.",
     "evidence": [
@@ -104196,6 +104610,7 @@
     "category": "Engine & diagnostics",
     "cheat_protected": false,
     "confidence": "high",
+    "configures": [],
     "derivation": "documented",
     "description": "Reset a cvar to default",
     "evidence": [
@@ -104419,6 +104834,7 @@
     "category": "Gameplay & combat",
     "cheat_protected": false,
     "confidence": "medium",
+    "configures": [],
     "derivation": "documented",
     "description": "Reset all player/team scores without having to reload the map.",
     "evidence": [
@@ -104691,6 +105107,7 @@
     "category": "Gameplay & combat",
     "cheat_protected": false,
     "confidence": "medium",
+    "configures": [],
     "derivation": "documented",
     "description": "Forwards this command to the connected game server.",
     "evidence": [
@@ -105021,6 +105438,7 @@
     "category": "Gameplay & combat",
     "cheat_protected": false,
     "confidence": "medium",
+    "configures": [],
     "derivation": "documented",
     "description": "Forwards this command to the connected game server.",
     "evidence": [
@@ -105387,6 +105805,7 @@
     "category": "Gameplay & combat",
     "cheat_protected": false,
     "confidence": "medium",
+    "configures": [],
     "derivation": "documented",
     "description": "Forwards this command to the connected game server.",
     "evidence": [
@@ -105843,6 +106262,7 @@
     "category": "Gameplay & combat",
     "cheat_protected": false,
     "confidence": "medium",
+    "configures": [],
     "derivation": "documented",
     "description": "Forwards this command to the connected game server.",
     "evidence": [
@@ -106147,6 +106567,7 @@
     "category": "Gameplay & combat",
     "cheat_protected": false,
     "confidence": "medium",
+    "configures": [],
     "derivation": "documented",
     "description": "Forwards this command to the connected game server.",
     "evidence": [
@@ -106459,6 +106880,7 @@
     "category": "Gameplay & combat",
     "cheat_protected": false,
     "confidence": "medium",
+    "configures": [],
     "derivation": "documented",
     "description": "Forwards this command to the connected game server.",
     "evidence": [
@@ -106826,6 +107248,7 @@
     "category": "Gameplay & combat",
     "cheat_protected": false,
     "confidence": "medium",
+    "configures": [],
     "derivation": "documented",
     "description": "Forwards this command to the connected game server.",
     "evidence": [
@@ -107354,6 +107777,7 @@
     "category": "Gameplay & combat",
     "cheat_protected": false,
     "confidence": "medium",
+    "configures": [],
     "derivation": "documented",
     "description": "Forwards this command to the connected game server.",
     "evidence": [
@@ -107735,6 +108159,7 @@
     "category": "Engine & diagnostics",
     "cheat_protected": false,
     "confidence": "high",
+    "configures": [],
     "derivation": "documented",
     "description": "Change dynamic music state",
     "evidence": [
@@ -107895,6 +108320,7 @@
     "category": "Gameplay & combat",
     "cheat_protected": false,
     "confidence": "medium",
+    "configures": [],
     "derivation": "documented",
     "description": "Runs `CG_Saber_f` in the cgame module.",
     "evidence": [
@@ -108500,6 +108926,7 @@
     "category": "Gameplay & combat",
     "cheat_protected": false,
     "confidence": "high",
+    "configures": [],
     "derivation": "documented",
     "description": "Switch lightsaber attack styles",
     "evidence": [
@@ -108763,6 +109190,7 @@
     "category": "Gameplay & combat",
     "cheat_protected": false,
     "confidence": "medium",
+    "configures": [],
     "derivation": "documented",
     "description": "Forwards this command to the connected game server.",
     "evidence": [
@@ -109141,6 +109569,9 @@
     "category": "Gameplay & combat",
     "cheat_protected": false,
     "confidence": "medium",
+    "configures": [
+      "g_saberDisable"
+    ],
     "derivation": "code-trace",
     "description": "Runs `Svcmd_ToggleSaberDisable_f` in the game module.",
     "evidence": [
@@ -109383,6 +109814,7 @@
     "category": "Chat & social",
     "cheat_protected": false,
     "confidence": "high",
+    "configures": [],
     "derivation": "code-trace",
     "description": "Forwards this command to the connected game server.",
     "evidence": [
@@ -109752,6 +110184,7 @@
     "category": "Chat & social",
     "cheat_protected": false,
     "confidence": "high",
+    "configures": [],
     "derivation": "code-trace",
     "description": "Forwards this command to the connected game server.",
     "evidence": [
@@ -110106,6 +110539,7 @@
     "category": "Chat & social",
     "cheat_protected": false,
     "confidence": "medium",
+    "configures": [],
     "derivation": "code-trace",
     "description": "Forwards this command to the connected game server.",
     "evidence": [
@@ -110392,6 +110826,7 @@
     "category": "Gameplay & combat",
     "cheat_protected": false,
     "confidence": "medium",
+    "configures": [],
     "derivation": "code-trace",
     "description": "Runs `Cmd_Score_f` in the game module.",
     "evidence": [
@@ -110804,6 +111239,7 @@
     "category": "Demos & media",
     "cheat_protected": false,
     "confidence": "high",
+    "configures": [],
     "derivation": "code-trace",
     "description": "Runs `R_ScreenShotJPEG_f` in the renderer module.",
     "evidence": [
@@ -111221,6 +111657,7 @@
     "category": "Demos & media",
     "cheat_protected": false,
     "confidence": "medium",
+    "configures": [],
     "derivation": "code-trace",
     "description": "Runs `R_ScreenShotPNG_f` in the renderer module.",
     "evidence": [
@@ -111889,6 +112326,7 @@
     "category": "Demos & media",
     "cheat_protected": false,
     "confidence": "high",
+    "configures": [],
     "derivation": "code-trace",
     "description": "Runs `R_ScreenShotTGA_f` in the renderer module.",
     "evidence": [
@@ -112297,6 +112735,7 @@
     "category": "Server & networking",
     "cheat_protected": false,
     "confidence": "high",
+    "configures": [],
     "derivation": "code-trace",
     "description": "Runs `SV_SectorList_f` in the engine-server module.",
     "evidence": [
@@ -112406,6 +112845,7 @@
     "category": "Gameplay & combat",
     "cheat_protected": false,
     "confidence": "high",
+    "configures": [],
     "derivation": "code-trace",
     "description": "Runs `CG_ToggleSingleFire_f` in the cgame module.",
     "evidence": [
@@ -112575,6 +113015,7 @@
     "category": "Server & networking",
     "cheat_protected": false,
     "confidence": "medium",
+    "configures": [],
     "derivation": "code-trace",
     "description": "Runs `CG_ServerConfig_f` in the cgame module.",
     "evidence": [
@@ -113063,6 +113504,7 @@
     "category": "Server & networking",
     "cheat_protected": false,
     "confidence": "high",
+    "configures": [],
     "derivation": "documented",
     "description": "Prints the serverinfo that is visible in the server browsers",
     "evidence": [
@@ -113227,6 +113669,7 @@
     "category": "Server & networking",
     "cheat_protected": false,
     "confidence": "high",
+    "configures": [],
     "derivation": "documented",
     "description": "Retrieve current or specified server's status",
     "evidence": [
@@ -113421,6 +113864,7 @@
     "category": "Engine & diagnostics",
     "cheat_protected": false,
     "confidence": "high",
+    "configures": [],
     "derivation": "documented",
     "description": "Set a cvar",
     "evidence": [
@@ -113635,6 +114079,7 @@
     "category": "Engine & diagnostics",
     "cheat_protected": false,
     "confidence": "high",
+    "configures": [],
     "derivation": "documented",
     "description": "Set a cvar and apply archive flag",
     "evidence": [
@@ -113851,6 +114296,7 @@
     "category": "Engine & diagnostics",
     "cheat_protected": false,
     "confidence": "high",
+    "configures": [],
     "derivation": "documented",
     "description": "Set a cvar and apply serverinfo flag",
     "evidence": [
@@ -114067,6 +114513,7 @@
     "category": "Engine & diagnostics",
     "cheat_protected": false,
     "confidence": "high",
+    "configures": [],
     "derivation": "documented",
     "description": "Set a cvar and apply userinfo flag",
     "evidence": [
@@ -114283,6 +114730,7 @@
     "category": "Gameplay & combat",
     "cheat_protected": true,
     "confidence": "high",
+    "configures": [],
     "derivation": "documented",
     "description": "Wow really??",
     "evidence": [
@@ -114529,6 +114977,7 @@
     "category": "Graphics & rendering",
     "cheat_protected": false,
     "confidence": "high",
+    "configures": [],
     "derivation": "code-trace",
     "description": "Runs `R_ShaderList_f` in the renderer module.",
     "evidence": [
@@ -114916,6 +115365,7 @@
     "category": "Engine & diagnostics",
     "cheat_protected": false,
     "confidence": "high",
+    "configures": [],
     "derivation": "documented",
     "description": "Shows local IP",
     "evidence": [
@@ -115078,6 +115528,7 @@
     "category": "Gameplay & combat",
     "cheat_protected": false,
     "confidence": "medium",
+    "configures": [],
     "derivation": "documented",
     "description": "Forwards this command to the connected game server.",
     "evidence": [
@@ -115479,6 +115930,7 @@
     "category": "Gameplay & combat",
     "cheat_protected": false,
     "confidence": "medium",
+    "configures": [],
     "derivation": "code-trace",
     "description": "Runs `CG_ClientList_f` in the cgame module.",
     "evidence": [
@@ -115723,6 +116175,7 @@
     "category": "Gameplay & combat",
     "cheat_protected": false,
     "confidence": "medium",
+    "configures": [],
     "derivation": "code-trace",
     "description": "Forwards this command to the connected game server.",
     "evidence": [
@@ -116193,6 +116646,7 @@
     "category": "Engine & diagnostics",
     "cheat_protected": false,
     "confidence": "high",
+    "configures": [],
     "derivation": "code-trace",
     "description": "Runs `CG_SiegeCompleteCvarUpdate_f` in the cgame module.",
     "evidence": [
@@ -116405,6 +116859,7 @@
     "category": "Engine & diagnostics",
     "cheat_protected": false,
     "confidence": "high",
+    "configures": [],
     "derivation": "code-trace",
     "description": "Runs `CG_SiegeCvarUpdate_f` in the cgame module.",
     "evidence": [
@@ -116527,6 +116982,7 @@
     "category": "Gameplay & combat",
     "cheat_protected": false,
     "confidence": "high",
+    "configures": [],
     "derivation": "code-trace",
     "description": "Runs `CG_SizeDown_f` in the cgame module.",
     "evidence": [
@@ -116703,6 +117159,7 @@
     "category": "Gameplay & combat",
     "cheat_protected": false,
     "confidence": "high",
+    "configures": [],
     "derivation": "code-trace",
     "description": "Runs `CG_SizeUp_f` in the cgame module.",
     "evidence": [
@@ -116879,6 +117336,7 @@
     "category": "Graphics & rendering",
     "cheat_protected": false,
     "confidence": "high",
+    "configures": [],
     "derivation": "code-trace",
     "description": "Runs `R_SkinList_f` in the renderer module.",
     "evidence": [
@@ -117267,6 +117725,7 @@
     "category": "Gameplay & combat",
     "cheat_protected": false,
     "confidence": "high",
+    "configures": [],
     "derivation": "code-trace",
     "description": "Runs `CG_WeaponSlot_f` in the cgame module.",
     "evidence": [
@@ -117456,6 +117915,7 @@
     "category": "Gameplay & combat",
     "cheat_protected": false,
     "confidence": "high",
+    "configures": [],
     "derivation": "code-trace",
     "description": "Runs `CG_PrevWeaponSlot_f` in the cgame module.",
     "evidence": [
@@ -117626,6 +118086,7 @@
     "category": "Gameplay & combat",
     "cheat_protected": false,
     "confidence": "high",
+    "configures": [],
     "derivation": "code-trace",
     "description": "Runs `CG_NextWeaponSlot_f` in the cgame module.",
     "evidence": [
@@ -117792,6 +118253,7 @@
     "category": "Engine & diagnostics",
     "cheat_protected": false,
     "confidence": "high",
+    "configures": [],
     "derivation": "documented",
     "description": "Restart sound",
     "evidence": [
@@ -117924,6 +118386,7 @@
     "category": "Audio & music",
     "cheat_protected": false,
     "confidence": "high",
+    "configures": [],
     "derivation": "documented",
     "description": "Display information about the sound backend",
     "evidence": [
@@ -118210,6 +118673,7 @@
     "category": "Audio & music",
     "cheat_protected": false,
     "confidence": "high",
+    "configures": [],
     "derivation": "documented",
     "description": "Lists all cached sound and music files",
     "evidence": [
@@ -118442,6 +118906,7 @@
     "category": "Audio & music",
     "cheat_protected": false,
     "confidence": "high",
+    "configures": [],
     "derivation": "documented",
     "description": "Stops all sounds including music",
     "evidence": [
@@ -118605,6 +119070,9 @@
     "category": "Movement & race",
     "cheat_protected": false,
     "confidence": "medium",
+    "configures": [
+      "cg_speedometer"
+    ],
     "derivation": "code-trace",
     "description": "Runs `CG_SpeedometerSettings_f` in the cgame module.",
     "evidence": [
@@ -118961,6 +119429,7 @@
     "category": "Gameplay & combat",
     "cheat_protected": false,
     "confidence": "medium",
+    "configures": [],
     "derivation": "code-trace",
     "description": "Forwards this command to the connected game server.",
     "evidence": [
@@ -119309,6 +119778,9 @@
     "category": "Gameplay & combat",
     "cheat_protected": false,
     "confidence": "medium",
+    "configures": [
+      "g_startingItems"
+    ],
     "derivation": "code-trace",
     "description": "Runs `Svcmd_ToggleStartingItems_f` in the game module.",
     "evidence": [
@@ -119554,6 +120026,9 @@
     "category": "Gameplay & combat",
     "cheat_protected": false,
     "confidence": "medium",
+    "configures": [
+      "g_startingWeapons"
+    ],
     "derivation": "code-trace",
     "description": "Runs `Svcmd_ToggleStartingWeapons_f` in the game module.",
     "evidence": [
@@ -119833,6 +120308,7 @@
     "category": "Gameplay & combat",
     "cheat_protected": false,
     "confidence": "high",
+    "configures": [],
     "derivation": "code-trace",
     "description": "Runs `CG_StartOrbit_f` in the cgame module.",
     "evidence": [
@@ -119955,6 +120431,7 @@
     "category": "Gameplay & combat",
     "cheat_protected": false,
     "confidence": "high",
+    "configures": [],
     "derivation": "documented",
     "description": "Rename to info?",
     "evidence": [
@@ -120163,6 +120640,7 @@
     "category": "Server & networking",
     "cheat_protected": false,
     "confidence": "high",
+    "configures": [],
     "derivation": "documented",
     "description": "Prints status of server and connected clients",
     "evidence": [
@@ -120558,6 +121036,7 @@
     "category": "Audio & music",
     "cheat_protected": false,
     "confidence": "medium",
+    "configures": [],
     "derivation": "documented",
     "description": "Stops all music",
     "evidence": [
@@ -120978,6 +121457,7 @@
     "category": "Demos & media",
     "cheat_protected": false,
     "confidence": "high",
+    "configures": [],
     "derivation": "documented",
     "description": "Stop recording a demo",
     "evidence": [
@@ -121121,6 +121601,7 @@
     "category": "Demos & media",
     "cheat_protected": false,
     "confidence": "medium",
+    "configures": [],
     "derivation": "documented",
     "description": "Stop avi recording",
     "evidence": [
@@ -121585,6 +122066,9 @@
     "category": "Movement & race",
     "cheat_protected": false,
     "confidence": "medium",
+    "configures": [
+      "cg_strafeHelper"
+    ],
     "derivation": "code-trace",
     "description": "Runs `CG_StrafeHelper_f` in the cgame module.",
     "evidence": [
@@ -121910,6 +122394,7 @@
     "category": "Movement & race",
     "cheat_protected": false,
     "confidence": "medium",
+    "configures": [],
     "derivation": "documented",
     "description": "Runs `CG_AddStrafeTrail_f` in the cgame module.",
     "evidence": [
@@ -122177,6 +122662,7 @@
     "category": "Engine & diagnostics",
     "cheat_protected": false,
     "confidence": "high",
+    "configures": [],
     "derivation": "documented",
     "description": "Executes a command after replacing text surrounded by dollar signs with the value of that cvar. A doubled dollar sign emits one literal dollar sign.",
     "evidence": [
@@ -122295,6 +122781,9 @@
     "category": "Gameplay & combat",
     "cheat_protected": false,
     "confidence": "medium",
+    "configures": [
+      "cg_stylePlayer"
+    ],
     "derivation": "code-trace",
     "description": "Runs `CG_StylePlayer_f` in the cgame module.",
     "evidence": [
@@ -122650,6 +123139,7 @@
     "category": "Server & networking",
     "cheat_protected": false,
     "confidence": "medium",
+    "configures": [],
     "derivation": "documented",
     "description": "Bans a user",
     "evidence": [
@@ -123036,6 +123526,7 @@
     "category": "Server & networking",
     "cheat_protected": false,
     "confidence": "medium",
+    "configures": [],
     "derivation": "documented",
     "description": "Removes a ban",
     "evidence": [
@@ -123422,6 +123913,7 @@
     "category": "Server & networking",
     "cheat_protected": false,
     "confidence": "medium",
+    "configures": [],
     "derivation": "documented",
     "description": "Adds a ban exception for a user",
     "evidence": [
@@ -123808,6 +124300,7 @@
     "category": "Server & networking",
     "cheat_protected": false,
     "confidence": "medium",
+    "configures": [],
     "derivation": "documented",
     "description": "Removes a ban exception",
     "evidence": [
@@ -124212,6 +124705,7 @@
     "category": "Server & networking",
     "cheat_protected": false,
     "confidence": "medium",
+    "configures": [],
     "derivation": "documented",
     "description": "Removes all bans and exceptions",
     "evidence": [
@@ -124598,6 +125092,7 @@
     "category": "Server & networking",
     "cheat_protected": false,
     "confidence": "medium",
+    "configures": [],
     "derivation": "documented",
     "description": "Lists bans",
     "evidence": [
@@ -125003,6 +125498,7 @@
     "category": "Demos & media",
     "cheat_protected": false,
     "confidence": "medium",
+    "configures": [],
     "derivation": "documented",
     "description": "Lists demos being recorded",
     "evidence": [
@@ -125266,6 +125762,7 @@
     "category": "Server & networking",
     "cheat_protected": false,
     "confidence": "medium",
+    "configures": [],
     "derivation": "documented",
     "description": "Reloads banlist from file",
     "evidence": [
@@ -125650,6 +126147,7 @@
     "category": "Server & networking",
     "cheat_protected": false,
     "confidence": "high",
+    "configures": [],
     "derivation": "documented",
     "description": "Holster/activate lightsaber",
     "evidence": [
@@ -125777,6 +126275,7 @@
     "category": "Demos & media",
     "cheat_protected": false,
     "confidence": "high",
+    "configures": [],
     "derivation": "documented",
     "description": "Clears metadata for server-side demos for one player. Call with clientnum.",
     "evidence": [
@@ -125924,6 +126423,7 @@
     "category": "Demos & media",
     "cheat_protected": false,
     "confidence": "high",
+    "configures": [],
     "derivation": "documented",
     "description": "Clears pre-record data for a particular client. Call with clientnum.",
     "evidence": [
@@ -126071,6 +126571,7 @@
     "category": "Demos & media",
     "cheat_protected": false,
     "confidence": "high",
+    "configures": [],
     "derivation": "documented",
     "description": "Sets a new metadata entry for server-side demos for one player. Call with clientnum, metakey, [data]",
     "evidence": [
@@ -126216,6 +126717,7 @@
     "category": "Demos & media",
     "cheat_protected": false,
     "confidence": "medium",
+    "configures": [],
     "derivation": "documented",
     "description": "Record a server-side demo",
     "evidence": [
@@ -126771,6 +127273,7 @@
     "category": "Demos & media",
     "cheat_protected": false,
     "confidence": "medium",
+    "configures": [],
     "derivation": "documented",
     "description": "Rename a server-side demo",
     "evidence": [
@@ -127092,6 +127595,7 @@
     "category": "Chat & social",
     "cheat_protected": false,
     "confidence": "high",
+    "configures": [],
     "derivation": "documented",
     "description": "Broadcast server messages to clients",
     "evidence": [
@@ -127343,6 +127847,7 @@
     "category": "Demos & media",
     "cheat_protected": false,
     "confidence": "medium",
+    "configures": [],
     "derivation": "documented",
     "description": "Stop recording a server-side demo",
     "evidence": [
@@ -127807,6 +128312,7 @@
     "category": "Chat & social",
     "cheat_protected": false,
     "confidence": "medium",
+    "configures": [],
     "derivation": "documented",
     "description": "Private message from the server to a user",
     "evidence": [
@@ -128209,6 +128715,7 @@
     "category": "Server & networking",
     "cheat_protected": false,
     "confidence": "high",
+    "configures": [],
     "derivation": "documented",
     "description": "Prints the systeminfo variables that are replicated to clients",
     "evidence": [
@@ -128370,6 +128877,7 @@
     "category": "Gameplay & combat",
     "cheat_protected": true,
     "confidence": "medium",
+    "configures": [],
     "derivation": "code-trace",
     "description": "Runs `Cmd_TargetUse_f` in the game module.",
     "evidence": [
@@ -128794,6 +129302,7 @@
     "category": "Engine & diagnostics",
     "cheat_protected": false,
     "confidence": "high",
+    "configures": [],
     "derivation": "documented",
     "description": "Taunt",
     "evidence": [
@@ -128992,6 +129501,7 @@
     "category": "Gameplay & combat",
     "cheat_protected": false,
     "confidence": "high",
+    "configures": [],
     "derivation": "code-trace",
     "description": "Runs `CG_TargetCommand_f` in the cgame module.",
     "evidence": [
@@ -129223,6 +129733,7 @@
     "category": "Gameplay & combat",
     "cheat_protected": false,
     "confidence": "high",
+    "configures": [],
     "derivation": "code-trace",
     "description": "Forwards this command to the connected game server.",
     "evidence": [
@@ -129474,6 +129985,7 @@
     "category": "Gameplay & combat",
     "cheat_protected": false,
     "confidence": "high",
+    "configures": [],
     "derivation": "code-trace",
     "description": "Forwards this command to the connected game server.",
     "evidence": [
@@ -129572,6 +130084,7 @@
     "category": "Gameplay & combat",
     "cheat_protected": false,
     "confidence": "high",
+    "configures": [],
     "derivation": "code-trace",
     "description": "Forwards this command to the connected game server.",
     "evidence": [
@@ -129802,6 +130315,7 @@
     "category": "Movement & race",
     "cheat_protected": false,
     "confidence": "medium",
+    "configures": [],
     "derivation": "documented",
     "description": "Runs `CG_TeleToCheckpoint_f` in the cgame module.",
     "evidence": [
@@ -130044,6 +130558,7 @@
     "category": "Chat & social",
     "cheat_protected": false,
     "confidence": "high",
+    "configures": [],
     "derivation": "code-trace",
     "description": "Forwards this command to the connected game server.",
     "evidence": [
@@ -130393,6 +130908,7 @@
     "category": "Chat & social",
     "cheat_protected": false,
     "confidence": "high",
+    "configures": [],
     "derivation": "code-trace",
     "description": "Runs `CG_TellAttacker_f` in the cgame module.",
     "evidence": [
@@ -130551,6 +131067,7 @@
     "category": "Chat & social",
     "cheat_protected": false,
     "confidence": "high",
+    "configures": [],
     "derivation": "code-trace",
     "description": "Runs `CG_TellTarget_f` in the cgame module.",
     "evidence": [
@@ -130694,6 +131211,7 @@
     "category": "Gameplay & combat",
     "cheat_protected": true,
     "confidence": "medium",
+    "configures": [],
     "derivation": "code-trace",
     "description": "Runs `Cmd_TestBSP_f` in the game module.",
     "evidence": [
@@ -130958,6 +131476,7 @@
     "category": "Gameplay & combat",
     "cheat_protected": false,
     "confidence": "high",
+    "configures": [],
     "derivation": "code-trace",
     "description": "Runs `CG_TestGun_f` in the cgame module.",
     "evidence": [
@@ -131116,6 +131635,7 @@
     "category": "Gameplay & combat",
     "cheat_protected": false,
     "confidence": "high",
+    "configures": [],
     "derivation": "code-trace",
     "description": "Runs `CG_TestModel_f` in the cgame module.",
     "evidence": [
@@ -131313,6 +131833,7 @@
     "category": "Gameplay & combat",
     "cheat_protected": true,
     "confidence": "medium",
+    "configures": [],
     "derivation": "code-trace",
     "description": "Runs `Cmd_TheDestroyer_f` in the game module.",
     "evidence": [
@@ -131703,6 +132224,7 @@
     "category": "Gameplay & combat",
     "cheat_protected": false,
     "confidence": "medium",
+    "configures": [],
     "derivation": "code-trace",
     "description": "Runs `Cmd_Throwflag_f` in the game module.",
     "evidence": [
@@ -132016,6 +132538,7 @@
     "category": "Gameplay & combat",
     "cheat_protected": false,
     "confidence": "high",
+    "configures": [],
     "derivation": "code-trace",
     "description": "Runs `Cmd_ThrowNade_f` in the game module.",
     "evidence": [
@@ -132222,6 +132745,7 @@
     "category": "Engine & diagnostics",
     "cheat_protected": false,
     "confidence": "high",
+    "configures": [],
     "derivation": "documented",
     "description": "Toggle a cvar between values",
     "evidence": [
@@ -132445,6 +132969,10 @@
     "category": "Administration",
     "cheat_protected": false,
     "confidence": "medium",
+    "configures": [
+      "g_fullAdminLevel",
+      "g_juniorAdminLevel"
+    ],
     "derivation": "documented",
     "description": "Runs `Svcmd_ToggleAdmin_f` in the game module.",
     "evidence": [
@@ -132708,6 +133236,7 @@
     "category": "Gameplay & combat",
     "cheat_protected": false,
     "confidence": "medium",
+    "configures": [],
     "derivation": "code-trace",
     "description": "Runs `Svcmd_ToggleAllowVote_f` in the game module.",
     "evidence": [
@@ -133110,6 +133639,7 @@
     "category": "Engine & diagnostics",
     "cheat_protected": false,
     "confidence": "high",
+    "configures": [],
     "derivation": "documented",
     "description": "Show/hide console",
     "evidence": [
@@ -133418,6 +133948,9 @@
     "category": "Gameplay & combat",
     "cheat_protected": false,
     "confidence": "medium",
+    "configures": [
+      "g_emotesDisable"
+    ],
     "derivation": "code-trace",
     "description": "Runs `Svcmd_ToggleEmotes_f` in the game module.",
     "evidence": [
@@ -133662,6 +134195,7 @@
     "category": "HUD & interface",
     "cheat_protected": false,
     "confidence": "medium",
+    "configures": [],
     "derivation": "documented",
     "description": "Show/hide the menu",
     "evidence": [
@@ -134066,6 +134600,7 @@
     "category": "Gameplay & combat",
     "cheat_protected": false,
     "confidence": "medium",
+    "configures": [],
     "derivation": "code-trace",
     "description": "Runs `Svcmd_ToggleUserinfoValidation_f` in the game module.",
     "evidence": [
@@ -134562,6 +135097,9 @@
     "category": "Gameplay & combat",
     "cheat_protected": false,
     "confidence": "medium",
+    "configures": [
+      "g_allowVote"
+    ],
     "derivation": "code-trace",
     "description": "Runs `Svcmd_ToggleVote_f` in the game module.",
     "evidence": [
@@ -134807,6 +135345,7 @@
     "category": "Gameplay & combat",
     "cheat_protected": false,
     "confidence": "medium",
+    "configures": [],
     "derivation": "documented",
     "description": "Forwards this command to the connected game server.",
     "evidence": [
@@ -135153,6 +135692,7 @@
     "category": "Engine & diagnostics",
     "cheat_protected": false,
     "confidence": "high",
+    "configures": [],
     "derivation": "documented",
     "description": "Touches a file",
     "evidence": [
@@ -135335,6 +135875,7 @@
     "category": "Gameplay & combat",
     "cheat_protected": false,
     "confidence": "high",
+    "configures": [],
     "derivation": "code-trace",
     "description": "Runs `Cmd_Trace_f` in the game module.",
     "evidence": [
@@ -135506,6 +136047,9 @@
     "category": "Gameplay & combat",
     "cheat_protected": false,
     "confidence": "medium",
+    "configures": [
+      "g_tweakForce"
+    ],
     "derivation": "code-trace",
     "description": "Runs `Svcmd_ToggleTweakForce_f` in the game module.",
     "evidence": [
@@ -135751,6 +136295,9 @@
     "category": "Gameplay & combat",
     "cheat_protected": false,
     "confidence": "medium",
+    "configures": [
+      "g_tweakSaber"
+    ],
     "derivation": "code-trace",
     "description": "Runs `Svcmd_ToggleTweakSaber_f` in the game module.",
     "evidence": [
@@ -135996,6 +136543,9 @@
     "category": "Gameplay & combat",
     "cheat_protected": false,
     "confidence": "medium",
+    "configures": [
+      "g_tweakVote"
+    ],
     "derivation": "code-trace",
     "description": "Runs `Svcmd_ToggleTweakVote_f` in the game module.",
     "evidence": [
@@ -136241,6 +136791,9 @@
     "category": "Gameplay & combat",
     "cheat_protected": false,
     "confidence": "medium",
+    "configures": [
+      "g_tweakWeapons"
+    ],
     "derivation": "code-trace",
     "description": "Runs `Svcmd_ToggleTweakWeapons_f` in the game module.",
     "evidence": [
@@ -136558,6 +137111,7 @@
     "category": "HUD & interface",
     "cheat_protected": false,
     "confidence": "medium",
+    "configures": [],
     "derivation": "code-trace",
     "description": "Runs `UI_Cache_f` in the ui module.",
     "evidence": [
@@ -136999,6 +137553,7 @@
     "category": "HUD & interface",
     "cheat_protected": false,
     "confidence": "medium",
+    "configures": [],
     "derivation": "code-trace",
     "description": "Runs `UI_Load` in the ui module.",
     "evidence": [
@@ -137523,6 +138078,7 @@
     "category": "HUD & interface",
     "cheat_protected": false,
     "confidence": "medium",
+    "configures": [],
     "derivation": "code-trace",
     "description": "Runs `UI_Modversion_f` in the ui module.",
     "evidence": [
@@ -137804,6 +138360,7 @@
     "category": "HUD & interface",
     "cheat_protected": false,
     "confidence": "medium",
+    "configures": [],
     "derivation": "code-trace",
     "description": "Runs `UI_OpenMenu_f` in the ui module.",
     "evidence": [
@@ -138171,6 +138728,7 @@
     "category": "HUD & interface",
     "cheat_protected": false,
     "confidence": "medium",
+    "configures": [],
     "derivation": "code-trace",
     "description": "Runs `UI_OpenSiegeMenu_f` in the ui module.",
     "evidence": [
@@ -138593,6 +139151,7 @@
     "category": "HUD & interface",
     "cheat_protected": false,
     "confidence": "medium",
+    "configures": [],
     "derivation": "code-trace",
     "description": "Runs `UI_Report` in the ui module.",
     "evidence": [
@@ -139015,6 +139574,7 @@
     "category": "Input & controls",
     "cheat_protected": false,
     "confidence": "high",
+    "configures": [],
     "derivation": "documented",
     "description": "Unbind a key",
     "evidence": [
@@ -139211,6 +139771,7 @@
     "category": "Input & controls",
     "cheat_protected": false,
     "confidence": "high",
+    "configures": [],
     "derivation": "documented",
     "description": "Delete all key bindings",
     "evidence": [
@@ -139391,6 +139952,7 @@
     "category": "Engine & diagnostics",
     "cheat_protected": false,
     "confidence": "medium",
+    "configures": [],
     "derivation": "documented",
     "description": "Unset a user generated cvar",
     "evidence": [
@@ -139867,6 +140429,7 @@
     "category": "Engine & diagnostics",
     "cheat_protected": false,
     "confidence": "medium",
+    "configures": [],
     "derivation": "documented",
     "description": "Unset all user generated cvars Use with caution!",
     "evidence": [
@@ -140191,6 +140754,7 @@
     "category": "Engine & diagnostics",
     "cheat_protected": false,
     "confidence": "high",
+    "configures": [],
     "derivation": "documented",
     "description": "Use ammo dispenser item",
     "evidence": [
@@ -140295,6 +140859,7 @@
     "category": "Engine & diagnostics",
     "cheat_protected": false,
     "confidence": "high",
+    "configures": [],
     "derivation": "documented",
     "description": "Use bacta item",
     "evidence": [
@@ -140491,6 +141056,7 @@
     "category": "Engine & diagnostics",
     "cheat_protected": false,
     "confidence": "high",
+    "configures": [],
     "derivation": "documented",
     "description": "Use big bacta item",
     "evidence": [
@@ -140595,6 +141161,7 @@
     "category": "Engine & diagnostics",
     "cheat_protected": false,
     "confidence": "high",
+    "configures": [],
     "derivation": "documented",
     "description": "Use cloaking item",
     "evidence": [
@@ -140699,6 +141266,7 @@
     "category": "Engine & diagnostics",
     "cheat_protected": false,
     "confidence": "high",
+    "configures": [],
     "derivation": "documented",
     "description": "Use electro binoculars item",
     "evidence": [
@@ -140895,6 +141463,7 @@
     "category": "Engine & diagnostics",
     "cheat_protected": false,
     "confidence": "high",
+    "configures": [],
     "derivation": "documented",
     "description": "Use e-web item",
     "evidence": [
@@ -140999,6 +141568,7 @@
     "category": "Engine & diagnostics",
     "cheat_protected": false,
     "confidence": "high",
+    "configures": [],
     "derivation": "documented",
     "description": "Use forcefield item",
     "evidence": [
@@ -141122,6 +141692,7 @@
     "category": "Gameplay & combat",
     "cheat_protected": false,
     "confidence": "high",
+    "configures": [],
     "derivation": "documented",
     "description": "Use health dispenser item",
     "evidence": [
@@ -141264,6 +141835,7 @@
     "category": "Engine & diagnostics",
     "cheat_protected": false,
     "confidence": "high",
+    "configures": [],
     "derivation": "documented",
     "description": "Use jetpack item",
     "evidence": [
@@ -141368,6 +141940,7 @@
     "category": "Engine & diagnostics",
     "cheat_protected": false,
     "confidence": "high",
+    "configures": [],
     "derivation": "documented",
     "description": "Use seeker drone item",
     "evidence": [
@@ -141564,6 +142137,7 @@
     "category": "Engine & diagnostics",
     "cheat_protected": false,
     "confidence": "high",
+    "configures": [],
     "derivation": "documented",
     "description": "Use sentry gun item",
     "evidence": [
@@ -141760,6 +142334,7 @@
     "category": "Gameplay & combat",
     "cheat_protected": false,
     "confidence": "high",
+    "configures": [],
     "derivation": "documented",
     "description": "Use specified force power",
     "evidence": [
@@ -141885,6 +142460,7 @@
     "category": "Engine & diagnostics",
     "cheat_protected": false,
     "confidence": "medium",
+    "configures": [],
     "derivation": "code-trace",
     "description": "Runs `CL_Clientinfo_f` in the engine-client module.",
     "evidence": [
@@ -142167,6 +142743,7 @@
     "category": "Graphics & rendering",
     "cheat_protected": false,
     "confidence": "high",
+    "configures": [],
     "derivation": "code-trace",
     "description": "Runs `R_VBOList_f` in the renderer module.",
     "evidence": [
@@ -142499,6 +143076,7 @@
     "category": "Chat & social",
     "cheat_protected": false,
     "confidence": "medium",
+    "configures": [],
     "derivation": "documented",
     "description": "Vgs",
     "evidence": [
@@ -142853,6 +143431,7 @@
     "category": "Graphics & rendering",
     "cheat_protected": false,
     "confidence": "high",
+    "configures": [],
     "derivation": "documented",
     "description": "Restart the renderer - or change the resolution",
     "evidence": [
@@ -143122,6 +143701,7 @@
     "category": "Demos & media",
     "cheat_protected": false,
     "confidence": "medium",
+    "configures": [],
     "derivation": "documented",
     "description": "Record demo to avi",
     "evidence": [
@@ -143608,6 +144188,7 @@
     "category": "Gameplay & combat",
     "cheat_protected": false,
     "confidence": "high",
+    "configures": [],
     "derivation": "code-trace",
     "description": "Runs `CG_Viewpos_f` in the cgame module.",
     "evidence": [
@@ -143843,6 +144424,7 @@
     "category": "Graphics & rendering",
     "cheat_protected": false,
     "confidence": "high",
+    "configures": [],
     "derivation": "documented",
     "description": "Runs `vk_info_f` in the renderer module.",
     "evidence": [
@@ -144162,6 +144744,7 @@
     "category": "Gameplay & combat",
     "cheat_protected": false,
     "confidence": "medium",
+    "configures": [],
     "derivation": "code-trace",
     "description": "Forwards this command to the connected game server.",
     "evidence": [
@@ -144692,6 +145275,7 @@
     "category": "Chat & social",
     "cheat_protected": false,
     "confidence": "high",
+    "configures": [],
     "derivation": "documented",
     "description": "Open voice chat menu",
     "evidence": [
@@ -144823,6 +145407,7 @@
     "category": "Gameplay & combat",
     "cheat_protected": false,
     "confidence": "high",
+    "configures": [],
     "derivation": "code-trace",
     "description": "Forwards this command to the connected game server.",
     "evidence": [
@@ -145164,6 +145749,7 @@
     "category": "Engine & diagnostics",
     "cheat_protected": false,
     "confidence": "high",
+    "configures": [],
     "derivation": "documented",
     "description": "Execute the value of a cvar",
     "evidence": [
@@ -145297,6 +145883,7 @@
     "category": "Engine & diagnostics",
     "cheat_protected": false,
     "confidence": "high",
+    "configures": [],
     "derivation": "documented",
     "description": "Pause command buffer execution",
     "evidence": [
@@ -145463,6 +146050,7 @@
     "category": "Engine & diagnostics",
     "cheat_protected": false,
     "confidence": "high",
+    "configures": [],
     "derivation": "documented",
     "description": "Queues the commands after the semicolon to run after the requested number of rendered frames without pausing unrelated command-buffer work.",
     "evidence": [
@@ -145670,6 +146258,7 @@
     "category": "Engine & diagnostics",
     "cheat_protected": false,
     "confidence": "high",
+    "configures": [],
     "derivation": "documented",
     "description": "Cancels pending frame-based waitf entries whose command text contains the supplied text. An empty string matches every pending waitf.",
     "evidence": [
@@ -145874,6 +146463,7 @@
     "category": "Gameplay & combat",
     "cheat_protected": false,
     "confidence": "medium",
+    "configures": [],
     "derivation": "documented",
     "description": "Forwards this command to the connected game server.",
     "evidence": [
@@ -146223,6 +146813,7 @@
     "category": "Gameplay & combat",
     "cheat_protected": false,
     "confidence": "medium",
+    "configures": [],
     "derivation": "documented",
     "description": "Forwards this command to the connected game server.",
     "evidence": [
@@ -146517,6 +147108,7 @@
     "category": "Gameplay & combat",
     "cheat_protected": false,
     "confidence": "medium",
+    "configures": [],
     "derivation": "code-trace",
     "description": "Runs `CG_LastWeapon_f` in the cgame module.",
     "evidence": [
@@ -146790,6 +147382,7 @@
     "category": "Gameplay & combat",
     "cheat_protected": false,
     "confidence": "high",
+    "configures": [],
     "derivation": "code-trace",
     "description": "Runs `CG_NextWeapon_f` in the cgame module.",
     "evidence": [
@@ -146994,6 +147587,7 @@
     "category": "Gameplay & combat",
     "cheat_protected": false,
     "confidence": "high",
+    "configures": [],
     "derivation": "code-trace",
     "description": "Runs `CG_Weapon_f` in the cgame module.",
     "evidence": [
@@ -147287,6 +147881,7 @@
     "category": "Gameplay & combat",
     "cheat_protected": false,
     "confidence": "high",
+    "configures": [],
     "derivation": "code-trace",
     "description": "Runs `CG_WeaponClean_f` in the cgame module.",
     "evidence": [
@@ -147466,6 +148061,7 @@
     "category": "Gameplay & combat",
     "cheat_protected": false,
     "confidence": "medium",
+    "configures": [],
     "derivation": "documented",
     "description": "Toggle g_weaponDisable bits",
     "evidence": [
@@ -147850,6 +148446,7 @@
     "category": "Gameplay & combat",
     "cheat_protected": false,
     "confidence": "high",
+    "configures": [],
     "derivation": "code-trace",
     "description": "Runs `CG_PrevWeapon_f` in the cgame module.",
     "evidence": [
@@ -148074,6 +148671,7 @@
     "category": "Gameplay & combat",
     "cheat_protected": false,
     "confidence": "medium",
+    "configures": [],
     "derivation": "code-trace",
     "description": "Forwards this command to the connected game server.",
     "evidence": [
@@ -148554,6 +149152,7 @@
     "category": "Engine & diagnostics",
     "cheat_protected": false,
     "confidence": "medium",
+    "configures": [],
     "derivation": "documented",
     "description": "Determines which search path a file was loaded from",
     "evidence": [
@@ -149094,6 +149693,7 @@
     "category": "Server & networking",
     "cheat_protected": false,
     "confidence": "high",
+    "configures": [],
     "derivation": "documented",
     "description": "Add IP to the whitelist",
     "evidence": [
@@ -149481,6 +150081,7 @@
     "category": "Administration",
     "cheat_protected": false,
     "confidence": "medium",
+    "configures": [],
     "derivation": "documented",
     "description": "Forwards this command to the connected game server.",
     "evidence": [
@@ -149972,6 +150573,7 @@
     "category": "Engine & diagnostics",
     "cheat_protected": false,
     "confidence": "medium",
+    "configures": [],
     "derivation": "documented",
     "description": "Write the configuration to file",
     "evidence": [
@@ -150214,6 +150816,7 @@
     "category": "Engine & diagnostics",
     "cheat_protected": false,
     "confidence": "high",
+    "configures": [],
     "derivation": "documented",
     "description": "Write the configuration to file",
     "evidence": [
@@ -150412,6 +151015,7 @@
     "category": "Gameplay & combat",
     "cheat_protected": false,
     "confidence": "medium",
+    "configures": [],
     "derivation": "documented",
     "description": "Forwards this command to the connected game server.",
     "evidence": [
@@ -150767,6 +151371,7 @@
     "category": "Engine & diagnostics",
     "cheat_protected": false,
     "confidence": "high",
+    "configures": [],
     "derivation": "documented",
     "description": "Prints out full detailed zone memory info",
     "evidence": [
@@ -150926,6 +151531,7 @@
     "category": "Engine & diagnostics",
     "cheat_protected": false,
     "confidence": "high",
+    "configures": [],
     "derivation": "code-trace",
     "description": "Runs `Z_MemRecoverTest_f` in the engine-shared module.",
     "evidence": [
@@ -151049,6 +151655,7 @@
     "category": "Engine & diagnostics",
     "cheat_protected": false,
     "confidence": "high",
+    "configures": [],
     "derivation": "documented",
     "description": "Prints out zone memory stats",
     "evidence": [
@@ -151208,6 +151815,7 @@
     "category": "Gameplay & combat",
     "cheat_protected": false,
     "confidence": "high",
+    "configures": [],
     "derivation": "documented",
     "description": "Use binoculars item",
     "evidence": [

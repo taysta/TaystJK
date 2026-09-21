@@ -32,6 +32,7 @@ Allow/disallow sharing current game information on Discord profile status
 | Value type | `bool` |
 | Restart | No latch flag is registered. |
 | Cheat protected | No |
+| Player-settable | Yes |
 
 ## Values
 

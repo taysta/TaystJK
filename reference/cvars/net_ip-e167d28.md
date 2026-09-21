@@ -32,6 +32,7 @@ Controls `net_ip` in the engine-shared module. Consult the cited behavior reads 
 | Value type | `string` |
 | Restart | Yes; the value is latched. |
 | Cheat protected | No |
+| Player-settable | Yes |
 
 ## Values
 

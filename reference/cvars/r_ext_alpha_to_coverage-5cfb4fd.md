@@ -33,6 +33,7 @@ Controls `r_ext_alpha_to_coverage` in the renderer module. Consult the cited beh
 | Value type | `bool` |
 | Restart | Yes; the value is latched. |
 | Cheat protected | No |
+| Player-settable | Yes |
 
 ## Values
 

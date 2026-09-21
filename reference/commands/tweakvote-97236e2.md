@@ -30,6 +30,7 @@ Runs `Svcmd_ToggleTweakVote_f` in the game module.
 | In-game menu | No |
 | Syntax | `tweakVote [arguments]` |
 | Cheat protected | No |
+| Configures | [`g_tweakVote`](/TaystJK/reference/cvars/g_tweakvote-97a7f7d/) |
 
 ## Arguments and gating
 

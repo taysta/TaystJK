@@ -32,6 +32,7 @@ Registered by the current source, but no user-facing behavior description has be
 | Value type | `int` |
 | Restart | No latch flag is registered. |
 | Cheat protected | Yes |
+| Player-settable | Yes |
 
 ## Values
 

@@ -32,6 +32,7 @@ If the difference is greater than X percent of the frag limit... then end match.
 | Value type | `float` |
 | Restart | No latch flag is registered. |
 | Cheat protected | No |
+| Player-settable | Yes |
 
 ## Values
 

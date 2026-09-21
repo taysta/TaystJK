@@ -30,6 +30,7 @@ Runs `Svcmd_ToggleStartingItems_f` in the game module.
 | In-game menu | No |
 | Syntax | `startingItems [arguments]` |
 | Cheat protected | No |
+| Configures | [`g_startingItems`](/TaystJK/reference/cvars/g_startingitems-8ece828/) |
 
 ## Arguments and gating
 

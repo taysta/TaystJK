@@ -72,6 +72,17 @@ FLAG_HELP = {
     "CVAR_INTERNAL": "internal UI/engine state",
     "CVAR_TEMP": "temporary and not archived",
 }
+# Why a cvar is engine-managed, in the reader's terms.  Each clause names the
+# evidence the pipeline actually matched, so the notice stays checkable.
+ENGINE_MANAGED_HELP = {
+    "CVAR_ROM": "it is read-only after registration (<code>CVAR_ROM</code>)",
+    "CVAR_INTERNAL": "it is internal UI/engine state, hidden from every cvar listing (<code>CVAR_INTERNAL</code>)",
+    "implicit-write": (
+        "no registration exists — every cited site only writes it with <code>Cvar_Set</code>, "
+        "so a value you set is replaced the next time that code runs"
+    ),
+    "editorial": "it is internal state rather than a setting; see the description above",
+}
 NETWORK_HELP = {
     "client-only": "Local to the client/UI/renderer.",
     "needs-server-support": "Sent to, or only useful with, a supporting game server.",
@@ -780,6 +791,16 @@ def catalog_app(
           <button class="filter-clear" type="button" data-clear-filter="coverage">Clear in-game coverage</button>
         </div>
       </div>
+      <div class="filter-dropdown" data-filter-dropdown="audience" data-cvar-filter>
+        <button class="filter-toggle" type="button" data-filter-toggle="audience" aria-expanded="false"><span>Settable</span><strong data-filter-summary="audience">Any cvar</strong><span class="filter-chevron" aria-hidden="true"></span></button>
+        <div class="filter-popover" data-filter-popover="audience" hidden>
+          <div class="filter-options">
+            <label class="filter-checkbox"><input type="checkbox" name="audience" value="settable" data-filter="audience"><span>Player-settable</span></label>
+            <label class="filter-checkbox"><input type="checkbox" name="audience" value="engine-managed" data-filter="audience"><span>Engine-managed</span></label>
+          </div>
+          <button class="filter-clear" type="button" data-clear-filter="audience">Clear settable</button>
+        </div>
+      </div>
       <div class="filter-dropdown" data-filter-dropdown="flag" data-cvar-filter>
         <button class="filter-toggle" type="button" data-filter-toggle="flag" aria-expanded="false"><span>Cvar flag</span><strong data-filter-summary="flag">Any flag</strong><span class="filter-chevron" aria-hidden="true"></span></button>
         <div class="filter-popover" data-filter-popover="flag" hidden>
@@ -798,6 +819,7 @@ def catalog_app(
       <label><span>Documentation</span><select name="status" data-filter="status"><option value="">Any status</option><option value="documented">Documented</option><option value="needs-review">Needs review</option></select></label>
       <label><span>Network scope</span><select name="network" data-filter="network"><option value="">Any scope</option></select></label>
       <label><span>In game</span><select name="coverage" data-filter="coverage"><option value="">Any coverage</option><option value="xdocs">Has xdocs entry</option><option value="menu">Has menu entry</option><option value="no-xdocs">Missing from xdocs</option><option value="no-menu">Missing from menus</option></select></label>
+      <label data-cvar-filter><span>Settable</span><select name="audience" data-filter="audience"><option value="">Any cvar</option><option value="settable">Player-settable</option><option value="engine-managed">Engine-managed</option></select></label>
       <label data-cvar-filter><span>Cvar flag</span><select name="flag" data-filter="flag"><option value="">Any flag</option></select></label>
     </div>"""
     return f"""
@@ -872,25 +894,137 @@ def value_table(entry: dict[str, Any]) -> str:
         return "No discrete value list is enforced or documented in the inspected source."
     lines = ["| Value | Meaning | Evidence |", "|:--|:--|:--|"]
     for item in values:
-        evidence = item.get("evidence")
-        if evidence and not evidence.get("url") and evidence.get("path"):
-            sha = entry["source_commit"]
-            evidence = dict(evidence, url=source_url(evidence["path"], evidence["line"], sha))
+        evidence = blamed(item.get("evidence"), entry["source_commit"])
         lines.append(f"| {code(item['value'])} | {item['meaning']} | {evidence_link(evidence) if evidence else '—'} |")
     return "\n".join(lines)
+
+
+def blamed(evidence: dict[str, Any] | None, sha: str) -> dict[str, Any] | None:
+    """Fill in a blame URL for evidence recorded as a bare path and line."""
+    if evidence and not evidence.get("url") and evidence.get("path"):
+        return dict(evidence, url=source_url(evidence["path"], evidence["line"], sha))
+    return evidence
 
 
 def source_url(path: str, line: int, sha: str) -> str:
     return f"https://github.com/taysta/TaystJK/blame/{sha}/{path}#L{line}"
 
 
-def detail_page(entry: dict[str, Any], refs: dict[str, str]) -> str:
+def mirror_target(entry: dict[str, Any], cvar_names: dict[str, str]) -> tuple[str, str | None]:
+    """The staged setting's reference spelling and detail-page URL, if it has one."""
+    target = entry["menu_mirror"]["target"]
+    canonical = cvar_names.get(target.casefold())
+    if not canonical:
+        return target, None
+    return canonical, detail_url({"kind": "cvar", "name": canonical})
+
+
+def mirror_clause(entry: dict[str, Any], cvar_names: dict[str, str]) -> str:
+    """Name the setting a menu staging copy stands in for."""
+    name, url = mirror_target(entry, cvar_names)
+    label = f"<code>{esc(name)}</code>"
+    if url:
+        label = f'<a href="{url}">{label}</a>'
+    return (
+        f"it is the menu's staging copy of {label}, which the menu writes through when the "
+        "change is applied and reads back when it is opened"
+    )
+
+
+def mirror_row(entry: dict[str, Any], cvar_names: dict[str, str]) -> str:
+    """The At-a-glance cell pairing a staging copy with its setting and evidence."""
+    name, url = mirror_target(entry, cvar_names)
+    cell = f"[{code(name)}]({url})" if url else code(name)
+    mirror = entry["menu_mirror"]
+    links = [
+        evidence_link(mirror[key], label)
+        for key, label in (("apply", "written through"), ("read", "read back"))
+        if mirror.get(key)
+    ]
+    return f"{cell} — {', '.join(links)}" if links else cell
+
+
+def command_link(name: str, kind: str = "command") -> str:
+    return f"[{code(name)}]({detail_url({'kind': kind, 'name': name})})"
+
+
+def joined(values: list[str], conjunction: str = "or") -> str:
+    if len(values) < 2:
+        return "".join(values)
+    return f"{', '.join(values[:-1])} {conjunction} {values[-1]}"
+
+
+def bit_notice(entry: dict[str, Any]) -> str | None:
+    """Point a bitmask cvar at the command that owns its bits."""
+    commands = (entry.get("bits") or {}).get("commands") or []
+    if not commands:
+        return None
+    names = joined([f"<code>{esc(name)}</code>" for name in commands])
+    return (
+        f'<p class="ref-notice"><strong>Set with {names}.</strong> '
+        "Each bit is a separate option, so the command toggles one of them per use and leaves "
+        "the rest alone. Setting a raw value by hand replaces every option at once.</p>"
+    )
+
+
+def bit_table(entry: dict[str, Any]) -> list[str]:
+    """The named options behind a bitmask value.
+
+    This replaces the inferred value list, which can only reach the handful of
+    bits with a distinctive read site and would otherwise describe the same bit
+    twice in two vocabularies.
+    """
+    bits = entry.get("bits")
+    if not bits or not bits["options"]:
+        return []
+    commands = bits.get("commands") or []
+    lead = (
+        f"Toggle one with {joined([command_link(name) for name in commands])} "
+        "followed by the bit number."
+        if commands else "Each bit is one option."
+    )
+    # Where the pipeline already traced a bit to the code that reads it, keep
+    # that evidence beside the source table's own label.
+    reads = {str(option.get("value")): option for option in entry.get("values", [])}
+    lines = [
+        "## Bits", "",
+        f"{lead} The value column is that bit on its own — "
+        f"{evidence_link(bits['evidence'], 'the labels come from the source table')}.", "",
+        "| Bit | Value | Meaning | Read by |", "|:--|:--|:--|:--|",
+    ]
+    for option in bits["options"]:
+        read = blamed((reads.get(option["value"]) or {}).get("evidence"), entry["source_commit"])
+        evidence = evidence_link(read) if read else "—"
+        lines.append(
+            f"| {option['bit']} | {code(option['value'])} | {option['meaning']} | {evidence} |"
+        )
+    return lines
+
+
+def engine_managed_notice(entry: dict[str, Any], cvar_names: dict[str, str] | None = None) -> str | None:
+    """Return the callout that separates engine state from a real setting."""
+    basis = entry.get("engine_managed_basis") or []
+    reasons = [ENGINE_MANAGED_HELP[item] for item in basis if item in ENGINE_MANAGED_HELP]
+    if entry.get("menu_mirror") and "menu-mirror" in basis:
+        reasons.append(mirror_clause(entry, cvar_names or {}))
+    if not reasons:
+        return None
+    return (
+        '<p class="ref-notice"><strong>Engine-managed.</strong> The game maintains this value '
+        "itself, so it is not a setting to change by hand: " + "; ".join(reasons) + ".</p>"
+    )
+
+
+def detail_page(entry: dict[str, Any], refs: dict[str, str], cvar_names: dict[str, str] | None = None) -> str:
     origin = entry["origin"]
     lines = [frontmatter(entry["name"], nav_exclude=True), f"# {code(entry['name'])}", "", badge(origin["source"]), ""]
     if entry["status"] != "documented":
         lines.extend([
             '<p class="ref-warning"><strong>Needs review.</strong> The inventory/provenance evidence is recorded, but some behavior, options, or attribution still lacks a direct user-facing source.</p>', "",
         ])
+    for notice in (engine_managed_notice(entry, cvar_names), bit_notice(entry)):
+        if notice:
+            lines.extend([notice, ""])
     lines.extend([entry["description"], "", "## At a glance", "", "| Field | Value |", "|:--|:--|"])
     lines.append(f"| Category | {entry['category']} |")
     if entry.get("feature"):
@@ -932,7 +1066,12 @@ def detail_page(entry: dict[str, Any], refs: dict[str, str]) -> str:
             f"| Value type | {code(entry['value_type'])} |",
             f"| Restart | {'Yes; the value is latched.' if entry['requires_restart'] else 'No latch flag is registered.'} |",
             f"| Cheat protected | {'Yes' if entry['cheat_protected'] else 'No'} |",
-            "", "## Values", "", value_table(entry), "",
+            f"| Player-settable | {'No — the game writes this value.' if entry.get('engine_managed') else 'Yes'} |",
+            *([f"| Staging copy of | {mirror_row(entry, cvar_names or {})} |"] if entry.get("menu_mirror") else []),
+            *([f"| Configure with | {joined([command_link(name) for name in entry['bits']['commands']])} |"]
+              if (entry.get("bits") or {}).get("commands") else []),
+            "",
+            *(bit_table(entry) or ["## Values", "", value_table(entry), ""]),
         ])
         if entry.get("range"):
             lines.extend(["## Enforced ranges", ""])
@@ -958,6 +1097,8 @@ def detail_page(entry: dict[str, Any], refs: dict[str, str]) -> str:
         lines.extend([
             f"| Syntax | {code(entry['syntax'])} |",
             f"| Cheat protected | {'Yes' if entry['cheat_protected'] else 'No'} |",
+            *([f"| Configures | {', '.join(command_link(name, 'cvar') for name in entry['configures'])} |"]
+              if entry.get("configures") else []),
             "", "## Arguments and gating", "",
         ])
         if entry.get("arguments"):
@@ -1154,6 +1295,7 @@ def compact_catalog_entry(entry: dict[str, Any]) -> dict[str, Any]:
             "flags": entry.get("flags", []),
             "value_type": entry.get("value_type"),
             "requires_restart": entry.get("requires_restart", False),
+            "engine_managed": entry.get("engine_managed", False),
             "values": [
                 {"value": option["value"], "meaning": option["meaning"]}
                 for option in entry.get("values", [])
@@ -1495,6 +1637,9 @@ def main() -> None:
     cvars = load(args.cvars)
     commands = load(args.commands)
     entries = cvars + commands
+    # A staging copy links to the setting it stands in for, under the reference's
+    # own spelling; a target the source writes but never registers has no page.
+    cvar_names = {entry["name"].casefold(): entry["name"] for entry in cvars}
     refs = load(Path("_data/reference-meta.json"))["upstream_commits"]
 
     write(Path("index.md"), home_page(cvars, commands))
@@ -1546,7 +1691,7 @@ An entry marked **needs review** is real and has registration evidence, but one 
 - Download the machine-readable [catalog JSON](/TaystJK/assets/data/catalog.json), [full cvars JSON](/TaystJK/assets/data/cvars.json), [full commands JSON](/TaystJK/assets/data/commands.json), [metadata](/TaystJK/assets/data/reference-meta.json), or [JSON Schema](/TaystJK/assets/data/schema.json)
 """)
     for entry in entries:
-        write(Path("reference") / f"{entry['kind']}s" / f"{slug(entry['name'])}.md", detail_page(entry, refs))
+        write(Path("reference") / f"{entry['kind']}s" / f"{slug(entry['name'])}.md", detail_page(entry, refs, cvar_names))
     write(Path("reference/all.md"), static_index_page(cvars, commands))
 
     origin_cards = []

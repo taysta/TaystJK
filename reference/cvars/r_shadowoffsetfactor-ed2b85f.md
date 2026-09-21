@@ -33,6 +33,7 @@ Controls `r_shadowOffsetFactor` in the renderer module. Consult the cited behavi
 | Value type | `float` |
 | Restart | No latch flag is registered. |
 | Cheat protected | Yes |
+| Player-settable | Yes |
 
 ## Values
 

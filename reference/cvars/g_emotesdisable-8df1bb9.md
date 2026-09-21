@@ -12,6 +12,8 @@ search_exclude: false
 
 <p class="ref-warning"><strong>Needs review.</strong> The inventory/provenance evidence is recorded, but some behavior, options, or attribution still lacks a direct user-facing source.</p>
 
+<p class="ref-notice"><strong>Set with <code>toggleEmotes</code>.</strong> Each bit is a separate option, so the command toggles one of them per use and leaves the rest alone. Setting a raw value by hand replaces every option at once.</p>
+
 Configured with /toggleEmotes command
 
 ## At a glance
@@ -32,11 +34,36 @@ Configured with /toggleEmotes command
 | Value type | `bitmask` |
 | Restart | No latch flag is registered. |
 | Cheat protected | No |
+| Player-settable | Yes |
+| Configure with | [`toggleEmotes`](/TaystJK/reference/commands/toggleemotes-c7d169a/) |
 
-## Values
+## Bits
 
-No discrete value list is enforced or documented in the inspected source.
+Toggle one with [`toggleEmotes`](/TaystJK/reference/commands/toggleemotes-c7d169a/) followed by the bit number. The value column is that bit on its own — [the labels come from the source table](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_svcmds.c#L1532).
 
+| Bit | Value | Meaning | Read by |
+|:--|:--|:--|:--|
+| 0 | `1` | Beg | — |
+| 1 | `2` | Breakdance | — |
+| 2 | `4` | Cheer | — |
+| 3 | `8` | Cower | — |
+| 4 | `16` | Dance | — |
+| 5 | `32` | Hug | — |
+| 6 | `64` | Noisy | — |
+| 7 | `128` | Point | — |
+| 8 | `256` | Rage | — |
+| 9 | `512` | Sit | — |
+| 10 | `1024` | Surrender | — |
+| 11 | `2048` | Smack | — |
+| 12 | `4096` | Taunt | — |
+| 13 | `8192` | Victory | — |
+| 14 | `16384` | Jawa run | — |
+| 15 | `32768` | Bernie | — |
+| 16 | `65536` | Sleep | — |
+| 17 | `131072` | Saberflip | — |
+| 18 | `262144` | Slap | — |
+| 19 | `524288` | Signal | — |
+| 20 | `1048576` | Taunt/Flourish/Bow/Meditate outside of duel or while moving | — |
 ## Flags
 
 - `CVAR_ARCHIVE` — saved to the user configuration

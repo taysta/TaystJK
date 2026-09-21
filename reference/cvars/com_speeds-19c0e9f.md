@@ -32,6 +32,7 @@ Controls `com_speeds` in the engine-shared module. Consult the cited behavior re
 | Value type | `enum` |
 | Restart | No latch flag is registered. |
 | Cheat protected | No |
+| Player-settable | Yes |
 
 ## Values
 

@@ -32,6 +32,7 @@ Displays the local time on the scoreboard
 | Value type | `bool` |
 | Restart | No latch flag is registered. |
 | Cheat protected | No |
+| Player-settable | Yes |
 
 ## Values
 

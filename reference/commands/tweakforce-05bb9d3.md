@@ -30,6 +30,7 @@ Runs `Svcmd_ToggleTweakForce_f` in the game module.
 | In-game menu | No |
 | Syntax | `tweakForce [arguments]` |
 | Cheat protected | No |
+| Configures | [`g_tweakForce`](/TaystJK/reference/cvars/g_tweakforce-d616b7a/) |
 
 ## Arguments and gating
 

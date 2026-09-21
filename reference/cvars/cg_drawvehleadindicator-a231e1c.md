@@ -32,6 +32,7 @@ Controls `cg_drawVehLeadIndicator` in the cgame module. Consult the cited behavi
 | Value type | `bool` |
 | Restart | No latch flag is registered. |
 | Cheat protected | No |
+| Player-settable | Yes |
 
 ## Values
 

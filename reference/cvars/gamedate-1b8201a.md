@@ -12,6 +12,8 @@ search_exclude: false
 
 <p class="ref-warning"><strong>Needs review.</strong> The inventory/provenance evidence is recorded, but some behavior, options, or attribution still lacks a direct user-facing source.</p>
 
+<p class="ref-notice"><strong>Engine-managed.</strong> The game maintains this value itself, so it is not a setting to change by hand: it is read-only after registration (<code>CVAR_ROM</code>).</p>
+
 Controls `gamedate` in the game module. Consult the cited behavior reads before relying on values not listed here.
 
 ## At a glance
@@ -32,6 +34,7 @@ Controls `gamedate` in the game module. Consult the cited behavior reads before 
 | Value type | `string` |
 | Restart | No latch flag is registered. |
 | Cheat protected | No |
+| Player-settable | No — the game writes this value. |
 
 ## Values
 

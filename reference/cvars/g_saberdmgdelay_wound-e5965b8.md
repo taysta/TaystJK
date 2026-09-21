@@ -32,6 +32,7 @@ Controls `g_saberDmgDelay_Wound` in the game module. Consult the cited behavior 
 | Value type | `bool` |
 | Restart | No latch flag is registered. |
 | Cheat protected | No |
+| Player-settable | Yes |
 
 ## Values
 

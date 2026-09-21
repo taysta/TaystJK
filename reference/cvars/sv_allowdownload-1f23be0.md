@@ -30,6 +30,7 @@ Allow clients to download mod files via UDP from the server
 | Value type | `bool` |
 | Restart | No latch flag is registered. |
 | Cheat protected | No |
+| Player-settable | Yes |
 
 ## Values
 

@@ -32,6 +32,7 @@ Controls `r_markcount` in the renderer module. Consult the cited behavior reads 
 | Value type | `int` |
 | Restart | No latch flag is registered. |
 | Cheat protected | No |
+| Player-settable | Yes |
 
 ## Values
 

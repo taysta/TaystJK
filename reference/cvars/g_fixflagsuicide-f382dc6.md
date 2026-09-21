@@ -32,6 +32,7 @@ Don't auto return flag when flag carrier suicides.
 | Value type | `bool` |
 | Restart | No latch flag is registered. |
 | Cheat protected | No |
+| Player-settable | Yes |
 
 ## Values
 

@@ -32,6 +32,7 @@ Controls `g_unlaggedProjectileTolerance` in the game module. Consult the cited b
 | Value type | `int` |
 | Restart | No latch flag is registered. |
 | Cheat protected | No |
+| Player-settable | Yes |
 
 ## Values
 

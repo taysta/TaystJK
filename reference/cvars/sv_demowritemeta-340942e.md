@@ -30,6 +30,7 @@ Enables writing metadata to demos, which can be set by the server/game. This is 
 | Value type | `bool` |
 | Restart | No latch flag is registered. |
 | Cheat protected | No |
+| Player-settable | Yes |
 
 ## Values
 

@@ -10,9 +10,9 @@ search_exclude: false
 
 <span class="label ref-origin ref-origin-japro">jaPRO</span>
 
-<p class="ref-warning"><strong>Needs review.</strong> The inventory/provenance evidence is recorded, but some behavior, options, or attribution still lacks a direct user-facing source.</p>
+<p class="ref-notice"><strong>Engine-managed.</strong> The game maintains this value itself, so it is not a setting to change by hand: no registration exists — every cited site only writes it with <code>Cvar_Set</code>, so a value you set is replaced the next time that code runs.</p>
 
-Registered by the current source, but no user-facing behavior description has been verified. Consult the cited behavior reads before relying on values not listed here.
+Menu-only state the UI keeps while reading server info. `UI_UpdateCurrentServerInfo` clears it on every refresh and sets it to 1 when a jaPRO server advertises `JAPRO_CINFO2_WTTRIBES` in its `jcinfo2` key; the in-game tribes menu reads it to offer the class and pack pages. A value set by hand is replaced at the next refresh.
 
 ## At a glance
 
@@ -29,13 +29,17 @@ Registered by the current source, but no user-facing behavior description has be
 | In-game xdocs | No |
 | In-game menu | Yes — [ingame.menu:72](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/assets/japro/ui/jamp/ingame.menu#L72), [ingame.menu:86](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/assets/japro/ui/jamp/ingame.menu#L86), [ingame.menu:898](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/assets/japro/ui/jamp/ingame.menu#L898) |
 | Default | `0` |
-| Value type | `int` |
+| Value type | `bool` |
 | Restart | No latch flag is registered. |
 | Cheat protected | No |
+| Player-settable | No — the game writes this value. |
 
 ## Values
 
-No discrete value list is enforced or documented in the inspected source.
+| Value | Meaning | Evidence |
+|:--|:--|:--|
+| `0` | The server does not advertise tribes mode, or its info has not been read yet. | [codemp/ui/ui_main.c:630](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/ui/ui_main.c#L630) |
+| `1` | The connected jaPRO server advertises tribes mode. | [codemp/ui/ui_main.c:659](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/ui/ui_main.c#L659) |
 
 ## Flags
 

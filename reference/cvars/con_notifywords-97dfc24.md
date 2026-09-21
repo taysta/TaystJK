@@ -33,6 +33,7 @@ Notifies you when defined words are mentioned
 | Value type | `string` |
 | Restart | No latch flag is registered. |
 | Cheat protected | No |
+| Player-settable | Yes |
 
 ## Values
 

@@ -33,6 +33,7 @@ Controls `g_eloKValue2` in the game module. Consult the cited behavior reads bef
 | Value type | `int` |
 | Restart | No latch flag is registered. |
 | Cheat protected | No |
+| Player-settable | Yes |
 
 ## Values
 

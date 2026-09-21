@@ -32,6 +32,7 @@ Controls `r_directedScale` in the renderer module. Consult the cited behavior re
 | Value type | `float` |
 | Restart | No latch flag is registered. |
 | Cheat protected | Yes |
+| Player-settable | Yes |
 
 ## Values
 

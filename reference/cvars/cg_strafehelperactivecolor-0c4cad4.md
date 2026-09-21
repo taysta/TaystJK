@@ -33,6 +33,7 @@ Controls `cg_strafeHelperActiveColor` in the cgame module. Consult the cited beh
 | Value type | `color` |
 | Restart | No latch flag is registered. |
 | Cheat protected | No |
+| Player-settable | Yes |
 
 ## Values
 

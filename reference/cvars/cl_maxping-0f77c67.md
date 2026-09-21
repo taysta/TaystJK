@@ -30,6 +30,7 @@ Max. ping for servers when searching the serverlist
 | Value type | `int` |
 | Restart | No latch flag is registered. |
 | Cheat protected | No |
+| Player-settable | Yes |
 
 ## Values
 

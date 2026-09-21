@@ -32,6 +32,7 @@ Randomness of the colors changing, higher numbers are less random
 | Value type | `int` |
 | Restart | No latch flag is registered. |
 | Cheat protected | No |
+| Player-settable | Yes |
 
 ## Values
 

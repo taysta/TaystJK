@@ -12,6 +12,8 @@ search_exclude: false
 
 <p class="ref-warning"><strong>Needs review.</strong> The inventory/provenance evidence is recorded, but some behavior, options, or attribution still lacks a direct user-facing source.</p>
 
+<p class="ref-notice"><strong>Set with <code>plugin</code> or <code>pluginDisable</code>.</strong> Each bit is a separate option, so the command toggles one of them per use and leaves the rest alone. Setting a raw value by hand replaces every option at once.</p>
+
 'enable' holstered saber (512) and ledge grab (1536) by default, to avoid missing JA+ animations
 
 ## At a glance
@@ -32,16 +34,44 @@ search_exclude: false
 | Value type | `bitmask` |
 | Restart | No latch flag is registered. |
 | Cheat protected | No |
+| Player-settable | Yes |
+| Configure with | [`plugin`](/TaystJK/reference/commands/plugin-fd8c7c8/) or [`pluginDisable`](/TaystJK/reference/commands/plugindisable-98b2c24/) |
 
-## Values
+## Bits
 
-| Value | Meaning | Evidence |
-|:--|:--|:--|
-| `524288` | Enables the `JAPRO_PLUGIN_BHOP` code path. | [codemp/game/bg_public.h:538](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/bg_public.h#L538) |
-| `134217728` | Enables the `JAPRO_PLUGIN_CENTERMUZZLE` code path. | [codemp/game/bg_public.h:546](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/bg_public.h#L546) |
-| `2` | Enables the `JAPRO_PLUGIN_DUELSEEOTHERS` code path. | [codemp/game/bg_public.h:516](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/bg_public.h#L516) |
-| `1048576` | Enables the `JAPRO_PLUGIN_NOROLL` code path. | [codemp/game/bg_public.h:539](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/bg_public.h#L539) |
+Toggle one with [`plugin`](/TaystJK/reference/commands/plugin-fd8c7c8/) or [`pluginDisable`](/TaystJK/reference/commands/plugindisable-98b2c24/) followed by the bit number. The value column is that bit on its own — [the labels come from the source table](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_consolecmds.c#L1257).
 
+| Bit | Value | Meaning | Read by |
+|:--|:--|:--|:--|
+| 0 | `1` | New drain FX | — |
+| 1 | `2` | Duel see others | [codemp/game/bg_public.h:516](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/bg_public.h#L516) |
+| 2 | `4` | End duel rotation | — |
+| 3 | `8` | No black sabers | — |
+| 4 | `16` | No auto replier | — |
+| 5 | `32` | New force effect | — |
+| 6 | `64` | No new deathmsg | — |
+| 7 | `128` | New sight effect | — |
+| 8 | `256` | No alt dim effect | — |
+| 9 | `512` | Holstered saber | — |
+| 10 | `1024` | Ledge grab | — |
+| 11 | `2048` | Disable New DFA Primary | — |
+| 12 | `4096` | Disable New DFA Alt | — |
+| 13 | `8192` | No SP Cartwheel | — |
+| 14 | `16384` | No Auto DL Redirect | — |
+| 15 | `32768` | No Kata | — |
+| 16 | `65536` | No Butterfly | — |
+| 17 | `131072` | No Stab | — |
+| 18 | `262144` | No DFA | — |
+| 19 | `524288` | Disable forcejumps | [codemp/game/bg_public.h:538](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/bg_public.h#L538) |
+| 20 | `1048576` | Disable rolls | [codemp/game/bg_public.h:539](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/bg_public.h#L539) |
+| 21 | `2097152` | Disable cartwheels | — |
+| 22 | `4194304` | New run animation | — |
+| 23 | `8388608` | Disable duel tele | — |
+| 24 | `16777216` | Disable centerprint checkpoints | — |
+| 25 | `33554432` | Show chatbox checkpoints | — |
+| 26 | `67108864` | Disable damage numbers | — |
+| 27 | `134217728` | Centermuzzle | [codemp/game/bg_public.h:546](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/bg_public.h#L546) |
+| 28 | `268435456` | Show checkpoints in console only | — |
 ## Flags
 
 - `CVAR_ARCHIVE` — saved to the user configuration

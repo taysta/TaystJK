@@ -12,7 +12,9 @@ search_exclude: false
 
 <p class="ref-warning"><strong>Needs review.</strong> The inventory/provenance evidence is recorded, but some behavior, options, or attribution still lacks a direct user-facing source.</p>
 
-Registered by the current source, but no user-facing behavior description has been verified. Consult the cited behavior reads before relying on values not listed here.
+<p class="ref-notice"><strong>Engine-managed.</strong> The game maintains this value itself, so it is not a setting to change by hand: no registration exists — every cited site only writes it with <code>Cvar_Set</code>, so a value you set is replaced the next time that code runs.</p>
+
+Menu-only state the UI keeps while reading server info. `UI_UpdateCurrentServerInfo` clears it on every refresh and sets it to 1 when a jaPRO server advertises `JAPRO_CINFO2_RACEMODE` in its `jcinfo2` key. A value set by hand is replaced at the next refresh.
 
 ## At a glance
 
@@ -29,13 +31,17 @@ Registered by the current source, but no user-facing behavior description has be
 | In-game xdocs | No |
 | In-game menu | Yes — [ingame.menu:151](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/assets/japro/ui/jamp/ingame.menu#L151), [ingame.menu:184](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/assets/japro/ui/jamp/ingame.menu#L184), [ingame.menu:805](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/assets/japro/ui/jamp/ingame.menu#L805) |
 | Default | `0` |
-| Value type | `int` |
+| Value type | `bool` |
 | Restart | No latch flag is registered. |
 | Cheat protected | No |
+| Player-settable | No — the game writes this value. |
 
 ## Values
 
-No discrete value list is enforced or documented in the inspected source.
+| Value | Meaning | Evidence |
+|:--|:--|:--|
+| `0` | The server does not advertise race mode, or its info has not been read yet. | [codemp/ui/ui_main.c:629](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/ui/ui_main.c#L629) |
+| `1` | The connected jaPRO server advertises race mode. | [codemp/ui/ui_main.c:656](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/ui/ui_main.c#L656) |
 
 ## Flags
 

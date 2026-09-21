@@ -33,6 +33,7 @@ Controls `r_shadowMapSize` in the renderer module. Consult the cited behavior re
 | Value type | `int` |
 | Restart | Yes; the value is latched. |
 | Cheat protected | No |
+| Player-settable | Yes |
 
 ## Values
 

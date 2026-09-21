@@ -32,6 +32,7 @@ Controls `r_displayRefresh` in the renderer module. Consult the cited behavior r
 | Value type | `int` |
 | Restart | Yes; the value is latched. |
 | Cheat protected | No |
+| Player-settable | Yes |
 
 ## Values
 

@@ -30,6 +30,7 @@ Enables fast HTTP downloads for referenced PK3 files. When enabled, the server a
 | Value type | `bool` |
 | Restart | Yes; the value is latched. |
 | Cheat protected | No |
+| Player-settable | Yes |
 
 ## Values
 

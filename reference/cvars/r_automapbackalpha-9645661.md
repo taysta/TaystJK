@@ -33,6 +33,7 @@ Controls `r_autoMapBackAlpha` in the renderer module. Consult the cited behavior
 | Value type | `float` |
 | Restart | No latch flag is registered. |
 | Cheat protected | No |
+| Player-settable | Yes |
 
 ## Values
 

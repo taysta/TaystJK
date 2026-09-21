@@ -12,6 +12,8 @@ search_exclude: false
 
 <p class="ref-warning"><strong>Needs review.</strong> The inventory/provenance evidence is recorded, but some behavior, options, or attribution still lacks a direct user-facing source.</p>
 
+<p class="ref-notice"><strong>Set with <code>strafeHelper</code>.</strong> Each bit is a separate option, so the command toggles one of them per use and leaves the rest alone. Setting a raw value by hand replaces every option at once.</p>
+
 Configure with the /strafehelper command
 
 ## At a glance
@@ -33,14 +35,36 @@ Configure with the /strafehelper command
 | Value type | `bitmask` |
 | Restart | No latch flag is registered. |
 | Cheat protected | No |
+| Player-settable | Yes |
+| Configure with | [`strafeHelper`](/TaystJK/reference/commands/strafehelper-bdb34b4/) |
 
-## Values
+## Bits
 
-| Value | Meaning | Evidence |
-|:--|:--|:--|
-| `16384` | Enables the `SHELPER_CROSSHAIR` code path. | [codemp/cgame/hud_strafehelper.h:76](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/hud_strafehelper.h#L76) |
-| `2` | Enables the `SHELPER_UPDATED` code path. | [codemp/cgame/hud_strafehelper.h:63](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/hud_strafehelper.h#L63) |
+Toggle one with [`strafeHelper`](/TaystJK/reference/commands/strafehelper-bdb34b4/) followed by the bit number. The value column is that bit on its own — [the labels come from the source table](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_consolecmds.c#L1108).
 
+| Bit | Value | Meaning | Read by |
+|:--|:--|:--|:--|
+| 0 | `1` | Original style | — |
+| 1 | `2` | Updated style | [codemp/cgame/hud_strafehelper.h:63](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/hud_strafehelper.h#L63) |
+| 2 | `4` | Cgaz style | — |
+| 3 | `8` | Warsow style | — |
+| 4 | `16` | Sound | — |
+| 5 | `32` | W | — |
+| 6 | `64` | WA | — |
+| 7 | `128` | WD | — |
+| 8 | `256` | A | — |
+| 9 | `512` | D | — |
+| 10 | `1024` | Rear | — |
+| 11 | `2048` | Center | — |
+| 12 | `4096` | Accel bar | — |
+| 13 | `8192` | Weze style | — |
+| 14 | `16384` | Line Crosshair | [codemp/cgame/hud_strafehelper.h:76](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/hud_strafehelper.h#L76) |
+| 15 | `32768` | S | — |
+| 16 | `65536` | SA | — |
+| 17 | `131072` | SD | — |
+| 18 | `262144` | Small Lines | — |
+| 19 | `524288` | Max | — |
+| 20 | `1048576` | Accel Zones | — |
 ## Flags
 
 - `CVAR_ARCHIVE` — saved to the user configuration

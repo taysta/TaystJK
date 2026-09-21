@@ -20,6 +20,22 @@ const cvar = catalog.prepareEntry({
   menu: false,
   values: [{ value: "1", meaning: "Enable bloom" }]
 });
+const engineManaged = catalog.prepareEntry({
+  kind: "cvar",
+  name: "ui_tribesMode",
+  summary: "Report whether the connected jaPRO server runs tribes mode",
+  category: "HUD & interface",
+  feature: null,
+  module: "ui",
+  renderer: [],
+  flags: [],
+  network: "client-only",
+  origin: "japro",
+  xdocs: false,
+  menu: true,
+  engine_managed: true,
+  values: []
+});
 const command = catalog.prepareEntry({
   kind: "command",
   name: "download",
@@ -46,6 +62,7 @@ function state(overrides = {}) {
     status: "",
     network: "",
     coverage: "",
+    audience: "",
     flag: "",
     query: "",
     tokens: [],
@@ -69,6 +86,15 @@ assert.equal(catalog.entryMatches(command, state({ feature: "Bloom" })), false);
 assert.equal(catalog.entryMatches(cvar, state({ coverage: "xdocs" })), true);
 assert.equal(catalog.entryMatches(cvar, state({ coverage: "menu" })), false);
 assert.equal(catalog.entryMatches(command, state({ coverage: ["xdocs", "menu"] })), true);
+assert.equal(catalog.entryMatches(engineManaged, state({ audience: "engine-managed" })), true);
+assert.equal(catalog.entryMatches(engineManaged, state({ audience: "settable" })), false);
+assert.equal(catalog.entryMatches(cvar, state({ audience: "settable" })), true);
+assert.equal(catalog.entryMatches(cvar, state({ audience: "engine-managed" })), false);
+// A command is neither; the filter is offered for cvars only.
+assert.equal(catalog.entryMatches(command, state({ audience: ["settable", "engine-managed"] })), false);
+const engineManagedCvars = generatedEntries.filter((entry) => catalog.entryMatches(entry, state({ kind: "cvar", audience: "engine-managed" })));
+assert.ok(engineManagedCvars.length > 0 && engineManagedCvars.every((entry) => entry.engine_managed === true));
+assert.ok(engineManagedCvars.some((entry) => entry.name === "ui_tribesMode"));
 assert.equal(catalog.defaultSort, "origin");
 assert.deepEqual(catalog.sortEntries([command, cvar], state({ query: "r_bloom", tokens: ["r_bloom"], sort: "relevance" }))[0], cvar);
 assert.deepEqual(catalog.sortEntries([command, cvar], state({ sort: "feature" }))[0], cvar);

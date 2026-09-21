@@ -12,6 +12,8 @@ search_exclude: false
 
 <p class="ref-warning"><strong>Needs review.</strong> The inventory/provenance evidence is recorded, but some behavior, options, or attribution still lacks a direct user-facing source.</p>
 
+<p class="ref-notice"><strong>Set with <code>toggleAdmin</code>.</strong> Each bit is a separate option, so the command toggles one of them per use and leaves the rest alone. Setting a raw value by hand replaces every option at once.</p>
+
 Controls `g_fullAdminLevel` in the game module. Consult the cited behavior reads before relying on values not listed here.
 
 ## At a glance
@@ -32,13 +34,38 @@ Controls `g_fullAdminLevel` in the game module. Consult the cited behavior reads
 | Value type | `bitmask` |
 | Restart | No latch flag is registered. |
 | Cheat protected | No |
+| Player-settable | Yes |
+| Configure with | [`toggleAdmin`](/TaystJK/reference/commands/toggleadmin-b7c3f7b/) |
 
-## Values
+## Bits
 
-| Value | Meaning | Evidence |
-|:--|:--|:--|
-| `1048576` | Enables the `JAPRO_ACCOUNTFLAG_A_CALLVOTE` code path. | [codemp/game/g_local.h:368](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_local.h#L368) |
+Toggle one with [`toggleAdmin`](/TaystJK/reference/commands/toggleadmin-b7c3f7b/) followed by the bit number. The value column is that bit on its own — [the labels come from the source table](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_svcmds.c#L1305).
 
+| Bit | Value | Meaning | Read by |
+|:--|:--|:--|:--|
+| 0 | `1` | Amtele | — |
+| 1 | `2` | Amfreeze | — |
+| 2 | `4` | Amtelemark | — |
+| 3 | `8` | Amban | — |
+| 4 | `16` | Amkick | — |
+| 5 | `32` | NPC | — |
+| 6 | `64` | Noclip | — |
+| 7 | `128` | Grantadmin | — |
+| 8 | `256` | Ammap | — |
+| 9 | `512` | Ampsay | — |
+| 10 | `1024` | Amforceteam | — |
+| 11 | `2048` | Amlockteam | — |
+| 12 | `4096` | Amvstr | — |
+| 13 | `8192` | See IPs | — |
+| 14 | `16384` | Amrename | — |
+| 15 | `32768` | Amlistmaps | — |
+| 16 | `65536` | Amwhois | — |
+| 17 | `131072` | Amlookup | — |
+| 18 | `262144` | Use hide | — |
+| 19 | `524288` | See hiders | — |
+| 20 | `1048576` | Callvote | [codemp/game/g_local.h:368](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_local.h#L368) |
+| 21 | `2097152` | Killvote | — |
+| 22 | `4194304` | Read Amsay | — |
 ## Flags
 
 - `CVAR_ARCHIVE` — saved to the user configuration

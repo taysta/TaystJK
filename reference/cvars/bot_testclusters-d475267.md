@@ -30,6 +30,7 @@ Test the AAS clusters
 | Value type | `int` |
 | Restart | No latch flag is registered. |
 | Cheat protected | Yes |
+| Player-settable | Yes |
 
 ## Values
 

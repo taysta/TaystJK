@@ -32,6 +32,7 @@ Controls `r_DynamicGlowWidth` in the renderer module. Consult the cited behavior
 | Value type | `int` |
 | Restart | Yes; the value is latched. |
 | Cheat protected | No |
+| Player-settable | Yes |
 
 ## Values
 

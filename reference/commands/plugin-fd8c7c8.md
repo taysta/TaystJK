@@ -30,6 +30,7 @@ Runs `CG_PluginDisable_f` in the cgame module.
 | In-game menu | No |
 | Syntax | `plugin [arguments]` |
 | Cheat protected | No |
+| Configures | [`cp_pluginDisable`](/TaystJK/reference/cvars/cp_plugindisable-715762d/) |
 
 ## Arguments and gating
 

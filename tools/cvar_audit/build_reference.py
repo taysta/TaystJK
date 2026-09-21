@@ -603,6 +603,144 @@ def registration_baselines(name: str, inventories: dict[str, set[str]]) -> list[
     return [baseline for baseline, names in inventories.items() if name.casefold() not in names]
 
 
+# Flags the engine itself uses to keep a cvar out of the player's hands, plus
+# the shape of a cvar the code only ever writes: declared nowhere, so nothing
+# the player types survives the next write.  Each basis names its own evidence.
+ENGINE_MANAGED_FLAGS = ("CVAR_ROM", "CVAR_INTERNAL")
+
+
+def engine_managed_basis(
+    flags: list[str], records: list[dict[str, Any]], mirror: dict[str, Any] | None = None,
+) -> list[str]:
+    """Return why a cvar is engine-managed, or an empty list when it is not."""
+    basis = [flag for flag in ENGINE_MANAGED_FLAGS if flag in flags]
+    if records and all(record["kind"].startswith("implicit") for record in records):
+        basis.append("implicit-write")
+    if mirror:
+        basis.append("menu-mirror")
+    return basis
+
+
+# ``Cvar_Set("r_picmip", UI_Cvar_VariableString("ui_r_picmip"))``.  The menus
+# stage a setting in a ``ui_`` copy so the player can discard the change, then
+# write it through on accept; ``UI_GetVideoSetup`` reads the real value back the
+# other way.  Either direction names the pair, so the mirror's page can say what
+# it actually augments instead of leaving a reader to guess from the name.
+MENU_MIRROR = re.compile(
+    r'Cvar_Set\s*\(\s*"([A-Za-z0-9_]+)"\s*,\s*'
+    r'(?:UI_)?Cvar_VariableString\s*\(\s*"([A-Za-z0-9_]+)"\s*\)'
+)
+
+
+# ``static bitInfo_T strafeTweaks[] = { {"Original style"}, ... };`` followed by
+# the console handler that toggles one bit of a cvar per invocation.  The table
+# is the only place each bit is named, and the handler is the intended way to
+# change the cvar, so both belong on the cvar's page.
+BIT_TABLE = re.compile(r'\bbitInfo_T\s+(\w+)\s*\[\s*\]\s*=\s*\{(.*?)\}\s*;', re.S)
+BIT_LABEL = re.compile(r'\{\s*"((?:[^"\\]|\\.)*)"\s*\}')
+BIT_SET = re.compile(r'Cvar_Set\s*\(\s*"([A-Za-z0-9_]+)"')
+BIT_HANDLER = re.compile(r'\bvoid\s+(\w+)\s*\(\s*void\s*\)\s*\{')
+
+
+def calling_handler(files: list[tuple[str, str]], handler: str) -> str | None:
+    """The function that calls ``handler``, for a dispatcher one hop from a command.
+
+    ``cosmetics`` registers ``CG_Cosmetics_f``, which forwards to the jaPRO
+    variant holding the bit table, so the table's own function is not the name
+    the command registration uses.
+    """
+    call = re.compile(rf"\b{re.escape(handler)}\s*\(")
+    for _, text in files:
+        masked = mask_comments(text)
+        for definition in BIT_HANDLER.finditer(masked):
+            # Match on the body, so the handler's own definition is not a call.
+            if definition.group(1) == handler:
+                continue
+            if call.search(balanced_body(masked, definition.end() - 1)):
+                return definition.group(1)
+    return None
+
+
+def balanced_body(text: str, brace: int) -> str:
+    """Return the block starting at ``brace``, ignoring braces inside strings."""
+    depth = 0
+    in_string = escaped = False
+    for pos in range(brace, len(text)):
+        ch = text[pos]
+        if in_string:
+            if escaped:
+                escaped = False
+            elif ch == "\\":
+                escaped = True
+            elif ch == '"':
+                in_string = False
+        elif ch == '"':
+            in_string = True
+        elif ch == "{":
+            depth += 1
+        elif ch == "}":
+            depth -= 1
+            if depth == 0:
+                return text[brace + 1:pos]
+    return text[brace + 1:]
+
+
+def bit_option_index(files: list[tuple[str, str]]) -> dict[str, dict[str, Any]]:
+    """Pair each bit-label table with the cvars its console command toggles.
+
+    The search is bounded by the handler's own body, not by the next table: the
+    last table in a file would otherwise absorb every later function.
+    ``toggleAdmin`` drives two cvars from one table, so each target is recorded
+    rather than only the first.
+    """
+    index: dict[str, dict[str, Any]] = {}
+    for path, text in files:
+        masked = mask_comments(text)
+        tables = list(BIT_TABLE.finditer(masked))
+        for position, match in enumerate(tables):
+            table = match.group(1)
+            labels = BIT_LABEL.findall(match.group(2))
+            end = tables[position + 1].start() if position + 1 < len(tables) else len(masked)
+            following = masked[match.end():end]
+            handler = BIT_HANDLER.search(following)
+            # An account-flag table with no cvar behind it is not a cvar's bits.
+            if not handler or not labels:
+                continue
+            region = balanced_body(following, following.index("{", handler.end() - 1))
+            if table not in region:
+                continue
+            # Bit order is the array position; the trailing source comments
+            # number from 0 in some tables and from 1 in others.
+            options = [
+                {"bit": bit, "value": str(1 << bit), "meaning": label}
+                for bit, label in enumerate(labels) if label.strip()
+            ]
+            evidence = {"path": path, "line": masked[:match.start()].count("\n") + 1}
+            for target in unique(BIT_SET.findall(region)):
+                index[target.casefold()] = {
+                    "handler": handler.group(1), "options": options, "evidence": evidence,
+                }
+    return index
+
+
+def menu_mirror_index(files: list[tuple[str, str]]) -> dict[str, dict[str, Any]]:
+    """Pair each menu staging copy with the cvar it writes through to."""
+    mirrors: dict[str, dict[str, Any]] = {}
+    for path, text in files:
+        for number, line in enumerate(mask_comments(text).splitlines(), 1):
+            for target, source in MENU_MIRROR.findall(line):
+                staged = source.casefold().startswith("ui_")
+                if staged == target.casefold().startswith("ui_"):
+                    continue
+                mirror = source if staged else target
+                item = mirrors.setdefault(
+                    mirror.casefold(),
+                    {"name": mirror, "target": target if staged else source, "apply": None, "read": None},
+                )
+                item["apply" if staged else "read"] = {"path": path, "line": number}
+    return mirrors
+
+
 CONSTANT_BOUND = re.compile(r"[+-]?(?:0[xX][0-9a-fA-F]+|\d+\.?\d*(?:[eE][+-]?\d+)?)[uUlLfF]*")
 MACRO_BOUND = re.compile(r"[A-Z][A-Z0-9_]{2,}")
 # ``r_bloom = ri.Cvar_Get("r_bloom", ...)``.  Registrations reached through an
@@ -774,6 +912,23 @@ def main() -> None:
     }
     wanted |= wanted_handlers
     occurrences = build_occurrence_index(files, wanted)
+    menu_mirrors = menu_mirror_index(files)
+    bit_options = bit_option_index(files)
+    cvar_names = {key: records[0]["name"] for key, records in cvar_groups.items()}
+    # One handler can carry several registered names: `plugin` and
+    # `pluginDisable` are the same command, so a cvar names both.
+    command_by_handler: dict[str, list[str]] = defaultdict(list)
+    for records in command_groups.values():
+        for record in records:
+            if record.get("handler"):
+                command_by_handler[record["handler"].casefold()].append(records[0]["name"])
+    command_by_handler = {
+        handler: sorted(unique(names)) for handler, names in command_by_handler.items()
+    }
+    for item in bit_options.values():
+        handler = item["handler"]
+        if handler and handler.casefold() not in command_by_handler:
+            item["handler"] = calling_handler(files, handler) or handler
     file_map = dict(files)
     definitions = define_index(files)
     ranges, range_aliases = range_index(files, definitions)
@@ -904,6 +1059,16 @@ def main() -> None:
         status = origin.get("status", "needs-review")
         if (not documented and not override.get("summary")) or value_type == "unknown":
             status = "needs-review"
+        bits = bit_options.get(key)
+        mirror = menu_mirrors.get(key)
+        basis = engine_managed_basis(flags, records, mirror)
+        # An override settles the cases the flags and registration shape get
+        # wrong in either direction: a hand-written hack the code never flags,
+        # or a menu setting that happens to carry CVAR_INTERNAL.
+        if isinstance(override.get("engine_managed"), bool):
+            basis = basis if override["engine_managed"] else []
+            if override["engine_managed"] and not basis:
+                basis = ["editorial"]
         primary = choose_module(name, modules)
         cvars.append({
             "name": name, "kind": "cvar", "module": primary,
@@ -916,6 +1081,22 @@ def main() -> None:
             ],
             "default_macro": default_macro, "default_macro_kind": default_macro_kind,
             "flags": flags, "value_type": value_type, "range": cvar_ranges,
+            "engine_managed": bool(basis), "engine_managed_basis": basis,
+            "bits": {
+                "commands": command_by_handler.get((bits["handler"] or "").casefold(), []),
+                "options": bits["options"],
+                "evidence": dict(
+                    bits["evidence"],
+                    url=source_url(bits["evidence"]["path"], bits["evidence"]["line"], current_sha),
+                ),
+            } if bits else None,
+            "menu_mirror": {
+                "target": mirror["target"],
+                "apply": mirror["apply"] and dict(
+                    mirror["apply"], url=source_url(mirror["apply"]["path"], mirror["apply"]["line"], current_sha)),
+                "read": mirror["read"] and dict(
+                    mirror["read"], url=source_url(mirror["read"]["path"], mirror["read"]["line"], current_sha)),
+            } if mirror else None,
             "values": values, "summary": summary, "description": description,
             "derivation": override.get("derivation", derivation), "network": network,
             "requires_restart": "CVAR_LATCH" in flags, "cheat_protected": "CVAR_CHEAT" in flags,
@@ -989,6 +1170,12 @@ def main() -> None:
             status = "needs-review"
         commands.append({
             "name": name, "kind": "command", "module": primary, "modules": modules,
+            "configures": sorted(
+                cvar_names[target] for target, item in bit_options.items()
+                if item["handler"] and item["handler"].casefold() in {
+                    handler.casefold() for handler in handlers
+                } and target in cvar_names
+            ),
             "renderer": renderers, "syntax": override.get("syntax", syntax),
             "arguments": override.get("arguments", []), "summary": summary,
             "description": override.get("description", summary),

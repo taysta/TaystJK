@@ -32,6 +32,7 @@ Toggle the leg dangle animation which is not predicted and results in jerkyness 
 | Value type | `bool` |
 | Restart | No latch flag is registered. |
 | Cheat protected | No |
+| Player-settable | Yes |
 
 ## Values
 

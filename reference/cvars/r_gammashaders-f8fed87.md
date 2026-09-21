@@ -32,6 +32,7 @@ Set gamma using pixel shaders inside the game window only.
 | Value type | `bool` |
 | Restart | Yes; the value is latched. |
 | Cheat protected | No |
+| Player-settable | Yes |
 
 ## Values
 

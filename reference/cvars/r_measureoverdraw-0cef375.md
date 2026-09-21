@@ -32,6 +32,7 @@ Controls `r_measureOverdraw` in the renderer module. Consult the cited behavior 
 | Value type | `enum` |
 | Restart | No latch flag is registered. |
 | Cheat protected | Yes |
+| Player-settable | Yes |
 
 ## Values
 

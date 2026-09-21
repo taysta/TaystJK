@@ -32,6 +32,7 @@ Controls `r_nobind` in the renderer module. Consult the cited behavior reads bef
 | Value type | `bool` |
 | Restart | No latch flag is registered. |
 | Cheat protected | Yes |
+| Player-settable | Yes |
 
 ## Values
 

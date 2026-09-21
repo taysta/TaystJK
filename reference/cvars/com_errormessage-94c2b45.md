@@ -10,6 +10,8 @@ search_exclude: false
 
 <span class="label ref-origin ref-origin-basejka">Base Jedi Academy</span>
 
+<p class="ref-notice"><strong>Engine-managed.</strong> The game maintains this value itself, so it is not a setting to change by hand: it is read-only after registration (<code>CVAR_ROM</code>).</p>
+
 Give com_errorMessage a default so it won't come back to life after a resetDefaults
 
 ## At a glance
@@ -30,6 +32,7 @@ Give com_errorMessage a default so it won't come back to life after a resetDefau
 | Value type | `string` |
 | Restart | No latch flag is registered. |
 | Cheat protected | No |
+| Player-settable | No — the game writes this value. |
 
 ## Values
 

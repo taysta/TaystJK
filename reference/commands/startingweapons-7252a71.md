@@ -30,6 +30,7 @@ Runs `Svcmd_ToggleStartingWeapons_f` in the game module.
 | In-game menu | No |
 | Syntax | `startingWeapons [arguments]` |
 | Cheat protected | No |
+| Configures | [`g_startingWeapons`](/TaystJK/reference/cvars/g_startingweapons-ba463fc/) |
 
 ## Arguments and gating
 

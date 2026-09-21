@@ -32,6 +32,7 @@ Controls `s_lip_threshold_1` in the engine-client module. Consult the cited beha
 | Value type | `float` |
 | Restart | No latch flag is registered. |
 | Cheat protected | No |
+| Player-settable | Yes |
 
 ## Values
 

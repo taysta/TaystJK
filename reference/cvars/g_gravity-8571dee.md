@@ -32,6 +32,7 @@ Controls `g_gravity` in the game module. Consult the cited behavior reads before
 | Value type | `float` |
 | Restart | No latch flag is registered. |
 | Cheat protected | No |
+| Player-settable | Yes |
 
 ## Values
 

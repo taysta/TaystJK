@@ -32,6 +32,7 @@ Controls `cl_lanForcePackets` in the engine-client module. Consult the cited beh
 | Value type | `bool` |
 | Restart | No latch flag is registered. |
 | Cheat protected | No |
+| Player-settable | Yes |
 
 ## Values
 

@@ -321,6 +321,84 @@
         "unknown"
       ]
     },
+    "engine_managed": {
+      "type": "boolean"
+    },
+    "engine_managed_basis": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": {
+        "enum": [
+          "CVAR_ROM",
+          "CVAR_INTERNAL",
+          "implicit-write",
+          "menu-mirror",
+          "editorial"
+        ]
+      }
+    },
+    "bits": {
+      "type": ["object", "null"],
+      "required": ["commands", "options", "evidence"],
+      "properties": {
+        "commands": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "options": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "object",
+            "required": ["bit", "value", "meaning"],
+            "properties": {
+              "bit": {
+                "type": "integer",
+                "minimum": 0
+              },
+              "value": {
+                "type": "string"
+              },
+              "meaning": {
+                "type": "string",
+                "minLength": 1
+              }
+            }
+          }
+        },
+        "evidence": {
+          "type": "object"
+        }
+      }
+    },
+    "configures": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "menu_mirror": {
+      "type": ["object", "null"],
+      "required": ["target", "apply", "read"],
+      "properties": {
+        "target": {
+          "type": "string",
+          "minLength": 1
+        },
+        "apply": {
+          "type": ["object", "null"]
+        },
+        "read": {
+          "type": ["object", "null"]
+        }
+      }
+    },
     "range": {
       "type": "array",
       "items": {
@@ -439,7 +517,11 @@
           "value_type",
           "range",
           "values",
-          "requires_restart"
+          "requires_restart",
+          "engine_managed",
+          "engine_managed_basis",
+          "menu_mirror",
+          "bits"
         ]
       }
     },
@@ -456,7 +538,8 @@
           "syntax",
           "arguments",
           "gating",
-          "handlers"
+          "handlers",
+          "configures"
         ]
       }
     }

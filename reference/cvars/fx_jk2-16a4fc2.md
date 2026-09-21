@@ -30,6 +30,7 @@ Displays jk2 style projectile fx - 0: Disabled - 1: Enabled
 | Value type | `bool` |
 | Restart | No latch flag is registered. |
 | Cheat protected | No |
+| Player-settable | Yes |
 
 ## Values
 

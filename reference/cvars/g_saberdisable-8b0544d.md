@@ -12,6 +12,8 @@ search_exclude: false
 
 <p class="ref-warning"><strong>Needs review.</strong> The inventory/provenance evidence is recorded, but some behavior, options, or attribution still lacks a direct user-facing source.</p>
 
+<p class="ref-notice"><strong>Set with <code>saberDisable</code>.</strong> Each bit is a separate option, so the command toggles one of them per use and leaves the rest alone. Setting a raw value by hand replaces every option at once.</p>
+
 Configured with /saberDisable command.
 
 ## At a glance
@@ -32,16 +34,22 @@ Configured with /saberDisable command.
 | Value type | `bitmask` |
 | Restart | No latch flag is registered. |
 | Cheat protected | No |
+| Player-settable | Yes |
+| Configure with | [`saberDisable`](/TaystJK/reference/commands/saberdisable-cf2b094/) |
 
-## Values
+## Bits
 
-| Value | Meaning | Evidence |
-|:--|:--|:--|
-| `1` | No blue | [codemp/game/g_local.h:296](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_local.h#L296) |
-| `32` | Desann only | [codemp/game/g_local.h:301](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_local.h#L301) |
-| `64` | Tavion only | [codemp/game/g_local.h:302](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_local.h#L302) |
-| `2` | No yellow | [codemp/game/g_local.h:297](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_local.h#L297) |
+Toggle one with [`saberDisable`](/TaystJK/reference/commands/saberdisable-cf2b094/) followed by the bit number. The value column is that bit on its own — [the labels come from the source table](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_svcmds.c#L1251).
 
+| Bit | Value | Meaning | Read by |
+|:--|:--|:--|:--|
+| 0 | `1` | Disable blue style | [codemp/game/g_local.h:296](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_local.h#L296) |
+| 1 | `2` | Disable yellow style | [codemp/game/g_local.h:297](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_local.h#L297) |
+| 2 | `4` | Disable red style | — |
+| 3 | `8` | Disable duals | — |
+| 4 | `16` | Distable staff | — |
+| 5 | `32` | Force desann style | [codemp/game/g_local.h:301](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_local.h#L301) |
+| 6 | `64` | Force tavion style | [codemp/game/g_local.h:302](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_local.h#L302) |
 ## Flags
 
 - `CVAR_ARCHIVE` — saved to the user configuration

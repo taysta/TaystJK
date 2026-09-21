@@ -32,6 +32,7 @@ Enables automatic Steam API integration (requires a steam_api64.dll to be in Gam
 | Value type | `int` |
 | Restart | Yes; the value is latched. |
 | Cheat protected | No |
+| Player-settable | Yes |
 
 ## Values
 

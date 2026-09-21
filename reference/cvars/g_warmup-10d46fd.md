@@ -32,6 +32,7 @@ Controls `g_warmup` in the game module. Consult the cited behavior reads before 
 | Value type | `int` |
 | Restart | No latch flag is registered. |
 | Cheat protected | No |
+| Player-settable | Yes |
 
 ## Values
 

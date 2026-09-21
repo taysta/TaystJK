@@ -32,6 +32,7 @@ Controls `g_gunGame` in the game module. Consult the cited behavior reads before
 | Value type | `enum` |
 | Restart | No latch flag is registered. |
 | Cheat protected | No |
+| Player-settable | Yes |
 
 ## Values
 

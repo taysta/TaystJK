@@ -32,6 +32,7 @@ Select color bits used for presentation surfaces Requires \\r_fbo 1
 | Value type | `int` |
 | Restart | Yes; the value is latched. |
 | Cheat protected | No |
+| Player-settable | Yes |
 
 ## Values
 

@@ -32,6 +32,7 @@ Shader for slick surface rendering
 | Value type | `string` |
 | Restart | Yes; the value is latched. |
 | Cheat protected | No |
+| Player-settable | Yes |
 
 ## Values
 

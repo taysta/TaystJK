@@ -32,6 +32,7 @@ Mouse acceleration offset for style 1
 | Value type | `float` |
 | Restart | No latch flag is registered. |
 | Cheat protected | No |
+| Player-settable | Yes |
 
 ## Values
 

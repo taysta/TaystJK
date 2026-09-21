@@ -31,6 +31,7 @@ Runs `CG_SpeedometerSettings_f` in the cgame module.
 | In-game menu | No |
 | Syntax | `speedometer [arguments]` |
 | Cheat protected | No |
+| Configures | [`cg_speedometer`](/TaystJK/reference/cvars/cg_speedometer-9810620/) |
 
 ## Arguments and gating
 

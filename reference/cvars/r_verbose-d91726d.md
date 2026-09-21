@@ -32,6 +32,7 @@ Controls `r_verbose` in the renderer module. Consult the cited behavior reads be
 | Value type | `bool` |
 | Restart | No latch flag is registered. |
 | Cheat protected | Yes |
+| Player-settable | Yes |
 
 ## Values
 
