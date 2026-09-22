@@ -22,10 +22,10 @@ Runs `R_RemapSkyShader_f` in the renderer module.
 | Module | `renderer` |
 | Also registered in | `renderer` |
 | Renderer | `rd-rend2`, `rd-vanilla`, `rd-vulkan` |
-| Network scope | `client-only` — Local to the client/UI/renderer. |
+| Network scope | `client-only`: Local to the client/UI/renderer. |
 | Derivation | `documented` |
 | Confidence | `medium` |
-| Added | 2019-03-21 in [`9e7eaec5c`](https://github.com/taysta/TaystJK/commit/9e7eaec5c4cf17d9edf4c1d9e3fea57e49fb7658) <span class="status-chip">needs review</span> — [how to compare this against your build](/TaystJK/features/whats-new/#how-to-tell-what-your-build-has) |
+| Added | 2019-03-21 in [`9e7eaec5c`](https://github.com/taysta/TaystJK/commit/9e7eaec5c4cf17d9edf4c1d9e3fea57e49fb7658) <span class="status-chip">needs review</span> ([how to compare this against your build](/TaystJK/features/whats-new/#how-to-tell-what-your-build-has)) |
 | In-game xdocs | No |
 | In-game menu | No |
 | Syntax | `remapSky <new>` |

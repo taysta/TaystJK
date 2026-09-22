@@ -22,10 +22,10 @@ Rename a server-side demo
 | Module | `engine-server` |
 | Also registered in | `engine-server` |
 | Renderer | All / not renderer-specific |
-| Network scope | `server-authoritative` — Owned or enforced by the server. |
+| Network scope | `server-authoritative`: Owned or enforced by the server. |
 | Derivation | `documented` |
 | Confidence | `medium` |
-| Added | 2017-12-28 in [`668821b03`](https://github.com/taysta/TaystJK/commit/668821b03696231dfcf06b1805102a776c1d7efe) <span class="status-chip">needs review</span> — [how to compare this against your build](/TaystJK/features/whats-new/#how-to-tell-what-your-build-has) |
+| Added | 2017-12-28 in [`668821b03`](https://github.com/taysta/TaystJK/commit/668821b03696231dfcf06b1805102a776c1d7efe) <span class="status-chip">needs review</span> ([how to compare this against your build](/TaystJK/features/whats-new/#how-to-tell-what-your-build-has)) |
 | In-game xdocs | No |
 | In-game menu | No |
 | Syntax | `svrenamedemo [arguments]` |

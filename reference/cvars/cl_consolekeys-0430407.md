@@ -22,10 +22,10 @@ Which keys are used to toggle the console
 | Module | `engine-client` |
 | Also registered in | `engine-client` |
 | Renderer | All / not renderer-specific |
-| Network scope | `client-only` — Local to the client/UI/renderer. |
+| Network scope | `client-only`: Local to the client/UI/renderer. |
 | Derivation | `documented` |
 | Confidence | `medium` |
-| Added | 2013-04-24 in [`f6cadd34c`](https://github.com/taysta/TaystJK/commit/f6cadd34c6ab5788140aa01552ea87b5b4b7cec1) <span class="status-chip">needs review</span> — [how to compare this against your build](/TaystJK/features/whats-new/#how-to-tell-what-your-build-has) |
+| Added | 2013-04-24 in [`f6cadd34c`](https://github.com/taysta/TaystJK/commit/f6cadd34c6ab5788140aa01552ea87b5b4b7cec1) <span class="status-chip">needs review</span> ([how to compare this against your build](/TaystJK/features/whats-new/#how-to-tell-what-your-build-has)) |
 | In-game xdocs | No |
 | In-game menu | No |
 | Default | `~ &#96; 0x7e 0x60 0xb2` |
@@ -40,7 +40,7 @@ No discrete value list is enforced or documented in the inspected source.
 
 ## Flags
 
-- `CVAR_ARCHIVE` — saved to the user configuration
+- `CVAR_ARCHIVE`: saved to the user configuration
 
 ## Provenance
 

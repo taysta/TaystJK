@@ -22,10 +22,10 @@ Controls `cg_predictItems` in the cgame module. Consult the cited behavior reads
 | Module | `cgame` |
 | Also registered in | `cgame`, `engine-client` |
 | Renderer | All / not renderer-specific |
-| Network scope | `needs-server-support` — Sent to, or only useful with, a supporting game server. |
+| Network scope | `needs-server-support`: Sent to, or only useful with, a supporting game server. |
 | Derivation | `code-trace` |
 | Confidence | `high` |
-| Added | 2013-04-08 in [`14cea1563`](https://github.com/taysta/TaystJK/commit/14cea1563762076974bee277afadbd5bf234c494) — [how to compare this against your build](/TaystJK/features/whats-new/#how-to-tell-what-your-build-has) |
+| Added | 2013-04-08 in [`14cea1563`](https://github.com/taysta/TaystJK/commit/14cea1563762076974bee277afadbd5bf234c494) ([how to compare this against your build](/TaystJK/features/whats-new/#how-to-tell-what-your-build-has)) |
 | In-game xdocs | No |
 | In-game menu | No |
 | Default | `1` |
@@ -43,8 +43,8 @@ Controls `cg_predictItems` in the cgame module. Consult the cited behavior reads
 
 ## Flags
 
-- `CVAR_ARCHIVE` — saved to the user configuration
-- `CVAR_USERINFO` — sent in the client's userinfo
+- `CVAR_ARCHIVE`: saved to the user configuration
+- `CVAR_USERINFO`: sent in the client's userinfo
 
 ## Registration-specific defaults
 

@@ -23,12 +23,12 @@ Opacity of console background
 | Module | `engine-client` |
 | Also registered in | `engine-client` |
 | Renderer | All / not renderer-specific |
-| Network scope | `client-only` — Local to the client/UI/renderer. |
+| Network scope | `client-only`: Local to the client/UI/renderer. |
 | Derivation | `documented` |
 | Confidence | `medium` |
-| Added | 2014-03-30 in [`37a07abc8`](https://github.com/taysta/TaystJK/commit/37a07abc8b262a30c24397b17c3ada0c16b5bcd7) <span class="status-chip">needs review</span> — [how to compare this against your build](/TaystJK/features/whats-new/#how-to-tell-what-your-build-has) |
+| Added | 2014-03-30 in [`37a07abc8`](https://github.com/taysta/TaystJK/commit/37a07abc8b262a30c24397b17c3ada0c16b5bcd7) <span class="status-chip">needs review</span> ([how to compare this against your build](/TaystJK/features/whats-new/#how-to-tell-what-your-build-has)) |
 | In-game xdocs | No |
-| In-game menu | Yes — [ingame_setup.menu:3338](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/assets/japro/ui/jamp/ingame_setup.menu#L3338) |
+| In-game menu | Yes: [ingame_setup.menu:3338](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/assets/japro/ui/jamp/ingame_setup.menu#L3338) |
 | Default | `1.0` |
 | Value type | `float` |
 | Restart | No latch flag is registered. |
@@ -41,7 +41,7 @@ No discrete value list is enforced or documented in the inspected source.
 
 ## Flags
 
-- `CVAR_ARCHIVE_ND` — saved to configuration without marking the cvar as user-created
+- `CVAR_ARCHIVE_ND`: saved to configuration without marking the cvar as user-created
 
 ## Provenance
 

@@ -21,11 +21,11 @@ Color for single key press
 | Module | `cgame` |
 | Also registered in | `cgame` |
 | Renderer | All / not renderer-specific |
-| Network scope | `client-only` — Local to the client/UI/renderer. |
+| Network scope | `client-only`: Local to the client/UI/renderer. |
 | Derivation | `documented` |
 | Confidence | `high` |
-| Added | 2024-03-02 in [`1d4c081cb`](https://github.com/taysta/TaystJK/commit/1d4c081cb7621bf86ee9e3d1a523df56cf2992d1) — [how to compare this against your build](/TaystJK/features/whats-new/#how-to-tell-what-your-build-has) |
-| In-game xdocs | Yes — [codemp/ui/ui_xdocs.h:552](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/ui/ui_xdocs.h#L552) |
+| Added | 2024-03-02 in [`1d4c081cb`](https://github.com/taysta/TaystJK/commit/1d4c081cb7621bf86ee9e3d1a523df56cf2992d1) ([how to compare this against your build](/TaystJK/features/whats-new/#how-to-tell-what-your-build-has)) |
+| In-game xdocs | Yes: [codemp/ui/ui_xdocs.h:552](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/ui/ui_xdocs.h#L552) |
 | In-game menu | No |
 | Default | `127 179 230 179` |
 | Value type | `color` |
@@ -39,7 +39,7 @@ No discrete value list is enforced or documented in the inspected source.
 
 ## Flags
 
-- `CVAR_ARCHIVE` — saved to the user configuration
+- `CVAR_ARCHIVE`: saved to the user configuration
 
 ## Provenance
 

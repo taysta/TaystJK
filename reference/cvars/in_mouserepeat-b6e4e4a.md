@@ -22,10 +22,10 @@ Controls `in_mouserepeat` in the engine-shared module. Consult the cited behavio
 | Module | `engine-shared` |
 | Also registered in | `engine-shared` |
 | Renderer | All / not renderer-specific |
-| Network scope | `client-only` — Local to the client/UI/renderer. |
+| Network scope | `client-only`: Local to the client/UI/renderer. |
 | Derivation | `code-trace` |
 | Confidence | `medium` |
-| Added | 2017-12-28 in [`668821b03`](https://github.com/taysta/TaystJK/commit/668821b03696231dfcf06b1805102a776c1d7efe) <span class="status-chip">needs review</span> — [how to compare this against your build](/TaystJK/features/whats-new/#how-to-tell-what-your-build-has) |
+| Added | 2017-12-28 in [`668821b03`](https://github.com/taysta/TaystJK/commit/668821b03696231dfcf06b1805102a776c1d7efe) <span class="status-chip">needs review</span> ([how to compare this against your build](/TaystJK/features/whats-new/#how-to-tell-what-your-build-has)) |
 | In-game xdocs | No |
 | In-game menu | No |
 | Default | `0` |
@@ -42,7 +42,7 @@ Controls `in_mouserepeat` in the engine-shared module. Consult the cited behavio
 
 ## Flags
 
-- `CVAR_ARCHIVE` — saved to the user configuration
+- `CVAR_ARCHIVE`: saved to the user configuration
 
 ## Provenance
 

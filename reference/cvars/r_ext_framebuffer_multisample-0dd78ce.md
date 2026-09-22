@@ -12,7 +12,7 @@ search_exclude: false
 
 <p class="ref-warning"><strong>Needs review.</strong> The inventory/provenance evidence is recorded, but some behavior, options, or attribution still lacks a direct user-facing source.</p>
 
-<p class="ref-notice"><strong>Engine-managed.</strong> The game maintains this value itself, so it is not a setting to change by hand: no registration exists — every cited site only writes it with <code>Cvar_Set</code>, so a value you set is replaced the next time that code runs.</p>
+<p class="ref-notice"><strong>Engine-managed.</strong> The game maintains this value itself, so it is not a setting to change by hand: no registration exists; every cited site only writes it with <code>Cvar_Set</code>, so a value you set is replaced the next time that code runs.</p>
 
 Controls `r_ext_framebuffer_multisample` in the renderer module. Consult the cited behavior reads before relying on values not listed here.
 
@@ -25,17 +25,17 @@ Controls `r_ext_framebuffer_multisample` in the renderer module. Consult the cit
 | Module | `renderer` |
 | Also registered in | `renderer` |
 | Renderer | `rd-rend2` |
-| Network scope | `client-only` — Local to the client/UI/renderer. |
+| Network scope | `client-only`: Local to the client/UI/renderer. |
 | Derivation | `code-trace` |
 | Confidence | `medium` |
-| Added | 2024-02-04 in [`0c789787f`](https://github.com/taysta/TaystJK/commit/0c789787f79c23c977ebb59cc96a6d4d97815f69) <span class="status-chip">needs review</span> — [how to compare this against your build](/TaystJK/features/whats-new/#how-to-tell-what-your-build-has) |
+| Added | 2024-02-04 in [`0c789787f`](https://github.com/taysta/TaystJK/commit/0c789787f79c23c977ebb59cc96a6d4d97815f69) <span class="status-chip">needs review</span> ([how to compare this against your build](/TaystJK/features/whats-new/#how-to-tell-what-your-build-has)) |
 | In-game xdocs | No |
 | In-game menu | No |
 | Default | `(float` |
 | Value type | `int` |
 | Restart | No latch flag is registered. |
 | Cheat protected | No |
-| Player-settable | No — the game writes this value. |
+| Player-settable | No; the game writes this value. |
 
 ## Values
 

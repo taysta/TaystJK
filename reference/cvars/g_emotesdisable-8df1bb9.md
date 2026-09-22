@@ -24,10 +24,10 @@ Configured with /toggleEmotes command
 | Module | `game` |
 | Also registered in | `game` |
 | Renderer | All / not renderer-specific |
-| Network scope | `server-authoritative` — Owned or enforced by the server. |
+| Network scope | `server-authoritative`: Owned or enforced by the server. |
 | Derivation | `documented` |
 | Confidence | `medium` |
-| Added | 2018-01-01 in [`d9d510063`](https://github.com/taysta/TaystJK/commit/d9d510063ce680639e6ba060021b6d40ee0c1419) <span class="status-chip">needs review</span> — [how to compare this against your build](/TaystJK/features/whats-new/#how-to-tell-what-your-build-has) |
+| Added | 2018-01-01 in [`d9d510063`](https://github.com/taysta/TaystJK/commit/d9d510063ce680639e6ba060021b6d40ee0c1419) <span class="status-chip">needs review</span> ([how to compare this against your build](/TaystJK/features/whats-new/#how-to-tell-what-your-build-has)) |
 | In-game xdocs | No |
 | In-game menu | No |
 | Default | `0` |
@@ -39,7 +39,7 @@ Configured with /toggleEmotes command
 
 ## Bits
 
-Use [`toggleEmotes`](/TaystJK/reference/commands/toggleemotes-c7d169a/) to toggle one option at a time; see the command page for syntax. The value column is that bit on its own — [the labels come from the source table](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_svcmds.c#L1532).
+Use [`toggleEmotes`](/TaystJK/reference/commands/toggleemotes-c7d169a/) to toggle one option at a time; see the command page for syntax. The value column is that bit on its own. [The labels come from the source table](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_svcmds.c#L1532).
 
 | Bit | Value | Meaning | Read by |
 |:--|:--|:--|:--|
@@ -66,7 +66,7 @@ Use [`toggleEmotes`](/TaystJK/reference/commands/toggleemotes-c7d169a/) to toggl
 | 20 | `1048576` | Taunt/Flourish/Bow/Meditate outside of duel or while moving | — |
 ## Flags
 
-- `CVAR_ARCHIVE` — saved to the user configuration
+- `CVAR_ARCHIVE`: saved to the user configuration
 
 ## Provenance
 

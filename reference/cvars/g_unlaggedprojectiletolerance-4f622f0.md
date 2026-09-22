@@ -22,10 +22,10 @@ Controls `g_unlaggedProjectileTolerance` in the game module. Consult the cited b
 | Module | `game` |
 | Also registered in | `game` |
 | Renderer | All / not renderer-specific |
-| Network scope | `server-authoritative` — Owned or enforced by the server. |
+| Network scope | `server-authoritative`: Owned or enforced by the server. |
 | Derivation | `code-trace` |
 | Confidence | `high` |
-| Added | 2023-12-21 in [`41c7e75be`](https://github.com/taysta/TaystJK/commit/41c7e75be47a14426fe6ec5dd479edc5aa77a310) — [how to compare this against your build](/TaystJK/features/whats-new/#how-to-tell-what-your-build-has) |
+| Added | 2023-12-21 in [`41c7e75be`](https://github.com/taysta/TaystJK/commit/41c7e75be47a14426fe6ec5dd479edc5aa77a310) ([how to compare this against your build](/TaystJK/features/whats-new/#how-to-tell-what-your-build-has)) |
 | In-game xdocs | No |
 | In-game menu | No |
 | Default | `135` |
@@ -40,7 +40,7 @@ No discrete value list is enforced or documented in the inspected source.
 
 ## Flags
 
-- `CVAR_ARCHIVE` — saved to the user configuration
+- `CVAR_ARCHIVE`: saved to the user configuration
 
 ## Provenance
 

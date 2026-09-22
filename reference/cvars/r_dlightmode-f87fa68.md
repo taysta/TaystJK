@@ -23,10 +23,10 @@ Controls `r_dlightMode` in the renderer module. Consult the cited behavior reads
 | Module | `renderer` |
 | Also registered in | `renderer` |
 | Renderer | `rd-rend2`, `rd-vulkan` |
-| Network scope | `client-only` — Local to the client/UI/renderer. |
+| Network scope | `client-only`: Local to the client/UI/renderer. |
 | Derivation | `code-trace` |
 | Confidence | `high` |
-| Added | 2021-05-25 in [`c4a9c87ef`](https://github.com/taysta/TaystJK/commit/c4a9c87ef0e3171c80fd8c4e24df94e0fa1bcbe4) — [how to compare this against your build](/TaystJK/features/whats-new/#how-to-tell-what-your-build-has) |
+| Added | 2021-05-25 in [`c4a9c87ef`](https://github.com/taysta/TaystJK/commit/c4a9c87ef0e3171c80fd8c4e24df94e0fa1bcbe4) ([how to compare this against your build](/TaystJK/features/whats-new/#how-to-tell-what-your-build-has)) |
 | In-game xdocs | No |
 | In-game menu | No |
 | Default | `1` |
@@ -43,12 +43,12 @@ Controls `r_dlightMode` in the renderer module. Consult the cited behavior reads
 
 ## Enforced ranges
 
-- `0` through `2` (integer; Cvar_CheckRange) — [codemp/rd-vulkan/tr_init.cpp:948](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-vulkan/tr_init.cpp#L948)
+- `0` through `2` (integer; Cvar_CheckRange). Evidence: [codemp/rd-vulkan/tr_init.cpp:948](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-vulkan/tr_init.cpp#L948)
 
 ## Flags
 
-- `CVAR_ARCHIVE` — saved to the user configuration
-- `CVAR_LATCH` — latched until the relevant subsystem or map is restarted
+- `CVAR_ARCHIVE`: saved to the user configuration
+- `CVAR_LATCH`: latched until the relevant subsystem or map is restarted
 
 ## Registration-specific defaults
 

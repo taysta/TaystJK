@@ -11,7 +11,7 @@ toc: true
 
 # Troubleshooting
 
-<p class="page-lede">Listed by symptom — what you see, not what causes it. If your problem is that something behaves differently on one server than another, that is usually not a bug; see mod compatibility.</p>
+<p class="page-lede">Listed by symptom: what you see, not what causes it. If your problem is that something behaves differently on one server than another, that is usually not a bug; see mod compatibility.</p>
 </div>
 
 ## My server does not appear in the server list
@@ -30,7 +30,7 @@ just started is not listed yet. Wait rather than restarting it repeatedly.
 **The default master is dead.** `sv_master1` still defaults to `masterjk3.ravensoft.com`,
 Raven's original master, which has not answered in many years. The working ones are
 `sv_master2` (`master.jkhub.org`) and `sv_master3` (`master.ouned.de`), and all three are
-polled, so leaving the dead one alone costs nothing — but if you have overridden the master
+polled, so leaving the dead one alone costs nothing. If you have overridden the master
 cvars, make sure a live one is still in the list. Look each up in the
 [console reference](/TaystJK/reference/).
 
@@ -61,7 +61,7 @@ the new copy even though the previous one ran. The app is ad-hoc signed at relea
 is not a signing problem and re-signing is not the fix.
 
 Clearing the attribute is covered step by step on the
-[install page](/TaystJK/install/) — follow it there rather than copying a command from
+[install page](/TaystJK/install/). Follow it there rather than copying a command from
 memory, because the guidance about when `sudo` is and is not appropriate matters.
 
 Approving the app in System Settings is not a substitute for clearing the attribute, and
@@ -69,8 +69,8 @@ this is why an install that worked yesterday can fail today: it is the *replacem
 is quarantined, not your original install.
 
 If the client instead fails naming a library it could not load, that is not quarantine.
-Take a current build first — that class of fault has been a packaging problem more than
-once — and if a current build still does it, report it.
+Take a current build first. That class of fault has been a packaging problem more than
+once. If a current build still does it, report it.
 
 ## The client crashes when joining a modded server
 
@@ -96,18 +96,18 @@ the install guide explains which bits to use for which module in
 [when to use `vm_legacy`](/TaystJK/install/#when-to-use-vm_legacy). Nothing detects this for
 you.
 
-A third cause is the mod's own assets rather than its code — an oversized texture can
+A third cause is the mod's own assets rather than its code. An oversized texture can
 exhaust a 32-bit client's memory while loading. If a single mod fails everywhere and others
 are fine, that belongs with the mod's author; see
 [where to report](/TaystJK/where-to-report/).
 
 If the client connects but a *feature* is missing rather than crashing, that is a different
-question — see [mod compatibility](/TaystJK/mod-compatibility/).
+question. See [mod compatibility](/TaystJK/mod-compatibility/).
 
 ## No saber hum, or sound distances are wrong, on Linux
 
 Update your build before anything else. Both symptoms have been caused by the same
-regression in how non-Windows builds select their audio path, and that was reverted — so on
+regression in how non-Windows builds select their audio path, and that was reverted. On
 a current build this should be gone.
 
 If a current build still does it, it is something new. Say which build, and check the SDL

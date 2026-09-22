@@ -23,12 +23,12 @@ Configure with the /speedometer command
 | Module | `cgame` |
 | Also registered in | `cgame`, `ui` |
 | Renderer | All / not renderer-specific |
-| Network scope | `client-only` — Local to the client/UI/renderer. |
+| Network scope | `client-only`: Local to the client/UI/renderer. |
 | Derivation | `documented` |
 | Confidence | `high` |
-| Added | 2018-11-04 in [`ead7c2c37`](https://github.com/taysta/TaystJK/commit/ead7c2c37109a313e0f3994b832e627636e0fa06) — [how to compare this against your build](/TaystJK/features/whats-new/#how-to-tell-what-your-build-has) |
-| In-game xdocs | Yes — [codemp/ui/ui_xdocs.h:107](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/ui/ui_xdocs.h#L107) |
-| In-game menu | Yes — [ingame_setup.menu:3998](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/assets/japro/ui/jamp/ingame_setup.menu#L3998) |
+| Added | 2018-11-04 in [`ead7c2c37`](https://github.com/taysta/TaystJK/commit/ead7c2c37109a313e0f3994b832e627636e0fa06) ([how to compare this against your build](/TaystJK/features/whats-new/#how-to-tell-what-your-build-has)) |
+| In-game xdocs | Yes: [codemp/ui/ui_xdocs.h:107](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/ui/ui_xdocs.h#L107) |
+| In-game menu | Yes: [ingame_setup.menu:3998](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/assets/japro/ui/jamp/ingame_setup.menu#L3998) |
 | Default | `0` |
 | Value type | `bitmask` |
 | Restart | No latch flag is registered. |
@@ -38,7 +38,7 @@ Configure with the /speedometer command
 
 ## Bits
 
-Use [`speedometer`](/TaystJK/reference/commands/speedometer-b0e26e4/) to toggle one option at a time; see the command page for syntax. The value column is that bit on its own — [the labels come from the source table](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_consolecmds.c#L1509).
+Use [`speedometer`](/TaystJK/reference/commands/speedometer-b0e26e4/) to toggle one option at a time; see the command page for syntax. The value column is that bit on its own. [The labels come from the source table](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_consolecmds.c#L1509).
 
 | Bit | Value | Meaning | Read by |
 |:--|:--|:--|:--|
@@ -60,7 +60,7 @@ Use [`speedometer`](/TaystJK/reference/commands/speedometer-b0e26e4/) to toggle 
 | 15 | `32768` | XYZ Speed | — |
 ## Flags
 
-- `CVAR_ARCHIVE` — saved to the user configuration
+- `CVAR_ARCHIVE`: saved to the user configuration
 
 ## Registration-specific defaults
 

@@ -22,10 +22,10 @@ Controls `r_picmip` in the renderer module. Consult the cited behavior reads bef
 | Module | `renderer` |
 | Also registered in | `renderer` |
 | Renderer | `rd-dedicated`, `rd-rend2`, `rd-vanilla`, `rd-vulkan` |
-| Network scope | `client-only` — Local to the client/UI/renderer. |
+| Network scope | `client-only`: Local to the client/UI/renderer. |
 | Derivation | `code-trace` |
 | Confidence | `high` |
-| Added | 2013-04-08 in [`14cea1563`](https://github.com/taysta/TaystJK/commit/14cea1563762076974bee277afadbd5bf234c494) — [how to compare this against your build](/TaystJK/features/whats-new/#how-to-tell-what-your-build-has) |
+| Added | 2013-04-08 in [`14cea1563`](https://github.com/taysta/TaystJK/commit/14cea1563762076974bee277afadbd5bf234c494) ([how to compare this against your build](/TaystJK/features/whats-new/#how-to-tell-what-your-build-has)) |
 | In-game xdocs | No |
 | In-game menu | No |
 | Default | `0` |
@@ -40,15 +40,15 @@ No discrete value list is enforced or documented in the inspected source.
 
 ## Enforced ranges
 
-- `0` through `16` (integer; Cvar_CheckRange) — [codemp/rd-dedicated/tr_init.cpp:334](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-dedicated/tr_init.cpp#L334)
-- `0` through `16` (integer; Cvar_CheckRange) — [codemp/rd-rend2/tr_init.cpp:1521](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-rend2/tr_init.cpp#L1521)
-- `0` through `16` (integer; Cvar_CheckRange) — [codemp/rd-vanilla/tr_init.cpp:1652](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-vanilla/tr_init.cpp#L1652)
-- `0` through `16` (integer; Cvar_CheckRange) — [codemp/rd-vulkan/tr_init.cpp:804](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-vulkan/tr_init.cpp#L804)
+- `0` through `16` (integer; Cvar_CheckRange). Evidence: [codemp/rd-dedicated/tr_init.cpp:334](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-dedicated/tr_init.cpp#L334)
+- `0` through `16` (integer; Cvar_CheckRange). Evidence: [codemp/rd-rend2/tr_init.cpp:1521](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-rend2/tr_init.cpp#L1521)
+- `0` through `16` (integer; Cvar_CheckRange). Evidence: [codemp/rd-vanilla/tr_init.cpp:1652](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-vanilla/tr_init.cpp#L1652)
+- `0` through `16` (integer; Cvar_CheckRange). Evidence: [codemp/rd-vulkan/tr_init.cpp:804](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-vulkan/tr_init.cpp#L804)
 
 ## Flags
 
-- `CVAR_ARCHIVE` — saved to the user configuration
-- `CVAR_LATCH` — latched until the relevant subsystem or map is restarted
+- `CVAR_ARCHIVE`: saved to the user configuration
+- `CVAR_LATCH`: latched until the relevant subsystem or map is restarted
 
 ## Registration-specific defaults
 

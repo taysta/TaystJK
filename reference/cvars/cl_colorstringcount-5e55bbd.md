@@ -24,17 +24,17 @@ Controls `cl_colorStringCount` in the engine-client module. Consult the cited be
 | Module | `engine-client` |
 | Also registered in | `engine-client` |
 | Renderer | All / not renderer-specific |
-| Network scope | `client-only` — Local to the client/UI/renderer. |
+| Network scope | `client-only`: Local to the client/UI/renderer. |
 | Derivation | `code-trace` |
 | Confidence | `medium` |
-| Added | 2016-03-21 in [`9888b3f26`](https://github.com/taysta/TaystJK/commit/9888b3f266ed8f8e677cb904cc9e36ce78a524d6) <span class="status-chip">needs review</span> — [how to compare this against your build](/TaystJK/features/whats-new/#how-to-tell-what-your-build-has) |
+| Added | 2016-03-21 in [`9888b3f26`](https://github.com/taysta/TaystJK/commit/9888b3f266ed8f8e677cb904cc9e36ce78a524d6) <span class="status-chip">needs review</span> ([how to compare this against your build](/TaystJK/features/whats-new/#how-to-tell-what-your-build-has)) |
 | In-game xdocs | No |
 | In-game menu | No |
 | Default | `0` |
 | Value type | `bool` |
 | Restart | No latch flag is registered. |
 | Cheat protected | No |
-| Player-settable | No — the game writes this value. |
+| Player-settable | No; the game writes this value. |
 
 ## Values
 
@@ -45,9 +45,9 @@ Controls `cl_colorStringCount` in the engine-client module. Consult the cited be
 
 ## Flags
 
-- `CVAR_ARCHIVE` — saved to the user configuration
-- `CVAR_INTERNAL` — internal UI/engine state
-- `CVAR_ROM` — read-only after registration
+- `CVAR_ARCHIVE`: saved to the user configuration
+- `CVAR_INTERNAL`: internal UI/engine state
+- `CVAR_ROM`: read-only after registration
 
 ## Provenance
 

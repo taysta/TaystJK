@@ -22,10 +22,10 @@ Controls `g_forcePowerDisableFFA` in the game module. Consult the cited behavior
 | Module | `game` |
 | Also registered in | `game` |
 | Renderer | All / not renderer-specific |
-| Network scope | `server-authoritative` — Owned or enforced by the server. |
+| Network scope | `server-authoritative`: Owned or enforced by the server. |
 | Derivation | `code-trace` |
 | Confidence | `medium` |
-| Added | 2018-07-22 in [`fae0fd307`](https://github.com/taysta/TaystJK/commit/fae0fd30741627a4c90fec92d4ba5c07c826410a) <span class="status-chip">needs review</span> — [how to compare this against your build](/TaystJK/features/whats-new/#how-to-tell-what-your-build-has) |
+| Added | 2018-07-22 in [`fae0fd307`](https://github.com/taysta/TaystJK/commit/fae0fd30741627a4c90fec92d4ba5c07c826410a) <span class="status-chip">needs review</span> ([how to compare this against your build](/TaystJK/features/whats-new/#how-to-tell-what-your-build-has)) |
 | In-game xdocs | No |
 | In-game menu | No |
 | Default | `0` |
@@ -40,7 +40,7 @@ No discrete value list is enforced or documented in the inspected source.
 
 ## Flags
 
-- `CVAR_ARCHIVE` — saved to the user configuration
+- `CVAR_ARCHIVE`: saved to the user configuration
 
 ## Provenance
 

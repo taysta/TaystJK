@@ -22,10 +22,10 @@ Controls `r_aviMotionJpegQuality` in the renderer module. Consult the cited beha
 | Module | `renderer` |
 | Also registered in | `renderer` |
 | Renderer | `rd-rend2`, `rd-vanilla`, `rd-vulkan` |
-| Network scope | `client-only` — Local to the client/UI/renderer. |
+| Network scope | `client-only`: Local to the client/UI/renderer. |
 | Derivation | `code-trace` |
 | Confidence | `medium` |
-| Added | 2013-04-16 in [`714c868b4`](https://github.com/taysta/TaystJK/commit/714c868b42c6eaa5a1d2704d3425419f6e55579c) <span class="status-chip">needs review</span> — [how to compare this against your build](/TaystJK/features/whats-new/#how-to-tell-what-your-build-has) |
+| Added | 2013-04-16 in [`714c868b4`](https://github.com/taysta/TaystJK/commit/714c868b42c6eaa5a1d2704d3425419f6e55579c) <span class="status-chip">needs review</span> ([how to compare this against your build](/TaystJK/features/whats-new/#how-to-tell-what-your-build-has)) |
 | In-game xdocs | No |
 | In-game menu | No |
 | Default | `100` |
@@ -40,13 +40,13 @@ No discrete value list is enforced or documented in the inspected source.
 
 ## Enforced ranges
 
-- `10` through `100` (integer; Cvar_CheckRange) — [codemp/rd-vanilla/tr_init.cpp:1777](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-vanilla/tr_init.cpp#L1777)
-- `10` through `100` (integer; Cvar_CheckRange) — [codemp/rd-vulkan/tr_init.cpp:1009](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-vulkan/tr_init.cpp#L1009)
+- `10` through `100` (integer; Cvar_CheckRange). Evidence: [codemp/rd-vanilla/tr_init.cpp:1777](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-vanilla/tr_init.cpp#L1777)
+- `10` through `100` (integer; Cvar_CheckRange). Evidence: [codemp/rd-vulkan/tr_init.cpp:1009](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-vulkan/tr_init.cpp#L1009)
 
 ## Flags
 
-- `CVAR_ARCHIVE` — saved to the user configuration
-- `CVAR_ARCHIVE_ND` — saved to configuration without marking the cvar as user-created
+- `CVAR_ARCHIVE`: saved to the user configuration
+- `CVAR_ARCHIVE_ND`: saved to configuration without marking the cvar as user-created
 
 ## Registration-specific defaults
 

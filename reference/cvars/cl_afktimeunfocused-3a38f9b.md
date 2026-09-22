@@ -22,10 +22,10 @@ Minutes to autorename to afk while unfocused/minimized
 | Module | `engine-client` |
 | Also registered in | `engine-client` |
 | Renderer | All / not renderer-specific |
-| Network scope | `client-only` — Local to the client/UI/renderer. |
+| Network scope | `client-only`: Local to the client/UI/renderer. |
 | Derivation | `documented` |
 | Confidence | `medium` |
-| Added | 2016-04-23 in [`cc95a4841`](https://github.com/taysta/TaystJK/commit/cc95a484132f02cdf1f95e7abf47d49f809aa12f) <span class="status-chip">needs review</span> — [how to compare this against your build](/TaystJK/features/whats-new/#how-to-tell-what-your-build-has) |
+| Added | 2016-04-23 in [`cc95a4841`](https://github.com/taysta/TaystJK/commit/cc95a484132f02cdf1f95e7abf47d49f809aa12f) <span class="status-chip">needs review</span> ([how to compare this against your build](/TaystJK/features/whats-new/#how-to-tell-what-your-build-has)) |
 | In-game xdocs | No |
 | In-game menu | No |
 | Default | `5` |
@@ -40,7 +40,7 @@ No discrete value list is enforced or documented in the inspected source.
 
 ## Flags
 
-- `CVAR_ARCHIVE` — saved to the user configuration
+- `CVAR_ARCHIVE`: saved to the user configuration
 
 ## Provenance
 

@@ -25,17 +25,17 @@ Reports the protocol selected for the active file download. The client sets this
 | Module | `engine-client` |
 | Also registered in | `engine-client` |
 | Renderer | All / not renderer-specific |
-| Network scope | `client-only` — Local to the client/UI/renderer. |
+| Network scope | `client-only`: Local to the client/UI/renderer. |
 | Derivation | `code-trace` |
 | Confidence | `medium` |
-| Added | 2024-03-21 in [`2a5ea5d88`](https://github.com/taysta/TaystJK/commit/2a5ea5d885dc6c081b75631334aac405da3fa36d) <span class="status-chip">needs review</span> — [how to compare this against your build](/TaystJK/features/whats-new/#how-to-tell-what-your-build-has) |
+| Added | 2024-03-21 in [`2a5ea5d88`](https://github.com/taysta/TaystJK/commit/2a5ea5d885dc6c081b75631334aac405da3fa36d) <span class="status-chip">needs review</span> ([how to compare this against your build](/TaystJK/features/whats-new/#how-to-tell-what-your-build-has)) |
 | In-game xdocs | No |
 | In-game menu | No |
 | Default | `` |
 | Value type | `enum` |
 | Restart | No latch flag is registered. |
 | Cheat protected | No |
-| Player-settable | No — the game writes this value. |
+| Player-settable | No; the game writes this value. |
 
 ## Values
 
@@ -46,7 +46,7 @@ Reports the protocol selected for the active file download. The client sets this
 
 ## Flags
 
-- `CVAR_INTERNAL` — internal UI/engine state
+- `CVAR_INTERNAL`: internal UI/engine state
 
 ## Provenance
 

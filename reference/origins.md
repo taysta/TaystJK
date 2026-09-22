@@ -13,7 +13,7 @@ description: "Every cvar and command grouped by the project it first appeared in
 
 <h1>Browse by origin</h1>
 
-<p class="page-lede">Origin means the earliest source supported by the inspected code, Git history, pull requests, and upstream snapshots—not simply every project that now contains the name.</p>
+<p class="page-lede">Origin means the earliest source supported by the inspected code, Git history, pull requests, and upstream snapshots; it does not simply mean every project that now contains the name.</p>
 </div>
 
 <div class="directory-grid">

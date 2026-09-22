@@ -1336,7 +1336,7 @@ def home_page(cvars: list[dict[str, Any]], commands: list[dict[str, Any]]) -> st
     total_count = len(entries)
     japro_count = sum(1 for entry in entries if entry["origin"]["source"] == "japro")
     return frontmatter(
-        "TaystJK — one client for Jedi Academy multiplayer",
+        "TaystJK: one client for Jedi Academy multiplayer",
         1,
         wide=True,
         toc=True,
@@ -1393,7 +1393,7 @@ def home_page(cvars: list[dict[str, Any]], commands: list[dict[str, Any]]) -> st
     <article>
       <span>02</span>
       <h3>Modern where it matters</h3>
-      <p>Maintain fast, stable builds for Windows, Linux, and macOS—including current 64-bit and Apple Silicon systems.</p>
+      <p>Maintain fast, stable builds for Windows, Linux, and macOS, including current 64-bit and Apple Silicon systems.</p>
     </article>
     <article>
       <span>03</span>

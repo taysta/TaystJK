@@ -22,10 +22,10 @@ Controls `r_centerWindow` in the renderer module. Consult the cited behavior rea
 | Module | `renderer` |
 | Also registered in | `renderer`, `engine-shared` |
 | Renderer | `rd-dedicated` |
-| Network scope | `client-only` — Local to the client/UI/renderer. |
+| Network scope | `client-only`: Local to the client/UI/renderer. |
 | Derivation | `code-trace` |
 | Confidence | `medium` |
-| Added | 2013-05-11 in [`f203e799b`](https://github.com/taysta/TaystJK/commit/f203e799b14c0716833793eed611c272111c3cb6) <span class="status-chip">needs review</span> — [how to compare this against your build](/TaystJK/features/whats-new/#how-to-tell-what-your-build-has) |
+| Added | 2013-05-11 in [`f203e799b`](https://github.com/taysta/TaystJK/commit/f203e799b14c0716833793eed611c272111c3cb6) <span class="status-chip">needs review</span> ([how to compare this against your build](/TaystJK/features/whats-new/#how-to-tell-what-your-build-has)) |
 | In-game xdocs | No |
 | In-game menu | No |
 | Default | `0` |
@@ -43,9 +43,9 @@ Controls `r_centerWindow` in the renderer module. Consult the cited behavior rea
 
 ## Flags
 
-- `CVAR_ARCHIVE` — saved to the user configuration
-- `CVAR_ARCHIVE_ND` — saved to configuration without marking the cvar as user-created
-- `CVAR_LATCH` — latched until the relevant subsystem or map is restarted
+- `CVAR_ARCHIVE`: saved to the user configuration
+- `CVAR_ARCHIVE_ND`: saved to configuration without marking the cvar as user-created
+- `CVAR_LATCH`: latched until the relevant subsystem or map is restarted
 
 ## Registration-specific defaults
 

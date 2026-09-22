@@ -12,7 +12,7 @@ search_exclude: false
 
 <p class="ref-warning"><strong>Needs review.</strong> The inventory/provenance evidence is recorded, but some behavior, options, or attribution still lacks a direct user-facing source.</p>
 
-<p class="ref-notice"><strong>Engine-managed.</strong> The game maintains this value itself, so it is not a setting to change by hand: no registration exists — every cited site only writes it with <code>Cvar_Set</code>, so a value you set is replaced the next time that code runs.</p>
+<p class="ref-notice"><strong>Engine-managed.</strong> The game maintains this value itself, so it is not a setting to change by hand: no registration exists; every cited site only writes it with <code>Cvar_Set</code>, so a value you set is replaced the next time that code runs.</p>
 
 Used by UI in the in-game "about" menu
 
@@ -24,17 +24,17 @@ Used by UI in the in-game "about" menu
 | Module | `cgame` |
 | Also registered in | `cgame` |
 | Renderer | All / not renderer-specific |
-| Network scope | `client-only` — Local to the client/UI/renderer. |
+| Network scope | `client-only`: Local to the client/UI/renderer. |
 | Derivation | `documented` |
 | Confidence | `medium` |
-| Added | 2018-10-04 in [`e4ececfdb`](https://github.com/taysta/TaystJK/commit/e4ececfdb4d1033473d6f502615964281530d401) <span class="status-chip">needs review</span> — [how to compare this against your build](/TaystJK/features/whats-new/#how-to-tell-what-your-build-has) |
+| Added | 2018-10-04 in [`e4ececfdb`](https://github.com/taysta/TaystJK/commit/e4ececfdb4d1033473d6f502615964281530d401) <span class="status-chip">needs review</span> ([how to compare this against your build](/TaystJK/features/whats-new/#how-to-tell-what-your-build-has)) |
 | In-game xdocs | No |
-| In-game menu | Yes — [ingame_about.menu:267](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/assets/japro/ui/jamp/ingame_about.menu#L267) |
+| In-game menu | Yes: [ingame_about.menu:267](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/assets/japro/ui/jamp/ingame_about.menu#L267) |
 | Default | `Info_ValueForKey(info, "version")` |
 | Value type | `string` |
 | Restart | No latch flag is registered. |
 | Cheat protected | No |
-| Player-settable | No — the game writes this value. |
+| Player-settable | No; the game writes this value. |
 
 ## Values
 

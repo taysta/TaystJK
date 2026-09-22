@@ -22,10 +22,10 @@ Controls `g_validateCosmetics` in the game module. Consult the cited behavior re
 | Module | `game` |
 | Also registered in | `game` |
 | Renderer | All / not renderer-specific |
-| Network scope | `server-authoritative` — Owned or enforced by the server. |
+| Network scope | `server-authoritative`: Owned or enforced by the server. |
 | Derivation | `code-trace` |
 | Confidence | `medium` |
-| Added | 2018-09-10 in [`239adf14f`](https://github.com/taysta/TaystJK/commit/239adf14f0b06a96f929e6f5a56ce4cb8ef9fd16) <span class="status-chip">needs review</span> — [how to compare this against your build](/TaystJK/features/whats-new/#how-to-tell-what-your-build-has) |
+| Added | 2018-09-10 in [`239adf14f`](https://github.com/taysta/TaystJK/commit/239adf14f0b06a96f929e6f5a56ce4cb8ef9fd16) <span class="status-chip">needs review</span> ([how to compare this against your build](/TaystJK/features/whats-new/#how-to-tell-what-your-build-has)) |
 | In-game xdocs | No |
 | In-game menu | No |
 | Default | `1` |
@@ -43,7 +43,7 @@ Controls `g_validateCosmetics` in the game module. Consult the cited behavior re
 
 ## Flags
 
-- `CVAR_ARCHIVE` — saved to the user configuration
+- `CVAR_ARCHIVE`: saved to the user configuration
 
 ## Provenance
 

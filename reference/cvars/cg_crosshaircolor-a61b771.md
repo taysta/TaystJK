@@ -23,10 +23,10 @@ Controls `cg_crosshairColor` in the cgame module. Consult the cited behavior rea
 | Module | `cgame` |
 | Also registered in | `cgame` |
 | Renderer | All / not renderer-specific |
-| Network scope | `client-only` — Local to the client/UI/renderer. |
+| Network scope | `client-only`: Local to the client/UI/renderer. |
 | Derivation | `code-trace` |
 | Confidence | `medium` |
-| Added | 2018-12-18 in [`3173474c4`](https://github.com/taysta/TaystJK/commit/3173474c4b67cc9603582a8ddc4065ebd9e7c824) <span class="status-chip">needs review</span> — [how to compare this against your build](/TaystJK/features/whats-new/#how-to-tell-what-your-build-has) |
+| Added | 2018-12-18 in [`3173474c4`](https://github.com/taysta/TaystJK/commit/3173474c4b67cc9603582a8ddc4065ebd9e7c824) <span class="status-chip">needs review</span> ([how to compare this against your build](/TaystJK/features/whats-new/#how-to-tell-what-your-build-has)) |
 | In-game xdocs | No |
 | In-game menu | No |
 | Default | `0 0 0 255` |
@@ -41,7 +41,7 @@ No discrete value list is enforced or documented in the inspected source.
 
 ## Flags
 
-- `CVAR_ARCHIVE` — saved to the user configuration
+- `CVAR_ARCHIVE`: saved to the user configuration
 
 ## Provenance
 

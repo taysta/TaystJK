@@ -22,12 +22,12 @@ Restart the renderer (with specified mod folder) - or change the resolution
 | Module | `engine-client` |
 | Also registered in | `engine-client` |
 | Renderer | All / not renderer-specific |
-| Network scope | `client-only` — Local to the client/UI/renderer. |
+| Network scope | `client-only`: Local to the client/UI/renderer. |
 | Derivation | `documented` |
 | Confidence | `medium` |
-| Added | 2018-02-24 in [`04db4f373`](https://github.com/taysta/TaystJK/commit/04db4f3730791a1497dc2c2df47a2a3d7b1ec704) <span class="status-chip">needs review</span> — [how to compare this against your build](/TaystJK/features/whats-new/#how-to-tell-what-your-build-has) |
+| Added | 2018-02-24 in [`04db4f373`](https://github.com/taysta/TaystJK/commit/04db4f3730791a1497dc2c2df47a2a3d7b1ec704) <span class="status-chip">needs review</span> ([how to compare this against your build](/TaystJK/features/whats-new/#how-to-tell-what-your-build-has)) |
 | In-game xdocs | No |
-| In-game menu | Yes — [setup.menu:3136](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/assets/japro/ui/jamp/setup.menu#L3136) |
+| In-game menu | Yes: [setup.menu:3136](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/assets/japro/ui/jamp/setup.menu#L3136) |
 | Syntax | `loadmod <folder name>` |
 | Cheat protected | No |
 

@@ -1,5 +1,5 @@
 ---
-title: "TaystJK \u2014 one client for Jedi Academy multiplayer"
+title: "TaystJK: one client for Jedi Academy multiplayer"
 layout: reference
 generated: true
 nav_order: 1
@@ -56,7 +56,7 @@ toc: true
     <article>
       <span>02</span>
       <h3>Modern where it matters</h3>
-      <p>Maintain fast, stable builds for Windows, Linux, and macOS—including current 64-bit and Apple Silicon systems.</p>
+      <p>Maintain fast, stable builds for Windows, Linux, and macOS, including current 64-bit and Apple Silicon systems.</p>
     </article>
     <article>
       <span>03</span>

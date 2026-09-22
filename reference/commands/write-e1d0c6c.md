@@ -22,10 +22,10 @@ Write the configuration to file
 | Module | `engine-shared` |
 | Also registered in | `engine-shared` |
 | Renderer | All / not renderer-specific |
-| Network scope | `client-only` — Local to the client/UI/renderer. |
+| Network scope | `client-only`: Local to the client/UI/renderer. |
 | Derivation | `documented` |
 | Confidence | `medium` |
-| Added | 2019-03-21 in [`4ff81d3be`](https://github.com/taysta/TaystJK/commit/4ff81d3bece4378fe9c001e94ab890cb30229fcc) <span class="status-chip">needs review</span> — [how to compare this against your build](/TaystJK/features/whats-new/#how-to-tell-what-your-build-has) |
+| Added | 2019-03-21 in [`4ff81d3be`](https://github.com/taysta/TaystJK/commit/4ff81d3bece4378fe9c001e94ab890cb30229fcc) <span class="status-chip">needs review</span> ([how to compare this against your build](/TaystJK/features/whats-new/#how-to-tell-what-your-build-has)) |
 | In-game xdocs | No |
 | In-game menu | No |
 | Syntax | `write <filename>` |

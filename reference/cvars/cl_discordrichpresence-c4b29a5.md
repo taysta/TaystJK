@@ -22,10 +22,10 @@ Allow/disallow sharing current game information on Discord profile status
 | Module | `engine-client` |
 | Also registered in | `engine-client` |
 | Renderer | All / not renderer-specific |
-| Network scope | `client-only` — Local to the client/UI/renderer. |
+| Network scope | `client-only`: Local to the client/UI/renderer. |
 | Derivation | `documented` |
 | Confidence | `medium` |
-| Added | 2019-03-19 in [`1bcb29af6`](https://github.com/taysta/TaystJK/commit/1bcb29af644349fd7a3acb14cc07ee634d168803) <span class="status-chip">needs review</span> — [how to compare this against your build](/TaystJK/features/whats-new/#how-to-tell-what-your-build-has) |
+| Added | 2019-03-19 in [`1bcb29af6`](https://github.com/taysta/TaystJK/commit/1bcb29af644349fd7a3acb14cc07ee634d168803) <span class="status-chip">needs review</span> ([how to compare this against your build](/TaystJK/features/whats-new/#how-to-tell-what-your-build-has)) |
 | In-game xdocs | No |
 | In-game menu | No |
 | Default | `1` |
@@ -43,7 +43,7 @@ Allow/disallow sharing current game information on Discord profile status
 
 ## Flags
 
-- `CVAR_ARCHIVE` — saved to the user configuration
+- `CVAR_ARCHIVE`: saved to the user configuration
 
 ## Provenance
 

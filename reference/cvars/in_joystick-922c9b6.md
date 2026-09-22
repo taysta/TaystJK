@@ -22,12 +22,12 @@ Controls `in_joystick` in the engine-shared module. Consult the cited behavior r
 | Module | `engine-shared` |
 | Also registered in | `engine-shared` |
 | Renderer | All / not renderer-specific |
-| Network scope | `client-only` — Local to the client/UI/renderer. |
+| Network scope | `client-only`: Local to the client/UI/renderer. |
 | Derivation | `code-trace` |
 | Confidence | `high` |
-| Added | 2013-04-08 in [`14cea1563`](https://github.com/taysta/TaystJK/commit/14cea1563762076974bee277afadbd5bf234c494) — [how to compare this against your build](/TaystJK/features/whats-new/#how-to-tell-what-your-build-has) |
+| Added | 2013-04-08 in [`14cea1563`](https://github.com/taysta/TaystJK/commit/14cea1563762076974bee277afadbd5bf234c494) ([how to compare this against your build](/TaystJK/features/whats-new/#how-to-tell-what-your-build-has)) |
 | In-game xdocs | No |
-| In-game menu | Yes — [controls.menu:3014](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/assets/japro/ui/jamp/controls.menu#L3014), [ingame_controls.menu:2773](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/assets/japro/ui/jamp/ingame_controls.menu#L2773) |
+| In-game menu | Yes: [controls.menu:3014](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/assets/japro/ui/jamp/controls.menu#L3014), [ingame_controls.menu:2773](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/assets/japro/ui/jamp/ingame_controls.menu#L2773) |
 | Default | `0` |
 | Value type | `bool` |
 | Restart | Yes; the value is latched. |
@@ -43,8 +43,8 @@ Controls `in_joystick` in the engine-shared module. Consult the cited behavior r
 
 ## Flags
 
-- `CVAR_ARCHIVE_ND` — saved to configuration without marking the cvar as user-created
-- `CVAR_LATCH` — latched until the relevant subsystem or map is restarted
+- `CVAR_ARCHIVE_ND`: saved to configuration without marking the cvar as user-created
+- `CVAR_LATCH`: latched until the relevant subsystem or map is restarted
 
 ## Provenance
 

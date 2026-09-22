@@ -22,10 +22,10 @@ Runs `CG_ListEmojis_f` in the cgame module.
 | Module | `cgame` |
 | Also registered in | `cgame` |
 | Renderer | All / not renderer-specific |
-| Network scope | `client-only` — Local to the client/UI/renderer. |
+| Network scope | `client-only`: Local to the client/UI/renderer. |
 | Derivation | `code-trace` |
 | Confidence | `medium` |
-| Added | 2021-02-11 in [`0d34eb5a1`](https://github.com/taysta/TaystJK/commit/0d34eb5a1d2c230d28760132665486a0d46085be) <span class="status-chip">needs review</span> — [how to compare this against your build](/TaystJK/features/whats-new/#how-to-tell-what-your-build-has) |
+| Added | 2021-02-11 in [`0d34eb5a1`](https://github.com/taysta/TaystJK/commit/0d34eb5a1d2c230d28760132665486a0d46085be) <span class="status-chip">needs review</span> ([how to compare this against your build](/TaystJK/features/whats-new/#how-to-tell-what-your-build-has)) |
 | In-game xdocs | No |
 | In-game menu | No |
 | Syntax | `listEmojis` |

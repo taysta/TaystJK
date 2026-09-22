@@ -3,7 +3,7 @@
 Rules every hand-written page on this branch follows, so pages do not diverge in front
 matter, tone, or badge usage. This file is excluded from the built site.
 
-The generated console reference does not follow this document — it is produced by
+The generated console reference does not follow this document. It is produced by
 `tools/cvar_audit/generate_docs.py` and its conventions live in
 `tools/cvar_audit/README.md`. Never hand-edit anything under `_data/`,
 `reference/cvars/`, `reference/commands/`, or the generated pages under `reference/`.
@@ -16,7 +16,7 @@ The generated console reference does not follow this document — it is produced
 
 | Field | Type | Required | Notes |
 |:--|:--|:--|:--|
-| `title` | string | yes | Quoted. Non-ASCII is escaped, e.g. `"TaystJK — one client"`. Appears in `<title>` as `{title} · TaystJK`. |
+| `title` | string | yes | Quoted. Non-ASCII is escaped, e.g. `"TaystJK: one client"`. Appears in `<title>` as `{title} · TaystJK`. |
 | `layout` | string | yes | Always `reference`. `_config.yml` defaults supply it, but every page sets it explicitly. |
 | `description` | string | yes | One sentence. Drives `<meta name="description">`, listing cards, and search previews. |
 | `nav_order` | integer | no | Orders previous/next links among pages with the same `parent`. The top nav is hardcoded in `_layouts/reference.html`; add a page there. |
@@ -40,18 +40,18 @@ The generated console reference does not follow this document — it is produced
 
 Rationale, one line each:
 
-- `title` — the page name in the tab, the card, and search results.
-- `layout` — explicit so a page never silently depends on a `defaults` change.
-- `description` — the only summary the card grid and meta tags have; a page without one
+- `title`: the page name in the tab, the card, and search results.
+- `layout`: explicit so a page never silently depends on a `defaults` change.
+- `description`: the only summary the card grid and meta tags have; a page without one
   renders a blank card.
-- `nav_order` — orders child pages within a section; the top nav is hand-ordered separately.
-- `wide` — opt-in, because prose reads badly at 1180px but tables and grids need it.
-- `reference_app` — loads a search app that only one page uses.
-- `parent` — breadcrumbs and section sequencing; `nav_exclude` controls the reference breadcrumb fallback.
-- `origin` — supplies the default baseline grouping for a hand-written feature page,
+- `nav_order`: orders child pages within a section; the top nav is hand-ordered separately.
+- `wide`: opt-in, because prose reads badly at 1180px but tables and grids need it.
+- `reference_app`: loads a search app that only one page uses.
+- `parent`: breadcrumbs and section sequencing; `nav_exclude` controls the reference breadcrumb fallback.
+- `origin`: supplies the default baseline grouping for a hand-written feature page,
   so non-cvar features are not invisible; confirm the comparison when adding the page.
-- `status` — marks a feature that a reader should not assume is finished or supported.
-- `added_on` — the only way to express availability, because there are no version tags.
+- `status`: marks a feature that a reader should not assume is finished or supported.
+- `added_on`: the only way to express availability, because there are no version tags.
 
 ## 2. `added_on`
 
@@ -59,7 +59,7 @@ TaystJK has no release versioning. Releases are rolling: the `latest` tag is mov
 each release commit, so a build identifies itself as `latest-<shorthash>` plus a compile
 date, and availability is a date, never "added in vX.Y".
 
-Format: `YYYY-MM-DD (shorthash)` — for example `2025-03-14 (a1b2c3d)`.
+Format: `YYYY-MM-DD (shorthash)`, for example `2025-03-14 (a1b2c3d)`.
 
 `version` ends with the engine's compile date (`SOURCE_DATE`, `codemp/qcommon/common.cpp`),
 and `modversion` prints the game module's compile date and time followed by the
@@ -68,7 +68,7 @@ and `modversion` prints the game module's compile date and time followed by the
 the release commit, describe resolves to `latest`.
 
 Tell readers to compare **the date**; an older build does not have the entry. The hash does
-not order builds — two short hashes cannot be ranked against each other — and the tag is
+not order builds because two short hashes cannot be ranked against each other. The tag is
 the same string on every release, so neither half of the identifier answers "is mine
 newer". The semver-looking tags in the repository (`1.0` … `1.5.5`) are inherited from the
 fork's ancestry and are not TaystJK releases.
@@ -83,10 +83,10 @@ Phase 3 creates one.
 The reference derives `added_on` from `origin.first_commit` using that commit's
 **committer** date, not its author date. The two answer different questions:
 
-- *Attribution* — who had it first — is resolved in `provenance.py` across the upstream
+- *Attribution*, meaning who had it first, is resolved in `provenance.py` across the upstream
   repositories, and ranks on author and PR dates so that work authored upstream keeps its
   credit even when TaystJK merged it first. Do not change that.
-- *Availability* — is it in my build — is a question about this repository only.
+- *Availability*, meaning whether it is in a particular build, is a question about this repository only.
   `first_commit` is always an ancestor of `origin/master`, and its committer date is when
   the change entered that history. An author date can be earlier and would claim a feature
   was available before TaystJK had it.
@@ -97,7 +97,7 @@ largest blast radius is the original Raven source import, authored 2013-04-04 an
 
 A date is marked *needs review* when `origin.confidence` is `medium`: it is only as firm as
 the attribution it rests on. A date is omitted entirely when the origin has no resolvable
-first commit — never invented.
+first commit; it is never invented.
 
 ## 3. Headings
 
@@ -122,14 +122,14 @@ Three things are left out of the rail automatically:
 
 - Headings inside a tab panel, because only one panel is visible at a time and a link into
   a hidden one goes nowhere the reader can see. The tab strip is the navigation there.
-- Headings marked `data-toc-skip`, for captions that label furniture rather than a section —
+- Headings marked `data-toc-skip`, for captions that label furniture rather than a section;
   the homepage's "Quick links" sidebar heading is the case this exists for.
 - Nothing else. Earlier revisions of this file tried to judge which pages "deserved" a rail
   by section count and then by whether a page was read or navigated. Both produced results
   that could not be defended, so the rule is now the simple one.
 
 The exception worth stating: `reference/all.md` has no rail despite qualifying. It is the
-no-JavaScript index, and the rail is built by JavaScript — it would never appear for the
+no-JavaScript index, and the rail is built by JavaScript. It would never appear for the
 readers that page exists for.
 
 ## 3b. What the layout adds on every page
@@ -139,10 +139,10 @@ Written once, so pages do not reimplement them:
 - **Heading anchors** on `h2`–`h4`, and the contents rail where `toc: true` is set (§3a).
 - **A copy button on every code block**, added by JS. Nothing in the Markdown is needed.
 - **Syntax highlighting** for fenced blocks with a language tag, which is why §4 requires
-  one — an untagged fence renders flat.
+  one, because an untagged fence renders flat.
 - **Search**, which reads `search-index.json`; opt a page out with `search_exclude`.
 - **An "Edit this page on GitHub" link**, on hand-written pages only. The generator stamps
-  `generated: true`, and the layout hides the link on those — editing a generated page is
+  `generated: true`, and the layout hides the link on those. Editing a generated page is
   work the next pipeline run throws away.
 - **Print styles**, which drop the chrome and invert the palette, since the dark theme
   prints as a solid black page.
@@ -155,16 +155,16 @@ Written once, so pages do not reimplement them:
   judging a page's age, and the History link is exact when precision matters.
 - **Light and dark themes.** Every colour resolves from a token in `:root`, and tints are
   `color-mix()` on those tokens, so a theme is a second set of values rather than a second
-  stylesheet. Do not add a raw colour to a rule — add a token. Both themes are checked to
+  stylesheet. Do not add a raw colour to a rule; add a token. Both themes are checked to
   meet WCAG AA for body text, links and headings.
 
 ## 4. Code fences
 
 Every fence carries a language tag. Tags in use:
 
-- `text` — directory trees, file listings, console output, anything not a real language.
-- `sh` — shell commands.
-- `yaml`, `json`, `cpp` — as applicable.
+- `text`: directory trees, file listings, console output, anything not a real language.
+- `sh`: shell commands.
+- `yaml`, `json`, `cpp`: as applicable.
 
 Console commands and cvar names in prose go in single backticks: `cg_killfeed`, not bold
 or quoted.
@@ -183,7 +183,7 @@ Every guide page opens with the same heading block:
 </div>
 ```
 
-- `eyebrow` is a short audience or role label — "Player guide", "Administrator guide".
+- `eyebrow` is a short audience or role label, such as "Player guide" or "Administrator guide".
 - `page-lede` is the opening sentence, set larger than body text.
 - `markdown="1"` is required on the wrapper or the Markdown inside will not render.
 
@@ -193,6 +193,8 @@ Prose style, matching `install.md` and `server-hosting.md`:
   "Choose your operating system", "Start with a small, private server".
 - No marketing language. Describe what the software does, not how good it is.
 - Prefer the concrete: name the file, the port, the cvar, the directory.
+- Use em dashes sparingly. Prefer a sentence, colon, comma, semicolon or parentheses when
+  the relationship does not need an abrupt break.
 - State constraints as constraints ("do not copy only the executable, because …") and give
   the reason.
 - Do not restate a cvar table the generated reference already produces. Link to the entry.
@@ -200,7 +202,7 @@ Prose style, matching `install.md` and `server-hosting.md`:
 ## 6. Source links
 
 Every factual claim about behaviour links to its source, using a GitHub **blame** link
-pinned to a commit — not `blob`, and never an unpinned branch link:
+pinned to a commit, not `blob` and never an unpinned branch link:
 
 ```text
 https://github.com/taysta/TaystJK/blame/<full-commit-sha>/<path>#L<line>
@@ -221,12 +223,12 @@ its text. When you cross-reference a specific point, link the section rather tha
 `/TaystJK/install/#when-to-use-vm_legacy`, not `/TaystJK/install/`.
 
 Renaming a heading changes its id and silently breaks inbound links. If you rename one that
-other pages point at, update them — `check_generated.py` validates internal links, so run it
+other pages point at, update them. `check_generated.py` validates internal links, so run it
 after.
 
 ### `master`'s `docs/` folder is a source to cite, not a copy to mirror
 
-The source branch carries a `docs/` folder. Most of it did not originate here —
+The source branch carries a `docs/` folder. Most of it did not originate here.
 `japro_docs.md` and `Defrag Mapping Guide.md` arrived with a jaPRO update and are jaPRO's
 own documentation, carried downstream alongside the gamecode.
 
@@ -248,7 +250,7 @@ The tracker is the live record of what is broken and what was fixed; these pages
 mirror of it. A wiki page that says "#343 is fixed in #367" is stale the moment either
 changes, and an open issue named here is a promise the page cannot keep.
 
-Read the tracker freely — it is the best guide to which problems actually recur, and which
+Read the tracker freely. It is the best guide to which problems actually recur and which
 ones are worth a page at all. Then write the problem, not the report: the symptom a reader
 would recognise, the cause, and what to do about it, in terms that stay true after the
 issue is closed. A fault that is fixed does not need its history retold; "update your build
@@ -259,7 +261,7 @@ Citing individual numbers is not.
 
 ## 6a. Devlog posts
 
-A post is one file in `_devlog/`. Nothing else needs editing — the index, the Atom feed and
+A post is one file in `_devlog/`. Nothing else needs editing; the index, the Atom feed and
 the site search all read the collection, so a new file appears in all three on the next
 build.
 
@@ -275,7 +277,7 @@ description: "One sentence. Shown on the index, in the feed, and under the post 
 ---
 ```
 
-`date` is required — it orders the index and the feed, and it is what the feed's `updated`
+`date` is required. It orders the index and the feed, and it is what the feed's `updated`
 timestamp comes from. `author` and `description` are optional but worth writing; without a
 description the index entry is a bare title.
 
@@ -298,14 +300,14 @@ Use these consistently.
 | **mod directory** | A sibling directory under `GameData` selected by `fs_game`. |
 | `fs_game` | Selects the mod directory. Server-settable. |
 | `fs_forcegame` | Client-side override of `fs_game`; cannot be set by the server. |
-| **origin** | Where an entry or feature *first appeared* — not every fork that ships it. |
+| **origin** | Where an entry or feature *first appeared*, not every fork that ships it. |
 
 Write "Jedi Academy" in full on first use per page; "JKA" afterwards is fine.
 
 ## 8. Badges
 
 `status: experimental` and `status: deprecated` render a chip above the page heading. The
-chip reuses the existing chip styling in `assets/css/reference.css` — the same base rules
+chip reuses the existing chip styling in `assets/css/reference.css`, using the same base rules
 as `.status-chip`, `.meta-chip`, and the origin labels. `stable` renders nothing, because
 stable is the assumed default and a badge on every page carries no information.
 
@@ -317,7 +319,7 @@ reference and are emitted by `generate_docs.py`. Do not hand-write them onto gui
 
 A bitmask cvar whose options are toggled by a console command carries a "Set with" callout, a
 `Configure with` row, and a generated `Bits` section in place of the inferred value list; the
-command page links back through `Configures`. Write guide prose in terms of that command —
+command page links back through `Configures`. Write guide prose in terms of that command:
 `strafeHelper 4`, not a raw bitmask value.
 
 A cvar the engine writes for itself is not a setting, and the reference says so rather than
@@ -380,7 +382,7 @@ For these handwritten features, `origin` supplies the default baseline grouping;
 that the feature is absent from the clients it is compared against. Generated cvars and
 commands instead compare registrations independently against each upstream snapshot,
 recorded in `_data/reference-meta.json`; origin attribution does not decide membership.
-An origin of `basejka` is rejected — it is not new against any baseline.
+An origin of `basejka` is rejected because it is not new against any baseline.
 
 **Before that page exists**, seed it in the `features` array instead:
 
@@ -395,7 +397,7 @@ An origin of `basejka` is rejected — it is not new against any baseline.
 ```
 
 The build **warns** about a destination that does not resolve yet; it does not fail. When
-the page is written and declares `whats_new: true`, it supersedes the seed by title —
+the page is written and declares `whats_new: true`, it supersedes the seed by title;
 delete the seed entry then.
 
 Seed summaries are provisional. Verify them against source when writing the page, the same
@@ -404,7 +406,7 @@ as any other factual claim (§6).
 ### Adding a seventh feature
 
 1. Decide the origin, and confirm the mapping puts it in the baseline you expect.
-2. If the page exists, add the four front-matter fields to it and regenerate — done.
+2. If the page exists, add the four front-matter fields to it and regenerate.
 3. If it does not, add an object to `features` with a `page` pointing where it will live.
 4. Run `python3 tools/cvar_audit/generate_docs.py` and read the warnings.
 5. Run `python3 tools/cvar_audit/validate.py` and
@@ -420,11 +422,11 @@ anchors on their own parent.
 
 The prose of `hardcoded-changes.md` is preserved verbatim at
 `.migration/hardcoded-changes-original.md`; the retired trees are preserved at
-`.migration/orphaned-trees/`. `.migration/` is a scratch directory, not part of the site —
+`.migration/orphaned-trees/`. `.migration/` is a scratch directory, not part of the site;
 Jekyll ignores dot-directories.
 
 **Approach: hand-written meta-refresh stubs, no plugin.** A redirect on GitHub Pages needs
-a file at the old path — Pages serves static files and has no server-side redirect
+a file at the old path. Pages serves static files and has no server-side redirect
 configuration. `jekyll-redirect-from` is on the GitHub Pages allowed-plugin list, but it
 does not help here: its `redirect_from` form puts the mapping on the *destination* page,
 and the destination does not exist yet, while its `redirect_to` form generates exactly the
@@ -457,8 +459,8 @@ that was published.
 
 The retired child pages carried `permalink` values containing a `#`, such as
 `/cvars/strafe#speedometer` and `/hardcoded-changes#vulkan`. Those are not separately
-retrievable URLs — a browser reads everything after `#` as a fragment and requests the
-parent path — so the parent stub above covers them. They needed no stub of their own. The
+retrievable URLs. A browser reads everything after `#` as a fragment and requests the
+parent path, so the parent stub above covers them. They needed no stub of their own. The
 full list of retired anchor permalinks, for reference:
 
 ```text

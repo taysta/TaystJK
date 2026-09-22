@@ -22,10 +22,10 @@ Controls `cl_commandsize` in the cgame module. Consult the cited behavior reads 
 | Module | `cgame` |
 | Also registered in | `cgame`, `engine-shared` |
 | Renderer | All / not renderer-specific |
-| Network scope | `client-only` — Local to the client/UI/renderer. |
+| Network scope | `client-only`: Local to the client/UI/renderer. |
 | Derivation | `code-trace` |
 | Confidence | `medium` |
-| Added | 2017-12-04 in [`748dc11de`](https://github.com/taysta/TaystJK/commit/748dc11dea5adc3a3f02fe88f7dc00197e482abe) <span class="status-chip">needs review</span> — [how to compare this against your build](/TaystJK/features/whats-new/#how-to-tell-what-your-build-has) |
+| Added | 2017-12-04 in [`748dc11de`](https://github.com/taysta/TaystJK/commit/748dc11dea5adc3a3f02fe88f7dc00197e482abe) <span class="status-chip">needs review</span> ([how to compare this against your build](/TaystJK/features/whats-new/#how-to-tell-what-your-build-has)) |
 | In-game xdocs | No |
 | In-game menu | No |
 | Default | `64` |
@@ -40,8 +40,8 @@ No discrete value list is enforced or documented in the inspected source.
 
 ## Flags
 
-- `CVAR_ARCHIVE` — saved to the user configuration
-- `CVAR_ARCHIVE_ND` — saved to configuration without marking the cvar as user-created
+- `CVAR_ARCHIVE`: saved to the user configuration
+- `CVAR_ARCHIVE_ND`: saved to configuration without marking the cvar as user-created
 
 ## Registration-specific defaults
 

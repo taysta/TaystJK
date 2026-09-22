@@ -20,11 +20,11 @@ Play a sound when you kill someone
 | Module | `cgame` |
 | Also registered in | `cgame` |
 | Renderer | All / not renderer-specific |
-| Network scope | `client-only` — Local to the client/UI/renderer. |
+| Network scope | `client-only`: Local to the client/UI/renderer. |
 | Derivation | `documented` |
 | Confidence | `high` |
-| Added | 2024-03-06 in [`477910d22`](https://github.com/taysta/TaystJK/commit/477910d22e11f8e6a4967b7ea074bfb2de181a49) — [how to compare this against your build](/TaystJK/features/whats-new/#how-to-tell-what-your-build-has) |
-| In-game xdocs | Yes — [codemp/ui/ui_xdocs.h:402](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/ui/ui_xdocs.h#L402) |
+| Added | 2024-03-06 in [`477910d22`](https://github.com/taysta/TaystJK/commit/477910d22e11f8e6a4967b7ea074bfb2de181a49) ([how to compare this against your build](/TaystJK/features/whats-new/#how-to-tell-what-your-build-has)) |
+| In-game xdocs | Yes: [codemp/ui/ui_xdocs.h:402](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/ui/ui_xdocs.h#L402) |
 | In-game menu | No |
 | Default | `2` |
 | Value type | `enum` |
@@ -42,7 +42,7 @@ Play a sound when you kill someone
 
 ## Flags
 
-- `CVAR_ARCHIVE` — saved to the user configuration
+- `CVAR_ARCHIVE`: saved to the user configuration
 
 ## Provenance
 

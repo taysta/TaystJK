@@ -11,7 +11,7 @@ toc: true
 
 # Install TaystJK
 
-<p class="page-lede">TaystJK replaces the multiplayer executable, not the retail game data. Keep the four Jedi Academy asset archives and place TaystJK beside—or deliberately separate from—them.</p>
+<p class="page-lede">TaystJK replaces the multiplayer executable, not the retail game data. Keep the four Jedi Academy asset archives and place TaystJK beside them, or deliberately separate from them.</p>
 </div>
 
 ## Before you start
@@ -148,7 +148,7 @@ If the retail files are only available through Steam, SteamCMD can download app 
 
 ## Installing several modded clients
 
-Do not merge every client's executables and shared libraries into one `GameData` directory. Different projects—or 32-bit and 64-bit builds of the same project—may ship incompatible `SDL2` or `OpenAL` libraries.
+Do not merge every client's executables and shared libraries into one `GameData` directory. Different projects, or 32-bit and 64-bit builds of the same project, may ship incompatible `SDL2` or `OpenAL` libraries.
 
 ### Recommended: one shared asset directory
 
@@ -225,7 +225,7 @@ To deliberately use another mod's client-side libraries and assets, install them
 taystjk.x86_64.exe +set fs_game japlus +set fs_forcegame japlus
 ```
 
-Setting both values loads the mod from the beginning—including a custom UI—and prevents a later server-provided `fs_game` from changing the directory used for files and generated output. To return to the normal TaystJK client setup, remove the `fs_game japlus` argument and either remove the `fs_forcegame` argument or set it back to `taystjk`.
+Setting both values loads the mod from the beginning, including a custom UI, and prevents a later server-provided `fs_game` from changing the directory used for files and generated output. To return to the normal TaystJK client setup, remove the `fs_game japlus` argument and either remove the `fs_forcegame` argument or set it back to `taystjk`.
 
 ### When to use `vm_legacy`
 
@@ -251,7 +251,7 @@ If the console reports `VM_CreateLegacy: ... succeeded`, the requested legacy in
 
 ## Steam playtime and overlay
 
-Optional, and **Windows only** — `Sys_SteamInit` is an empty stub everywhere else
+Optional, and **Windows only**. `Sys_SteamInit` is an empty stub everywhere else
 ([`sys_unix.cpp`](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/shared/sys/sys_unix.cpp#L655)).
 
 With it working, Steam counts your TaystJK time against Jedi Academy and the overlay works,
@@ -273,7 +273,7 @@ Jedi Academy. Put both in `GameData`, beside the executable:
 **Mind the architecture.** The
 [Steam Integration Tools](https://jkhub.org/files/file/3549-steam-integration-tools/)
 package on JKHub is the usual source for these, but it provides the **32-bit**
-`steam_api.dll` only. If you run the 64-bit build — which most people do — that package
+`steam_api.dll` only. If you run the 64-bit build, as most people do, that package
 alone will not work; you need `steam_api64.dll`, which comes from the Steamworks SDK.
 
 If the file is missing the client says so at startup in red, and otherwise runs normally:
@@ -301,8 +301,8 @@ This layout is adapted from the longer [multiple modded clients guide on JKHub](
 
 ## Next steps
 
-- [What this client adds](/TaystJK/features/) — the HUD tools, movement styles and cosmetics
-- [Something is wrong](/TaystJK/troubleshooting/) — listed by symptom, including the macOS
+- [What this client adds](/TaystJK/features/): the HUD tools, movement styles and cosmetics
+- [Something is wrong](/TaystJK/troubleshooting/): listed by symptom, including the macOS
   and modded-server cases above
 - [Why a feature works on one server and not another](/TaystJK/mod-compatibility/)
 - [Host a dedicated server](/TaystJK/server-hosting/)

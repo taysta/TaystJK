@@ -22,10 +22,10 @@ Runs `R_FontList_f` in the renderer module.
 | Module | `renderer` |
 | Also registered in | `renderer` |
 | Renderer | `rd-rend2`, `rd-vanilla`, `rd-vulkan` |
-| Network scope | `client-only` — Local to the client/UI/renderer. |
+| Network scope | `client-only`: Local to the client/UI/renderer. |
 | Derivation | `code-trace` |
 | Confidence | `medium` |
-| Added | 2014-06-23 in [`333d0ace7`](https://github.com/taysta/TaystJK/commit/333d0ace79e0f070c7308e26ad3262a10c0b6458) <span class="status-chip">needs review</span> — [how to compare this against your build](/TaystJK/features/whats-new/#how-to-tell-what-your-build-has) |
+| Added | 2014-06-23 in [`333d0ace7`](https://github.com/taysta/TaystJK/commit/333d0ace79e0f070c7308e26ad3262a10c0b6458) <span class="status-chip">needs review</span> ([how to compare this against your build](/TaystJK/features/whats-new/#how-to-tell-what-your-build-has)) |
 | In-game xdocs | No |
 | In-game menu | No |
 | Syntax | `fontlist` |

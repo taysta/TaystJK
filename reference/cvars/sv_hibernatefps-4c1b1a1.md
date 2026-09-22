@@ -20,10 +20,10 @@ The fps to use while the server is in hibernation mode.
 | Module | `engine-server` |
 | Also registered in | `engine-server` |
 | Renderer | All / not renderer-specific |
-| Network scope | `server-authoritative` — Owned or enforced by the server. |
+| Network scope | `server-authoritative`: Owned or enforced by the server. |
 | Derivation | `documented` |
 | Confidence | `high` |
-| Added | 2018-10-14 in [`c648f59e6`](https://github.com/taysta/TaystJK/commit/c648f59e6b353f9755a4890a1e6f27abb2491cd1) — [how to compare this against your build](/TaystJK/features/whats-new/#how-to-tell-what-your-build-has) |
+| Added | 2018-10-14 in [`c648f59e6`](https://github.com/taysta/TaystJK/commit/c648f59e6b353f9755a4890a1e6f27abb2491cd1) ([how to compare this against your build](/TaystJK/features/whats-new/#how-to-tell-what-your-build-has)) |
 | In-game xdocs | No |
 | In-game menu | No |
 | Default | `2` |
@@ -38,11 +38,11 @@ No discrete value list is enforced or documented in the inspected source.
 
 ## Enforced ranges
 
-- `1` through `1000` (integer; Cvar_CheckRange) — [codemp/server/sv_init.cpp:1068](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/server/sv_init.cpp#L1068)
+- `1` through `1000` (integer; Cvar_CheckRange). Evidence: [codemp/server/sv_init.cpp:1068](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/server/sv_init.cpp#L1068)
 
 ## Flags
 
-- `CVAR_ARCHIVE_ND` — saved to configuration without marking the cvar as user-created
+- `CVAR_ARCHIVE_ND`: saved to configuration without marking the cvar as user-created
 
 ## Provenance
 

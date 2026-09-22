@@ -22,10 +22,10 @@ Controls the rend2 dynamic-glow bloom strength. Zero skips the bloom pass; posit
 | Module | `renderer` |
 | Also registered in | `renderer` |
 | Renderer | `rd-rend2` |
-| Network scope | `client-only` — Local to the client/UI/renderer. |
+| Network scope | `client-only`: Local to the client/UI/renderer. |
 | Derivation | `code-trace` |
 | Confidence | `medium` |
-| Added | 2025-04-15 in [`c98ecf977`](https://github.com/taysta/TaystJK/commit/c98ecf977bd3b652b1a7974cd21ee1f80a1b7aad) <span class="status-chip">needs review</span> — [how to compare this against your build](/TaystJK/features/whats-new/#how-to-tell-what-your-build-has) |
+| Added | 2025-04-15 in [`c98ecf977`](https://github.com/taysta/TaystJK/commit/c98ecf977bd3b652b1a7974cd21ee1f80a1b7aad) <span class="status-chip">needs review</span> ([how to compare this against your build](/TaystJK/features/whats-new/#how-to-tell-what-your-build-has)) |
 | In-game xdocs | No |
 | In-game menu | No |
 | Default | `0.0` |
@@ -43,11 +43,11 @@ Controls the rend2 dynamic-glow bloom strength. Zero skips the bloom pass; posit
 
 ## Enforced ranges
 
-- `0.f` through `2.f` (numeric; Cvar_CheckRange) — [codemp/rd-rend2/tr_init.cpp:1515](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-rend2/tr_init.cpp#L1515)
+- `0.f` through `2.f` (numeric; Cvar_CheckRange). Evidence: [codemp/rd-rend2/tr_init.cpp:1515](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-rend2/tr_init.cpp#L1515)
 
 ## Flags
 
-- `CVAR_ARCHIVE` — saved to the user configuration
+- `CVAR_ARCHIVE`: saved to the user configuration
 
 ## Provenance
 

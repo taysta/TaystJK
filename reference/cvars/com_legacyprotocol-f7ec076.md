@@ -24,17 +24,17 @@ search_exclude: false
 | Module | `engine-client` |
 | Also registered in | `engine-client` |
 | Renderer | All / not renderer-specific |
-| Network scope | `client-only` — Local to the client/UI/renderer. |
+| Network scope | `client-only`: Local to the client/UI/renderer. |
 | Derivation | `documented` |
 | Confidence | `medium` |
-| Added | 2018-04-26 in [`6107f5fbc`](https://github.com/taysta/TaystJK/commit/6107f5fbcf594706f4d729052bda36e9cb208847) <span class="status-chip">needs review</span> — [how to compare this against your build](/TaystJK/features/whats-new/#how-to-tell-what-your-build-has) |
+| Added | 2018-04-26 in [`6107f5fbc`](https://github.com/taysta/TaystJK/commit/6107f5fbcf594706f4d729052bda36e9cb208847) <span class="status-chip">needs review</span> ([how to compare this against your build](/TaystJK/features/whats-new/#how-to-tell-what-your-build-has)) |
 | In-game xdocs | No |
 | In-game menu | No |
 | Default | `va("%i", PROTOCOL_LEGACY)` |
 | Value type | `int` |
 | Restart | No latch flag is registered. |
 | Cheat protected | No |
-| Player-settable | No — the game writes this value. |
+| Player-settable | No; the game writes this value. |
 
 ## Values
 
@@ -42,7 +42,7 @@ No discrete value list is enforced or documented in the inspected source.
 
 ## Flags
 
-- `CVAR_ROM` — read-only after registration
+- `CVAR_ROM`: read-only after registration
 
 ## Provenance
 

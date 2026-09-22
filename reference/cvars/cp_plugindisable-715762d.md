@@ -24,10 +24,10 @@ search_exclude: false
 | Module | `cgame` |
 | Also registered in | `cgame` |
 | Renderer | All / not renderer-specific |
-| Network scope | `feature-flagged` — Client behavior is negotiated through a server feature flag. |
+| Network scope | `feature-flagged`: Client behavior is negotiated through a server feature flag. |
 | Derivation | `documented` |
 | Confidence | `medium` |
-| Added | 2018-01-01 in [`d9d510063`](https://github.com/taysta/TaystJK/commit/d9d510063ce680639e6ba060021b6d40ee0c1419) <span class="status-chip">needs review</span> — [how to compare this against your build](/TaystJK/features/whats-new/#how-to-tell-what-your-build-has) |
+| Added | 2018-01-01 in [`d9d510063`](https://github.com/taysta/TaystJK/commit/d9d510063ce680639e6ba060021b6d40ee0c1419) <span class="status-chip">needs review</span> ([how to compare this against your build](/TaystJK/features/whats-new/#how-to-tell-what-your-build-has)) |
 | In-game xdocs | No |
 | In-game menu | No |
 | Default | `1536` |
@@ -39,7 +39,7 @@ search_exclude: false
 
 ## Bits
 
-Use [`plugin`](/TaystJK/reference/commands/plugin-fd8c7c8/) or [`pluginDisable`](/TaystJK/reference/commands/plugindisable-98b2c24/) to toggle one option at a time; see the command pages for syntax. The value column is that bit on its own — [the labels come from the source table](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_consolecmds.c#L1257).
+Use [`plugin`](/TaystJK/reference/commands/plugin-fd8c7c8/) or [`pluginDisable`](/TaystJK/reference/commands/plugindisable-98b2c24/) to toggle one option at a time; see the command pages for syntax. The value column is that bit on its own. [The labels come from the source table](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_consolecmds.c#L1257).
 
 | Bit | Value | Meaning | Read by |
 |:--|:--|:--|:--|
@@ -74,8 +74,8 @@ Use [`plugin`](/TaystJK/reference/commands/plugin-fd8c7c8/) or [`pluginDisable`]
 | 28 | `268435456` | Show checkpoints in console only | — |
 ## Flags
 
-- `CVAR_ARCHIVE` — saved to the user configuration
-- `CVAR_USERINFO` — sent in the client's userinfo
+- `CVAR_ARCHIVE`: saved to the user configuration
+- `CVAR_USERINFO`: sent in the client's userinfo
 
 ## Provenance
 

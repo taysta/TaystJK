@@ -22,10 +22,10 @@ Controls `com_affinity` in the engine-shared module. Consult the cited behavior 
 | Module | `engine-shared` |
 | Also registered in | `engine-shared` |
 | Renderer | All / not renderer-specific |
-| Network scope | `client-only` — Local to the client/UI/renderer. |
+| Network scope | `client-only`: Local to the client/UI/renderer. |
 | Derivation | `code-trace` |
 | Confidence | `medium` |
-| Added | 2014-04-04 in [`d3ecd6191`](https://github.com/taysta/TaystJK/commit/d3ecd6191c5b92509a6491f10eac74cabf8a8daa) <span class="status-chip">needs review</span> — [how to compare this against your build](/TaystJK/features/whats-new/#how-to-tell-what-your-build-has) |
+| Added | 2014-04-04 in [`d3ecd6191`](https://github.com/taysta/TaystJK/commit/d3ecd6191c5b92509a6491f10eac74cabf8a8daa) <span class="status-chip">needs review</span> ([how to compare this against your build](/TaystJK/features/whats-new/#how-to-tell-what-your-build-has)) |
 | In-game xdocs | No |
 | In-game menu | No |
 | Default | `0` |
@@ -40,7 +40,7 @@ No discrete value list is enforced or documented in the inspected source.
 
 ## Flags
 
-- `CVAR_ARCHIVE_ND` — saved to configuration without marking the cvar as user-created
+- `CVAR_ARCHIVE_ND`: saved to configuration without marking the cvar as user-created
 
 ## Provenance
 

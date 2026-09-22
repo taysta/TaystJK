@@ -27,7 +27,7 @@ or setting the cvars back by hand. Nothing here is locked in.
 
 All fourteen live at the top level of `assets/japro/`, which the build packages into
 `japro-assets.pk3` in your `taystjk/` directory. Read one before running it if you want to
-know exactly what it will change — they are short.
+know exactly what it will change. They are short.
 
 ## Strafe helper presets
 
@@ -55,7 +55,7 @@ what you had. The `strafehelper` and `speedometer` commands print what each bit 
 |:--|:--|
 | `japro_default` | A broad baseline touching movement keys and general client settings. The longest of the set. |
 | `japro_loda` | An alternative baseline, including client smoothing settings. |
-| `hud_tayst` | A HUD layout preset — FPS display, timers and placement. |
+| `hud_tayst` | A HUD layout preset with an FPS display, timers and placement. |
 
 ## Motion sickness
 
@@ -63,7 +63,7 @@ Two very short files that exist as a pair:
 
 | Config | What it does |
 |:--|:--|
-| `noMotion` | Resets the view-movement cvars — `cg_runPitch` and its siblings — so the view stops bobbing and rolling. |
+| `noMotion` | Resets the view-movement cvars, including `cg_runPitch` and its siblings, so the view stops bobbing and rolling. |
 | `restoreMotion` | Puts them back to their stock values. |
 
 Run `noMotion` if head-bob makes you unwell; `restoreMotion` undoes it exactly, which is why
@@ -81,6 +81,6 @@ The second is for whoever runs the server, not for players. See
 
 ## Files that are not presets
 
-`assets/japro/` contains other `.cfg` files that are not meant to be `exec`ed — per-model
+`assets/japro/` contains other `.cfg` files that are not meant to be `exec`ed. Per-model
 `sounds.cfg`, `animation.cfg` and `animevents_japlus.cfg` are asset descriptions the engine
 reads on its own. Only the fourteen at the top level are user-facing presets.

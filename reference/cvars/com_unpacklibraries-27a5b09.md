@@ -22,10 +22,10 @@ Controls `com_unpackLibraries` in the engine-shared module. Consult the cited be
 | Module | `engine-shared` |
 | Also registered in | `engine-shared` |
 | Renderer | All / not renderer-specific |
-| Network scope | `client-only` — Local to the client/UI/renderer. |
+| Network scope | `client-only`: Local to the client/UI/renderer. |
 | Derivation | `code-trace` |
 | Confidence | `high` |
-| Added | 2023-11-29 in [`596ae40cc`](https://github.com/taysta/TaystJK/commit/596ae40cc9aa24600f282fdac79b79b2ebef0be0) — [how to compare this against your build](/TaystJK/features/whats-new/#how-to-tell-what-your-build-has) |
+| Added | 2023-11-29 in [`596ae40cc`](https://github.com/taysta/TaystJK/commit/596ae40cc9aa24600f282fdac79b79b2ebef0be0) ([how to compare this against your build](/TaystJK/features/whats-new/#how-to-tell-what-your-build-has)) |
 | In-game xdocs | No |
 | In-game menu | No |
 | Default | `0` |
@@ -43,8 +43,8 @@ Controls `com_unpackLibraries` in the engine-shared module. Consult the cited be
 
 ## Flags
 
-- `CVAR_INIT` — initialization/command-line setting
-- `CVAR_PROTECTED` — protected from unsafe remote changes
+- `CVAR_INIT`: initialization/command-line setting
+- `CVAR_PROTECTED`: protected from unsafe remote changes
 
 ## Provenance
 

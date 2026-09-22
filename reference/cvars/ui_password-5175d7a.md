@@ -24,17 +24,17 @@ Controls `ui_password` in the ui module. Consult the cited behavior reads before
 | Module | `ui` |
 | Also registered in | `ui` |
 | Renderer | All / not renderer-specific |
-| Network scope | `client-only` — Local to the client/UI/renderer. |
+| Network scope | `client-only`: Local to the client/UI/renderer. |
 | Derivation | `code-trace` |
 | Confidence | `medium` |
-| Added | 2015-04-27 in [`c6eb4507a`](https://github.com/taysta/TaystJK/commit/c6eb4507a9c53d8a50b61c37ab72cb3491d41cdf) <span class="status-chip">needs review</span> — [how to compare this against your build](/TaystJK/features/whats-new/#how-to-tell-what-your-build-has) |
+| Added | 2015-04-27 in [`c6eb4507a`](https://github.com/taysta/TaystJK/commit/c6eb4507a9c53d8a50b61c37ab72cb3491d41cdf) <span class="status-chip">needs review</span> ([how to compare this against your build](/TaystJK/features/whats-new/#how-to-tell-what-your-build-has)) |
 | In-game xdocs | No |
-| In-game menu | Yes — [ingame_account.menu:214](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/assets/japro/ui/jamp/ingame_account.menu#L214) |
+| In-game menu | Yes: [ingame_account.menu:214](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/assets/japro/ui/jamp/ingame_account.menu#L214) |
 | Default | `` |
 | Value type | `string` |
 | Restart | No latch flag is registered. |
 | Cheat protected | No |
-| Player-settable | No — the game writes this value. |
+| Player-settable | No; the game writes this value. |
 
 ## Values
 
@@ -42,9 +42,9 @@ No discrete value list is enforced or documented in the inspected source.
 
 ## Flags
 
-- `CVAR_ARCHIVE` — saved to the user configuration
-- `CVAR_INTERNAL` — internal UI/engine state
-- `CVAR_NORESTART` — preserved across cvar restart
+- `CVAR_ARCHIVE`: saved to the user configuration
+- `CVAR_INTERNAL`: internal UI/engine state
+- `CVAR_NORESTART`: preserved across cvar restart
 
 ## Provenance
 

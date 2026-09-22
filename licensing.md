@@ -29,7 +29,7 @@ code is not permitted.
 
 TaystJK is a fork several generations deep, and almost nothing here originated with it.
 The [console reference](/TaystJK/reference/) records an **origin** for every one of its
-2,014 entries — the project where that cvar or command first appeared, resolved from commit
+2,014 entries: the project where that cvar or command first appeared, resolved from commit
 history rather than assumed:
 
 | Origin | Entries |
@@ -49,7 +49,7 @@ on [sources and methodology](/TaystJK/reference/sources/). Origin means *first a
 there*, not *only exists there*.
 
 Two of those deserve naming beyond a row in a table. **jaPRO** supplies both halves of the
-gamecode this client bundles — see [the overview](/TaystJK/overview/) — and is developed at
+gamecode this client bundles (see [the overview](/TaystJK/overview/)) and is developed at
 [videoP/jaPRO](https://github.com/videoP/jaPRO). The **Vulkan renderer** is maintained
 downstream by JKSunny at
 [JKSunny/EternalJK](https://github.com/JKSunny/EternalJK), and derives from
@@ -58,18 +58,18 @@ downstream by JKSunny at
 ## Assets
 
 The licence covers code. It does not cover Jedi Academy's own game assets, which you must
-own a copy of the game to obtain — TaystJK ships no Raven assets and cannot be played
+own a copy of the game to obtain. TaystJK ships no Raven assets and cannot be played
 without them. The [install guide](/TaystJK/install/) covers what you need.
 
-Assets that *do* ship with the client — the cosmetics, emoji, HUD and shader files under
-`assets/japro/` — come from the jaPRO project and contributors credited in the source
+Assets that *do* ship with the client, including the cosmetics, emoji, HUD and shader files under
+`assets/japro/`, come from the jaPRO project and contributors credited in the source
 history. A few are noted individually where a page describes them.
 
 ## This documentation
 
 The pages on this site are written for TaystJK and generated from its source. Where a page
-leans on someone else's documentation it says so and links it, rather than absorbing it —
-the [movement styles](/TaystJK/features/movement-styles/) page follows jaPRO's own mapping
+leans on someone else's documentation it says so and links it, rather than absorbing it.
+The [movement styles](/TaystJK/features/movement-styles/) page follows jaPRO's own mapping
 guide, for instance.
 
 Parts of this site were written with AI assistance, which is disclosed in full on

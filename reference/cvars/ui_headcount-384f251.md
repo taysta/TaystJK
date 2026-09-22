@@ -24,17 +24,17 @@ Controls `ui_headCount` in the ui module. Consult the cited behavior reads befor
 | Module | `ui` |
 | Also registered in | `ui` |
 | Renderer | All / not renderer-specific |
-| Network scope | `client-only` — Local to the client/UI/renderer. |
+| Network scope | `client-only`: Local to the client/UI/renderer. |
 | Derivation | `code-trace` |
 | Confidence | `medium` |
-| Added | 2019-03-18 in [`0b9f190a7`](https://github.com/taysta/TaystJK/commit/0b9f190a7a4b85682fcc0f1ff0d15e5a153e1180) <span class="status-chip">needs review</span> — [how to compare this against your build](/TaystJK/features/whats-new/#how-to-tell-what-your-build-has) |
+| Added | 2019-03-18 in [`0b9f190a7`](https://github.com/taysta/TaystJK/commit/0b9f190a7a4b85682fcc0f1ff0d15e5a153e1180) <span class="status-chip">needs review</span> ([how to compare this against your build](/TaystJK/features/whats-new/#how-to-tell-what-your-build-has)) |
 | In-game xdocs | No |
 | In-game menu | No |
 | Default | `-1` |
 | Value type | `int` |
 | Restart | No latch flag is registered. |
 | Cheat protected | No |
-| Player-settable | No — the game writes this value. |
+| Player-settable | No; the game writes this value. |
 
 ## Values
 
@@ -42,9 +42,9 @@ No discrete value list is enforced or documented in the inspected source.
 
 ## Flags
 
-- `CVAR_ARCHIVE` — saved to the user configuration
-- `CVAR_INTERNAL` — internal UI/engine state
-- `CVAR_ROM` — read-only after registration
+- `CVAR_ARCHIVE`: saved to the user configuration
+- `CVAR_INTERNAL`: internal UI/engine state
+- `CVAR_ROM`: read-only after registration
 
 ## Provenance
 

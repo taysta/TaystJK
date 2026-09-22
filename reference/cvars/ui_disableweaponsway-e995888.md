@@ -24,17 +24,17 @@ Registered by the current source, but no user-facing behavior description has be
 | Module | `ui` |
 | Also registered in | `ui` |
 | Renderer | All / not renderer-specific |
-| Network scope | `client-only` — Local to the client/UI/renderer. |
+| Network scope | `client-only`: Local to the client/UI/renderer. |
 | Derivation | `code-trace` |
 | Confidence | `high` |
-| Added | 2018-01-11 in [`60132754c`](https://github.com/taysta/TaystJK/commit/60132754c61719a97f300fa62cc77e55061f4c1e) — [how to compare this against your build](/TaystJK/features/whats-new/#how-to-tell-what-your-build-has) |
+| Added | 2018-01-11 in [`60132754c`](https://github.com/taysta/TaystJK/commit/60132754c61719a97f300fa62cc77e55061f4c1e) ([how to compare this against your build](/TaystJK/features/whats-new/#how-to-tell-what-your-build-has)) |
 | In-game xdocs | No |
-| In-game menu | Yes — [ingame_setup.menu:5095](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/assets/japro/ui/jamp/ingame_setup.menu#L5095), [ingame_setup.menu:5101](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/assets/japro/ui/jamp/ingame_setup.menu#L5101), [ingame_setup.menu:5132](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/assets/japro/ui/jamp/ingame_setup.menu#L5132) |
+| In-game menu | Yes: [ingame_setup.menu:5095](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/assets/japro/ui/jamp/ingame_setup.menu#L5095), [ingame_setup.menu:5101](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/assets/japro/ui/jamp/ingame_setup.menu#L5101), [ingame_setup.menu:5132](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/assets/japro/ui/jamp/ingame_setup.menu#L5132) |
 | Default | `1` |
 | Value type | `int` |
 | Restart | No latch flag is registered. |
 | Cheat protected | No |
-| Player-settable | No — the game writes this value. |
+| Player-settable | No; the game writes this value. |
 
 ## Values
 
@@ -42,8 +42,8 @@ No discrete value list is enforced or documented in the inspected source.
 
 ## Flags
 
-- `CVAR_ARCHIVE` — saved to the user configuration
-- `CVAR_INTERNAL` — internal UI/engine state
+- `CVAR_ARCHIVE`: saved to the user configuration
+- `CVAR_INTERNAL`: internal UI/engine state
 
 ## Provenance
 

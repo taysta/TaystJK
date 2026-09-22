@@ -22,10 +22,10 @@ Controls `r_DynamicGlowScale` in the renderer module. Consult the cited behavior
 | Module | `renderer` |
 | Also registered in | `renderer` |
 | Renderer | `rd-vanilla`, `rd-vulkan` |
-| Network scope | `client-only` — Local to the client/UI/renderer. |
+| Network scope | `client-only`: Local to the client/UI/renderer. |
 | Derivation | `code-trace` |
 | Confidence | `medium` |
-| Added | 2018-03-29 in [`f768a9d0b`](https://github.com/taysta/TaystJK/commit/f768a9d0b3b10086974b9c9a01b620549d13915e) <span class="status-chip">needs review</span> — [how to compare this against your build](/TaystJK/features/whats-new/#how-to-tell-what-your-build-has) |
+| Added | 2018-03-29 in [`f768a9d0b`](https://github.com/taysta/TaystJK/commit/f768a9d0b3b10086974b9c9a01b620549d13915e) <span class="status-chip">needs review</span> ([how to compare this against your build](/TaystJK/features/whats-new/#how-to-tell-what-your-build-has)) |
 | In-game xdocs | No |
 | In-game menu | No |
 | Default | `0.25` |
@@ -40,8 +40,8 @@ No discrete value list is enforced or documented in the inspected source.
 
 ## Flags
 
-- `CVAR_ARCHIVE_ND` — saved to configuration without marking the cvar as user-created
-- `CVAR_LATCH` — latched until the relevant subsystem or map is restarted
+- `CVAR_ARCHIVE_ND`: saved to configuration without marking the cvar as user-created
+- `CVAR_LATCH`: latched until the relevant subsystem or map is restarted
 
 ## Registration-specific defaults
 

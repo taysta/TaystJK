@@ -12,7 +12,7 @@ toc: true
 
 # Platform support
 
-<p class="page-lede">A few features are compiled in only for certain platforms. If one of these is missing for you, it is not broken — your build never had it.</p>
+<p class="page-lede">A few features are compiled in only for certain platforms. If one of these is missing for you, it is not broken; your build never had it.</p>
 </div>
 
 Each of these is decided when the client is built, so no cvar will turn it on.
@@ -32,7 +32,7 @@ so it never exists outside Windows at all.
 On Windows it is narrower still. The sound code asks for `EAXMan64.dll` in a 64-bit build
 and `EaxMan.dll` otherwise
 ([`snd_dma.cpp`](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/snd_dma.cpp#L5399)),
-but the installer ships `EaxMan.dll` only for 32-bit builds — a 64-bit install gets
+but the installer ships `EaxMan.dll` only for 32-bit builds. A 64-bit install gets
 `OpenAL32.x86_64.dll` and nothing else
 ([`InstallConfig.cmake`](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/cmake/Modules/InstallConfig.cmake#L78)).
 The 64-bit path therefore looks for a library that is never shipped, and EAX quietly stays
@@ -54,19 +54,19 @@ and the feature is absent rather than disabled. The same applies to ARM Linux. R
 x86-64 build under Rosetta is compiled differently and is not the same thing as an arm64
 build.
 
-The Windows AddressSanitizer build does not have it either, for an unrelated reason — see
+The Windows AddressSanitizer build does not have it either, for an unrelated reason. See
 [the AddressSanitizer build](/TaystJK/features/builds-and-versioning/#the-addresssanitizer-build).
 
 ## Steam integration is Windows only
 
 `Sys_SteamInit` has a real implementation only in the Windows platform layer. The Unix one
-is an empty function whose comment says as much — "Only Windows has this feature at the
+is an empty function whose comment says as much: "Only Windows has this feature at the
 moment"
 ([`sys_unix.cpp`](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/shared/sys/sys_unix.cpp#L650)).
 
 This is not a build-time choice you can change: on Linux and macOS there is no code to
 enable. `com_steamIntegration` still exists and still defaults to `1` there, because it is
-registered in shared code — so the cvar being on is not evidence the feature is doing
+registered in shared code, so the cvar being on is not evidence the feature is doing
 anything.
 
 Even on Windows it needs two files you have to supply yourself, and the commonly available
@@ -78,4 +78,3 @@ package is 32-bit only. Setting it up is covered on the
 Which renderer backends exist in your build is also a build-time choice, and a missing one
 falls back to the default with a message rather than failing. See
 [Renderers](/TaystJK/features/renderers/).
-

@@ -20,10 +20,10 @@ Percent chance to deny a valid MP saber block/clash. 0=off, 100=always.
 | Module | `game` |
 | Also registered in | `game` |
 | Renderer | All / not renderer-specific |
-| Network scope | `server-authoritative` — Owned or enforced by the server. |
+| Network scope | `server-authoritative`: Owned or enforced by the server. |
 | Derivation | `documented` |
 | Confidence | `high` |
-| Added | 2026-06-03 in [`1ca8755a9`](https://github.com/taysta/TaystJK/commit/1ca8755a910522142deee632f607e2505f6c083a) — [how to compare this against your build](/TaystJK/features/whats-new/#how-to-tell-what-your-build-has) |
+| Added | 2026-06-03 in [`1ca8755a9`](https://github.com/taysta/TaystJK/commit/1ca8755a910522142deee632f607e2505f6c083a) ([how to compare this against your build](/TaystJK/features/whats-new/#how-to-tell-what-your-build-has)) |
 | In-game xdocs | No |
 | In-game menu | No |
 | Default | `0` |
@@ -41,7 +41,7 @@ Percent chance to deny a valid MP saber block/clash. 0=off, 100=always.
 
 ## Flags
 
-- `CVAR_ARCHIVE` — saved to the user configuration
+- `CVAR_ARCHIVE`: saved to the user configuration
 
 ## Provenance
 

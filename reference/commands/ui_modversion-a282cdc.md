@@ -22,10 +22,10 @@ Runs `UI_Modversion_f` in the ui module.
 | Module | `ui` |
 | Also registered in | `ui` |
 | Renderer | All / not renderer-specific |
-| Network scope | `client-only` — Local to the client/UI/renderer. |
+| Network scope | `client-only`: Local to the client/UI/renderer. |
 | Derivation | `code-trace` |
 | Confidence | `medium` |
-| Added | 2016-02-04 in [`561b84ebe`](https://github.com/taysta/TaystJK/commit/561b84ebefaf74a5ada68700a8c74b4c0ff2d419) <span class="status-chip">needs review</span> — [how to compare this against your build](/TaystJK/features/whats-new/#how-to-tell-what-your-build-has) |
+| Added | 2016-02-04 in [`561b84ebe`](https://github.com/taysta/TaystJK/commit/561b84ebefaf74a5ada68700a8c74b4c0ff2d419) <span class="status-chip">needs review</span> ([how to compare this against your build](/TaystJK/features/whats-new/#how-to-tell-what-your-build-has)) |
 | In-game xdocs | No |
 | In-game menu | No |
 | Syntax | `ui_modversion` |

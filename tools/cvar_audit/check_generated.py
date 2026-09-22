@@ -22,7 +22,7 @@ def missing_description_errors() -> list:
     search result shows under the title. A page without one renders a blank card and
     falls back to the site-wide description everywhere else.
 
-    Tracked files only — an untracked local build tree is not part of the site. Redirect
+    Tracked files only. An untracked local build tree is not part of the site. Redirect
     stubs are exempt: they carry `layout: none` and are never indexed.
     """
     tracked = subprocess.run(

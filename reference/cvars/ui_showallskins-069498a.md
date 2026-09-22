@@ -22,10 +22,10 @@ Controls `ui_showAllSkins` in the ui module. Consult the cited behavior reads be
 | Module | `ui` |
 | Also registered in | `ui` |
 | Renderer | All / not renderer-specific |
-| Network scope | `client-only` — Local to the client/UI/renderer. |
+| Network scope | `client-only`: Local to the client/UI/renderer. |
 | Derivation | `code-trace` |
 | Confidence | `medium` |
-| Added | 2019-04-10 in [`452010cb6`](https://github.com/taysta/TaystJK/commit/452010cb69e89d0c546144d5373bdb954e90afd5) <span class="status-chip">needs review</span> — [how to compare this against your build](/TaystJK/features/whats-new/#how-to-tell-what-your-build-has) |
+| Added | 2019-04-10 in [`452010cb6`](https://github.com/taysta/TaystJK/commit/452010cb69e89d0c546144d5373bdb954e90afd5) <span class="status-chip">needs review</span> ([how to compare this against your build](/TaystJK/features/whats-new/#how-to-tell-what-your-build-has)) |
 | In-game xdocs | No |
 | In-game menu | No |
 | Default | `0` |
@@ -43,7 +43,7 @@ Controls `ui_showAllSkins` in the ui module. Consult the cited behavior reads be
 
 ## Flags
 
-- `CVAR_ARCHIVE_ND` — saved to configuration without marking the cvar as user-created
+- `CVAR_ARCHIVE_ND`: saved to configuration without marking the cvar as user-created
 
 ## Provenance
 

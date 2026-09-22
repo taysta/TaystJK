@@ -24,17 +24,17 @@ Not a cvar, dont change it
 | Module | `game` |
 | Also registered in | `game` |
 | Renderer | All / not renderer-specific |
-| Network scope | `feature-flagged` — Client behavior is negotiated through a server feature flag. |
+| Network scope | `feature-flagged`: Client behavior is negotiated through a server feature flag. |
 | Derivation | `documented` |
 | Confidence | `medium` |
-| Added | 2018-01-01 in [`d9d510063`](https://github.com/taysta/TaystJK/commit/d9d510063ce680639e6ba060021b6d40ee0c1419) <span class="status-chip">needs review</span> — [how to compare this against your build](/TaystJK/features/whats-new/#how-to-tell-what-your-build-has) |
+| Added | 2018-01-01 in [`d9d510063`](https://github.com/taysta/TaystJK/commit/d9d510063ce680639e6ba060021b6d40ee0c1419) <span class="status-chip">needs review</span> ([how to compare this against your build](/TaystJK/features/whats-new/#how-to-tell-what-your-build-has)) |
 | In-game xdocs | No |
 | In-game menu | No |
 | Default | `0` |
 | Value type | `bool` |
 | Restart | No latch flag is registered. |
 | Cheat protected | No |
-| Player-settable | No — the game writes this value. |
+| Player-settable | No; the game writes this value. |
 
 ## Values
 
@@ -45,8 +45,8 @@ Not a cvar, dont change it
 
 ## Flags
 
-- `CVAR_ROM` — read-only after registration
-- `CVAR_SERVERINFO` — published in serverinfo
+- `CVAR_ROM`: read-only after registration
+- `CVAR_SERVERINFO`: published in serverinfo
 
 ## Provenance
 

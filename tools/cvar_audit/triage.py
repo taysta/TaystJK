@@ -78,7 +78,7 @@ def render(entries: list[dict[str, Any]], total: int) -> str:
                 marks.append("xdocs")
             if entry.get("menu_entries"):
                 marks.append("menu")
-            suffix = f" — {', '.join(marks)}" if marks else ""
+            suffix = f": {', '.join(marks)}" if marks else ""
             origin = ORIGIN_LABELS.get(origin_of(entry), origin_of(entry))
             lines.append(
                 f"- [ ] `{entry['name']}` ({entry['kind']}, {entry['module']}, {origin}){suffix}"

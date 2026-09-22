@@ -24,10 +24,10 @@ Controls `cp_cosmetics` in the cgame module. Consult the cited behavior reads be
 | Module | `cgame` |
 | Also registered in | `cgame` |
 | Renderer | All / not renderer-specific |
-| Network scope | `needs-server-support` — Sent to, or only useful with, a supporting game server. |
+| Network scope | `needs-server-support`: Sent to, or only useful with, a supporting game server. |
 | Derivation | `code-trace` |
 | Confidence | `medium` |
-| Added | 2018-09-08 in [`7778371e9`](https://github.com/taysta/TaystJK/commit/7778371e96142ef5afaea5c030ea863c9462d2aa) <span class="status-chip">needs review</span> — [how to compare this against your build](/TaystJK/features/whats-new/#how-to-tell-what-your-build-has) |
+| Added | 2018-09-08 in [`7778371e9`](https://github.com/taysta/TaystJK/commit/7778371e96142ef5afaea5c030ea863c9462d2aa) <span class="status-chip">needs review</span> ([how to compare this against your build](/TaystJK/features/whats-new/#how-to-tell-what-your-build-has)) |
 | In-game xdocs | No |
 | In-game menu | No |
 | Default | `0` |
@@ -39,7 +39,7 @@ Controls `cp_cosmetics` in the cgame module. Consult the cited behavior reads be
 
 ## Bits
 
-Use [`cosmetics`](/TaystJK/reference/commands/cosmetics-01c96cf/) to toggle one option at a time; see the command page for syntax. The value column is that bit on its own — [the labels come from the source table](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_consolecmds.c#L1591).
+Use [`cosmetics`](/TaystJK/reference/commands/cosmetics-01c96cf/) to toggle one option at a time; see the command page for syntax. The value column is that bit on its own. [The labels come from the source table](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_consolecmds.c#L1591).
 
 | Bit | Value | Meaning | Read by |
 |:--|:--|:--|:--|
@@ -77,8 +77,8 @@ Use [`cosmetics`](/TaystJK/reference/commands/cosmetics-01c96cf/) to toggle one 
 | 31 | `2147483648` | Super Saiyan | — |
 ## Flags
 
-- `CVAR_ARCHIVE` — saved to the user configuration
-- `CVAR_USERINFO` — sent in the client's userinfo
+- `CVAR_ARCHIVE`: saved to the user configuration
+- `CVAR_USERINFO`: sent in the client's userinfo
 
 ## Provenance
 

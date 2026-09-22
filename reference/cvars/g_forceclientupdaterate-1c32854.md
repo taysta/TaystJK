@@ -22,10 +22,10 @@ Controls `g_forceClientUpdateRate` in the game module. Consult the cited behavio
 | Module | `game` |
 | Also registered in | `game` |
 | Renderer | All / not renderer-specific |
-| Network scope | `server-authoritative` — Owned or enforced by the server. |
+| Network scope | `server-authoritative`: Owned or enforced by the server. |
 | Derivation | `code-trace` |
 | Confidence | `medium` |
-| Added | 2013-08-29 in [`77fa05762`](https://github.com/taysta/TaystJK/commit/77fa05762176f6a8eb4d0a0063497df557471eb5) <span class="status-chip">needs review</span> — [how to compare this against your build](/TaystJK/features/whats-new/#how-to-tell-what-your-build-has) |
+| Added | 2013-08-29 in [`77fa05762`](https://github.com/taysta/TaystJK/commit/77fa05762176f6a8eb4d0a0063497df557471eb5) <span class="status-chip">needs review</span> ([how to compare this against your build](/TaystJK/features/whats-new/#how-to-tell-what-your-build-has)) |
 | In-game xdocs | No |
 | In-game menu | No |
 | Default | `250` |
@@ -40,7 +40,7 @@ No discrete value list is enforced or documented in the inspected source.
 
 ## Flags
 
-- `CVAR_NONE` — fork/source-defined flag; see registration evidence
+- `CVAR_NONE`: fork/source-defined flag; see registration evidence
 
 ## Provenance
 

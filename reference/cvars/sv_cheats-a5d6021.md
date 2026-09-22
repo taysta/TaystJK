@@ -22,17 +22,17 @@ Allow cheats on server if set to 1
 | Module | `engine-server` |
 | Also registered in | `game`, `engine-shared`, `engine-server` |
 | Renderer | All / not renderer-specific |
-| Network scope | `server-authoritative` — Owned or enforced by the server. |
+| Network scope | `server-authoritative`: Owned or enforced by the server. |
 | Derivation | `documented` |
 | Confidence | `high` |
-| Added | 2013-04-08 in [`14cea1563`](https://github.com/taysta/TaystJK/commit/14cea1563762076974bee277afadbd5bf234c494) — [how to compare this against your build](/TaystJK/features/whats-new/#how-to-tell-what-your-build-has) |
+| Added | 2013-04-08 in [`14cea1563`](https://github.com/taysta/TaystJK/commit/14cea1563762076974bee277afadbd5bf234c494) ([how to compare this against your build](/TaystJK/features/whats-new/#how-to-tell-what-your-build-has)) |
 | In-game xdocs | No |
 | In-game menu | No |
 | Default | `1` |
 | Value type | `bool` |
 | Restart | No latch flag is registered. |
 | Cheat protected | No |
-| Player-settable | No — the game writes this value. |
+| Player-settable | No; the game writes this value. |
 
 ## Values
 
@@ -43,9 +43,9 @@ Allow cheats on server if set to 1
 
 ## Flags
 
-- `CVAR_NONE` — fork/source-defined flag; see registration evidence
-- `CVAR_ROM` — read-only after registration
-- `CVAR_SYSTEMINFO` — replicated in systeminfo
+- `CVAR_NONE`: fork/source-defined flag; see registration evidence
+- `CVAR_ROM`: read-only after registration
+- `CVAR_SYSTEMINFO`: replicated in systeminfo
 
 ## Registration-specific defaults
 

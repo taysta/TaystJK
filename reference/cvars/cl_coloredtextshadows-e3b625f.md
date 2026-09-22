@@ -22,10 +22,10 @@ Toggle JK2 1.02-style colored text shadows
 | Module | `renderer` |
 | Also registered in | `renderer` |
 | Renderer | All / not renderer-specific |
-| Network scope | `client-only` — Local to the client/UI/renderer. |
+| Network scope | `client-only`: Local to the client/UI/renderer. |
 | Derivation | `documented` |
 | Confidence | `medium` |
-| Added | 2017-12-03 in [`82c74a03d`](https://github.com/taysta/TaystJK/commit/82c74a03d641380e7724758570852e848c97231e) <span class="status-chip">needs review</span> — [how to compare this against your build](/TaystJK/features/whats-new/#how-to-tell-what-your-build-has) |
+| Added | 2017-12-03 in [`82c74a03d`](https://github.com/taysta/TaystJK/commit/82c74a03d641380e7724758570852e848c97231e) <span class="status-chip">needs review</span> ([how to compare this against your build](/TaystJK/features/whats-new/#how-to-tell-what-your-build-has)) |
 | In-game xdocs | No |
 | In-game menu | No |
 | Default | `0` |
@@ -43,7 +43,7 @@ Toggle JK2 1.02-style colored text shadows
 
 ## Flags
 
-- `CVAR_ARCHIVE` — saved to the user configuration
+- `CVAR_ARCHIVE`: saved to the user configuration
 
 ## Provenance
 

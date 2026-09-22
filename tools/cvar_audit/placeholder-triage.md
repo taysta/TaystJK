@@ -11,7 +11,7 @@ entry's name, then regenerate. Do not edit `_data/` directly.
 
 ## TaystJK-origin (12)
 
-- [ ] `cg_snapHudDef` (cvar, cgame, TaystJK) — xdocs
+- [ ] `cg_snapHudDef` (cvar, cgame, TaystJK): xdocs
 - [ ] `cg_drawTimerCountdown` (cvar, cgame, TaystJK)
 - [ ] `cg_pitchHudAngle` (cvar, cgame, TaystJK)
 - [ ] `cg_weaponCycleAmmo` (cvar, cgame, TaystJK)
@@ -28,9 +28,9 @@ entry's name, then regenerate. Do not edit `_data/` directly.
 
 - [ ] `+duck` (command, cgame, jaPRO)
 - [ ] `+grapple` (command, cgame, EternalJK)
-- [ ] `+scores` (command, cgame, Base Jedi Academy) — menu
+- [ ] `+scores` (command, cgame, Base Jedi Academy): menu
 - [ ] `+singlefire` (command, cgame, jaPRO)
-- [ ] `+zoom` (command, cgame, jaPRO) — menu
+- [ ] `+zoom` (command, cgame, jaPRO): menu
 - [ ] `-altattack` (command, engine-client, Base Jedi Academy)
 - [ ] `-attack` (command, engine-client, Base Jedi Academy)
 - [ ] `-back` (command, engine-client, Base Jedi Academy)
@@ -115,14 +115,14 @@ entry's name, then regenerate. Do not edit `_data/` directly.
 - [ ] `cg_animSpeed` (cvar, cgame, Base Jedi Academy)
 - [ ] `cg_antiAmKiss` (cvar, cgame, EternalJK)
 - [ ] `cg_auraShell` (cvar, cgame, Base Jedi Academy)
-- [ ] `cg_autoKillWhenFalling` (cvar, cgame, jaPRO) — menu
+- [ ] `cg_autoKillWhenFalling` (cvar, cgame, jaPRO): menu
 - [ ] `cg_autoLoginPass2` (cvar, cgame, jaPRO)
 - [ ] `cg_autoLoginPass3` (cvar, cgame, jaPRO)
 - [ ] `cg_autoLoginServer2` (cvar, cgame, jaPRO)
 - [ ] `cg_autoLoginServer3` (cvar, cgame, jaPRO)
-- [ ] `cg_autoRecordDemo` (cvar, cgame, jaPRO) — menu
-- [ ] `cg_autoRecordRaceDemo` (cvar, cgame, jaPRO) — menu
-- [ ] `cg_autoSwitch` (cvar, cgame, Base Jedi Academy) — menu
+- [ ] `cg_autoRecordDemo` (cvar, cgame, jaPRO): menu
+- [ ] `cg_autoRecordRaceDemo` (cvar, cgame, jaPRO): menu
+- [ ] `cg_autoSwitch` (cvar, cgame, Base Jedi Academy): menu
 - [ ] `cg_bobPitch` (cvar, cgame, Base Jedi Academy)
 - [ ] `cg_bobRoll` (cvar, cgame, Base Jedi Academy)
 - [ ] `cg_bobUp` (cvar, cgame, Base Jedi Academy)
@@ -132,13 +132,13 @@ entry's name, then regenerate. Do not edit `_data/` directly.
 - [ ] `cg_centerSize` (cvar, cgame, jaPRO)
 - [ ] `cg_centerTime` (cvar, cgame, Base Jedi Academy)
 - [ ] `cg_chatBox` (cvar, cgame, Base Jedi Academy)
-- [ ] `cg_chatBoxEmojis` (cvar, cgame, EternalJK) — menu
+- [ ] `cg_chatBoxEmojis` (cvar, cgame, EternalJK): menu
 - [ ] `cg_chatBoxHeight` (cvar, cgame, Base Jedi Academy)
 - [ ] `cg_chatBoxShowCutoff` (cvar, cgame, EternalJK)
 - [ ] `cg_chatBoxX` (cvar, cgame, jaPRO)
 - [ ] `cg_crosshairColor` (cvar, cgame, EternalJK)
 - [ ] `cg_crosshairHealth` (cvar, cgame, Base Jedi Academy)
-- [ ] `cg_crosshairIdentifyTarget` (cvar, cgame, Base Jedi Academy) — menu
+- [ ] `cg_crosshairIdentifyTarget` (cvar, cgame, Base Jedi Academy): menu
 - [ ] `cg_crosshairSaberStyleColor` (cvar, cgame, EternalJK)
 - [ ] `cg_crosshairSize` (cvar, cgame, Base Jedi Academy)
 - [ ] `cg_crosshairSizeScale` (cvar, cgame, jaPRO)
@@ -149,28 +149,28 @@ entry's name, then regenerate. Do not edit `_data/` directly.
 - [ ] `cg_debugEvents` (cvar, cgame, Base Jedi Academy)
 - [ ] `cg_debugGun` (cvar, cgame, OpenJK)
 - [ ] `cg_debugPosition` (cvar, cgame, Base Jedi Academy)
-- [ ] `cg_defaultFemaleModel` (cvar, cgame, jaPRO) — menu
-- [ ] `cg_defaultModel` (cvar, cgame, jaPRO) — menu
+- [ ] `cg_defaultFemaleModel` (cvar, cgame, jaPRO): menu
+- [ ] `cg_defaultModel` (cvar, cgame, jaPRO): menu
 - [ ] `cg_defaultModelRandom` (cvar, cgame, jaPRO)
-- [ ] `cg_deferPlayers` (cvar, cgame, Base Jedi Academy) — menu
+- [ ] `cg_deferPlayers` (cvar, cgame, Base Jedi Academy): menu
 - [ ] `cg_dismember` (cvar, cgame, Base Jedi Academy)
 - [ ] `cg_displayCameraPosition` (cvar, cgame, jaPRO)
 - [ ] `cg_displayNetSettings` (cvar, cgame, jaPRO)
 - [ ] `cg_drainFX` (cvar, cgame, jaPRO)
 - [ ] `cg_draw3DIcons` (cvar, cgame, Base Jedi Academy)
 - [ ] `cg_drawAmmoWarning` (cvar, cgame, Base Jedi Academy)
-- [ ] `cg_drawCrosshair` (cvar, cgame, Base Jedi Academy) — menu
-- [ ] `cg_drawEnemyInfo` (cvar, cgame, Base Jedi Academy) — menu
+- [ ] `cg_drawCrosshair` (cvar, cgame, Base Jedi Academy): menu
+- [ ] `cg_drawEnemyInfo` (cvar, cgame, Base Jedi Academy): menu
 - [ ] `cg_drawFriend` (cvar, cgame, Base Jedi Academy)
-- [ ] `cg_drawGun` (cvar, cgame, Base Jedi Academy) — menu
-- [ ] `cg_drawHitBox` (cvar, cgame, jaPRO) — menu
+- [ ] `cg_drawGun` (cvar, cgame, Base Jedi Academy): menu
+- [ ] `cg_drawHitBox` (cvar, cgame, jaPRO): menu
 - [ ] `cg_drawHud` (cvar, cgame, Base Jedi Academy)
 - [ ] `cg_drawIcons` (cvar, cgame, Base Jedi Academy)
 - [ ] `cg_drawInventory` (cvar, cgame, EternalJK)
-- [ ] `cg_drawPlayerNames` (cvar, cgame, jaPRO) — menu
+- [ ] `cg_drawPlayerNames` (cvar, cgame, jaPRO): menu
 - [ ] `cg_drawPlayerNamesScale` (cvar, cgame, jaPRO)
 - [ ] `cg_drawPowerUpIcons` (cvar, cgame, EternalJK)
-- [ ] `cg_drawRadar` (cvar, cgame, Base Jedi Academy) — menu
+- [ ] `cg_drawRadar` (cvar, cgame, Base Jedi Academy): menu
 - [ ] `cg_drawRewards` (cvar, cgame, Base Jedi Academy)
 - [ ] `cg_drawSnapshot` (cvar, cgame, Base Jedi Academy)
 - [ ] `cg_drawTimerMsec` (cvar, cgame, jaPRO)
@@ -178,21 +178,21 @@ entry's name, then regenerate. Do not edit `_data/` directly.
 - [ ] `cg_drawTriggers` (cvar, cgame, jaPRO)
 - [ ] `cg_drawUpperRight` (cvar, cgame, jaPRO)
 - [ ] `cg_drawVehLeadIndicator` (cvar, cgame, Base Jedi Academy)
-- [ ] `cg_dynamicCrosshair` (cvar, cgame, Base Jedi Academy) — menu
-- [ ] `cg_dynamicCrosshairPrecision` (cvar, cgame, Base Jedi Academy) — menu
+- [ ] `cg_dynamicCrosshair` (cvar, cgame, Base Jedi Academy): menu
+- [ ] `cg_dynamicCrosshairPrecision` (cvar, cgame, Base Jedi Academy): menu
 - [ ] `cg_engineModifications` (cvar, cgame, jaPRO)
 - [ ] `cg_errorDecay` (cvar, cgame, Base Jedi Academy)
 - [ ] `cg_fkDuration` (cvar, cgame, jaPRO)
 - [ ] `cg_fkFirstJumpDuration` (cvar, cgame, jaPRO)
 - [ ] `cg_fkSecondJumpDelay` (cvar, cgame, jaPRO)
-- [ ] `cg_footsteps` (cvar, cgame, Base Jedi Academy) — menu
-- [ ] `cg_forceAllyModel` (cvar, cgame, jaPRO) — menu
-- [ ] `cg_forceEnemyModel` (cvar, cgame, jaPRO) — menu
-- [ ] `cg_forceModel` (cvar, cgame, Base Jedi Academy) — menu
+- [ ] `cg_footsteps` (cvar, cgame, Base Jedi Academy): menu
+- [ ] `cg_forceAllyModel` (cvar, cgame, jaPRO): menu
+- [ ] `cg_forceEnemyModel` (cvar, cgame, jaPRO): menu
+- [ ] `cg_forceModel` (cvar, cgame, Base Jedi Academy): menu
 - [ ] `cg_forceOwnSaber` (cvar, cgame, EternalJK)
-- [ ] `cg_fov` (cvar, cgame, Base Jedi Academy) — menu
-- [ ] `cg_fovViewmodel` (cvar, cgame, OpenJK) — menu
-- [ ] `cg_fpls` (cvar, cgame, Base Jedi Academy) — menu
+- [ ] `cg_fov` (cvar, cgame, Base Jedi Academy): menu
+- [ ] `cg_fovViewmodel` (cvar, cgame, OpenJK): menu
+- [ ] `cg_fpls` (cvar, cgame, Base Jedi Academy): menu
 - [ ] `cg_g2TraceLod` (cvar, cgame, Base Jedi Academy)
 - [ ] `cg_ghoul2Marks` (cvar, cgame, Base Jedi Academy)
 - [ ] `cg_gunAlpha` (cvar, cgame, jaPRO)
@@ -201,14 +201,14 @@ entry's name, then regenerate. Do not edit `_data/` directly.
 - [ ] `cg_gunZ` (cvar, cgame, Base Jedi Academy)
 - [ ] `cg_headTurn` (cvar, cgame, jaPRO)
 - [ ] `cg_instantDuck` (cvar, cgame, jaPRO)
-- [ ] `cg_lagometer` (cvar, cgame, Base Jedi Academy) — menu
+- [ ] `cg_lagometer` (cvar, cgame, Base Jedi Academy): menu
 - [ ] `cg_lagometerX` (cvar, cgame, jaPRO)
 - [ ] `cg_lagometerY` (cvar, cgame, jaPRO)
-- [ ] `cg_leadIndicator` (cvar, cgame, jaPRO) — menu
+- [ ] `cg_leadIndicator` (cvar, cgame, jaPRO): menu
 - [ ] `cg_legstuck` (cvar, cgame, jaPRO)
 - [ ] `cg_logChat` (cvar, cgame, EternalJK)
 - [ ] `cg_logStrafeTrail` (cvar, cgame, jaPRO)
-- [ ] `cg_marks` (cvar, cgame, Base Jedi Academy) — menu
+- [ ] `cg_marks` (cvar, cgame, Base Jedi Academy): menu
 - [ ] `cg_minimapScale` (cvar, cgame, jaPRO)
 - [ ] `cg_noPlayerAnims` (cvar, cgame, Base Jedi Academy)
 - [ ] `cg_noPredict` (cvar, cgame, Base Jedi Academy)
@@ -230,55 +230,55 @@ entry's name, then regenerate. Do not edit `_data/` directly.
 - [ ] `cg_saberModelTraceEffect` (cvar, cgame, Base Jedi Academy)
 - [ ] `cg_saberStaffMultiColor` (cvar, cgame, EternalJK)
 - [ ] `cg_saberTeamColors` (cvar, cgame, jaPRO)
-- [ ] `cg_saberTrail` (cvar, cgame, Base Jedi Academy) — menu
-- [ ] `cg_scopeSensitivity` (cvar, cgame, jaPRO) — menu
+- [ ] `cg_saberTrail` (cvar, cgame, Base Jedi Academy): menu
+- [ ] `cg_scopeSensitivity` (cvar, cgame, jaPRO): menu
 - [ ] `cg_scorePlums` (cvar, cgame, Base Jedi Academy)
 - [ ] `cg_selectedPlayer` (cvar, ui, Base Jedi Academy)
 - [ ] `cg_selectedPlayerName` (cvar, ui, Base Jedi Academy)
 - [ ] `cg_shaderSaberCore` (cvar, cgame, jaPRO)
 - [ ] `cg_shaderSaberGlow` (cvar, cgame, jaPRO)
-- [ ] `cg_shadows` (cvar, cgame, Base Jedi Academy) — menu
+- [ ] `cg_shadows` (cvar, cgame, Base Jedi Academy): menu
 - [ ] `cg_showMiss` (cvar, cgame, Base Jedi Academy)
 - [ ] `cg_showpos` (cvar, cgame, EternalJK)
 - [ ] `cg_showVehBounds` (cvar, cgame, Base Jedi Academy)
 - [ ] `cg_showVehMiss` (cvar, cgame, Base Jedi Academy)
 - [ ] `cg_siegeTeam1` (cvar, cgame, Base Jedi Academy)
 - [ ] `cg_siegeTeam2` (cvar, cgame, Base Jedi Academy)
-- [ ] `cg_simpleItems` (cvar, cgame, Base Jedi Academy) — menu
+- [ ] `cg_simpleItems` (cvar, cgame, Base Jedi Academy): menu
 - [ ] `cg_smoothClients` (cvar, cgame, Base Jedi Academy)
 - [ ] `cg_snapshotTimeout` (cvar, cgame, Base Jedi Academy)
 - [ ] `cg_specCameraMode` (cvar, cgame, jaPRO)
-- [ ] `cg_specHud` (cvar, cgame, jaPRO) — menu
-- [ ] `cg_speedTrail` (cvar, cgame, Base Jedi Academy) — menu
+- [ ] `cg_specHud` (cvar, cgame, jaPRO): menu
+- [ ] `cg_speedTrail` (cvar, cgame, Base Jedi Academy): menu
 - [ ] `cg_spotIconPlums` (cvar, cgame, jaPRO)
 - [ ] `cg_stats` (cvar, cgame, Base Jedi Academy)
 - [ ] `cg_stereoSeparation` (cvar, cgame, Base Jedi Academy)
 - [ ] `cg_strafeHelperActiveColor` (cvar, cgame, jaPRO)
-- [ ] `cg_strafeHelperCutoff` (cvar, cgame, jaPRO) — menu
-- [ ] `cg_strafeHelperInactiveAlpha` (cvar, cgame, jaPRO) — menu
+- [ ] `cg_strafeHelperCutoff` (cvar, cgame, jaPRO): menu
+- [ ] `cg_strafeHelperInactiveAlpha` (cvar, cgame, jaPRO): menu
 - [ ] `cg_strafeHelperLineWidth` (cvar, cgame, jaPRO)
-- [ ] `cg_strafeHelperOffset` (cvar, cgame, jaPRO) — menu
-- [ ] `cg_strafeHelperPrecision` (cvar, cgame, jaPRO) — menu
+- [ ] `cg_strafeHelperOffset` (cvar, cgame, jaPRO): menu
+- [ ] `cg_strafeHelperPrecision` (cvar, cgame, jaPRO): menu
 - [ ] `cg_strafeTrailGhost` (cvar, cgame, jaPRO)
 - [ ] `cg_strafeTrailLife` (cvar, cgame, jaPRO)
 - [ ] `cg_strafeTrailPlayers` (cvar, cgame, jaPRO)
 - [ ] `cg_strafeTrailPlums` (cvar, cgame, jaPRO)
 - [ ] `cg_strafeTrailRacersOnly` (cvar, cgame, jaPRO)
 - [ ] `cg_strafeTrailRadius` (cvar, cgame, jaPRO)
-- [ ] `cg_thirdPerson` (cvar, cgame, Base Jedi Academy) — menu
+- [ ] `cg_thirdPerson` (cvar, cgame, Base Jedi Academy): menu
 - [ ] `cg_thirdPersonAlpha` (cvar, cgame, Base Jedi Academy)
-- [ ] `cg_thirdPersonAngle` (cvar, cgame, Base Jedi Academy) — menu
-- [ ] `cg_thirdPersonCameraDamp` (cvar, cgame, Base Jedi Academy) — menu
-- [ ] `cg_thirdPersonHorzOffset` (cvar, cgame, Base Jedi Academy) — menu
-- [ ] `cg_thirdPersonPitchOffset` (cvar, cgame, Base Jedi Academy) — menu
-- [ ] `cg_thirdPersonRange` (cvar, cgame, Base Jedi Academy) — menu
+- [ ] `cg_thirdPersonAngle` (cvar, cgame, Base Jedi Academy): menu
+- [ ] `cg_thirdPersonCameraDamp` (cvar, cgame, Base Jedi Academy): menu
+- [ ] `cg_thirdPersonHorzOffset` (cvar, cgame, Base Jedi Academy): menu
+- [ ] `cg_thirdPersonPitchOffset` (cvar, cgame, Base Jedi Academy): menu
+- [ ] `cg_thirdPersonRange` (cvar, cgame, Base Jedi Academy): menu
 - [ ] `cg_thirdPersonSpecialCam` (cvar, cgame, Base Jedi Academy)
-- [ ] `cg_thirdPersonTargetDamp` (cvar, cgame, Base Jedi Academy) — menu
-- [ ] `cg_thirdPersonVertOffset` (cvar, cgame, Base Jedi Academy) — menu
+- [ ] `cg_thirdPersonTargetDamp` (cvar, cgame, Base Jedi Academy): menu
+- [ ] `cg_thirdPersonVertOffset` (cvar, cgame, Base Jedi Academy): menu
 - [ ] `cg_timescaleFadeEnd` (cvar, cgame, Base Jedi Academy)
 - [ ] `cg_timescaleFadeSpeed` (cvar, cgame, Base Jedi Academy)
 - [ ] `cg_viewsize` (cvar, cgame, Base Jedi Academy)
-- [ ] `cg_zoomSensitivity` (cvar, cgame, jaPRO) — menu
+- [ ] `cg_zoomSensitivity` (cvar, cgame, jaPRO): menu
 - [ ] `changeVectors` (command, engine-shared, Base Jedi Academy)
 - [ ] `chatlog` (command, cgame, EternalJK)
 - [ ] `cjp_client` (cvar, cgame, jaPRO)
@@ -290,13 +290,13 @@ entry's name, then regenerate. Do not edit `_data/` directly.
 - [ ] `cl_colorStringCount` (cvar, engine-client, EternalJK)
 - [ ] `cl_commandsize` (cvar, cgame, EternalJK)
 - [ ] `cl_conXOffset` (cvar, engine-client, Base Jedi Academy)
-- [ ] `cl_currentServerAddress` (cvar, cgame, Base Jedi Academy) — menu
+- [ ] `cl_currentServerAddress` (cvar, cgame, Base Jedi Academy): menu
 - [ ] `cl_debugMove` (cvar, engine-client, Base Jedi Academy)
 - [ ] `cl_downloadCount` (cvar, engine-client, Base Jedi Academy)
 - [ ] `cl_downloadName` (cvar, engine-client, Base Jedi Academy)
 - [ ] `cl_downloadSize` (cvar, engine-client, Base Jedi Academy)
 - [ ] `cl_downloadTime` (cvar, engine-client, Base Jedi Academy)
-- [ ] `cl_drawRecording` (cvar, engine-client, OpenJK) — menu
+- [ ] `cl_drawRecording` (cvar, engine-client, OpenJK): menu
 - [ ] `cl_forceavidemo` (cvar, engine-client, Base Jedi Academy)
 - [ ] `cl_framerate` (cvar, engine-client, Base Jedi Academy)
 - [ ] `cl_idrive` (cvar, engine-client, jaPRO)
@@ -305,7 +305,7 @@ entry's name, then regenerate. Do not edit `_data/` directly.
 - [ ] `cl_motdString` (cvar, engine-client, Base Jedi Academy)
 - [ ] `cl_nodelta` (cvar, engine-client, Base Jedi Academy)
 - [ ] `cl_noprint` (cvar, engine-client, Base Jedi Academy)
-- [ ] `cl_packetdup` (cvar, engine-client, Base Jedi Academy) — menu
+- [ ] `cl_packetdup` (cvar, engine-client, Base Jedi Academy): menu
 - [ ] `cl_paused` (cvar, cgame, Base Jedi Academy)
 - [ ] `cl_pitchspeed` (cvar, engine-client, Base Jedi Academy)
 - [ ] `cl_serverStatusResendTime` (cvar, engine-client, Base Jedi Academy)
@@ -313,7 +313,7 @@ entry's name, then regenerate. Do not edit `_data/` directly.
 - [ ] `cl_shownet` (cvar, engine-client, Base Jedi Academy)
 - [ ] `cl_showSend` (cvar, engine-client, Base Jedi Academy)
 - [ ] `cl_showTimeDelta` (cvar, engine-client, Base Jedi Academy)
-- [ ] `cl_timeNudge` (cvar, engine-client, Base Jedi Academy) — menu
+- [ ] `cl_timeNudge` (cvar, engine-client, Base Jedi Academy): menu
 - [ ] `cl_timeout` (cvar, engine-client, Base Jedi Academy)
 - [ ] `cl_yawspeed` (cvar, engine-client, Base Jedi Academy)
 - [ ] `clandelete` (command, game, EternalJK)
@@ -386,7 +386,7 @@ entry's name, then regenerate. Do not edit `_data/` directly.
 - [ ] `deleteSpeedsound` (command, cgame, jaPRO)
 - [ ] `disco` (cvar, cgame, jaPRO)
 - [ ] `dmflags` (cvar, game, Base Jedi Academy)
-- [ ] `do` (command, cgame, jaPRO) — menu
+- [ ] `do` (command, cgame, jaPRO): menu
 - [ ] `duel_fraglimit` (cvar, game, Base Jedi Academy)
 - [ ] `entityinfo` (command, game, EternalJK)
 - [ ] `entitylist` (command, game, OpenJK)
@@ -394,14 +394,14 @@ entry's name, then regenerate. Do not edit `_data/` directly.
 - [ ] `fixedtime` (cvar, engine-shared, Base Jedi Academy)
 - [ ] `flagAccount` (command, game, EternalJK)
 - [ ] `flagRecord` (command, game, jaPRO)
-- [ ] `flipkick` (command, cgame, jaPRO) — menu
-- [ ] `followBlueFlag` (command, cgame, jaPRO) — menu
-- [ ] `followFastest` (command, cgame, jaPRO) — menu
-- [ ] `followRedFlag` (command, cgame, jaPRO) — menu
+- [ ] `flipkick` (command, cgame, jaPRO): menu
+- [ ] `followBlueFlag` (command, cgame, jaPRO): menu
+- [ ] `followFastest` (command, cgame, jaPRO): menu
+- [ ] `followRedFlag` (command, cgame, jaPRO): menu
 - [ ] `fontlist` (command, renderer, OpenJK)
-- [ ] `forcenext` (command, cgame, Base Jedi Academy) — menu
+- [ ] `forcenext` (command, cgame, Base Jedi Academy): menu
 - [ ] `forcepowers` (command, engine-client, Base Jedi Academy)
-- [ ] `forceprev` (command, cgame, Base Jedi Academy) — menu
+- [ ] `forceprev` (command, cgame, Base Jedi Academy): menu
 - [ ] `forceteam` (command, game, OpenJK)
 - [ ] `fraglimit` (cvar, game, Base Jedi Academy)
 - [ ] `freeze` (command, engine-shared, Base Jedi Academy)
@@ -448,7 +448,7 @@ entry's name, then regenerate. Do not edit `_data/` directly.
 - [ ] `g_debugServerSkel` (cvar, game, Base Jedi Academy)
 - [ ] `g_disableServerG2` (cvar, game, Base Jedi Academy)
 - [ ] `g_dismember` (cvar, game, Base Jedi Academy)
-- [ ] `g_doWarmup` (cvar, game, Base Jedi Academy) — menu
+- [ ] `g_doWarmup` (cvar, game, Base Jedi Academy): menu
 - [ ] `g_duelDistanceLimit` (cvar, game, jaPRO)
 - [ ] `g_duelStartArmor` (cvar, game, jaPRO)
 - [ ] `g_duelStartHealth` (cvar, game, jaPRO)
@@ -597,20 +597,20 @@ entry's name, then regenerate. Do not edit `_data/` directly.
 - [ ] `ignoreVGS` (command, cgame, jaPRO)
 - [ ] `imagecacheinfo` (command, renderer, Base Jedi Academy)
 - [ ] `imagelist` (command, renderer, Base Jedi Academy)
-- [ ] `in_joystick` (cvar, engine-shared, Base Jedi Academy) — menu
+- [ ] `in_joystick` (cvar, engine-shared, Base Jedi Academy): menu
 - [ ] `in_joystickNo` (cvar, engine-shared, OpenJK)
 - [ ] `in_joystickUseAnalog` (cvar, engine-shared, OpenJK)
 - [ ] `in_keyboardDebug` (cvar, engine-shared, OpenJK)
-- [ ] `in_mouse` (cvar, engine-shared, Base Jedi Academy) — menu
+- [ ] `in_mouse` (cvar, engine-shared, Base Jedi Academy): menu
 - [ ] `in_mouserepeat` (cvar, engine-shared, EternalJK)
 - [ ] `in_nograb` (cvar, engine-shared, OpenJK)
-- [ ] `in_restart` (command, engine-shared, Base Jedi Academy) — menu
+- [ ] `in_restart` (command, engine-shared, Base Jedi Academy): menu
 - [ ] `invfree` (command, cgame, jaPRO)
-- [ ] `invnext` (command, cgame, Base Jedi Academy) — menu
-- [ ] `invprev` (command, cgame, Base Jedi Academy) — menu
-- [ ] `jetpack` (command, game, jaPRO) — menu
+- [ ] `invnext` (command, cgame, Base Jedi Academy): menu
+- [ ] `invprev` (command, cgame, Base Jedi Academy): menu
+- [ ] `jetpack` (command, game, jaPRO): menu
 - [ ] `journal` (cvar, engine-shared, Base Jedi Academy)
-- [ ] `joy_threshold` (cvar, engine-shared, Base Jedi Academy) — menu
+- [ ] `joy_threshold` (cvar, engine-shared, Base Jedi Academy): menu
 - [ ] `killother` (command, game, OpenJK)
 - [ ] `listAdmins` (command, game, jaPRO)
 - [ ] `listCheckpoints` (command, cgame, jaPRO)
@@ -622,8 +622,8 @@ entry's name, then regenerate. Do not edit `_data/` directly.
 - [ ] `loadhud` (command, cgame, Base Jedi Academy)
 - [ ] `loadTrail` (command, cgame, jaPRO)
 - [ ] `logfile` (cvar, engine-shared, Base Jedi Academy)
-- [ ] `lowjump` (command, cgame, jaPRO) — menu
-- [ ] `m_filter` (cvar, engine-client, Base Jedi Academy) — menu
+- [ ] `lowjump` (command, cgame, jaPRO): menu
+- [ ] `m_filter` (cvar, engine-client, Base Jedi Academy): menu
 - [ ] `m_forward` (cvar, engine-client, Base Jedi Academy)
 - [ ] `m_pitch` (cvar, engine-client, Base Jedi Academy)
 - [ ] `m_pitchVeh` (cvar, engine-client, Base Jedi Academy)
@@ -652,10 +652,10 @@ entry's name, then regenerate. Do not edit `_data/` directly.
 - [ ] `net_socksUsername` (cvar, engine-shared, Base Jedi Academy)
 - [ ] `nextdemo` (cvar, engine-client, Base Jedi Academy)
 - [ ] `nextframe` (command, cgame, Base Jedi Academy)
-- [ ] `nextmap` (cvar, engine-server, Base Jedi Academy) — menu
+- [ ] `nextmap` (cvar, engine-server, Base Jedi Academy): menu
 - [ ] `nextskin` (command, cgame, Base Jedi Academy)
-- [ ] `nudge` (command, game, jaPRO) — menu
-- [ ] `pack` (command, game, jaPRO) — menu
+- [ ] `nudge` (command, game, jaPRO): menu
+- [ ] `pack` (command, game, jaPRO): menu
 - [ ] `plugin` (command, cgame, jaPRO)
 - [ ] `pluginDisable` (command, cgame, jaPRO)
 - [ ] `pmove_fixed` (cvar, cgame, Base Jedi Academy)
@@ -726,7 +726,7 @@ entry's name, then regenerate. Do not edit `_data/` directly.
 - [ ] `r_DynamicGlowScale` (cvar, renderer, EternalJK)
 - [ ] `r_DynamicGlowSoft` (cvar, renderer, Base Jedi Academy)
 - [ ] `r_DynamicGlowWidth` (cvar, renderer, Base Jedi Academy)
-- [ ] `r_dynamiclight` (cvar, renderer, Base Jedi Academy) — menu
+- [ ] `r_dynamiclight` (cvar, renderer, Base Jedi Academy): menu
 - [ ] `r_environmentMapping` (cvar, renderer, OpenJK)
 - [ ] `r_ext_alpha_to_coverage` (cvar, renderer, Vulkan)
 - [ ] `r_ext_compress_lightmaps` (cvar, renderer, Base Jedi Academy)
@@ -736,10 +736,10 @@ entry's name, then regenerate. Do not edit `_data/` directly.
 - [ ] `r_ext_supersample` (cvar, renderer, Vulkan)
 - [ ] `r_externalGLSL` (cvar, renderer, rend2)
 - [ ] `r_facePlaneCull` (cvar, renderer, Base Jedi Academy)
-- [ ] `r_fastsky` (cvar, renderer, Base Jedi Academy) — menu
+- [ ] `r_fastsky` (cvar, renderer, Base Jedi Academy): menu
 - [ ] `r_fbo` (cvar, renderer, Vulkan)
 - [ ] `r_finish` (cvar, renderer, Base Jedi Academy)
-- [ ] `r_flares` (cvar, renderer, Base Jedi Academy) — menu
+- [ ] `r_flares` (cvar, renderer, Base Jedi Academy): menu
 - [ ] `r_forceAutoExposure` (cvar, renderer, rend2)
 - [ ] `r_forceAutoExposureMax` (cvar, renderer, rend2)
 - [ ] `r_forceAutoExposureMin` (cvar, renderer, rend2)
@@ -754,7 +754,7 @@ entry's name, then regenerate. Do not edit `_data/` directly.
 - [ ] `r_forceToneMapMin` (cvar, renderer, rend2)
 - [ ] `r_fullbright` (cvar, renderer, Base Jedi Academy)
 - [ ] `r_fullscreen` (cvar, renderer, Base Jedi Academy)
-- [ ] `r_gamma` (cvar, renderer, Base Jedi Academy) — menu
+- [ ] `r_gamma` (cvar, renderer, Base Jedi Academy): menu
 - [ ] `r_ghoul2animsmooth` (cvar, renderer, Base Jedi Academy)
 - [ ] `r_ghoul2unsqashaftersmooth` (cvar, renderer, Base Jedi Academy)
 - [ ] `r_greyscale` (cvar, renderer, rend2)
@@ -783,7 +783,7 @@ entry's name, then regenerate. Do not edit `_data/` directly.
 - [ ] `r_mode` (cvar, renderer, Base Jedi Academy)
 - [ ] `r_modelpoolmegs` (cvar, renderer, Base Jedi Academy)
 - [ ] `r_nobind` (cvar, renderer, Base Jedi Academy)
-- [ ] `r_noborder` (cvar, renderer, OpenJK) — menu
+- [ ] `r_noborder` (cvar, renderer, OpenJK): menu
 - [ ] `r_nocull` (cvar, renderer, Base Jedi Academy)
 - [ ] `r_nocurves` (cvar, renderer, Base Jedi Academy)
 - [ ] `r_noghoul2` (cvar, renderer, Base Jedi Academy)
@@ -833,7 +833,7 @@ entry's name, then regenerate. Do not edit `_data/` directly.
 - [ ] `r_sunShadows` (cvar, renderer, rend2)
 - [ ] `r_surfaceSprites` (cvar, renderer, Base Jedi Academy)
 - [ ] `r_surfaceWeather` (cvar, renderer, Base Jedi Academy)
-- [ ] `r_swapInterval` (cvar, renderer, Base Jedi Academy) — menu
+- [ ] `r_swapInterval` (cvar, renderer, Base Jedi Academy): menu
 - [ ] `r_terrainTessellate` (cvar, renderer, Base Jedi Academy)
 - [ ] `r_terrainWaterOffset` (cvar, renderer, Base Jedi Academy)
 - [ ] `r_texturebits` (cvar, renderer, Base Jedi Academy)
@@ -865,7 +865,7 @@ entry's name, then regenerate. Do not edit `_data/` directly.
 - [ ] `s_debugdynamic` (cvar, engine-client, Base Jedi Academy)
 - [ ] `s_doppler` (cvar, engine-client, OpenJK)
 - [ ] `s_initsound` (cvar, engine-client, Base Jedi Academy)
-- [ ] `s_khz` (cvar, engine-client, Base Jedi Academy) — menu
+- [ ] `s_khz` (cvar, engine-client, Base Jedi Academy): menu
 - [ ] `s_mixahead` (cvar, engine-client, Base Jedi Academy)
 - [ ] `s_mixPreStep` (cvar, engine-client, Base Jedi Academy)
 - [ ] `s_mp3overhead` (cvar, engine-client, Base Jedi Academy)
@@ -882,15 +882,15 @@ entry's name, then regenerate. Do not edit `_data/` directly.
 - [ ] `s_threshold2` (cvar, engine-client, Base Jedi Academy)
 - [ ] `s_threshold3` (cvar, engine-client, Base Jedi Academy)
 - [ ] `s_threshold4` (cvar, engine-client, Base Jedi Academy)
-- [ ] `s_UseOpenAL` (cvar, engine-client, Base Jedi Academy) — menu
-- [ ] `saber` (command, cgame, OpenJK) — menu
+- [ ] `s_UseOpenAL` (cvar, engine-client, Base Jedi Academy): menu
+- [ ] `saber` (command, cgame, OpenJK): menu
 - [ ] `saberDisable` (command, game, jaPRO)
-- [ ] `score` (command, game, OpenJK) — menu
-- [ ] `screenshot` (command, renderer, Base Jedi Academy) — menu
+- [ ] `score` (command, game, OpenJK): menu
+- [ ] `screenshot` (command, renderer, Base Jedi Academy): menu
 - [ ] `screenshot_png` (command, renderer, OpenJK)
 - [ ] `screenshot_tga` (command, renderer, Base Jedi Academy)
 - [ ] `se_debug` (cvar, engine-shared, Base Jedi Academy)
-- [ ] `se_language` (cvar, engine-shared, Base Jedi Academy) — menu
+- [ ] `se_language` (cvar, engine-shared, Base Jedi Academy): menu
 - [ ] `sectorlist` (command, engine-server, Base Jedi Academy)
 - [ ] `selectfiremode` (command, cgame, jaPRO)
 - [ ] `serverconfig` (command, cgame, jaPRO)
@@ -910,7 +910,7 @@ entry's name, then regenerate. Do not edit `_data/` directly.
 - [ ] `startingItems` (command, game, jaPRO)
 - [ ] `startingWeapons` (command, game, jaPRO)
 - [ ] `startOrbit` (command, cgame, Base Jedi Academy)
-- [ ] `strafeHelper` (command, cgame, jaPRO) — menu
+- [ ] `strafeHelper` (command, cgame, jaPRO): menu
 - [ ] `strafeTrail` (command, cgame, jaPRO)
 - [ ] `stylePlayer` (command, cgame, jaPRO)
 - [ ] `sv_autoDemoMaxMaps` (cvar, engine-server, OpenJK)
@@ -941,7 +941,7 @@ entry's name, then regenerate. Do not edit `_data/` directly.
 - [ ] `sys_lowmem` (cvar, engine-shared, Base Jedi Academy)
 - [ ] `t_use` (command, game, OpenJK)
 - [ ] `tcmd` (command, cgame, Base Jedi Academy)
-- [ ] `teamoverlay` (cvar, cgame, Base Jedi Academy) — menu
+- [ ] `teamoverlay` (cvar, cgame, Base Jedi Academy): menu
 - [ ] `teleToCheckpoint` (command, cgame, jaPRO)
 - [ ] `tell_attacker` (command, cgame, Base Jedi Academy)
 - [ ] `tell_target` (command, cgame, Base Jedi Academy)
@@ -949,7 +949,7 @@ entry's name, then regenerate. Do not edit `_data/` directly.
 - [ ] `testgun` (command, cgame, Base Jedi Academy)
 - [ ] `testmodel` (command, cgame, Base Jedi Academy)
 - [ ] `thedestroyer` (command, game, OpenJK)
-- [ ] `throwflag` (command, game, jaPRO) — menu
+- [ ] `throwflag` (command, game, jaPRO): menu
 - [ ] `thrownade` (command, game, jaPRO)
 - [ ] `timedemo` (cvar, engine-client, Base Jedi Academy)
 - [ ] `timegraph` (cvar, engine-client, Base Jedi Academy)
@@ -965,19 +965,19 @@ entry's name, then regenerate. Do not edit `_data/` directly.
 - [ ] `tweakSaber` (command, game, jaPRO)
 - [ ] `tweakVote` (command, game, jaPRO)
 - [ ] `tweakWeapons` (command, game, jaPRO)
-- [ ] `ui_about_botminplayers` (cvar, cgame, Base Jedi Academy) — menu
-- [ ] `ui_about_capturelimit` (cvar, cgame, Base Jedi Academy) — menu
+- [ ] `ui_about_botminplayers` (cvar, cgame, Base Jedi Academy): menu
+- [ ] `ui_about_capturelimit` (cvar, cgame, Base Jedi Academy): menu
 - [ ] `ui_about_dmflags` (cvar, cgame, Base Jedi Academy)
-- [ ] `ui_about_duellimit` (cvar, cgame, Base Jedi Academy) — menu
-- [ ] `ui_about_fraglimit` (cvar, cgame, Base Jedi Academy) — menu
-- [ ] `ui_about_gametype` (cvar, cgame, Base Jedi Academy) — menu
-- [ ] `ui_about_hostname` (cvar, cgame, Base Jedi Academy) — menu
-- [ ] `ui_about_mapname` (cvar, cgame, Base Jedi Academy) — menu
-- [ ] `ui_about_maxclients` (cvar, cgame, Base Jedi Academy) — menu
+- [ ] `ui_about_duellimit` (cvar, cgame, Base Jedi Academy): menu
+- [ ] `ui_about_fraglimit` (cvar, cgame, Base Jedi Academy): menu
+- [ ] `ui_about_gametype` (cvar, cgame, Base Jedi Academy): menu
+- [ ] `ui_about_hostname` (cvar, cgame, Base Jedi Academy): menu
+- [ ] `ui_about_mapname` (cvar, cgame, Base Jedi Academy): menu
+- [ ] `ui_about_maxclients` (cvar, cgame, Base Jedi Academy): menu
 - [ ] `ui_about_needpass` (cvar, cgame, Base Jedi Academy)
-- [ ] `ui_about_timelimit` (cvar, cgame, Base Jedi Academy) — menu
+- [ ] `ui_about_timelimit` (cvar, cgame, Base Jedi Academy): menu
 - [ ] `ui_actualNetGametype` (cvar, ui, Base Jedi Academy)
-- [ ] `ui_aspectratio` (cvar, ui, EternalJK) — menu
+- [ ] `ui_aspectratio` (cvar, ui, EternalJK): menu
 - [ ] `ui_blueteam` (cvar, ui, Base Jedi Academy)
 - [ ] `ui_blueteam1` (cvar, ui, Base Jedi Academy)
 - [ ] `ui_blueteam2` (cvar, ui, Base Jedi Academy)
@@ -988,92 +988,92 @@ entry's name, then regenerate. Do not edit `_data/` directly.
 - [ ] `ui_blueteam7` (cvar, ui, Base Jedi Academy)
 - [ ] `ui_blueteam8` (cvar, ui, Base Jedi Academy)
 - [ ] `ui_browserFilterInvalidInfo` (cvar, ui, OpenJK)
-- [ ] `ui_browserShowEmpty` (cvar, ui, Base Jedi Academy) — menu
-- [ ] `ui_browserShowFull` (cvar, ui, Base Jedi Academy) — menu
+- [ ] `ui_browserShowEmpty` (cvar, ui, Base Jedi Academy): menu
+- [ ] `ui_browserShowFull` (cvar, ui, Base Jedi Academy): menu
 - [ ] `ui_browserShowPasswordProtected` (cvar, ui, OpenJK)
 - [ ] `ui_bypassMainMenuLoad` (cvar, ui, Base Jedi Academy)
 - [ ] `ui_cache` (command, ui, OpenJK)
 - [ ] `ui_captureLimit` (cvar, ui, Base Jedi Academy)
 - [ ] `ui_cg_shadows` (cvar, ui, Base Jedi Academy)
 - [ ] `ui_char_anim` (cvar, ui, Base Jedi Academy)
-- [ ] `ui_char_color_blue` (cvar, ui, Base Jedi Academy) — menu
-- [ ] `ui_char_color_green` (cvar, ui, Base Jedi Academy) — menu
-- [ ] `ui_char_color_red` (cvar, ui, Base Jedi Academy) — menu
-- [ ] `ui_char_model` (cvar, ui, Base Jedi Academy) — menu
+- [ ] `ui_char_color_blue` (cvar, ui, Base Jedi Academy): menu
+- [ ] `ui_char_color_green` (cvar, ui, Base Jedi Academy): menu
+- [ ] `ui_char_color_red` (cvar, ui, Base Jedi Academy): menu
+- [ ] `ui_char_model` (cvar, ui, Base Jedi Academy): menu
 - [ ] `ui_char_skin_head` (cvar, ui, Base Jedi Academy)
 - [ ] `ui_char_skin_legs` (cvar, ui, Base Jedi Academy)
 - [ ] `ui_char_skin_torso` (cvar, ui, Base Jedi Academy)
-- [ ] `ui_cl_maxpackets` (cvar, ui, EternalJK) — menu
-- [ ] `ui_cl_renderer` (cvar, ui, rend2) — menu
-- [ ] `ui_ctf_capturelimit` (cvar, ui, Base Jedi Academy) — menu
-- [ ] `ui_ctf_timelimit` (cvar, ui, Base Jedi Academy) — menu
+- [ ] `ui_cl_maxpackets` (cvar, ui, EternalJK): menu
+- [ ] `ui_cl_renderer` (cvar, ui, rend2): menu
+- [ ] `ui_ctf_capturelimit` (cvar, ui, Base Jedi Academy): menu
+- [ ] `ui_ctf_timelimit` (cvar, ui, Base Jedi Academy): menu
 - [ ] `ui_currentMap` (cvar, ui, Base Jedi Academy)
 - [ ] `ui_currentNetMap` (cvar, ui, Base Jedi Academy)
 - [ ] `ui_dedicated` (cvar, ui, Base Jedi Academy)
 - [ ] `ui_dualforcepower` (cvar, ui, Base Jedi Academy)
-- [ ] `ui_duel_fraglimit` (cvar, ui, EternalJK) — menu
-- [ ] `ui_duel_timelimit` (cvar, ui, EternalJK) — menu
-- [ ] `ui_ffa_fraglimit` (cvar, ui, Base Jedi Academy) — menu
-- [ ] `ui_ffa_timelimit` (cvar, ui, Base Jedi Academy) — menu
-- [ ] `ui_findPlayer` (cvar, ui, Base Jedi Academy) — menu
+- [ ] `ui_duel_fraglimit` (cvar, ui, EternalJK): menu
+- [ ] `ui_duel_timelimit` (cvar, ui, EternalJK): menu
+- [ ] `ui_ffa_fraglimit` (cvar, ui, Base Jedi Academy): menu
+- [ ] `ui_ffa_timelimit` (cvar, ui, Base Jedi Academy): menu
+- [ ] `ui_findPlayer` (cvar, ui, Base Jedi Academy): menu
 - [ ] `ui_forcePowerDisable` (cvar, ui, Base Jedi Academy)
 - [ ] `ui_fragLimit` (cvar, ui, Base Jedi Academy)
 - [ ] `ui_freeSaber` (cvar, ui, Base Jedi Academy)
 - [ ] `ui_gametype` (cvar, ui, Base Jedi Academy)
-- [ ] `ui_geometricdetail` (cvar, ui, EternalJK) — menu
+- [ ] `ui_geometricdetail` (cvar, ui, EternalJK): menu
 - [ ] `ui_headCount` (cvar, ui, EternalJK)
 - [ ] `ui_holdteam` (cvar, ui, Base Jedi Academy)
 - [ ] `ui_itemforceinvdesc` (cvar, ui, Base Jedi Academy)
-- [ ] `ui_joinGametype` (cvar, ui, Base Jedi Academy) — menu
-- [ ] `ui_load` (command, ui, OpenJK) — menu
+- [ ] `ui_joinGametype` (cvar, ui, Base Jedi Academy): menu
+- [ ] `ui_load` (command, ui, OpenJK): menu
 - [ ] `ui_mapIndex` (cvar, ui, Base Jedi Academy)
 - [ ] `ui_menuFilesMP` (cvar, ui, Base Jedi Academy)
 - [ ] `ui_modversion` (command, ui, EternalJK)
-- [ ] `ui_mousePitch` (cvar, ui, Base Jedi Academy) — menu
+- [ ] `ui_mousePitch` (cvar, ui, Base Jedi Academy): menu
 - [ ] `ui_mousePitchVeh` (cvar, ui, Base Jedi Academy)
 - [ ] `ui_mySiegeClass` (cvar, cgame, Base Jedi Academy)
 - [ ] `ui_myteam` (cvar, cgame, Base Jedi Academy)
-- [ ] `ui_Name` (cvar, ui, Base Jedi Academy) — menu
-- [ ] `ui_netGametype` (cvar, ui, Base Jedi Academy) — menu
-- [ ] `ui_netSource` (cvar, ui, Base Jedi Academy) — menu
+- [ ] `ui_Name` (cvar, ui, Base Jedi Academy): menu
+- [ ] `ui_netGametype` (cvar, ui, Base Jedi Academy): menu
+- [ ] `ui_netSource` (cvar, ui, Base Jedi Academy): menu
 - [ ] `ui_openmenu` (command, ui, OpenJK)
 - [ ] `ui_opensiegemenu` (command, ui, OpenJK)
 - [ ] `ui_opponentName` (cvar, ui, Base Jedi Academy)
-- [ ] `ui_password` (cvar, ui, EternalJK) — menu
+- [ ] `ui_password` (cvar, ui, EternalJK): menu
 - [ ] `ui_PrecacheModels` (cvar, ui, Base Jedi Academy)
 - [ ] `ui_r_allowExtensions` (cvar, ui, Base Jedi Academy)
-- [ ] `ui_r_autoexposure` (cvar, ui, rend2) — menu
-- [ ] `ui_r_colorbits` (cvar, ui, Base Jedi Academy) — menu
-- [ ] `ui_r_cubemapping` (cvar, ui, rend2) — menu
-- [ ] `ui_r_cubemappingBounces` (cvar, ui, rend2) — menu
-- [ ] `ui_r_customHeight` (cvar, ui, EternalJK) — menu
-- [ ] `ui_r_customWidth` (cvar, ui, EternalJK) — menu
-- [ ] `ui_r_deluxemapping` (cvar, ui, rend2) — menu
+- [ ] `ui_r_autoexposure` (cvar, ui, rend2): menu
+- [ ] `ui_r_colorbits` (cvar, ui, Base Jedi Academy): menu
+- [ ] `ui_r_cubemapping` (cvar, ui, rend2): menu
+- [ ] `ui_r_cubemappingBounces` (cvar, ui, rend2): menu
+- [ ] `ui_r_customHeight` (cvar, ui, EternalJK): menu
+- [ ] `ui_r_customWidth` (cvar, ui, EternalJK): menu
+- [ ] `ui_r_deluxemapping` (cvar, ui, rend2): menu
 - [ ] `ui_r_depthbits` (cvar, ui, Base Jedi Academy)
-- [ ] `ui_r_detailtextures` (cvar, ui, Base Jedi Academy) — menu
-- [ ] `ui_r_ext_compress_textures` (cvar, ui, Base Jedi Academy) — menu
+- [ ] `ui_r_detailtextures` (cvar, ui, Base Jedi Academy): menu
+- [ ] `ui_r_ext_compress_textures` (cvar, ui, Base Jedi Academy): menu
 - [ ] `ui_r_fastSky` (cvar, ui, Base Jedi Academy)
-- [ ] `ui_r_floatLightmap` (cvar, ui, rend2) — menu
-- [ ] `ui_r_fullBright` (cvar, ui, EternalJK) — menu
-- [ ] `ui_r_fullscreen` (cvar, ui, Base Jedi Academy) — menu
-- [ ] `ui_r_genNormalMaps` (cvar, ui, rend2) — menu
-- [ ] `ui_r_glCustom` (cvar, ui, Base Jedi Academy) — menu
-- [ ] `ui_r_hdr` (cvar, ui, rend2) — menu
+- [ ] `ui_r_floatLightmap` (cvar, ui, rend2): menu
+- [ ] `ui_r_fullBright` (cvar, ui, EternalJK): menu
+- [ ] `ui_r_fullscreen` (cvar, ui, Base Jedi Academy): menu
+- [ ] `ui_r_genNormalMaps` (cvar, ui, rend2): menu
+- [ ] `ui_r_glCustom` (cvar, ui, Base Jedi Academy): menu
+- [ ] `ui_r_hdr` (cvar, ui, rend2): menu
 - [ ] `ui_r_inGameVideo` (cvar, ui, Base Jedi Academy)
-- [ ] `ui_r_intensity` (cvar, ui, EternalJK) — menu
-- [ ] `ui_r_lightMap` (cvar, ui, EternalJK) — menu
-- [ ] `ui_r_lodbias` (cvar, ui, Base Jedi Academy) — menu
-- [ ] `ui_r_mode` (cvar, ui, Base Jedi Academy) — menu
-- [ ] `ui_r_modified` (cvar, ui, Base Jedi Academy) — menu
-- [ ] `ui_r_parallaxmapping` (cvar, ui, rend2) — menu
-- [ ] `ui_r_picmip` (cvar, ui, Base Jedi Academy) — menu
-- [ ] `ui_r_picmip_custom` (cvar, ui, EternalJK) — menu
-- [ ] `ui_r_ssao` (cvar, ui, rend2) — menu
-- [ ] `ui_r_subdivisions` (cvar, ui, Base Jedi Academy) — menu
-- [ ] `ui_r_texturebits` (cvar, ui, Base Jedi Academy) — menu
-- [ ] `ui_r_texturemode` (cvar, ui, Base Jedi Academy) — menu
-- [ ] `ui_r_tonemap` (cvar, ui, rend2) — menu
-- [ ] `ui_r_vertexLight` (cvar, ui, EternalJK) — menu
+- [ ] `ui_r_intensity` (cvar, ui, EternalJK): menu
+- [ ] `ui_r_lightMap` (cvar, ui, EternalJK): menu
+- [ ] `ui_r_lodbias` (cvar, ui, Base Jedi Academy): menu
+- [ ] `ui_r_mode` (cvar, ui, Base Jedi Academy): menu
+- [ ] `ui_r_modified` (cvar, ui, Base Jedi Academy): menu
+- [ ] `ui_r_parallaxmapping` (cvar, ui, rend2): menu
+- [ ] `ui_r_picmip` (cvar, ui, Base Jedi Academy): menu
+- [ ] `ui_r_picmip_custom` (cvar, ui, EternalJK): menu
+- [ ] `ui_r_ssao` (cvar, ui, rend2): menu
+- [ ] `ui_r_subdivisions` (cvar, ui, Base Jedi Academy): menu
+- [ ] `ui_r_texturebits` (cvar, ui, Base Jedi Academy): menu
+- [ ] `ui_r_texturemode` (cvar, ui, Base Jedi Academy): menu
+- [ ] `ui_r_tonemap` (cvar, ui, rend2): menu
+- [ ] `ui_r_vertexLight` (cvar, ui, EternalJK): menu
 - [ ] `ui_rankChange` (cvar, ui, Base Jedi Academy)
 - [ ] `ui_recordSPDemo` (cvar, ui, Base Jedi Academy)
 - [ ] `ui_redteam` (cvar, ui, Base Jedi Academy)
@@ -1085,37 +1085,37 @@ entry's name, then regenerate. Do not edit `_data/` directly.
 - [ ] `ui_redteam7` (cvar, ui, Base Jedi Academy)
 - [ ] `ui_redteam8` (cvar, ui, Base Jedi Academy)
 - [ ] `ui_report` (command, ui, OpenJK)
-- [ ] `ui_resolution` (cvar, ui, EternalJK) — menu
-- [ ] `ui_RGBSkin` (cvar, ui, EternalJK) — menu
+- [ ] `ui_resolution` (cvar, ui, EternalJK): menu
+- [ ] `ui_RGBSkin` (cvar, ui, EternalJK): menu
 - [ ] `ui_rules_backout` (cvar, ui, Base Jedi Academy)
-- [ ] `ui_sab1_b` (cvar, ui, EternalJK) — menu
-- [ ] `ui_sab1_g` (cvar, ui, EternalJK) — menu
-- [ ] `ui_sab1_r` (cvar, ui, EternalJK) — menu
-- [ ] `ui_sab2_b` (cvar, ui, EternalJK) — menu
-- [ ] `ui_sab2_g` (cvar, ui, EternalJK) — menu
-- [ ] `ui_sab2_r` (cvar, ui, EternalJK) — menu
-- [ ] `ui_saber` (cvar, ui, Base Jedi Academy) — menu
-- [ ] `ui_saber2` (cvar, ui, Base Jedi Academy) — menu
-- [ ] `ui_saber2_color` (cvar, ui, Base Jedi Academy) — menu
-- [ ] `ui_saber_color` (cvar, ui, Base Jedi Academy) — menu
-- [ ] `ui_saber_type` (cvar, ui, Base Jedi Academy) — menu
+- [ ] `ui_sab1_b` (cvar, ui, EternalJK): menu
+- [ ] `ui_sab1_g` (cvar, ui, EternalJK): menu
+- [ ] `ui_sab1_r` (cvar, ui, EternalJK): menu
+- [ ] `ui_sab2_b` (cvar, ui, EternalJK): menu
+- [ ] `ui_sab2_g` (cvar, ui, EternalJK): menu
+- [ ] `ui_sab2_r` (cvar, ui, EternalJK): menu
+- [ ] `ui_saber` (cvar, ui, Base Jedi Academy): menu
+- [ ] `ui_saber2` (cvar, ui, Base Jedi Academy): menu
+- [ ] `ui_saber2_color` (cvar, ui, Base Jedi Academy): menu
+- [ ] `ui_saber_color` (cvar, ui, Base Jedi Academy): menu
+- [ ] `ui_saber_type` (cvar, ui, Base Jedi Academy): menu
 - [ ] `ui_screenshotType` (cvar, ui, OpenJK)
-- [ ] `ui_selectedModelIndex` (cvar, ui, Base Jedi Academy) — menu
+- [ ] `ui_selectedModelIndex` (cvar, ui, Base Jedi Academy): menu
 - [ ] `ui_serverFilterType` (cvar, ui, OpenJK)
 - [ ] `ui_serverStatusTimeOut` (cvar, ui, Base Jedi Academy)
-- [ ] `ui_sha_a` (cvar, ui, EternalJK) — menu
-- [ ] `ui_sha_b` (cvar, ui, EternalJK) — menu
-- [ ] `ui_sha_g` (cvar, ui, EternalJK) — menu
-- [ ] `ui_sha_r` (cvar, ui, EternalJK) — menu
+- [ ] `ui_sha_a` (cvar, ui, EternalJK): menu
+- [ ] `ui_sha_b` (cvar, ui, EternalJK): menu
+- [ ] `ui_sha_g` (cvar, ui, EternalJK): menu
+- [ ] `ui_sha_r` (cvar, ui, EternalJK): menu
 - [ ] `ui_showAllSkins` (cvar, ui, EternalJK)
 - [ ] `ui_siegeTimer` (cvar, cgame, Base Jedi Academy)
-- [ ] `ui_singlePlayerActive` (cvar, ui, Base Jedi Academy) — menu
+- [ ] `ui_singlePlayerActive` (cvar, ui, Base Jedi Academy): menu
 - [ ] `ui_startsiegeclass` (cvar, ui, Base Jedi Academy)
 - [ ] `ui_startsiegeteam` (cvar, ui, Base Jedi Academy)
 - [ ] `ui_team` (cvar, ui, Base Jedi Academy)
-- [ ] `ui_team_fraglimit` (cvar, ui, Base Jedi Academy) — menu
-- [ ] `ui_team_timelimit` (cvar, ui, Base Jedi Academy) — menu
-- [ ] `ui_teamSize` (cvar, ui, EternalJK) — menu
+- [ ] `ui_team_fraglimit` (cvar, ui, Base Jedi Academy): menu
+- [ ] `ui_team_timelimit` (cvar, ui, Base Jedi Academy): menu
+- [ ] `ui_teamSize` (cvar, ui, EternalJK): menu
 - [ ] `ui_tm1_c0_cnt` (cvar, cgame, Base Jedi Academy)
 - [ ] `ui_tm1_c1_cnt` (cvar, cgame, Base Jedi Academy)
 - [ ] `ui_tm1_c2_cnt` (cvar, cgame, Base Jedi Academy)
@@ -1131,11 +1131,11 @@ entry's name, then regenerate. Do not edit `_data/` directly.
 - [ ] `ui_tm2_c5_cnt` (cvar, cgame, Base Jedi Academy)
 - [ ] `ui_tm2_cnt` (cvar, cgame, Base Jedi Academy)
 - [ ] `ui_tm3_cnt` (cvar, cgame, Base Jedi Academy)
-- [ ] `ui_username` (cvar, ui, EternalJK) — menu
+- [ ] `ui_username` (cvar, ui, EternalJK): menu
 - [ ] `ui_vgs` (cvar, ui, EternalJK)
-- [ ] `ui_vidrestart` (cvar, ui, EternalJK) — menu
+- [ ] `ui_vidrestart` (cvar, ui, EternalJK): menu
 - [ ] `userinfo` (command, engine-client, EternalJK)
-- [ ] `username` (cvar, engine-shared, Base Jedi Academy) — menu
+- [ ] `username` (cvar, engine-shared, Base Jedi Academy): menu
 - [ ] `vbolist` (command, renderer, rend2)
 - [ ] `vid_xpos` (cvar, engine-shared, Base Jedi Academy)
 - [ ] `vid_ypos` (cvar, engine-shared, Base Jedi Academy)
@@ -1143,8 +1143,8 @@ entry's name, then regenerate. Do not edit `_data/` directly.
 - [ ] `vkinfo` (command, renderer, Vulkan)
 - [ ] `vm_legacy` (cvar, engine-shared, OpenJK)
 - [ ] `weaplast` (command, cgame, jaPRO)
-- [ ] `weapnext` (command, cgame, Base Jedi Academy) — menu
-- [ ] `weapon` (command, cgame, Base Jedi Academy) — menu
+- [ ] `weapnext` (command, cgame, Base Jedi Academy): menu
+- [ ] `weapon` (command, cgame, Base Jedi Academy): menu
 - [ ] `weaponclean` (command, cgame, Base Jedi Academy)
-- [ ] `weapprev` (command, cgame, Base Jedi Academy) — menu
+- [ ] `weapprev` (command, cgame, Base Jedi Academy): menu
 - [ ] `zone_memrecovertest` (command, engine-shared, Base Jedi Academy)

@@ -20,10 +20,10 @@ Enables fast HTTP downloads for referenced PK3 files. When enabled, the server a
 | Module | `engine-server` |
 | Also registered in | `engine-server` |
 | Renderer | All / not renderer-specific |
-| Network scope | `server-authoritative` — Owned or enforced by the server. |
+| Network scope | `server-authoritative`: Owned or enforced by the server. |
 | Derivation | `mixed` |
 | Confidence | `high` |
-| Added | 2024-03-21 in [`2a5ea5d88`](https://github.com/taysta/TaystJK/commit/2a5ea5d885dc6c081b75631334aac405da3fa36d) — [how to compare this against your build](/TaystJK/features/whats-new/#how-to-tell-what-your-build-has) |
+| Added | 2024-03-21 in [`2a5ea5d88`](https://github.com/taysta/TaystJK/commit/2a5ea5d885dc6c081b75631334aac405da3fa36d) ([how to compare this against your build](/TaystJK/features/whats-new/#how-to-tell-what-your-build-has)) |
 | In-game xdocs | No |
 | In-game menu | No |
 | Default | `0` |
@@ -41,9 +41,9 @@ Enables fast HTTP downloads for referenced PK3 files. When enabled, the server a
 
 ## Flags
 
-- `CVAR_ARCHIVE` — saved to the user configuration
-- `CVAR_LATCH` — latched until the relevant subsystem or map is restarted
-- `CVAR_SERVERINFO` — published in serverinfo
+- `CVAR_ARCHIVE`: saved to the user configuration
+- `CVAR_LATCH`: latched until the relevant subsystem or map is restarted
+- `CVAR_SERVERINFO`: published in serverinfo
 
 ## Provenance
 

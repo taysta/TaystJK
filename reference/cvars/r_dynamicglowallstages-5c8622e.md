@@ -20,10 +20,10 @@ In Vanilla certain glow stages are skipped, render those anyway
 | Module | `renderer` |
 | Also registered in | `renderer` |
 | Renderer | `rd-vulkan` |
-| Network scope | `client-only` — Local to the client/UI/renderer. |
+| Network scope | `client-only`: Local to the client/UI/renderer. |
 | Derivation | `documented` |
 | Confidence | `high` |
-| Added | 2023-09-24 in [`a435f91de`](https://github.com/taysta/TaystJK/commit/a435f91de078325de74408f44053240448efe1b4) — [how to compare this against your build](/TaystJK/features/whats-new/#how-to-tell-what-your-build-has) |
+| Added | 2023-09-24 in [`a435f91de`](https://github.com/taysta/TaystJK/commit/a435f91de078325de74408f44053240448efe1b4) ([how to compare this against your build](/TaystJK/features/whats-new/#how-to-tell-what-your-build-has)) |
 | In-game xdocs | No |
 | In-game menu | No |
 | Default | `0` |
@@ -41,8 +41,8 @@ In Vanilla certain glow stages are skipped, render those anyway
 
 ## Flags
 
-- `CVAR_ARCHIVE_ND` — saved to configuration without marking the cvar as user-created
-- `CVAR_LATCH` — latched until the relevant subsystem or map is restarted
+- `CVAR_ARCHIVE_ND`: saved to configuration without marking the cvar as user-created
+- `CVAR_LATCH`: latched until the relevant subsystem or map is restarted
 
 ## Provenance
 

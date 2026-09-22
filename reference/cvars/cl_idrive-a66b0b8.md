@@ -22,10 +22,10 @@ Controls `cl_idrive` in the engine-client module. Consult the cited behavior rea
 | Module | `engine-client` |
 | Also registered in | `engine-client` |
 | Renderer | All / not renderer-specific |
-| Network scope | `client-only` — Local to the client/UI/renderer. |
+| Network scope | `client-only`: Local to the client/UI/renderer. |
 | Derivation | `code-trace` |
 | Confidence | `high` |
-| Added | 2017-12-04 in [`e0d7a341b`](https://github.com/taysta/TaystJK/commit/e0d7a341bc6c9a68a359941a4065e9c6b408305a) — [how to compare this against your build](/TaystJK/features/whats-new/#how-to-tell-what-your-build-has) |
+| Added | 2017-12-04 in [`e0d7a341b`](https://github.com/taysta/TaystJK/commit/e0d7a341bc6c9a68a359941a4065e9c6b408305a) ([how to compare this against your build](/TaystJK/features/whats-new/#how-to-tell-what-your-build-has)) |
 | In-game xdocs | No |
 | In-game menu | No |
 | Default | `0` |
@@ -42,7 +42,7 @@ Controls `cl_idrive` in the engine-client module. Consult the cited behavior rea
 
 ## Flags
 
-- `CVAR_ARCHIVE` — saved to the user configuration
+- `CVAR_ARCHIVE`: saved to the user configuration
 
 ## Provenance
 

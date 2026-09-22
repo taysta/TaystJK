@@ -22,10 +22,10 @@ Controls `cl_avi2GBLimit` in the engine-client module. Consult the cited behavio
 | Module | `engine-client` |
 | Also registered in | `engine-client` |
 | Renderer | All / not renderer-specific |
-| Network scope | `client-only` — Local to the client/UI/renderer. |
+| Network scope | `client-only`: Local to the client/UI/renderer. |
 | Derivation | `code-trace` |
 | Confidence | `medium` |
-| Added | 2014-04-21 in [`e0291062c`](https://github.com/taysta/TaystJK/commit/e0291062ce4afb88e725b51aa99a07148c96ba65) <span class="status-chip">needs review</span> — [how to compare this against your build](/TaystJK/features/whats-new/#how-to-tell-what-your-build-has) |
+| Added | 2014-04-21 in [`e0291062c`](https://github.com/taysta/TaystJK/commit/e0291062ce4afb88e725b51aa99a07148c96ba65) <span class="status-chip">needs review</span> ([how to compare this against your build](/TaystJK/features/whats-new/#how-to-tell-what-your-build-has)) |
 | In-game xdocs | No |
 | In-game menu | No |
 | Default | `1` |
@@ -43,7 +43,7 @@ Controls `cl_avi2GBLimit` in the engine-client module. Consult the cited behavio
 
 ## Flags
 
-- `CVAR_ARCHIVE` — saved to the user configuration
+- `CVAR_ARCHIVE`: saved to the user configuration
 
 ## Provenance
 

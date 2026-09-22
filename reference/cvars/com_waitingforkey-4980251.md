@@ -24,17 +24,17 @@ Controls `com_waitingForKey` in the engine-shared module. Consult the cited beha
 | Module | `engine-shared` |
 | Also registered in | `engine-shared` |
 | Renderer | All / not renderer-specific |
-| Network scope | `client-only` — Local to the client/UI/renderer. |
+| Network scope | `client-only`: Local to the client/UI/renderer. |
 | Derivation | `code-trace` |
 | Confidence | `high` |
-| Added | 2025-04-26 in [`a1ee9793b`](https://github.com/taysta/TaystJK/commit/a1ee9793b45d409840c6b75b3da75fdebca685a2) — [how to compare this against your build](/TaystJK/features/whats-new/#how-to-tell-what-your-build-has) |
+| Added | 2025-04-26 in [`a1ee9793b`](https://github.com/taysta/TaystJK/commit/a1ee9793b45d409840c6b75b3da75fdebca685a2) ([how to compare this against your build](/TaystJK/features/whats-new/#how-to-tell-what-your-build-has)) |
 | In-game xdocs | No |
 | In-game menu | No |
 | Default | `0` |
 | Value type | `bool` |
 | Restart | No latch flag is registered. |
 | Cheat protected | No |
-| Player-settable | No — the game writes this value. |
+| Player-settable | No; the game writes this value. |
 
 ## Values
 
@@ -45,7 +45,7 @@ Controls `com_waitingForKey` in the engine-shared module. Consult the cited beha
 
 ## Flags
 
-- `CVAR_ROM` — read-only after registration
+- `CVAR_ROM`: read-only after registration
 
 ## Provenance
 

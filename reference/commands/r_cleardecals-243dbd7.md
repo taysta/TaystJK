@@ -22,10 +22,10 @@ Runs `RE_ClearDecals` in the renderer module.
 | Module | `renderer` |
 | Also registered in | `renderer` |
 | Renderer | `rd-rend2`, `rd-vanilla`, `rd-vulkan` |
-| Network scope | `client-only` — Local to the client/UI/renderer. |
+| Network scope | `client-only`: Local to the client/UI/renderer. |
 | Derivation | `code-trace` |
 | Confidence | `medium` |
-| Added | 2018-11-29 in [`58c7d66ab`](https://github.com/taysta/TaystJK/commit/58c7d66abda5e2c2915dc5322e3509029aa2bbb9) <span class="status-chip">needs review</span> — [how to compare this against your build](/TaystJK/features/whats-new/#how-to-tell-what-your-build-has) |
+| Added | 2018-11-29 in [`58c7d66ab`](https://github.com/taysta/TaystJK/commit/58c7d66abda5e2c2915dc5322e3509029aa2bbb9) <span class="status-chip">needs review</span> ([how to compare this against your build](/TaystJK/features/whats-new/#how-to-tell-what-your-build-has)) |
 | In-game xdocs | No |
 | In-game menu | No |
 | Syntax | `r_cleardecals` |

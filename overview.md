@@ -22,7 +22,7 @@ Five sections, written by different means:
   [**Develop**](/TaystJK/development/) are written by hand. They explain how to do something,
   or how a feature works.
 - [**Console reference**](/TaystJK/reference/) is generated from the source code. It has one
-  page per cvar and console command — what it is, what it defaults to, where it is
+  page per cvar and console command: what it is, what it defaults to, where it is
   registered, and where it came from.
 
 The split is deliberate. A cvar list cannot tell you why `.oshader` files exist or what a
@@ -43,12 +43,12 @@ client-side gamecode (`cgame`) *and* the server-side gamecode (`jampgame`), alon
 UI and the engine
 ([`CMakeLists.txt`](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/CMakeLists.txt#L42)).
 The split shows in the reference: of those 458 entries, 261 are in the `cgame` module and
-**190 are in `game`** — the module that decides the rules.
+**190 are in `game`**, the module that decides the rules.
 
 | What you get | Where it lives | What it gives you |
 |:--|:--|:--|
-| Client-side gamecode | `cgame` | The HUD tools, movement helpers, cosmetics — present on every server you join |
-| Server-side gamecode | `jampgame` | Race mode, the movement styles, Tribes, the admin system — when *you* host |
+| Client-side gamecode | `cgame` | The HUD tools, movement helpers and cosmetics, present on every server you join |
+| Server-side gamecode | `jampgame` | Race mode, the movement styles, Tribes and the admin system when *you* host |
 | Assets | `japro-assets.pk3` | The shaders, models and icons those features draw ([`codemp/CMakeLists.txt`](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/CMakeLists.txt#L81)) |
 
 So a TaystJK dedicated server serves jaPRO-style gameplay out of the box, with nothing else
@@ -56,12 +56,12 @@ installed. That is why this site can cite `codemp/game/` for things like `/move`
 Tribes classes: that code is in this tree.
 
 **Joining someone else's server is the other case.** There, their game module decides the
-rules and your bundled copy is not used at all — which is why the same feature can behave
+rules and your bundled copy is not used at all. That is why the same feature can behave
 differently from server to server. See
 [mod compatibility](/TaystJK/mod-compatibility/).
 
 **This matters when something is wrong.** Gameplay belongs to the game module, and that
-code is maintained upstream at <https://github.com/videoP/jaPRO> and pulled down here — so
+code is maintained upstream at <https://github.com/videoP/jaPRO> and pulled down here, so
 that is where a rules problem goes, even though a copy of the module ships with this client.
 How the client renders, connects, binds keys or loads files belongs here. The reference's
 **network scope** field is the quickest way to tell which side owns a given cvar.
@@ -70,7 +70,7 @@ How the client renders, connects, binds keys or loads files belongs here. The re
 
 Each reference entry carries fields whose meaning is not self-evident.
 
-**Origin** says where an entry *first appeared* — not every fork that ships it. A cvar
+**Origin** says where an entry *first appeared*, not every fork that ships it. A cvar
 inherited from Raven's code stays *Base Jedi Academy* even though every fork carries it,
 and a cvar only registered by the Vulkan backend is not automatically Vulkan-originated;
 the resolver checks the other upstream snapshots first. The full method, including how
@@ -90,7 +90,7 @@ negotiates. **Renderer scope** says which of the three backends registers a cvar
 why some entries do nothing until you switch renderer.
 
 **Added** is a date, because there are no version numbers to quote. Compare it against the
-date your build reports — `version` for the engine, `modversion` for the game module. If
+date your build reports: `version` for the engine, `modversion` for the game module. If
 your build is older than the date shown, it does not have that entry. The identifier beside
 the date cannot be compared: `latest` is the same string on every release, and two short
 hashes cannot be ranked against each other. A date marked *needs review* rests on an

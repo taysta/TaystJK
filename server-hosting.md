@@ -157,7 +157,7 @@ The supplied file already defines a working stock-map rotation. Change its examp
 ```cfg
 // Identity and access
 seta sv_hostname "My TaystJK server"
-seta g_motd "Welcome — have fun"
+seta g_motd "Welcome! Have fun"
 seta rconPassword "replace-with-a-long-random-secret"
 
 // Downloads: UDP fallback plus the built-in HTTP server
@@ -196,7 +196,7 @@ Do not put spaces or `@` in downloadable PK3 filenames. After changing downloada
 Only referenced PK3s are offered to clients. TaystJK automatically references a PK3 when:
 
 1. A BSP map is loaded from it.
-2. A recognized native client module marker—currently `cgamex86.dll` or `uix86.dll`—is loaded from it.
+2. A recognized native client module marker, currently `cgamex86.dll` or `uix86.dll`, is loaded from it.
 3. It is in the active `fs_game` directory rather than `base`.
 
 TaystJK does not currently execute `cgame.qvm` or `ui.qvm`. Its modules are native libraries: `.dll` on Windows, `.so` on Linux, and `.dylib` on macOS. Because the automatic PK3 check uses the two x86 Windows marker names for cross-platform pure-server bookkeeping, add a package explicitly to `ref_forcelist.txt` when it contains only another architecture's module names or client assets that do not otherwise trigger a reference.
@@ -247,13 +247,13 @@ restriction ([`cl_parse.cpp`](https://github.com/taysta/TaystJK/blame/6ff04c0baf
 Two things happen at once. The client marks the base assets pak as referenced so the
 checksums it reports back look like a stock client's
 ([`files.cpp`](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/qcommon/files.cpp#L4169)), and it skips loading your pak list
-altogether — which leaves it with no list to restrict against, so every pak it has is
+altogether. This leaves it with no list to restrict against, so every pak it has is
 treated as allowed
 ([`FS_PakIsPure`](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/qcommon/files.cpp#L393)).
 
 The effect is that the client authenticates as pure while still loading its own assets:
-emoji, cosmetics, HUD files and any other PK3 the player has installed. This is deliberate —
-it is what lets TaystJK's client-side additions work on stock servers — but it means
+emoji, cosmetics, HUD files and any other PK3 the player has installed. This is deliberate:
+it lets TaystJK's client-side additions work on stock servers, but it means
 **`sv_pure` is not an asset-parity guarantee for these clients.** If you are relying on pure
 to ensure everyone sees identical content, a `basejka` gamename does not give you that.
 
@@ -298,8 +298,8 @@ because it is usually wasted work.
 Buffering runs per connected client, so the memory cost scales with your player count as
 well as with the time window. Raise `sv_demoPreRecordTime` deliberately.
 
-`sv_demoWriteMeta` controls whether the metadata set by `svdemometa` — and by the game
-module — is written into the demo. It is on by default and invisible to ordinary playback.
+`sv_demoWriteMeta` controls whether the metadata set by `svdemometa` and by the game
+module is written into the demo. It is on by default and invisible to ordinary playback.
 
 ## Verify before going public
 
@@ -313,5 +313,5 @@ module — is written into the demo. It is on by default and invisible to ordina
 Use the [console reference](/TaystJK/reference/?kind=cvar&network=server-authoritative) to inspect server-owned cvars and their exact source registrations.
 
 If the server does not appear in the list, or it keeps rewriting your config, both have
-their own entries on [troubleshooting](/TaystJK/troubleshooting/) — they are the two things
+their own entries on [troubleshooting](/TaystJK/troubleshooting/). They are the two things
 that go wrong most often here.

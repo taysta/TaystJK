@@ -22,10 +22,10 @@ Controls `s_doppler` in the engine-client module. Consult the cited behavior rea
 | Module | `engine-client` |
 | Also registered in | `engine-client` |
 | Renderer | All / not renderer-specific |
-| Network scope | `client-only` — Local to the client/UI/renderer. |
+| Network scope | `client-only`: Local to the client/UI/renderer. |
 | Derivation | `code-trace` |
 | Confidence | `medium` |
-| Added | 2013-10-21 in [`69800e894`](https://github.com/taysta/TaystJK/commit/69800e894dff5ea9fcad22c26cc41c9bbf250216) <span class="status-chip">needs review</span> — [how to compare this against your build](/TaystJK/features/whats-new/#how-to-tell-what-your-build-has) |
+| Added | 2013-10-21 in [`69800e894`](https://github.com/taysta/TaystJK/commit/69800e894dff5ea9fcad22c26cc41c9bbf250216) <span class="status-chip">needs review</span> ([how to compare this against your build](/TaystJK/features/whats-new/#how-to-tell-what-your-build-has)) |
 | In-game xdocs | No |
 | In-game menu | No |
 | Default | `1` |
@@ -43,7 +43,7 @@ Controls `s_doppler` in the engine-client module. Consult the cited behavior rea
 
 ## Flags
 
-- `CVAR_ARCHIVE_ND` — saved to configuration without marking the cvar as user-created
+- `CVAR_ARCHIVE_ND`: saved to configuration without marking the cvar as user-created
 
 ## Provenance
 

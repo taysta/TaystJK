@@ -20,10 +20,10 @@ Relative font sharpness (doesn't affect console font).
 | Module | `renderer` |
 | Also registered in | `renderer` |
 | Renderer | All / not renderer-specific |
-| Network scope | `client-only` — Local to the client/UI/renderer. |
+| Network scope | `client-only`: Local to the client/UI/renderer. |
 | Derivation | `documented` |
 | Confidence | `high` |
-| Added | 2023-11-29 in [`e8e1da168`](https://github.com/taysta/TaystJK/commit/e8e1da168ed586bb1f7c64ec1f9d2baf764bba63) — [how to compare this against your build](/TaystJK/features/whats-new/#how-to-tell-what-your-build-has) |
+| Added | 2023-11-29 in [`e8e1da168`](https://github.com/taysta/TaystJK/commit/e8e1da168ed586bb1f7c64ec1f9d2baf764bba63) ([how to compare this against your build](/TaystJK/features/whats-new/#how-to-tell-what-your-build-has)) |
 | In-game xdocs | No |
 | In-game menu | No |
 | Default | `1` |
@@ -41,7 +41,7 @@ Relative font sharpness (doesn't affect console font).
 
 ## Flags
 
-- `CVAR_ARCHIVE_ND` — saved to configuration without marking the cvar as user-created
+- `CVAR_ARCHIVE_ND`: saved to configuration without marking the cvar as user-created
 
 ## Provenance
 

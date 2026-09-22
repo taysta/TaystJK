@@ -22,10 +22,10 @@ Runs `Cmd_DFCompare_f` in the game module.
 | Module | `game` |
 | Also registered in | `game` |
 | Renderer | All / not renderer-specific |
-| Network scope | `needs-server-support` — Sent to, or only useful with, a supporting game server. |
+| Network scope | `needs-server-support`: Sent to, or only useful with, a supporting game server. |
 | Derivation | `documented` |
 | Confidence | `high` |
-| Added | 2024-01-10 in [`90d3c68f2`](https://github.com/taysta/TaystJK/commit/90d3c68f2da918f353b24bff60e49066dd018806) — [how to compare this against your build](/TaystJK/features/whats-new/#how-to-tell-what-your-build-has) |
+| Added | 2024-01-10 in [`90d3c68f2`](https://github.com/taysta/TaystJK/commit/90d3c68f2da918f353b24bff60e49066dd018806) ([how to compare this against your build](/TaystJK/features/whats-new/#how-to-tell-what-your-build-has)) |
 | In-game xdocs | No |
 | In-game menu | No |
 | Syntax | `rCompare <username> <style (optional)> <current season (optional - example: s) <page (optional)>. This displays the courses that the specified user has defeated you on` |

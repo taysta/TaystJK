@@ -42,7 +42,7 @@ a restart. The menu exposes the same choice.
 If the library you named cannot be loaded, the client says so, resets `cl_renderer` to the
 default and loads that instead rather than failing outright
 ([`cl_main.cpp`](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/cl_main.cpp#L2748)).
-If you switch and end up back on the default, that is what happened — usually the build
+If you switch and end up back on the default, that is what happened. Usually the build
 does not include that renderer.
 
 ## What differs in practice
@@ -61,7 +61,7 @@ is registered by the Vulkan backend and its own description says it requires
 Both are latched, so set both and then `vid_restart`.
 
 **Override shaders work everywhere.** `.oshader` files are implemented in all three
-backends, so a shader override does not depend on your choice — see
+backends, so a shader override does not depend on your choice. See
 [client behaviour changes](/TaystJK/features/client-behaviour/).
 
 **Memory.** rend2 is the heaviest of the three. On a 32-bit build that can matter; the
@@ -74,4 +74,4 @@ Vulkan-specific rendering problems to
 <https://github.com/JKSunny/EternalJK>, not here.
 
 Anything you can also reproduce on `rd-taystjk` is not a Vulkan bug. Switch backends before
-reporting — it is the single most useful thing you can say in the report.
+reporting. It is the single most useful thing you can say in the report.

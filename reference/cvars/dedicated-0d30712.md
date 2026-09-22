@@ -22,10 +22,10 @@ Controls `dedicated` in the game module. Consult the cited behavior reads before
 | Module | `game` |
 | Also registered in | `game`, `engine-shared` |
 | Renderer | All / not renderer-specific |
-| Network scope | `server-authoritative` — Owned or enforced by the server. |
+| Network scope | `server-authoritative`: Owned or enforced by the server. |
 | Derivation | `code-trace` |
 | Confidence | `high` |
-| Added | 2013-04-08 in [`14cea1563`](https://github.com/taysta/TaystJK/commit/14cea1563762076974bee277afadbd5bf234c494) — [how to compare this against your build](/TaystJK/features/whats-new/#how-to-tell-what-your-build-has) |
+| Added | 2013-04-08 in [`14cea1563`](https://github.com/taysta/TaystJK/commit/14cea1563762076974bee277afadbd5bf234c494) ([how to compare this against your build](/TaystJK/features/whats-new/#how-to-tell-what-your-build-has)) |
 | In-game xdocs | No |
 | In-game menu | No |
 | Default | `0` |
@@ -40,12 +40,12 @@ No discrete value list is enforced or documented in the inspected source.
 
 ## Enforced ranges
 
-- `1` through `2` (integer; Cvar_CheckRange) — [codemp/qcommon/common.cpp:1436](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/qcommon/common.cpp#L1436)
+- `1` through `2` (integer; Cvar_CheckRange). Evidence: [codemp/qcommon/common.cpp:1436](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/qcommon/common.cpp#L1436)
 
 ## Flags
 
-- `CVAR_INIT` — initialization/command-line setting
-- `CVAR_NONE` — fork/source-defined flag; see registration evidence
+- `CVAR_INIT`: initialization/command-line setting
+- `CVAR_NONE`: fork/source-defined flag; see registration evidence
 
 ## Registration-specific defaults
 

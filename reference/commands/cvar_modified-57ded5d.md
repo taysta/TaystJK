@@ -22,10 +22,10 @@ Show all modified cvars
 | Module | `engine-shared` |
 | Also registered in | `engine-shared` |
 | Renderer | All / not renderer-specific |
-| Network scope | `client-only` — Local to the client/UI/renderer. |
+| Network scope | `client-only`: Local to the client/UI/renderer. |
 | Derivation | `documented` |
 | Confidence | `medium` |
-| Added | 2013-08-15 in [`f7058dcb5`](https://github.com/taysta/TaystJK/commit/f7058dcb56443a3ddc7425eeb2d538a866a06a8c) <span class="status-chip">needs review</span> — [how to compare this against your build](/TaystJK/features/whats-new/#how-to-tell-what-your-build-has) |
+| Added | 2013-08-15 in [`f7058dcb5`](https://github.com/taysta/TaystJK/commit/f7058dcb56443a3ddc7425eeb2d538a866a06a8c) <span class="status-chip">needs review</span> ([how to compare this against your build](/TaystJK/features/whats-new/#how-to-tell-what-your-build-has)) |
 | In-game xdocs | No |
 | In-game menu | No |
 | Syntax | `cvar_modified` |

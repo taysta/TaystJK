@@ -22,10 +22,10 @@ Forwards this command to the connected game server.
 | Module | `cgame` |
 | Also registered in | `cgame`, `game` |
 | Renderer | All / not renderer-specific |
-| Network scope | `needs-server-support` — Sent to, or only useful with, a supporting game server. |
+| Network scope | `needs-server-support`: Sent to, or only useful with, a supporting game server. |
 | Derivation | `documented` |
 | Confidence | `medium` |
-| Added | 2018-08-19 in [`fa2b5ba68`](https://github.com/taysta/TaystJK/commit/fa2b5ba6883ba72c77c53130fedf2d3d2bfb86ea) <span class="status-chip">needs review</span> — [how to compare this against your build](/TaystJK/features/whats-new/#how-to-tell-what-your-build-has) |
+| Added | 2018-08-19 in [`fa2b5ba68`](https://github.com/taysta/TaystJK/commit/fa2b5ba6883ba72c77c53130fedf2d3d2bfb86ea) <span class="status-chip">needs review</span> ([how to compare this against your build](/TaystJK/features/whats-new/#how-to-tell-what-your-build-has)) |
 | In-game xdocs | No |
 | In-game menu | No |
 | Syntax | `clanInvite <clan> <player>` |

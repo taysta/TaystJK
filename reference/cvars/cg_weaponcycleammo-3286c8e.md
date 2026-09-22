@@ -22,10 +22,10 @@ Controls `cg_weaponCycleAmmo` in the cgame module. Consult the cited behavior re
 | Module | `cgame` |
 | Also registered in | `cgame` |
 | Renderer | All / not renderer-specific |
-| Network scope | `client-only` — Local to the client/UI/renderer. |
+| Network scope | `client-only`: Local to the client/UI/renderer. |
 | Derivation | `code-trace` |
 | Confidence | `medium` |
-| Added | 2022-04-21 in [`3692583bb`](https://github.com/taysta/TaystJK/commit/3692583bb66afbb96b1fc36bafc1e0f57ba002a3) <span class="status-chip">needs review</span> — [how to compare this against your build](/TaystJK/features/whats-new/#how-to-tell-what-your-build-has) |
+| Added | 2022-04-21 in [`3692583bb`](https://github.com/taysta/TaystJK/commit/3692583bb66afbb96b1fc36bafc1e0f57ba002a3) <span class="status-chip">needs review</span> ([how to compare this against your build](/TaystJK/features/whats-new/#how-to-tell-what-your-build-has)) |
 | In-game xdocs | No |
 | In-game menu | No |
 | Default | `0` |
@@ -43,7 +43,7 @@ Controls `cg_weaponCycleAmmo` in the cgame module. Consult the cited behavior re
 
 ## Flags
 
-- `CVAR_ARCHIVE` — saved to the user configuration
+- `CVAR_ARCHIVE`: saved to the user configuration
 
 ## Provenance
 

@@ -22,10 +22,10 @@ Show/hide the menu
 | Module | `engine-client` |
 | Also registered in | `engine-client` |
 | Renderer | All / not renderer-specific |
-| Network scope | `client-only` — Local to the client/UI/renderer. |
+| Network scope | `client-only`: Local to the client/UI/renderer. |
 | Derivation | `documented` |
 | Confidence | `medium` |
-| Added | 2014-02-01 in [`b276c56dd`](https://github.com/taysta/TaystJK/commit/b276c56dd51c9934657fe418620165990229e97f) <span class="status-chip">needs review</span> — [how to compare this against your build](/TaystJK/features/whats-new/#how-to-tell-what-your-build-has) |
+| Added | 2014-02-01 in [`b276c56dd`](https://github.com/taysta/TaystJK/commit/b276c56dd51c9934657fe418620165990229e97f) <span class="status-chip">needs review</span> ([how to compare this against your build](/TaystJK/features/whats-new/#how-to-tell-what-your-build-has)) |
 | In-game xdocs | No |
 | In-game menu | No |
 | Syntax | `togglemenu` |

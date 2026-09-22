@@ -330,7 +330,7 @@ def resolve_default(value: str, defines: dict[str, str | None],
                     enumerators: set[str]) -> tuple[str, str | None, str | None]:
     """Return ``(default, macro, macro_kind)`` for a raw C default argument.
 
-    A quoted string is already the value a player sees and is never expanded —
+    A quoted string is already the value a player sees and is never expanded.
     ``Cvar_Get("r_drawBuffer", "GL_BACK", ...)`` really does default to the
     text ``GL_BACK``.  Only a bare identifier is treated as a macro.
     """

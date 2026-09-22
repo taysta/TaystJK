@@ -22,10 +22,10 @@ Controls `cp_sbRGB2` in the cgame module. Consult the cited behavior reads befor
 | Module | `cgame` |
 | Also registered in | `cgame`, `ui` |
 | Renderer | All / not renderer-specific |
-| Network scope | `needs-server-support` — Sent to, or only useful with, a supporting game server. |
+| Network scope | `needs-server-support`: Sent to, or only useful with, a supporting game server. |
 | Derivation | `code-trace` |
 | Confidence | `medium` |
-| Added | 2015-11-11 in [`272692a04`](https://github.com/taysta/TaystJK/commit/272692a0441369b6cde4858141428037f80f145c) <span class="status-chip">needs review</span> — [how to compare this against your build](/TaystJK/features/whats-new/#how-to-tell-what-your-build-has) |
+| Added | 2015-11-11 in [`272692a04`](https://github.com/taysta/TaystJK/commit/272692a0441369b6cde4858141428037f80f145c) <span class="status-chip">needs review</span> ([how to compare this against your build](/TaystJK/features/whats-new/#how-to-tell-what-your-build-has)) |
 | In-game xdocs | No |
 | In-game menu | No |
 | Default | `0` |
@@ -43,8 +43,8 @@ Controls `cp_sbRGB2` in the cgame module. Consult the cited behavior reads befor
 
 ## Flags
 
-- `CVAR_ARCHIVE` — saved to the user configuration
-- `CVAR_USERINFO` — sent in the client's userinfo
+- `CVAR_ARCHIVE`: saved to the user configuration
+- `CVAR_USERINFO`: sent in the client's userinfo
 
 ## Registration-specific defaults
 

@@ -21,11 +21,11 @@ Swap victim/killer sides
 | Module | `cgame` |
 | Also registered in | `cgame` |
 | Renderer | All / not renderer-specific |
-| Network scope | `client-only` — Local to the client/UI/renderer. |
+| Network scope | `client-only`: Local to the client/UI/renderer. |
 | Derivation | `documented` |
 | Confidence | `high` |
-| Added | 2026-08-06 in [`17085eaea`](https://github.com/taysta/TaystJK/commit/17085eaeadd029b670346330588de005c6c41158) — [how to compare this against your build](/TaystJK/features/whats-new/#how-to-tell-what-your-build-has) |
-| In-game xdocs | Yes — [codemp/ui/ui_xdocs.h:546](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/ui/ui_xdocs.h#L546) |
+| Added | 2026-08-06 in [`17085eaea`](https://github.com/taysta/TaystJK/commit/17085eaeadd029b670346330588de005c6c41158) ([how to compare this against your build](/TaystJK/features/whats-new/#how-to-tell-what-your-build-has)) |
+| In-game xdocs | Yes: [codemp/ui/ui_xdocs.h:546](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/ui/ui_xdocs.h#L546) |
 | In-game menu | No |
 | Default | `0` |
 | Value type | `bool` |
@@ -42,7 +42,7 @@ Swap victim/killer sides
 
 ## Flags
 
-- `CVAR_ARCHIVE` — saved to the user configuration
+- `CVAR_ARCHIVE`: saved to the user configuration
 
 ## Provenance
 

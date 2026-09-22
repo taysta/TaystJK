@@ -17,7 +17,7 @@ status: experimental
 <p class="page-lede">A movement style that replaces running with skiing and adds a jetpack, its own HUD and its own weapons. It is experimental, few servers run it, and it needs assets you may not have.</p>
 </div>
 
-Tribes is one of the nineteen [movement styles](/TaystJK/features/movement-styles/) — the
+Tribes is one of the nineteen [movement styles](/TaystJK/features/movement-styles/); the
 server chooses it. Unlike the others it comes with a substantial amount of client-side
 machinery: a replacement HUD, team markers, a fuel display and its own weapon effects.
 
@@ -55,7 +55,7 @@ In team games the client floats a team-coloured sprite above other players so yo
 friend from enemy at speed
 ([`cg_players.c`](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_players.c#L11059)).
 
-The marker scales with distance — `4 + distance * 0.008` — so a distant player still gets a
+The marker scales with distance using `4 + distance * 0.008`, so a distant player still gets a
 readable icon rather than a dot. Friendly markers show at any range; **enemy markers only
 appear within 7500 units**, so an unmarked player far away is not necessarily a teammate.
 Nothing is drawn on the dead, on NPCs, or on yourself except in mirrors.
@@ -69,7 +69,7 @@ The mode swaps in a different HUD entirely
 a health bar, a weapon selector that greys out anything you cannot currently fire, a pack
 display, and the fuel bar above.
 
-The weapon selector's availability test is energy-based rather than counting rounds — a
+The weapon selector's availability test is energy-based rather than counting rounds. A
 weapon is selectable when you hold at least as much ammo as one shot costs
 ([`hud_tribes.c`](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/hud_tribes.c#L183)),
 which is why the display talks in shots rather than in a raw ammo count.
@@ -88,7 +88,7 @@ is audibly different from a ground kill
 
 ## Classes
 
-You do not pick a class with a command — **your player model decides it**
+You do not pick a class with a command. **Your player model decides it**
 ([`DetectTribesClass`](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_client.c#L2263)),
 on a server running `g_tribesMode 1`.
 
@@ -96,13 +96,13 @@ on a server running `g_tribesMode 1`.
 |:--|:--|
 | Heavy | `tribesheavy`, `reborn_twin`, `reelo`, `noghri`, `rax_joris` |
 | Light | `tavion`, `tavion_new`, `jan`, `alora`, `alora2`, `jedi_tf`, `jedi_zf`, `jedi_hf`, `monmothma` |
-| Medium | everything else — the default |
+| Medium | everything else (the default) |
 
 Set your `model` and you change class. The server confirms with a message such as
 "Spawning as Tribes heavy class", and **it kills you** so you respawn as the new class, so
 do not do it mid-run.
 
-Anything not on the list is medium, so an unusual model never locks you out — it just makes
+Anything not on the list is medium, so an unusual model never locks you out. It just makes
 you medium. Names other than `tribesheavy` are matched by prefix, so a skin suffix such as
 `tavion/red` still counts. `tribesheavy` is compared over more characters than the name is
 long, so there only a bare `tribesheavy` works and `tribesheavy/default` falls through to
@@ -112,7 +112,7 @@ What the class changes:
 
 - **Speed.** Light runs at 1.05×, heavy at 0.78×
   ([`g_active.c`](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_active.c#L4296)).
-- **Weight.** Explosions throw light further and heavy less — knockback mass is 175, 200 and
+- **Weight.** Explosions throw light further and heavy less. Knockback mass is 175, 200 and
   240 ([`g_combat.c`](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_combat.c#L5121)).
 - **What `thrownade` throws.** A thermal for light, a detpack for medium, a tripmine for
   heavy ([`Cmd_ThrowNade_f`](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_cmds.c#L8660)).
@@ -126,8 +126,8 @@ team in a team gametype
 
 Two shipped configs, described on [shipped configs](/TaystJK/features/shipped-configs/):
 
-- `japro_tribes` — client-side setup, including the binds the mode expects.
-- `japro_tribes_server` — for whoever runs the server, including force-power restrictions.
+- `japro_tribes`: client-side setup, including the binds the mode expects.
+- `japro_tribes_server`: for whoever runs the server, including force-power restrictions.
 
 Run the client one with `exec japro_tribes`. Read it first: it rebinds number keys.
 

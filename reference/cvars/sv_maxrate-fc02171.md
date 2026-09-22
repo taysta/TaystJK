@@ -20,10 +20,10 @@ Max bandwidth rate allowed on server. Use 0 for unlimited.
 | Module | `engine-server` |
 | Also registered in | `game`, `engine-server` |
 | Renderer | All / not renderer-specific |
-| Network scope | `server-authoritative` — Owned or enforced by the server. |
+| Network scope | `server-authoritative`: Owned or enforced by the server. |
 | Derivation | `documented` |
 | Confidence | `high` |
-| Added | 2013-04-08 in [`14cea1563`](https://github.com/taysta/TaystJK/commit/14cea1563762076974bee277afadbd5bf234c494) — [how to compare this against your build](/TaystJK/features/whats-new/#how-to-tell-what-your-build-has) |
+| Added | 2013-04-08 in [`14cea1563`](https://github.com/taysta/TaystJK/commit/14cea1563762076974bee277afadbd5bf234c494) ([how to compare this against your build](/TaystJK/features/whats-new/#how-to-tell-what-your-build-has)) |
 | In-game xdocs | No |
 | In-game menu | No |
 | Default | `90000` |
@@ -38,9 +38,9 @@ No discrete value list is enforced or documented in the inspected source.
 
 ## Flags
 
-- `CVAR_ARCHIVE` — saved to the user configuration
-- `CVAR_ARCHIVE_ND` — saved to configuration without marking the cvar as user-created
-- `CVAR_SERVERINFO` — published in serverinfo
+- `CVAR_ARCHIVE`: saved to the user configuration
+- `CVAR_ARCHIVE_ND`: saved to configuration without marking the cvar as user-created
+- `CVAR_SERVERINFO`: published in serverinfo
 
 ## Registration-specific defaults
 

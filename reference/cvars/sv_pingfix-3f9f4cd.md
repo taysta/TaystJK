@@ -22,10 +22,10 @@ Improved scoreboard client ping calculation
 | Module | `engine-server` |
 | Also registered in | `engine-server` |
 | Renderer | All / not renderer-specific |
-| Network scope | `server-authoritative` — Owned or enforced by the server. |
+| Network scope | `server-authoritative`: Owned or enforced by the server. |
 | Derivation | `documented` |
 | Confidence | `medium` |
-| Added | 2018-10-15 in [`dc3c8171d`](https://github.com/taysta/TaystJK/commit/dc3c8171d100cca45ac75fc830cd749c851ad1ae) <span class="status-chip">needs review</span> — [how to compare this against your build](/TaystJK/features/whats-new/#how-to-tell-what-your-build-has) |
+| Added | 2018-10-15 in [`dc3c8171d`](https://github.com/taysta/TaystJK/commit/dc3c8171d100cca45ac75fc830cd749c851ad1ae) <span class="status-chip">needs review</span> ([how to compare this against your build](/TaystJK/features/whats-new/#how-to-tell-what-your-build-has)) |
 | In-game xdocs | No |
 | In-game menu | No |
 | Default | `1` |
@@ -42,7 +42,7 @@ Improved scoreboard client ping calculation
 
 ## Flags
 
-- `CVAR_ARCHIVE_ND` — saved to configuration without marking the cvar as user-created
+- `CVAR_ARCHIVE_ND`: saved to configuration without marking the cvar as user-created
 
 ## Provenance
 

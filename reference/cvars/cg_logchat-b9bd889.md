@@ -24,10 +24,10 @@ Controls `cg_logChat` in the cgame module. Consult the cited behavior reads befo
 | Module | `cgame` |
 | Also registered in | `cgame` |
 | Renderer | All / not renderer-specific |
-| Network scope | `client-only` — Local to the client/UI/renderer. |
+| Network scope | `client-only`: Local to the client/UI/renderer. |
 | Derivation | `code-trace` |
 | Confidence | `medium` |
-| Added | 2015-11-18 in [`f1b9b8958`](https://github.com/taysta/TaystJK/commit/f1b9b895897d19abcc7cfba7f63015a627e80df2) <span class="status-chip">needs review</span> — [how to compare this against your build](/TaystJK/features/whats-new/#how-to-tell-what-your-build-has) |
+| Added | 2015-11-18 in [`f1b9b8958`](https://github.com/taysta/TaystJK/commit/f1b9b895897d19abcc7cfba7f63015a627e80df2) <span class="status-chip">needs review</span> ([how to compare this against your build](/TaystJK/features/whats-new/#how-to-tell-what-your-build-has)) |
 | In-game xdocs | No |
 | In-game menu | No |
 | Default | `1` |
@@ -39,7 +39,7 @@ Controls `cg_logChat` in the cgame module. Consult the cited behavior reads befo
 
 ## Bits
 
-Use [`chatlog`](/TaystJK/reference/commands/chatlog-84c4a99/) to toggle one option at a time; see the command page for syntax. The value column is that bit on its own — [the labels come from the source table](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_consolecmds.c#L1914).
+Use [`chatlog`](/TaystJK/reference/commands/chatlog-84c4a99/) to toggle one option at a time; see the command page for syntax. The value column is that bit on its own. [The labels come from the source table](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_consolecmds.c#L1914).
 
 | Bit | Value | Meaning | Read by |
 |:--|:--|:--|:--|
@@ -50,7 +50,7 @@ Use [`chatlog`](/TaystJK/reference/commands/chatlog-84c4a99/) to toggle one opti
 | 4 | `16` | Log Center Prints | — |
 ## Flags
 
-- `CVAR_ARCHIVE` — saved to the user configuration
+- `CVAR_ARCHIVE`: saved to the user configuration
 
 ## Provenance
 

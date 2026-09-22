@@ -11,7 +11,7 @@ toc: true
 
 # Mod compatibility
 
-<p class="page-lede">Several client features are switched off unless the server's game module is known to support them. Nothing tells you this has happened — the feature simply does nothing — so this page explains what the client decides and why.</p>
+<p class="page-lede">Several client features are switched off unless the server's game module is known to support them. Nothing tells you this has happened; the feature simply does nothing. This page explains what the client decides and why.</p>
 </div>
 
 ## What the client decides
@@ -49,8 +49,8 @@ Lugormod. This is why the practical answer to "does my client do X here" is usua
 
 ## What is actually gated
 
-Not everything. The client's own display settings — the HUD tools, cosmetics you see
-locally, console behaviour — do not care what the server runs. What is gated is behaviour
+Not everything. The client's own display settings, including the HUD tools, cosmetics you see
+locally and console behaviour, do not care what the server runs. What is gated is behaviour
 the **server has to agree with**, because the client is predicting movement or drawing
 something the server also has an opinion about.
 
@@ -73,8 +73,8 @@ gets wrong.
 If you play on **base_enhanced** or **base_entranced** servers, the recommended client is
 not this one. Use [NewJK/NewMod](https://jkanewmod.github.io/) instead.
 
-Those server mods and NewMod share an author, and NewMod is built for them specifically —
-it supports their features properly rather than approximately. TaystJK recognises
+Those server mods and NewMod share an author, and NewMod is built for them specifically.
+It supports their features properly rather than approximately. TaystJK recognises
 base_enhanced well enough not to break, but it is not trying to replace that pairing and
 should not be treated as a substitute for it.
 
@@ -104,5 +104,5 @@ sabers or flipkick do nothing, this key is the answer.
 server sets it. That is the quickest way to check whether a feature is missing because of
 your client or because of the server.
 
-A feature that behaves differently between two servers is not a client bug — see
+A feature that behaves differently between two servers is not a client bug. See
 [where to report](/TaystJK/where-to-report/).

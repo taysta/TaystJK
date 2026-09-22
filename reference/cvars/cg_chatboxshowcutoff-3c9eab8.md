@@ -23,10 +23,10 @@ Controls `cg_chatBoxShowCutoff` in the cgame module. Consult the cited behavior 
 | Module | `cgame` |
 | Also registered in | `cgame` |
 | Renderer | All / not renderer-specific |
-| Network scope | `client-only` — Local to the client/UI/renderer. |
+| Network scope | `client-only`: Local to the client/UI/renderer. |
 | Derivation | `code-trace` |
 | Confidence | `medium` |
-| Added | 2020-08-10 in [`3ea9b3c38`](https://github.com/taysta/TaystJK/commit/3ea9b3c38f7bea43895619f40d5c2695f73c7704) <span class="status-chip">needs review</span> — [how to compare this against your build](/TaystJK/features/whats-new/#how-to-tell-what-your-build-has) |
+| Added | 2020-08-10 in [`3ea9b3c38`](https://github.com/taysta/TaystJK/commit/3ea9b3c38f7bea43895619f40d5c2695f73c7704) <span class="status-chip">needs review</span> ([how to compare this against your build](/TaystJK/features/whats-new/#how-to-tell-what-your-build-has)) |
 | In-game xdocs | No |
 | In-game menu | No |
 | Default | `0` |
@@ -44,7 +44,7 @@ Controls `cg_chatBoxShowCutoff` in the cgame module. Consult the cited behavior 
 
 ## Flags
 
-- `CVAR_ARCHIVE_ND` — saved to configuration without marking the cvar as user-created
+- `CVAR_ARCHIVE_ND`: saved to configuration without marking the cvar as user-created
 
 ## Provenance
 

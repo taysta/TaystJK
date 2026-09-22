@@ -22,10 +22,10 @@ Controls `cg_showpos` in the cgame module. Consult the cited behavior reads befo
 | Module | `cgame` |
 | Also registered in | `cgame` |
 | Renderer | All / not renderer-specific |
-| Network scope | `client-only` — Local to the client/UI/renderer. |
+| Network scope | `client-only`: Local to the client/UI/renderer. |
 | Derivation | `code-trace` |
 | Confidence | `medium` |
-| Added | 2018-11-04 in [`0b6764d01`](https://github.com/taysta/TaystJK/commit/0b6764d0171edd446ef75464ad2edeaaead40e92) <span class="status-chip">needs review</span> — [how to compare this against your build](/TaystJK/features/whats-new/#how-to-tell-what-your-build-has) |
+| Added | 2018-11-04 in [`0b6764d01`](https://github.com/taysta/TaystJK/commit/0b6764d0171edd446ef75464ad2edeaaead40e92) <span class="status-chip">needs review</span> ([how to compare this against your build](/TaystJK/features/whats-new/#how-to-tell-what-your-build-has)) |
 | In-game xdocs | No |
 | In-game menu | No |
 | Default | `0` |
@@ -43,7 +43,7 @@ Controls `cg_showpos` in the cgame module. Consult the cited behavior reads befo
 
 ## Flags
 
-- `CVAR_NONE` — fork/source-defined flag; see registration evidence
+- `CVAR_NONE`: fork/source-defined flag; see registration evidence
 
 ## Provenance
 

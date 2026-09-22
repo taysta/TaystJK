@@ -88,10 +88,10 @@ is recorded as `menu_mirror` with the line for each direction, so the mirror's
 page names and links the setting it stands in for. Comments are masked first: a
 commented-out pair is not a pair. Every mirror found so far is already
 engine-managed through its flags, so this basis adds the reason rather than new
-entries. `ui_r_picmip_custom` shows why the pairing comes from the source —
+entries. `ui_r_picmip_custom` shows why the pairing comes from the source:
 its counterpart is `r_picmip`, which no name-prefix rule would find.
 
-Both directions are wrong sometimes — a hand-written mirror the code never flags, a
+Both directions are wrong sometimes: a hand-written mirror the code never flags, or a
 menu setting that happens to carry `CVAR_INTERNAL`. Settle either with an
 `engine_managed` boolean in that entry's `tools/cvar_audit/overrides.json` record,
 next to its `summary` and `description`, and regenerate. An override that asserts
@@ -126,8 +126,8 @@ Four details the scan has to get right:
   instead lets a file's last table absorb every function after it.
 - Bit order is the array position. The trailing comments in these tables number
   from 0 in some and from 1 in others; the code shifts by the array index.
-- One table can drive several cvars — `toggleAdmin` writes `g_juniorAdminLevel`
-  or `g_fullAdminLevel` depending on its first argument — and one handler can
+- One table can drive several cvars. `toggleAdmin` writes `g_juniorAdminLevel`
+  or `g_fullAdminLevel` depending on its first argument, and one handler can
   carry several registered names, as `plugin` and `pluginDisable` do.
 - A command may reach the table through a dispatcher: `cosmetics` registers
   `CG_Cosmetics_f`, which forwards to the jaPRO variant, so an unregistered

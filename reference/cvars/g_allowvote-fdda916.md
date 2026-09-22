@@ -24,10 +24,10 @@ Controls `g_allowVote` in the game module. Consult the cited behavior reads befo
 | Module | `game` |
 | Also registered in | `game` |
 | Renderer | All / not renderer-specific |
-| Network scope | `server-authoritative` — Owned or enforced by the server. |
+| Network scope | `server-authoritative`: Owned or enforced by the server. |
 | Derivation | `code-trace` |
 | Confidence | `high` |
-| Added | 2013-04-08 in [`14cea1563`](https://github.com/taysta/TaystJK/commit/14cea1563762076974bee277afadbd5bf234c494) — [how to compare this against your build](/TaystJK/features/whats-new/#how-to-tell-what-your-build-has) |
+| Added | 2013-04-08 in [`14cea1563`](https://github.com/taysta/TaystJK/commit/14cea1563762076974bee277afadbd5bf234c494) ([how to compare this against your build](/TaystJK/features/whats-new/#how-to-tell-what-your-build-has)) |
 | In-game xdocs | No |
 | In-game menu | No |
 | Default | `-1` |
@@ -39,7 +39,7 @@ Controls `g_allowVote` in the game module. Consult the cited behavior reads befo
 
 ## Bits
 
-Use [`toggleVote`](/TaystJK/reference/commands/togglevote-397b6ff/) to toggle one option at a time; see the command page for syntax. The value column is that bit on its own — [the labels come from the source table](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_svcmds.c#L1410).
+Use [`toggleVote`](/TaystJK/reference/commands/togglevote-397b6ff/) to toggle one option at a time; see the command page for syntax. The value column is that bit on its own. [The labels come from the source table](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_svcmds.c#L1410).
 
 | Bit | Value | Meaning | Read by |
 |:--|:--|:--|:--|
@@ -61,7 +61,7 @@ Use [`toggleVote`](/TaystJK/reference/commands/togglevote-397b6ff/) to toggle on
 | 15 | `32768` | score_restart | — |
 ## Flags
 
-- `CVAR_ARCHIVE` — saved to the user configuration
+- `CVAR_ARCHIVE`: saved to the user configuration
 
 ## Provenance
 

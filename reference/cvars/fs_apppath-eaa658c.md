@@ -22,10 +22,10 @@ search_exclude: false
 | Module | `engine-shared` |
 | Also registered in | `engine-shared` |
 | Renderer | All / not renderer-specific |
-| Network scope | `client-only` — Local to the client/UI/renderer. |
+| Network scope | `client-only`: Local to the client/UI/renderer. |
 | Derivation | `documented` |
 | Confidence | `medium` |
-| Added | 2013-11-11 in [`2229f7cb1`](https://github.com/taysta/TaystJK/commit/2229f7cb1aba359eed397f76f466fe4e2dcabae4) <span class="status-chip">needs review</span> — [how to compare this against your build](/TaystJK/features/whats-new/#how-to-tell-what-your-build-has) |
+| Added | 2013-11-11 in [`2229f7cb1`](https://github.com/taysta/TaystJK/commit/2229f7cb1aba359eed397f76f466fe4e2dcabae4) <span class="status-chip">needs review</span> ([how to compare this against your build](/TaystJK/features/whats-new/#how-to-tell-what-your-build-has)) |
 | In-game xdocs | No |
 | In-game menu | No |
 | Default | `Sys_DefaultAppPath()` |
@@ -40,8 +40,8 @@ No discrete value list is enforced or documented in the inspected source.
 
 ## Flags
 
-- `CVAR_INIT` — initialization/command-line setting
-- `CVAR_PROTECTED` — protected from unsafe remote changes
+- `CVAR_INIT`: initialization/command-line setting
+- `CVAR_PROTECTED`: protected from unsafe remote changes
 
 ## Provenance
 
