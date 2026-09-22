@@ -11,7 +11,7 @@ description: "What TaystJK adds to Jedi Academy beyond the console reference: be
 
 # What TaystJK adds
 
-<p class="page-lede">Engine and client behaviour that a list of cvars cannot explain on its own — why a setting exists, what it changes, and what you have to provide to use it.</p>
+<p class="page-lede">Engine and client behaviour that a list of cvars cannot explain on its own: why a setting exists, what it changes, and what you have to provide to use it.</p>
 </div>
 
 This section covers behaviour, formats, and features. The [console reference](/TaystJK/reference/)

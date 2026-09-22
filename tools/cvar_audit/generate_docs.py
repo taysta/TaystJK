@@ -78,7 +78,7 @@ ENGINE_MANAGED_HELP = {
     "CVAR_ROM": "it is read-only after registration (<code>CVAR_ROM</code>)",
     "CVAR_INTERNAL": "it is internal UI/engine state, hidden from every cvar listing (<code>CVAR_INTERNAL</code>)",
     "implicit-write": (
-        "no registration exists — every cited site only writes it with <code>Cvar_Set</code>, "
+        "no registration exists; every cited site only writes it with <code>Cvar_Set</code>, "
         "so a value you set is replaced the next time that code runs"
     ),
     "editorial": "it is internal state rather than a setting; see the description above",
@@ -516,7 +516,7 @@ def added_on_row(entry: dict[str, Any]) -> str | None:
     )
     return (
         f'| Added | {esc(value["date"])} in {commit}{caveat} '
-        f'— [how to compare this against your build]({ADDED_ON_ANCHOR}) |'
+        f'([how to compare this against your build]({ADDED_ON_ANCHOR})) |'
     )
 
 
@@ -532,7 +532,7 @@ def feature_row(feature: dict[str, Any]) -> str:
         name = f'{title} <span class="meta-chip">page not written yet</span>'
     else:
         name = f"[{title}]({feature['page']})"
-    summary = f" — {esc(feature['summary'])}" if feature.get("summary") else ""
+    summary = f": {esc(feature['summary'])}" if feature.get("summary") else ""
     return (
         f"- {name} {badge(feature['origin'])}"
         f"{added_on_cell(feature)} <span class=\"meta-chip\">feature</span>{summary}"
@@ -554,7 +554,7 @@ def whats_new_rows(
             rank if isinstance(rank, int) else float("inf"),
             entry["name"].casefold(),
             f"- [{code(entry['name'])}]({detail_url(entry)}) "
-            f"{badge(entry['origin']['source'])}{added_on_cell(entry)} — {esc(summary)}",
+            f"{badge(entry['origin']['source'])}{added_on_cell(entry)}: {esc(summary)}",
         ))
     for feature in features:
         grouped.setdefault(feature.get("group") or "Other", []).append(
@@ -687,7 +687,7 @@ def default_cell(entry: dict[str, Any]) -> str:
     kind = entry.get("default_macro_kind")
     if kind:
         # Not a literal: the identifier is all the source commits to.
-        return f"{code(value)} — {esc(MACRO_KIND_LABELS.get(kind, kind))}"
+        return f"{code(value)} ({esc(MACRO_KIND_LABELS.get(kind, kind))})"
     if macro and macro != value:
         return f"{code(value)} <span class=\"meta-chip\">from {esc(macro)}</span>"
     return code(value)
@@ -941,7 +941,7 @@ def mirror_row(entry: dict[str, Any], cvar_names: dict[str, str]) -> str:
         for key, label in (("apply", "written through"), ("read", "read back"))
         if mirror.get(key)
     ]
-    return f"{cell} — {', '.join(links)}" if links else cell
+    return f"{cell}; {', '.join(links)}" if links else cell
 
 
 def command_link(name: str, kind: str = "command") -> str:
@@ -988,8 +988,8 @@ def bit_table(entry: dict[str, Any]) -> list[str]:
     reads = {str(option.get("value")): option for option in entry.get("values", [])}
     lines = [
         "## Bits", "",
-        f"{lead} The value column is that bit on its own — "
-        f"{evidence_link(bits['evidence'], 'the labels come from the source table')}.", "",
+        f"{lead} The value column is that bit on its own. "
+        f"{evidence_link(bits['evidence'], 'The labels come from the source table')}.", "",
         "| Bit | Value | Meaning | Read by |", "|:--|:--|:--|:--|",
     ]
     for option in bits["options"]:
@@ -1033,7 +1033,7 @@ def detail_page(entry: dict[str, Any], refs: dict[str, str], cvar_names: dict[st
         f"| Module | {code(entry['module'])} |",
         f"| Also registered in | {', '.join(code(value) for value in entry.get('modules', []))} |",
         f"| Renderer | {', '.join(code(value) for value in entry.get('renderer', [])) or 'All / not renderer-specific'} |",
-        f"| Network scope | {code(entry['network'])} — {NETWORK_HELP.get(entry['network'], '')} |",
+        f"| Network scope | {code(entry['network'])}: {NETWORK_HELP.get(entry['network'], '')} |",
         f"| Derivation | {code(entry['derivation'])} |",
         f"| Confidence | {code(entry['confidence'])} |",
         *( [added_on_row(entry)] if added_on_row(entry) else [] ),
@@ -1041,7 +1041,7 @@ def detail_page(entry: dict[str, Any], refs: dict[str, str], cvar_names: dict[st
     xdocs = entry.get("xdocs")
     if xdocs:
         xdocs_item = dict(xdocs, url=source_url(xdocs["path"], xdocs["line"], entry["source_commit"]))
-        xdocs_value = "Yes — " + evidence_link(xdocs_item)
+        xdocs_value = "Yes: " + evidence_link(xdocs_item)
     else:
         xdocs_value = "No"
     menus = entry.get("menu_entries", [])
@@ -1053,7 +1053,7 @@ def detail_page(entry: dict[str, Any], refs: dict[str, str], cvar_names: dict[st
             )
             for item in menus[:3]
         ]
-        menu_value = "Yes — " + ", ".join(menu_links)
+        menu_value = "Yes: " + ", ".join(menu_links)
     else:
         menu_value = "No"
     lines.extend([
@@ -1066,7 +1066,7 @@ def detail_page(entry: dict[str, Any], refs: dict[str, str], cvar_names: dict[st
             f"| Value type | {code(entry['value_type'])} |",
             f"| Restart | {'Yes; the value is latched.' if entry['requires_restart'] else 'No latch flag is registered.'} |",
             f"| Cheat protected | {'Yes' if entry['cheat_protected'] else 'No'} |",
-            f"| Player-settable | {'No — the game writes this value.' if entry.get('engine_managed') else 'Yes'} |",
+            f"| Player-settable | {'No; the game writes this value.' if entry.get('engine_managed') else 'Yes'} |",
             *([f"| Staging copy of | {mirror_row(entry, cvar_names or {})} |"] if entry.get("menu_mirror") else []),
             *([f"| Configure with | {joined([command_link(name) for name in entry['bits']['commands']])} |"]
               if (entry.get("bits") or {}).get("commands") else []),
@@ -1079,13 +1079,13 @@ def detail_page(entry: dict[str, Any], refs: dict[str, str], cvar_names: dict[st
                 lines.append(
                     f"- {code(item['min'])} through {code(item['max'])}"
                     f" ({'integer' if item.get('integral') else 'numeric'}; {item.get('kind', 'range check')}"
-                    f"{'' if item.get('confidence', 'high') == 'high' else ', not enforced on every path'}) — "
-                    f"{evidence_link(dict(item['evidence'], url=source_url(item['evidence']['path'], item['evidence']['line'], entry['source_commit'])))}"
+                    f"{'' if item.get('confidence', 'high') == 'high' else ', not enforced on every path'}). "
+                    f"Evidence: {evidence_link(dict(item['evidence'], url=source_url(item['evidence']['path'], item['evidence']['line'], entry['source_commit'])))}"
                 )
             lines.append("")
         lines.extend(["## Flags", ""])
         if entry.get("flags"):
-            lines.extend(f"- {code(flag)} — {FLAG_HELP.get(flag, 'fork/source-defined flag; see registration evidence')}" for flag in entry["flags"])
+            lines.extend(f"- {code(flag)}: {FLAG_HELP.get(flag, 'fork/source-defined flag; see registration evidence')}" for flag in entry["flags"])
         else:
             lines.append("No cvar flags are registered at the cited site.")
         defaults = {(item.get("value"), item.get("module"), item.get("renderer"), item.get("condition")) for item in entry.get("defaults", [])}
@@ -1709,7 +1709,7 @@ An entry marked **needs review** is real and has registration evidence, but one 
 
 <h1>Browse by origin</h1>
 
-<p class="page-lede">Origin means the earliest source supported by the inspected code, Git history, pull requests, and upstream snapshots—not simply every project that now contains the name.</p>
+<p class="page-lede">Origin means the earliest source supported by the inspected code, Git history, pull requests, and upstream snapshots; it does not simply mean every project that now contains the name.</p>
 </div>
 
 <div class="directory-grid">

@@ -52,8 +52,8 @@ which is what the *needs review* markers and the source links are for.
 
 ## Known limits
 
-Pages describing behaviour that cannot be read from source — how something feels to play,
-what a server operator sees in practice — rest on weaker evidence than the rest, and
+Pages describing behaviour that cannot be read from source, such as how something feels to
+play or what a server operator sees in practice, rest on weaker evidence than the rest, and
 several were corrected after the fact when the original claim turned out to be an
 assumption. If a page tells you something you can test, and your test disagrees, trust your
 test.

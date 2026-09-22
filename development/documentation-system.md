@@ -20,13 +20,13 @@ The site lives on the `gh-pages` branch; the engine lives on `master`. The pipel
 
 ## Generated or hand-written
 
-**Never edit these by hand** — they are rewritten wholesale:
+**Never edit these by hand.** They are rewritten wholesale:
 
 - `_data/cvars.json`, `_data/commands.json`, `_data/reference-meta.json`
 - `reference/cvars/*.md`, `reference/commands/*.md`
 - `reference/{all,audit,categories,features,modules,origins,removed}.md`
 - `features/whats-new.md`, `features/emoji.md`, `assets/data/catalog.json`
-- `index.md` — the homepage is generated too, which catches people out
+- `index.md`: the homepage is generated too, which catches people out
 
 Everything else is hand-written: the guides, the Features pages, this page.
 `check_generated.py` fails if a generated file has been edited, so a mistake here is caught
@@ -60,9 +60,9 @@ python3 tools/cvar_audit/runtime_check.py --cvars <cvarlist.txt> --commands <cmd
 python3 tools/cvar_audit/generate_docs.py
 ```
 
-`provenance.py` expects remote-tracking refs for every upstream — `origin/master`,
+`provenance.py` expects remote-tracking refs for every upstream: `origin/master`,
 `openjk/master`, `eternaljk/master`, `japro/main`, `jk2mv/master`, `newjk/master`,
-`somaz/rend2-unified-wip`, `Sunny/master` — and PR metadata as JSON. `runtime_check.py`
+`somaz/rend2-unified-wip`, and `Sunny/master`, plus PR metadata as JSON. `runtime_check.py`
 needs console output captured from a client you actually launched.
 
 **This is why regeneration is not automated.** No CI runner has eight upstream remotes, your
@@ -81,7 +81,7 @@ tools/cvar_audit/run_all.sh
 ```
 
 The site also builds locally, which is the only way to check anything that depends on
-rendering — Liquid templates, the search index, or how Markdown inside an HTML block is
+rendering, including Liquid templates, the search index, or how Markdown inside an HTML block is
 parsed:
 
 ```sh
@@ -96,8 +96,8 @@ render rather than being byte-identical to production.
 
 Create a Markdown file, give it front matter per `CONVENTIONS.md`, and add it to the nav.
 
-The nav is **hardcoded** in `_layouts/reference.html` — there is no theme and nothing reads
-`nav_order` — so a new top-level page means editing that file. Add hand-written pages to the
+The nav is **hardcoded** in `_layouts/reference.html`; there is no theme and nothing reads
+`nav_order`. A new top-level page therefore means editing that file. Add hand-written pages to the
 list in `check_generated.py` too, or their internal links are never validated.
 
 Everything else is automatic: the page is picked up by the site search through

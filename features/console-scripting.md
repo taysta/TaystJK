@@ -19,7 +19,7 @@ origin: newjk
 Everything here came from NewJK and NewMod, and
 [their documentation](https://jkanewmod.github.io/documentation_commands.html) is the
 original account of `ifCvar` and `strSub`. This page describes what the TaystJK client
-actually does, which is not identical — see [what does not work](#what-does-not-work).
+actually does, which is not identical. See [what does not work](#what-does-not-work).
 
 The console reference has the catalogue entries:
 [`ifCvar`](/TaystJK/reference/commands/ifcvar-a68f57c/),
@@ -130,7 +130,7 @@ the NewMod documentation lists only `$beginswith`.
 
 The text follows the modifier with no space: `$containsbeer`, `$>=50`, `$else`. Put a
 `$` in front of the comparison value to read it from another cvar instead of using it
-literally — `$>=$cg_someOtherCvar`. That indirection works for the six numeric operators
+literally, for example `$>=$cg_someOtherCvar`. That indirection works for the six numeric operators
 and for plain equality; it does **not** work for `$contains`, `$beginswith`, `$startswith`
 or `$endswith`, for the reasons in [what does not work](#what-does-not-work).
 
@@ -181,8 +181,8 @@ in the command buffer rather than run as ordinary commands
   does nothing. `delay 1000;say vader` works.
 - **Everything after that `;` is deferred as one unit**, to the end of the line
   ([`cmd.cpp:324`](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/qcommon/cmd.cpp#L324)).
-  So `a;delay 500;b;delay 500;c` runs `a`, waits, then runs `b;delay 500;c` — the delays
-  chain rather than both counting from now.
+  So `a;delay 500;b;delay 500;c` runs `a`, waits, then runs `b;delay 500;c`. The delays
+  chain instead of both counting from now.
 
 Omitting the number entirely is the same as `1`, but a space must remain between the
 command and the separator: `delay ;say vader` works, while `delay;say vader` does not
@@ -195,8 +195,8 @@ command and the separator: `delay ;say vader` works, while `delay;say vader` doe
 ## What does not work
 
 Verified against the source this reference is generated from. These are defects in the
-client, not deliberate limits, so they may be fixed in a build newer than this page —
-[compare the dates](/TaystJK/features/whats-new/#how-to-tell-what-your-build-has).
+client, not deliberate limits, so they may be fixed in a build newer than this page.
+[Compare the dates](/TaystJK/features/whats-new/#how-to-tell-what-your-build-has).
 
 **Cvar indirection is broken for the three text operators.** `$contains$myCvar`,
 `$beginswith$myCvar`, `$startswith$myCvar` and `$endswith$myCvar` all read the wrong

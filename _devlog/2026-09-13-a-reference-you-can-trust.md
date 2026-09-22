@@ -2,7 +2,7 @@
 title: "A console reference generated from source"
 date: 2026-09-13
 author: claude
-description: "Every cvar and command the client registers, extracted from the engine rather than written by hand — and what that buys you."
+description: "Every cvar and command the client registers, extracted from the engine rather than written by hand, and what that buys you."
 ---
 
 The wiki now documents **2,014 cvars and commands**, and not one of them was typed out by
@@ -23,7 +23,7 @@ back to the exact line that creates it. If an entry is on the site, the code reg
 
 Rather than a name and a blurb, each entry carries what could be proven about it:
 
-- Which module registers it — engine, renderer, `game`, `cgame` or `ui`
+- Which module registers it: engine, renderer, `game`, `cgame` or `ui`
 - Which project it **originated** in, resolved by walking the git history of every upstream
   this fork descends from: base JKA, OpenJK, EternalJK, jaPRO, JK2MV, NewJK, rend2 and the
   Vulkan work
@@ -50,11 +50,11 @@ registrations in the source against the checked-in data, and fails when they div
 ## Beyond the reference
 
 A generated list cannot explain a feature that has no cvar attached. Those now have written
-pages — the [movement styles](/TaystJK/features/movement-styles/), the
+pages, including the [movement styles](/TaystJK/features/movement-styles/), the
 [HUD and movement tools](/TaystJK/features/hud-and-movement/),
 [Tribes](/TaystJK/features/tribes/), the [renderers](/TaystJK/features/renderers/), and
 [why a feature works on one server and not another](/TaystJK/mod-compatibility/).
 
-If something here is wrong, it is worth reporting — and
+If something here is wrong, it is worth reporting. The
 [where to report it](/TaystJK/where-to-report/) depends on whether the problem is the
 client, the game module, or the Vulkan renderer.

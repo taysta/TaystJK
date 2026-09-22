@@ -17,7 +17,7 @@ toc: true
 
 ## The problem it solves
 
-Several client features need the server to behave compatibly — they change movement
+Several client features need the server to behave compatibly because they change movement
 prediction, or draw something the server also decides. Rather than run them everywhere and
 desync, the client checks which mod the server is running and enables them only where it
 knows they work. The ordering that check uses, and what it costs you, is described on
@@ -54,7 +54,7 @@ Defined in
 | 5 | 32 | `TAYSTJK_INFO_FIXROLL_2` | The above, plus chaining rolls. |
 | 6 | 64 | `TAYSTJK_INFO_FIXROLL_3` | JK2-style rolling. |
 
-The three roll bits are alternatives rather than a progression to be combined — the client
+The three roll bits are alternatives rather than a progression to be combined. The client
 tests them from 3 downwards and takes the first that matches
 ([`bg_pmove.c`](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/bg_pmove.c#L314)).
 
@@ -62,7 +62,7 @@ tests them from 3 downwards and takes the first that matches
 
 Each feature listed in the bit table accepts its flag in the client check. The grapple
 check is representative
-([`bg_pmove.c`](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/bg_pmove.c#L15402)) — JA+, or jaPRO with its own grapple
+([`bg_pmove.c`](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/bg_pmove.c#L15402)): JA+, or jaPRO with its own grapple
 option set, or your flag.
 
 Flags can also change behaviour on recognised JA+ and jaPRO servers. For example, the
@@ -76,5 +76,5 @@ Keep the advertised flags consistent with the server's actual movement rules and
 
 Connect and run `serverinfo`. The key appears with the value you set, and the feature should
 behave as it does on a jaPRO server. If the key is absent from that output, the client never
-received it and nothing downstream of it will work — fix that before looking at the feature
+received it and nothing downstream of it will work. Fix that before looking at the feature
 itself.

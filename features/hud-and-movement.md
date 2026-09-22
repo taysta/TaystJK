@@ -38,13 +38,13 @@ strafehelper 2      toggle option 2
 ```
 
 **Some options are radio groups.** Turning one on turns its siblings off, because they are
-alternatives rather than additions — the strafe helper's five styles behave this way
+alternatives rather than additions. The strafe helper's five styles behave this way
 ([`cg_consolecmds.c`](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_consolecmds.c#L1165)),
 as do the speedometer's unit and array-colour pairs
 ([`cg_consolecmds.c`](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_consolecmds.c#L1560)).
 
 Setting the cvar directly replaces every option at once, which is why `exec`ing a preset
-does not merge with what you had. Presets ship with the client — see
+does not merge with what you had. Presets ship with the client; see
 [shipped configs](/TaystJK/features/shipped-configs/).
 
 ## The strafe helper
@@ -57,13 +57,13 @@ Run `strafehelper` for the live list
 ([`cg_consolecmds.c`](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_consolecmds.c#L1108)).
 The options fall into three groups.
 
-**Pick one style** — `Original`, `Updated`, `Cgaz`, `Warsow` or `Weze`. These are the
+**Pick one style:** `Original`, `Updated`, `Cgaz`, `Warsow` or `Weze`. These are the
 radio group; the rest stack on top.
 
-**Choose which directions to draw** — `W`, `WA`, `WD`, `A`, `D`, `S`, `SA`, `SD`, plus
+**Choose which directions to draw:** `W`, `WA`, `WD`, `A`, `D`, `S`, `SA`, `SD`, plus
 `Rear` and `Center`. Most players draw only the directions they actually strafe in.
 
-**Add extras** — `Sound`, `Accel bar`, `Accel Zones`, `Line Crosshair`, `Small Lines`
+**Add extras:** `Sound`, `Accel bar`, `Accel Zones`, `Line Crosshair`, `Small Lines`
 and `Max`.
 
 Tuning lives in separate cvars rather than bits: `cg_strafeHelperPrecision`,
@@ -114,14 +114,14 @@ amount matters
 
 ## Movement keys
 
-Shows which movement inputs you are pressing — useful for recording, for spectating, and
+Shows which movement inputs you are pressing. This is useful for recording, for spectating, and
 for seeing your own mistakes
 ([`CG_DrawMovementKeys`](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/hud_strafehelper.c#L2268)).
 
 `cg_movementKeys` selects one of four layouts. `1` and `2` are the original display near the
 bottom of the screen, and `2` adds your attack and alt-attack inputs to it. `4` is the newer
 layout in the same place. `3` is the same newer layout drawn small and **fixed at the
-crosshair** — it is the one exception that ignores `cg_movementKeysX` and
+crosshair**. It is the one exception that ignores `cg_movementKeysX` and
 `cg_movementKeysY`, so if your offsets appear to do nothing, that is why.
 
 `cg_movementKeysWalk` adds the walk key, and `cg_movementKeysSize` scales whichever layout
@@ -155,15 +155,15 @@ The odd value of each pair draws every teammate the same; the even one marks you
 
 `cg_drawTeamOverlayX` and `cg_drawTeamOverlayY` place it, and `cg_drawTeamOverlayWeapons`
 adds each player's weapon. `cg_drawTeamOverlayScale` and `cg_drawTeamOverlayMaxHP` apply to
-styles `5` and `6` only — the second sets what counts as a full health bar, since combined
+styles `5` and `6` only. The second sets what counts as a full health bar, since combined
 health and shields can exceed 100. `cg_drawTeamOverlayForce` adds a force-point column and
 needs a jaPRO server to have anything to show.
 
 ## The centre timer and team score
 
 The stock HUD puts the timer and scores in the top-right corner. TaystJK adds a centred
-arrangement across the top of the screen instead — the maintainer's changelog calls the
-timer Counter-Strike style — built from three cvars that are designed to be set together
+arrangement across the top of the screen instead. The maintainer's changelog calls it a
+Counter-Strike-style timer built from three cvars that are designed to be set together
 ([`CG_DrawTaystHUD`](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_draw.c#L3825)).
 
 ```text
@@ -185,7 +185,7 @@ and CTY only
 ([`CG_DrawTeamHUD`](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_draw.c#L3864)).
 
 Two timer options only make sense here. `cg_drawTimerMsec` adds milliseconds, and
-`cg_drawTimerCountdown` counts **down** to the time limit rather than up — which needs a
+`cg_drawTimerCountdown` counts **down** to the time limit rather than up, which needs a
 time limit to exist and applies to style `7`
 ([`cg_draw.c`](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_draw.c#L5924)).
 A negative `cg_drawTimer` shows absolute client time rather than time since the map loaded.
@@ -201,8 +201,8 @@ exec hud_tayst
 
 `cg_hudFiles` swaps the underlying HUD layout rather than individual elements
 ([`cg_main.c`](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_main.c#L2611)):
-`3` loads the Elegance HUD and `4` loads the Tayst HUD — the Quake-style one — both shipped
-in the asset pk3. The default leaves the stock Jedi Academy HUD in place. It takes effect immediately — the cvar
+`3` loads the Elegance HUD and `4` loads the Tayst HUD, the Quake-style option. Both ship
+in the asset pk3. The default leaves the stock Jedi Academy HUD in place. It takes effect immediately; the cvar
 reloads the HUD when it changes
 ([`cg_cvar.c`](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_cvar.c#L59)).
 

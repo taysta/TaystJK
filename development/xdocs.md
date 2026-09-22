@@ -22,16 +22,16 @@ falls back to the string in the cvar's own registration
 ([`Cvar_DescriptionString`](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/qcommon/cvar.cpp#L182)):
 
 1. **xdocs**, compiled into the UI module from
-   [`ui_xdocs.h`](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/ui/ui_xdocs.h) — richer, and able to enumerate values
-2. **The registration string**, the last argument to `Cvar_Get` — one line, no structure
+   [`ui_xdocs.h`](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/ui/ui_xdocs.h), which is richer and able to enumerate values
+2. **The registration string**, the last argument to `Cvar_Get`: one line, no structure
 3. Nothing, if neither exists
 
 So xdocs do not replace a good registration description; they are the longer form shown to
 somebody who is already in the console trying to work the cvar out. Write both.
 
 **Because xdocs live in the UI module, they travel with it.** Load another mod's `ui`
-library — JA+'s, say, as [install](/TaystJK/install/#run-taystjk-with-another-client-side-mod)
-describes — and that module answers the engine instead, so TaystJK's in-game help is gone
+library, such as JA+'s, as [install](/TaystJK/install/#run-taystjk-with-another-client-side-mod)
+describes. That module answers the engine instead, so TaystJK's in-game help is gone
 until you switch back.
 
 ## Writing an entry
@@ -61,7 +61,7 @@ full entry.
 | Macro | For | Used |
 |:--|:--|--:|
 | `XDOCS_CVAR_DEF` | An ordinary cvar | 128 |
-| `XDOCS_CMD_DEF` | A command — name and one description, no values | 6 |
+| `XDOCS_CMD_DEF` | A command: name and one description, no values | 6 |
 | `XDOCS_CVAR_BITFLAG_DEF` | A bitmask cvar | 5 |
 | `XDOCS_CVAR_KEYVALUE_DEF` | A cvar taking `key=value` pairs | 5 |
 | `XDOCS_CVAR_BITVALUE_DEF` | A bitmask whose entry also carries exec text | 3 |

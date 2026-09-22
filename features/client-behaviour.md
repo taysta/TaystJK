@@ -24,7 +24,7 @@ one silently replaced the other, and the only fix was merging them by hand.
 
 TaystJK adds a second shader extension. The renderer lists `shaders/*.oshader` alongside
 `shaders/*.shader`, and a shader defined in an `.oshader` file wins over every `.shader`
-definition of the same name — from any pk3, including the base assets.
+definition of the same name from any pk3, including the base assets.
 
 The mechanism is worth knowing because it explains the guarantee. All shader files are
 concatenated into one buffer before parsing, and `.oshader` contents are placed at the
@@ -57,7 +57,7 @@ textures/example/glass
 ```
 
 Package that file as `shaders/myfixes.oshader` inside your own pk3. You do not copy the
-rest of `example.shader`, and you do not have to load after the map's pk3 — the extension
+rest of `example.shader`, and you do not have to load after the map's pk3. The extension
 alone decides. Every other shader in `example.shader` keeps working.
 
 The count of loaded override files is printed at startup, so you can confirm yours was
@@ -69,7 +69,7 @@ found.
 ordinary rules are unchanged, and they are worth knowing, because they are what the
 override extension works around.
 
-Two pk3s shipping the **same filename** — both carrying their own `shaders/gfx.shader` —
+Two pk3s shipping the **same filename**, both carrying their own `shaders/gfx.shader`,
 resolve the ordinary way. The file list is uniqued by name
 ([`FS_AddFileToList`](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/qcommon/files.cpp#L2636)),
 so the name is listed once and the renderer reads whichever pk3 has priority. This is why
@@ -101,14 +101,14 @@ just the order of the entries in the archive, so do not rely on it either.
 ahead of every `.shader` buffer, so they win regardless of which pk3 they came from. Among
 `.oshader` files themselves the order is **forward**
 ([`tr_shader.cpp`](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-vanilla/tr_shader.cpp#L4135)),
-so between two overrides of the same shader the higher-priority pk3 wins — the normal
-precedence, restored.
+so between two overrides of the same shader the higher-priority pk3 wins, restoring normal
+precedence.
 
 ## Binds
 
-**Modifier combinations.** Every key holds a separate binding per modifier — plain, `alt+`,
+**Modifier combinations.** Every key holds a separate binding per modifier: plain, `alt+`,
 `ctrl+` and `shift+`
-([`keys.h`](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/keys.h#L29)) —
+([`keys.h`](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/keys.h#L29)),
 so `bind ctrl+x kill` leaves plain <kbd>X</kbd> alone. `bind` and `unbind` both take the
 prefix
 ([`cl_keys.cpp`](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/cl_keys.cpp#L1317)).
@@ -128,7 +128,7 @@ and `ALT` *are* the left-hand keys, and nothing you bind to `RCTRL` reaches them
 **Which modifier counts as held.** Only the left-hand modifier arms a `ctrl+` style binding
 ([`cl_keys.cpp`](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/cl_keys.cpp#L1619)).
 Hold the **right** Ctrl and press <kbd>X</kbd> and you get plain <kbd>X</kbd>, not
-`ctrl+x` — the right-hand keys can carry bindings, but they cannot act as modifiers for
+`ctrl+x`. The right-hand keys can carry bindings, but they cannot act as modifiers for
 another key. When more than one is held, the order is alt, then ctrl, then shift.
 
 ## Console and chat editing

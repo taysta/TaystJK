@@ -57,7 +57,7 @@ cosmetics <category/clear> [id]
 The categories are `Hats` and `Capes`. Run `cosmetics hats` to list what your client
 loaded, then `cosmetics hats <id>` to wear one. `cosmetics clear` removes both.
 
-Your choice is stored in the `color1` cvar for a hat and `color2` for a cape — the client
+Your choice is stored in the `color1` cvar for a hat and `color2` for a cape. The client
 reuses those two userinfo slots to carry the cosmetic name, which is why a cosmetic name is
 limited to 14 characters
 ([`cg_local.h`](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_local.h#L323)).
@@ -86,7 +86,7 @@ models/cosmetics/capes/<name>.md3
 Keep `<name>` to 14 characters or fewer. The client checks the `.md3` exists before
 offering it, so a name that appears in a listing is one it could actually load.
 
-Package the model in a pk3 and everyone who wants to see it needs that pk3 — cosmetics are
+Package the model in a pk3. Everyone who wants to see it needs that pk3 because cosmetics are
 drawn client-side from local files, so a player without your pk3 sees nothing.
 
 Shaders for the shipped set live in
@@ -105,7 +105,7 @@ settings/cosmetics/hats/<name>.cosmetic
 settings/cosmetics/capes/<name>.cosmetic
 ```
 
-The name matches the `.md3`. With no file, all three offsets are zero — the cosmetic is
+The name matches the `.md3`. With no file, all three offsets are zero, so the cosmetic is
 still drawn, just unpositioned.
 
 TaystJK installs a worked example at `settings/cosmetics/hats/example.cosmetic`:
@@ -135,12 +135,12 @@ TaystJK installs a worked example at `settings/cosmetics/hats/example.cosmetic`:
 
 Reading it key by key:
 
-- **Top-level keys are player model names** — `desann`, `kyle`.
+- **Top-level keys are player model names:** `desann`, `kyle`.
 - **`xOffset`, `yOffset`, `zOffset` on the model** are that model's own offsets. They are
   used only when `modelFallback` allows it, below.
 - **`modelFallback`** decides what happens to a skin with no entry of its own. It defaults
   to **false**, so writing it out is only necessary to turn it on.
-- **Nested keys are skin names** — `default`, `red`, `blue`.
+- **Nested keys are skin names:** `default`, `red`, `blue`.
 
 **How a match is chosen.**
 
@@ -157,7 +157,7 @@ Both levels resolve the same way
    nothing, while `kyle` gives it `30, 15, -24`.
 
 Two details worth knowing. All three offsets must be present and numeric or the whole entry
-is rejected with a console warning and treated as zero — there is no partial application.
+is rejected with a console warning and treated as zero. There is no partial application.
 And the values are read as whole numbers, so a fractional offset is truncated.
 
 **Testing without restarting.**
@@ -191,4 +191,4 @@ With it on, the client checks the date and may put a hat on players who have non
 
 The dates are fixed in the client and read from **your own clock**, not the server's, so a
 player in another timezone can briefly see something different. A seasonal hat only appears
-on players wearing nothing already — your own choice is never replaced.
+on players wearing nothing already. Your own choice is never replaced.

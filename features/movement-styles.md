@@ -21,7 +21,7 @@ There are nineteen, defined as the `MV_*` enum in
 The descriptions below follow
 [`docs/Defrag Mapping Guide.md`](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/docs/Defrag%20Mapping%20Guide.md),
 which ships on the source branch. It is jaPRO's own guide, carried downstream with the
-gamecode rather than written here — which is what makes it worth following: it is the
+gamecode rather than written here. That makes it worth following because it is the
 account of the person who built the styles.
 
 ## The styles
@@ -71,14 +71,14 @@ Four conditions must hold, and the command tells you which one you failed
 
 - The server must have race mode enabled (`g_raceMode`).
 - You must be **in** racemode yourself, not just on a server that allows it.
-- You must be alive — not dead, not spectating.
+- You must be alive, not dead or spectating.
 - You must be **standing still**. Any velocity and it refuses.
 
 That last one catches people out. Try it while you are still drifting and the style does
 not change; the only sign is the refusal printed to your console.
 
 Outside racemode there is no per-player choice: `g_movementStyle` picks the style for
-everyone, clamped to the enum — below the first style it falls back to `siege`, and at or
+everyone, clamped to the enum. Below the first style it falls back to `siege`, and at or
 past the end of it to `jka`
 ([`bg_pmove.c`](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/bg_pmove.c#L445)).
 In racemode your own `STAT_MOVEMENTSTYLE` wins instead, which is how one race server runs

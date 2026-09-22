@@ -78,7 +78,7 @@ You can instead open the generated `TaystJK.sln`, select `RelWithDebInfo` and `x
 
 The repository ships a script that asks the questions and runs CMake for you
 ([`build/build-windows-msvc.bat`](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/build/build-windows-msvc.bat#L1)). Run it from the
-`build` directory. It **generates the solution only** — it does not compile anything, so
+`build` directory. It **generates the solution only**; it does not compile anything, so
 open the `.sln` afterwards and build from Visual Studio.
 
 It asks two things, and pressing Enter takes the default:
@@ -86,7 +86,7 @@ It asks two things, and pressing Enter takes the default:
 | Prompt | Default |
 |:--|:--|
 | Visual Studio version | 2022 (`msvc17`); 2015, 2017 and 2019 also offered |
-| Architecture | **32-bit (`x86`)** — choose `[2]` for x64 |
+| Architecture | **32-bit (`x86`)**; choose `[2]` for x64 |
 
 Both answers name the folders, so a run with both defaults gives you:
 
@@ -103,8 +103,8 @@ disturbing the first, and the script prints both paths before it starts.
 **The architecture default is 32-bit**, which is not what you usually want: prefer x64 for
 development, for the reason in the paragraph above. Press `2` at that prompt.
 
-Press `C` at the third prompt to toggle what gets built — the engine, the dedicated server,
-each renderer backend, the game, cgame and UI modules, Discord Rich Presence, tests — or to
+Press `C` at the third prompt to toggle what gets built: the engine, the dedicated server,
+each renderer backend, the game, cgame and UI modules, Discord Rich Presence, and tests. You can also use it to
 set a custom install path. Everything except tests is on by default, and portable builds
 are on, matching what the release workflow produces. If CMake is not on your `PATH` the
 script says so and stops rather than failing later.
