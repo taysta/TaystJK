@@ -92,6 +92,12 @@ assert.equal(catalog.entryMatches(cvar, state({ audience: "settable" })), true);
 assert.equal(catalog.entryMatches(cvar, state({ audience: "engine-managed" })), false);
 // A command is neither; the filter is offered for cvars only.
 assert.equal(catalog.entryMatches(command, state({ audience: ["settable", "engine-managed"] })), false);
+const commandState = state({ audience: ["engine-managed"], flag: ["CVAR_ROM"] });
+catalog.selectKind(commandState, "command");
+assert.equal(commandState.kind, "command");
+assert.deepEqual(commandState.audience, []);
+assert.deepEqual(commandState.flag, []);
+assert.equal(catalog.entryMatches(command, commandState), true);
 const engineManagedCvars = generatedEntries.filter((entry) => catalog.entryMatches(entry, state({ kind: "cvar", audience: "engine-managed" })));
 assert.ok(engineManagedCvars.length > 0 && engineManagedCvars.every((entry) => entry.engine_managed === true));
 assert.ok(engineManagedCvars.some((entry) => entry.name === "ui_tribesMode"));

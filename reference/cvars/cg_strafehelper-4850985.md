@@ -40,7 +40,7 @@ Configure with the /strafehelper command
 
 ## Bits
 
-Toggle one with [`strafeHelper`](/TaystJK/reference/commands/strafehelper-bdb34b4/) followed by the bit number. The value column is that bit on its own — [the labels come from the source table](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_consolecmds.c#L1108).
+Use [`strafeHelper`](/TaystJK/reference/commands/strafehelper-bdb34b4/) to toggle one option at a time; see the command page for syntax. The value column is that bit on its own — [the labels come from the source table](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_consolecmds.c#L1108).
 
 | Bit | Value | Meaning | Read by |
 |:--|:--|:--|:--|

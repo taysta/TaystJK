@@ -39,7 +39,7 @@ Configured with /tweakWeapons command
 
 ## Bits
 
-Toggle one with [`tweakWeapons`](/TaystJK/reference/commands/tweakweapons-fd5860d/) followed by the bit number. The value column is that bit on its own — [the labels come from the source table](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_svcmds.c#L843).
+Use [`tweakWeapons`](/TaystJK/reference/commands/tweakweapons-fd5860d/) to toggle one option at a time; see the command page for syntax. The value column is that bit on its own — [the labels come from the source table](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_svcmds.c#L843).
 
 | Bit | Value | Meaning | Read by |
 |:--|:--|:--|:--|

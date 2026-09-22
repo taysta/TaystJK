@@ -184,7 +184,8 @@ in the command buffer rather than run as ordinary commands
   So `a;delay 500;b;delay 500;c` runs `a`, waits, then runs `b;delay 500;c` — the delays
   chain rather than both counting from now.
 
-Omitting the number entirely is the same as `1`
+Omitting the number entirely is the same as `1`, but a space must remain between the
+command and the separator: `delay ;say vader` works, while `delay;say vader` does not
 ([`cmd.cpp:314`](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/qcommon/cmd.cpp#L314)).
 
 `delaycancel` and `waitfcancel` drop pending entries whose text contains the argument, so

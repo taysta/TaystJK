@@ -39,7 +39,7 @@ Controls `cp_cosmetics` in the cgame module. Consult the cited behavior reads be
 
 ## Bits
 
-Toggle one with [`cosmetics`](/TaystJK/reference/commands/cosmetics-01c96cf/) followed by the bit number. The value column is that bit on its own — [the labels come from the source table](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_consolecmds.c#L1591).
+Use [`cosmetics`](/TaystJK/reference/commands/cosmetics-01c96cf/) to toggle one option at a time; see the command page for syntax. The value column is that bit on its own — [the labels come from the source table](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_consolecmds.c#L1591).
 
 | Bit | Value | Meaning | Read by |
 |:--|:--|:--|:--|

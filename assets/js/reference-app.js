@@ -295,6 +295,15 @@
     return value;
   }
 
+  function selectKind(state, kind) {
+    state.kind = kind;
+    if (kind === "command") {
+      state.flag = [];
+      state.audience = [];
+    }
+    return state;
+  }
+
   function stateFrom(root) {
     var params = new URLSearchParams(global.location.search);
     var mode = root.dataset.mode || "all";
@@ -325,11 +334,7 @@
       limit: PAGE_SIZE,
       presets: presets
     };
-    if (kind === "command") {
-      state.flag = [];
-      state.audience = [];
-    }
-    return state;
+    return selectKind(state, kind);
   }
 
   function updateFilterSummary(root, state, key) {
@@ -485,8 +490,7 @@
     });
     Array.prototype.forEach.call(root.querySelectorAll("[data-kind]"), function (button) {
       button.addEventListener("click", function () {
-        state.kind = button.dataset.kind;
-        if (state.kind === "command") state.flag = [];
+        selectKind(state, button.dataset.kind);
         state.limit = PAGE_SIZE;
         applyState(root, state);
         update(true);
@@ -789,7 +793,8 @@
     relevance: relevance,
     detectPlatform: detectPlatform,
     choosePlatform: choosePlatform,
-    chooseBaseline: chooseBaseline
+    chooseBaseline: chooseBaseline,
+    selectKind: selectKind
   };
 
   if (typeof module !== "undefined" && module.exports) module.exports = api;

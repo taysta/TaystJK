@@ -39,7 +39,7 @@ search_exclude: false
 
 ## Bits
 
-Toggle one with [`plugin`](/TaystJK/reference/commands/plugin-fd8c7c8/) or [`pluginDisable`](/TaystJK/reference/commands/plugindisable-98b2c24/) followed by the bit number. The value column is that bit on its own — [the labels come from the source table](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_consolecmds.c#L1257).
+Use [`plugin`](/TaystJK/reference/commands/plugin-fd8c7c8/) or [`pluginDisable`](/TaystJK/reference/commands/plugindisable-98b2c24/) to toggle one option at a time; see the command pages for syntax. The value column is that bit on its own — [the labels come from the source table](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_consolecmds.c#L1257).
 
 | Bit | Value | Meaning | Read by |
 |:--|:--|:--|:--|

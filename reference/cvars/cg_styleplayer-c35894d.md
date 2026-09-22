@@ -39,7 +39,7 @@ Configure with the /stylePlayer command
 
 ## Bits
 
-Toggle one with [`stylePlayer`](/TaystJK/reference/commands/styleplayer-33ef966/) followed by the bit number. The value column is that bit on its own — [the labels come from the source table](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_consolecmds.c#L1408).
+Use [`stylePlayer`](/TaystJK/reference/commands/styleplayer-33ef966/) to toggle one option at a time; see the command page for syntax. The value column is that bit on its own — [the labels come from the source table](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_consolecmds.c#L1408).
 
 | Bit | Value | Meaning | Read by |
 |:--|:--|:--|:--|

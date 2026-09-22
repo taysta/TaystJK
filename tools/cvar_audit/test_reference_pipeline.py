@@ -181,7 +181,10 @@ void CG_Cosmetics_f( void ) {
         }
         rendered = "\n".join(bit_table(entry))
         self.assertIn("strafeHelper", rendered)
-        self.assertIn("or", rendered.split("followed by")[0])
+        self.assertIn("strafeHelper`](/TaystJK/reference/commands/strafehelper-", rendered)
+        self.assertIn(" or [`sh`](/TaystJK/reference/commands/sh-", rendered)
+        self.assertIn("see the command pages for syntax", rendered)
+        self.assertNotIn("followed by the bit number", rendered)
         self.assertIn("| 1 | `2` | Sound | [cg.h:63](", rendered)
         self.assertIn("| 0 | `1` | Original style | — |", rendered)
         self.assertEqual(bit_table({"bits": None}), [])

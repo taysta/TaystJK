@@ -39,7 +39,7 @@ Controls `cg_logChat` in the cgame module. Consult the cited behavior reads befo
 
 ## Bits
 
-Toggle one with [`chatlog`](/TaystJK/reference/commands/chatlog-84c4a99/) followed by the bit number. The value column is that bit on its own — [the labels come from the source table](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_consolecmds.c#L1914).
+Use [`chatlog`](/TaystJK/reference/commands/chatlog-84c4a99/) to toggle one option at a time; see the command page for syntax. The value column is that bit on its own — [the labels come from the source table](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_consolecmds.c#L1914).
 
 | Bit | Value | Meaning | Read by |
 |:--|:--|:--|:--|

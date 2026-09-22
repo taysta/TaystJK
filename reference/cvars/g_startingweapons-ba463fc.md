@@ -39,7 +39,7 @@ Start with saber only default, fall back to melee if no saberattack
 
 ## Bits
 
-Toggle one with [`startingWeapons`](/TaystJK/reference/commands/startingweapons-7252a71/) followed by the bit number. The value column is that bit on its own — [the labels come from the source table](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_svcmds.c#L1120).
+Use [`startingWeapons`](/TaystJK/reference/commands/startingweapons-7252a71/) to toggle one option at a time; see the command page for syntax. The value column is that bit on its own — [the labels come from the source table](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_svcmds.c#L1120).
 
 | Bit | Value | Meaning | Read by |
 |:--|:--|:--|:--|

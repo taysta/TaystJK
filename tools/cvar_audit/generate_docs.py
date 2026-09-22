@@ -979,8 +979,8 @@ def bit_table(entry: dict[str, Any]) -> list[str]:
         return []
     commands = bits.get("commands") or []
     lead = (
-        f"Toggle one with {joined([command_link(name) for name in commands])} "
-        "followed by the bit number."
+        f"Use {joined([command_link(name) for name in commands])} to toggle one option at a time; "
+        f"see the {'command page' if len(commands) == 1 else 'command pages'} for syntax."
         if commands else "Each bit is one option."
     )
     # Where the pipeline already traced a bit to the code that reads it, keep
