@@ -51,6 +51,11 @@ along with this program; if not, see <http://www.gnu.org/licenses/>.
 
 #define USE_BUFFER_CLEAR		/* clear attachments on render pass begin */
 
+#define VK_G2_POINTER_FRAMECACHE
+#define VK_G2_POINTER_INVALIDATE_BITS 4
+#define VK_G2_POINTER_INVALIDATE_MASK ((1 << VK_G2_POINTER_INVALIDATE_BITS) - 1)
+#define VK_G2_POINTER_FRAME_SHIFT VK_G2_POINTER_INVALIDATE_BITS
+
 #include "qcommon/qfiles.h"
 #include "rd-common/tr_public.h"
 #include "rd-common/tr_common.h"
@@ -1700,6 +1705,10 @@ typedef struct trGlobals_s {
 	int						goreVBOCurrentIndex;
 	IBO_t					*goreIBO;
 	int						goreIBOCurrentIndex;
+#endif
+#ifdef VK_G2_POINTER_FRAMECACHE
+	// force resolving the ghoul2 per-frame pointers
+	int						g2PtrInvalidation;
 #endif
 
 #ifdef USE_VBO_SS

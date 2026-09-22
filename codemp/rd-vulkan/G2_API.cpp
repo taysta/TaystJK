@@ -913,8 +913,10 @@ qboolean G2API_SetSurfaceOnOff(CGhoul2Info_v &ghoul2, const char *surfaceName, c
 
 	if (G2_SetupModelPointers(ghlInfo))
 	{
+#ifndef VK_G2_POINTER_FRAMECACHE
 		// ensure we flush the cache
 		ghlInfo->mMeshFrameNum = 0;
+#endif
 		return G2_SetSurfaceOnOff(ghlInfo, ghlInfo->mSlist, surfaceName, flags);
 	}
 	return qfalse;
@@ -943,8 +945,10 @@ int G2API_AddSurface(CGhoul2Info *ghlInfo, int surfaceNumber, int polyNumber, fl
 {
 	if (G2_SetupModelPointers(ghlInfo))
 	{
+#ifndef VK_G2_POINTER_FRAMECACHE
 		// ensure we flush the cache
 		ghlInfo->mMeshFrameNum = 0;
+#endif
 		return G2_AddSurface(ghlInfo, surfaceNumber, polyNumber, BarycentricI, BarycentricJ, lod);
 	}
 	return -1;
@@ -954,8 +958,10 @@ qboolean G2API_RemoveSurface(CGhoul2Info *ghlInfo, const int index)
 {
 	if (G2_SetupModelPointers(ghlInfo))
 	{
+#ifndef VK_G2_POINTER_FRAMECACHE
 		// ensure we flush the cache
 		ghlInfo->mMeshFrameNum = 0;
+#endif
 		return G2_RemoveSurface(ghlInfo->mSlist, index);
 	}
 	return qfalse;
@@ -2909,6 +2915,18 @@ qboolean G2_SetupModelPointers(CGhoul2Info *ghlInfo) // returns true if the mode
 		return qtrue;
 	}
 
+#ifdef VK_G2_POINTER_FRAMECACHE
+	// Already resolved this frame, against this generation of the model list. Everything
+	// below re-registers the model by name and re-fetches its handles, which cannot change
+	// within a frame - and CG_Player asks for it 8 to 25 times per character.
+	const int ptrFrameBits = (tr.frameCount << VK_G2_POINTER_FRAME_SHIFT) | (tr.g2PtrInvalidation & VK_G2_POINTER_INVALIDATE_MASK);
+	
+	if ( ghlInfo->mValid && ghlInfo->mMeshFrameNum == ptrFrameBits)
+	{
+		return qtrue;
+	}
+#endif
+
 	ghlInfo->mValid=false;
 
 //	G2WARNING(ghlInfo->mModelindex != -1,"Setup request on non-used info slot?");
@@ -2967,6 +2985,9 @@ qboolean G2_SetupModelPointers(CGhoul2Info *ghlInfo) // returns true if the mode
 						ghlInfo->currentAnimModelSize=ghlInfo->aHeader->ofsEnd;
 						G2ERROR(ghlInfo->currentAnimModelSize,va("Zero sized Model? (gla) %s",ghlInfo->mFileName));
 						ghlInfo->mValid=true;
+#ifdef VK_G2_POINTER_FRAMECACHE
+						ghlInfo->mMeshFrameNum = ptrFrameBits;
+#endif
 					}
 				}
 			}
