@@ -176,27 +176,6 @@ void vk_create_framebuffers()
 
     if (vk.fboActive)
     {
-        // refraction
-        {
-            desc.renderPass = vk.render_pass.refraction.extract.handle;
-            desc.attachmentCount = 2;
-            desc.width = glConfig.vidWidth;
-            desc.height = glConfig.vidHeight;
-
-            // set color and depth attachment
-            attachments[0] = vk.color_image_view;
-            attachments[1] = vk.depth_image_view;
-
-            if ( vk.msaaActive )
-            {
-                desc.attachmentCount = 3;
-                attachments[2] = vk.msaa_image_view;
-            }
-
-            VK_CHECK(qvkCreateFramebuffer(vk.device, &desc, NULL, &vk.framebuffers.refraction.extract));
-            VK_SET_OBJECT_NAME(vk.framebuffers.refraction.extract, "framebuffer - refraction extract", VK_DEBUG_REPORT_OBJECT_TYPE_FRAMEBUFFER_EXT);
-        }
-
         // screenmap
         desc.renderPass = vk.render_pass.screenmap.handle;
         desc.attachmentCount = 2;

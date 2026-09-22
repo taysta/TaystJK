@@ -808,7 +808,7 @@ void vk_refraction_extract( void ) {
 
 void vk_begin_post_refraction_extract_render_pass( void )
 {
-    VkFramebuffer frameBuffer = vk.framebuffers.refraction.extract;
+    VkFramebuffer frameBuffer = vk.framebuffers.main[vk.cmd->swapchain_image_index];
 
     vk.renderPassIndex = RENDER_PASS_REFRACTION;
 

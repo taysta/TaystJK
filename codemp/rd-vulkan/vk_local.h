@@ -743,10 +743,6 @@ typedef struct {
 		VkFramebuffer capture;
 		
 		struct {
-			VkFramebuffer extract;
-		} refraction;
-
-		struct {
 			VkFramebuffer blur[VK_NUM_BLUR_PASSES * 2];
 			VkFramebuffer extract;
 		} bloom;
