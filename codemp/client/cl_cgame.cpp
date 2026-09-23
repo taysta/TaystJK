@@ -696,6 +696,7 @@ void CL_ShutdownCGame( void ) {
 	cls.cgameStarted = qfalse;
 
 	CL_UnbindCGame();
+	FX_SetRefDef( NULL );
 
 	if (cl_logChat->integer) {
 		if (cls.log.started) CL_LogPrintf(cls.log.file, "End log\n----------------------------------------------------------------\n\n");

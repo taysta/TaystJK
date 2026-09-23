@@ -1280,16 +1280,6 @@ void C_LevelLoadEnd( void )
 	ri.S_RestartMusic();
 }
 
-static const cplane_t* RE_GetFrustum(void)
-{
-	return tr.viewParms.frustum;
-}
-
-static const vec_t* RE_GetViewPosition(void)
-{
-	return tr.viewParms.ori.origin;
-}
-
 /*
 @@@@@@@@@@@@@@@@@@@@@
 GetRefAPI
@@ -1486,8 +1476,6 @@ Q_EXPORT refexport_t* QDECL GetRefAPI( int apiVersion, refimport_t *rimp ) {
 	//re.G2VertSpaceServer	= G2VertSpaceServer;
 
 	re.ext.Font_StrLenPixels				= RE_Font_StrLenPixelsNew;
-	re.ext.GetFrustum                       = RE_GetFrustum;
-	re.ext.GetViewPosition                  = RE_GetViewPosition;
 
 	return &re;
 }
