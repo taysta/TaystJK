@@ -7,6 +7,7 @@
 #	include <gl/gl.h>
 #elif defined(MACOS_X)
 #	include <OpenGL/gl3.h>
+#   define GL_SILENCE_DEPRECATION
 #elif defined( __linux__ )
 #	include <GL/gl.h>
 #	include <GL/glx.h>

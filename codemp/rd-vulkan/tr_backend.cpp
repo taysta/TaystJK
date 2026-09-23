@@ -895,9 +895,9 @@ static void vk_update_entity_light_constants( vkUniformEntity_t &uniform, const 
 
 	VectorScale(refEntity->ambientLight, normalizeFactor, uniform.ambientLight);
 	VectorScale(refEntity->directedLight, normalizeFactor, uniform.directedLight);
-	VectorCopy(refEntity->lightDir, uniform.lightOrigin);
+	VectorCopy(refEntity->lightDir, uniform.localLightOrigin);
 
-	uniform.lightOrigin[3] = 0.0f;
+	uniform.localLightOrigin[3] = 0.0f;
 }
 
 static void vk_update_entity_matrix_constants( vkUniformEntity_t &uniform, const trRefEntity_t *refEntity ) 

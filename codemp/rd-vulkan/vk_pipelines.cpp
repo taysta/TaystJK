@@ -23,6 +23,12 @@ along with this program; if not, see <http://www.gnu.org/licenses/>.
 
 #include "tr_local.h"
 
+#define VK_POSTFX_PIPELINE_GAMMA			0
+#define VK_POSTFX_PIPELINE_BLOOM_EXTRACT	1
+#define VK_POSTFX_PIPELINE_BLOOM_BLEND		2
+#define VK_POSTFX_PIPELINE_CAPTURE			3
+#define VK_POSTFX_PIPELINE_DGLOW_BLEND		4
+
 #define ALLOC_SPEC_ENTRY( arr, index, struct_type, struct_data, member ) \
     arr[index].constantID = (index); \
     arr[index].offset = offsetof(struct_type, member); \
@@ -1377,11 +1383,11 @@ VkPipeline vk_create_pipeline( const Vk_Pipeline_Def *def, renderPass_t renderPa
 		create_info.layout = vk.pipeline_layout;
 
     if ( renderPassIndex == RENDER_PASS_SCREENMAP )
-        create_info.renderPass = vk.render_pass.screenmap;
+        create_info.renderPass = vk.render_pass.screenmap.handle;
     else if ( renderPassIndex == RENDER_PASS_REFRACTION )
-        create_info.renderPass = vk.render_pass.refraction.extract;
+        create_info.renderPass = vk.render_pass.refraction.extract.handle;
     else
-        create_info.renderPass = vk.render_pass.main;
+        create_info.renderPass = vk.render_pass.main.handle;
 
     create_info.subpass = 0;
     create_info.basePipelineHandle = VK_NULL_HANDLE;
@@ -1432,46 +1438,46 @@ static void vk_create_post_process_pipeline( int program_index, uint32_t width, 
     VkSpecializationInfo frag_spec_info;
 
     switch ( program_index ) {
-        case 1: // bloom extraction
-            pipeline = &vk.bloom_extract_pipeline;
-            fs_module = vk.shaders.bloom_fs;
-            renderpass = vk.render_pass.bloom.extract;
-            layout = vk.pipeline_layout_post_process;
-            samples = VK_SAMPLE_COUNT_1_BIT;
-            pipeline_name = "bloom extraction pipeline";
-            blend = qfalse;
+        case VK_POSTFX_PIPELINE_BLOOM_EXTRACT:
+            pipeline            = &vk.bloom_extract_pipeline;
+            fs_module           = vk.shaders.bloom_fs;
+            renderpass          = vk.render_pass.bloom.extract.handle;
+            layout              = vk.pipeline_layout_post_process;
+            samples             = VK_SAMPLE_COUNT_1_BIT;
+            pipeline_name       = "bloom extraction pipeline";
+            blend               = qfalse;
             break;
-        case 2: // final bloom blend
-            pipeline = &vk.bloom_blend_pipeline;
-            fs_module = vk.shaders.blend_fs;
-            renderpass = vk.render_pass.bloom.blend;
-            layout = vk.pipeline_layout_blend;
-            samples = (VkSampleCountFlagBits)vkSamples;
-            pipeline_name = "bloom blend pipeline";
-            blend = qtrue;
+        case VK_POSTFX_PIPELINE_BLOOM_BLEND:
+            pipeline            = &vk.bloom_blend_pipeline;
+            fs_module           = vk.shaders.blend_fs;
+            renderpass          = vk.render_pass.bloom.blend.handle;
+            layout              = vk.pipeline_layout_blend;
+            samples             = (VkSampleCountFlagBits)vkSamples;
+            pipeline_name       = "bloom blend pipeline";
+            blend               = qtrue;
             break;
-        case 3: // capture buffer extraction
-            pipeline = &vk.capture_pipeline;
-            fs_module = vk.shaders.gamma_fs;
-            renderpass = vk.render_pass.capture;
-            layout = vk.pipeline_layout_post_process;
-            samples = VK_SAMPLE_COUNT_1_BIT;
-            pipeline_name = "capture buffer pipeline";
-            blend = qfalse;
+        case VK_POSTFX_PIPELINE_CAPTURE:
+            pipeline            = &vk.capture_pipeline;
+            fs_module           = vk.shaders.gamma_fs;
+            renderpass          = vk.render_pass.capture.handle;
+            layout              = vk.pipeline_layout_post_process;
+            samples             = VK_SAMPLE_COUNT_1_BIT;
+            pipeline_name       = "capture buffer pipeline";
+            blend               = qfalse;
             break;
-        case 4: // final dglow blend
-            pipeline = &vk.dglow_blend_pipeline;
-            fs_module = vk.shaders.blend_fs;
-            renderpass = vk.render_pass.dglow.blend;
-            layout = vk.pipeline_layout_blend;
-            samples = (VkSampleCountFlagBits)vkSamples;
-            pipeline_name = "dglow blend pipeline";
-            blend = qtrue;
+        case VK_POSTFX_PIPELINE_DGLOW_BLEND:
+            pipeline            = &vk.dglow_blend_pipeline;
+            fs_module           = vk.shaders.blend_fs;
+            renderpass          = vk.render_pass.dglow.blend.handle;
+            layout              = vk.pipeline_layout_blend;
+            samples             = (VkSampleCountFlagBits)vkSamples;
+            pipeline_name       = "dglow blend pipeline";
+            blend               = qtrue;
             break;
         default: // gamma correction
             pipeline = &vk.gamma_pipeline;
             fs_module = vk.shaders.gamma_fs;
-            renderpass = vk.render_pass.gamma;
+            renderpass = vk.render_pass.gamma.handle;
             layout = vk.pipeline_layout_post_process;
             samples = VK_SAMPLE_COUNT_1_BIT;
             pipeline_name = "gamma-correction pipeline";
@@ -1519,7 +1525,7 @@ static void vk_create_post_process_pipeline( int program_index, uint32_t width, 
     frag_spec_data.bloom_modulate = r_bloom_modulate->integer;
     frag_spec_data.dither = r_dither->integer;
 
-    if ( program_index == 4 ) 
+    if ( program_index == VK_POSTFX_PIPELINE_DGLOW_BLEND ) 
     {
         // adjust for legacy bias: r_DynamicGlowIntensity default ~1.13, subtract 1.0 to align with old bloom intensity defaults
         frag_spec_data.bloom_intensity = MAX( 0.01f, MIN( (r_DynamicGlowIntensity->value - 1.0f), 4.0f ) );
@@ -1559,7 +1565,7 @@ static void vk_create_post_process_pipeline( int program_index, uint32_t width, 
     //
     // Viewport.
     //
-    if ( program_index == 0 ) {
+    if ( program_index == VK_POSTFX_PIPELINE_GAMMA ) {
         // gamma correction
         viewport.x = 0.0 + vk.blitX0;
         viewport.y = 0.0 + vk.blitY0;
@@ -1665,7 +1671,7 @@ static void vk_create_post_process_pipeline( int program_index, uint32_t width, 
     create_info.pViewportState = &viewport_state;
     create_info.pRasterizationState = &rasterization_state;
     create_info.pMultisampleState = &multisample_state;
-    create_info.pDepthStencilState = (program_index == 2) ? &depth_stencil_state : NULL;
+    create_info.pDepthStencilState = (program_index == VK_POSTFX_PIPELINE_BLOOM_BLEND) ? &depth_stencil_state : NULL;
     create_info.pDepthStencilState = &depth_stencil_state;
     create_info.pColorBlendState = &blend_state;
     create_info.pDynamicState = NULL;
@@ -1706,12 +1712,12 @@ static void vk_create_blur_pipeline( char *name, int program_index, uint32_t ind
     switch( program_index ){
         case 1:
             pipeline = &vk.bloom_blur_pipeline[index];
-            renderpass = vk.render_pass.bloom.blur[index];
+            renderpass = vk.render_pass.bloom.blur[index].handle;
             frag_spec_data.correction = 0.0; // intensity?
             break;
         case 2:
             pipeline = &vk.dglow_blur_pipeline[index];
-            renderpass = vk.render_pass.dglow.blur[index];
+            renderpass = vk.render_pass.dglow.blur[index].handle;
             frag_spec_data.correction = 0.15; // intensity?
             break;
         default:
@@ -2234,7 +2240,7 @@ static void vk_create_bloom_pipelines( void )
     uint32_t height = gls.captureHeight;
     uint32_t i;
 
-    vk_create_post_process_pipeline( 1, width, height ); // bloom extraction
+    vk_create_post_process_pipeline( VK_POSTFX_PIPELINE_BLOOM_EXTRACT, width, height );
 
     for ( i = 0; i < ARRAY_LEN( vk.bloom_blur_pipeline ); i += 2 ) {
         width /= 2;
@@ -2262,18 +2268,18 @@ static void vk_create_dglow_pipelines( void )
         vk_create_blur_pipeline( "dglow", 2, i + 1, width, height, qfalse); // vertical
     }
 
-    vk_create_post_process_pipeline( 4, glConfig.vidWidth, glConfig.vidHeight ); // post process blending
+    vk_create_post_process_pipeline( VK_POSTFX_PIPELINE_DGLOW_BLEND, glConfig.vidWidth, glConfig.vidHeight ); // post process blending
 }
 
 void vk_update_post_process_pipelines( void )
 {
     if ( vk.fboActive ) {
         // update gamma shader
-        vk_create_post_process_pipeline(0, 0, 0);
+        vk_create_post_process_pipeline( VK_POSTFX_PIPELINE_GAMMA, 0, 0 );
 
         if ( vk.capture.image ) {
             // update capture pipeline
-            vk_create_post_process_pipeline( 3, gls.captureWidth, gls.captureHeight );
+            vk_create_post_process_pipeline( VK_POSTFX_PIPELINE_CAPTURE, gls.captureWidth, gls.captureHeight );
         }
 
         vk_create_bloom_pipelines();
@@ -2281,20 +2287,26 @@ void vk_update_post_process_pipelines( void )
     }
 }
 
+static void vk_destroy_pipeline( VkPipeline *pipeline )
+{
+    if ( pipeline && *pipeline != VK_NULL_HANDLE ) 
+    {
+        qvkDestroyPipeline( vk.device, *pipeline, NULL );
+        *pipeline = VK_NULL_HANDLE;
+    }
+}
+
 void vk_destroy_pipelines( qboolean resetCounter )
 {
     uint32_t i, j;
 
-    // Destroy pipelines
     for ( i = 0; i < vk.pipelines_count; i++ ) {
         for ( j = 0; j < RENDER_PASS_COUNT; j++ ) {
             if ( vk.pipelines[i].handle[j] != VK_NULL_HANDLE ) {
-                qvkDestroyPipeline( vk.device, vk.pipelines[i].handle[j], NULL );
-                vk.pipelines[i].handle[j] = VK_NULL_HANDLE;
+                vk_destroy_pipeline( &vk.pipelines[i].handle[j] );
                 vk.pipeline_create_count--;
             }
         }
-
     }
 
     if ( resetCounter ) {
@@ -2302,42 +2314,15 @@ void vk_destroy_pipelines( qboolean resetCounter )
         vk.pipelines_count = 0;
     }
 
-    if ( vk.gamma_pipeline ) {
-        qvkDestroyPipeline( vk.device, vk.gamma_pipeline, NULL );
-        vk.gamma_pipeline = VK_NULL_HANDLE;
-    }
+    vk_destroy_pipeline( &vk.gamma_pipeline );
+    vk_destroy_pipeline( &vk.bloom_extract_pipeline );
+    vk_destroy_pipeline( &vk.bloom_blend_pipeline );
+    vk_destroy_pipeline( &vk.dglow_blend_pipeline );
+    vk_destroy_pipeline( &vk.capture_pipeline );
 
-    if ( vk.bloom_extract_pipeline != VK_NULL_HANDLE ) {
-        qvkDestroyPipeline( vk.device, vk.bloom_extract_pipeline, NULL );
-        vk.bloom_extract_pipeline = VK_NULL_HANDLE;
-    }
+    for ( i = 0; i < ARRAY_LEN( vk.bloom_blur_pipeline ); i++ )
+        vk_destroy_pipeline( &vk.bloom_blur_pipeline[i] );
 
-    if ( vk.bloom_blend_pipeline != VK_NULL_HANDLE ) {
-        qvkDestroyPipeline( vk.device, vk.bloom_blend_pipeline, NULL );
-        vk.bloom_blend_pipeline = VK_NULL_HANDLE;
-    }
-
-    if ( vk.capture_pipeline ) {
-        qvkDestroyPipeline( vk.device, vk.capture_pipeline, NULL );
-        vk.capture_pipeline = VK_NULL_HANDLE;
-    }
-
-    for ( i = 0; i < ARRAY_LEN( vk.bloom_blur_pipeline ); i++ ) {
-        if ( vk.bloom_blur_pipeline[i] != VK_NULL_HANDLE ) {
-            qvkDestroyPipeline( vk.device, vk.bloom_blur_pipeline[i], NULL );
-            vk.bloom_blur_pipeline[i] = VK_NULL_HANDLE;
-        }
-    }
-
-    for ( i = 0; i < ARRAY_LEN( vk.dglow_blur_pipeline ); i++ ) {
-        if ( vk.dglow_blur_pipeline[i] != VK_NULL_HANDLE ) {
-            qvkDestroyPipeline( vk.device, vk.dglow_blur_pipeline[i], NULL );
-            vk.dglow_blur_pipeline[i] = VK_NULL_HANDLE;
-        }
-    }
-
-    if ( vk.dglow_blend_pipeline != VK_NULL_HANDLE ) {
-        qvkDestroyPipeline( vk.device, vk.dglow_blend_pipeline, NULL );
-        vk.dglow_blend_pipeline = VK_NULL_HANDLE;
-    }
+    for ( i = 0; i < ARRAY_LEN( vk.dglow_blur_pipeline ); i++ )
+        vk_destroy_pipeline( &vk.dglow_blur_pipeline[i] );
 }

@@ -58,6 +58,12 @@ along with this program; if not, see <http://www.gnu.org/licenses/>.
 #endif
 #endif
 
+typedef float mat4_t[16];
+typedef float mat3x4_t[12];
+typedef unsigned int uvec4_t[4];
+
+#define BUFFER_OFFSET(i) ((char *)NULL + (i))
+
 #ifndef MAX
 #define MAX(x,y) ((x)>(y)?(x):(y))
 #endif
@@ -90,25 +96,8 @@ along with this program; if not, see <http://www.gnu.org/licenses/>.
 // depth + msaa + msaa-resolve + screenmap.msaa + screenmap.resolve + screenmap.depth + (bloom_extract + blur pairs + dglow_extract + blur pairs) + dglow-msaa
 #define MAX_ATTACHMENTS_IN_POOL			( 6 + ( ( 1 + VK_NUM_BLUR_PASSES * 2 ) * 2 ) + 1  ) 
 
-#define VK_DESC_STORAGE					0
-#define VK_DESC_UNIFORM					0
-#define VK_DESC_TEXTURE0				1
-#define VK_DESC_TEXTURE1				2
-#define VK_DESC_TEXTURE2				3
-#define VK_DESC_FOG_COLLAPSE			4
-#define VK_DESC_COUNT					5
-
-#define VK_DESC_TEXTURE_BASE			VK_DESC_TEXTURE0
-#define VK_DESC_FOG_ONLY				VK_DESC_TEXTURE1
-#define VK_DESC_FOG_DLIGHT				VK_DESC_TEXTURE1
-
-#define VK_DESC_UNIFORM_MAIN_BINDING		0
-#define VK_DESC_UNIFORM_CAMERA_BINDING		1
-#define VK_DESC_UNIFORM_ENTITY_BINDING		2
-#define VK_DESC_UNIFORM_BONES_BINDING		3
-#define VK_DESC_UNIFORM_FOGS_BINDING		4
-#define VK_DESC_UNIFORM_GLOBAL_BINDING		5
-#define VK_DESC_UNIFORM_COUNT				6
+#define GLOBAL_SHADER_C
+#include "shaders/glsl/global.h"
 
 //#define MIN_IMAGE_ALIGN				( 128 * 1024 )
 
@@ -418,12 +407,6 @@ extern PFN_vkDebugMarkerSetObjectNameEXT				qvkDebugMarkerSetObjectNameEXT;
 
 extern PFN_vkCmdDrawIndexedIndirect						qvkCmdDrawIndexedIndirect;
 
-typedef float mat4_t[16];
-typedef float mat3x4_t[12];
-typedef unsigned int uvec4_t[4];
-
-#define BUFFER_OFFSET(i) ((char *)NULL + (i))
-
 void Matrix16Identity( mat4_t out );
 void Matrix16Copy( const mat4_t in, mat4_t out );
 
@@ -490,19 +473,31 @@ typedef struct VK_Pipeline {
 	VkPipeline		handle[RENDER_PASS_COUNT];
 } VK_Pipeline_t;
 
-typedef struct vktcMod_s {
-	vec4_t	matrix;
-	vec4_t	offTurb;
-} vktcMod_t;
-
-typedef struct vktcGen_s {
-	vec3_t	vector0;
-	int32_t	pad0;
-	vec3_t	vector1;
-	int32_t	type;
-} vktcGen_t;
-
 // this structure must be in sync with shader uniforms!
+typedef struct {
+	float	mvp[16];
+} pushConst;
+
+struct vkRenderPassDef_t {
+	VkAttachmentDescription attachments[3];
+	struct {
+		VkAttachmentReference	color;
+		VkAttachmentReference	depth;
+		VkAttachmentReference	resolve;
+	} attachment_ref;
+	VkSubpassDescription	subpass;
+	uint32_t				subpass_count;
+	VkSubpassDependency		dependencies[2];
+	uint32_t				attachmentCount;
+	uint32_t				dependencyCount;
+};
+
+struct vkRenderPass_t {
+	const char			*name;
+	vkRenderPassDef_t	def;
+	VkRenderPass		handle;
+};
+
 typedef struct vkUniform_s {
 	// light/env/material parameters:
 	vec4_t eyePos;
@@ -527,76 +522,6 @@ typedef struct vkUniform_s {
 
 	mat4_t	modelMatrix;
 } vkUniform_t;
-
-#ifdef USE_VBO_GHOUL2
-typedef struct vkBundle_s {
-	vec4_t		baseColor;
-	vec4_t		vertColor;
-	vktcMod_t	tcMod;
-	vktcGen_t	tcGen;
-	int32_t		rgbGen;
-	int32_t		alphaGen;
-	int32_t		numTexMods;	// make this to a specialization constant
-	int32_t		pad0;
-} vkBundle_t;
-
-typedef struct vkDisintegration_s {
-	vec3_t	origin;
-	float	threshold;
-} vkDisintegration_t;
-
-typedef struct vkDeform_s {
-	float	base;
-	float	amplitude;
-	float	phase;
-	float	frequency;
-
-	vec3_t	vector;
-	float	time;
-
-	int32_t	type;
-	int32_t	func;
-	vec2_t	pad0;
-} vkDeform_t;
-
-typedef struct vkUniformCamera_s {
-	vec4_t viewOrigin;
-} vkUniformCamera_t;
-
-typedef struct vkUniformEntity_s {
-	vec4_t ambientLight;
-	vec4_t directedLight;
-	vec4_t lightOrigin;
-	vec4_t localViewOrigin;
-	mat4_t modelMatrix;
-} vkUniformEntity_t;
-
-typedef struct vkUniformGlobal_s {
-	vkBundle_t			bundle[3];
-	vkDisintegration_t	disintegration;
-	vkDeform_t			deform;
-	float				portalRange;
-	vec3_t				pad0;
-} vkUniformGlobal_t;
-
-typedef struct vkUniformBones_s {
-	mat3x4_t boneMatrices[72];
-} vkUniformBones_t;
-#endif
-
-typedef struct vkUniformFogEntry_s {
-	vec4_t	plane;
-	vec4_t	color;
-	float	depthToOpaque;
-	int		hasPlane;
-	vec2_t	pad0;
-} vkUniformFogEntry_t;
-
-typedef struct vkUniformFog_s {
-	int			num_fogs;
-	vec3_t		pad0;
-	vkUniformFogEntry_t fogs[16];
-} vkUniformFog_t;
 
 typedef struct {
 	VkSamplerAddressMode address_mode; // clamp/repeat texture addressing mode
@@ -777,25 +702,30 @@ typedef struct {
 
 	// render passes
 	struct {
-		VkRenderPass main;
-		VkRenderPass gamma;
-		VkRenderPass screenmap;
-		VkRenderPass capture;
-
 		struct {
-			VkRenderPass extract;
+			VkSubpassDependency shader_to_color;
+			VkSubpassDependency color_to_shader; 
+			VkSubpassDependency present_final; 
+		} subpass_deps;
+
+		vkRenderPass_t main;
+		vkRenderPass_t gamma;
+		vkRenderPass_t screenmap;
+		vkRenderPass_t capture;
+		struct {
+			vkRenderPass_t extract;
 		} refraction;
 
 		struct {
-			VkRenderPass blur[VK_NUM_BLUR_PASSES * 2];
-			VkRenderPass extract;
-			VkRenderPass blend;
+			vkRenderPass_t blur[VK_NUM_BLUR_PASSES * 2];
+			vkRenderPass_t extract;
+			vkRenderPass_t blend;
 		} bloom;
 
 		struct {
-			VkRenderPass blur[VK_NUM_BLUR_PASSES * 2];
-			VkRenderPass extract;
-			VkRenderPass blend;
+			vkRenderPass_t blur[VK_NUM_BLUR_PASSES * 2];
+			vkRenderPass_t extract;
+			vkRenderPass_t blend;
 		} dglow;
 	} render_pass;
 
@@ -812,10 +742,6 @@ typedef struct {
 		VkFramebuffer screenmap;
 		VkFramebuffer capture;
 		
-		struct {
-			VkFramebuffer extract;
-		} refraction;
-
 		struct {
 			VkFramebuffer blur[VK_NUM_BLUR_PASSES * 2];
 			VkFramebuffer extract;
@@ -847,7 +773,6 @@ typedef struct {
 #ifdef USE_VBO_GHOUL2
 	uint32_t uniform_global_item_size;
 	uint32_t uniform_entity_item_size;
-	uint32_t uniform_bones_item_size;
 
 	uint32_t ghoul2_vbo_stride;
 	uint32_t mdv_vbo_stride;
@@ -1201,9 +1126,12 @@ VkBuffer	vk_get_vertex_buffer( void );
 void		vk_update_descriptor( int tmu, VkDescriptorSet curDesSet );
 uint32_t	vk_find_pipeline_ext( uint32_t base, const Vk_Pipeline_Def *def, qboolean use );
 VkPipeline	vk_gen_pipeline( uint32_t index );
+void		vk_begin_render_pass( VkRenderPass renderPass, VkFramebuffer frameBuffer, qboolean clearValues, uint32_t width, uint32_t height );
 void		vk_end_render_pass( void );
+void		vk_begin_screenmap_render_pass( void );
 void		vk_begin_main_render_pass( void );
 void		vk_get_pipeline_def( uint32_t pipeline, Vk_Pipeline_Def *def );
+void		*vk_reserve_uniform( size_t size, uint32_t *offset );
 uint32_t	vk_append_uniform( const void *uniform, size_t size, uint32_t min_offset );
 
 // image process

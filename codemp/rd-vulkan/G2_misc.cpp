@@ -595,9 +595,10 @@ void G2_TransformModel(CGhoul2Info_v &ghoul2, const int frameNum, vec3_t scale, 
 		}
 		assert(g.mBoneCache);
 //		assert(G2_MODEL_OK(&g));
+#ifndef VK_G2_POINTER_FRAMECACHE
 		// stop us building this model more than once per frame
 		g.mMeshFrameNum = frameNum;
-
+#endif
 		// decide the LOD
 #ifdef _G2_GORE
 		if (ApplyGore)

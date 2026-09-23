@@ -10,6 +10,7 @@ struct Asset
 {
 	qhandle_t		handle;
 	char			path[MAX_QPATH];
+	int				hashNext;	// next asset in the same bucket, -1 ends the chain
 };
 
 /* and shaderCache_t is needed for the model cache manager */
@@ -50,6 +51,8 @@ public:
 	using FileCache = std::vector<CachedFile>;
 
 public:
+	CModelCacheManager();
+
 	/*
 	 * Return -1 if asset not currently loaded, return positive qhandle_t if found
 	 */
@@ -81,11 +84,17 @@ public:
 	void		DumpNonPure();
 
 private:
-	AssetCache::iterator FindAsset( const char *name );
+	// Model lookups are resolved by name, and G2API_GetBoltMatrix does one per call - CG_Player
+	// alone makes 25 per character, every frame. A linear scan over every loaded model made
+	// that the single hottest path in the game once a map held more than a handful of NPCs.
+	// rd-vanilla hashes for the same reason, see mhHashTable in its tr_model.cpp.
+	static const int ASSET_HASH_SIZE = 1024;	// power of two, masked not modulo
+
 	FileCache::iterator	FindFile( const char *name );
 
 	AssetCache assets;
 	FileCache files;
+	int assetHashHeads[ASSET_HASH_SIZE];
 };
 
 qboolean C_Models_LevelLoadEnd( qboolean deleteUnusedByLevel );

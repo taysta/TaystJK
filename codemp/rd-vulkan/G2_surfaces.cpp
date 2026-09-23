@@ -213,7 +213,10 @@ void G2_SetSurfaceOnOffFromSkin (CGhoul2Info *ghlInfo, qhandle_t renderSkin)
 	const skin_t *skin = R_GetSkinByHandle( renderSkin );
 
 	ghlInfo->mSlist.clear();	//remove any overrides we had before.
-	ghlInfo->mMeshFrameNum = 0;
+#ifndef VK_G2_POINTER_FRAMECACHE
+		// ensure we flush the cache
+		ghlInfo->mMeshFrameNum = 0;
+#endif
 
 	for ( j = 0 ; j < skin->numSurfaces ; j++ )
 	{

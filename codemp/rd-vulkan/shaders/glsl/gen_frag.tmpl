@@ -1,19 +1,10 @@
 #version 450
+#extension GL_GOOGLE_include_directive : enable
 
-#if defined(USE_VBO_GHOUL2) || defined(USE_VBO_MDV)
-	#define USE_VBO_MODEL
-#endif
-
-#ifdef USE_TX2
-#define USE_TX1
-#endif
-
-#ifdef USE_CL2
-#define USE_CL1
-#endif
+#include "global.h"
 
 #if defined (USE_FOG)
-	layout(set = 0, binding = 0) uniform UBO {
+	layout(set = VK_DESC_UNIFORM, binding = VK_DESC_UNIFORM_MAIN_BINDING) uniform UBO {
 		// light/env/material parameters:
 		vec4 eyePos;
 		vec4 lightPos;
@@ -28,112 +19,42 @@
 	//#endif
 	};
 
-	struct vkUniformFogEntry_t {
-		vec4	plane;
-		vec4	color;
-		float	depthToOpaque;
-		int		hasPlane;
+	layout(set = VK_DESC_UNIFORM, binding = VK_DESC_UNIFORM_CAMERA_BINDING) uniform Camera {
+		vkUniformCamera_t u_camera;
 	};
 
-	struct vkUniformFog_t {
-		int					num_fogs;
-		vkUniformFogEntry_t	fogs[16];
-	};
-
-	layout(set = 0, binding = 1) uniform Camera {
-		vec4 u_ViewOrigin;
-	};
-
-	layout(set = 0, binding = 4) uniform Fog {
+	layout(set = VK_DESC_UNIFORM, binding = VK_DESC_UNIFORM_FOGS_BINDING) uniform Fog {
 		vkUniformFog_t u_fogs;
 	};
 #endif
 
 #if !defined(USE_CLX_IDENT) && defined(USE_VBO_MODEL)
-	struct tcMod_t {
-		vec4	matrix;
-		vec4	offTurb;
+	layout(set = VK_DESC_UNIFORM, binding = VK_DESC_UNIFORM_ENTITY_BINDING) uniform Entity {
+		vkUniformEntity_t u_entity;
 	};
 
-	struct tcGen_t {
-		vec3	vector0;
-		vec3	vector1;
-		int		type;
+	layout(set = VK_DESC_UNIFORM, binding = VK_DESC_UNIFORM_BONES_BINDING) uniform Bones {
+		vkUniformBones_t u_bones;
 	};
 
-	struct vkBundle_t {
-		vec4	baseColor;
-		vec4	vertColor;
-		tcMod_t	tcMod;
-		tcGen_t	tcGen;
-		int		rgbGen;
-		int		alphaGen;
-		int		numTexMods;
-	};
-
-	struct vkDisintegration_t {
-		vec3	origin;
-		float	threshold;
-	};
-
-	struct vkDeform_t {
-		float	base;
-		float	amplitude;
-		float	phase;
-		float	frequency;
-
-		vec3	vector;
-		float	time;
-
-		int		type;
-		int		func;
-	};
-
-	layout(set = 0, binding = 2) uniform Entity {
-		vec4 u_ambientLight;
-		vec4 u_directedLight;
-		vec4 u_LocalLightOrigin;
-		vec4 u_localViewOrigin;
-		mat4 u_ModelMatrix;
-	};
-
-	layout(set = 0, binding = 3) uniform Bones {
-		mat3x4 u_BoneMatrices[72];
-	};
-
-	layout(set = 0, binding = 5) uniform Global {
-		vkBundle_t			u_bundle[3];
-		vkDisintegration_t	u_disintegration;
-		vkDeform_t			u_deform;
-		float				u_portalRange;
+	layout(set = VK_DESC_UNIFORM, binding = VK_DESC_UNIFORM_GLOBAL_BINDING) uniform Global {
+		vkUniformGlobal_t u_global;
 	};	
 
 	layout(location = 7) in vec4 var_Normal;
 	layout(location = 8) in vec4 var_LightDir;
 	//layout(location = 9) in vec4 var_ViewDir;
-
-	bool needsShading( in int rgbType ) {
-		return ( rgbType >= 9 && rgbType != 11 && rgbType != 12 && rgbType != 13 ) ? true : false;
-	}
-
-	float CalcLightAttenuation(float point, float normDist)
-	{
-		// zero light at 1.0, approximating q3 style
-		// also don't attenuate directional light
-		float attenuation = ( 0.5 * normDist - 1.5 ) * point + 1.0;
-		return clamp( attenuation, 0.0, 1.0 );
-	}
 #endif
 
-layout(set = 1, binding = 0) uniform sampler2D texture0;
+layout(set = VK_DESC_TEXTURE0, binding = 0) uniform sampler2D texture0;
 #ifdef USE_TX1
-layout(set = 2, binding = 0) uniform sampler2D texture1;
+layout(set = VK_DESC_TEXTURE1, binding = 0) uniform sampler2D texture1;
 #endif
 #ifdef USE_TX2
-layout(set = 3, binding = 0) uniform sampler2D texture2;
+layout(set = VK_DESC_TEXTURE2, binding = 0) uniform sampler2D texture2;
 #endif
 #ifdef USE_FOG
-layout(set = 4, binding = 0) uniform sampler2D fog_texture;
+layout(set = VK_DESC_FOG_COLLAPSE, binding = 0) uniform sampler2D fog_texture;
 #endif
 
 #ifdef USE_CLX_IDENT
@@ -195,80 +116,10 @@ layout (constant_id = 10) const float identity_alpha = 1.0;
 layout (constant_id = 11) const int acff = 0; // NONE, RGB, RGBA, ALPHA
 #endif
 
-#ifdef USE_ATEST
-float CorrectAlpha(float threshold, float alpha, vec2 tc)
-{
-	ivec2 ts = textureSize(texture0, 0);
-	float dx = max(abs(dFdx(tc.x * float(ts.x))), 0.001);
-	float dy = max(abs(dFdy(tc.y * float(ts.y))), 0.001);
-	float dxy = max(dx, dy); // apply the smallest boost
-	float scale = max(1.0 / dxy, 1.0);
-	float ac = threshold + (alpha - threshold) * scale;
-	return ac;
-}
-#endif
-
-
-#ifdef USE_FOG
-	void ApplyACFF(inout vec4 base, in vec4 fogColor, in float fogAlpha)
-	{
-		if ( acff == 1 )		// ACFF_RGB
-			base.rgb *= ( 1.0 - fogAlpha );        
-
-		else if ( acff == 2 )		// ACFF_RGBA
-			base *= ( 1.0 - fogAlpha );            
-
-		else if ( acff == 3 )		// ACFF_ALPHA
-			base.a *= ( 1.0 - fogAlpha );         
-
-		else			// default: ACFF_NONE
-			base = mix( base, fogColor, fogAlpha ); 
-	}
-
-	vec4 CalcFog(in vec3 viewOrigin, in vec3 position, in vkUniformFogEntry_t fog)
-	{
-		bool inFog = dot(viewOrigin, fog.plane.xyz) - fog.plane.w >= 0.0 || (fog.hasPlane == 0);
-
-		// line: x = o + tv
-		// plane: (x . n) + d = 0
-		// intersects: dot(o + tv, n) + d = 0
-		//             dot(o + tv, n) = -d
-		//             dot(o, n) + t*dot(n, v) = -d
-		//             t = -(d + dot(o, n)) / dot(n, v)
-		vec3 V = position - viewOrigin;
-
-		// fogPlane is inverted in tr_bsp for some reason.
-		float t = -(fog.plane.w + dot(viewOrigin, -fog.plane.xyz)) / dot(V, -fog.plane.xyz);
-
-		// only use this for objects with potentially two contibuting fogs
-		#if defined(USE_FALLBACK_GLOBAL_FOG)
-			bool intersects = (t > 0.0 && t < 0.995);
-			if (inFog == intersects)
-			{
-				int u_globalFogIndex = int(fogDistanceVector[0]);
-				Fog globalFog = u_fogs.fogs[u_globalFogIndex];
-
-				float distToVertex = length(V);
-				float distFromIntersection = distToVertex - (t * distToVertex);
-				float z = globalFog.depthToOpaque * mix(distToVertex, distFromIntersection, intersects);
-				return vec4(globalFog.color.rgb, 1.0 - clamp(exp(-(z * z)), 0.0, 1.0));
-			}
-		#else
-			bool intersects = (t > 0.0 && t < 0.995);
-			if (inFog == intersects)
-				return vec4(0.0);
-		#endif
-
-		float distToVertexFromViewOrigin = length(V);
-		float distToIntersectionFromViewOrigin = t * distToVertexFromViewOrigin;
-
-		float distOutsideFog = max(distToVertexFromViewOrigin - distToIntersectionFromViewOrigin, 0.0);
-		float distThroughFog = mix(distOutsideFog, distToVertexFromViewOrigin, inFog);
-
-		float z = fog.depthToOpaque * distThroughFog;
-		return vec4(fog.color.rgb * fogDistanceVector[2], 1.0 - clamp(exp(-(z * z)), 0.0, 1.0));
-	}
-#endif
+#define SHADER_FRAG
+#include "common/utils.glsl"
+#include "common/fog.glsl"
+#include "common/color.glsl"
 
 void main() {
 	vec4 diffuse;
@@ -627,9 +478,9 @@ void main() {
 	float sqrLightDist = dot(L, L);
 	L /= sqrt(sqrLightDist);
 
-	if ( needsShading( u_bundle[0].rgbGen ) ) {
-		lightColor = ( u_directedLight.xyz * 1.2 ) * base.rgb;
-		ambientColor = ( u_ambientLight.rgb ) * base.rgb;
+	if ( needsShading( u_global.bundle[0].rgbGen ) ) {
+		lightColor = ( u_entity.directedLight.xyz * 1.2 ) * base.rgb;
+		ambientColor = ( u_entity.ambientLight.rgb ) * base.rgb;
 
 		vec3 nL = normalize( L );
 		float LdotL = dot( L, L );
@@ -648,7 +499,7 @@ void main() {
 #ifdef USE_FOG
 	if ( hw_fog == 1 ) {
 		int u_fogIndex = int(fogDistanceVector[1]);
-		vec4 fog_color = CalcFog( u_ViewOrigin.rgb, fog_tex_coord, u_fogs.fogs[u_fogIndex] );
+		vec4 fog_color = CalcFog( u_camera.viewOrigin.rgb, fog_tex_coord, u_fogs.fogs[u_fogIndex] );
 		ApplyACFF( base, fog_color, fog_color.a );
 	} 
 	else {

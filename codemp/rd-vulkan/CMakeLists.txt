@@ -86,6 +86,7 @@ set(MPVulkanRendererFiles
 	"${MPDir}/rd-vulkan/vk_instance.cpp"
 	"${MPDir}/rd-vulkan/vk_local.h"
 	"${MPDir}/rd-vulkan/vk_pipelines.cpp"
+	"${MPDir}/rd-vulkan/vk_renderpass.cpp"
 	"${MPDir}/rd-vulkan/vk_shaders.cpp"
 	"${MPDir}/rd-vulkan/vk_shade_geometry.cpp"
 	"${MPDir}/rd-vulkan/vk_swapchain.cpp"

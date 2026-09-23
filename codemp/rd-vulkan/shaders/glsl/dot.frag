@@ -1,6 +1,9 @@
 #version 450
+#extension GL_GOOGLE_include_directive : enable
 
-layout(set = 0, binding = 0) buffer SSBO {
+#include "global.h"
+
+layout(set = VK_DESC_STORAGE, binding = VK_DESC_STORAGE) buffer SSBO {
 	int sampled;
 };
 

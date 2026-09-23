@@ -410,7 +410,6 @@ void vk_initialize( void )
 	vk.uniform_item_size		= PAD( sizeof(vkUniform_t),			(size_t)vk.uniform_alignment );
 	vk.uniform_camera_item_size	= PAD( sizeof(vkUniformCamera_t),	(size_t)vk.uniform_alignment );
 	vk.uniform_entity_item_size = PAD( sizeof(vkUniformEntity_t),	(size_t)vk.uniform_alignment );
-	vk.uniform_bones_item_size	= PAD( sizeof(vkUniformBones_t),	(size_t)vk.uniform_alignment );
 	vk.uniform_global_item_size	= PAD( sizeof(vkUniformGlobal_t),	(size_t)vk.uniform_alignment );
 	vk.uniform_fogs_item_size	= PAD( sizeof(vkUniformFog_t),		(size_t)vk.uniform_alignment );
 

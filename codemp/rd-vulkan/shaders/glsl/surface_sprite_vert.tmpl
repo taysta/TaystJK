@@ -1,4 +1,7 @@
 #version 450
+#extension GL_GOOGLE_include_directive : enable
+
+#include "global.h"
 // based on OpenJK rend2 surface_sprites.glsl
 
 #ifdef USE_FOG
@@ -17,7 +20,7 @@ layout(push_constant) uniform Transform {
 };
 
 #if defined(USE_FOG)
-layout(set = 0, binding = 0) uniform UBO {
+layout(set = VK_DESC_UNIFORM, binding = VK_DESC_UNIFORM_MAIN_BINDING) uniform UBO {
 	// light/env/material parameters:
 	vec4 eyePos;
 	vec4 lightPos;
@@ -33,21 +36,13 @@ layout(set = 0, binding = 0) uniform UBO {
 };
 #endif
 
-layout(set = 0, binding = 1) uniform Camera {
-	vec4 u_ViewOrigin;
+layout(set = VK_DESC_UNIFORM, binding = VK_DESC_UNIFORM_CAMERA_BINDING) uniform Camera {
+	vkUniformCamera_t u_camera;
 };
 
 layout(set = 1, binding = 0) buffer SurfaceSprite
 {
-	vec2  u_FxGrow;
-	float u_FxDuration;
-	float u_FadeStartDistance;
-	float u_FadeEndDistance;
-	float u_FadeScale;
-	float u_Wind;
-	float u_WindIdle;
-	float u_FxAlphaStart;
-	float u_FxAlphaEnd;
+	SurfaceSpriteBlock u_ss;
 };
 
 layout(location = 0) in uint in_vertex_id;	// unused
@@ -69,22 +64,22 @@ out gl_PerVertex {
 };
 
 void main() {
-	vec3 V = u_ViewOrigin.xyz - in_position.rgb;
+	vec3 V = u_camera.viewOrigin.xyz - in_position.rgb;
 
 	float width = in_width_height.x;
 	float height = in_width_height.y;
 	vec2 skew = in_skew.xy;
 
 	float distanceToCamera = length( V );
-	float fadeScale = smoothstep( u_FadeStartDistance, u_FadeEndDistance, distanceToCamera );
-	width += u_FadeScale * fadeScale * width;
+	float fadeScale = smoothstep( u_ss.fadeStartDistance, u_ss.fadeEndDistance, distanceToCamera );
+	width += u_ss.fadeScale * fadeScale * width;
 
 	if ( kFxSprite > 0 ) {
 		//float sprite_time = u_frameTime * 1000.0;
-		float sprite_time = u_ViewOrigin.w * 1000.0;
-		var_Effectpos = fract((sprite_time+10000.0 * in_position.w) / u_FxDuration);
-		width += var_Effectpos * width * u_FxGrow.x;
-		height += var_Effectpos * height * u_FxGrow.y;
+		float sprite_time = u_camera.viewOrigin.w * 1000.0;
+		var_Effectpos = fract((sprite_time+10000.0 * in_position.w) / u_ss.fxDuration);
+		width += var_Effectpos * width * u_ss.fxGrow.x;
+		height += var_Effectpos * height * u_ss.fxGrow.y;
 	}
 
 	float halfWidth = width * 0.5;
@@ -144,9 +139,9 @@ void main() {
 		float isLowerVertex = float(offset.z == 0.0);
 		offset.xy += mix(skew, vec2(0.0), isLowerVertex);
 		//float sprite_time = u_frameTime * 1000.0;
-		float sprite_time = u_ViewOrigin.w * 1000.0;
+		float sprite_time = u_camera.viewOrigin.w * 1000.0;
 		float angle = (in_position.x + in_position.y) * 0.02 + (sprite_time * 0.0015);
-		float windsway = mix(height* u_WindIdle * 0.075, 0.0, isLowerVertex);
+		float windsway = mix(height* u_ss.windIdle * 0.075, 0.0, isLowerVertex);
 		offset.xy += vec2(cos(angle), sin(angle)) * windsway;
 	}
 

@@ -1,15 +1,14 @@
 #version 450
+#extension GL_GOOGLE_include_directive : enable
 
-#if defined(USE_VBO_GHOUL2) || defined(USE_VBO_MDV)
-	#define USE_VBO_MODEL
-#endif
+#include "global.h"
 
 // 64 bytes
 layout(push_constant) uniform Transform {
 	mat4 mvp;
 };
 
-layout(set = 0, binding = 0) uniform UBO {
+layout(set = VK_DESC_UNIFORM, binding = VK_DESC_UNIFORM_MAIN_BINDING) uniform UBO {
 	// light/env/material parameters:
 	vec4 eyePos;
 	vec4 lightPos;
@@ -23,36 +22,22 @@ layout(set = 0, binding = 0) uniform UBO {
 	vec4 fogColor;
 //#endif
 #if !defined(USE_VBO_MODEL)
-	mat4 u_ModelMatrix;
+    vkEntityMatrix_t u_entity; // modelMatrix
 #endif
 };
 
 #if defined(USE_VBO_MODEL)
-	layout(set = 0, binding = 2) uniform Entity {
-		vec4 u_ambientLight;
-		vec4 u_directedLight;
-		vec4 u_LocalLightOrigin;
-		vec4 u_localViewOrigin;
-		mat4 u_ModelMatrix;
+	layout(set = VK_DESC_UNIFORM, binding = VK_DESC_UNIFORM_ENTITY_BINDING) uniform Entity {
+		vkUniformEntity_t u_entity;
 	};
 #endif
 
 #ifdef USE_VBO_GHOUL2
-	layout(set = 0, binding = 3) uniform Bones {
-		mat3x4 u_BoneMatrices[72];
+	layout(set = VK_DESC_UNIFORM, binding = VK_DESC_UNIFORM_BONES_BINDING) uniform Bones {
+		vkUniformBones_t u_bones;
 	};	
 	layout(location = 8) in uvec4 in_bones;
 	layout(location = 9) in vec4 in_weights;
-
-	mat4x3 GetBoneMatrix(uint index)
-	{
-		mat3x4 bone = u_BoneMatrices[index];
-		return mat4x3(
-			bone[0].x, bone[1].x, bone[2].x,
-			bone[0].y, bone[1].y, bone[2].y,
-			bone[0].z, bone[1].z, bone[2].z,
-			bone[0].w, bone[1].w, bone[2].w);
-	}
 #endif
 
 layout(location = 0) in vec3 in_position;
@@ -67,6 +52,9 @@ layout(location = 0) in vec3 in_position;
 out gl_PerVertex {
 	vec4 gl_Position;
 };
+
+#define SHADER_VERT
+#include "common/skinning.glsl"
 
 void main() {
 	#ifdef USE_VBO_GHOUL2
@@ -106,15 +94,15 @@ void main() {
 
 	#ifdef USE_FOG_EXP
 		#if defined(USE_VBO_MDV)
-			ws_position = (u_ModelMatrix * vec4(in_position, 1.0)).xyz;
+			ws_position = (u_entity.modelMatrix * vec4(in_position, 1.0)).xyz;
 		#elif defined(USE_VBO_GHOUL2)
-			ws_position = (u_ModelMatrix * vec4(position, 1.0)).xyz;
+			ws_position = (u_entity.modelMatrix * vec4(position, 1.0)).xyz;
 		#else
 			// when model vbos are disabled, but the shader still requires
 			// the modelmatrix to get world space positions.
 			// store the modelmatrix in main uniform
 			ws_position = (int(fogDistanceVector[3]) == 1)
-				? (u_ModelMatrix * vec4(in_position, 1.0)).xyz
+				? (u_entity.modelMatrix * vec4(in_position, 1.0)).xyz
 				: in_position;
 		#endif
 	#endif

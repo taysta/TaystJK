@@ -51,6 +51,11 @@ along with this program; if not, see <http://www.gnu.org/licenses/>.
 
 #define USE_BUFFER_CLEAR		/* clear attachments on render pass begin */
 
+#define VK_G2_POINTER_FRAMECACHE
+#define VK_G2_POINTER_INVALIDATE_BITS 4
+#define VK_G2_POINTER_INVALIDATE_MASK ((1 << VK_G2_POINTER_INVALIDATE_BITS) - 1)
+#define VK_G2_POINTER_FRAME_SHIFT VK_G2_POINTER_INVALIDATE_BITS
+
 #include "qcommon/qfiles.h"
 #include "rd-common/tr_public.h"
 #include "rd-common/tr_common.h"
@@ -527,20 +532,6 @@ enum surfaceSpriteOrientation_t
 	SURFSPRITE_FACING_UP,
 	SURFSPRITE_FACING_DOWN,
 	SURFSPRITE_FACING_ANY,
-};
-
-struct SurfaceSpriteBlock
-{
-	vec2_t fxGrow;
-	float fxDuration;
-	float fadeStartDistance;
-	float fadeEndDistance;
-	float fadeScale;
-	float wind;
-	float windIdle;
-	float fxAlphaStart;
-	float fxAlphaEnd;
-	float pad0[2];
 };
 
 #define	MAX_IMAGE_ANIMATIONS	32
@@ -1715,6 +1706,10 @@ typedef struct trGlobals_s {
 	IBO_t					*goreIBO;
 	int						goreIBOCurrentIndex;
 #endif
+#ifdef VK_G2_POINTER_FRAMECACHE
+	// force resolving the ghoul2 per-frame pointers
+	int						g2PtrInvalidation;
+#endif
 
 #ifdef USE_VBO_SS
 	struct {
@@ -2633,7 +2628,7 @@ void		vk_clean_staging_buffer( void );
 
 // ghoul2
 void		RB_TransformBones( const trRefEntity_t *ent, const trRefdef_t *refdef );
-int			RB_GetBoneUboOffset( CRenderableSurface *surf );
+uint32_t	RB_GetBoneUboOffset( CRenderableSurface *surf );
 
 // surface sprites
 #ifdef USE_VBO_SS
