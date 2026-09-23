@@ -31080,9 +31080,9 @@
           "line": 8496,
           "line_commit_sha": "0d1aac2a499a04a0281982cc2098fa7008e502f4",
           "path": "codemp/game/g_cmds.c",
-          "ref": "origin/master",
+          "ref": "eternaljk/master",
           "sha": "fa2b5ba6883ba72c77c53130fedf2d3d2bfb86ea",
-          "source": "taystjk",
+          "source": "eternaljk",
           "subject": "Merge branch 'feature/update-game'",
           "timestamp": 1534726375
         },
@@ -31100,9 +31100,9 @@
           "line": 8496,
           "line_commit_sha": "0d1aac2a499a04a0281982cc2098fa7008e502f4",
           "path": "codemp/game/g_cmds.c",
-          "ref": "japro/main",
+          "ref": "origin/master",
           "sha": "fa2b5ba6883ba72c77c53130fedf2d3d2bfb86ea",
-          "source": "japro",
+          "source": "taystjk",
           "subject": "Merge branch 'feature/update-game'",
           "timestamp": 1534726375
         },
@@ -31213,7 +31213,7 @@
           "timestamp": 1534726375
         }
       ],
-      "method": "shared-earliest-commit-lineage-order",
+      "method": "shared-earliest-commit-module-lineage",
       "modified_by": [
         {
           "categories": [
@@ -31271,12 +31271,12 @@
           "timestamp": 1706953739
         }
       ],
-      "notes": "The earliest authored/submitted introduction is shared by eternaljk, taystjk, japro, vulkan; fork-lineage order selects eternaljk.",
+      "notes": "The earliest authored/submitted introduction is shared by eternaljk, taystjk, japro, vulkan; module lineage selects japro.",
       "origin_evidence": {
         "kind": "forwarded client command table",
-        "line": 2283,
+        "line": 2608,
         "path": "codemp/cgame/cg_consolecmds.c",
-        "ref": "eternaljk/master"
+        "ref": "japro/main"
       },
       "origin_introduction": {
         "author": "eternalcodes",
@@ -31292,16 +31292,16 @@
         "line": 8496,
         "line_commit_sha": "0d1aac2a499a04a0281982cc2098fa7008e502f4",
         "path": "codemp/game/g_cmds.c",
-        "ref": "eternaljk/master",
+        "ref": "japro/main",
         "sha": "fa2b5ba6883ba72c77c53130fedf2d3d2bfb86ea",
-        "source": "eternaljk",
+        "source": "japro",
         "subject": "Merge branch 'feature/update-game'",
         "timestamp": 1534726375
       },
       "ported_via": [],
       "pr": null,
       "pr_url": null,
-      "source": "eternaljk",
+      "source": "japro",
       "squash_bullet": null,
       "status": "needs-review",
       "upstream_presence": [
@@ -31327,9 +31327,9 @@
           "line": 8497,
           "line_commit_sha": "4cf0c979cbf6d8a493d7305f9eb988ad75b099c0",
           "path": "codemp/game/g_cmds.c",
-          "ref": "origin/master",
+          "ref": "eternaljk/master",
           "sha": "fa2b5ba6883ba72c77c53130fedf2d3d2bfb86ea",
-          "source": "taystjk",
+          "source": "eternaljk",
           "subject": "Merge branch 'feature/update-game'",
           "timestamp": 1534726375
         },
@@ -31347,9 +31347,9 @@
           "line": 8497,
           "line_commit_sha": "4cf0c979cbf6d8a493d7305f9eb988ad75b099c0",
           "path": "codemp/game/g_cmds.c",
-          "ref": "japro/main",
+          "ref": "origin/master",
           "sha": "fa2b5ba6883ba72c77c53130fedf2d3d2bfb86ea",
-          "source": "japro",
+          "source": "taystjk",
           "subject": "Merge branch 'feature/update-game'",
           "timestamp": 1534726375
         },
@@ -31460,7 +31460,7 @@
           "timestamp": 1534726375
         }
       ],
-      "method": "shared-earliest-commit-lineage-order",
+      "method": "shared-earliest-commit-module-lineage",
       "modified_by": [
         {
           "categories": [
@@ -31499,12 +31499,12 @@
           "timestamp": 1592176499
         }
       ],
-      "notes": "The earliest authored/submitted introduction is shared by eternaljk, taystjk, japro, vulkan; fork-lineage order selects eternaljk.",
+      "notes": "The earliest authored/submitted introduction is shared by eternaljk, taystjk, japro, vulkan; module lineage selects japro.",
       "origin_evidence": {
         "kind": "forwarded client command table",
-        "line": 2282,
+        "line": 2607,
         "path": "codemp/cgame/cg_consolecmds.c",
-        "ref": "eternaljk/master"
+        "ref": "japro/main"
       },
       "origin_introduction": {
         "author": "eternalcodes",
@@ -31520,16 +31520,16 @@
         "line": 8497,
         "line_commit_sha": "4cf0c979cbf6d8a493d7305f9eb988ad75b099c0",
         "path": "codemp/game/g_cmds.c",
-        "ref": "eternaljk/master",
+        "ref": "japro/main",
         "sha": "fa2b5ba6883ba72c77c53130fedf2d3d2bfb86ea",
-        "source": "eternaljk",
+        "source": "japro",
         "subject": "Merge branch 'feature/update-game'",
         "timestamp": 1534726375
       },
       "ported_via": [],
       "pr": null,
       "pr_url": null,
-      "source": "eternaljk",
+      "source": "japro",
       "squash_bullet": null,
       "status": "needs-review",
       "upstream_presence": [
@@ -31555,9 +31555,9 @@
           "line": 1613,
           "line_commit_sha": "355f680ecd1599b8be9f1c347ed653f2f52b020c",
           "path": "codemp/game/g_svcmds.c",
-          "ref": "origin/master",
+          "ref": "eternaljk/master",
           "sha": "fa2b5ba6883ba72c77c53130fedf2d3d2bfb86ea",
-          "source": "taystjk",
+          "source": "eternaljk",
           "subject": "Merge branch 'feature/update-game'",
           "timestamp": 1534726375
         },
@@ -31575,9 +31575,9 @@
           "line": 1613,
           "line_commit_sha": "355f680ecd1599b8be9f1c347ed653f2f52b020c",
           "path": "codemp/game/g_svcmds.c",
-          "ref": "japro/main",
+          "ref": "origin/master",
           "sha": "fa2b5ba6883ba72c77c53130fedf2d3d2bfb86ea",
-          "source": "japro",
+          "source": "taystjk",
           "subject": "Merge branch 'feature/update-game'",
           "timestamp": 1534726375
         },
@@ -31688,7 +31688,7 @@
           "timestamp": 1534726375
         }
       ],
-      "method": "shared-earliest-commit-lineage-order",
+      "method": "shared-earliest-commit-module-lineage",
       "modified_by": [
         {
           "categories": [
@@ -31709,12 +31709,12 @@
           "timestamp": 1592176499
         }
       ],
-      "notes": "The earliest authored/submitted introduction is shared by eternaljk, taystjk, japro, vulkan; fork-lineage order selects eternaljk.",
+      "notes": "The earliest authored/submitted introduction is shared by eternaljk, taystjk, japro, vulkan; module lineage selects japro.",
       "origin_evidence": {
         "kind": "game-console command table",
-        "line": 1635,
+        "line": 1663,
         "path": "codemp/game/g_svcmds.c",
-        "ref": "eternaljk/master"
+        "ref": "japro/main"
       },
       "origin_introduction": {
         "author": "eternalcodes",
@@ -31730,16 +31730,16 @@
         "line": 1613,
         "line_commit_sha": "355f680ecd1599b8be9f1c347ed653f2f52b020c",
         "path": "codemp/game/g_svcmds.c",
-        "ref": "eternaljk/master",
+        "ref": "japro/main",
         "sha": "fa2b5ba6883ba72c77c53130fedf2d3d2bfb86ea",
-        "source": "eternaljk",
+        "source": "japro",
         "subject": "Merge branch 'feature/update-game'",
         "timestamp": 1534726375
       },
       "ported_via": [],
       "pr": null,
       "pr_url": null,
-      "source": "eternaljk",
+      "source": "japro",
       "squash_bullet": null,
       "status": "needs-review",
       "upstream_presence": [
@@ -31765,9 +31765,9 @@
           "line": 8498,
           "line_commit_sha": "b1f744edf944f731548a3229f4174ac1a7ff9205",
           "path": "codemp/game/g_cmds.c",
-          "ref": "origin/master",
+          "ref": "eternaljk/master",
           "sha": "fa2b5ba6883ba72c77c53130fedf2d3d2bfb86ea",
-          "source": "taystjk",
+          "source": "eternaljk",
           "subject": "Merge branch 'feature/update-game'",
           "timestamp": 1534726375
         },
@@ -31785,9 +31785,9 @@
           "line": 8498,
           "line_commit_sha": "b1f744edf944f731548a3229f4174ac1a7ff9205",
           "path": "codemp/game/g_cmds.c",
-          "ref": "japro/main",
+          "ref": "origin/master",
           "sha": "fa2b5ba6883ba72c77c53130fedf2d3d2bfb86ea",
-          "source": "japro",
+          "source": "taystjk",
           "subject": "Merge branch 'feature/update-game'",
           "timestamp": 1534726375
         },
@@ -31898,7 +31898,7 @@
           "timestamp": 1534726375
         }
       ],
-      "method": "shared-earliest-commit-lineage-order",
+      "method": "shared-earliest-commit-module-lineage",
       "modified_by": [
         {
           "categories": [
@@ -31937,12 +31937,12 @@
           "timestamp": 1537985589
         }
       ],
-      "notes": "The earliest authored/submitted introduction is shared by eternaljk, taystjk, japro, vulkan; fork-lineage order selects eternaljk.",
+      "notes": "The earliest authored/submitted introduction is shared by eternaljk, taystjk, japro, vulkan; module lineage selects japro.",
       "origin_evidence": {
         "kind": "forwarded client command table",
-        "line": 2287,
+        "line": 2612,
         "path": "codemp/cgame/cg_consolecmds.c",
-        "ref": "eternaljk/master"
+        "ref": "japro/main"
       },
       "origin_introduction": {
         "author": "eternalcodes",
@@ -31958,16 +31958,16 @@
         "line": 8498,
         "line_commit_sha": "b1f744edf944f731548a3229f4174ac1a7ff9205",
         "path": "codemp/game/g_cmds.c",
-        "ref": "eternaljk/master",
+        "ref": "japro/main",
         "sha": "fa2b5ba6883ba72c77c53130fedf2d3d2bfb86ea",
-        "source": "eternaljk",
+        "source": "japro",
         "subject": "Merge branch 'feature/update-game'",
         "timestamp": 1534726375
       },
       "ported_via": [],
       "pr": null,
       "pr_url": null,
-      "source": "eternaljk",
+      "source": "japro",
       "squash_bullet": null,
       "status": "needs-review",
       "upstream_presence": [
@@ -31993,9 +31993,9 @@
           "line": 5707,
           "line_commit_sha": "4c12cf1eb3e8b850db22309a29f9195503926e63",
           "path": "codemp/game/g_cmds.c",
-          "ref": "origin/master",
+          "ref": "eternaljk/master",
           "sha": "fa2b5ba6883ba72c77c53130fedf2d3d2bfb86ea",
-          "source": "taystjk",
+          "source": "eternaljk",
           "subject": "Merge branch 'feature/update-game'",
           "timestamp": 1534726375
         },
@@ -32013,9 +32013,9 @@
           "line": 5707,
           "line_commit_sha": "4c12cf1eb3e8b850db22309a29f9195503926e63",
           "path": "codemp/game/g_cmds.c",
-          "ref": "japro/main",
+          "ref": "origin/master",
           "sha": "fa2b5ba6883ba72c77c53130fedf2d3d2bfb86ea",
-          "source": "japro",
+          "source": "taystjk",
           "subject": "Merge branch 'feature/update-game'",
           "timestamp": 1534726375
         },
@@ -32126,7 +32126,7 @@
           "timestamp": 1534726375
         }
       ],
-      "method": "shared-earliest-commit-lineage-order",
+      "method": "shared-earliest-commit-module-lineage",
       "modified_by": [
         {
           "categories": [
@@ -32165,12 +32165,12 @@
           "timestamp": 1592176499
         }
       ],
-      "notes": "The earliest authored/submitted introduction is shared by eternaljk, taystjk, japro, vulkan; fork-lineage order selects eternaljk.",
+      "notes": "The earliest authored/submitted introduction is shared by eternaljk, taystjk, japro, vulkan; module lineage selects japro.",
       "origin_evidence": {
         "kind": "forwarded client command table",
-        "line": 2284,
+        "line": 2609,
         "path": "codemp/cgame/cg_consolecmds.c",
-        "ref": "eternaljk/master"
+        "ref": "japro/main"
       },
       "origin_introduction": {
         "author": "eternalcodes",
@@ -32186,16 +32186,16 @@
         "line": 5707,
         "line_commit_sha": "4c12cf1eb3e8b850db22309a29f9195503926e63",
         "path": "codemp/game/g_cmds.c",
-        "ref": "eternaljk/master",
+        "ref": "japro/main",
         "sha": "fa2b5ba6883ba72c77c53130fedf2d3d2bfb86ea",
-        "source": "eternaljk",
+        "source": "japro",
         "subject": "Merge branch 'feature/update-game'",
         "timestamp": 1534726375
       },
       "ported_via": [],
       "pr": null,
       "pr_url": null,
-      "source": "eternaljk",
+      "source": "japro",
       "squash_bullet": null,
       "status": "needs-review",
       "upstream_presence": [
@@ -32221,9 +32221,9 @@
           "line": 8500,
           "line_commit_sha": "4cf0c979cbf6d8a493d7305f9eb988ad75b099c0",
           "path": "codemp/game/g_cmds.c",
-          "ref": "origin/master",
+          "ref": "eternaljk/master",
           "sha": "fa2b5ba6883ba72c77c53130fedf2d3d2bfb86ea",
-          "source": "taystjk",
+          "source": "eternaljk",
           "subject": "Merge branch 'feature/update-game'",
           "timestamp": 1534726375
         },
@@ -32241,9 +32241,9 @@
           "line": 8500,
           "line_commit_sha": "4cf0c979cbf6d8a493d7305f9eb988ad75b099c0",
           "path": "codemp/game/g_cmds.c",
-          "ref": "japro/main",
+          "ref": "origin/master",
           "sha": "fa2b5ba6883ba72c77c53130fedf2d3d2bfb86ea",
-          "source": "japro",
+          "source": "taystjk",
           "subject": "Merge branch 'feature/update-game'",
           "timestamp": 1534726375
         },
@@ -32354,7 +32354,7 @@
           "timestamp": 1534726375
         }
       ],
-      "method": "shared-earliest-commit-lineage-order",
+      "method": "shared-earliest-commit-module-lineage",
       "modified_by": [
         {
           "categories": [
@@ -32429,12 +32429,12 @@
           "timestamp": 1706953739
         }
       ],
-      "notes": "The earliest authored/submitted introduction is shared by eternaljk, taystjk, japro, vulkan; fork-lineage order selects eternaljk.",
+      "notes": "The earliest authored/submitted introduction is shared by eternaljk, taystjk, japro, vulkan; module lineage selects japro.",
       "origin_evidence": {
         "kind": "forwarded client command table",
-        "line": 2281,
+        "line": 2606,
         "path": "codemp/cgame/cg_consolecmds.c",
-        "ref": "eternaljk/master"
+        "ref": "japro/main"
       },
       "origin_introduction": {
         "author": "eternalcodes",
@@ -32450,16 +32450,16 @@
         "line": 8500,
         "line_commit_sha": "4cf0c979cbf6d8a493d7305f9eb988ad75b099c0",
         "path": "codemp/game/g_cmds.c",
-        "ref": "eternaljk/master",
+        "ref": "japro/main",
         "sha": "fa2b5ba6883ba72c77c53130fedf2d3d2bfb86ea",
-        "source": "eternaljk",
+        "source": "japro",
         "subject": "Merge branch 'feature/update-game'",
         "timestamp": 1534726375
       },
       "ported_via": [],
       "pr": null,
       "pr_url": null,
-      "source": "eternaljk",
+      "source": "japro",
       "squash_bullet": null,
       "status": "needs-review",
       "upstream_presence": [
@@ -32485,9 +32485,9 @@
           "line": 1615,
           "line_commit_sha": "355f680ecd1599b8be9f1c347ed653f2f52b020c",
           "path": "codemp/game/g_svcmds.c",
-          "ref": "origin/master",
+          "ref": "eternaljk/master",
           "sha": "fa2b5ba6883ba72c77c53130fedf2d3d2bfb86ea",
-          "source": "taystjk",
+          "source": "eternaljk",
           "subject": "Merge branch 'feature/update-game'",
           "timestamp": 1534726375
         },
@@ -32505,9 +32505,9 @@
           "line": 1615,
           "line_commit_sha": "355f680ecd1599b8be9f1c347ed653f2f52b020c",
           "path": "codemp/game/g_svcmds.c",
-          "ref": "japro/main",
+          "ref": "origin/master",
           "sha": "fa2b5ba6883ba72c77c53130fedf2d3d2bfb86ea",
-          "source": "japro",
+          "source": "taystjk",
           "subject": "Merge branch 'feature/update-game'",
           "timestamp": 1534726375
         },
@@ -32618,7 +32618,7 @@
           "timestamp": 1534726375
         }
       ],
-      "method": "shared-earliest-commit-lineage-order",
+      "method": "shared-earliest-commit-module-lineage",
       "modified_by": [
         {
           "categories": [
@@ -32639,12 +32639,12 @@
           "timestamp": 1592176499
         }
       ],
-      "notes": "The earliest authored/submitted introduction is shared by eternaljk, taystjk, japro, vulkan; fork-lineage order selects eternaljk.",
+      "notes": "The earliest authored/submitted introduction is shared by eternaljk, taystjk, japro, vulkan; module lineage selects japro.",
       "origin_evidence": {
         "kind": "game-console command table",
-        "line": 1637,
+        "line": 1665,
         "path": "codemp/game/g_svcmds.c",
-        "ref": "eternaljk/master"
+        "ref": "japro/main"
       },
       "origin_introduction": {
         "author": "eternalcodes",
@@ -32660,16 +32660,16 @@
         "line": 1615,
         "line_commit_sha": "355f680ecd1599b8be9f1c347ed653f2f52b020c",
         "path": "codemp/game/g_svcmds.c",
-        "ref": "eternaljk/master",
+        "ref": "japro/main",
         "sha": "fa2b5ba6883ba72c77c53130fedf2d3d2bfb86ea",
-        "source": "eternaljk",
+        "source": "japro",
         "subject": "Merge branch 'feature/update-game'",
         "timestamp": 1534726375
       },
       "ported_via": [],
       "pr": null,
       "pr_url": null,
-      "source": "eternaljk",
+      "source": "japro",
       "squash_bullet": null,
       "status": "needs-review",
       "upstream_presence": [
@@ -32924,9 +32924,9 @@
           "line": 8501,
           "line_commit_sha": "4cf0c979cbf6d8a493d7305f9eb988ad75b099c0",
           "path": "codemp/game/g_cmds.c",
-          "ref": "origin/master",
+          "ref": "eternaljk/master",
           "sha": "fa2b5ba6883ba72c77c53130fedf2d3d2bfb86ea",
-          "source": "taystjk",
+          "source": "eternaljk",
           "subject": "Merge branch 'feature/update-game'",
           "timestamp": 1534726375
         },
@@ -32944,9 +32944,9 @@
           "line": 8501,
           "line_commit_sha": "4cf0c979cbf6d8a493d7305f9eb988ad75b099c0",
           "path": "codemp/game/g_cmds.c",
-          "ref": "japro/main",
+          "ref": "origin/master",
           "sha": "fa2b5ba6883ba72c77c53130fedf2d3d2bfb86ea",
-          "source": "japro",
+          "source": "taystjk",
           "subject": "Merge branch 'feature/update-game'",
           "timestamp": 1534726375
         },
@@ -33057,7 +33057,7 @@
           "timestamp": 1534726375
         }
       ],
-      "method": "shared-earliest-commit-lineage-order",
+      "method": "shared-earliest-commit-module-lineage",
       "modified_by": [
         {
           "categories": [
@@ -33096,12 +33096,12 @@
           "timestamp": 1538764994
         }
       ],
-      "notes": "The earliest authored/submitted introduction is shared by eternaljk, taystjk, japro, vulkan; fork-lineage order selects eternaljk.",
+      "notes": "The earliest authored/submitted introduction is shared by eternaljk, taystjk, japro, vulkan; module lineage selects japro.",
       "origin_evidence": {
         "kind": "forwarded client command table",
-        "line": 2286,
+        "line": 2611,
         "path": "codemp/cgame/cg_consolecmds.c",
-        "ref": "eternaljk/master"
+        "ref": "japro/main"
       },
       "origin_introduction": {
         "author": "eternalcodes",
@@ -33117,16 +33117,16 @@
         "line": 8501,
         "line_commit_sha": "4cf0c979cbf6d8a493d7305f9eb988ad75b099c0",
         "path": "codemp/game/g_cmds.c",
-        "ref": "eternaljk/master",
+        "ref": "japro/main",
         "sha": "fa2b5ba6883ba72c77c53130fedf2d3d2bfb86ea",
-        "source": "eternaljk",
+        "source": "japro",
         "subject": "Merge branch 'feature/update-game'",
         "timestamp": 1534726375
       },
       "ported_via": [],
       "pr": null,
       "pr_url": null,
-      "source": "eternaljk",
+      "source": "japro",
       "squash_bullet": null,
       "status": "needs-review",
       "upstream_presence": [
@@ -46164,9 +46164,9 @@
           "line": 1609,
           "line_commit_sha": "16f914f5f915fa439dc620242f37d8ebf91d0832",
           "path": "codemp/game/g_svcmds.c",
-          "ref": "origin/master",
+          "ref": "eternaljk/master",
           "sha": "675e97128f486095bc24289cf0610badfd8130fd",
-          "source": "taystjk",
+          "source": "eternaljk",
           "subject": "Merge remote-tracking branch 'eternalcodes/master'",
           "timestamp": 1517800067
         },
@@ -46184,9 +46184,9 @@
           "line": 1609,
           "line_commit_sha": "16f914f5f915fa439dc620242f37d8ebf91d0832",
           "path": "codemp/game/g_svcmds.c",
-          "ref": "japro/main",
+          "ref": "origin/master",
           "sha": "675e97128f486095bc24289cf0610badfd8130fd",
-          "source": "japro",
+          "source": "taystjk",
           "subject": "Merge remote-tracking branch 'eternalcodes/master'",
           "timestamp": 1517800067
         },
@@ -46297,14 +46297,14 @@
           "timestamp": 1517800067
         }
       ],
-      "method": "shared-earliest-commit-lineage-order",
+      "method": "shared-earliest-commit-module-lineage",
       "modified_by": [],
-      "notes": "The earliest authored/submitted introduction is shared by eternaljk, taystjk, japro, vulkan; fork-lineage order selects eternaljk.",
+      "notes": "The earliest authored/submitted introduction is shared by eternaljk, taystjk, japro, vulkan; module lineage selects japro.",
       "origin_evidence": {
         "kind": "game-console command table",
-        "line": 1643,
+        "line": 1671,
         "path": "codemp/game/g_svcmds.c",
-        "ref": "eternaljk/master"
+        "ref": "japro/main"
       },
       "origin_introduction": {
         "author": "Bucky21659",
@@ -46320,16 +46320,16 @@
         "line": 1609,
         "line_commit_sha": "16f914f5f915fa439dc620242f37d8ebf91d0832",
         "path": "codemp/game/g_svcmds.c",
-        "ref": "eternaljk/master",
+        "ref": "japro/main",
         "sha": "675e97128f486095bc24289cf0610badfd8130fd",
-        "source": "eternaljk",
+        "source": "japro",
         "subject": "Merge remote-tracking branch 'eternalcodes/master'",
         "timestamp": 1517800067
       },
       "ported_via": [],
       "pr": null,
       "pr_url": null,
-      "source": "eternaljk",
+      "source": "japro",
       "squash_bullet": null,
       "status": "needs-review",
       "upstream_presence": [
@@ -47725,9 +47725,9 @@
           "line": 1625,
           "line_commit_sha": "26510ea71c073671b5c8d17753bbec1a11992e7c",
           "path": "codemp/game/g_svcmds.c",
-          "ref": "origin/master",
+          "ref": "eternaljk/master",
           "sha": "ad634ee5d2ffe8264a546136a174ee3fdba985c3",
-          "source": "taystjk",
+          "source": "eternaljk",
           "subject": "Merge branch 'master' of https://github.com/eternalcodes/EternalJK",
           "timestamp": 1541309659
         },
@@ -47745,9 +47745,9 @@
           "line": 1625,
           "line_commit_sha": "26510ea71c073671b5c8d17753bbec1a11992e7c",
           "path": "codemp/game/g_svcmds.c",
-          "ref": "japro/main",
+          "ref": "origin/master",
           "sha": "ad634ee5d2ffe8264a546136a174ee3fdba985c3",
-          "source": "japro",
+          "source": "taystjk",
           "subject": "Merge branch 'master' of https://github.com/eternalcodes/EternalJK",
           "timestamp": 1541309659
         },
@@ -47858,7 +47858,7 @@
           "timestamp": 1541309659
         }
       ],
-      "method": "squash-feature-group-explicit-credit",
+      "method": "shared-earliest-commit-module-lineage",
       "modified_by": [
         {
           "categories": [
@@ -47951,12 +47951,12 @@
           "timestamp": 1706953739
         }
       ],
-      "notes": "The identifier's single-prefix squash feature group explicitly credits eternaljk.",
+      "notes": "The earliest authored/submitted introduction is shared by eternaljk, taystjk, japro, vulkan; module lineage selects japro. The squash feature group broadly credits eternaljk, but non-identifier-specific credit does not override the japro game-module provider lineage.",
       "origin_evidence": {
         "kind": "game-console command table",
-        "line": 1645,
+        "line": 1673,
         "path": "codemp/game/g_svcmds.c",
-        "ref": "eternaljk/master"
+        "ref": "japro/main"
       },
       "origin_introduction": {
         "author": "david",
@@ -47972,16 +47972,16 @@
         "line": 1625,
         "line_commit_sha": "26510ea71c073671b5c8d17753bbec1a11992e7c",
         "path": "codemp/game/g_svcmds.c",
-        "ref": "eternaljk/master",
+        "ref": "japro/main",
         "sha": "ad634ee5d2ffe8264a546136a174ee3fdba985c3",
-        "source": "eternaljk",
+        "source": "japro",
         "subject": "Merge branch 'master' of https://github.com/eternalcodes/EternalJK",
         "timestamp": 1541309659
       },
       "ported_via": [],
       "pr": null,
       "pr_url": null,
-      "source": "eternaljk",
+      "source": "japro",
       "squash_bullet": null,
       "status": "needs-review",
       "upstream_presence": [
@@ -80711,9 +80711,9 @@
           "line": 8571,
           "line_commit_sha": "fc4e9da56272dbcfe3dc07ec87a8463a7fcf28e4",
           "path": "codemp/game/g_cmds.c",
-          "ref": "origin/master",
+          "ref": "eternaljk/master",
           "sha": "fa2b5ba6883ba72c77c53130fedf2d3d2bfb86ea",
-          "source": "taystjk",
+          "source": "eternaljk",
           "subject": "Merge branch 'feature/update-game'",
           "timestamp": 1534726375
         },
@@ -80731,9 +80731,9 @@
           "line": 8571,
           "line_commit_sha": "fc4e9da56272dbcfe3dc07ec87a8463a7fcf28e4",
           "path": "codemp/game/g_cmds.c",
-          "ref": "japro/main",
+          "ref": "origin/master",
           "sha": "fa2b5ba6883ba72c77c53130fedf2d3d2bfb86ea",
-          "source": "japro",
+          "source": "taystjk",
           "subject": "Merge branch 'feature/update-game'",
           "timestamp": 1534726375
         },
@@ -80844,7 +80844,7 @@
           "timestamp": 1534726375
         }
       ],
-      "method": "shared-earliest-commit-lineage-order",
+      "method": "shared-earliest-commit-module-lineage",
       "modified_by": [
         {
           "categories": [
@@ -80919,12 +80919,12 @@
           "timestamp": 1706942998
         }
       ],
-      "notes": "The earliest authored/submitted introduction is shared by eternaljk, taystjk, japro, vulkan; fork-lineage order selects eternaljk.",
+      "notes": "The earliest authored/submitted introduction is shared by eternaljk, taystjk, japro, vulkan; module lineage selects japro.",
       "origin_evidence": {
         "kind": "forwarded client command table",
-        "line": 2381,
+        "line": 2706,
         "path": "codemp/cgame/cg_consolecmds.c",
-        "ref": "eternaljk/master"
+        "ref": "japro/main"
       },
       "origin_introduction": {
         "author": "eternalcodes",
@@ -80940,16 +80940,16 @@
         "line": 8571,
         "line_commit_sha": "fc4e9da56272dbcfe3dc07ec87a8463a7fcf28e4",
         "path": "codemp/game/g_cmds.c",
-        "ref": "eternaljk/master",
+        "ref": "japro/main",
         "sha": "fa2b5ba6883ba72c77c53130fedf2d3d2bfb86ea",
-        "source": "eternaljk",
+        "source": "japro",
         "subject": "Merge branch 'feature/update-game'",
         "timestamp": 1534726375
       },
       "ported_via": [],
       "pr": null,
       "pr_url": null,
-      "source": "eternaljk",
+      "source": "japro",
       "squash_bullet": null,
       "status": "needs-review",
       "upstream_presence": [
@@ -80975,9 +80975,9 @@
           "line": 8472,
           "line_commit_sha": "29f99bfa6ed57222a6039419c736f439ee8902f0",
           "path": "codemp/game/g_cmds.c",
-          "ref": "origin/master",
+          "ref": "eternaljk/master",
           "sha": "675e97128f486095bc24289cf0610badfd8130fd",
-          "source": "taystjk",
+          "source": "eternaljk",
           "subject": "Merge remote-tracking branch 'eternalcodes/master'",
           "timestamp": 1517800067
         },
@@ -80995,9 +80995,9 @@
           "line": 8472,
           "line_commit_sha": "29f99bfa6ed57222a6039419c736f439ee8902f0",
           "path": "codemp/game/g_cmds.c",
-          "ref": "japro/main",
+          "ref": "origin/master",
           "sha": "675e97128f486095bc24289cf0610badfd8130fd",
-          "source": "japro",
+          "source": "taystjk",
           "subject": "Merge remote-tracking branch 'eternalcodes/master'",
           "timestamp": 1517800067
         },
@@ -81108,7 +81108,7 @@
           "timestamp": 1517800067
         }
       ],
-      "method": "shared-earliest-commit-lineage-order",
+      "method": "shared-earliest-commit-module-lineage",
       "modified_by": [
         {
           "categories": [
@@ -81219,12 +81219,12 @@
           "timestamp": 1780824933
         }
       ],
-      "notes": "The earliest authored/submitted introduction is shared by eternaljk, taystjk, japro, vulkan; fork-lineage order selects eternaljk.",
+      "notes": "The earliest authored/submitted introduction is shared by eternaljk, taystjk, japro, vulkan; module lineage selects japro.",
       "origin_evidence": {
         "kind": "forwarded client command table",
-        "line": 2375,
+        "line": 2700,
         "path": "codemp/cgame/cg_consolecmds.c",
-        "ref": "eternaljk/master"
+        "ref": "japro/main"
       },
       "origin_introduction": {
         "author": "Bucky21659",
@@ -81240,16 +81240,16 @@
         "line": 8472,
         "line_commit_sha": "29f99bfa6ed57222a6039419c736f439ee8902f0",
         "path": "codemp/game/g_cmds.c",
-        "ref": "eternaljk/master",
+        "ref": "japro/main",
         "sha": "675e97128f486095bc24289cf0610badfd8130fd",
-        "source": "eternaljk",
+        "source": "japro",
         "subject": "Merge remote-tracking branch 'eternalcodes/master'",
         "timestamp": 1517800067
       },
       "ported_via": [],
       "pr": null,
       "pr_url": null,
-      "source": "eternaljk",
+      "source": "japro",
       "squash_bullet": null,
       "status": "needs-review",
       "upstream_presence": [
@@ -81275,9 +81275,9 @@
           "line": 8473,
           "line_commit_sha": "e2113c87cb4381e7cd7b75789099ba0f51fdb3e5",
           "path": "codemp/game/g_cmds.c",
-          "ref": "origin/master",
+          "ref": "eternaljk/master",
           "sha": "675e97128f486095bc24289cf0610badfd8130fd",
-          "source": "taystjk",
+          "source": "eternaljk",
           "subject": "Merge remote-tracking branch 'eternalcodes/master'",
           "timestamp": 1517800067
         },
@@ -81295,9 +81295,9 @@
           "line": 8473,
           "line_commit_sha": "e2113c87cb4381e7cd7b75789099ba0f51fdb3e5",
           "path": "codemp/game/g_cmds.c",
-          "ref": "japro/main",
+          "ref": "origin/master",
           "sha": "675e97128f486095bc24289cf0610badfd8130fd",
-          "source": "japro",
+          "source": "taystjk",
           "subject": "Merge remote-tracking branch 'eternalcodes/master'",
           "timestamp": 1517800067
         },
@@ -81408,7 +81408,7 @@
           "timestamp": 1517800067
         }
       ],
-      "method": "shared-earliest-commit-lineage-order",
+      "method": "shared-earliest-commit-module-lineage",
       "modified_by": [
         {
           "categories": [
@@ -81609,12 +81609,12 @@
           "timestamp": 1706942998
         }
       ],
-      "notes": "The earliest authored/submitted introduction is shared by eternaljk, taystjk, japro, vulkan; fork-lineage order selects eternaljk.",
+      "notes": "The earliest authored/submitted introduction is shared by eternaljk, taystjk, japro, vulkan; module lineage selects japro.",
       "origin_evidence": {
         "kind": "forwarded client command table",
-        "line": 2378,
+        "line": 2703,
         "path": "codemp/cgame/cg_consolecmds.c",
-        "ref": "eternaljk/master"
+        "ref": "japro/main"
       },
       "origin_introduction": {
         "author": "Bucky21659",
@@ -81630,16 +81630,16 @@
         "line": 8473,
         "line_commit_sha": "e2113c87cb4381e7cd7b75789099ba0f51fdb3e5",
         "path": "codemp/game/g_cmds.c",
-        "ref": "eternaljk/master",
+        "ref": "japro/main",
         "sha": "675e97128f486095bc24289cf0610badfd8130fd",
-        "source": "eternaljk",
+        "source": "japro",
         "subject": "Merge remote-tracking branch 'eternalcodes/master'",
         "timestamp": 1517800067
       },
       "ported_via": [],
       "pr": null,
       "pr_url": null,
-      "source": "eternaljk",
+      "source": "japro",
       "squash_bullet": null,
       "status": "needs-review",
       "upstream_presence": [
@@ -81893,9 +81893,9 @@
           "line": 8549,
           "line_commit_sha": "98ca0b84619759b4677150792c4297dd5f89d89a",
           "path": "codemp/game/g_cmds.c",
-          "ref": "origin/master",
+          "ref": "eternaljk/master",
           "sha": "fae0fd30741627a4c90fec92d4ba5c07c826410a",
-          "source": "taystjk",
+          "source": "eternaljk",
           "subject": "Merge branch 'feature/update-game' into develop",
           "timestamp": 1532298801
         },
@@ -81913,9 +81913,9 @@
           "line": 8549,
           "line_commit_sha": "98ca0b84619759b4677150792c4297dd5f89d89a",
           "path": "codemp/game/g_cmds.c",
-          "ref": "japro/main",
+          "ref": "origin/master",
           "sha": "fae0fd30741627a4c90fec92d4ba5c07c826410a",
-          "source": "japro",
+          "source": "taystjk",
           "subject": "Merge branch 'feature/update-game' into develop",
           "timestamp": 1532298801
         },
@@ -82026,7 +82026,7 @@
           "timestamp": 1532298801
         }
       ],
-      "method": "shared-earliest-commit-lineage-order",
+      "method": "shared-earliest-commit-module-lineage",
       "modified_by": [
         {
           "categories": [
@@ -82083,12 +82083,12 @@
           "timestamp": 1706953739
         }
       ],
-      "notes": "The earliest authored/submitted introduction is shared by eternaljk, taystjk, japro, vulkan; fork-lineage order selects eternaljk.",
+      "notes": "The earliest authored/submitted introduction is shared by eternaljk, taystjk, japro, vulkan; module lineage selects japro.",
       "origin_evidence": {
         "kind": "forwarded client command table",
-        "line": 2380,
+        "line": 2705,
         "path": "codemp/cgame/cg_consolecmds.c",
-        "ref": "eternaljk/master"
+        "ref": "japro/main"
       },
       "origin_introduction": {
         "author": "eternalcodes",
@@ -82104,16 +82104,16 @@
         "line": 8549,
         "line_commit_sha": "98ca0b84619759b4677150792c4297dd5f89d89a",
         "path": "codemp/game/g_cmds.c",
-        "ref": "eternaljk/master",
+        "ref": "japro/main",
         "sha": "fae0fd30741627a4c90fec92d4ba5c07c826410a",
-        "source": "eternaljk",
+        "source": "japro",
         "subject": "Merge branch 'feature/update-game' into develop",
         "timestamp": 1532298801
       },
       "ported_via": [],
       "pr": null,
       "pr_url": null,
-      "source": "eternaljk",
+      "source": "japro",
       "squash_bullet": null,
       "status": "needs-review",
       "upstream_presence": [
@@ -82139,9 +82139,9 @@
           "line": 8477,
           "line_commit_sha": "e2113c87cb4381e7cd7b75789099ba0f51fdb3e5",
           "path": "codemp/game/g_cmds.c",
-          "ref": "origin/master",
+          "ref": "eternaljk/master",
           "sha": "675e97128f486095bc24289cf0610badfd8130fd",
-          "source": "taystjk",
+          "source": "eternaljk",
           "subject": "Merge remote-tracking branch 'eternalcodes/master'",
           "timestamp": 1517800067
         },
@@ -82159,9 +82159,9 @@
           "line": 8477,
           "line_commit_sha": "e2113c87cb4381e7cd7b75789099ba0f51fdb3e5",
           "path": "codemp/game/g_cmds.c",
-          "ref": "japro/main",
+          "ref": "origin/master",
           "sha": "675e97128f486095bc24289cf0610badfd8130fd",
-          "source": "japro",
+          "source": "taystjk",
           "subject": "Merge remote-tracking branch 'eternalcodes/master'",
           "timestamp": 1517800067
         },
@@ -82272,7 +82272,7 @@
           "timestamp": 1517800067
         }
       ],
-      "method": "shared-earliest-commit-lineage-order",
+      "method": "shared-earliest-commit-module-lineage",
       "modified_by": [
         {
           "categories": [
@@ -82384,12 +82384,12 @@
           "timestamp": 1541913623
         }
       ],
-      "notes": "The earliest authored/submitted introduction is shared by eternaljk, taystjk, japro, vulkan; fork-lineage order selects eternaljk.",
+      "notes": "The earliest authored/submitted introduction is shared by eternaljk, taystjk, japro, vulkan; module lineage selects japro.",
       "origin_evidence": {
         "kind": "forwarded client command table",
-        "line": 2377,
+        "line": 2702,
         "path": "codemp/cgame/cg_consolecmds.c",
-        "ref": "eternaljk/master"
+        "ref": "japro/main"
       },
       "origin_introduction": {
         "author": "Bucky21659",
@@ -82405,16 +82405,16 @@
         "line": 8477,
         "line_commit_sha": "e2113c87cb4381e7cd7b75789099ba0f51fdb3e5",
         "path": "codemp/game/g_cmds.c",
-        "ref": "eternaljk/master",
+        "ref": "japro/main",
         "sha": "675e97128f486095bc24289cf0610badfd8130fd",
-        "source": "eternaljk",
+        "source": "japro",
         "subject": "Merge remote-tracking branch 'eternalcodes/master'",
         "timestamp": 1517800067
       },
       "ported_via": [],
       "pr": null,
       "pr_url": null,
-      "source": "eternaljk",
+      "source": "japro",
       "squash_bullet": null,
       "status": "needs-review",
       "upstream_presence": [
@@ -82440,9 +82440,9 @@
           "line": 8478,
           "line_commit_sha": "e2113c87cb4381e7cd7b75789099ba0f51fdb3e5",
           "path": "codemp/game/g_cmds.c",
-          "ref": "origin/master",
+          "ref": "eternaljk/master",
           "sha": "675e97128f486095bc24289cf0610badfd8130fd",
-          "source": "taystjk",
+          "source": "eternaljk",
           "subject": "Merge remote-tracking branch 'eternalcodes/master'",
           "timestamp": 1517800067
         },
@@ -82460,9 +82460,9 @@
           "line": 8478,
           "line_commit_sha": "e2113c87cb4381e7cd7b75789099ba0f51fdb3e5",
           "path": "codemp/game/g_cmds.c",
-          "ref": "japro/main",
+          "ref": "origin/master",
           "sha": "675e97128f486095bc24289cf0610badfd8130fd",
-          "source": "japro",
+          "source": "taystjk",
           "subject": "Merge remote-tracking branch 'eternalcodes/master'",
           "timestamp": 1517800067
         },
@@ -82573,7 +82573,7 @@
           "timestamp": 1517800067
         }
       ],
-      "method": "shared-earliest-commit-lineage-order",
+      "method": "shared-earliest-commit-module-lineage",
       "modified_by": [
         {
           "categories": [
@@ -82846,12 +82846,12 @@
           "timestamp": 1706942998
         }
       ],
-      "notes": "The earliest authored/submitted introduction is shared by eternaljk, taystjk, japro, vulkan; fork-lineage order selects eternaljk.",
+      "notes": "The earliest authored/submitted introduction is shared by eternaljk, taystjk, japro, vulkan; module lineage selects japro.",
       "origin_evidence": {
         "kind": "forwarded client command table",
-        "line": 2376,
+        "line": 2701,
         "path": "codemp/cgame/cg_consolecmds.c",
-        "ref": "eternaljk/master"
+        "ref": "japro/main"
       },
       "origin_introduction": {
         "author": "Bucky21659",
@@ -82867,16 +82867,16 @@
         "line": 8478,
         "line_commit_sha": "e2113c87cb4381e7cd7b75789099ba0f51fdb3e5",
         "path": "codemp/game/g_cmds.c",
-        "ref": "eternaljk/master",
+        "ref": "japro/main",
         "sha": "675e97128f486095bc24289cf0610badfd8130fd",
-        "source": "eternaljk",
+        "source": "japro",
         "subject": "Merge remote-tracking branch 'eternalcodes/master'",
         "timestamp": 1517800067
       },
       "ported_via": [],
       "pr": null,
       "pr_url": null,
-      "source": "eternaljk",
+      "source": "japro",
       "squash_bullet": null,
       "status": "needs-review",
       "upstream_presence": [
@@ -82902,9 +82902,9 @@
           "line": 8479,
           "line_commit_sha": "e2113c87cb4381e7cd7b75789099ba0f51fdb3e5",
           "path": "codemp/game/g_cmds.c",
-          "ref": "origin/master",
+          "ref": "eternaljk/master",
           "sha": "675e97128f486095bc24289cf0610badfd8130fd",
-          "source": "taystjk",
+          "source": "eternaljk",
           "subject": "Merge remote-tracking branch 'eternalcodes/master'",
           "timestamp": 1517800067
         },
@@ -82922,9 +82922,9 @@
           "line": 8479,
           "line_commit_sha": "e2113c87cb4381e7cd7b75789099ba0f51fdb3e5",
           "path": "codemp/game/g_cmds.c",
-          "ref": "japro/main",
+          "ref": "origin/master",
           "sha": "675e97128f486095bc24289cf0610badfd8130fd",
-          "source": "japro",
+          "source": "taystjk",
           "subject": "Merge remote-tracking branch 'eternalcodes/master'",
           "timestamp": 1517800067
         },
@@ -83035,7 +83035,7 @@
           "timestamp": 1517800067
         }
       ],
-      "method": "shared-earliest-commit-lineage-order",
+      "method": "shared-earliest-commit-module-lineage",
       "modified_by": [
         {
           "categories": [
@@ -83164,12 +83164,12 @@
           "timestamp": 1706953739
         }
       ],
-      "notes": "The earliest authored/submitted introduction is shared by eternaljk, taystjk, japro, vulkan; fork-lineage order selects eternaljk.",
+      "notes": "The earliest authored/submitted introduction is shared by eternaljk, taystjk, japro, vulkan; module lineage selects japro.",
       "origin_evidence": {
         "kind": "forwarded client command table",
-        "line": 2379,
+        "line": 2704,
         "path": "codemp/cgame/cg_consolecmds.c",
-        "ref": "eternaljk/master"
+        "ref": "japro/main"
       },
       "origin_introduction": {
         "author": "Bucky21659",
@@ -83185,16 +83185,16 @@
         "line": 8479,
         "line_commit_sha": "e2113c87cb4381e7cd7b75789099ba0f51fdb3e5",
         "path": "codemp/game/g_cmds.c",
-        "ref": "eternaljk/master",
+        "ref": "japro/main",
         "sha": "675e97128f486095bc24289cf0610badfd8130fd",
-        "source": "eternaljk",
+        "source": "japro",
         "subject": "Merge remote-tracking branch 'eternalcodes/master'",
         "timestamp": 1517800067
       },
       "ported_via": [],
       "pr": null,
       "pr_url": null,
-      "source": "eternaljk",
+      "source": "japro",
       "squash_bullet": null,
       "status": "needs-review",
       "upstream_presence": [
@@ -104698,9 +104698,9 @@
           "line": 8510,
           "line_commit_sha": "e2113c87cb4381e7cd7b75789099ba0f51fdb3e5",
           "path": "codemp/game/g_cmds.c",
-          "ref": "origin/master",
+          "ref": "eternaljk/master",
           "sha": "675e97128f486095bc24289cf0610badfd8130fd",
-          "source": "taystjk",
+          "source": "eternaljk",
           "subject": "Merge remote-tracking branch 'eternalcodes/master'",
           "timestamp": 1517800067
         },
@@ -104718,9 +104718,9 @@
           "line": 8510,
           "line_commit_sha": "e2113c87cb4381e7cd7b75789099ba0f51fdb3e5",
           "path": "codemp/game/g_cmds.c",
-          "ref": "japro/main",
+          "ref": "origin/master",
           "sha": "675e97128f486095bc24289cf0610badfd8130fd",
-          "source": "japro",
+          "source": "taystjk",
           "subject": "Merge remote-tracking branch 'eternalcodes/master'",
           "timestamp": 1517800067
         },
@@ -104831,7 +104831,7 @@
           "timestamp": 1517800067
         }
       ],
-      "method": "shared-earliest-commit-lineage-order",
+      "method": "shared-earliest-commit-module-lineage",
       "modified_by": [
         {
           "categories": [
@@ -104925,12 +104925,12 @@
           "timestamp": 1536012201
         }
       ],
-      "notes": "The earliest authored/submitted introduction is shared by eternaljk, taystjk, japro, vulkan; fork-lineage order selects eternaljk.",
+      "notes": "The earliest authored/submitted introduction is shared by eternaljk, taystjk, japro, vulkan; module lineage selects japro.",
       "origin_evidence": {
         "kind": "forwarded client command table",
-        "line": 2400,
+        "line": 2725,
         "path": "codemp/cgame/cg_consolecmds.c",
-        "ref": "eternaljk/master"
+        "ref": "japro/main"
       },
       "origin_introduction": {
         "author": "Bucky21659",
@@ -104946,16 +104946,16 @@
         "line": 8510,
         "line_commit_sha": "e2113c87cb4381e7cd7b75789099ba0f51fdb3e5",
         "path": "codemp/game/g_cmds.c",
-        "ref": "eternaljk/master",
+        "ref": "japro/main",
         "sha": "675e97128f486095bc24289cf0610badfd8130fd",
-        "source": "eternaljk",
+        "source": "japro",
         "subject": "Merge remote-tracking branch 'eternalcodes/master'",
         "timestamp": 1517800067
       },
       "ported_via": [],
       "pr": null,
       "pr_url": null,
-      "source": "eternaljk",
+      "source": "japro",
       "squash_bullet": null,
       "status": "needs-review",
       "upstream_presence": [
@@ -117011,9 +117011,9 @@
           "line": 8720,
           "line_commit_sha": "4cf8b6457b135c1fe92681ba4edbc3461d29786c",
           "path": "codemp/game/g_cmds.c",
-          "ref": "origin/master",
+          "ref": "eternaljk/master",
           "sha": "2af38213b793183fd6313a195d0f36ea3aa02196",
-          "source": "taystjk",
+          "source": "eternaljk",
           "subject": "Merge branch 'master' of https://github.com/eternalcodes/EternalJK",
           "timestamp": 1539188743
         },
@@ -117031,9 +117031,9 @@
           "line": 8720,
           "line_commit_sha": "4cf8b6457b135c1fe92681ba4edbc3461d29786c",
           "path": "codemp/game/g_cmds.c",
-          "ref": "japro/main",
+          "ref": "origin/master",
           "sha": "2af38213b793183fd6313a195d0f36ea3aa02196",
-          "source": "japro",
+          "source": "taystjk",
           "subject": "Merge branch 'master' of https://github.com/eternalcodes/EternalJK",
           "timestamp": 1539188743
         },
@@ -117144,7 +117144,7 @@
           "timestamp": 1539188743
         }
       ],
-      "method": "squash-feature-group-explicit-credit",
+      "method": "shared-earliest-commit-module-lineage",
       "modified_by": [
         {
           "categories": [
@@ -117238,12 +117238,12 @@
           "timestamp": 1706203447
         }
       ],
-      "notes": "The identifier's single-prefix squash feature group explicitly credits eternaljk.",
+      "notes": "The earliest authored/submitted introduction is shared by eternaljk, taystjk, japro, vulkan; module lineage selects japro. The squash feature group broadly credits eternaljk, but non-identifier-specific credit does not override the japro game-module provider lineage.",
       "origin_evidence": {
         "kind": "forwarded client command table",
-        "line": 2396,
+        "line": 2721,
         "path": "codemp/cgame/cg_consolecmds.c",
-        "ref": "eternaljk/master"
+        "ref": "japro/main"
       },
       "origin_introduction": {
         "author": "david",
@@ -117259,16 +117259,16 @@
         "line": 8720,
         "line_commit_sha": "4cf8b6457b135c1fe92681ba4edbc3461d29786c",
         "path": "codemp/game/g_cmds.c",
-        "ref": "eternaljk/master",
+        "ref": "japro/main",
         "sha": "2af38213b793183fd6313a195d0f36ea3aa02196",
-        "source": "eternaljk",
+        "source": "japro",
         "subject": "Merge branch 'master' of https://github.com/eternalcodes/EternalJK",
         "timestamp": 1539188743
       },
       "ported_via": [],
       "pr": null,
       "pr_url": null,
-      "source": "eternaljk",
+      "source": "japro",
       "squash_bullet": null,
       "status": "needs-review",
       "upstream_presence": [
@@ -215816,9 +215816,9 @@
           "line": 310,
           "line_commit_sha": "c328b33b1d7d1f0b73f26bc471120ccb4b9e038b",
           "path": "codemp/game/g_xcvar.h",
-          "ref": "origin/master",
+          "ref": "eternaljk/master",
           "sha": "2af38213b793183fd6313a195d0f36ea3aa02196",
-          "source": "taystjk",
+          "source": "eternaljk",
           "subject": "Merge branch 'master' of https://github.com/eternalcodes/EternalJK",
           "timestamp": 1539188743
         },
@@ -215836,9 +215836,9 @@
           "line": 310,
           "line_commit_sha": "c328b33b1d7d1f0b73f26bc471120ccb4b9e038b",
           "path": "codemp/game/g_xcvar.h",
-          "ref": "japro/main",
+          "ref": "origin/master",
           "sha": "2af38213b793183fd6313a195d0f36ea3aa02196",
-          "source": "japro",
+          "source": "taystjk",
           "subject": "Merge branch 'master' of https://github.com/eternalcodes/EternalJK",
           "timestamp": 1539188743
         },
@@ -215949,7 +215949,7 @@
           "timestamp": 1539188743
         }
       ],
-      "method": "squash-feature-group-explicit-credit",
+      "method": "shared-earliest-commit-module-lineage",
       "modified_by": [
         {
           "categories": [
@@ -215970,12 +215970,12 @@
           "timestamp": 1589589889
         }
       ],
-      "notes": "The identifier's single-prefix squash feature group explicitly credits eternaljk.",
+      "notes": "The earliest authored/submitted introduction is shared by eternaljk, taystjk, japro, vulkan; module lineage selects japro. The squash feature group broadly credits eternaljk, but non-identifier-specific credit does not override the japro game-module provider lineage.",
       "origin_evidence": {
         "kind": "XCVAR_DEF",
-        "line": 312,
+        "line": 319,
         "path": "codemp/game/g_xcvar.h",
-        "ref": "eternaljk/master"
+        "ref": "japro/main"
       },
       "origin_introduction": {
         "author": "david",
@@ -215991,16 +215991,16 @@
         "line": 310,
         "line_commit_sha": "c328b33b1d7d1f0b73f26bc471120ccb4b9e038b",
         "path": "codemp/game/g_xcvar.h",
-        "ref": "eternaljk/master",
+        "ref": "japro/main",
         "sha": "2af38213b793183fd6313a195d0f36ea3aa02196",
-        "source": "eternaljk",
+        "source": "japro",
         "subject": "Merge branch 'master' of https://github.com/eternalcodes/EternalJK",
         "timestamp": 1539188743
       },
       "ported_via": [],
       "pr": null,
       "pr_url": null,
-      "source": "eternaljk",
+      "source": "japro",
       "squash_bullet": null,
       "status": "needs-review",
       "upstream_presence": [
@@ -224757,31 +224757,33 @@
           "line": 94,
           "line_commit_sha": "03752786710213015d82bcf093aec9e744434562",
           "path": "codemp/game/g_xcvar.h",
+          "pr": 29,
+          "pr_url": "https://github.com/taysta/TaystJK/pull/29",
+          "ref": "origin/master",
+          "sha": "530446764ef05a4c0cff2b29b9eb2b514c5c2b2a",
+          "source": "taystjk",
+          "subject": "Merge pull request #29 from taysta/reconcile",
+          "timestamp": 1698569286
+        },
+        {
+          "author": "tayst",
+          "author_timestamp": 1698569286,
+          "content_author": "Razish",
+          "content_author_timestamp": 1696766398,
+          "content_email": "mrrazish@gmail.com",
+          "content_sha": "03752786710213015d82bcf093aec9e744434562",
+          "content_subject": "reconcile game module changes with the SDK release by diffing codemp/game",
+          "content_timestamp": 1696766398,
+          "email": "taylor.brough13@gmail.com",
+          "history_search": "g_fixSaberDisarmBonus",
+          "line": 94,
+          "line_commit_sha": "03752786710213015d82bcf093aec9e744434562",
+          "path": "codemp/game/g_xcvar.h",
           "ref": "japro/main",
           "sha": "530446764ef05a4c0cff2b29b9eb2b514c5c2b2a",
           "source": "japro",
           "subject": "Merge pull request #29 from taysta/reconcile",
           "timestamp": 1698569286
-        },
-        {
-          "author": "razor",
-          "author_timestamp": 1708417456,
-          "content_author": "razor",
-          "content_author_timestamp": 1708417456,
-          "content_email": "mrrazish@gmail.com",
-          "content_sha": "142e0b71cca84f53ddbe1eb74fb088db51ad8756",
-          "content_subject": "[MP] reconcile game module changes with the original source releases by diffing codemp/game (#1178)",
-          "content_timestamp": 1708417456,
-          "email": "mrrazish@gmail.com",
-          "history_search": "g_fixSaberDisarmBonus",
-          "line": 95,
-          "line_commit_sha": "142e0b71cca84f53ddbe1eb74fb088db51ad8756",
-          "path": "codemp/game/g_xcvar.h",
-          "ref": "openjk/master",
-          "sha": "142e0b71cca84f53ddbe1eb74fb088db51ad8756",
-          "source": "openjk",
-          "subject": "[MP] reconcile game module changes with the original source releases by diffing codemp/game (#1178)",
-          "timestamp": 1708417456
         },
         {
           "author": "SomaZ",
@@ -224824,7 +224826,6 @@
           "line_commit_sha": "03752786710213015d82bcf093aec9e744434562",
           "path": "codemp/game/g_xcvar.h",
           "pr": 29,
-          "pr_created_timestamp": 1698516367,
           "pr_url": "https://github.com/taysta/TaystJK/pull/29",
           "ref": "origin/master",
           "sha": "530446764ef05a4c0cff2b29b9eb2b514c5c2b2a",
@@ -224866,6 +224867,9 @@
           "line": 95,
           "line_commit_sha": "142e0b71cca84f53ddbe1eb74fb088db51ad8756",
           "path": "codemp/game/g_xcvar.h",
+          "pr": 1178,
+          "pr_created_timestamp": 1696767521,
+          "pr_url": "https://github.com/JACoders/OpenJK/pull/1178",
           "ref": "openjk/master",
           "sha": "142e0b71cca84f53ddbe1eb74fb088db51ad8756",
           "source": "openjk",
@@ -224893,44 +224897,42 @@
           "timestamp": 1712688967
         }
       ],
-      "method": "earliest-authored-project-introduction",
+      "method": "curated-historical-attribution",
       "modified_by": [],
-      "notes": "The TaystJK integration evidence credits openjk as an immediate port source, but taystjk has an earlier dated introduction and remains the ultimate origin.",
+      "notes": "Razish introduced g_fixSaberDisarmBonus in OpenJK PR #1178 on 2023-10-08; TaystJK PR #29 imported the still-open OpenJK work later that month. The cvar optionally restores Base JKA behavior but is not itself present in the Base JKA source snapshot.",
       "origin_evidence": {
         "kind": "XCVAR_DEF",
-        "line": 92,
+        "line": 95,
         "path": "codemp/game/g_xcvar.h",
-        "ref": "6ff04c0baf588a89e5ec9361ad7a0992941d7655"
+        "ref": "openjk/master"
       },
       "origin_introduction": {
-        "author": "tayst",
-        "author_timestamp": 1698569286,
-        "content_author": "Razish",
-        "content_author_timestamp": 1696766398,
+        "author": "razor",
+        "author_timestamp": 1708417456,
+        "content_author": "razor",
+        "content_author_timestamp": 1708417456,
         "content_email": "mrrazish@gmail.com",
-        "content_sha": "03752786710213015d82bcf093aec9e744434562",
-        "content_subject": "reconcile game module changes with the SDK release by diffing codemp/game",
-        "content_timestamp": 1696766398,
-        "email": "taylor.brough13@gmail.com",
+        "content_sha": "142e0b71cca84f53ddbe1eb74fb088db51ad8756",
+        "content_subject": "[MP] reconcile game module changes with the original source releases by diffing codemp/game (#1178)",
+        "content_timestamp": 1708417456,
+        "email": "mrrazish@gmail.com",
         "history_search": "g_fixSaberDisarmBonus",
-        "line": 94,
-        "line_commit_sha": "03752786710213015d82bcf093aec9e744434562",
+        "line": 95,
+        "line_commit_sha": "142e0b71cca84f53ddbe1eb74fb088db51ad8756",
         "path": "codemp/game/g_xcvar.h",
-        "pr": 29,
-        "pr_created_timestamp": 1698516367,
-        "pr_url": "https://github.com/taysta/TaystJK/pull/29",
-        "ref": "origin/master",
-        "sha": "530446764ef05a4c0cff2b29b9eb2b514c5c2b2a",
-        "source": "taystjk",
-        "subject": "Merge pull request #29 from taysta/reconcile",
-        "timestamp": 1698569286
+        "pr": 1178,
+        "pr_created_timestamp": 1696767521,
+        "pr_url": "https://github.com/JACoders/OpenJK/pull/1178",
+        "ref": "openjk/master",
+        "sha": "142e0b71cca84f53ddbe1eb74fb088db51ad8756",
+        "source": "openjk",
+        "subject": "[MP] reconcile game module changes with the original source releases by diffing codemp/game (#1178)",
+        "timestamp": 1708417456
       },
-      "ported_via": [
-        "openjk"
-      ],
-      "pr": 29,
-      "pr_url": "https://github.com/taysta/TaystJK/pull/29",
-      "source": "taystjk",
+      "ported_via": [],
+      "pr": 1178,
+      "pr_url": "https://github.com/JACoders/OpenJK/pull/1178",
+      "source": "openjk",
       "squash_bullet": null,
       "status": "documented",
       "upstream_presence": [
@@ -225184,31 +225186,33 @@
           "line": 95,
           "line_commit_sha": "03752786710213015d82bcf093aec9e744434562",
           "path": "codemp/game/g_xcvar.h",
+          "pr": 29,
+          "pr_url": "https://github.com/taysta/TaystJK/pull/29",
+          "ref": "origin/master",
+          "sha": "530446764ef05a4c0cff2b29b9eb2b514c5c2b2a",
+          "source": "taystjk",
+          "subject": "Merge pull request #29 from taysta/reconcile",
+          "timestamp": 1698569286
+        },
+        {
+          "author": "tayst",
+          "author_timestamp": 1698569286,
+          "content_author": "Razish",
+          "content_author_timestamp": 1696766398,
+          "content_email": "mrrazish@gmail.com",
+          "content_sha": "03752786710213015d82bcf093aec9e744434562",
+          "content_subject": "reconcile game module changes with the SDK release by diffing codemp/game",
+          "content_timestamp": 1696766398,
+          "email": "taylor.brough13@gmail.com",
+          "history_search": "g_fixSaberMoveData",
+          "line": 95,
+          "line_commit_sha": "03752786710213015d82bcf093aec9e744434562",
+          "path": "codemp/game/g_xcvar.h",
           "ref": "japro/main",
           "sha": "530446764ef05a4c0cff2b29b9eb2b514c5c2b2a",
           "source": "japro",
           "subject": "Merge pull request #29 from taysta/reconcile",
           "timestamp": 1698569286
-        },
-        {
-          "author": "razor",
-          "author_timestamp": 1708417456,
-          "content_author": "razor",
-          "content_author_timestamp": 1708417456,
-          "content_email": "mrrazish@gmail.com",
-          "content_sha": "142e0b71cca84f53ddbe1eb74fb088db51ad8756",
-          "content_subject": "[MP] reconcile game module changes with the original source releases by diffing codemp/game (#1178)",
-          "content_timestamp": 1708417456,
-          "email": "mrrazish@gmail.com",
-          "history_search": "g_fixSaberMoveData",
-          "line": 96,
-          "line_commit_sha": "142e0b71cca84f53ddbe1eb74fb088db51ad8756",
-          "path": "codemp/game/g_xcvar.h",
-          "ref": "openjk/master",
-          "sha": "142e0b71cca84f53ddbe1eb74fb088db51ad8756",
-          "source": "openjk",
-          "subject": "[MP] reconcile game module changes with the original source releases by diffing codemp/game (#1178)",
-          "timestamp": 1708417456
         },
         {
           "author": "SomaZ",
@@ -225251,7 +225255,6 @@
           "line_commit_sha": "03752786710213015d82bcf093aec9e744434562",
           "path": "codemp/game/g_xcvar.h",
           "pr": 29,
-          "pr_created_timestamp": 1698516367,
           "pr_url": "https://github.com/taysta/TaystJK/pull/29",
           "ref": "origin/master",
           "sha": "530446764ef05a4c0cff2b29b9eb2b514c5c2b2a",
@@ -225293,6 +225296,9 @@
           "line": 96,
           "line_commit_sha": "142e0b71cca84f53ddbe1eb74fb088db51ad8756",
           "path": "codemp/game/g_xcvar.h",
+          "pr": 1178,
+          "pr_created_timestamp": 1696767521,
+          "pr_url": "https://github.com/JACoders/OpenJK/pull/1178",
           "ref": "openjk/master",
           "sha": "142e0b71cca84f53ddbe1eb74fb088db51ad8756",
           "source": "openjk",
@@ -225320,7 +225326,7 @@
           "timestamp": 1712688967
         }
       ],
-      "method": "earliest-authored-project-introduction",
+      "method": "curated-historical-attribution",
       "modified_by": [
         {
           "categories": [
@@ -225341,42 +225347,40 @@
           "timestamp": 1708913001
         }
       ],
-      "notes": "The TaystJK integration evidence credits openjk as an immediate port source, but taystjk has an earlier dated introduction and remains the ultimate origin.",
+      "notes": "Razish introduced g_fixSaberMoveData in OpenJK PR #1178 on 2023-10-08; TaystJK PR #29 imported the still-open OpenJK work later that month. The cvar optionally restores Base JKA behavior but is not itself present in the Base JKA source snapshot.",
       "origin_evidence": {
         "kind": "XCVAR_DEF",
-        "line": 93,
+        "line": 96,
         "path": "codemp/game/g_xcvar.h",
-        "ref": "6ff04c0baf588a89e5ec9361ad7a0992941d7655"
+        "ref": "openjk/master"
       },
       "origin_introduction": {
-        "author": "tayst",
-        "author_timestamp": 1698569286,
-        "content_author": "Razish",
-        "content_author_timestamp": 1696766398,
+        "author": "razor",
+        "author_timestamp": 1708417456,
+        "content_author": "razor",
+        "content_author_timestamp": 1708417456,
         "content_email": "mrrazish@gmail.com",
-        "content_sha": "03752786710213015d82bcf093aec9e744434562",
-        "content_subject": "reconcile game module changes with the SDK release by diffing codemp/game",
-        "content_timestamp": 1696766398,
-        "email": "taylor.brough13@gmail.com",
+        "content_sha": "142e0b71cca84f53ddbe1eb74fb088db51ad8756",
+        "content_subject": "[MP] reconcile game module changes with the original source releases by diffing codemp/game (#1178)",
+        "content_timestamp": 1708417456,
+        "email": "mrrazish@gmail.com",
         "history_search": "g_fixSaberMoveData",
-        "line": 95,
-        "line_commit_sha": "03752786710213015d82bcf093aec9e744434562",
+        "line": 96,
+        "line_commit_sha": "142e0b71cca84f53ddbe1eb74fb088db51ad8756",
         "path": "codemp/game/g_xcvar.h",
-        "pr": 29,
-        "pr_created_timestamp": 1698516367,
-        "pr_url": "https://github.com/taysta/TaystJK/pull/29",
-        "ref": "origin/master",
-        "sha": "530446764ef05a4c0cff2b29b9eb2b514c5c2b2a",
-        "source": "taystjk",
-        "subject": "Merge pull request #29 from taysta/reconcile",
-        "timestamp": 1698569286
+        "pr": 1178,
+        "pr_created_timestamp": 1696767521,
+        "pr_url": "https://github.com/JACoders/OpenJK/pull/1178",
+        "ref": "openjk/master",
+        "sha": "142e0b71cca84f53ddbe1eb74fb088db51ad8756",
+        "source": "openjk",
+        "subject": "[MP] reconcile game module changes with the original source releases by diffing codemp/game (#1178)",
+        "timestamp": 1708417456
       },
-      "ported_via": [
-        "openjk"
-      ],
-      "pr": 29,
-      "pr_url": "https://github.com/taysta/TaystJK/pull/29",
-      "source": "taystjk",
+      "ported_via": [],
+      "pr": 1178,
+      "pr_url": "https://github.com/JACoders/OpenJK/pull/1178",
+      "source": "openjk",
       "squash_bullet": null,
       "status": "documented",
       "upstream_presence": [
@@ -228690,9 +228694,9 @@
           "line": 98,
           "line_commit_sha": "5e454bdddf24d0ad4c40b3efaa32b5185477a461",
           "path": "codemp/game/g_xcvar.h",
-          "ref": "origin/master",
+          "ref": "eternaljk/master",
           "sha": "fae0fd30741627a4c90fec92d4ba5c07c826410a",
-          "source": "taystjk",
+          "source": "eternaljk",
           "subject": "Merge branch 'feature/update-game' into develop",
           "timestamp": 1532298801
         },
@@ -228710,9 +228714,9 @@
           "line": 98,
           "line_commit_sha": "5e454bdddf24d0ad4c40b3efaa32b5185477a461",
           "path": "codemp/game/g_xcvar.h",
-          "ref": "japro/main",
+          "ref": "origin/master",
           "sha": "fae0fd30741627a4c90fec92d4ba5c07c826410a",
-          "source": "japro",
+          "source": "taystjk",
           "subject": "Merge branch 'feature/update-game' into develop",
           "timestamp": 1532298801
         },
@@ -228823,14 +228827,14 @@
           "timestamp": 1532298801
         }
       ],
-      "method": "shared-earliest-commit-lineage-order",
+      "method": "shared-earliest-commit-module-lineage",
       "modified_by": [],
-      "notes": "The earliest authored/submitted introduction is shared by eternaljk, taystjk, japro, vulkan; fork-lineage order selects eternaljk.",
+      "notes": "The earliest authored/submitted introduction is shared by eternaljk, taystjk, japro, vulkan; module lineage selects japro.",
       "origin_evidence": {
         "kind": "XCVAR_DEF",
-        "line": 98,
+        "line": 102,
         "path": "codemp/game/g_xcvar.h",
-        "ref": "eternaljk/master"
+        "ref": "japro/main"
       },
       "origin_introduction": {
         "author": "eternalcodes",
@@ -228846,16 +228850,16 @@
         "line": 98,
         "line_commit_sha": "5e454bdddf24d0ad4c40b3efaa32b5185477a461",
         "path": "codemp/game/g_xcvar.h",
-        "ref": "eternaljk/master",
+        "ref": "japro/main",
         "sha": "fae0fd30741627a4c90fec92d4ba5c07c826410a",
-        "source": "eternaljk",
+        "source": "japro",
         "subject": "Merge branch 'feature/update-game' into develop",
         "timestamp": 1532298801
       },
       "ported_via": [],
       "pr": null,
       "pr_url": null,
-      "source": "eternaljk",
+      "source": "japro",
       "squash_bullet": null,
       "status": "needs-review",
       "upstream_presence": [
@@ -234632,9 +234636,9 @@
           "line": 279,
           "line_commit_sha": "360d8bc1b70d760f5c01ae63a3d3dfc75cc9798e",
           "path": "codemp/game/g_xcvar.h",
-          "ref": "origin/master",
+          "ref": "eternaljk/master",
           "sha": "6e78add659de33e4919f25aefad3e61546599f3c",
-          "source": "taystjk",
+          "source": "eternaljk",
           "subject": "Merge remote-tracking branch 'videoP/master'",
           "timestamp": 1535987777
         },
@@ -234652,9 +234656,9 @@
           "line": 279,
           "line_commit_sha": "360d8bc1b70d760f5c01ae63a3d3dfc75cc9798e",
           "path": "codemp/game/g_xcvar.h",
-          "ref": "japro/main",
+          "ref": "origin/master",
           "sha": "6e78add659de33e4919f25aefad3e61546599f3c",
-          "source": "japro",
+          "source": "taystjk",
           "subject": "Merge remote-tracking branch 'videoP/master'",
           "timestamp": 1535987777
         },
@@ -234765,7 +234769,7 @@
           "timestamp": 1535987777
         }
       ],
-      "method": "shared-earliest-commit-lineage-order",
+      "method": "shared-earliest-commit-module-lineage",
       "modified_by": [
         {
           "categories": [
@@ -234804,12 +234808,12 @@
           "timestamp": 1702302979
         }
       ],
-      "notes": "The earliest authored/submitted introduction is shared by eternaljk, taystjk, japro, vulkan; fork-lineage order selects eternaljk.",
+      "notes": "The earliest authored/submitted introduction is shared by eternaljk, taystjk, japro, vulkan; module lineage selects japro.",
       "origin_evidence": {
         "kind": "XCVAR_DEF",
-        "line": 281,
+        "line": 287,
         "path": "codemp/game/g_xcvar.h",
-        "ref": "eternaljk/master"
+        "ref": "japro/main"
       },
       "origin_introduction": {
         "author": "eternalcodes",
@@ -234825,16 +234829,16 @@
         "line": 279,
         "line_commit_sha": "360d8bc1b70d760f5c01ae63a3d3dfc75cc9798e",
         "path": "codemp/game/g_xcvar.h",
-        "ref": "eternaljk/master",
+        "ref": "japro/main",
         "sha": "6e78add659de33e4919f25aefad3e61546599f3c",
-        "source": "eternaljk",
+        "source": "japro",
         "subject": "Merge remote-tracking branch 'videoP/master'",
         "timestamp": 1535987777
       },
       "ported_via": [],
       "pr": null,
       "pr_url": null,
-      "source": "eternaljk",
+      "source": "japro",
       "squash_bullet": null,
       "status": "needs-review",
       "upstream_presence": [
@@ -277117,9 +277121,9 @@
           "line": 291,
           "line_commit_sha": "dbfd735d1da2aa590f5aa453a330e6ab1ed94cdd",
           "path": "codemp/game/g_xcvar.h",
-          "ref": "origin/master",
+          "ref": "eternaljk/master",
           "sha": "dbfd735d1da2aa590f5aa453a330e6ab1ed94cdd",
-          "source": "taystjk",
+          "source": "eternaljk",
           "subject": "Added jcinfo2 to allow UI to only show Race button when relevant",
           "timestamp": 1536623995
         },
@@ -277137,9 +277141,9 @@
           "line": 291,
           "line_commit_sha": "dbfd735d1da2aa590f5aa453a330e6ab1ed94cdd",
           "path": "codemp/game/g_xcvar.h",
-          "ref": "japro/main",
+          "ref": "origin/master",
           "sha": "dbfd735d1da2aa590f5aa453a330e6ab1ed94cdd",
-          "source": "japro",
+          "source": "taystjk",
           "subject": "Added jcinfo2 to allow UI to only show Race button when relevant",
           "timestamp": 1536623995
         },
@@ -277250,7 +277254,7 @@
           "timestamp": 1536623995
         }
       ],
-      "method": "shared-earliest-commit-lineage-order",
+      "method": "shared-earliest-commit-module-lineage",
       "modified_by": [
         {
           "categories": [
@@ -277844,12 +277848,12 @@
           "timestamp": 1780330742
         }
       ],
-      "notes": "The earliest authored/submitted introduction is shared by eternaljk, taystjk, japro, vulkan; fork-lineage order selects eternaljk.",
+      "notes": "The earliest authored/submitted introduction is shared by eternaljk, taystjk, japro, vulkan; module lineage selects japro.",
       "origin_evidence": {
         "kind": "XCVAR_DEF",
-        "line": 292,
+        "line": 299,
         "path": "codemp/game/g_xcvar.h",
-        "ref": "eternaljk/master"
+        "ref": "japro/main"
       },
       "origin_introduction": {
         "author": "Bucky21659",
@@ -277865,16 +277869,16 @@
         "line": 291,
         "line_commit_sha": "dbfd735d1da2aa590f5aa453a330e6ab1ed94cdd",
         "path": "codemp/game/g_xcvar.h",
-        "ref": "eternaljk/master",
+        "ref": "japro/main",
         "sha": "dbfd735d1da2aa590f5aa453a330e6ab1ed94cdd",
-        "source": "eternaljk",
+        "source": "japro",
         "subject": "Added jcinfo2 to allow UI to only show Race button when relevant",
         "timestamp": 1536623995
       },
       "ported_via": [],
       "pr": null,
       "pr_url": null,
-      "source": "eternaljk",
+      "source": "japro",
       "squash_bullet": null,
       "status": "needs-review",
       "upstream_presence": [
@@ -397093,6 +397097,6 @@
     "current_ref": "6ff04c0baf588a89e5ec9361ad7a0992941d7655",
     "extractor_version": 7,
     "provenance_schema_version": 6,
-    "resolver_version": 36
+    "resolver_version": 40
   }
 }

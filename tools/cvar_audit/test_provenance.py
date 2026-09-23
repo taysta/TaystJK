@@ -15,6 +15,7 @@ from provenance import (
     integration_subject_sources,
     introduction_content_event,
     is_registration_line,
+    module_lineage_beats_group_credit,
     pr_for_commit,
     reconcile_explicit_origin_credit,
     resolve_one,
@@ -212,6 +213,32 @@ class DatedOriginTests(unittest.TestCase):
         self.assertIn("Daggolin", result["notes"])
         self.assertEqual(result["origin_introduction"]["source"], "openjk")
 
+    @patch("provenance.source_context", return_value="")
+    @patch("provenance.commit_body", return_value="Reconcile game module with the SDK")
+    def test_reconciliation_cvars_belong_to_openjk_not_base_or_taystjk(
+        self, _body: object, _context: object,
+    ) -> None:
+        for name in ("g_fixSaberDisarmBonus", "g_fixSaberMoveData"):
+            with self.subTest(name=name):
+                key = name.casefold()
+                registration = {
+                    "name": name, "kind": "XCVAR_DEF", "path": "codemp/game/g_xcvar.h",
+                    "line": 1, "module": "game", "renderer": None,
+                    "handler": None, "gating": [], "condition": None,
+                }
+                introductions = {
+                    "taystjk": {key: event(200, "a" * 40, content_author_timestamp=100)},
+                    "openjk": {key: event(300, "b" * 40, content_author_timestamp=100)},
+                }
+                result = resolve_one(
+                    key, [registration], set(),
+                    {"openjk": {key: [registration]}}, [], Path("."), False,
+                    introductions, {}, {}, {}, False,
+                )
+                self.assertEqual(result["source"], "openjk")
+                self.assertEqual(result["confidence"], "high")
+                self.assertEqual(result["method"], "curated-historical-attribution")
+
     def test_later_newjk_import_does_not_claim_rend2_origin(self) -> None:
         source, confidence, method, _ = select_dated_origin({
             "rend2": event(100, "rend2"),
@@ -237,6 +264,46 @@ class DatedOriginTests(unittest.TestCase):
         self.assertEqual(source, "taystjk")
         self.assertEqual(confidence, "medium")
         self.assertEqual(method, "shared-earliest-commit-lineage-order")
+
+    def test_shared_game_module_commit_uses_japro_provider_lineage(self) -> None:
+        source, confidence, method, _ = select_dated_origin({
+            "eternaljk": event(100, "shared"),
+            "taystjk": event(100, "shared"),
+            "japro": event(100, "shared"),
+        }, shared_commit_preference="japro")
+        self.assertEqual(source, "japro")
+        self.assertEqual(confidence, "medium")
+        self.assertEqual(method, "shared-earliest-commit-module-lineage")
+
+    def test_game_module_lineage_does_not_override_explicit_credit(self) -> None:
+        source, confidence, method, _ = select_dated_origin({
+            "eternaljk": event(
+                100, "shared", content_subject="Import game command from EternalJK",
+            ),
+            "japro": event(
+                100, "shared", content_subject="Import game command from EternalJK",
+            ),
+        }, shared_commit_preference="japro")
+        self.assertEqual(source, "eternaljk")
+        self.assertEqual(confidence, "high")
+        self.assertEqual(method, "introduction-commit-explicit-credit")
+
+    def test_non_specific_group_credit_does_not_override_module_lineage(self) -> None:
+        method = "shared-earliest-commit-module-lineage"
+        self.assertTrue(module_lineage_beats_group_credit(method, direct_credit=False))
+        self.assertFalse(module_lineage_beats_group_credit(method, direct_credit=True))
+
+    def test_shared_merge_label_does_not_override_game_module_lineage(self) -> None:
+        shared = event(
+            100, "shared", subject="Merge branch 'master' of EternalJK",
+        )
+        source, confidence, method, _ = select_dated_origin({
+            "eternaljk": dict(shared),
+            "japro": dict(shared),
+        }, shared_commit_preference="japro")
+        self.assertEqual(source, "japro")
+        self.assertEqual(confidence, "medium")
+        self.assertEqual(method, "shared-earliest-commit-module-lineage")
 
     def test_direction_is_not_hardcoded_to_one_project_pair(self) -> None:
         source, _, _, _ = select_dated_origin({

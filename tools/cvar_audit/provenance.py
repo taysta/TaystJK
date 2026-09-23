@@ -29,7 +29,7 @@ CURRENT_REF = "origin/master"
 # evidence. Bump the provenance schema separately when origin inputs change.
 EXTRACTOR_VERSION = 7
 PROVENANCE_SCHEMA_VERSION = 6
-RESOLVER_VERSION = 36
+RESOLVER_VERSION = 40
 UPSTREAM_REFS = {
     "openjk": "openjk/master",
     "eternaljk": "eternaljk/master",
@@ -107,6 +107,32 @@ ORIGIN_EXCEPTIONS = {
             "contributor here, not Vulkan lineage."
         ),
     },
+    "g_fixsaberdisarmbonus": {
+        "source": "openjk",
+        "confidence": "high",
+        "method": "curated-historical-attribution",
+        "note": (
+            "Razish introduced g_fixSaberDisarmBonus in OpenJK PR #1178 on "
+            "2023-10-08; TaystJK PR #29 imported the still-open OpenJK work "
+            "later that month. The cvar optionally restores Base JKA behavior "
+            "but is not itself present in the Base JKA source snapshot."
+        ),
+    },
+    "g_fixsabermovedata": {
+        "source": "openjk",
+        "confidence": "high",
+        "method": "curated-historical-attribution",
+        "note": (
+            "Razish introduced g_fixSaberMoveData in OpenJK PR #1178 on "
+            "2023-10-08; TaystJK PR #29 imported the still-open OpenJK work "
+            "later that month. The cvar optionally restores Base JKA behavior "
+            "but is not itself present in the Base JKA source snapshot."
+        ),
+    },
+}
+OPENJK_RECONCILIATION_CVARS = {
+    "g_fixsaberdisarmbonus",
+    "g_fixsabermovedata",
 }
 REPOSITORY_SOURCES = {
     "jacoders/openjk": "openjk",
@@ -695,6 +721,13 @@ def reconcile_explicit_origin_credit(
     return explicit
 
 
+def module_lineage_beats_group_credit(
+    selected_method: str, direct_credit: bool,
+) -> bool:
+    """Keep a known module provider over non-identifier-specific squash text."""
+    return selected_method == "shared-earliest-commit-module-lineage" and not direct_credit
+
+
 def enrich_introduction_events(
     events: dict[str, dict[str, Any]],
     prs: list[dict[str, Any]],
@@ -738,8 +771,14 @@ def introduction_rank(
 
 def select_dated_origin(
     events: dict[str, dict[str, Any]],
+    shared_commit_preference: str | None = None,
 ) -> tuple[str, str, str, list[str]]:
-    """Select origin by explicit credit, authorship, PR submission, and merge."""
+    """Select origin by explicit credit, authorship, PR submission, and merge.
+
+    ``shared_commit_preference`` identifies the known provider lineage only
+    when several project heads contain the exact same earliest commit. Direct
+    source credit and independently dated introductions remain stronger.
+    """
     if not events:
         return "unknown", "low", "unresolved", []
 
@@ -784,6 +823,7 @@ def select_dated_origin(
     # SHA is shared by multiple project heads. A one-off downstream merge such
     # as "merge rend2 into ..." is not feature-origin evidence.
     shared_integration_credits: set[str] = set()
+    preference_shares_credited_integration = False
     preliminary_by_sha: dict[str, list[str]] = defaultdict(list)
     for event_source, event in events.items():
         preliminary_by_sha[event["sha"]].append(event_source)
@@ -793,8 +833,13 @@ def select_dated_origin(
         credits: set[str] = set()
         for item in shared_sources:
             credits.update(integration_subject_sources(events[item].get("subject", "")))
+        if (
+            shared_commit_preference in shared_sources
+            and any(credit in shared_sources for credit in credits)
+        ):
+            preference_shares_credited_integration = True
         shared_integration_credits.update(item for item in credits if item in events)
-    if len(shared_integration_credits) == 1:
+    if len(shared_integration_credits) == 1 and not preference_shares_credited_integration:
         source = next(iter(shared_integration_credits))
         return source, "high", "shared-integration-explicit-credit", [source]
 
@@ -864,6 +909,13 @@ def select_dated_origin(
         return source, "high", method, ordered_ties
     shared_shas = {candidates[candidate]["sha"] for candidate in earliest_sources}
     if len(shared_shas) == 1:
+        if shared_commit_preference in earliest_sources:
+            return (
+                shared_commit_preference,
+                "medium",
+                "shared-earliest-commit-module-lineage",
+                ordered_ties,
+            )
         return source, "medium", "shared-earliest-commit-lineage-order", ordered_ties
     return source, "medium", "tied-earliest-project-introductions", ordered_ties
 
@@ -1258,7 +1310,19 @@ def resolve_one(
         }
         if events:
             events = enrich_introduction_events(events, prs)
-            source, confidence, method, earliest_sources = select_dated_origin(events)
+            # TaystJK bundles jaPRO's server-side game module. When the same
+            # earliest commit is present in multiple fork heads, a game-module
+            # registration therefore follows the jaPRO provider lineage rather
+            # than the generic fork ordering. Explicit source credit and dated
+            # independent introductions are still resolved first.
+            shared_commit_preference = (
+                "japro"
+                if any(record.get("module") == "game" for record in registrations)
+                else None
+            )
+            source, confidence, method, earliest_sources = select_dated_origin(
+                events, shared_commit_preference,
+            )
             earliest_integration = min(event["timestamp"] for event in events.values())
             selected_event = events.get(source)
             if selected_event and selected_event["timestamp"] > earliest_integration:
@@ -1276,10 +1340,15 @@ def resolve_one(
                     "the identifier is absent from that project's configured public snapshot."
                 )
             if len(earliest_sources) > 1:
+                selection_basis = (
+                    "module lineage"
+                    if method == "shared-earliest-commit-module-lineage"
+                    else "fork-lineage order"
+                )
                 notes.append(
                     "The earliest authored/submitted introduction is shared by "
                     + ", ".join(earliest_sources)
-                    + f"; fork-lineage order selects {source}."
+                    + f"; {selection_basis} selects {source}."
                 )
         else:
             # Keep a conservative head-presence fallback for registrations whose
@@ -1376,7 +1445,14 @@ def resolve_one(
                     and credited_event["sha"] != selected_event["sha"]
                     and credited_event["timestamp"] > selected_event["timestamp"]
                 )
-            if credit_is_later_hop:
+            keep_module_lineage = module_lineage_beats_group_credit(method, direct_credit)
+            if keep_module_lineage:
+                notes.append(
+                    f"The squash feature group broadly credits {credited_source}, but "
+                    f"non-identifier-specific credit does not override the {source} "
+                    "game-module provider lineage."
+                )
+            elif credit_is_later_hop:
                 ported_via.append(credited_source)
                 notes.append(
                     f"The TaystJK integration evidence credits {credited_source} as an immediate port source, "
@@ -1405,7 +1481,7 @@ def resolve_one(
                 line for line in related_bullets
                 if text_credits_source(line, credited_source)
             ]
-            if len(credit_lines) == 1:
+            if len(credit_lines) == 1 and not keep_module_lineage:
                 credited_bullet = credit_lines[0]
 
         for linked in sorted(linked_upstream_pr_sources(pr)):
@@ -1605,7 +1681,48 @@ def reusable_provenance(candidate: dict[str, Any]) -> bool:
     meta = candidate.get("meta", {})
     # v6 reports predate the independent provenance schema field.
     schema = meta.get("provenance_schema_version", meta.get("extractor_version"))
-    return schema == PROVENANCE_SCHEMA_VERSION and meta.get("resolver_version") == RESOLVER_VERSION
+    resolver = meta.get("resolver_version")
+    return schema == PROVENANCE_SCHEMA_VERSION and resolver in {
+        RESOLVER_VERSION,
+        # Versions 37–40 have targeted entry migrations below, allowing prior
+        # report's PR evidence to survive without re-resolving unrelated rows.
+        39,
+        38,
+        37,
+        36,
+    }
+
+
+def reusable_provenance_entry(
+    entry: dict[str, Any], registrations: list[dict[str, Any]], resolver_version: int,
+) -> bool:
+    """Return whether an entry survives a supported resolver migration."""
+    if resolver_version == 36 and (
+            entry.get("source") in {"eternaljk", "japro"}
+            and entry.get("method") in {
+                "shared-earliest-commit-lineage-order",
+                "shared-earliest-commit-module-lineage",
+            }
+            and "japro" in entry.get("upstream_presence", [])
+            and any(record.get("module") == "game" for record in registrations)
+    ):
+        return False
+    if resolver_version in {36, 37, 38} and (
+        entry.get("source") == "eternaljk"
+        and entry.get("method") == "squash-feature-group-explicit-credit"
+        and "japro" in entry.get("upstream_presence", [])
+        and any(record.get("module") == "game" for record in registrations)
+    ):
+        return False
+    if resolver_version in {36, 37, 38, 39} and (
+        entry.get("source") != "openjk"
+        and any(
+            str(record.get("name", "")).casefold() in OPENJK_RECONCILIATION_CVARS
+            for record in registrations
+        )
+    ):
+        return False
+    return True
 
 
 def main() -> None:
@@ -1700,7 +1817,16 @@ def main() -> None:
 
     processed = 0
     for kind in ("cvars", "commands"):
-        result[kind].update(previous.get(kind, {}))
+        previous_resolver = int(previous.get("meta", {}).get("resolver_version", 0))
+        result[kind].update({
+            key: entry
+            for key, entry in previous.get(kind, {}).items()
+            if reusable_provenance_entry(
+                entry,
+                inventories["current"][kind].get(key, []),
+                previous_resolver,
+            )
+        })
         upstream = {source: inventories[source][kind] for source in all_refs}
         base_names = set(inventories["basejka"][kind])
         for key in sorted(inventories["current"][kind]):

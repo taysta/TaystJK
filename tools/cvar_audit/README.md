@@ -38,6 +38,11 @@ was imported by TaystJK PR #53 before its upstream squash merge. The import
 commit for `ifCvar`, `strSub`, `delay`, and `waitf` explicitly credits
 NewJK/NewMod; such explicit import credit does not require the identifier to
 remain registered in the configured public upstream snapshot.
+`g_fixSaberDisarmBonus` and `g_fixSaberMoveData` follow the same upstream-first
+case: Razish opened OpenJK PR #1178 with both cvars on 2023-10-08, before
+TaystJK PR #29 imported the still-open work. They expose optional fixes that
+restore Base JKA behavior, but the new cvar registrations are OpenJK-originated,
+not part of the Base JKA source snapshot.
 
 For every non-base identifier, the resolver records the first mainline
 registration in every project. It distinguishes the exact registration's first
@@ -47,6 +52,13 @@ TaystJK while still open upstream remains OpenJK-originated. PR dates are used
 comparatively only when metadata exists for at least two candidates; an explicit
 cross-project import link remains direct evidence. Shared commits remain
 reviewable ties when authorship, submission, and integration cannot resolve them.
+For an exact shared-commit tie involving a `game`-module registration, the resolver
+uses jaPRO as the provider lineage because TaystJK bundles jaPRO's server-side game
+module. Identifier-adjacent commit or PR credit and independently dated introductions
+remain stronger evidence, while a broad squash-group label does not override the known
+module provider. A project name in the subject of that shared merge is likewise port-route
+context rather than identifier-specific origin evidence. This keeps the provider rule from
+erasing a demonstrated upstream origin.
 An import link identifies an intermediate port when another project has older
 authorship; for example, `fs_forcegame` reached TaystJK through OpenJK but
 originated in JK2MV. Installation paths and cvar default values are not project

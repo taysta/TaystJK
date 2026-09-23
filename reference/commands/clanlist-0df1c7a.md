@@ -8,7 +8,7 @@ search_exclude: false
 
 # `clanList`
 
-<span class="label ref-origin ref-origin-eternaljk">EternalJK</span>
+<span class="label ref-origin ref-origin-japro">jaPRO</span>
 
 <p class="ref-warning"><strong>Needs review.</strong> The inventory/provenance evidence is recorded, but some behavior, options, or attribution still lacks a direct user-facing source.</p>
 
@@ -38,13 +38,13 @@ Gating: `CMD_NOINTERMISSION`, `sent-to-server`.
 
 ## Provenance
 
-Origin: <span class="label ref-origin ref-origin-eternaljk">EternalJK</span>
+Origin: <span class="label ref-origin ref-origin-japro">jaPRO</span>
 
-- Ultimate-origin introduction: [`fa2b5ba6883b`](https://github.com/eternalcodes/EternalJK/commit/fa2b5ba6883ba72c77c53130fedf2d3d2bfb86ea) in <span class="label ref-origin ref-origin-eternaljk">EternalJK</span> (content authored `2018-08-08`, integrated `2018-08-20`)
-- Upstream registration evidence: [codemp/cgame/cg_consolecmds.c:2286](https://github.com/eternalcodes/EternalJK/blame/a40e793a802c8db8df6132b711eea2fc846e5dd1/codemp/cgame/cg_consolecmds.c#L2286)
-- Attribution method: `shared-earliest-commit-lineage-order`
+- Ultimate-origin introduction: [`fa2b5ba6883b`](https://github.com/videoP/jaPRO/commit/fa2b5ba6883ba72c77c53130fedf2d3d2bfb86ea) in <span class="label ref-origin ref-origin-japro">jaPRO</span> (content authored `2018-08-08`, integrated `2018-08-20`)
+- Upstream registration evidence: [codemp/cgame/cg_consolecmds.c:2611](https://github.com/videoP/jaPRO/blame/33d1f1e22ac6db0c17beedbcc419ffef98bbe3c3/codemp/cgame/cg_consolecmds.c#L2611)
+- Attribution method: `shared-earliest-commit-module-lineage`
 - Attribution confidence: `medium`
-- Notes: The earliest authored/submitted introduction is shared by eternaljk, taystjk, japro, vulkan; fork-lineage order selects eternaljk.
+- Notes: The earliest authored/submitted introduction is shared by eternaljk, taystjk, japro, vulkan; module lineage selects japro.
 
 ### Dated project introductions
 
@@ -52,9 +52,9 @@ Authored dates come from the exact registration's first content commit, PR dates
 
 | Project | Authored | PR opened | Integrated | Commit | Relationship |
 |:--|:--|:--|:--|:--|:--|
-| <span class="label ref-origin ref-origin-eternaljk">EternalJK</span> | `2018-08-08` | — | `2018-08-20` | [`fa2b5ba6883b`](https://github.com/eternalcodes/EternalJK/commit/fa2b5ba6883ba72c77c53130fedf2d3d2bfb86ea) | Ultimate origin |
+| <span class="label ref-origin ref-origin-eternaljk">EternalJK</span> | `2018-08-08` | — | `2018-08-20` | [`fa2b5ba6883b`](https://github.com/eternalcodes/EternalJK/commit/fa2b5ba6883ba72c77c53130fedf2d3d2bfb86ea) | Shared integration commit |
 | <span class="label ref-origin ref-origin-taystjk">TaystJK</span> | `2018-08-08` | — | `2018-08-20` | [`fa2b5ba6883b`](https://github.com/taysta/TaystJK/commit/fa2b5ba6883ba72c77c53130fedf2d3d2bfb86ea) | Shared integration commit |
-| <span class="label ref-origin ref-origin-japro">jaPRO</span> | `2018-08-08` | — | `2018-08-20` | [`fa2b5ba6883b`](https://github.com/videoP/jaPRO/commit/fa2b5ba6883ba72c77c53130fedf2d3d2bfb86ea) | Shared integration commit |
+| <span class="label ref-origin ref-origin-japro">jaPRO</span> | `2018-08-08` | — | `2018-08-20` | [`fa2b5ba6883b`](https://github.com/videoP/jaPRO/commit/fa2b5ba6883ba72c77c53130fedf2d3d2bfb86ea) | Ultimate origin |
 | <span class="label ref-origin ref-origin-vulkan">Vulkan</span> | `2018-08-08` | — | `2018-08-20` | [`fa2b5ba6883b`](https://github.com/JKSunny/EternalJK/commit/fa2b5ba6883ba72c77c53130fedf2d3d2bfb86ea) | Shared integration commit |
 
 ### Later changes

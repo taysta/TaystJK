@@ -14,7 +14,12 @@ from build_reference import (
 from generate_docs import (
     bit_table, emoji_page, engine_managed_notice, mirror_row, whats_new_rows, whats_new_page,
 )
-from provenance import extract_ref, reusable_provenance, RESOLVER_VERSION
+from provenance import (
+    RESOLVER_VERSION,
+    extract_ref,
+    reusable_provenance,
+    reusable_provenance_entry,
+)
 
 
 class PipelineTests(unittest.TestCase):
@@ -51,6 +56,41 @@ r = ri.Cvar_Get("cl_renderer", DEFAULT_RENDER_LIBRARY, CVAR_ARCHIVE);
         self.assertFalse(reusable_provenance({"meta": {
             "extractor_version": 5, "resolver_version": RESOLVER_VERSION,
         }}))
+
+    def test_resolver_upgrade_refreshes_only_shared_japro_game_entries(self):
+        report = {"meta": {
+            "extractor_version": 7, "provenance_schema_version": 6,
+            "resolver_version": 36,
+        }}
+        self.assertTrue(reusable_provenance(report))
+        old_entry = {
+            "source": "eternaljk",
+            "method": "shared-earliest-commit-lineage-order",
+            "upstream_presence": ["eternaljk", "japro"],
+        }
+        self.assertFalse(reusable_provenance_entry(
+            old_entry, [{"module": "game"}], 36,
+        ))
+        self.assertTrue(reusable_provenance_entry(
+            old_entry, [{"module": "cgame"}], 36,
+        ))
+        group_credit_entry = {
+            "source": "eternaljk",
+            "method": "squash-feature-group-explicit-credit",
+            "upstream_presence": ["eternaljk", "japro"],
+        }
+        self.assertTrue(reusable_provenance({"meta": {
+            "extractor_version": 7, "provenance_schema_version": 6,
+            "resolver_version": 37,
+        }}))
+        self.assertFalse(reusable_provenance_entry(
+            group_credit_entry, [{"module": "game"}], 37,
+        ))
+        self.assertFalse(reusable_provenance_entry(
+            {"source": "taystjk"},
+            [{"name": "g_fixSaberMoveData", "module": "game"}],
+            39,
+        ))
 
     def test_baselines_use_presence_and_are_not_cumulative(self):
         inventories = {"eternaljk": {"cg_camerafps"}, "openjk": {"removed_upstream"}, "basejka": set()}

@@ -17,13 +17,13 @@ This is the deliberately untidy review queue behind the published reference. `un
 | Group | Count |
 |:--|--:|
 | Base Jedi Academy | 1024 |
-| EternalJK | 145 |
+| EternalJK | 122 |
 | JK2MV | 16 |
 | NewJK / NewMod | 12 |
-| OpenJK | 170 |
-| TaystJK | 75 |
+| OpenJK | 172 |
+| TaystJK | 73 |
 | Vulkan | 24 |
-| jaPRO | 458 |
+| jaPRO | 481 |
 | rend2 | 90 |
 
 ## Runtime reconciliation
