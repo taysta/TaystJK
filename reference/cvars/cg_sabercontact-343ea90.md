@@ -20,7 +20,6 @@ Controls `cg_saberContact` in the cgame module. Consult the cited behavior reads
 |:--|:--|
 | Category | Server & networking |
 | Module | `cgame` |
-| Also registered in | `cgame` |
 | Renderer | All / not renderer-specific |
 | Network scope | `client-only`: Local to the client/UI/renderer. |
 | Derivation | `code-trace` |

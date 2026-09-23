@@ -23,10 +23,11 @@ The site lives on the `gh-pages` branch; the engine lives on `master`. The pipel
 **Never edit these by hand.** They are rewritten wholesale:
 
 - `_data/cvars.json`, `_data/commands.json`, `_data/reference-meta.json`,
-  `_data/reference_stats.json`
-- `reference/cvars/*.md`, `reference/commands/*.md`
-- `reference/{all,audit,categories,features,modules,origins,removed}.md`
-- `features/whats-new.md`, `features/emoji.md`, `assets/data/catalog.json`
+  `_data/reference_stats.json`, and `_data/page_updated.json` (from `page_dates.py`)
+- `reference.md`, `reference/cvars/*.md`, `reference/commands/*.md`
+- `reference/{all,audit,sources,removed}.md` and the `reference/categories/`,
+  `reference/features/`, `reference/modules/` and `reference/origins/` collections
+- `features/whats-new.md`, `features/emoji.md`, and the JSON under `assets/data/`
 - `index.md`: the homepage is generated too, which catches people out
 
 Everything else is hand-written: the guides, the Features pages, this page.
@@ -70,11 +71,23 @@ python3 tools/cvar_audit/generate_docs.py
 `somaz/rend2-unified-wip`, and `Sunny/master`, plus PR metadata as JSON. `runtime_check.py`
 needs console output captured from a client you actually launched.
 
-**This is why regeneration is not automated.** No CI runner has eight upstream remotes, your
-PR metadata, and a game that can launch. What CI does instead is notice when the result has
-gone stale: `check_drift.py` compares the registrations at a source ref against the
+**The static part is automated; the runtime part is not.** `reference-check.yml` on
+`master` fetches every upstream, collects the PR metadata, reruns provenance, reference
+assembly and page generation, runs every check and a Jekyll build, and opens or updates a
+pull request against `gh-pages`. It runs weekly, when a release is published, and after each
+automatic `latest` build. Nothing is pushed to the published branch without review.
+
+It keeps the existing runtime reconciliation rather than redoing it, because no runner
+launches the game, and an old `+cvarlist` capture must not be relabelled as current. A
+person with a real capture still runs `runtime_check.py` by hand.
+
+Between refreshes, `check_drift.py` compares the registrations at a source ref against the
 checked-in data and fails when they diverge. `tools/cvar_audit/README.md` is the full
 contract.
+
+A refresh moves the reference to a new source commit, but hand-written guides keep citing
+the commit they were checked against. Their blame links stay valid; the prose is only as
+current as that check. When you re-verify a guide, re-pin its links to `source_commit`.
 
 ## Verifying a change
 
@@ -103,8 +116,8 @@ Create a Markdown file, give it front matter per `CONVENTIONS.md`, and place it 
 
 The header tabs are **hardcoded** in `_layouts/reference.html`; there is no theme. A page joins
 a section through its `parent` (the section page's title) and `nav_order`, which give it a
-breadcrumb, previous/next links, and the section's highlighted header tab. On the Features and
-Help sections, also add a card for it to `_data/navigation.yml`, which draws their hub pages.
+breadcrumb, previous/next links, and the section's highlighted header tab. Also add a card for
+it to `_data/navigation.yml`, which draws the Install, Features, Development and Help hubs.
 Only a new top-level section means editing the layout. Add hand-written pages to the list in
 `check_generated.py` too, or their internal links are never validated.
 

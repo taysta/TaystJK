@@ -20,7 +20,6 @@ Toggle JK2 1.02-style colored text shadows
 |:--|:--|
 | Category | Graphics & rendering |
 | Module | `renderer` |
-| Also registered in | `renderer` |
 | Renderer | All / not renderer-specific |
 | Network scope | `client-only`: Local to the client/UI/renderer. |
 | Derivation | `documented` |

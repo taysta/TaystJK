@@ -18,7 +18,6 @@ Allow clients to download mod files via UDP from the server
 |:--|:--|
 | Category | Files & downloads |
 | Module | `engine-server` |
-| Also registered in | `engine-server` |
 | Renderer | All / not renderer-specific |
 | Network scope | `server-authoritative`: Owned or enforced by the server. |
 | Derivation | `documented` |

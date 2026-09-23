@@ -21,7 +21,6 @@ The range of numbers to display as green (eg. range 30, offset 0 = +15 to -15)
 | Category | Movement & race |
 | Feature family | Pitch helper |
 | Module | `cgame` |
-| Also registered in | `cgame` |
 | Renderer | All / not renderer-specific |
 | Network scope | `client-only`: Local to the client/UI/renderer. |
 | Derivation | `documented` |

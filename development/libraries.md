@@ -12,25 +12,25 @@ toc: true
 
 # Libraries and versions
 
-<p class="page-lede">Versions below are read from TaystJK source commit <code>6ff04c0baf58</code>. A system-library build can use different runtime versions; the configure log is authoritative for that build.</p>
+<p class="page-lede">Versions below are read from TaystJK source commit <code>77d84176b3b9</code>. A system-library build can use different runtime versions; the configure log is authoritative for that build.</p>
 </div>
 
 ## Versioned source dependencies
 
 | Library | Version in tree | How TaystJK uses it | Evidence |
 |:--|:--|:--|:--|
-| SDL 2 | 2.32.4 | Windowing, input, audio, and platform integration; bundled by default on Windows and macOS, system-provided by default on Linux. | [`SDL_version.h`](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/lib/SDL2/include/SDL_version.h#L59) |
+| SDL 2 | 2.32.4 | Windowing, input, audio, and platform integration; bundled by default on Windows and macOS, system-provided by default on Linux. | [`SDL_version.h`](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/lib/SDL2/include/SDL_version.h#L59) |
 | OpenAL Soft | 1.23.1 | Bundled software implementation of OpenAL on Windows, including software EAX support in the 32-bit package. | [OpenAL Soft import](https://github.com/taysta/TaystJK/commit/e7467a834a155ceb60913739a90313beea52adc5) |
-| libpng | 1.6.53 | PNG image loading for renderer builds. | [`png.h`](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/lib/libpng/include/png.h#L3) |
-| zlib | 1.3.1 | Deflate compression and PK3 support. | [`zlib.h`](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/lib/zlib/include/zlib.h#L40) |
-| minizip | from zlib 1.3.1 | ZIP/PK3 reading; always uses TaystJK's modified bundled copy. | [`lib/minizip/CMakeLists.txt`](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/lib/minizip/CMakeLists.txt#L37) |
-| IJG libjpeg | 9c | Default bundled JPEG implementation. | [`jversion.h`](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/lib/jpeg-9c/jversion.h#L12) |
-| libjpeg-turbo | 3.1.4.1 | Optional configure-time replacement when `UseTurboJPEG=ON`; fetched by CMake. | [`CMakeLists.txt`](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/CMakeLists.txt#L507) |
-| cJSON | 1.7.16 | JSON parsing in the client game module. | [`cJSON.h`](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/lib/cJSON/include/cJSON.h#L81) |
-| Mongoose | 7.13 | Embedded HTTP server and HTTP client used by downloads. | [`mongoose.h`](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/lib/mongoose/include/mongoose.h#L23) |
-| gsl-lite | 0.41.0 | Header-only bounds and safety helpers. | [`gsl-lite.h`](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/lib/gsl-lite/include/gsl/gsl-lite.h#L33) |
-| SQLite | 3.8.5 | Embedded database used by the game module. | [`sqlite3.h`](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/sqlite3.h#L110) |
-| libcurl headers | 7.15.5 | Legacy game-module HTTP interface headers. | [`curlver.h`](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/curl/curlver.h#L31) |
+| libpng | 1.6.53 | PNG image loading for renderer builds. | [`png.h`](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/lib/libpng/include/png.h#L3) |
+| zlib | 1.3.1 | Deflate compression and PK3 support. | [`zlib.h`](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/lib/zlib/include/zlib.h#L40) |
+| minizip | from zlib 1.3.1 | ZIP/PK3 reading; always uses TaystJK's modified bundled copy. | [`lib/minizip/CMakeLists.txt`](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/lib/minizip/CMakeLists.txt#L37) |
+| IJG libjpeg | 9c | Default bundled JPEG implementation. | [`jversion.h`](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/lib/jpeg-9c/jversion.h#L12) |
+| libjpeg-turbo | 3.1.4.1 | Optional configure-time replacement when `UseTurboJPEG=ON`; fetched by CMake. | [`CMakeLists.txt`](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/CMakeLists.txt#L507) |
+| cJSON | 1.7.16 | JSON parsing in the client game module. | [`cJSON.h`](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/lib/cJSON/include/cJSON.h#L81) |
+| Mongoose | 7.13 | Embedded HTTP server and HTTP client used by downloads. | [`mongoose.h`](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/lib/mongoose/include/mongoose.h#L23) |
+| gsl-lite | 0.41.0 | Header-only bounds and safety helpers. | [`gsl-lite.h`](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/lib/gsl-lite/include/gsl/gsl-lite.h#L33) |
+| SQLite | 3.8.5 | Embedded database used by the game module. | [`sqlite3.h`](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/codemp/game/sqlite3.h#L110) |
+| libcurl headers | 7.15.5 | Legacy game-module HTTP interface headers. | [`curlver.h`](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/codemp/game/curl/curlver.h#L31) |
 
 ## Bundled binaries without recorded upstream versions
 
@@ -38,7 +38,7 @@ TaystJK also carries prebuilt Discord RPC libraries for selected platforms. Thei
 
 | Library | Selection | Source evidence |
 |:--|:--|:--|
-| Discord RPC | Prebuilt per-platform archives, controlled by `BuildDiscordRichPresence`. | [Discord RPC selection](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/CMakeLists.txt#L415) |
+| Discord RPC | Prebuilt per-platform archives, controlled by `BuildDiscordRichPresence`. | [Discord RPC selection](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/codemp/CMakeLists.txt#L415) |
 
 ## Bundled versus system libraries
 

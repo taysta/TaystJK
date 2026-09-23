@@ -22,7 +22,6 @@ Controls `cg_displayCameraPosition` in the cgame module. Consult the cited behav
 |:--|:--|
 | Category | HUD & interface |
 | Module | `cgame` |
-| Also registered in | `cgame` |
 | Renderer | All / not renderer-specific |
 | Network scope | `needs-server-support`: Sent to, or only useful with, a supporting game server. |
 | Derivation | `code-trace` |

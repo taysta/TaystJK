@@ -21,7 +21,6 @@ Minimalist crosshair disruptor scope replacement
 | Category | Crosshair & aiming |
 | Feature family | Crosshair |
 | Module | `cgame` |
-| Also registered in | `cgame` |
 | Renderer | All / not renderer-specific |
 | Network scope | `client-only`: Local to the client/UI/renderer. |
 | Derivation | `documented` |

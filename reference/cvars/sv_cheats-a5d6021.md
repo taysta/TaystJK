@@ -20,7 +20,7 @@ Allow cheats on server if set to 1
 |:--|:--|
 | Category | Server & networking |
 | Module | `engine-server` |
-| Also registered in | `game`, `engine-shared`, `engine-server` |
+| Also registered in | `game`, `engine-shared` |
 | Renderer | All / not renderer-specific |
 | Network scope | `server-authoritative`: Owned or enforced by the server. |
 | Derivation | `documented` |

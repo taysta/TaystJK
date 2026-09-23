@@ -21,7 +21,6 @@ Final bloom blend factor, default is 0.15
 | Category | Graphics & rendering |
 | Feature family | Bloom |
 | Module | `renderer` |
-| Also registered in | `renderer` |
 | Renderer | `rd-vulkan` |
 | Network scope | `client-only`: Local to the client/UI/renderer. |
 | Derivation | `documented` |

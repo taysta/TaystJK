@@ -19,7 +19,7 @@ Selects crosshair-name coloring. Zero strips player color codes and uses green f
 | Category | Crosshair & aiming |
 | Feature family | Crosshair |
 | Module | `cgame` |
-| Also registered in | `cgame`, `ui` |
+| Also registered in | `ui` |
 | Renderer | All / not renderer-specific |
 | Network scope | `client-only`: Local to the client/UI/renderer. |
 | Derivation | `mixed` |

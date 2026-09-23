@@ -56,7 +56,7 @@
         {%- comment -%}
           The active tab is the page's top-level ancestor, found by following `parent`
           titles up to two levels. A section is what its pages declare, not where their
-          files sit: /features/platform-support/ belongs to Install. The reference and the
+          files sit: a page whose parent is "Install TaystJK" belongs to Install. The reference and the
           devlog are matched by URL because their entry pages and posts carry no parent.
         {%- endcomment -%}
         {%- assign nav_root = page.url -%}
@@ -208,7 +208,7 @@
         to the Help pages readers look for at the foot of a page; the full list is on /help/.
       {%- endcomment -%}
       <nav aria-label="Footer navigation">
-        <a href="{{ '/overview/' | relative_url }}">Overview</a>
+        <a href="{{ '/overview/' | relative_url }}">Documentation overview</a>
         <a href="{{ '/troubleshooting/' | relative_url }}">Troubleshooting</a>
         <a href="{{ '/where-to-report/' | relative_url }}">Where to report</a>
         <a href="{{ '/glossary/' | relative_url }}">Glossary</a>

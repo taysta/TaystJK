@@ -20,7 +20,6 @@ Controls `s_lip_threshold_3` in the engine-client module. Consult the cited beha
 |:--|:--|
 | Category | Engine & diagnostics |
 | Module | `engine-client` |
-| Also registered in | `engine-client` |
 | Renderer | All / not renderer-specific |
 | Network scope | `client-only`: Local to the client/UI/renderer. |
 | Derivation | `code-trace` |

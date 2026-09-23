@@ -18,7 +18,6 @@ Displays jk2 style projectile fx - 0: Disabled - 1: Enabled
 |:--|:--|
 | Category | Engine & diagnostics |
 | Module | `engine-client` |
-| Also registered in | `engine-client` |
 | Renderer | All / not renderer-specific |
 | Network scope | `client-only`: Local to the client/UI/renderer. |
 | Derivation | `documented` |

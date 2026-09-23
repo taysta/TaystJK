@@ -112,7 +112,7 @@ If a breakpoint remains hollow, open **Debug → Windows → Modules** and confi
 
 ### Move and sign the installed build
 
-After the install target finishes, run TaystJK's [macOS development helper](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/scripts/macosx/moveandsign.sh):
+After the install target finishes, run TaystJK's [macOS development helper](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/scripts/macosx/moveandsign.sh):
 
 ```bash
 ./scripts/macosx/moveandsign.sh

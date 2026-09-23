@@ -20,7 +20,6 @@ Controls `cl_packetdup` in the engine-client module. Consult the cited behavior 
 |:--|:--|
 | Category | Server & networking |
 | Module | `engine-client` |
-| Also registered in | `engine-client` |
 | Renderer | All / not renderer-specific |
 | Network scope | `client-only`: Local to the client/UI/renderer. |
 | Derivation | `code-trace` |

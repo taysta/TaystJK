@@ -22,7 +22,6 @@ Used by UI in the in-game "about" menu
 |:--|:--|
 | Category | HUD & interface |
 | Module | `cgame` |
-| Also registered in | `cgame` |
 | Renderer | All / not renderer-specific |
 | Network scope | `client-only`: Local to the client/UI/renderer. |
 | Derivation | `documented` |

@@ -1,5 +1,5 @@
 ---
-title: "Feature flags (`taystJKinfo`)"
+title: "Feature flags"
 layout: reference
 parent: "Development"
 nav_order: 4
@@ -21,7 +21,7 @@ Several client features need the server to behave compatibly because they change
 prediction, or draw something the server also decides. Rather than run them everywhere and
 desync, the client checks which mod the server is running and enables them only where it
 knows they work. The ordering that check uses, and what it costs you, is described on
-[mod compatibility](/TaystJK/mod-compatibility/).
+[mod compatibility](/TaystJK/install/mod-compatibility/).
 
 If your module supports one of these features but is not JA+ or jaPRO, that check would
 turn it off. `taystJKinfo` is the override.
@@ -30,7 +30,7 @@ turn it off. `taystJKinfo` is the override.
 
 Put the bitmask in your serverinfo under the key `taystJKinfo`. The client reads it once
 per `gamestate`, alongside the rest of the server's configstring
-([`cg_servercmds.c`](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_servercmds.c#L246)):
+([`cg_servercmds.c`](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/codemp/cgame/cg_servercmds.c#L246)):
 
 ```c
 Info_SetValueForKey( info, "taystJKinfo", va( "%i", flags ) );
@@ -42,7 +42,7 @@ honour will mispredict, which is worse for the player than the feature being abs
 ## The bits
 
 Defined in
-[`bg_public.h`](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/bg_public.h#L550):
+[`bg_public.h`](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/codemp/game/bg_public.h#L550):
 
 | Bit | Value | Constant | Means |
 |--:|--:|:--|:--|
@@ -56,20 +56,20 @@ Defined in
 
 The three roll bits are alternatives rather than a progression to be combined. The client
 tests them from 3 downwards and takes the first that matches
-([`bg_pmove.c`](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/bg_pmove.c#L314)).
+([`bg_pmove.c`](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/codemp/game/bg_pmove.c#L314)).
 
 ## How the client uses a flag
 
 Each feature listed in the bit table accepts its flag in the client check. The grapple
 check is representative
-([`bg_pmove.c`](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/bg_pmove.c#L15402)): JA+, or jaPRO with its own grapple
+([`bg_pmove.c`](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/codemp/game/bg_pmove.c#L15402)): JA+, or jaPRO with its own grapple
 option set, or your flag.
 
 Flags can also change behaviour on recognised JA+ and jaPRO servers. For example, the
 grapple flag enables the client path even when jaPRO's own grapple option is off. In the
 roll selection above, `FIXROLL_3` is tested before the server's roll-2 or roll-1 option, so
 advertising it takes precedence over either lower mode
-([`bg_pmove.c`](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/bg_pmove.c#L314)).
+([`bg_pmove.c`](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/codemp/game/bg_pmove.c#L314)).
 Keep the advertised flags consistent with the server's actual movement rules and options.
 
 ## Verifying it

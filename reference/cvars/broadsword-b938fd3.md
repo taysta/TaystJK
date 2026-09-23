@@ -20,7 +20,7 @@ Controls `broadsword` in the cgame module. Consult the cited behavior reads befo
 |:--|:--|
 | Category | Gameplay & combat |
 | Module | `cgame` |
-| Also registered in | `cgame`, `renderer` |
+| Also registered in | `renderer` |
 | Renderer | `rd-dedicated`, `rd-rend2`, `rd-vanilla`, `rd-vulkan` |
 | Network scope | `client-only`: Local to the client/UI/renderer. |
 | Derivation | `code-trace` |

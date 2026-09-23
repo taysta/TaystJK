@@ -21,7 +21,6 @@ Controls `g_eloMinimumDuels` in the game module. Consult the cited behavior read
 | Category | Gameplay & combat |
 | Feature family | Elo rankings |
 | Module | `game` |
-| Also registered in | `game` |
 | Renderer | All / not renderer-specific |
 | Network scope | `server-authoritative`: Owned or enforced by the server. |
 | Derivation | `code-trace` |

@@ -20,7 +20,6 @@ Instantly changethe gametype of the server without having to reload the map
 |:--|:--|
 | Category | Gameplay & combat |
 | Module | `game` |
-| Also registered in | `game` |
 | Renderer | All / not renderer-specific |
 | Network scope | `needs-server-support`: Sent to, or only useful with, a supporting game server. |
 | Derivation | `documented` |

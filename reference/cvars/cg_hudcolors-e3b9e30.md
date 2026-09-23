@@ -20,7 +20,6 @@ Changes the colors of the HUD based on saber style and force
 |:--|:--|
 | Category | HUD & interface |
 | Module | `cgame` |
-| Also registered in | `cgame` |
 | Renderer | All / not renderer-specific |
 | Network scope | `client-only`: Local to the client/UI/renderer. |
 | Derivation | `documented` |

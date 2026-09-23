@@ -21,7 +21,6 @@ Start speed goal, if your start speed is above your goal speed, the text will be
 | Category | Movement & race |
 | Feature family | Checkpoints |
 | Module | `cgame` |
-| Also registered in | `cgame` |
 | Renderer | All / not renderer-specific |
 | Network scope | `client-only`: Local to the client/UI/renderer. |
 | Derivation | `documented` |

@@ -5,6 +5,23 @@
 # previous/next links at the foot of each page walk the section in one order.
 
 sections:
+  install:
+    groups:
+      - title: More in this section
+        description: Details that decide what your installation can do.
+        items:
+          - title: Platform support
+            url: /install/platform-support/
+            description: Features whose availability depends on your operating system or processor.
+            cta: Platform differences
+          - title: Builds and versioning
+            url: /install/builds-and-versioning/
+            description: How releases are identified, and how to tell whether your build has a feature.
+            cta: Read your build
+          - title: Mod compatibility
+            url: /install/mod-compatibility/
+            description: Why a client feature works on one server and silently does nothing on another.
+            cta: Server differences
   features:
     groups:
       - title: Coming from another client
@@ -63,6 +80,49 @@ sections:
             url: /features/console-scripting/
             description: Nested quotes, conditional commands, cvar substitution, and command timers.
             cta: Scripting guide
+  development:
+    groups:
+      - title: Build and debug
+        description: Get a working build and step through it.
+        items:
+          - title: Compiling
+            url: /development/compiling/
+            description: Install prerequisites, choose targets and diagnostics, then build and install on Windows, Linux, or macOS.
+            cta: Compilation guide
+          - title: Debugging
+            url: /development/debugging/
+            description: Launch with the right working directory, debug engine and module code, capture logs, and use sanitizers.
+            cta: Debugging guide
+          - title: Libraries and versions
+            url: /development/libraries/
+            description: The versions of bundled dependencies, and when CMake selects system libraries instead.
+            cta: Library inventory
+      - title: Extend and contribute
+        description: Add features that other mods and players can rely on.
+        items:
+          - title: Feature flags
+            url: /development/feature-flags/
+            description: Advertise the optional client-side features your game module supports, without being detected as JA+ or jaPRO.
+            cta: taystJKinfo spec
+          - title: Contributing
+            url: /development/contributing/
+            description: Which branch to target, what CI builds, and how to test a fix from a PR artifact without compiling it yourself.
+            cta: Contributing guide
+          - title: In-game documentation
+            url: /development/xdocs/
+            description: How a cvar documents itself inside the client, and how that relates to its registration description.
+            cta: xdocs guide
+      - title: Background
+        description: Where the code came from, and how this site is produced.
+        items:
+          - title: Code lineage
+            url: /reference/sources/
+            description: How TaystJK relates to OpenJK, EternalJK, jaPRO, JK2MV, NewJK, rend2, and the Vulkan work. Part of the console reference.
+            cta: Source methodology
+          - title: How this site is built
+            url: /development/documentation-system/
+            description: The pipeline that generates the console reference, what is generated versus hand-written, and how to add a page.
+            cta: Documentation system
   help:
     groups:
       - title: Solve a problem

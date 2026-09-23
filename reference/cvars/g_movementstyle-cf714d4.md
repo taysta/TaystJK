@@ -20,7 +20,6 @@ Force movement style for players. 0=SIEGE 1=JKA 2=QW 3=CPM 4=Q3 5=PJK 6=WSW
 |:--|:--|
 | Category | Gameplay & combat |
 | Module | `game` |
-| Also registered in | `game` |
 | Renderer | All / not renderer-specific |
 | Network scope | `server-authoritative`: Owned or enforced by the server. |
 | Derivation | `documented` |

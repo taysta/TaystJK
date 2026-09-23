@@ -20,7 +20,7 @@ Controls `r_customwidth` in the renderer module. Consult the cited behavior read
 |:--|:--|
 | Category | Graphics & rendering |
 | Module | `renderer` |
-| Also registered in | `renderer`, `engine-shared` |
+| Also registered in | `engine-shared` |
 | Renderer | `rd-dedicated` |
 | Network scope | `client-only`: Local to the client/UI/renderer. |
 | Derivation | `code-trace` |

@@ -18,7 +18,6 @@ Overrides the active folder, allowing a server/client to store configs and other
 |:--|:--|
 | Category | Files & downloads |
 | Module | `engine-shared` |
-| Also registered in | `engine-shared` |
 | Renderer | All / not renderer-specific |
 | Network scope | `client-only`: Local to the client/UI/renderer. |
 | Derivation | `documented` |

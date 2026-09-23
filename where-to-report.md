@@ -22,6 +22,7 @@ toc: true
 | The client crashes, will not start, will not connect, mis-renders, or mishandles files, keys or configs | [taysta/TaystJK](https://github.com/taysta/TaystJK) |
 | How the game *plays*: movement, saber behaviour, scoring, admin commands, race and defrag | [videoP/jaPRO](https://github.com/videoP/jaPRO) |
 | Something only wrong on the Vulkan renderer | [JKSunny/EternalJK](https://github.com/JKSunny/EternalJK) |
+| Something only wrong on the rend2 renderer | [taysta/TaystJK](https://github.com/taysta/TaystJK); see [Renderers](/TaystJK/features/renderers/#where-a-renderer-bug-goes) |
 | Something only wrong on a JA+ server | Nowhere; see below |
 
 ## How to tell which
@@ -33,7 +34,7 @@ guessing.
 server is the client's. One that appears only on particular servers is almost certainly the
 game module those servers run. The rules live there, not in your client. The
 [overview](/TaystJK/overview/) explains that split, and
-[mod compatibility](/TaystJK/mod-compatibility/) explains why a feature can work on one
+[mod compatibility](/TaystJK/install/mod-compatibility/) explains why a feature can work on one
 server and silently do nothing on another.
 
 **Does it survive switching renderer?** Run `cl_renderer rd-taystjk` then `vid_restart` and
@@ -64,7 +65,7 @@ is pulled downstream, so filing in the right place is also the faster route.
 
 ## The Vulkan renderer
 
-The Vulkan backend is developed downstream by JKSunny and fixes flow from there, so
+The Vulkan backend is developed upstream by JKSunny and fixes flow from there to TaystJK, so
 Vulkan-specific rendering problems belong at
 <https://github.com/JKSunny/EternalJK>.
 
@@ -89,7 +90,7 @@ realistic answer is an open-source server mod, not a client change.
 Whichever project you file with:
 
 - the output of `version` and `modversion`, pasted rather than summarised; see
-  [builds and versioning](/TaystJK/features/builds-and-versioning/)
+  [builds and versioning](/TaystJK/install/builds-and-versioning/)
 - your operating system and whether the build is 32- or 64-bit
 - which renderer, and whether switching changes anything
 - the server and the mod it runs

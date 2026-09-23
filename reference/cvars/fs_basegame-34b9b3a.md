@@ -20,7 +20,6 @@ Controls `fs_basegame` in the engine-shared module. Consult the cited behavior r
 |:--|:--|
 | Category | Files & downloads |
 | Module | `engine-shared` |
-| Also registered in | `engine-shared` |
 | Renderer | All / not renderer-specific |
 | Network scope | `client-only`: Local to the client/UI/renderer. |
 | Derivation | `code-trace` |

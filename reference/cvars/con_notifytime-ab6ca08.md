@@ -19,7 +19,6 @@ How many seconds notify messages should be shown before they fade away
 | Category | Engine & diagnostics |
 | Feature family | Console |
 | Module | `engine-client` |
-| Also registered in | `engine-client` |
 | Renderer | All / not renderer-specific |
 | Network scope | `client-only`: Local to the client/UI/renderer. |
 | Derivation | `documented` |

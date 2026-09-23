@@ -23,7 +23,6 @@ Reports the protocol selected for the active file download. The client sets this
 | Category | Files & downloads |
 | Feature family | Downloads |
 | Module | `engine-client` |
-| Also registered in | `engine-client` |
 | Renderer | All / not renderer-specific |
 | Network scope | `client-only`: Local to the client/UI/renderer. |
 | Derivation | `code-trace` |

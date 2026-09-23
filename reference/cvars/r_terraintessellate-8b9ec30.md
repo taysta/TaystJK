@@ -20,7 +20,6 @@ Controls `r_terrainTessellate` in the renderer module. Consult the cited behavio
 |:--|:--|
 | Category | Graphics & rendering |
 | Module | `renderer` |
-| Also registered in | `renderer` |
 | Renderer | `rd-vanilla`, `rd-vulkan` |
 | Network scope | `client-only`: Local to the client/UI/renderer. |
 | Derivation | `code-trace` |

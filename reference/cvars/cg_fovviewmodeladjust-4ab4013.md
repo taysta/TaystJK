@@ -20,7 +20,6 @@ Shifts viewmodels down above cg_fov 90
 |:--|:--|
 | Category | Crosshair & aiming |
 | Module | `cgame` |
-| Also registered in | `cgame` |
 | Renderer | All / not renderer-specific |
 | Network scope | `client-only`: Local to the client/UI/renderer. |
 | Derivation | `documented` |

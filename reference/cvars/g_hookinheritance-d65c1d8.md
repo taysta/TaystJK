@@ -21,7 +21,6 @@ Controls `g_hookInheritance` in the game module. Consult the cited behavior read
 | Category | Gameplay & combat |
 | Feature family | Grapple |
 | Module | `game` |
-| Also registered in | `game` |
 | Renderer | All / not renderer-specific |
 | Network scope | `server-authoritative`: Owned or enforced by the server. |
 | Derivation | `code-trace` |

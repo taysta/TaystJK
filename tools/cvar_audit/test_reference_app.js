@@ -104,6 +104,12 @@ assert.ok(engineManagedCvars.some((entry) => entry.name === "ui_tribesMode"));
 assert.equal(catalog.defaultSort, "origin");
 assert.deepEqual(catalog.sortEntries([command, cvar], state({ query: "r_bloom", tokens: ["r_bloom"], sort: "relevance" }))[0], cvar);
 assert.deepEqual(catalog.sortEntries([command, cvar], state({ sort: "feature" }))[0], cvar);
+// With no sort chosen, a search orders by match quality and an empty query by origin; an
+// explicit choice is kept even while searching.
+assert.equal(catalog.effectiveSort(state({ sortAuto: true })), "origin");
+assert.equal(catalog.effectiveSort(state({ sortAuto: true, query: "strafe", tokens: ["strafe"] })), "relevance");
+assert.equal(catalog.effectiveSort(state({ sortAuto: false, sort: "origin", query: "strafe", tokens: ["strafe"] })), "origin");
+assert.deepEqual(catalog.sortEntries([command, cvar], state({ sortAuto: true, query: "r_bloom", tokens: ["r_bloom"] }))[0], cvar);
 const originOrder = ["taystjk", "eternaljk", "japro", "newjk", "vulkan", "rend2", "openjk", "basejka"];
 const preferredOrigins = originOrder.map((origin, index) => catalog.prepareEntry({ name: `entry-${index}`, origin }));
 assert.deepEqual(catalog.sortEntries(preferredOrigins.slice().reverse(), state({ sort: "origin" })).map((entry) => entry.origin), originOrder);

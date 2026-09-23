@@ -20,7 +20,6 @@ Controls `vid_xpos` in the engine-shared module. Consult the cited behavior read
 |:--|:--|
 | Category | Graphics & rendering |
 | Module | `engine-shared` |
-| Also registered in | `engine-shared` |
 | Renderer | All / not renderer-specific |
 | Network scope | `client-only`: Local to the client/UI/renderer. |
 | Derivation | `code-trace` |

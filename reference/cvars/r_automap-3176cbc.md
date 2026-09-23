@@ -21,7 +21,7 @@ Controls `r_autoMap` in the renderer module. Consult the cited behavior reads be
 | Category | HUD & interface |
 | Feature family | Automap |
 | Module | `renderer` |
-| Also registered in | `cgame`, `renderer` |
+| Also registered in | `cgame` |
 | Renderer | `rd-dedicated`, `rd-vanilla`, `rd-vulkan` |
 | Network scope | `client-only`: Local to the client/UI/renderer. |
 | Derivation | `code-trace` |

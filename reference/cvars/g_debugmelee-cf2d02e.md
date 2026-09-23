@@ -20,7 +20,6 @@ Controls `g_debugMelee` in the game module. Consult the cited behavior reads bef
 |:--|:--|
 | Category | Engine & diagnostics |
 | Module | `game` |
-| Also registered in | `game` |
 | Renderer | All / not renderer-specific |
 | Network scope | `server-authoritative`: Owned or enforced by the server. |
 | Derivation | `code-trace` |

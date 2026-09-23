@@ -21,7 +21,6 @@ Runs `SV_MigrateCheckpoints_f` in the game module.
 | Category | Movement & race |
 | Feature family | Checkpoints |
 | Module | `game` |
-| Also registered in | `game` |
 | Renderer | All / not renderer-specific |
 | Network scope | `needs-server-support`: Sent to, or only useful with, a supporting game server. |
 | Derivation | `code-trace` |

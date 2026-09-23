@@ -20,7 +20,6 @@ Enables automatic Steam API integration (requires a steam_api64.dll to be in Gam
 |:--|:--|
 | Category | Gameplay & combat |
 | Module | `engine-shared` |
-| Also registered in | `engine-shared` |
 | Renderer | All / not renderer-specific |
 | Network scope | `client-only`: Local to the client/UI/renderer. |
 | Derivation | `documented` |

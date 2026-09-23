@@ -21,7 +21,7 @@ Configure with the /speedometer command
 | Category | Movement & race |
 | Feature family | Speedometer |
 | Module | `cgame` |
-| Also registered in | `cgame`, `ui` |
+| Also registered in | `ui` |
 | Renderer | All / not renderer-specific |
 | Network scope | `client-only`: Local to the client/UI/renderer. |
 | Derivation | `documented` |

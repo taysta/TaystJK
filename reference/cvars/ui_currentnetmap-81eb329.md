@@ -22,7 +22,6 @@ Controls `ui_currentNetMap` in the ui module. Consult the cited behavior reads b
 |:--|:--|
 | Category | HUD & interface |
 | Module | `ui` |
-| Also registered in | `ui` |
 | Renderer | All / not renderer-specific |
 | Network scope | `client-only`: Local to the client/UI/renderer. |
 | Derivation | `code-trace` |

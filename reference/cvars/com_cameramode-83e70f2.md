@@ -20,7 +20,7 @@ Controls `com_cameraMode` in the cgame module. Consult the cited behavior reads 
 |:--|:--|
 | Category | HUD & interface |
 | Module | `cgame` |
-| Also registered in | `cgame`, `engine-shared` |
+| Also registered in | `engine-shared` |
 | Renderer | All / not renderer-specific |
 | Network scope | `client-only`: Local to the client/UI/renderer. |
 | Derivation | `code-trace` |

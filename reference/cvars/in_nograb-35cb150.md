@@ -20,7 +20,6 @@ Controls `in_nograb` in the engine-shared module. Consult the cited behavior rea
 |:--|:--|
 | Category | Input & controls |
 | Module | `engine-shared` |
-| Also registered in | `engine-shared` |
 | Renderer | All / not renderer-specific |
 | Network scope | `client-only`: Local to the client/UI/renderer. |
 | Derivation | `code-trace` |

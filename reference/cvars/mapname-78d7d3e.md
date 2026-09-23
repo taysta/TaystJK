@@ -22,7 +22,7 @@ Controls `mapname` in the game module. Consult the cited behavior reads before r
 |:--|:--|
 | Category | Gameplay & combat |
 | Module | `game` |
-| Also registered in | `game`, `engine-server` |
+| Also registered in | `engine-server` |
 | Renderer | All / not renderer-specific |
 | Network scope | `server-authoritative`: Owned or enforced by the server. |
 | Derivation | `code-trace` |

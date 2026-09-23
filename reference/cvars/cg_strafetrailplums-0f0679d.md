@@ -21,7 +21,6 @@ Controls `cg_strafeTrailPlums` in the cgame module. Consult the cited behavior r
 | Category | Movement & race |
 | Feature family | Strafe trail |
 | Module | `cgame` |
-| Also registered in | `cgame` |
 | Renderer | All / not renderer-specific |
 | Network scope | `client-only`: Local to the client/UI/renderer. |
 | Derivation | `code-trace` |

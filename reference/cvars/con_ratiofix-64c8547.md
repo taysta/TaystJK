@@ -21,7 +21,6 @@ Correct console background height, should probably disable for custom console ba
 | Category | Engine & diagnostics |
 | Feature family | Console |
 | Module | `engine-client` |
-| Also registered in | `engine-client` |
 | Renderer | All / not renderer-specific |
 | Network scope | `client-only`: Local to the client/UI/renderer. |
 | Derivation | `documented` |

@@ -16,6 +16,54 @@ LINK = re.compile(r"(?:\]\(|href=[\"'])(/TaystJK/[^)\"'#?]*)")
 STATS_KEY = re.compile(r"site\.data\.reference_stats((?:\.\w+)+)")
 
 
+FRAGMENT_LINK = re.compile(r"(?:\]\(|href=[\"'])(/TaystJK/[^)\"'#?]*)?(?:\?[^)\"'#]*)?#([^)\"'\s]+)")
+FENCE = re.compile(r"^(```|~~~).*?^\1", re.M | re.S)
+ATX_HEADING = re.compile(r"^#{1,6}[ \t]+(.+?)[ \t]*#*[ \t]*$", re.M)
+EXPLICIT_ID = re.compile(r"""\bid=["']([^"'{}]+)["']|\{:?\s*#([\w-]+)\s*\}""")
+NON_WORD = re.compile(r"[^\w\- \t]")
+
+
+def page_anchor_ids(text: str) -> set:
+    """The ids kramdown gives a page's headings, plus any written out by hand.
+
+    Jekyll parses Markdown as GFM, which derives an id from the heading's raw source: lower
+    case, everything but word characters, hyphens and spaces dropped, spaces turned into
+    hyphens, and a repeat numbered -1, -2 and so on. Headings inside code fences are not
+    headings, so fences are removed first.
+    """
+    body = FENCE.sub("", text)
+    ids = set()
+    seen = {}
+    for match in ATX_HEADING.finditer(body):
+        raw = match.group(1)
+        explicit = re.search(r"\{:?\s*#([\w-]+)\s*\}\s*$", raw)
+        if explicit:
+            ids.add(explicit.group(1))
+            continue
+        base = NON_WORD.sub("", raw.lower()).replace(" ", "-").replace("\t", "-")
+        count = seen.get(base, -1) + 1
+        seen[base] = count
+        ids.add(base if count == 0 else f"{base}-{count}")
+    for match in EXPLICIT_ID.finditer(text):
+        ids.add(match.group(1) or match.group(2))
+    return ids
+
+
+def fragment_errors(page: Path, text: str, anchors: dict) -> list:
+    """A link to a heading that does not exist lands at the top of the page, silently."""
+    errors = []
+    for match in FRAGMENT_LINK.finditer(FENCE.sub("", text)):
+        url, fragment = match.group(1), match.group(2)
+        target = resolve_url(url) if url else page
+        if target is None or target.suffix != ".md":
+            continue
+        if target not in anchors:
+            anchors[target] = page_anchor_ids(target.read_text())
+        if fragment not in anchors[target]:
+            errors.append(f"broken anchor in {page}: {url or ''}#{fragment}")
+    return errors
+
+
 def stats_errors(page: Path, text: str, stats: dict) -> list:
     """A misspelt key renders as nothing, so check every figure a page quotes exists."""
     errors = []
@@ -176,16 +224,18 @@ def main() -> None:
             errors.append(f"retired standalone catalog page still exists: {page}")
 
     pages = [
-        Path("index.md"), Path("install.md"), Path("server-hosting.md"),
+        Path("index.md"), Path("install.md"), *Path("install").rglob("*.md"),
+        Path("server-hosting.md"),
         Path("development.md"), *Path("development").rglob("*.md"),
         Path("reference.md"), *Path("reference").rglob("*.md"),
         Path("features.md"), *Path("features").rglob("*.md"),
         Path("overview.md"), Path("glossary.md"),
         Path("troubleshooting.md"), Path("where-to-report.md"),
-        Path("mod-compatibility.md"), Path("devlog.md"), Path("licensing.md"),
+        Path("devlog.md"), Path("licensing.md"),
         Path("help.md"), Path("ai-disclosure.md"), Path("404.md"),
         *Path("_devlog").glob("*.md"),
     ]
+    anchors = {}
     for page in pages:
         text = page.read_text()
         if not text.startswith("---\n") or "\n---\n" not in text[4:]:
@@ -195,6 +245,7 @@ def main() -> None:
             if resolve_url(url) is None:
                 errors.append(f"broken internal link in {page}: {url}")
         errors.extend(tab_panel_errors(page, text))
+        errors.extend(fragment_errors(page, text, anchors))
         errors.extend(stats_errors(page, text, stats))
 
     errors.extend(missing_description_errors())

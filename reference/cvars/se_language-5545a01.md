@@ -20,7 +20,7 @@ Controls `se_language` in the engine-shared module. Consult the cited behavior r
 |:--|:--|
 | Category | Engine & diagnostics |
 | Module | `engine-shared` |
-| Also registered in | `engine-shared`, `renderer`, `ui` |
+| Also registered in | `renderer`, `ui` |
 | Renderer | `rd-rend2`, `rd-vanilla`, `rd-vulkan` |
 | Network scope | `client-only`: Local to the client/UI/renderer. |
 | Derivation | `code-trace` |

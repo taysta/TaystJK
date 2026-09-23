@@ -22,7 +22,6 @@ Controls `ui_tm2_c5_cnt` in the cgame module. Consult the cited behavior reads b
 |:--|:--|
 | Category | HUD & interface |
 | Module | `cgame` |
-| Also registered in | `cgame` |
 | Renderer | All / not renderer-specific |
 | Network scope | `client-only`: Local to the client/UI/renderer. |
 | Derivation | `code-trace` |

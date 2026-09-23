@@ -17,9 +17,9 @@ origin: japro
 </div>
 
 There are nineteen, defined as the `MV_*` enum in
-[`bg_public.h`](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/bg_public.h#L560).
+[`bg_public.h`](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/codemp/game/bg_public.h#L560).
 The descriptions below follow
-[`docs/Defrag Mapping Guide.md`](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/docs/Defrag%20Mapping%20Guide.md),
+[`docs/Defrag Mapping Guide.md`](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/docs/Defrag%20Mapping%20Guide.md),
 which ships on the source branch. It is jaPRO's own guide, carried downstream with the
 gamecode rather than written here. That makes it worth following because it is the
 account of the person who built the styles.
@@ -56,7 +56,7 @@ they are left as the guide states them.
 ## Choosing a style
 
 Players pick their own style with `/move`, which the server implements
-([`g_cmds.c`](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_cmds.c#L9004)):
+([`g_cmds.c`](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/codemp/game/g_cmds.c#L9004)):
 
 ```text
 move <siege, jka, qw, cpm, q3, pjk, wsw, rjq3, rjcpm, swoop, jetpack,
@@ -67,7 +67,7 @@ Run it with no argument and it prints exactly that list, which is the quickest w
 what your server accepts.
 
 Four conditions must hold, and the command tells you which one you failed
-([`Cmd_MovementStyle_f`](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_cmds.c#L6687)):
+([`Cmd_MovementStyle_f`](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/codemp/game/g_cmds.c#L6687)):
 
 - The server must have race mode enabled (`g_raceMode`).
 - You must be **in** racemode yourself, not just on a server that allows it.
@@ -80,7 +80,7 @@ not change; the only sign is the refusal printed to your console.
 Outside racemode there is no per-player choice: `g_movementStyle` picks the style for
 everyone, clamped to the enum. Below the first style it falls back to `siege`, and at or
 past the end of it to `jka`
-([`bg_pmove.c`](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/bg_pmove.c#L445)).
+([`bg_pmove.c`](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/codemp/game/bg_pmove.c#L445)).
 In racemode your own `STAT_MOVEMENTSTYLE` wins instead, which is how one race server runs
 different physics per player and keeps a leaderboard per style. [Racing on
 jaPRO](/TaystJK/features/racing/) covers the rest of a race server: practice mode, accounts,

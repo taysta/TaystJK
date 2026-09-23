@@ -20,7 +20,7 @@ Controls `cp_sbRGB2` in the cgame module. Consult the cited behavior reads befor
 |:--|:--|
 | Category | Gameplay & combat |
 | Module | `cgame` |
-| Also registered in | `cgame`, `ui` |
+| Also registered in | `ui` |
 | Renderer | All / not renderer-specific |
 | Network scope | `needs-server-support`: Sent to, or only useful with, a supporting game server. |
 | Derivation | `code-trace` |

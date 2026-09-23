@@ -21,7 +21,6 @@ Speed that grapple hook travels at
 | Category | Gameplay & combat |
 | Feature family | Grapple |
 | Module | `game` |
-| Also registered in | `game` |
 | Renderer | All / not renderer-specific |
 | Network scope | `server-authoritative`: Owned or enforced by the server. |
 | Derivation | `documented` |

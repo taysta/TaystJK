@@ -20,7 +20,6 @@ Show absorb when it's in use
 |:--|:--|
 | Category | Gameplay & combat |
 | Module | `cgame` |
-| Also registered in | `cgame` |
 | Renderer | All / not renderer-specific |
 | Network scope | `client-only`: Local to the client/UI/renderer. |
 | Derivation | `documented` |

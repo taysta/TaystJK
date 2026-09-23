@@ -20,7 +20,6 @@ Controls `debugBB` in the cgame module. Consult the cited behavior reads before 
 |:--|:--|
 | Category | Engine & diagnostics |
 | Module | `cgame` |
-| Also registered in | `cgame` |
 | Renderer | All / not renderer-specific |
 | Network scope | `client-only`: Local to the client/UI/renderer. |
 | Derivation | `code-trace` |

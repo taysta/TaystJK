@@ -20,7 +20,6 @@ Registered by the current source, but no user-facing behavior description has be
 |:--|:--|
 | Category | Gameplay & combat |
 | Module | `game` |
-| Also registered in | `game` |
 | Renderer | All / not renderer-specific |
 | Network scope | `server-authoritative`: Owned or enforced by the server. |
 | Derivation | `code-trace` |

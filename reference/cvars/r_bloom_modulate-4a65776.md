@@ -19,7 +19,6 @@ Modulate extracted color: 0: off (color = color, i.e. no changes) 1: by itself (
 | Category | Graphics & rendering |
 | Feature family | Bloom |
 | Module | `renderer` |
-| Also registered in | `renderer` |
 | Renderer | `rd-vulkan` |
 | Network scope | `client-only`: Local to the client/UI/renderer. |
 | Derivation | `documented` |

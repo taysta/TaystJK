@@ -20,7 +20,7 @@ Controls `r_stereo` in the renderer module. Consult the cited behavior reads bef
 |:--|:--|
 | Category | Graphics & rendering |
 | Module | `renderer` |
-| Also registered in | `renderer`, `engine-shared` |
+| Also registered in | `engine-shared` |
 | Renderer | `rd-dedicated`, `rd-rend2` |
 | Network scope | `client-only`: Local to the client/UI/renderer. |
 | Derivation | `code-trace` |

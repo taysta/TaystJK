@@ -23,7 +23,6 @@ Controls `r_ext_framebuffer_multisample` in the renderer module. Consult the cit
 | Category | Graphics & rendering |
 | Feature family | Renderer extensions |
 | Module | `renderer` |
-| Also registered in | `renderer` |
 | Renderer | `rd-rend2` |
 | Network scope | `client-only`: Local to the client/UI/renderer. |
 | Derivation | `code-trace` |

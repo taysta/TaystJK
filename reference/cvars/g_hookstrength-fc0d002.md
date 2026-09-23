@@ -21,7 +21,6 @@ Speed that grapple pulls you at
 | Category | Gameplay & combat |
 | Feature family | Grapple |
 | Module | `game` |
-| Also registered in | `game` |
 | Renderer | All / not renderer-specific |
 | Network scope | `feature-flagged`: Client behavior is negotiated through a server feature flag. |
 | Derivation | `documented` |

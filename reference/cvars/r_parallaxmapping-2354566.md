@@ -18,7 +18,6 @@ Disable/enable parallax mapping
 |:--|:--|
 | Category | Server & networking |
 | Module | `renderer` |
-| Also registered in | `renderer` |
 | Renderer | `rd-rend2` |
 | Network scope | `client-only`: Local to the client/UI/renderer. |
 | Derivation | `documented` |

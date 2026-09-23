@@ -20,7 +20,6 @@ Controls `r_screenshotJpegQuality` in the renderer module. Consult the cited beh
 |:--|:--|
 | Category | Demos & media |
 | Module | `renderer` |
-| Also registered in | `renderer` |
 | Renderer | `rd-rend2`, `rd-vanilla`, `rd-vulkan` |
 | Network scope | `client-only`: Local to the client/UI/renderer. |
 | Derivation | `code-trace` |

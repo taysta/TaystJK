@@ -22,7 +22,6 @@ Controls `ui_cl_maxpackets` in the ui module. Consult the cited behavior reads b
 |:--|:--|
 | Category | Server & networking |
 | Module | `ui` |
-| Also registered in | `ui` |
 | Renderer | All / not renderer-specific |
 | Network scope | `client-only`: Local to the client/UI/renderer. |
 | Derivation | `code-trace` |

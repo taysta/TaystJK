@@ -20,7 +20,6 @@ Give com_errorMessage a default so it won't come back to life after a resetDefau
 |:--|:--|
 | Category | Chat & social |
 | Module | `engine-shared` |
-| Also registered in | `engine-shared` |
 | Renderer | All / not renderer-specific |
 | Network scope | `client-only`: Local to the client/UI/renderer. |
 | Derivation | `documented` |

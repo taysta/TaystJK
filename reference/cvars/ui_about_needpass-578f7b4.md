@@ -22,7 +22,6 @@ Controls `ui_about_needpass` in the cgame module. Consult the cited behavior rea
 |:--|:--|
 | Category | HUD & interface |
 | Module | `cgame` |
-| Also registered in | `cgame` |
 | Renderer | All / not renderer-specific |
 | Network scope | `client-only`: Local to the client/UI/renderer. |
 | Derivation | `code-trace` |

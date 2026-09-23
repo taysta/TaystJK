@@ -18,7 +18,6 @@ Clears pre-record data for a particular client. Call with clientnum.
 |:--|:--|
 | Category | Demos & media |
 | Module | `engine-server` |
-| Also registered in | `engine-server` |
 | Renderer | All / not renderer-specific |
 | Network scope | `server-authoritative`: Owned or enforced by the server. |
 | Derivation | `documented` |

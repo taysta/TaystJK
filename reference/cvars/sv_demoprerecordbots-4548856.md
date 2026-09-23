@@ -18,7 +18,6 @@ Do demo pre-recording for bots as well
 |:--|:--|
 | Category | Demos & media |
 | Module | `engine-server` |
-| Also registered in | `engine-server` |
 | Renderer | All / not renderer-specific |
 | Network scope | `server-authoritative`: Owned or enforced by the server. |
 | Derivation | `documented` |

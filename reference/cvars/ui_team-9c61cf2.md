@@ -22,7 +22,7 @@ Controls `ui_team` in the ui module. Consult the cited behavior reads before rel
 |:--|:--|
 | Category | Gameplay & combat |
 | Module | `ui` |
-| Also registered in | `cgame`, `ui` |
+| Also registered in | `cgame` |
 | Renderer | All / not renderer-specific |
 | Network scope | `client-only`: Local to the client/UI/renderer. |
 | Derivation | `code-trace` |

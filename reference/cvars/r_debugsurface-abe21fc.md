@@ -20,7 +20,7 @@ Controls `cv2` in the renderer module. Consult the cited behavior reads before r
 |:--|:--|
 | Category | Graphics & rendering |
 | Module | `renderer` |
-| Also registered in | `engine-shared`, `renderer` |
+| Also registered in | `engine-shared` |
 | Renderer | `rd-dedicated`, `rd-rend2`, `rd-vanilla`, `rd-vulkan` |
 | Network scope | `client-only`: Local to the client/UI/renderer. |
 | Derivation | `code-trace` |

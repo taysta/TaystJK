@@ -50,7 +50,8 @@ function heading(tag, id, text, panel, skip) {
   return node;
 }
 
-function run(headings) {
+function run(headings, options) {
+  options = options || {};
   const main = makeNode("main");
   main.className = "site-main";
   main.classList = { add() {}, toggle() {} };
@@ -82,7 +83,8 @@ function run(headings) {
   const sandbox = {
     document: doc,
     navigator: {},
-    localStorage: { getItem: () => null, setItem() {} },
+    localStorage: { getItem: () => (options.stored === undefined ? null : options.stored), setItem() {} },
+    matchMedia: options.narrow === undefined ? undefined : () => ({ matches: options.narrow }),
     location: { origin: "https://x.test", pathname: "/", search: "", hash: "" },
     history: { replaceState() {} },
     setTimeout,
@@ -162,5 +164,15 @@ assert.strictEqual(run([
   heading("h2", "w", "Windows", true),
   heading("h2", "l", "Linux", true)
 ]), null, "panel headings do not count toward the threshold");
+
+
+// On a narrow screen the rail sits above the page title, so it starts closed unless the
+// reader has opened it before; wide screens, and any stored choice, are left as they were.
+const two = () => [heading("h2", "a", "A"), heading("h2", "b", "B")];
+assert.strictEqual(run(two(), { narrow: true }).dataset.collapsed, "true", "narrow screens start collapsed");
+assert.strictEqual(run(two(), { narrow: false }).dataset.collapsed, "false", "wide screens start open");
+assert.strictEqual(run(two()).dataset.collapsed, "false", "no matchMedia means open");
+assert.strictEqual(run(two(), { narrow: true, stored: "false" }).dataset.collapsed, "false", "a stored choice wins on narrow screens");
+assert.strictEqual(run(two(), { narrow: false, stored: "true" }).dataset.collapsed, "true", "a stored choice wins on wide screens");
 
 console.log("on-this-page navigation is valid");

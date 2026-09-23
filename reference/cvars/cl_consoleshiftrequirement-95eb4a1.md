@@ -18,7 +18,6 @@ Require shift key to be pressed for native console key detection
 |:--|:--|
 | Category | Engine & diagnostics |
 | Module | `engine-client` |
-| Also registered in | `engine-client` |
 | Renderer | All / not renderer-specific |
 | Network scope | `client-only`: Local to the client/UI/renderer. |
 | Derivation | `documented` |

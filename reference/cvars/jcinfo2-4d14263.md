@@ -22,7 +22,6 @@ Not a cvar, dont change it
 |:--|:--|
 | Category | Gameplay & combat |
 | Module | `game` |
-| Also registered in | `game` |
 | Renderer | All / not renderer-specific |
 | Network scope | `feature-flagged`: Client behavior is negotiated through a server feature flag. |
 | Derivation | `documented` |

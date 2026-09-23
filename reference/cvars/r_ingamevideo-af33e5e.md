@@ -20,7 +20,7 @@ Controls `cl_inGameVideo` in the renderer module. Consult the cited behavior rea
 |:--|:--|
 | Category | Demos & media |
 | Module | `renderer` |
-| Also registered in | `engine-client`, `renderer` |
+| Also registered in | `engine-client` |
 | Renderer | `rd-dedicated`, `rd-rend2`, `rd-vanilla`, `rd-vulkan` |
 | Network scope | `client-only`: Local to the client/UI/renderer. |
 | Derivation | `code-trace` |

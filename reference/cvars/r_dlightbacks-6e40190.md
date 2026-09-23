@@ -19,7 +19,6 @@ Dlight non-facing surfaces for continuity
 | Category | Graphics & rendering |
 | Feature family | Dynamic lights |
 | Module | `renderer` |
-| Also registered in | `renderer` |
 | Renderer | `rd-vanilla`, `rd-vulkan` |
 | Network scope | `client-only`: Local to the client/UI/renderer. |
 | Derivation | `documented` |

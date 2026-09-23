@@ -22,7 +22,6 @@ Controls `teamoverlay` in the cgame module. Consult the cited behavior reads bef
 |:--|:--|
 | Category | Gameplay & combat |
 | Module | `cgame` |
-| Also registered in | `cgame` |
 | Renderer | All / not renderer-specific |
 | Network scope | `needs-server-support`: Sent to, or only useful with, a supporting game server. |
 | Derivation | `code-trace` |

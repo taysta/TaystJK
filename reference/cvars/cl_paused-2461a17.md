@@ -22,7 +22,7 @@ Controls `cl_paused` in the cgame module. Consult the cited behavior reads befor
 |:--|:--|
 | Category | Gameplay & combat |
 | Module | `cgame` |
-| Also registered in | `cgame`, `engine-shared` |
+| Also registered in | `engine-shared` |
 | Renderer | All / not renderer-specific |
 | Network scope | `client-only`: Local to the client/UI/renderer. |
 | Derivation | `code-trace` |

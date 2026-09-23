@@ -1029,9 +1029,12 @@ def detail_page(entry: dict[str, Any], refs: dict[str, str], cvar_names: dict[st
     lines.append(f"| Category | {entry['category']} |")
     if entry.get("feature"):
         lines.append(f"| Feature family | {entry['feature']} |")
+    # `modules` lists every module that registers the name, including the primary one; the
+    # row is only worth showing when there is somewhere else.
+    other_modules = [value for value in entry.get("modules", []) if value != entry["module"]]
     lines.extend([
         f"| Module | {code(entry['module'])} |",
-        f"| Also registered in | {', '.join(code(value) for value in entry.get('modules', []))} |",
+        *([f"| Also registered in | {', '.join(code(value) for value in other_modules)} |"] if other_modules else []),
         f"| Renderer | {', '.join(code(value) for value in entry.get('renderer', [])) or 'All / not renderer-specific'} |",
         f"| Network scope | {code(entry['network'])}: {NETWORK_HELP.get(entry['network'], '')} |",
         f"| Derivation | {code(entry['derivation'])} |",
@@ -1386,7 +1389,7 @@ def home_page(cvars: list[dict[str, Any]], commands: list[dict[str, Any]]) -> st
     <p class="page-lede">Move between the game's major server communities without giving up a modern, responsive client. TaystJK combines mod-aware compatibility with cross-platform performance and practical quality-of-life improvements.</p>
     <nav class="docs-intro-links" aria-label="Project links">
       <a href="{{{{ '/install/' | relative_url }}}}">Installation</a>
-      <a href="{{{{ '/overview/' | relative_url }}}}">How this site works</a>
+      <a href="{{{{ '/overview/' | relative_url }}}}">Documentation overview</a>
       <a href="https://github.com/taysta/TaystJK/releases/tag/latest">Latest release</a>
       <a href="https://github.com/taysta/TaystJK">Source repository</a>
     </nav>
@@ -1438,7 +1441,7 @@ def home_page(cvars: list[dict[str, Any]], commands: list[dict[str, Any]]) -> st
 
   <p class="project-lineage">TaystJK is a considered assembly of proven work from OpenJK, EternalJK, jaPRO, JK2MV, NewJK, rend2, the community's Vulkan renderer work, and TaystJK's own contributors. Code brought across project boundaries is ported with permission, credited to its source, and maintained as part of a coherent client rather than a loose collection of patches. <a href="{{{{ '/reference/sources/' | relative_url }}}}">See the source lineage.</a></p>
 
-  <p class="project-lineage"><strong>jaPRO</strong> is the largest single source of what this client can do: {japro_count} of the {total_count:,} entries in the console reference originate there. TaystJK bundles jaPRO's gamecode on both sides &mdash; the client-side <code>cgame</code>, so its HUD and movement tools work on any server, and the server-side <code>jampgame</code>, so a TaystJK server hosts race, Tribes and the admin system with nothing else installed. The code is maintained upstream, so bugs in the rules belong to <a href="https://github.com/videoP/jaPRO">videoP/jaPRO</a>. <a href="{{{{ '/overview/' | relative_url }}}}">What the split means.</a></p>
+  <p class="project-lineage"><strong>jaPRO</strong> is the largest single source of what this client can do: {japro_count} of the {total_count:,} entries in the console reference originate there. TaystJK bundles jaPRO's gamecode on both sides: the client-side <code>cgame</code>, so its HUD and movement tools work on any server, and the server-side <code>jampgame</code>, so a TaystJK server hosts race, Tribes and the admin system with nothing else installed. The code is maintained upstream, so bugs in the rules belong to <a href="https://github.com/videoP/jaPRO">videoP/jaPRO</a>. <a href="{{{{ '/overview/' | relative_url }}}}">What the split means.</a></p>
 </section>
 
 <section class="home-compatibility" aria-labelledby="compatibility-heading">
@@ -1507,6 +1510,11 @@ def home_page(cvars: list[dict[str, Any]], commands: list[dict[str, Any]]) -> st
       <p>Search controls by topic, module, origin, and documentation coverage.</p>
       <span>Browse the reference →</span>
     </a>
+    <a class="home-guide" href="{{{{ '/help/' | relative_url }}}}">
+      <h3>Help</h3>
+      <p>Troubleshooting by symptom, where to report a problem, and the glossary.</p>
+      <span>Get help →</span>
+    </a>
   </div>
 </section>
 
@@ -1530,13 +1538,17 @@ def home_page(cvars: list[dict[str, Any]], commands: list[dict[str, Any]]) -> st
       <strong>Troubleshooting</strong>
       <span>Common problems listed by the symptom you actually see.</span>
     </a>
-    <a href="{{{{ '/mod-compatibility/' | relative_url }}}}">
+    <a href="{{{{ '/install/mod-compatibility/' | relative_url }}}}">
       <strong>Mod compatibility</strong>
       <span>Why a feature works on one server and does nothing on another.</span>
     </a>
     <a href="{{{{ '/ai-disclosure/' | relative_url }}}}">
       <strong>AI disclosure</strong>
       <span>How this documentation was produced and reviewed.</span>
+    </a>
+    <a href="{{{{ '/devlog/' | relative_url }}}}">
+      <strong>Devlog</strong>
+      <span>Dated posts about what has changed and why.</span>
     </a>
   </div>
 </section>

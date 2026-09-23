@@ -18,7 +18,6 @@ Enables use of ALT+ENTER keyboard combo to toggle fullscreen
 |:--|:--|
 | Category | Engine & diagnostics |
 | Module | `engine-client` |
-| Also registered in | `engine-client` |
 | Renderer | All / not renderer-specific |
 | Network scope | `client-only`: Local to the client/UI/renderer. |
 | Derivation | `documented` |

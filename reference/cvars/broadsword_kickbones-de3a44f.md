@@ -20,7 +20,6 @@ Controls `broadsword_kickbones` in the renderer module. Consult the cited behavi
 |:--|:--|
 | Category | Administration |
 | Module | `renderer` |
-| Also registered in | `renderer` |
 | Renderer | `rd-dedicated`, `rd-rend2`, `rd-vanilla`, `rd-vulkan` |
 | Network scope | `client-only`: Local to the client/UI/renderer. |
 | Derivation | `code-trace` |

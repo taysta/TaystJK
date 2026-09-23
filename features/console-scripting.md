@@ -49,20 +49,20 @@ three in a row is not a typo.
 
 A `"` counts as **opening** a level only when the character after it is not a space, a `;`
 or another `"`, and the character before it is not a `"`
-([`IsOpeningQuote`](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/qcommon/cmd.cpp#L251)).
+([`IsOpeningQuote`](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/codemp/qcommon/cmd.cpp#L251)).
 That heuristic is what lets the parser tell `say "hi"` from a stray quote, and it is why
 `""` is treated as an empty argument rather than as one level of nesting.
 
 Three places count depth the same way, which is why the feature holds up across all the
 routes a command can take: the command buffer, so a `;` inside quotes no longer splits the
 line
-([`Cbuf_Execute`](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/qcommon/cmd.cpp#L337));
+([`Cbuf_Execute`](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/codemp/qcommon/cmd.cpp#L337));
 the tokenizer that splits a line into arguments
-([`Cmd_TokenizeStringNestedQuotes`](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/qcommon/cmd.cpp#L820),
+([`Cmd_TokenizeStringNestedQuotes`](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/codemp/qcommon/cmd.cpp#L820),
 used by
-[`Cmd_ExecuteString`](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/qcommon/cmd.cpp#L1043));
+[`Cmd_ExecuteString`](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/codemp/qcommon/cmd.cpp#L1043));
 and bind parsing, so a bound string containing `;` inside quotes stays one command
-([`CL_ParseBinding`](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/cl_keys.cpp#L1655)).
+([`CL_ParseBinding`](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/codemp/client/cl_keys.cpp#L1655)).
 
 There is no backslash escape. `\"` is not special; depth counting is the only mechanism.
 
@@ -70,14 +70,14 @@ There is no backslash escape. `\"` is not special; depth counting is the only me
 
 `strSub` runs the command that follows it, first replacing every `$cvarname$` with that
 cvar's current value
-([`Com_StrSub_f`](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/qcommon/common.cpp#L433)).
+([`Com_StrSub_f`](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/codemp/qcommon/common.cpp#L433)).
 
 ```text
 strSub say "Hello, I am $name$"
 ```
 
 The name is delimited on **both** sides by `$`. Write `$$` for a literal dollar sign
-([`common.cpp:454`](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/qcommon/common.cpp#L454)).
+([`common.cpp:454`](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/codemp/qcommon/common.cpp#L454)).
 Substitution happens per argument, so a value containing spaces is re-quoted as one
 argument before the command runs.
 
@@ -89,7 +89,7 @@ want a value *inside* a string; use `vstr` when the cvar *is* the command.
 
 `ifCvar` reads one cvar, tests it against conditions in order, and runs the command
 belonging to the **first** match
-([`Com_IfCvar_f`](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/qcommon/common.cpp#L346)).
+([`Com_IfCvar_f`](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/codemp/qcommon/common.cpp#L346)).
 Nothing runs if no condition matches.
 
 ```text
@@ -125,7 +125,7 @@ string match.
 | `$else` | Always true |
 
 `$startswith` is accepted alongside `$beginswith`
-([`common.cpp:394`](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/qcommon/common.cpp#L394));
+([`common.cpp:394`](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/codemp/qcommon/common.cpp#L394));
 the NewMod documentation lists only `$beginswith`.
 
 The text follows the modifier with no space: `$containsbeer`, `$>=50`, `$else`. Put a
@@ -149,10 +149,10 @@ command's own name**. This is the part that trips people up.
 | `bind x say_team "hello there"` | `4` | `"hello there"` is quoted, so it is **one** argument. |
 
 A quoted phrase counts once, and the client re-adds the quotes when it runs the command
-([`common.cpp:417`](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/qcommon/common.cpp#L417)).
+([`common.cpp:417`](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/codemp/qcommon/common.cpp#L417)).
 Get the count wrong and `ifCvar` reads the following condition from the middle of your
 command; the count must be between 1 and 1023 or it refuses and prints why
-([`common.cpp:410`](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/qcommon/common.cpp#L410)).
+([`common.cpp:410`](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/codemp/qcommon/common.cpp#L410)).
 
 Putting it together:
 
@@ -175,18 +175,18 @@ say darth;delay 1000;say vader
 
 Two things about the syntax are not obvious, and both follow from these being intercepted
 in the command buffer rather than run as ordinary commands
-([`Cbuf_Execute`](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/qcommon/cmd.cpp#L290)):
+([`Cbuf_Execute`](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/codemp/qcommon/cmd.cpp#L290)):
 
 - **A `;` or a newline must follow the number.** `delay 1000 say vader` prints usage and
   does nothing. `delay 1000;say vader` works.
 - **Everything after that `;` is deferred as one unit**, to the end of the line
-  ([`cmd.cpp:324`](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/qcommon/cmd.cpp#L324)).
+  ([`cmd.cpp:324`](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/codemp/qcommon/cmd.cpp#L324)).
   So `a;delay 500;b;delay 500;c` runs `a`, waits, then runs `b;delay 500;c`. The delays
   chain instead of both counting from now.
 
 Omitting the number entirely is the same as `1`, but a space must remain between the
 command and the separator: `delay ;say vader` works, while `delay;say vader` does not
-([`cmd.cpp:314`](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/qcommon/cmd.cpp#L314)).
+([`cmd.cpp:314`](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/codemp/qcommon/cmd.cpp#L314)).
 
 `delaycancel` and `waitfcancel` drop pending entries whose text contains the argument, so
 `delaycancel vader` cancels the example above. `delaycancel ""` cancels every pending
@@ -201,25 +201,25 @@ client, not deliberate limits, so they may be fixed in a build newer than this p
 **Cvar indirection is broken for the three text operators.** `$contains$myCvar`,
 `$beginswith$myCvar`, `$startswith$myCvar` and `$endswith$myCvar` all read the wrong
 position when resolving the cvar name
-([`$contains`](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/qcommon/common.cpp#L392),
-[`$beginswith`](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/qcommon/common.cpp#L395),
-[`$endswith`](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/qcommon/common.cpp#L399)).
+([`$contains`](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/codemp/qcommon/common.cpp#L392),
+[`$beginswith`](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/codemp/qcommon/common.cpp#L395),
+[`$endswith`](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/codemp/qcommon/common.cpp#L399)).
 The lookup returns an empty string, and an empty string matches anything, so **the condition
 silently becomes always true** rather than failing visibly. Compare against literal text
 with these operators.
 
 **`$endswith` needs at least three characters.** `$endswithab` falls through to plain string
 equality instead of testing the suffix
-([`common.cpp:398`](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/qcommon/common.cpp#L398)).
+([`common.cpp:398`](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/codemp/qcommon/common.cpp#L398)).
 
 **Do not pass an empty setting.** `ifCvar someCvar "" 2 say hi` reaches a loop that does not
 advance
-([`common.cpp:363`](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/qcommon/common.cpp#L363)).
+([`common.cpp:363`](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/codemp/qcommon/common.cpp#L363)).
 Use `$else` when you want a condition that always matches.
 
 **`strSub` needs the closing `$`.** `$name` without a trailing `$` is read to the end of the
 argument
-([`common.cpp:461`](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/qcommon/common.cpp#L461)),
+([`common.cpp:461`](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/codemp/qcommon/common.cpp#L461)),
 which is rarely the cvar you meant.
 
 Report anything else you hit at

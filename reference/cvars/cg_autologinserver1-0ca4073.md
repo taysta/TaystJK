@@ -20,7 +20,6 @@ IP of server to try to autologin on, used with /autologin command. If you are no
 |:--|:--|
 | Category | Server & networking |
 | Module | `cgame` |
-| Also registered in | `cgame` |
 | Renderer | All / not renderer-specific |
 | Network scope | `client-only`: Local to the client/UI/renderer. |
 | Derivation | `documented` |

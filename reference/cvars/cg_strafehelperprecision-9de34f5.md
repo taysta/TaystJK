@@ -21,7 +21,6 @@ Controls `cg_strafeHelperPrecision` in the cgame module. Consult the cited behav
 | Category | Movement & race |
 | Feature family | Strafe helper |
 | Module | `cgame` |
-| Also registered in | `cgame` |
 | Renderer | All / not renderer-specific |
 | Network scope | `client-only`: Local to the client/UI/renderer. |
 | Derivation | `code-trace` |

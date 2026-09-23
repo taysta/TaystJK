@@ -20,7 +20,6 @@ Controls `s_allowDynamicMusic` in the engine-client module. Consult the cited be
 |:--|:--|
 | Category | Audio & music |
 | Module | `engine-client` |
-| Also registered in | `engine-client` |
 | Renderer | All / not renderer-specific |
 | Network scope | `client-only`: Local to the client/UI/renderer. |
 | Derivation | `code-trace` |

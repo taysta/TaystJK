@@ -21,7 +21,6 @@ Runs `CG_TeleToCheckpoint_f` in the cgame module.
 | Category | Movement & race |
 | Feature family | Checkpoints |
 | Module | `cgame` |
-| Also registered in | `cgame` |
 | Renderer | All / not renderer-specific |
 | Network scope | `client-only`: Local to the client/UI/renderer. |
 | Derivation | `documented` |

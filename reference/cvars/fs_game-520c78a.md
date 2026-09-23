@@ -18,7 +18,6 @@ Mod directory
 |:--|:--|
 | Category | Files & downloads |
 | Module | `engine-shared` |
-| Also registered in | `engine-shared` |
 | Renderer | All / not renderer-specific |
 | Network scope | `server-authoritative`: Owned or enforced by the server. |
 | Derivation | `documented` |

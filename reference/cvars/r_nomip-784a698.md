@@ -20,7 +20,6 @@ Apply picmip only on worldspawn textures
 |:--|:--|
 | Category | Graphics & rendering |
 | Module | `renderer` |
-| Also registered in | `renderer` |
 | Renderer | `rd-vulkan` |
 | Network scope | `client-only`: Local to the client/UI/renderer. |
 | Derivation | `documented` |

@@ -15,7 +15,7 @@ toc: true
     <p class="page-lede">Move between the game's major server communities without giving up a modern, responsive client. TaystJK combines mod-aware compatibility with cross-platform performance and practical quality-of-life improvements.</p>
     <nav class="docs-intro-links" aria-label="Project links">
       <a href="{{ '/install/' | relative_url }}">Installation</a>
-      <a href="{{ '/overview/' | relative_url }}">How this site works</a>
+      <a href="{{ '/overview/' | relative_url }}">Documentation overview</a>
       <a href="https://github.com/taysta/TaystJK/releases/tag/latest">Latest release</a>
       <a href="https://github.com/taysta/TaystJK">Source repository</a>
     </nav>
@@ -67,7 +67,7 @@ toc: true
 
   <p class="project-lineage">TaystJK is a considered assembly of proven work from OpenJK, EternalJK, jaPRO, JK2MV, NewJK, rend2, the community's Vulkan renderer work, and TaystJK's own contributors. Code brought across project boundaries is ported with permission, credited to its source, and maintained as part of a coherent client rather than a loose collection of patches. <a href="{{ '/reference/sources/' | relative_url }}">See the source lineage.</a></p>
 
-  <p class="project-lineage"><strong>jaPRO</strong> is the largest single source of what this client can do: 481 of the 2,015 entries in the console reference originate there. TaystJK bundles jaPRO's gamecode on both sides &mdash; the client-side <code>cgame</code>, so its HUD and movement tools work on any server, and the server-side <code>jampgame</code>, so a TaystJK server hosts race, Tribes and the admin system with nothing else installed. The code is maintained upstream, so bugs in the rules belong to <a href="https://github.com/videoP/jaPRO">videoP/jaPRO</a>. <a href="{{ '/overview/' | relative_url }}">What the split means.</a></p>
+  <p class="project-lineage"><strong>jaPRO</strong> is the largest single source of what this client can do: 481 of the 2,015 entries in the console reference originate there. TaystJK bundles jaPRO's gamecode on both sides: the client-side <code>cgame</code>, so its HUD and movement tools work on any server, and the server-side <code>jampgame</code>, so a TaystJK server hosts race, Tribes and the admin system with nothing else installed. The code is maintained upstream, so bugs in the rules belong to <a href="https://github.com/videoP/jaPRO">videoP/jaPRO</a>. <a href="{{ '/overview/' | relative_url }}">What the split means.</a></p>
 </section>
 
 <section class="home-compatibility" aria-labelledby="compatibility-heading">
@@ -136,6 +136,11 @@ toc: true
       <p>Search controls by topic, module, origin, and documentation coverage.</p>
       <span>Browse the reference →</span>
     </a>
+    <a class="home-guide" href="{{ '/help/' | relative_url }}">
+      <h3>Help</h3>
+      <p>Troubleshooting by symptom, where to report a problem, and the glossary.</p>
+      <span>Get help →</span>
+    </a>
   </div>
 </section>
 
@@ -159,13 +164,17 @@ toc: true
       <strong>Troubleshooting</strong>
       <span>Common problems listed by the symptom you actually see.</span>
     </a>
-    <a href="{{ '/mod-compatibility/' | relative_url }}">
+    <a href="{{ '/install/mod-compatibility/' | relative_url }}">
       <strong>Mod compatibility</strong>
       <span>Why a feature works on one server and does nothing on another.</span>
     </a>
     <a href="{{ '/ai-disclosure/' | relative_url }}">
       <strong>AI disclosure</strong>
       <span>How this documentation was produced and reviewed.</span>
+    </a>
+    <a href="{{ '/devlog/' | relative_url }}">
+      <strong>Devlog</strong>
+      <span>Dated posts about what has changed and why.</span>
     </a>
   </div>
 </section>

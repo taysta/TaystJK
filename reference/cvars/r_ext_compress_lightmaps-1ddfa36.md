@@ -21,7 +21,6 @@ Controls `r_ext_compressed_lightmaps` in the renderer module. Consult the cited 
 | Category | Graphics & rendering |
 | Feature family | Renderer extensions |
 | Module | `renderer` |
-| Also registered in | `renderer` |
 | Renderer | `rd-dedicated`, `rd-vanilla`, `rd-vulkan` |
 | Network scope | `client-only`: Local to the client/UI/renderer. |
 | Derivation | `code-trace` |

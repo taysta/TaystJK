@@ -22,7 +22,6 @@ Controls `com_waitingForKey` in the engine-shared module. Consult the cited beha
 |:--|:--|
 | Category | Input & controls |
 | Module | `engine-shared` |
-| Also registered in | `engine-shared` |
 | Renderer | All / not renderer-specific |
 | Network scope | `client-only`: Local to the client/UI/renderer. |
 | Derivation | `code-trace` |

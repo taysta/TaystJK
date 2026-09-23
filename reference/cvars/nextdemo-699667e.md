@@ -22,7 +22,6 @@ Controls `nextdemo` in the engine-client module. Consult the cited behavior read
 |:--|:--|
 | Category | Demos & media |
 | Module | `engine-client` |
-| Also registered in | `engine-client` |
 | Renderer | All / not renderer-specific |
 | Network scope | `client-only`: Local to the client/UI/renderer. |
 | Derivation | `code-trace` |

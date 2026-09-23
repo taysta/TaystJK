@@ -20,7 +20,6 @@ Menu-only state the UI keeps while reading server info. `UI_UpdateCurrentServerI
 |:--|:--|
 | Category | HUD & interface |
 | Module | `ui` |
-| Also registered in | `ui` |
 | Renderer | All / not renderer-specific |
 | Network scope | `client-only`: Local to the client/UI/renderer. |
 | Derivation | `code-trace` |

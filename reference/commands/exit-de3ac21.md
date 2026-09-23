@@ -20,7 +20,6 @@ Exits the game
 |:--|:--|
 | Category | Engine & diagnostics |
 | Module | `engine-shared` |
-| Also registered in | `engine-shared` |
 | Renderer | All / not renderer-specific |
 | Network scope | `client-only`: Local to the client/UI/renderer. |
 | Derivation | `documented` |

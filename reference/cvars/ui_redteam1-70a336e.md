@@ -20,7 +20,6 @@ Rww - these used to all default to 0 (closed).. I changed them to 1 (human)
 |:--|:--|
 | Category | Gameplay & combat |
 | Module | `ui` |
-| Also registered in | `ui` |
 | Renderer | All / not renderer-specific |
 | Network scope | `client-only`: Local to the client/UI/renderer. |
 | Derivation | `documented` |

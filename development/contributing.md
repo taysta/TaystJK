@@ -22,12 +22,12 @@ unanswered. See [where to report](/TaystJK/where-to-report/).
 ## Branches
 
 Pull requests target `master` or `beta`
-([`build.yml`](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/.github/workflows/build.yml#L13)).
+([`build.yml`](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/.github/workflows/build.yml#L13)).
 Use `master` unless you have been asked otherwise.
 
 Every pull request is reviewed by the maintainers team, which owns every path in the
 repository
-([`CODEOWNERS`](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/.github/CODEOWNERS)).
+([`CODEOWNERS`](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/.github/CODEOWNERS)).
 
 ## What CI does with your PR
 
@@ -36,7 +36,7 @@ Windows x86 and x86-64, Linux x86 and x86-64, macOS Intel and Apple Silicon, and
 universal binary. Both Debug and Release are compiled as a check; only Release is packaged.
 
 Changes touching only Markdown, `.gitignore` or `docs/` skip the build entirely
-([`build.yml`](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/.github/workflows/build.yml#L7)),
+([`build.yml`](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/.github/workflows/build.yml#L7)),
 so a docs-only PR showing no build is behaving correctly.
 
 ## Testing a fix without building it
@@ -54,7 +54,7 @@ Open the pull request, go to its **Checks** tab, choose the build for your platf
 download the artifact from the run's Artifacts section. Unzip it somewhere separate from
 your normal install. These are portable builds, so they keep their settings beside the
 executable and will not disturb anything, as described in
-[builds and versioning](/TaystJK/features/builds-and-versioning/).
+[builds and versioning](/TaystJK/install/builds-and-versioning/).
 
 This is the fastest way to answer "does this actually fix it for you", and reporters are
 often asked for exactly that.
@@ -87,18 +87,18 @@ The marker is how the change gets classified, and there are three:
 | Marker | Means |
 |:--|:--|
 | `[+]` | New: a feature that did not exist |
-| `[\*]` | Modified: an improvement or a fix to something that did |
+| `[*]` | Modified: an improvement or a fix to something that did |
 | `[-]` | Removed |
 
-Bug fixes take `[\*]`, alongside improvements; the fork's changelog does not separate them.
-Name the cvar or command in the line, in backticks, because that is how coverage is measured
-because `changelog_coverage.py` matches entry names as whole words against this file.
+Bug fixes take `[*]`, alongside improvements; the fork's changelog does not separate them.
+Name the cvar or command in the line, in backticks. That is how coverage is measured:
+`changelog_coverage.py` matches entry names as whole words against this file.
 
 ### xdocs
 
 xdocs are the in-client help: they are what `/help <name>` shows a player who never opens a
 browser. They live in
-[`ui_xdocs.h`](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/ui/ui_xdocs.h)
+[`ui_xdocs.h`](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/codemp/ui/ui_xdocs.h)
 and are plain macro calls:
 
 ```c
@@ -151,5 +151,5 @@ to opt in rather than being locked out by name.
 
 If the feature is compiled in conditionally for a platform, architecture, or renderer
 backend, say so and add a row to
-[platform support](/TaystJK/features/platform-support/). A feature that is absent rather
+[platform support](/TaystJK/install/platform-support/). A feature that is absent rather
 than disabled looks like a bug to the person missing it, and no cvar will explain it.

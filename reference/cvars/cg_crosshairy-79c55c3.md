@@ -21,7 +21,6 @@ Controls `cg_crosshairY` in the cgame module. Consult the cited behavior reads b
 | Category | Crosshair & aiming |
 | Feature family | Crosshair |
 | Module | `cgame` |
-| Also registered in | `cgame` |
 | Renderer | All / not renderer-specific |
 | Network scope | `client-only`: Local to the client/UI/renderer. |
 | Derivation | `code-trace` |

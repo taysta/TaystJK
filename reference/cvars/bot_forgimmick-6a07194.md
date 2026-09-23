@@ -20,7 +20,6 @@ Controls `bot_forgimmick` in the game module. Consult the cited behavior reads b
 |:--|:--|
 | Category | Bots & AI |
 | Module | `game` |
-| Also registered in | `game` |
 | Renderer | All / not renderer-specific |
 | Network scope | `server-authoritative`: Owned or enforced by the server. |
 | Derivation | `code-trace` |

@@ -20,7 +20,7 @@ Controls `cl_timedemo` in the engine-client module. Consult the cited behavior r
 |:--|:--|
 | Category | Demos & media |
 | Module | `engine-client` |
-| Also registered in | `engine-client`, `engine-shared` |
+| Also registered in | `engine-shared` |
 | Renderer | All / not renderer-specific |
 | Network scope | `client-only`: Local to the client/UI/renderer. |
 | Derivation | `code-trace` |

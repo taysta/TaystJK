@@ -141,18 +141,26 @@
     return 4;
   }
 
+  /* Until the reader picks a sort, a search is ordered by how well names match it, and an
+     unfiltered listing by origin. An explicit choice, from the menu or the URL, always wins. */
+  function effectiveSort(state) {
+    if (!state.sortAuto) return state.sort;
+    return state.query ? "relevance" : DEFAULT_SORT;
+  }
+
   function sortEntries(entries, state) {
+    var sort = effectiveSort(state);
     return entries.slice().sort(function (a, b) {
       var result = 0;
-      if (state.sort === "relevance" && state.query) result = relevance(a, state.query) - relevance(b, state.query);
-      if (!result && state.sort === "origin") {
+      if (sort === "relevance" && state.query) result = relevance(a, state.query) - relevance(b, state.query);
+      if (!result && sort === "origin") {
         var aOrigin = ORIGIN_ORDER.indexOf(a.origin);
         var bOrigin = ORIGIN_ORDER.indexOf(b.origin);
         result = (aOrigin === -1 ? ORIGIN_ORDER.length : aOrigin) - (bOrigin === -1 ? ORIGIN_ORDER.length : bOrigin);
       }
-      if (!result && state.sort === "module") result = a.module.localeCompare(b.module);
-      if (!result && state.sort === "category") result = a.category.localeCompare(b.category);
-      if (!result && state.sort === "feature") {
+      if (!result && sort === "module") result = a.module.localeCompare(b.module);
+      if (!result && sort === "category") result = a.category.localeCompare(b.category);
+      if (!result && sort === "feature") {
         if (Boolean(a.feature) !== Boolean(b.feature)) result = a.feature ? -1 : 1;
         else result = (a.feature || "").localeCompare(b.feature || "");
       }
@@ -331,6 +339,7 @@
       audience: paramValues(params, "audience"),
       flag: paramValues(params, "flag"),
       sort: ["relevance", "name", "category", "feature", "origin", "module"].indexOf(params.get("sort")) !== -1 ? params.get("sort") : DEFAULT_SORT,
+      sortAuto: ["relevance", "name", "category", "feature", "origin", "module"].indexOf(params.get("sort")) === -1,
       limit: PAGE_SIZE,
       presets: presets
     };
@@ -387,7 +396,7 @@
       }
       updateFilterSummary(root, state, key);
     });
-    root.querySelector("[data-sort]").value = state.sort;
+    root.querySelector("[data-sort]").value = effectiveSort(state);
     root.querySelector("[data-kind-tabs]").classList.toggle("is-fixed", state.mode !== "all");
     Array.prototype.forEach.call(root.querySelectorAll("[data-kind]"), function (button) {
       var active = button.dataset.kind === state.kind;
@@ -412,7 +421,7 @@
       if (state.presets[key]) return;
       selectedValues(state, key).forEach(function (value) { params.append(key, value); });
     });
-    if (state.sort !== DEFAULT_SORT) params.set("sort", state.sort);
+    if (!state.sortAuto) params.set("sort", state.sort);
     var query = params.toString();
     global.history.replaceState(null, "", global.location.pathname + (query ? "?" + query : "") + global.location.hash);
   }
@@ -466,6 +475,7 @@
       state.query = normalize(event.target.value);
       state.tokens = state.query.split(" ").filter(Boolean);
       state.limit = PAGE_SIZE;
+      root.querySelector("[data-sort]").value = effectiveSort(state);
       update(true);
     });
     Array.prototype.forEach.call(root.querySelectorAll("[data-filter]"), function (control) {
@@ -485,6 +495,7 @@
     });
     root.querySelector("[data-sort]").addEventListener("change", function (event) {
       state.sort = event.target.value;
+      state.sortAuto = false;
       state.limit = PAGE_SIZE;
       update(true);
     });
@@ -531,6 +542,7 @@
       state.audience = [];
       state.flag = [];
       state.sort = DEFAULT_SORT;
+      state.sortAuto = true;
       state.limit = PAGE_SIZE;
       closeDropdowns(root, "");
       applyState(root, state);
@@ -790,6 +802,7 @@
     prepareEntry: prepareEntry,
     entryMatches: entryMatches,
     sortEntries: sortEntries,
+    effectiveSort: effectiveSort,
     relevance: relevance,
     detectPlatform: detectPlatform,
     choosePlatform: choosePlatform,

@@ -21,7 +21,6 @@ Controls `r_dlightStyle` in the renderer module. Consult the cited behavior read
 | Category | Graphics & rendering |
 | Feature family | Dynamic lights |
 | Module | `renderer` |
-| Also registered in | `renderer` |
 | Renderer | `rd-dedicated`, `rd-vanilla`, `rd-vulkan` |
 | Network scope | `client-only`: Local to the client/UI/renderer. |
 | Derivation | `code-trace` |

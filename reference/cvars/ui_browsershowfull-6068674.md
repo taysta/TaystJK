@@ -23,7 +23,6 @@ Controls `ui_browserShowFull` in the ui module. Consult the cited behavior reads
 | Category | Server & networking |
 | Feature family | Server browser |
 | Module | `ui` |
-| Also registered in | `ui` |
 | Renderer | All / not renderer-specific |
 | Network scope | `client-only`: Local to the client/UI/renderer. |
 | Derivation | `code-trace` |

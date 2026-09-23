@@ -20,7 +20,6 @@ Runs `CG_ChatLogSettings_f` in the cgame module.
 |:--|:--|
 | Category | Chat & social |
 | Module | `cgame` |
-| Also registered in | `cgame` |
 | Renderer | All / not renderer-specific |
 | Network scope | `client-only`: Local to the client/UI/renderer. |
 | Derivation | `code-trace` |

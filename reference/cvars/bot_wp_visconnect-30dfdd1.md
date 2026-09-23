@@ -20,7 +20,6 @@ Controls `bot_wp_visconnect` in the game module. Consult the cited behavior read
 |:--|:--|
 | Category | Server & networking |
 | Module | `game` |
-| Also registered in | `game` |
 | Renderer | All / not renderer-specific |
 | Network scope | `server-authoritative`: Owned or enforced by the server. |
 | Derivation | `code-trace` |

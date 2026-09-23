@@ -20,7 +20,6 @@ Configure saber touch damage for MP dmgs. Can be >1 for more touch damage.
 |:--|:--|
 | Category | Gameplay & combat |
 | Module | `game` |
-| Also registered in | `game` |
 | Renderer | All / not renderer-specific |
 | Network scope | `server-authoritative`: Owned or enforced by the server. |
 | Derivation | `documented` |

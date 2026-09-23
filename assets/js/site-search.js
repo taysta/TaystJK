@@ -139,13 +139,18 @@
     /* Two is enough to be worth navigating; one is just the page itself. */
     if (headings.length < 2) return;
 
+    /* A reader's own choice wins. Without one, the rail starts closed below the width
+       where it becomes a strip above the content, so the page title stays on screen. */
     var storageKey = "taystjk-toc-collapsed";
-    var collapsed = false;
+    var stored = null;
     try {
-      collapsed = global.localStorage.getItem(storageKey) === "true";
+      stored = global.localStorage.getItem(storageKey);
     } catch (error) {
-      collapsed = false;
+      stored = null;
     }
+    var collapsed = stored === "true" || stored === "false"
+      ? stored === "true"
+      : !!(global.matchMedia && global.matchMedia("(max-width: 1100px)").matches);
 
     var rail = doc.createElement("aside");
     rail.className = "page-toc-rail";

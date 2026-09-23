@@ -19,7 +19,6 @@ Draw a killfeed on the HUD
 | Category | HUD & interface |
 | Feature family | Killfeed |
 | Module | `cgame` |
-| Also registered in | `cgame` |
 | Renderer | All / not renderer-specific |
 | Network scope | `client-only`: Local to the client/UI/renderer. |
 | Derivation | `documented` |

@@ -21,7 +21,6 @@ Controls `g_eloProvisionalCutoff` in the game module. Consult the cited behavior
 | Category | Gameplay & combat |
 | Feature family | Elo rankings |
 | Module | `game` |
-| Also registered in | `game` |
 | Renderer | All / not renderer-specific |
 | Network scope | `server-authoritative`: Owned or enforced by the server. |
 | Derivation | `code-trace` |

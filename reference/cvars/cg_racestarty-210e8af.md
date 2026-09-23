@@ -21,7 +21,6 @@ Vertical location of the race start timer onscreen
 | Category | Movement & race |
 | Feature family | Race start |
 | Module | `cgame` |
-| Also registered in | `cgame` |
 | Renderer | All / not renderer-specific |
 | Network scope | `client-only`: Local to the client/UI/renderer. |
 | Derivation | `documented` |

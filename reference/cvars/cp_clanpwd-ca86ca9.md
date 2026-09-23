@@ -20,7 +20,6 @@ Registered by the current source, but no user-facing behavior description has be
 |:--|:--|
 | Category | Chat & social |
 | Module | `cgame` |
-| Also registered in | `cgame` |
 | Renderer | All / not renderer-specific |
 | Network scope | `needs-server-support`: Sent to, or only useful with, a supporting game server. |
 | Derivation | `code-trace` |

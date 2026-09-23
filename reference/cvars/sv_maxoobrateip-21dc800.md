@@ -20,7 +20,6 @@ Maximum rate of handling incoming server commands per IP address
 |:--|:--|
 | Category | Server & networking |
 | Module | `engine-server` |
-| Also registered in | `engine-server` |
 | Renderer | All / not renderer-specific |
 | Network scope | `server-authoritative`: Owned or enforced by the server. |
 | Derivation | `documented` |

@@ -18,7 +18,7 @@ Password for remote console access
 |:--|:--|
 | Category | Server & networking |
 | Module | `engine-client` |
-| Also registered in | `engine-client`, `engine-server` |
+| Also registered in | `engine-server` |
 | Renderer | All / not renderer-specific |
 | Network scope | `client-only`: Local to the client/UI/renderer. |
 | Derivation | `documented` |

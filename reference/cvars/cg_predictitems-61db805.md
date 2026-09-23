@@ -20,7 +20,7 @@ Controls `cg_predictItems` in the cgame module. Consult the cited behavior reads
 |:--|:--|
 | Category | Gameplay & combat |
 | Module | `cgame` |
-| Also registered in | `cgame`, `engine-client` |
+| Also registered in | `engine-client` |
 | Renderer | All / not renderer-specific |
 | Network scope | `needs-server-support`: Sent to, or only useful with, a supporting game server. |
 | Derivation | `code-trace` |

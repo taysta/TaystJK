@@ -53,8 +53,8 @@ A generated list cannot explain a feature that has no cvar attached. Those now h
 pages, including the [movement styles](/TaystJK/features/movement-styles/), the
 [HUD and movement tools](/TaystJK/features/hud-and-movement/),
 [Tribes](/TaystJK/features/tribes/), the [renderers](/TaystJK/features/renderers/), and
-[why a feature works on one server and not another](/TaystJK/mod-compatibility/).
+[why a feature works on one server and not another](/TaystJK/install/mod-compatibility/).
 
-If something here is wrong, it is worth reporting. The
-[where to report it](/TaystJK/where-to-report/) depends on whether the problem is the
+If something here is wrong, it is worth reporting.
+[Where to report it](/TaystJK/where-to-report/) depends on whether the problem is the
 client, the game module, or the Vulkan renderer.

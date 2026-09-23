@@ -18,7 +18,6 @@ Prioritize directories before paks if not pure
 |:--|:--|
 | Category | Files & downloads |
 | Module | `engine-shared` |
-| Also registered in | `engine-shared` |
 | Renderer | All / not renderer-specific |
 | Network scope | `client-only`: Local to the client/UI/renderer. |
 | Derivation | `documented` |

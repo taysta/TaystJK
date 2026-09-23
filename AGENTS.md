@@ -80,8 +80,8 @@ Check the generator and `generated: true` front matter before editing an unfamil
 - Jekyll uses local layouts and no theme. `_layouts/reference.html` provides the main
   navigation, breadcrumbs, section previous/next links, and shared page furniture.
   Top-level navigation is explicit; child sequencing and the active header tab use
-  `parent` and `nav_order`. `_data/navigation.yml` holds the grouped cards on the Features
-  and Help hubs, rendered by `_includes/browse-grid.html`.
+  `parent` and `nav_order`. `_data/navigation.yml` holds the grouped cards on the Install,
+  Features, Development and Help hubs, rendered by `_includes/browse-grid.html`.
 - `_layouts/devlog.html` supplies post headings. `_layouts/none.html` handles raw output
   and redirect stubs. Follow CONVENTIONS.md's distinct guide and devlog structures.
 - `assets/js/reference-app.js` handles reference filters and platform selection;

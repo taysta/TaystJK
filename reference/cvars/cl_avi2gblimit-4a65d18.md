@@ -20,7 +20,6 @@ Controls `cl_avi2GBLimit` in the engine-client module. Consult the cited behavio
 |:--|:--|
 | Category | Demos & media |
 | Module | `engine-client` |
-| Also registered in | `engine-client` |
 | Renderer | All / not renderer-specific |
 | Network scope | `client-only`: Local to the client/UI/renderer. |
 | Derivation | `code-trace` |

@@ -12,7 +12,7 @@ toc: true
 
 # Licensing and attribution
 
-<p class="page-lede">TaystJK is free software under the GNU General Public License, version 2, and so is everything it is built from.</p>
+<p class="page-lede">TaystJK is free software under the GNU General Public License, version 2, the licence of the Raven source it descends from. The third-party libraries it bundles keep their own licences.</p>
 </div>
 
 ## The licence
@@ -25,6 +25,12 @@ In practice this means you may use, study, modify and redistribute it, and that 
 you distribute built from it carries the same licence and the same source-availability
 obligation. It is not a permissive licence: shipping a closed-source client built on this
 code is not permitted.
+
+The bundled third-party libraries, such as SDL, zlib, libpng, OpenAL Soft, cJSON and
+SQLite, are not GPLv2 code; each keeps the licence its own project publishes it under.
+[Libraries and versions](/TaystJK/development/libraries/) lists them.
+The Steamworks library is the one TaystJK cannot bundle at all; see
+[Steam playtime and overlay](/TaystJK/install/#steam-playtime-and-overlay).
 
 ## Who wrote what
 
@@ -43,8 +49,8 @@ there*, not *only exists there*.
 
 Two of those deserve naming beyond a row in a table. **jaPRO** supplies both halves of the
 gamecode this client bundles (see [the overview](/TaystJK/overview/)) and is developed at
-[videoP/jaPRO](https://github.com/videoP/jaPRO). The **Vulkan renderer** is maintained
-downstream by JKSunny at
+[videoP/jaPRO](https://github.com/videoP/jaPRO). The **Vulkan renderer** is developed
+upstream by JKSunny at
 [JKSunny/EternalJK](https://github.com/JKSunny/EternalJK), and derives from
 [Quake3e](https://github.com/ec-/Quake3e).
 

@@ -21,7 +21,6 @@ Controls `r_dlightIntensity` in the renderer module. Consult the cited behavior 
 | Category | Graphics & rendering |
 | Feature family | Dynamic lights |
 | Module | `renderer` |
-| Also registered in | `renderer` |
 | Renderer | `rd-vulkan` |
 | Network scope | `client-only`: Local to the client/UI/renderer. |
 | Derivation | `code-trace` |

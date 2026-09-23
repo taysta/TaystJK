@@ -11,8 +11,10 @@ from build_reference import (
     bit_option_index, calling_handler, engine_managed_basis, menu_mirror_index,
     registration_baselines,
 )
+from check_generated import fragment_errors, page_anchor_ids
 from generate_docs import (
-    bit_table, emoji_page, engine_managed_notice, mirror_row, whats_new_rows, whats_new_page,
+    bit_table, detail_page, emoji_page, engine_managed_notice, mirror_row, whats_new_rows,
+    whats_new_page,
 )
 from provenance import (
     RESOLVER_VERSION,
@@ -290,6 +292,36 @@ void CG_Cosmetics_f( void ) {
         self.assertIn("only_eternaljk_lacks_this", eternal)
         self.assertNotIn("only_eternaljk_lacks_this", rest)
 
+
+    def test_anchor_ids_follow_kramdown_gfm(self):
+        ids = page_anchor_ids(
+            "# Install TaystJK\n"
+            "## When to use `vm_legacy`\n"
+            "### Install TaystJK\n"
+            "```sh\n# not a heading\n```\n"
+            "## Positioning: the `.cosmetic` file\n"
+            '<section id="platform-panel-windows">\n'
+        )
+        self.assertEqual(ids, {
+            "install-taystjk", "install-taystjk-1", "when-to-use-vm_legacy",
+            "positioning-the-cosmetic-file", "platform-panel-windows",
+        })
+
+    def test_broken_same_page_anchor_is_reported(self):
+        with tempfile.TemporaryDirectory() as directory:
+            page = Path(directory) / "page.md"
+            text = "## Real heading\n\nSee [here](#real-heading) and [there](#missing).\n"
+            page.write_text(text)
+            self.assertEqual(fragment_errors(page, text, {}), [f"broken anchor in {page}: #missing"])
+
+    def test_detail_page_lists_only_other_registering_modules(self):
+        refs = json.loads(Path("_data/reference-meta.json").read_text())["upstream_commits"]
+        cvars = json.loads(Path("_data/cvars.json").read_text())
+        single = next(e for e in cvars if e.get("modules") == [e["module"]])
+        self.assertNotIn("Also registered in", detail_page(single, refs))
+        shared = next(e for e in cvars if len(set(e.get("modules", []))) > 1)
+        row = next(line for line in detail_page(shared, refs).splitlines() if line.startswith("| Also registered in"))
+        self.assertNotIn(f"`{shared['module']}`", row)
 
 if __name__ == "__main__":
     unittest.main()

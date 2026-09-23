@@ -22,7 +22,7 @@ Controls `botsFile` in the game module. Consult the cited behavior reads before 
 |:--|:--|
 | Category | Bots & AI |
 | Module | `game` |
-| Also registered in | `game`, `ui` |
+| Also registered in | `ui` |
 | Renderer | All / not renderer-specific |
 | Network scope | `server-authoritative`: Owned or enforced by the server. |
 | Derivation | `code-trace` |

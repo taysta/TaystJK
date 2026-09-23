@@ -19,7 +19,7 @@ Multiplies the target-name fade alpha by this opacity. Runtime use clamps the ef
 | Category | Crosshair & aiming |
 | Feature family | Crosshair |
 | Module | `cgame` |
-| Also registered in | `cgame`, `ui` |
+| Also registered in | `ui` |
 | Renderer | All / not renderer-specific |
 | Network scope | `client-only`: Local to the client/UI/renderer. |
 | Derivation | `code-trace` |

@@ -20,7 +20,6 @@ Controls `d_npcfreeze` in the game module. Consult the cited behavior reads befo
 |:--|:--|
 | Category | Administration |
 | Module | `game` |
-| Also registered in | `game` |
 | Renderer | All / not renderer-specific |
 | Network scope | `server-authoritative`: Owned or enforced by the server. |
 | Derivation | `code-trace` |

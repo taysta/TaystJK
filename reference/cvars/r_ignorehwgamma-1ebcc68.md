@@ -18,7 +18,7 @@ Overrides hardware gamma capabilities
 |:--|:--|
 | Category | Chat & social |
 | Module | `renderer` |
-| Also registered in | `renderer`, `engine-shared` |
+| Also registered in | `engine-shared` |
 | Renderer | `rd-dedicated`, `rd-vulkan` |
 | Network scope | `client-only`: Local to the client/UI/renderer. |
 | Derivation | `documented` |

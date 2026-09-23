@@ -20,7 +20,6 @@ Controls `com_speeds` in the engine-shared module. Consult the cited behavior re
 |:--|:--|
 | Category | Engine & diagnostics |
 | Module | `engine-shared` |
-| Also registered in | `engine-shared` |
 | Renderer | All / not renderer-specific |
 | Network scope | `client-only`: Local to the client/UI/renderer. |
 | Derivation | `code-trace` |

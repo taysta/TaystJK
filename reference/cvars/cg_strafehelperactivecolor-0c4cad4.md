@@ -21,7 +21,6 @@ Controls `cg_strafeHelperActiveColor` in the cgame module. Consult the cited beh
 | Category | Movement & race |
 | Feature family | Strafe helper |
 | Module | `cgame` |
-| Also registered in | `cgame` |
 | Renderer | All / not renderer-specific |
 | Network scope | `client-only`: Local to the client/UI/renderer. |
 | Derivation | `code-trace` |

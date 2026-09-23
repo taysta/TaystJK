@@ -21,7 +21,6 @@ Controls `r_forceAutoExposure` in the renderer module. Consult the cited behavio
 | Category | Graphics & rendering |
 | Feature family | Auto exposure |
 | Module | `renderer` |
-| Also registered in | `renderer` |
 | Renderer | `rd-rend2` |
 | Network scope | `client-only`: Local to the client/UI/renderer. |
 | Derivation | `code-trace` |

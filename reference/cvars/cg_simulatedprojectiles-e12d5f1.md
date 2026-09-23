@@ -20,7 +20,6 @@ Wether to use simulated projectiles so bullets appear instantly. Values > 1 don'
 |:--|:--|
 | Category | Gameplay & combat |
 | Module | `cgame` |
-| Also registered in | `cgame` |
 | Renderer | All / not renderer-specific |
 | Network scope | `feature-flagged`: Client behavior is negotiated through a server feature flag. |
 | Derivation | `documented` |

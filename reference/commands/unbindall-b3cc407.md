@@ -18,7 +18,6 @@ Delete all key bindings
 |:--|:--|
 | Category | Input & controls |
 | Module | `engine-client` |
-| Also registered in | `engine-client` |
 | Renderer | All / not renderer-specific |
 | Network scope | `client-only`: Local to the client/UI/renderer. |
 | Derivation | `documented` |

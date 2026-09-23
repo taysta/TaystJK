@@ -21,7 +21,6 @@ Controls `r_shadowFilter` in the renderer module. Consult the cited behavior rea
 | Category | Graphics & rendering |
 | Feature family | Shadows |
 | Module | `renderer` |
-| Also registered in | `renderer` |
 | Renderer | `rd-rend2` |
 | Network scope | `client-only`: Local to the client/UI/renderer. |
 | Derivation | `code-trace` |

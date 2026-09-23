@@ -29,15 +29,15 @@ definition of the same name from any pk3, including the base assets.
 The mechanism is worth knowing because it explains the guarantee. All shader files are
 concatenated into one buffer before parsing, and `.oshader` contents are placed at the
 front of it
-([`tr_shader.cpp`](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-vanilla/tr_shader.cpp#L4134)).
+([`tr_shader.cpp`](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/codemp/rd-vanilla/tr_shader.cpp#L4134)).
 Lookup walks the hash bucket and returns the **first** match it finds
-([`FindShaderInShaderText`](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-vanilla/tr_shader.cpp#L3229)),
+([`FindShaderInShaderText`](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/codemp/rd-vanilla/tr_shader.cpp#L3229)),
 so whatever sits earliest in that buffer is what the game draws.
 
 All three renderers implement it:
-[rd-vanilla](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-vanilla/tr_shader.cpp#L3983),
-[rd-rend2](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/shared/rd-rend2/tr_shader.cpp#L5035),
-[rd-vulkan](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-vulkan/tr_shader.cpp#L2902).
+[rd-vanilla](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/codemp/rd-vanilla/tr_shader.cpp#L3983),
+[rd-rend2](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/shared/rd-rend2/tr_shader.cpp#L5037),
+[rd-vulkan](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/codemp/rd-vulkan/tr_shader.cpp#L2902).
 
 ### Overriding one shader
 
@@ -71,7 +71,7 @@ override extension works around.
 
 Two pk3s shipping the **same filename**, both carrying their own `shaders/gfx.shader`,
 resolve the ordinary way. The file list is uniqued by name
-([`FS_AddFileToList`](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/qcommon/files.cpp#L2636)),
+([`FS_AddFileToList`](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/codemp/qcommon/files.cpp#L2636)),
 so the name is listed once and the renderer reads whichever pk3 has priority. This is why
 mods ship a whole copy of a file to change one shader in it, and why installing two such
 mods loses one of them.
@@ -81,14 +81,14 @@ files. That is settled by position in the concatenated text, and the order comes
 inverted relative to normal file precedence:
 
 - `FS_ListFiles` walks the search paths from highest priority to lowest
-  ([`FS_ListFilteredFiles`](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/qcommon/files.cpp#L2691)).
+  ([`FS_ListFilteredFiles`](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/codemp/qcommon/files.cpp#L2691)).
   Pk3s are mounted in ascending name order
-  ([`paksort`](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/qcommon/files.cpp#L3422))
+  ([`paksort`](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/codemp/qcommon/files.cpp#L3422))
   and each one is pushed onto the front of the search path
-  ([`FS_AddGameDirectory`](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/qcommon/files.cpp#L3482)),
+  ([`FS_AddGameDirectory`](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/codemp/qcommon/files.cpp#L3482)),
   so `zzz.pk3`'s shader files are listed first and `assets0.pk3`'s last.
 - The `.shader` buffers are then concatenated in **reverse** list order
-  ([`tr_shader.cpp`](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-vanilla/tr_shader.cpp#L4147)),
+  ([`tr_shader.cpp`](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/codemp/rd-vanilla/tr_shader.cpp#L4147)),
   which puts the lowest-priority file at the front of the text.
 - First match wins.
 
@@ -100,7 +100,7 @@ just the order of the entries in the archive, so do not rely on it either.
 `.oshader` sidesteps all of this rather than reordering it: override buffers are placed
 ahead of every `.shader` buffer, so they win regardless of which pk3 they came from. Among
 `.oshader` files themselves the order is **forward**
-([`tr_shader.cpp`](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-vanilla/tr_shader.cpp#L4135)),
+([`tr_shader.cpp`](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/codemp/rd-vanilla/tr_shader.cpp#L4135)),
 so between two overrides of the same shader the higher-priority pk3 wins, restoring normal
 precedence.
 
@@ -108,25 +108,25 @@ precedence.
 
 **Modifier combinations.** Every key holds a separate binding per modifier: plain, `alt+`,
 `ctrl+` and `shift+`
-([`keys.h`](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/keys.h#L29)),
+([`keys.h`](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/codemp/client/keys.h#L29)),
 so `bind ctrl+x kill` leaves plain <kbd>X</kbd> alone. `bind` and `unbind` both take the
 prefix
-([`cl_keys.cpp`](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/cl_keys.cpp#L1317)).
+([`cl_keys.cpp`](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/codemp/client/cl_keys.cpp#L1317)).
 A modifier key cannot be bound to itself with its own prefix.
 
 **Right-side modifiers.** `RCTRL`, `RALT` and `RSHIFT` are their own key names and take
 their own bindings
-([`cl_keys.cpp`](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/cl_keys.cpp#L188)),
+([`cl_keys.cpp`](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/codemp/client/cl_keys.cpp#L188)),
 so `bind rctrl kill` affects only the right-hand key.
 
 If the right-hand key has no binding of its own, the press falls back to the generic one
-([`CL_ParseBinding`](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/cl_keys.cpp#L1609)).
+([`CL_ParseBinding`](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/codemp/client/cl_keys.cpp#L1609)).
 So `bind ctrl +attack` gives you both Ctrl keys, and `bind rctrl kill` on top of it
 overrides only the right one. There is no fallback in the other direction: `SHIFT`, `CTRL`
 and `ALT` *are* the left-hand keys, and nothing you bind to `RCTRL` reaches them.
 
 **Which modifier counts as held.** Only the left-hand modifier arms a `ctrl+` style binding
-([`cl_keys.cpp`](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/cl_keys.cpp#L1619)).
+([`cl_keys.cpp`](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/codemp/client/cl_keys.cpp#L1619)).
 Hold the **right** Ctrl and press <kbd>X</kbd> and you get plain <kbd>X</kbd>, not
 `ctrl+x`. The right-hand keys can carry bindings, but they cannot act as modifiers for
 another key. When more than one is held, the order is alt, then ctrl, then shift.
@@ -137,14 +137,14 @@ Both the console and the chat prompt support word-wise editing. <kbd>Ctrl</kbd> 
 <kbd>Backspace</kbd>, <kbd>Delete</kbd>, <kbd>Left</kbd> or <kbd>Right</kbd> acts on a whole
 word instead of a character, and adding <kbd>Shift</kbd> changes where the word boundary is
 taken
-([`cl_keys.cpp`](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/cl_keys.cpp#L565)).
+([`cl_keys.cpp`](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/codemp/client/cl_keys.cpp#L565)).
 Each shortcut accepts either the left or the right modifier.
 
-[`con_height`](/TaystJK/reference/) sets how far the console drops down.
-[`con_datetime`](/TaystJK/reference/) draws a date and time display in the console
-([`cl_console.cpp`](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/cl_console.cpp#L1090)).
-Use [`con_timestamps`](/TaystJK/reference/) for per-line timestamps
-([`cl_console.cpp`](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/cl_console.cpp#L399)).
+[`con_height`](/TaystJK/reference/cvars/con_height-41c46da/) sets how far the console drops down.
+[`con_datetime`](/TaystJK/reference/cvars/con_datetime-fb79998/) draws a date and time display in the console
+([`cl_console.cpp`](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/codemp/client/cl_console.cpp#L1090)).
+Use [`con_timestamps`](/TaystJK/reference/cvars/con_timestamps-2b4f0eb/) for per-line timestamps
+([`cl_console.cpp`](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/codemp/client/cl_console.cpp#L399)).
 Look these up in the console reference for their defaults and flags.
 
 ## Widescreen assets
@@ -154,9 +154,9 @@ original otherwise. Nothing breaks if you supply neither.
 
 | Provide | Used instead of | Where |
 |:--|:--|:--|
-| `levelshots_16_9/<mapname>` | `levelshots/<mapname>` | [loading screen](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_info.c#L149) and the [map list](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/ui/ui_main.c#L2132) |
-| `menu/art/unknownmap_mp_16_9` | `menu/art/unknownmap_mp` | [map with no levelshot](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_info.c#L173) |
-| `menu/splash_16_9` | `menu/splash` | [startup splash](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-vanilla/tr_init.cpp#L296) |
+| `levelshots_16_9/<mapname>` | `levelshots/<mapname>` | [loading screen](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/codemp/cgame/cg_info.c#L149) and the [map list](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/codemp/ui/ui_main.c#L2132) |
+| `menu/art/unknownmap_mp_16_9` | `menu/art/unknownmap_mp` | [map with no levelshot](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/codemp/cgame/cg_info.c#L173) |
+| `menu/splash_16_9` | `menu/splash` | [startup splash](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/codemp/rd-vanilla/tr_init.cpp#L296) |
 
 As a map author, add the widescreen levelshot to your pk3 under `levelshots_16_9/` using the
 same name as the map. All three renderers load the splash image.
@@ -165,6 +165,6 @@ same name as the map. All three renderers load the splash image.
 
 `r_fontSharpness` scales glyph rendering with your vertical resolution rather than the
 fixed 480-line reference
-([`tr_font.cpp`](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-common/tr_font.cpp#L1171)).
+([`tr_font.cpp`](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/codemp/rd-common/tr_font.cpp#L1171)).
 It only helps where the font assets carry enough detail to scale up; with the retail fonts
 there is nothing extra to reveal.

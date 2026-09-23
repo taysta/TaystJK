@@ -21,7 +21,6 @@ Controls `cg_snapHudDef` in the cgame module. Consult the cited behavior reads b
 | Category | Movement & race |
 | Feature family | SnapHUD |
 | Module | `cgame` |
-| Also registered in | `cgame` |
 | Renderer | All / not renderer-specific |
 | Network scope | `client-only`: Local to the client/UI/renderer. |
 | Derivation | `code-trace` |

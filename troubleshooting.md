@@ -21,19 +21,35 @@ Almost always one of three things, in this order.
 
 **Your server is not set to public.** `dedicated 1` is LAN play; only `dedicated 2` sends
 heartbeats to the master servers, and the source says so in as many words
-([`sv_main.cpp`](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/server/sv_main.cpp#L257)).
+([`sv_main.cpp`](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/codemp/server/sv_main.cpp#L257)).
 A server on `dedicated 1` is working correctly and will never appear on the internet tab.
 Check the local tab before assuming it is broken.
 
-**You are waiting on the heartbeat.** Heartbeats go out every five minutes, so a server that
-just started is not listed yet. Wait rather than restarting it repeatedly.
+**You are waiting on the master.** The server sends its first heartbeat as soon as a map
+loads ([`sv_init.cpp`](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/codemp/server/sv_init.cpp#L743)) and another every five minutes
+after that ([`sv_main.cpp`](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/codemp/server/sv_main.cpp#L250)). If you think one was
+missed, run `heartbeat` in the server console to send one immediately rather than
+restarting the server.
 
 **The default master is dead.** `sv_master1` still defaults to `masterjk3.ravensoft.com`,
 Raven's original master, which has not answered in many years. The working ones are
-`sv_master2` (`master.jkhub.org`) and `sv_master3` (`master.ouned.de`), and all three are
-polled, so leaving the dead one alone costs nothing. If you have overridden the master
+`master.jkhub.org`, the default for `sv_master2`, and `master.ouned.de`, the default for
+`sv_master3`. Leaving the dead one in place costs nothing. If you have overridden the master
 cvars, make sure a live one is still in the list. Look each up in the
-[console reference](/TaystJK/reference/).
+[console reference](/TaystJK/reference/?q=sv_master).
+
+**`sv_master3` is never sent a heartbeat.** The source stores it in the wrong slot of the
+master list, and the next line overwrites that slot with `sv_master4`
+([`sv_init.cpp`](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/codemp/server/sv_init.cpp#L1023)), so `master.ouned.de` does not hear
+from your server however `sv_master3` is set. Until that is fixed, put the address in
+`sv_master4` instead, which is sent heartbeats normally:
+
+```text
+seta sv_master4 "master.ouned.de"
+```
+
+This is a defect rather than a setting, so a build newer than this page may have fixed it.
+[Compare the dates](/TaystJK/features/whats-new/#how-to-tell-what-your-build-has).
 
 Beyond that: the game port is UDP and must be forwarded to the server. If you changed
 `net_port`, forward the port you actually chose, not the default.
@@ -41,8 +57,8 @@ Beyond that: the game port is UDP and must be forwarded to the server. If you ch
 ## The dedicated server keeps rewriting my config
 
 It is doing what it was built to do. On shutdown the engine writes every archived cvar back
-to its own generated config
-([`common.cpp`](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/qcommon/common.cpp#L1587)),
+to its own generated config, `taystjk_server.cfg` on a dedicated server
+([`common.cpp`](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/codemp/qcommon/common.cpp#L1587)),
 so anything you typed into that file by hand is replaced by the engine's own idea of the
 current value.
 
@@ -78,7 +94,7 @@ once. If a current build still does it, report it.
 Usually an architecture mismatch rather than a crash in the client.
 
 Game modules are loaded by a filename that includes the architecture
-([`sv_gameapi.cpp`](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/server/sv_gameapi.cpp#L2849)),
+([`sv_gameapi.cpp`](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/codemp/server/sv_gameapi.cpp#L2849)),
 so a mod directory holding 32-bit `cgame` and `ui` libraries cannot be loaded by a 64-bit
 client. If a mod was installed years ago alongside a 32-bit build, it will still be sitting
 in `GameData` and the client will try to use it.
@@ -103,7 +119,42 @@ are fine, that belongs with the mod's author; see
 [where to report](/TaystJK/where-to-report/).
 
 If the client connects but a *feature* is missing rather than crashing, that is a different
-question. See [mod compatibility](/TaystJK/mod-compatibility/).
+question. See [mod compatibility](/TaystJK/install/mod-compatibility/).
+
+## A server's files will not download
+
+Watch the console while you connect; each case says what it is.
+
+**"Skipping downloads, because the server does not allow downloads."** The server has turned
+downloads off, so you need to get the files some other way and install them yourself
+([`cl_main.cpp`](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/codemp/client/cl_main.cpp#L1713)).
+
+**"You are missing some files referenced by the server."** Your own client has downloads
+off. Set `cl_allowDownload 1`, which is the default, and reconnect
+([`cl_main.cpp`](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/codemp/client/cl_main.cpp#L1701)).
+
+**Nothing happens and the connection waits.** The client is asking whether to download, and
+the question is on screen, not in the console. `cl_downloadPrompt 0` skips the question in
+future ([`cl_main.cpp`](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/codemp/client/cl_main.cpp#L1594)).
+
+**"Incorrect checksum for file."** The file the server sent is not the one it said it would
+send. That is the server's to fix; tell its administrator
+([`cl_main.cpp`](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/codemp/client/cl_main.cpp#L1622)).
+
+Server operators: the setup, including HTTP downloads and reflists, is on
+[Server hosting](/TaystJK/server-hosting/#automatic-pk3-downloads).
+
+## A map I downloaded is missing everywhere else
+
+Downloaded files are saved with a `dl_` prefix, as `dl_<name>.pk3` in the server's mod
+directory ([`files.cpp`](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/codemp/qcommon/files.cpp#L3623)), and a `dl_` file is only loaded
+while the server you are on references it
+([`files.cpp`](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/codemp/qcommon/files.cpp#L3432)). So a map you downloaded from one server
+does not appear in your own map list or on a server that does not use it. That stops one
+server's content from changing what you see on the next.
+
+If you want a downloaded pk3 everywhere, and you trust it, rename it to drop the `dl_`
+prefix. It then loads like any other pk3 in that directory.
 
 ## No saber hum, or sound distances are wrong, on Linux
 
@@ -113,4 +164,4 @@ a current build this should be gone.
 
 If a current build still does it, it is something new. Say which build, and check the SDL
 audio driver the client names at startup
-([`sdl_sound.cpp`](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/shared/sdl/sdl_sound.cpp#L189)).
+([`sdl_sound.cpp`](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/shared/sdl/sdl_sound.cpp#L189)).

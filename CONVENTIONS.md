@@ -214,7 +214,7 @@ https://github.com/taysta/TaystJK/blame/<full-commit-sha>/<path>#L<line>
 ```
 
 Pin to the commit the reference was generated from. That value is `source_commit` in
-`_data/reference-meta.json`; it is currently `6ff04c0baf588a89e5ec9361ad7a0992941d7655`,
+`_data/reference-meta.json`; it is currently `77d84176b3b94356d189a4420e1bc5e68c88e1ea`,
 and the existing guides already use it. Blame links survive later edits to the file in a
 way that line-numbered `blob` links on a moving branch do not.
 
@@ -455,9 +455,14 @@ console reference instead, because no feature page covers demos or sound.
 | `/TaystJK/commands/miscellaneous/` | `/TaystJK/reference/` |
 | `/TaystJK/whats-new/` | `/TaystJK/features/whats-new/` |
 | `/TaystJK/emoji/` | `/TaystJK/features/emoji/` |
+| `/TaystJK/features/platform-support/` | `/TaystJK/install/platform-support/` |
+| `/TaystJK/features/builds-and-versioning/` | `/TaystJK/install/builds-and-versioning/` |
+| `/TaystJK/mod-compatibility/` | `/TaystJK/install/mod-compatibility/` |
 
-The last two are not retired content: both pages are generated, and moved into the Features
-section when it was built. The old URLs were published in the interim, so they redirect.
+The what's-new and emoji entries are not retired content: both pages are generated, and moved
+into the Features section when it was built. The old URLs were published in the interim, so
+they redirect. The last three are Install pages that were published at the root or under
+`/features/` before the Install section had its own directory.
 
 `/TaystJK/cvars/miscellanous/` keeps the original misspelling, because that is the URL
 that was published.

@@ -21,7 +21,6 @@ Selects the movement-input overlay style, including classic, attack-aware, and m
 | Category | Movement & race |
 | Feature family | Movement keys |
 | Module | `cgame` |
-| Also registered in | `cgame` |
 | Renderer | All / not renderer-specific |
 | Network scope | `client-only`: Local to the client/UI/renderer. |
 | Derivation | `documented` |

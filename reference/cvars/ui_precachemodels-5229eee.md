@@ -20,7 +20,6 @@ Controls `ui_PrecacheModels` in the ui module. Consult the cited behavior reads 
 |:--|:--|
 | Category | HUD & interface |
 | Module | `ui` |
-| Also registered in | `ui` |
 | Renderer | All / not renderer-specific |
 | Network scope | `client-only`: Local to the client/UI/renderer. |
 | Derivation | `code-trace` |

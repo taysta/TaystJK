@@ -18,7 +18,6 @@ Player default right hand saber
 |:--|:--|
 | Category | Gameplay & combat |
 | Module | `engine-client` |
-| Also registered in | `engine-client` |
 | Renderer | All / not renderer-specific |
 | Network scope | `needs-server-support`: Sent to, or only useful with, a supporting game server. |
 | Derivation | `documented` |

@@ -262,10 +262,17 @@ table {
   font-size: .9rem;
 }
 
-.page-content > table { display: block; overflow-x: auto; }
+/* Tables scroll inside themselves rather than widening the page, including the ones nested
+   in tab panels on the generated pages. Long inline code (URLs, paths) wraps for the same
+   reason. */
+.page-content table { display: block; overflow-x: auto; }
+.page-content :not(pre) > code { overflow-wrap: anywhere; }
 .page-content > h1 code { overflow-wrap: anywhere; font-size: .78em; }
 
 .table-wrapper { overflow-x: auto; }
+
+/* The wide column is for grids and tables; running prose still reads at a normal measure. */
+.site-main-wide .page-content > p { max-width: 75ch; }
 
 th,
 td {
@@ -443,7 +450,7 @@ th { color: var(--text); background: var(--surface); }
   text-transform: uppercase;
 }
 
-.docs-quick-links a {
+.docs-quick-links > a {
   display: grid;
   gap: .12rem;
   padding: .85rem 0;
@@ -452,7 +459,7 @@ th { color: var(--text); background: var(--surface); }
   text-decoration: none;
 }
 
-.docs-quick-links a:hover strong { color: var(--accent); }
+.docs-quick-links > a:hover strong { color: var(--accent); }
 .docs-quick-links strong { font-size: .9rem; }
 .docs-quick-links span { color: var(--muted); font-size: .76rem; line-height: 1.45; }
 
@@ -549,7 +556,7 @@ th { color: var(--text); background: var(--surface); }
   border-left: 1px solid var(--line);
 }
 
-/* Five cards in a two-column grid leaves the last one beside an empty cell; let it
+/* An odd number of cards in a two-column grid leaves the last one beside an empty cell; let it
    span the row instead. */
 .home-guide:last-child:nth-child(odd) { grid-column: 1 / -1; }
 
@@ -1092,6 +1099,8 @@ kbd { padding: .15rem .42rem; color: var(--text-soft); background: var(--surface
 .browse-group-heading p { max-width: 640px; margin: 0; color: var(--muted); font-size: .92rem; }
 .browse-group .browse-grid { margin-top: 1.1rem; }
 .browse-group .browse-card { min-height: 0; }
+/* A group with one card would otherwise leave an empty cell beside it. */
+.browse-group .browse-card:only-child { grid-column: 1 / -1; }
 .browse-group .browse-card h3 { margin-top: 0; }
 
 .method-banner {

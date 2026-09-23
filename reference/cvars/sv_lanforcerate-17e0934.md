@@ -20,7 +20,6 @@ Controls `sv_lanForceRate` in the engine-server module. Consult the cited behavi
 |:--|:--|
 | Category | Server & networking |
 | Module | `engine-server` |
-| Also registered in | `engine-server` |
 | Renderer | All / not renderer-specific |
 | Network scope | `server-authoritative`: Owned or enforced by the server. |
 | Derivation | `code-trace` |

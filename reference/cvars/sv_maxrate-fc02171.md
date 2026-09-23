@@ -18,7 +18,7 @@ Max bandwidth rate allowed on server. Use 0 for unlimited.
 |:--|:--|
 | Category | Server & networking |
 | Module | `engine-server` |
-| Also registered in | `game`, `engine-server` |
+| Also registered in | `game` |
 | Renderer | All / not renderer-specific |
 | Network scope | `server-authoritative`: Owned or enforced by the server. |
 | Derivation | `documented` |

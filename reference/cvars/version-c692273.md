@@ -22,7 +22,6 @@ Registered by the current source, but no user-facing behavior description has be
 |:--|:--|
 | Category | Engine & diagnostics |
 | Module | `engine-shared` |
-| Also registered in | `engine-shared` |
 | Renderer | All / not renderer-specific |
 | Network scope | `server-authoritative`: Owned or enforced by the server. |
 | Derivation | `code-trace` |

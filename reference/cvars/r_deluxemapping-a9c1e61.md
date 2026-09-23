@@ -18,7 +18,6 @@ Disable/enable reading deluxemaps when compiled with q3map2
 |:--|:--|
 | Category | Server & networking |
 | Module | `renderer` |
-| Also registered in | `renderer` |
 | Renderer | `rd-rend2` |
 | Network scope | `client-only`: Local to the client/UI/renderer. |
 | Derivation | `documented` |

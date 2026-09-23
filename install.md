@@ -14,6 +14,10 @@ toc: true
 <p class="page-lede">TaystJK replaces the multiplayer executable, not the retail game data. Keep the four Jedi Academy asset archives and place TaystJK beside them, or deliberately separate from them.</p>
 </div>
 
+This section also covers [platform support](/TaystJK/install/platform-support/),
+[builds and versioning](/TaystJK/install/builds-and-versioning/) and
+[mod compatibility](/TaystJK/install/mod-compatibility/).
+
 ## Before you start
 
 You need a legal Jedi Academy installation and these files from its `GameData/base` directory:
@@ -108,9 +112,13 @@ This is the simplest layout when TaystJK is your only modded client.
 
 1. Extract the TaystJK archive and copy its `.app` bundle to a directory you control.
 2. Put the retail `base` directory beside the app, or point the app at an existing Jedi Academy installation with `fs_cdPath` as described below.
-3. Launch the app. User data is stored under `~/Library/Application Support/TaystJK/`.
+3. Launch the app. Release builds are portable, so configs, screenshots and downloads are
+   written beside the app, in the directory that holds it, rather than under
+   `~/Library/Application Support`
+   ([`sys_main.cpp`](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/shared/sys/sys_main.cpp#L700));
+   see [builds and versioning](/TaystJK/install/builds-and-versioning/#every-published-build-is-portable).
 
-The [release workflow](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/.github/workflows/build.yml#L435) ad-hoc signs the universal app before packaging, so a normal installation does not need another `codesign` command. If macOS quarantines the downloaded app and refuses to open it, clear that attribute from the extracted bundle:
+The [release workflow](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/.github/workflows/build.yml#L433) ad-hoc signs the universal app before packaging, so a normal installation does not need another `codesign` command. If macOS quarantines the downloaded app and refuses to open it, clear that attribute from the extracted bundle:
 
 ```bash
 xattr -dr com.apple.quarantine "/path/to/taystjk.app"
@@ -122,7 +130,7 @@ Run this without `sudo` when the app is in a directory you own. Use `sudo` only 
 codesign --verify --deep --strict "/path/to/taystjk.app"
 ```
 
-If verification fails, re-extract a fresh copy of the official archive rather than blindly signing the damaged copy. The separate `moveandsign.sh` workflow described in the [debugging guide](/TaystJK/development/debugging/#macos-move-and-sign-the-installed-build) is for locally built development binaries.
+If verification fails, re-extract a fresh copy of the official archive rather than blindly signing the damaged copy. The separate `moveandsign.sh` workflow described in the [debugging guide](/TaystJK/development/debugging/#move-and-sign-the-installed-build) is for locally built development binaries.
 
 On Apple silicon, use the universal or native arm64 release. Intel Macs need the x86_64 release.
   </section>
@@ -148,7 +156,7 @@ sudo dnf install SDL2 libglvnd-glx libjpeg-turbo libpng zlib libstdc++
 sudo pacman -S sdl2 libglvnd libjpeg-turbo libpng zlib
 ```
 
-The 32-bit TaystJK build needs 32-bit versions of the same libraries. Prefer the x86_64 release unless you specifically need 32-bit compatibility. TaystJK's [Linux release job](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/.github/workflows/build.yml#L158) records the libraries against which the official archive is built.
+The 32-bit TaystJK build needs 32-bit versions of the same libraries. Prefer the x86_64 release unless you specifically need 32-bit compatibility. TaystJK's [Linux release job](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/.github/workflows/build.yml#L158) records the libraries against which the official archive is built.
 
 If the loader still reports a missing library, run:
 
@@ -278,13 +286,13 @@ If the console reports `VM_CreateLegacy: ... succeeded`, the requested legacy in
 ## Steam playtime and overlay
 
 Optional, and **Windows only**. `Sys_SteamInit` is an empty stub everywhere else
-([`sys_unix.cpp`](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/shared/sys/sys_unix.cpp#L655)).
+([`sys_unix.cpp`](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/shared/sys/sys_unix.cpp#L655)).
 
 With it working, Steam counts your TaystJK time against Jedi Academy and the overlay works,
 without having to launch the client through Steam.
 
 `com_steamIntegration` is already **on by default**
-([`common.cpp`](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/qcommon/common.cpp#L1452)), so there is nothing to enable. It
+([`common.cpp`](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/codemp/qcommon/common.cpp#L1452)), so there is nothing to enable. It
 does nothing until you supply two files, neither of which ships with TaystJK or with retail
 Jedi Academy. Put both in `GameData`, beside the executable:
 
@@ -314,7 +322,7 @@ client looking at all.
 Why you have to supply these: the Steamworks SDK's terms do not fit TaystJK's GPLv2
 licence, so the library cannot be bundled. The client loads it at runtime if it finds it,
 which keeps the licences apart
-([`sys_win32.cpp`](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/shared/sys/sys_win32.cpp#L714)).
+([`sys_win32.cpp`](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/shared/sys/sys_win32.cpp#L714)).
 
 ## First-launch checks
 
@@ -330,9 +338,8 @@ This layout is adapted from the longer [multiple modded clients guide on JKHub](
 - [What this client adds](/TaystJK/features/): the HUD tools, movement styles and cosmetics
 - [Something is wrong](/TaystJK/troubleshooting/): listed by symptom, including the macOS
   and modded-server cases above
-- [Features that depend on your operating system](/TaystJK/features/platform-support/)
-- [Which build you are running](/TaystJK/features/builds-and-versioning/)
-- [Why a feature works on one server and not another](/TaystJK/mod-compatibility/)
 - [Host a dedicated server](/TaystJK/server-hosting/)
 - [Search cvars and commands](/TaystJK/reference/)
 - [Compile TaystJK from source](/TaystJK/development/compiling/)
+
+{% include browse-grid.html section="install" %}

@@ -20,7 +20,6 @@ Runs `CG_SiegeCvarUpdate_f` in the cgame module.
 |:--|:--|
 | Category | Engine & diagnostics |
 | Module | `cgame` |
-| Also registered in | `cgame` |
 | Renderer | All / not renderer-specific |
 | Network scope | `client-only`: Local to the client/UI/renderer. |
 | Derivation | `code-trace` |

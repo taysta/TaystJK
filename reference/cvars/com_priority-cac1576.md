@@ -20,7 +20,6 @@ Duno, -1 = do nothing, 1 = low priority, 2 = normal priority, 3 = high priority?
 |:--|:--|
 | Category | Engine & diagnostics |
 | Module | `engine-shared` |
-| Also registered in | `engine-shared` |
 | Renderer | All / not renderer-specific |
 | Network scope | `client-only`: Local to the client/UI/renderer. |
 | Derivation | `documented` |

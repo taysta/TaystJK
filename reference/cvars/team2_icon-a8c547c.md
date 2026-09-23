@@ -22,7 +22,7 @@ Registered by the current source, but no user-facing behavior description has be
 |:--|:--|
 | Category | Gameplay & combat |
 | Module | `cgame` |
-| Also registered in | `cgame`, `game` |
+| Also registered in | `game` |
 | Renderer | All / not renderer-specific |
 | Network scope | `client-only`: Local to the client/UI/renderer. |
 | Derivation | `code-trace` |

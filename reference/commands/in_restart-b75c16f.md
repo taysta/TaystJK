@@ -20,7 +20,6 @@ Runs `IN_Restart` in the engine-shared module.
 |:--|:--|
 | Category | Input & controls |
 | Module | `engine-shared` |
-| Also registered in | `engine-shared` |
 | Renderer | All / not renderer-specific |
 | Network scope | `client-only`: Local to the client/UI/renderer. |
 | Derivation | `code-trace` |

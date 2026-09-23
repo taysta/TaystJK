@@ -20,7 +20,6 @@ Controls `cg_drainFX` in the cgame module. Consult the cited behavior reads befo
 |:--|:--|
 | Category | Gameplay & combat |
 | Module | `cgame` |
-| Also registered in | `cgame` |
 | Renderer | All / not renderer-specific |
 | Network scope | `client-only`: Local to the client/UI/renderer. |
 | Derivation | `code-trace` |

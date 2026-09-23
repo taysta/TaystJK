@@ -22,7 +22,6 @@ Controls `sv_serverid` in the engine-server module. Consult the cited behavior r
 |:--|:--|
 | Category | Server & networking |
 | Module | `engine-server` |
-| Also registered in | `engine-server` |
 | Renderer | All / not renderer-specific |
 | Network scope | `server-authoritative`: Owned or enforced by the server. |
 | Derivation | `code-trace` |

@@ -20,7 +20,7 @@ Controls `cl_maxPackets` in the engine-client module. Consult the cited behavior
 |:--|:--|
 | Category | Server & networking |
 | Module | `engine-client` |
-| Also registered in | `cgame`, `engine-client` |
+| Also registered in | `cgame` |
 | Renderer | All / not renderer-specific |
 | Network scope | `client-only`: Local to the client/UI/renderer. |
 | Derivation | `code-trace` |

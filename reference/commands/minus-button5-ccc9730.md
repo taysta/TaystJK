@@ -20,7 +20,6 @@ Runs `IN_Button5Up` in the engine-client module.
 |:--|:--|
 | Category | Input & controls |
 | Module | `engine-client` |
-| Also registered in | `engine-client` |
 | Renderer | All / not renderer-specific |
 | Network scope | `client-only`: Local to the client/UI/renderer. |
 | Derivation | `code-trace` |

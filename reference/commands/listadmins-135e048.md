@@ -20,7 +20,6 @@ Runs `Svcmd_ListAdmins_f` in the game module.
 |:--|:--|
 | Category | Administration |
 | Module | `game` |
-| Also registered in | `game` |
 | Renderer | All / not renderer-specific |
 | Network scope | `needs-server-support`: Sent to, or only useful with, a supporting game server. |
 | Derivation | `documented` |

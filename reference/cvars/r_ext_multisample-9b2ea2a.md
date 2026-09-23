@@ -21,7 +21,7 @@ Disable/enable framebuffer MSAA
 | Category | Graphics & rendering |
 | Feature family | Renderer extensions |
 | Module | `renderer` |
-| Also registered in | `renderer`, `engine-shared` |
+| Also registered in | `engine-shared` |
 | Renderer | `rd-rend2`, `rd-vulkan` |
 | Network scope | `client-only`: Local to the client/UI/renderer. |
 | Derivation | `documented` |

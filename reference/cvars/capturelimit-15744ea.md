@@ -18,7 +18,7 @@ Fixme init'd to 8 in game module
 |:--|:--|
 | Category | Gameplay & combat |
 | Module | `game` |
-| Also registered in | `game`, `engine-server`, `ui` |
+| Also registered in | `engine-server`, `ui` |
 | Renderer | All / not renderer-specific |
 | Network scope | `server-authoritative`: Owned or enforced by the server. |
 | Derivation | `documented` |

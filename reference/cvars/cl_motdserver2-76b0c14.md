@@ -20,7 +20,6 @@ Registered by the current source, but no user-facing behavior description has be
 |:--|:--|
 | Category | Server & networking |
 | Module | `engine-client` |
-| Also registered in | `engine-client` |
 | Renderer | All / not renderer-specific |
 | Network scope | `client-only`: Local to the client/UI/renderer. |
 | Derivation | `code-trace` |

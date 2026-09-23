@@ -21,7 +21,6 @@ Controls `r_ext_max_anisotropy` in the renderer module. Consult the cited behavi
 | Category | Graphics & rendering |
 | Feature family | Renderer extensions |
 | Module | `renderer` |
-| Also registered in | `renderer` |
 | Renderer | `rd-vulkan` |
 | Network scope | `client-only`: Local to the client/UI/renderer. |
 | Derivation | `code-trace` |

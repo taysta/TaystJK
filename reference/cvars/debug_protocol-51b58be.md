@@ -20,7 +20,6 @@ Controls `debug_protocol` in the ui module. Consult the cited behavior reads bef
 |:--|:--|
 | Category | Engine & diagnostics |
 | Module | `ui` |
-| Also registered in | `ui` |
 | Renderer | All / not renderer-specific |
 | Network scope | `client-only`: Local to the client/UI/renderer. |
 | Derivation | `code-trace` |

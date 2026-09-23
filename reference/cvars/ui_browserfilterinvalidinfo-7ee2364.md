@@ -23,7 +23,6 @@ Controls `ui_browserFilterInvalidInfo` in the ui module. Consult the cited behav
 | Category | Server & networking |
 | Feature family | Server browser |
 | Module | `ui` |
-| Also registered in | `ui` |
 | Renderer | All / not renderer-specific |
 | Network scope | `client-only`: Local to the client/UI/renderer. |
 | Derivation | `code-trace` |

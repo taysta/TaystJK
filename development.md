@@ -14,13 +14,4 @@ description: "Build, debug, and understand the TaystJK codebase."
 <p class="page-lede">TaystJK uses CMake to produce the multiplayer client, dedicated server, game modules, UI, and three renderer backends.</p>
 </div>
 
-<div class="browse-grid">
-  <a class="browse-card" href="/TaystJK/development/compiling/"><span class="browse-icon">01</span><h3>Compile</h3><p>Install prerequisites, choose targets and diagnostics, then build and install on Windows, Linux, or macOS.</p><b>Compilation guide →</b></a>
-  <a class="browse-card" href="/TaystJK/development/debugging/"><span class="browse-icon">02</span><h3>Debug</h3><p>Launch with the right working directory, debug engine and module code, capture logs, and use sanitizers.</p><b>Debugging guide →</b></a>
-  <a class="browse-card" href="/TaystJK/development/libraries/"><span class="browse-icon">03</span><h3>Libraries</h3><p>See the versions of bundled dependencies and learn when CMake selects system libraries instead.</p><b>Library inventory →</b></a>
-  <a class="browse-card" href="/TaystJK/reference/sources/"><span class="browse-icon">04</span><h3>Code lineage</h3><p>Understand how TaystJK relates to OpenJK, EternalJK, jaPRO, JK2MV, NewJK, rend2, and Vulkan work.</p><b>Source methodology →</b></a>
-  <a class="browse-card" href="/TaystJK/development/feature-flags/"><span class="browse-icon">05</span><h3>Feature flags</h3><p>Advertise the optional client-side features your game module supports, without being detected as JA+ or jaPRO.</p><b>taystJKinfo spec →</b></a>
-  <a class="browse-card" href="/TaystJK/development/contributing/"><span class="browse-icon">06</span><h3>Contribute</h3><p>Which branch to target, what CI builds, how to test a fix from a PR artifact without compiling it yourself.</p><b>Contributing guide →</b></a>
-  <a class="browse-card" href="/TaystJK/development/xdocs/"><span class="browse-icon">07</span><h3>In-game docs</h3><p>How a cvar documents itself inside the client, and how that relates to its registration description.</p><b>xdocs guide →</b></a>
-  <a class="browse-card" href="/TaystJK/development/documentation-system/"><span class="browse-icon">08</span><h3>This site</h3><p>The pipeline that generates the console reference, what is generated versus hand-written, and how to add a page.</p><b>Documentation system →</b></a>
-</div>
+{% include browse-grid.html section="development" %}

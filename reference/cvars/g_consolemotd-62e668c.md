@@ -20,7 +20,6 @@ Controls `g_consoleMOTD` in the game module. Consult the cited behavior reads be
 |:--|:--|
 | Category | Chat & social |
 | Module | `game` |
-| Also registered in | `game` |
 | Renderer | All / not renderer-specific |
 | Network scope | `server-authoritative`: Owned or enforced by the server. |
 | Derivation | `code-trace` |

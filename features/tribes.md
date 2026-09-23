@@ -14,46 +14,57 @@ status: experimental
 
 # Tribes
 
-<p class="page-lede">A movement style that replaces running with skiing and adds a jetpack, its own HUD and its own weapons. It is experimental, few servers run it, and it needs assets you may not have.</p>
+<p class="page-lede">A movement style that replaces running with skiing and adds a jetpack, its own HUD and its own weapons. It is experimental, few servers run it, and one of its models does not ship with the client.</p>
 </div>
 
 Tribes is one of the nineteen [movement styles](/TaystJK/features/movement-styles/); the
 server chooses it. Unlike the others it comes with a substantial amount of client-side
 machinery: a replacement HUD, team markers, a fuel display and its own weapon effects.
 
-Almost everything below needs the Tribes assets. The client-side half is a bit in
-`cg_stylePlayer` labelled "Tribes Clientside (Requires assets)"; without those files you
-will see missing models and blank icons rather than a graceful fallback.
+The client-side half is bit 22 of `cg_stylePlayer`, labelled "Tribes Clientside (Requires
+assets)"
+([`cg_consolecmds.c`](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/codemp/cgame/cg_consolecmds.c#L1431)); turn it on with
+`stylePlayer 22`.
+
+Most of the assets it needs already ship in `japro-assets.pk3`: the jetpack and mortar
+effects under `effects/tribes/`, the ski and thrust sounds, the Tribes menu and the two
+configs. One does not. With the bit on, the spinfusor's projectile is drawn with
+`models/weapons2/concussion/disc.md3`
+([`cg_weaponinit.c`](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/codemp/cgame/cg_weaponinit.c#L190)), which is not in TaystJK's
+source tree.
+
+TODO: confirm where players get `disc.md3`, how the projectile draws without it, and whether
+any other Tribes asset is missing from the release.
 
 ## Skiing
 
 Holding the dash button removes ground friction, so instead of running you slide and keep
 momentum across terrain
-([`bg_pmove.c`](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/bg_pmove.c#L6051)).
+([`bg_pmove.c`](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/codemp/game/bg_pmove.c#L6051)).
 That is the whole idea of the mode: you gain speed downhill and carry it, rather than
 accelerating from a standstill.
 
 Landing while skiing plays its own sound rather than the normal landing thud
-([`cg_main.c`](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_main.c#L869)).
+([`cg_main.c`](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/codemp/cgame/cg_main.c#L869)).
 
 The same button is also a dash, shared with the `wsw` style but behaving differently here:
 in Tribes it spends force power and sets a much longer cooldown
-([`bg_pmove.c`](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/bg_pmove.c#L5448)).
+([`bg_pmove.c`](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/codemp/game/bg_pmove.c#L5448)).
 Bots ski by pressing the same button
-([`ai_main.c`](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/ai_main.c#L579)).
+([`ai_main.c`](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/codemp/game/ai_main.c#L579)).
 
 ## Jetpack fuel
 
 The jetpack has a fuel level from 0 to 100, drawn as a segmented bar with a numeric readout
 that eases towards the true value rather than snapping to it
-([`hud_tribes.c`](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/hud_tribes.c#L3)).
+([`hud_tribes.c`](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/codemp/cgame/hud_tribes.c#L3)).
 Skiing and jetpacking together is how you cross a map quickly.
 
 ## IFF markers
 
 In team games the client floats a team-coloured sprite above other players so you can tell
 friend from enemy at speed
-([`cg_players.c`](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_players.c#L11059)).
+([`cg_players.c`](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/codemp/cgame/cg_players.c#L11059)).
 
 The marker scales with distance using `4 + distance * 0.008`, so a distant player still gets a
 readable icon rather than a dot. Friendly markers show at any range; **enemy markers only
@@ -65,31 +76,31 @@ This is gated on the server advertising Tribes, not on your own settings.
 ## The Tribes HUD
 
 The mode swaps in a different HUD entirely
-([`hud_tribes.c`](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/hud_tribes.c#L762)):
+([`hud_tribes.c`](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/codemp/cgame/hud_tribes.c#L762)):
 a health bar, a weapon selector that greys out anything you cannot currently fire, a pack
 display, and the fuel bar above.
 
 The weapon selector's availability test is energy-based rather than counting rounds. A
 weapon is selectable when you hold at least as much ammo as one shot costs
-([`hud_tribes.c`](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/hud_tribes.c#L183)),
+([`hud_tribes.c`](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/codemp/cgame/hud_tribes.c#L183)),
 which is why the display talks in shots rather than in a raw ammo count.
 
 `invfree` selects the next usable inventory item and is bound by the HUD's prompt
-([`cg_consolecmds.c`](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_consolecmds.c#L2456)).
+([`cg_consolecmds.c`](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/codemp/cgame/cg_consolecmds.c#L2456)).
 
 ## Weapons and feedback
 
 The mortar has its own projectile and explosion effects under `tribes/weapons/mortar/`
-([`cg_weaponinit.c`](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_weaponinit.c#L405)).
+([`cg_weaponinit.c`](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/codemp/cgame/cg_weaponinit.c#L405)).
 
 Kills play one of two sounds depending on whether the victim was airborne, so a midair hit
 is audibly different from a ground kill
-([`cg_event.c`](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_event.c#L281)).
+([`cg_event.c`](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/codemp/cgame/cg_event.c#L281)).
 
 ## Classes
 
 You do not pick a class with a command. **Your player model decides it**
-([`DetectTribesClass`](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_client.c#L2263)),
+([`DetectTribesClass`](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/codemp/game/g_client.c#L2263)),
 on a server running `g_tribesMode 1`.
 
 | Class | Models |
@@ -111,16 +122,16 @@ medium.
 What the class changes:
 
 - **Speed.** Light runs at 1.05×, heavy at 0.78×
-  ([`g_active.c`](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_active.c#L4296)).
+  ([`g_active.c`](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/codemp/game/g_active.c#L4296)).
 - **Weight.** Explosions throw light further and heavy less. Knockback mass is 175, 200 and
-  240 ([`g_combat.c`](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_combat.c#L5121)).
+  240 ([`g_combat.c`](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/codemp/game/g_combat.c#L5121)).
 - **What `thrownade` throws.** A thermal for light, a detpack for medium, a tripmine for
-  heavy ([`Cmd_ThrowNade_f`](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_cmds.c#L8660)).
+  heavy ([`Cmd_ThrowNade_f`](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/codemp/game/g_cmds.c#L8660)).
 
 The last two need the server's Tribes weapon tweak (`g_tweakWeapons`); the speed difference
 does not. None of it applies in racemode: there you have no class at all unless you are on a
 team in a team gametype
-([`ClientUserinfoChanged`](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_client.c#L2542)).
+([`ClientUserinfoChanged`](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/codemp/game/g_client.c#L2542)).
 
 ## Setting it up
 
@@ -136,6 +147,6 @@ Run the client one with `exec japro_tribes`. Read it first: it rebinds number ke
 This mode is experimental and lightly played. It carries more bespoke code than any other
 movement style, some of it carrying the author's own notes about ground detection being
 unreliable while skiing
-([`bg_pmove.c`](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/bg_pmove.c#L5439)).
+([`bg_pmove.c`](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/codemp/game/bg_pmove.c#L5439)).
 Treat rough edges as expected rather than as bugs worth reporting, and report gameplay
 problems to [videoP/jaPRO](https://github.com/videoP/jaPRO) rather than here.

@@ -20,7 +20,7 @@ Controls `cl_shownet` in the engine-client module. Consult the cited behavior re
 |:--|:--|
 | Category | Engine & diagnostics |
 | Module | `engine-client` |
-| Also registered in | `engine-client`, `other` |
+| Also registered in | `other` |
 | Renderer | All / not renderer-specific |
 | Network scope | `client-only`: Local to the client/UI/renderer. |
 | Derivation | `code-trace` |

@@ -18,7 +18,6 @@ Sets a new metadata entry for server-side demos for one player. Call with client
 |:--|:--|
 | Category | Demos & media |
 | Module | `engine-server` |
-| Also registered in | `engine-server` |
 | Renderer | All / not renderer-specific |
 | Network scope | `server-authoritative`: Owned or enforced by the server. |
 | Derivation | `documented` |

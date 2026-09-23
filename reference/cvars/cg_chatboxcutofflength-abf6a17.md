@@ -21,7 +21,6 @@ Width of a line in the chatbox before breaking to a new one
 | Category | Chat & social |
 | Feature family | Chat box |
 | Module | `cgame` |
-| Also registered in | `cgame` |
 | Renderer | All / not renderer-specific |
 | Network scope | `client-only`: Local to the client/UI/renderer. |
 | Derivation | `documented` |

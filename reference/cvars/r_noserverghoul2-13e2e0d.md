@@ -20,7 +20,6 @@ Controls `r_noServerGhoul2` in the renderer module. Consult the cited behavior r
 |:--|:--|
 | Category | Server & networking |
 | Module | `renderer` |
-| Also registered in | `renderer` |
 | Renderer | `rd-dedicated`, `rd-rend2`, `rd-vanilla`, `rd-vulkan` |
 | Network scope | `client-only`: Local to the client/UI/renderer. |
 | Derivation | `code-trace` |

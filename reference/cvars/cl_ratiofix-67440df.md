@@ -20,7 +20,7 @@ Widescreen aspect ratio correction
 |:--|:--|
 | Category | Engine & diagnostics |
 | Module | `engine-client` |
-| Also registered in | `cgame`, `engine-client`, `renderer`, `ui` |
+| Also registered in | `cgame`, `renderer`, `ui` |
 | Renderer | `rd-rend2`, `rd-vanilla`, `rd-vulkan` |
 | Network scope | `client-only`: Local to the client/UI/renderer. |
 | Derivation | `documented` |

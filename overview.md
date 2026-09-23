@@ -1,5 +1,5 @@
 ---
-title: "Overview"
+title: "Documentation overview"
 layout: reference
 nav_order: 3
 parent: "Help"
@@ -10,7 +10,7 @@ toc: true
 <div class="page-heading" markdown="1">
 <p class="eyebrow">Start here</p>
 
-# How this documentation works
+# Documentation overview
 
 <p class="page-lede">Hand-written guides, one generated reference, and a glossary. This page explains which is which, and how to read the parts of an entry that are not obvious.</p>
 </div>
@@ -20,7 +20,9 @@ toc: true
 The sections are written by different means:
 
 - [**Install**](/TaystJK/install/), [**Host**](/TaystJK/server-hosting/), [**Features**](/TaystJK/features/),
-  [**Develop**](/TaystJK/development/) and [**Help**](/TaystJK/help/) are written by hand.
+  [**Develop**](/TaystJK/development/) and [**Help**](/TaystJK/help/) are written by hand,
+  apart from two generated lists in Features:
+  [what's new](/TaystJK/features/whats-new/) and [chat emoji](/TaystJK/features/emoji/).
   They explain how to do something, or how a feature works.
 - [**Console reference**](/TaystJK/reference/) is generated from the source code. It has one
   page per cvar and console command: what it is, what it defaults to, where it is
@@ -42,7 +44,7 @@ than the base game itself.
 **TaystJK bundles both halves of jaPRO**, not just the client side. The build produces the
 client-side gamecode (`cgame`) *and* the server-side gamecode (`jampgame`), along with the
 UI and the engine
-([`CMakeLists.txt`](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/CMakeLists.txt#L42)).
+([`CMakeLists.txt`](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/CMakeLists.txt#L42)).
 The split shows in the reference: of those {{ site.data.reference_stats.by_origin.japro.count }} entries, {{ site.data.reference_stats.by_origin.japro.modules.cgame }} are in the `cgame` module and
 **{{ site.data.reference_stats.by_origin.japro.modules.game }} are in `game`**, the module that decides the rules.
 
@@ -50,7 +52,7 @@ The split shows in the reference: of those {{ site.data.reference_stats.by_origi
 |:--|:--|:--|
 | Client-side gamecode | `cgame` | The HUD tools, movement helpers and cosmetics, present on every server you join |
 | Server-side gamecode | `jampgame` | Race mode, the movement styles, Tribes and the admin system when *you* host |
-| Assets | `japro-assets.pk3` | The shaders, models and icons those features draw ([`codemp/CMakeLists.txt`](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/CMakeLists.txt#L81)) |
+| Assets | `japro-assets.pk3` | The shaders, models and icons those features draw ([`codemp/CMakeLists.txt`](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/codemp/CMakeLists.txt#L81)) |
 
 So a TaystJK dedicated server serves jaPRO-style gameplay out of the box, with nothing else
 installed. That is why this site can cite `codemp/game/` for things like `/move` and the
@@ -59,7 +61,7 @@ Tribes classes: that code is in this tree.
 **Joining someone else's server is the other case.** There, their game module decides the
 rules and your bundled copy is not used at all. That is why the same feature can behave
 differently from server to server. See
-[mod compatibility](/TaystJK/mod-compatibility/).
+[mod compatibility](/TaystJK/install/mod-compatibility/).
 
 **This matters when something is wrong.** Gameplay belongs to the game module, and that
 code is maintained upstream at <https://github.com/videoP/jaPRO> and pulled down here, so

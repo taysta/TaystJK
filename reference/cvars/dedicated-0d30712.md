@@ -20,7 +20,7 @@ Controls `dedicated` in the game module. Consult the cited behavior reads before
 |:--|:--|
 | Category | Gameplay & combat |
 | Module | `game` |
-| Also registered in | `game`, `engine-shared` |
+| Also registered in | `engine-shared` |
 | Renderer | All / not renderer-specific |
 | Network scope | `server-authoritative`: Owned or enforced by the server. |
 | Derivation | `code-trace` |

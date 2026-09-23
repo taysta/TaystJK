@@ -21,7 +21,6 @@ Controls `r_autoMapBackAlpha` in the renderer module. Consult the cited behavior
 | Category | HUD & interface |
 | Feature family | Automap |
 | Module | `renderer` |
-| Also registered in | `renderer` |
 | Renderer | `rd-dedicated`, `rd-vanilla`, `rd-vulkan` |
 | Network scope | `client-only`: Local to the client/UI/renderer. |
 | Derivation | `code-trace` |

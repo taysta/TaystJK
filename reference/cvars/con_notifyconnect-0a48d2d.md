@@ -21,7 +21,6 @@ Notifies you when someone connects to the server
 | Category | Engine & diagnostics |
 | Feature family | Console |
 | Module | `engine-client` |
-| Also registered in | `engine-client` |
 | Renderer | All / not renderer-specific |
 | Network scope | `client-only`: Local to the client/UI/renderer. |
 | Derivation | `documented` |

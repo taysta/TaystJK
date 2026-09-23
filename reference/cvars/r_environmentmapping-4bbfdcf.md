@@ -20,7 +20,6 @@ Controls `r_environmentMapping` in the renderer module. Consult the cited behavi
 |:--|:--|
 | Category | Server & networking |
 | Module | `renderer` |
-| Also registered in | `renderer` |
 | Renderer | `rd-vanilla`, `rd-vulkan` |
 | Network scope | `client-only`: Local to the client/UI/renderer. |
 | Derivation | `code-trace` |

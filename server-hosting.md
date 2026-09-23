@@ -23,7 +23,7 @@ toc: true
 
 ## Docker Compose
 
-The repository ships a [Docker image and `docker-compose.yml`](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/docker-compose.yml). Use that definition from a TaystJK source checkout when possible; it supports both pulling the published image and building the server locally.
+The repository ships a [Docker image and `docker-compose.yml`](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/docker-compose.yml). Use that definition from a TaystJK source checkout when possible; it supports both pulling the published image and building the server locally.
 
 For the published image, the relevant files are:
 
@@ -90,7 +90,7 @@ docker compose --profile build up -d --build taystjk-build
 docker compose logs -f taystjk-build
 ```
 
-Both services use the same ports, asset mount, homepath mount, architecture, and mod selection as TaystJK's checked-in definition; do not start both at once. The image already contains TaystJK's [shipped `server.cfg`](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/scripts/docker/server.cfg), installs it under `basepath/taystjk/`, and automatically launches with `+exec server.cfg`. Start the container once with that configuration before changing it.
+Both services use the same ports, asset mount, homepath mount, architecture, and mod selection as TaystJK's checked-in definition; do not start both at once. The image already contains TaystJK's [shipped `server.cfg`](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/scripts/docker/server.cfg), installs it under `basepath/taystjk/`, and automatically launches with `+exec server.cfg`. Start the container once with that configuration before changing it.
 
 The remaining commands in this guide use the published-image service name, `taystjk`. Substitute `taystjk-build` when you are running the source-build profile.
 
@@ -176,7 +176,7 @@ TaystJK can serve required PK3 files over fast HTTP and optionally fall back to 
 
 The settings above enable HTTP on TCP `18200`. Forward that TCP port through NAT and allow it through the host firewall, independently of UDP `29070`. With `sv_httpServerPort 0`, the server selects the first free port from `18200` through `18215`; a fixed port is easier to expose from a container or router.
 
-Clients need `cl_allowDownload 1`. By default TaystJK asks before downloading and stores conflicting downloads with a `dl_` name plus a checksum so content from one server does not silently replace content used elsewhere.
+Clients need `cl_allowDownload 1`, which is the default. By default TaystJK asks before downloading, saves each download with a `dl_` prefix that is only loaded while a server references it, and adds a checksum to the name when a file of that name already exists, so content from one server does not silently replace content used elsewhere. See [a map I downloaded is missing everywhere else](/TaystJK/troubleshooting/#a-map-i-downloaded-is-missing-everywhere-else).
 
 ### External HTTP server
 
@@ -224,47 +224,52 @@ The behavior is inherited from JK2MV; its wiki has useful background on [downloa
 
 `sv_pure 1` checks the client's PK3 checksums against the server's expected files. The
 module checks specifically look for `cgamex86.dll` and `uix86.dll` inside PK3s
-([`sv_client.cpp`](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/server/sv_client.cpp#L957)).
+([`sv_client.cpp`](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/codemp/server/sv_client.cpp#L957)).
 
 TaystJK loads native modules as loose libraries. Its build installs them that way
-([cgame install rules](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/CMakeLists.txt#L162),
-[UI install rules](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/ui/CMakeLists.txt#L105)). Before loading a module,
+([cgame install rules](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/codemp/cgame/CMakeLists.txt#L162),
+[UI install rules](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/codemp/ui/CMakeLists.txt#L105)). Before loading a module,
 `FS_FindPureDLL` reads the corresponding legacy `x86.dll` so other platforms and
 architectures can account for the expected pure-server PK3 checksums
-([`files.cpp`](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/qcommon/files.cpp#L1862),
-[`vm.cpp`](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/qcommon/vm.cpp#L169)).
+([`files.cpp`](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/codemp/qcommon/files.cpp#L1862),
+[`vm.cpp`](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/codemp/qcommon/vm.cpp#L169)).
 
 Loose native libraries alone are therefore not a reason to disable `sv_pure`. If clients
 fail pure validation, check that the server and clients have the expected PK3s, including
 the legacy DLL entries used for these checks. Packing an x64 or ARM native library into a
 PK3 does not satisfy a check for an `x86.dll` entry.
 
-### `sv_pure` does not constrain TaystJK on a `basejka` server
+### `sv_pure` does not constrain TaystJK clients by default
 
-If your server reports its `gamename` as exactly `basejka`, TaystJK clients bypass the pure
-restriction ([`cl_parse.cpp`](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/cl_parse.cpp#L466)).
+TaystJK clients skip the pure restriction unless the player turns it off. The client-side
+cvar [`cl_pureBaseBypass`](/TaystJK/reference/cvars/cl_purebasebypass-b099e31/) defaults to
+`1` ([`cl_main.cpp`](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/codemp/client/cl_main.cpp#L3460)), and the client applies it on
+every connection, whatever `gamename` your server reports
+([`cl_parse.cpp`](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/codemp/client/cl_parse.cpp#L456)). Its own description speaks of "pure
+base servers", which is the case it was written for, but the code does not check what the
+server runs.
 
 Two things happen at once. The client marks the base assets pak as referenced so the
 checksums it reports back look like a stock client's
-([`files.cpp`](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/qcommon/files.cpp#L4169)), and it skips loading your pak list
+([`files.cpp`](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/codemp/qcommon/files.cpp#L4169)), and it skips loading your pak list
 altogether. This leaves it with no list to restrict against, so every pak it has is
 treated as allowed
-([`FS_PakIsPure`](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/qcommon/files.cpp#L393)).
+([`FS_PakIsPure`](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/codemp/qcommon/files.cpp#L393)).
 
 The effect is that the client authenticates as pure while still loading its own assets:
 emoji, cosmetics, HUD files and any other PK3 the player has installed. This is deliberate:
-it lets TaystJK's client-side additions work on stock servers, but it means
-**`sv_pure` is not an asset-parity guarantee for these clients.** If you are relying on pure
-to ensure everyone sees identical content, a `basejka` gamename does not give you that.
-
-Servers reporting any other `gamename`, including jaPRO and JA+, are unaffected and pure
-behaves normally.
+it lets TaystJK's client-side additions work on pure servers, but it means
+**`sv_pure` is not an asset-parity guarantee for TaystJK clients.** A player who sets
+`cl_pureBaseBypass 0` gets the normal restriction again from their next connection. A server
+cannot set it for them: it is an ordinary archived cvar, and the client discards server
+values for those
+([`Cvar_Server_Set`](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/codemp/qcommon/cvar.cpp#L807)).
 
 ## Server-side demo recording
 
 A dedicated server can record demos itself, independently of anything the players do. The
 commands exist only in the dedicated build
-([`sv_ccmds.cpp`](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/server/sv_ccmds.cpp#L2343)):
+([`sv_ccmds.cpp`](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/codemp/server/sv_ccmds.cpp#L2343)):
 
 | Command | Does |
 |:--|:--|

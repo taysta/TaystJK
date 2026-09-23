@@ -20,7 +20,7 @@ Controls `timescale` in the cgame module. Consult the cited behavior reads befor
 |:--|:--|
 | Category | Gameplay & combat |
 | Module | `cgame` |
-| Also registered in | `cgame`, `game`, `engine-shared` |
+| Also registered in | `game`, `engine-shared` |
 | Renderer | All / not renderer-specific |
 | Network scope | `server-authoritative`: Owned or enforced by the server. |
 | Derivation | `code-trace` |

@@ -18,7 +18,6 @@ Enables writing metadata to demos, which can be set by the server/game. This is 
 |:--|:--|
 | Category | Demos & media |
 | Module | `engine-server` |
-| Also registered in | `engine-server` |
 | Renderer | All / not renderer-specific |
 | Network scope | `server-authoritative`: Owned or enforced by the server. |
 | Derivation | `documented` |

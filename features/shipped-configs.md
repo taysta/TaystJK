@@ -59,15 +59,17 @@ what you had. The `strafehelper` and `speedometer` commands print what each bit 
 
 ## Motion sickness
 
-Two very short files that exist as a pair:
+TaystJK already starts with view bob and roll off: [`cg_runPitch`](/TaystJK/reference/cvars/cg_runpitch-db8b764/)
+and its siblings default to `0`, and [`ui_disableWeaponSway`](/TaystJK/reference/cvars/ui_disableweaponsway-e995888/)
+defaults to `1`. These two files switch between that and stock Jedi Academy's motion:
 
 | Config | What it does |
 |:--|:--|
-| `noMotion` | Resets the view-movement cvars, including `cg_runPitch` and its siblings, so the view stops bobbing and rolling. |
-| `restoreMotion` | Puts them back to their stock values. |
+| `restoreMotion` | Sets `cg_runPitch`, `cg_runRoll`, `cg_bobUp`, `cg_bobPitch` and `cg_bobRoll` to stock Jedi Academy's values and turns weapon sway back on ([`restoreMotion.cfg`](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/assets/japro/restoreMotion.cfg#L1)). |
+| `noMotion` | Resets the same cvars to TaystJK's defaults, so the view stops bobbing and rolling again ([`noMotion.cfg`](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/assets/japro/noMotion.cfg#L1)). |
 
-Run `noMotion` if head-bob makes you unwell; `restoreMotion` undoes it exactly, which is why
-they ship together.
+You only need `noMotion` after running `restoreMotion` or setting those cvars yourself. If
+head-bob makes you unwell and you have never changed them, there is nothing to undo.
 
 ## Tribes
 

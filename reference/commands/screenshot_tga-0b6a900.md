@@ -20,7 +20,6 @@ Runs `R_ScreenShotTGA_f` in the renderer module.
 |:--|:--|
 | Category | Demos & media |
 | Module | `renderer` |
-| Also registered in | `renderer` |
 | Renderer | `rd-rend2`, `rd-vanilla`, `rd-vulkan` |
 | Network scope | `client-only`: Local to the client/UI/renderer. |
 | Derivation | `code-trace` |

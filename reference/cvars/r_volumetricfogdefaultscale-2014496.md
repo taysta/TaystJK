@@ -21,7 +21,6 @@ Scales volumetric fog density unless scale has been explicitly defined
 | Category | Graphics & rendering |
 | Feature family | Volumetric fog |
 | Module | `renderer` |
-| Also registered in | `renderer` |
 | Renderer | `rd-rend2` |
 | Network scope | `client-only`: Local to the client/UI/renderer. |
 | Derivation | `documented` |

@@ -21,7 +21,6 @@ Offset the green range up or down (eg. range 30, offset 10 = +25 to -5)
 | Category | Movement & race |
 | Feature family | Pitch helper |
 | Module | `cgame` |
-| Also registered in | `cgame` |
 | Renderer | All / not renderer-specific |
 | Network scope | `client-only`: Local to the client/UI/renderer. |
 | Derivation | `documented` |

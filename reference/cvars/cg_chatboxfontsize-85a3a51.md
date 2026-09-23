@@ -21,7 +21,6 @@ Scale of the chat box font
 | Category | Chat & social |
 | Feature family | Chat box |
 | Module | `cgame` |
-| Also registered in | `cgame` |
 | Renderer | All / not renderer-specific |
 | Network scope | `client-only`: Local to the client/UI/renderer. |
 | Derivation | `documented` |
