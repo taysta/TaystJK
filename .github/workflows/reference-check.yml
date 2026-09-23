@@ -15,10 +15,17 @@ name: Reference check
 on:
   schedule:
     - cron: "17 6 * * 1"
-  # Catch a stale reference on release day rather than up to a week later.
+  # Catch a stale reference on release day rather than up to a week later. This only fires
+  # for releases a person publishes: build.yml makes `latest` with GITHUB_TOKEN, which does
+  # not trigger other workflows, so it dispatches this one directly with the tag instead.
   release:
     types: [published]
   workflow_dispatch:
+    inputs:
+      release_tag:
+        description: Release this check was run for, if any
+        required: false
+        default: ""
 
 permissions:
   contents: read
@@ -56,12 +63,11 @@ jobs:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           REPO: ${{ github.repository }}
           RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
-          EVENT: ${{ github.event_name }}
-          RELEASE_TAG: ${{ github.event.release.tag_name }}
+          RELEASE_TAG: ${{ github.event.release.tag_name || inputs.release_tag }}
         run: |
           set -euo pipefail
 
-          if [ "$EVENT" = "release" ]; then
+          if [ -n "$RELEASE_TAG" ]; then
             context="The reference check failed for release ${RELEASE_TAG}."
           else
             context="The scheduled console reference check failed."
