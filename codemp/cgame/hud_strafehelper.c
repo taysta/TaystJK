@@ -395,6 +395,9 @@ void DF_DrawStrafeHUD(centity_t* cent)
 		{
 			DF_StrafeHelper();
 		}
+
+		//cg_showpos and cg_pitchHelper
+		DF_DrawShowPos();
 	}
 
 	if (cg_snapHud.integer) {
