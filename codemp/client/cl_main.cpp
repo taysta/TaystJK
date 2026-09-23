@@ -135,6 +135,8 @@ cvar_t	*cl_chatBubbleSelf;
 
 cvar_t	*cl_logChat;
 
+cvar_t	*cl_pureBaseBypass;
+
 #if defined(DISCORD) && !defined(_DEBUG)
 cvar_t	*cl_discordRichPresence;
 #endif
@@ -3454,6 +3456,8 @@ void CL_Init( void ) {
 	cl_unfocusedTime = 0;
 
 	cl_logChat = Cvar_Get("cl_logChat", "0", CVAR_ARCHIVE, "Toggle engine chat logs");
+
+	cl_pureBaseBypass = Cvar_Get("cl_pureBaseBypass", "1", CVAR_ARCHIVE, "Bypass pure checks on pure base servers, takes effect on next connect");
 
 #if defined(DISCORD) && !defined(_DEBUG)
 	cl_discordRichPresence = Cvar_Get("cl_discordRichPresence", "1", CVAR_ARCHIVE, "Allow/disallow sharing current game information on Discord profile status");

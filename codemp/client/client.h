@@ -497,6 +497,7 @@ extern	cvar_t	*cl_chatBubbleUnfocused;
 extern	cvar_t	*cl_chatBubbleSelf;
 
 extern cvar_t	*cl_logChat;
+extern cvar_t	*cl_pureBaseBypass;
 
 #if defined(DISCORD) && !defined(_DEBUG)
 extern cvar_t	*cl_discordRichPresence;
