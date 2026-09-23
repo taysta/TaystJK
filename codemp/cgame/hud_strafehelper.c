@@ -28,13 +28,6 @@ along with this program; if not, see <https://www.gnu.org/licenses/>.
 #include "hud_strafehelper.h"
 #include "cg_local.h"
 
-// function that stores whether it's safe to display cg_showpos
-static qboolean posSafe = qfalse;
-
-// vehicle functions for cg_pitchHelper hide states
-qboolean CG_InFighter( void );
-qboolean CG_InATST( void );
-
 int DF_GetMovePhysics() {
 	int physics = MV_JKA;
 
@@ -402,6 +395,9 @@ void DF_DrawStrafeHUD(centity_t* cent)
 		{
 			DF_StrafeHelper();
 		}
+
+		//cg_showpos and cg_pitchHelper
+		DF_DrawShowPos();
 	}
 
 	if (cg_snapHud.integer) {
@@ -693,7 +689,6 @@ int DF_SetPlayerState(centity_t* cent)
 		DF_SetClientCmd(cent);
 	}
 	else {
-		posSafe = qfalse;
 		return 0;
 	}
 
@@ -716,7 +711,6 @@ int DF_SetPlayerState(centity_t* cent)
 	state.onSlick = DF_IsSlickSurf();
 	DF_SetPhysics();
 	DF_SetCGAZ();
-	posSafe = qtrue;
 	return 1;
 }
 
@@ -2450,10 +2444,7 @@ void DF_RaceTimer(void)
 
 void DF_DrawShowPos(void)
 {
-    if (!posSafe)
-        return;
-	
-    static char showPosString[128];
+	static char showPosString[128];
 	static char showPitchString[8];
 	vec4_t colorPitch = { 0, 0, 0, 1 };
 	float pitchAngle = fabsf(state.viewAngles[PITCH] + cg_pitchHelperOffset.value);
@@ -2472,52 +2463,15 @@ void DF_DrawShowPos(void)
 		colorPitch[1] = 0;
 	}
 
-	// cg_pitchHelper with all hide/fade logic
-    if (cg_pitchHelper.value) {
-        qboolean inFighterOrWalker = (qboolean)(
-            cg.predictedPlayerState.m_iVehicleNum &&
-            (CG_InFighter() || CG_InATST()));
+	if (cg_pitchHelper.value) {
+		Com_sprintf(showPitchString, sizeof(showPitchString), "%.1f", (float)state.viewAngles[PITCH]);
+		CG_Text_Paint((float)cg_pitchHelperX.integer, (float)cg_pitchHelperY.integer, 1.0f, colorPitch, showPitchString, 0, 0, ITEM_TEXTSTYLE_OUTLINESHADOWED, FONT_SMALL2);
+	}
 
-        qboolean intermissionOrSpec = (qboolean)(
-            cg.predictedPlayerState.pm_type == PM_INTERMISSION ||
-            cg.predictedPlayerState.pm_type == PM_SPECTATOR);
+	if (!cg_showpos.integer)
+		return;
 
-        // base hide conditions
-        qboolean shouldDraw = (qboolean)(
-            cg_drawHud.integer &&
-            !intermissionOrSpec &&
-            cg.snap->ps.stats[STAT_HEALTH] > 0 &&
-            !cg.showScores &&
-            !inFighterOrWalker);
-
-        if (shouldDraw) {
-            float alpha = 1.0f;
-            if (cg.snap->ps.fallingToDeath) {
-                float fallTime = (float)(cg.time - cg.snap->ps.fallingToDeath);
-                fallTime /= (FALL_FADE_TIME / 2);
-                if (fallTime < 0.0f) fallTime = 0.0f;
-                if (fallTime > 1.0f) fallTime = 1.0f;
-                alpha = 1.0f - fallTime;
-            }
-
-            if (alpha > 0.0f) {
-                colorPitch[3] = alpha;
-                Com_sprintf(showPitchString, sizeof(showPitchString),
-                            "%.1f", (float)state.viewAngles[PITCH]);
-                CG_Text_Paint((float)cg_pitchHelperX.integer,
-                              (float)cg_pitchHelperY.integer,
-                              1.0f, colorPitch, showPitchString,
-                              0, 0, ITEM_TEXTSTYLE_OUTLINESHADOWED, FONT_SMALL2);
-            }
-        }
-    }
-
-    // cg_showpos with all hide logic
-    if (!cg_showpos.integer ||
-	   cl_paused.integer)
-        return;
-
-    const float vel = sqrtf(state.cgaz.v * state.cgaz.v + state.velocity[2] * state.velocity[2]);
+	const float vel = sqrtf(state.cgaz.v * state.cgaz.v + state.velocity[2] * state.velocity[2]);
 
 	Com_sprintf(showPosString, sizeof(showPosString), "pos:   %.2f   %.2f   %.2f\nang:   %.2f   %.2f\nvel:     %.2f",
 		(float)state.viewOrg[0], (float)state.viewOrg[1], (float)state.viewOrg[2], (float)state.viewAngles[PITCH], (float)state.viewAngles[YAW], vel);

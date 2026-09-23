@@ -1959,7 +1959,7 @@ void CG_DrawHUD(centity_t	*cent)
 	char scoreBiasStr[16];
 
     //Defragmania Strafe Hud
-    if(cg_speedometer.integer & SPEEDOMETER_ENABLE || (cg_strafeHelper.integer & (SHELPER_ORIGINAL | SHELPER_UPDATED | SHELPER_CGAZ | SHELPER_WSW | SHELPER_WEZE)) || cg_movementKeys.integer || cg_raceTimer.integer || cg_raceStart.integer || cg_showpos.integer){
+    if(cg_speedometer.integer & SPEEDOMETER_ENABLE || (cg_strafeHelper.integer & (SHELPER_ORIGINAL | SHELPER_UPDATED | SHELPER_CGAZ | SHELPER_WSW | SHELPER_WEZE)) || cg_movementKeys.integer || cg_raceTimer.integer || cg_raceStart.integer || cg_showpos.integer || cg_pitchHelper.value){
         DF_DrawStrafeHUD(cent);
     }
 
@@ -11730,8 +11730,7 @@ static void CG_Draw2D( void ) {
 	if (!cl_paused.integer) {
 		CG_DrawBracketedEntities();
 		CG_DrawUpperRight();
-}
-DF_DrawShowPos();
+	}
 
 	if ( !CG_DrawFollow() ) {
 		CG_DrawWarmup();
