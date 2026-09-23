@@ -36,6 +36,10 @@ typedef struct visBrushNode_s {
 	visLeaf_t *visLeafs;
 	qboolean alwaysVisible;
 
+	// bounds of the drawable faces
+	vec3_t mins;
+	vec3_t maxs;
+
 	// This is a linked list.
 	// Why? I dont know.
 	// Let me know if you do.
@@ -64,6 +68,7 @@ typedef struct {
 
 static void setup_view(const refdef_t *rd, visView_t *view);
 static qboolean outside_frustum(const cplane_t frustum[4], const vec3_t mins, const vec3_t maxs);
+static float dist_sq_to_box(const vec3_t p, const vec3_t mins, const vec3_t maxs);
 static qboolean brush_visible(const visBrushNode_t *brush, const visView_t *view);
 static void draw(visBrushNode_t *brush, qhandle_t shader, visBrushType_t type, const visView_t *view);
 
@@ -425,24 +430,24 @@ static void free_vis_brushes(visBrushNode_t *brushes) {
 static void find_vis_leafs(visBrushNode_t *node) {
 	// covers the slick extrusion in draw and the anti z-fighting offset above
 	const float pad = 4.0f;
-	vec3_t mins, maxs;
-	ClearBounds(mins, maxs);
+	ClearBounds(node->mins, node->maxs);
 	for (int i = 0; i < node->numFaces; i++) {
 		if (node->faces[i].numVerts < 3)
 			continue;
-		AddPointToBounds(node->faces[i].mins, mins, maxs);
-		AddPointToBounds(node->faces[i].maxs, mins, maxs);
+		AddPointToBounds(node->faces[i].mins, node->mins, node->maxs);
+		AddPointToBounds(node->faces[i].maxs, node->mins, node->maxs);
 	}
 
 	node->numVisLeafs = 0;
 	node->visLeafs = NULL;
 	node->alwaysVisible = qfalse;
-	if (mins[0] > maxs[0]) // no drawable faces
+	if (node->mins[0] > node->maxs[0]) // no drawable faces
 		return;
 
+	vec3_t mins, maxs;
 	for (int i = 0; i < 3; i++) {
-		mins[i] -= pad;
-		maxs[i] += pad;
+		mins[i] = node->mins[i] - pad;
+		maxs[i] = node->maxs[i] + pad;
 	}
 
 	static int leafs[1024];
@@ -516,6 +521,15 @@ static qboolean outside_frustum(const cplane_t frustum[4], const vec3_t mins, co
 	return qfalse;
 }
 
+static float dist_sq_to_box(const vec3_t p, const vec3_t mins, const vec3_t maxs) {
+	float d = 0.0f;
+	for (int i = 0; i < 3; i++) {
+		const float c = Com_Clamp(mins[i], maxs[i], p[i]);
+		d += (p[i] - c) * (p[i] - c);
+	}
+	return d;
+}
+
 static qboolean brush_visible(const visBrushNode_t *brush, const visView_t *view) {
 	if (brush->alwaysVisible || !view->pvs)
 		return qtrue;
@@ -537,6 +551,10 @@ static void draw(visBrushNode_t *brush, qhandle_t shader, visBrushType_t type, c
 	const vec3_t pad = { 4.0f, 4.0f, 4.0f };
 
 	for (; brush; brush = brush->next) {
+		// measured to the nearest point of the brush, so long brushes passing by the view aren't dropped for a far corner
+		if (dist_sq_to_box(view->origin, brush->mins, brush->maxs) >= 8192 * 8192)
+			continue;
+
 		// behind walls or doors; faces there would still eat into the renderer's poly budget (600 on upstream renderers)
 		if (!brush_visible(brush, view))
 			continue;
@@ -545,9 +563,6 @@ static void draw(visBrushNode_t *brush, qhandle_t shader, visBrushType_t type, c
 			visFace_t *face = &brush->faces[i];
 			// slick brushes keep a face per side but only walkable ones get verts, and every AddPolyToScene call uses a poly slot
 			if (face->numVerts < 3)
-				continue;
-
-			if (DistanceSquared(view->origin, face->verts[0].xyz) >= 8192 * 8192)
 				continue;
 
 			// off-screen
