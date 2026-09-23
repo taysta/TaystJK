@@ -38,19 +38,6 @@ Raven's original master, which has not answered in many years. The working ones 
 cvars, make sure a live one is still in the list. Look each up in the
 [console reference](/TaystJK/reference/?q=sv_master).
 
-**`sv_master3` is never sent a heartbeat.** The source stores it in the wrong slot of the
-master list, and the next line overwrites that slot with `sv_master4`
-([`sv_init.cpp`](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/codemp/server/sv_init.cpp#L1023)), so `master.ouned.de` does not hear
-from your server however `sv_master3` is set. Until that is fixed, put the address in
-`sv_master4` instead, which is sent heartbeats normally:
-
-```text
-seta sv_master4 "master.ouned.de"
-```
-
-This is a defect rather than a setting, so a build newer than this page may have fixed it.
-[Compare the dates](/TaystJK/features/whats-new/#how-to-tell-what-your-build-has).
-
 Beyond that: the game port is UDP and must be forwarded to the server. If you changed
 `net_port`, forward the port you actually chose, not the default.
 
