@@ -43,7 +43,9 @@ static int winding_cmp(const void *a, const void *b);
 static void add_vert_to_face(visFace_t *face, vec3_t vert, vec4_t color, vec2_t tex_coords);
 static float *get_uv_coords(vec2_t uv, vec3_t vert, vec3_t normal);
 static void free_vis_brushes(visBrushNode_t *brushes);
-static void draw(visBrushNode_t *brush, qhandle_t shader, visBrushType_t type);
+static void setup_frustum(const refdef_t *rd, cplane_t frustum[4]);
+static qboolean outside_frustum(const cplane_t frustum[4], const vec3_t mins, const vec3_t maxs);
+static void draw(visBrushNode_t *brush, qhandle_t shader, visBrushType_t type, const vec3_t viewPos, const cplane_t frustum[4]);
 
 
 static visBrushNode_t *trigger_head = NULL;
@@ -133,15 +135,22 @@ static qboolean InPVS(const vec3_t p)
 } */
 
 void tc_vis_render(void) {
-	//SetPVSLocation(theFxHelper.refdef->vieworg);
+	const refdef_t *rd = theFxHelper.refdef;
+	if (!rd)
+		return;
+
+	cplane_t frustum[4];
+	setup_frustum(rd, frustum);
+
+	//SetPVSLocation(rd->vieworg);
 	if (triggers_draw->integer) {
-		draw(trigger_head, trigger_shader, TRIGGER_BRUSH);
+		draw(trigger_head, trigger_shader, TRIGGER_BRUSH, rd->vieworg, frustum);
 	}
 	if (clips_draw->integer) {
-		draw(clip_head, clip_shader, CLIP_BRUSH);
+		draw(clip_head, clip_shader, CLIP_BRUSH, rd->vieworg, frustum);
 	}
 	if (slicks_draw->integer) {
-		draw(slick_head, slick_shader, SLICK_BRUSH);
+		draw(slick_head, slick_shader, SLICK_BRUSH, rd->vieworg, frustum);
 	}
 }
 
@@ -417,28 +426,71 @@ static void free_vis_brushes(visBrushNode_t *brushes) {
 	}
 }
 
-static void draw(visBrushNode_t *brush, qhandle_t shader, visBrushType_t type) {
-	if (!theFxHelper.refdef)
-		return;
-	vec3_t viewPos;
-	VectorCopy(theFxHelper.refdef->vieworg, viewPos);
+// side planes of the view, built like the renderer's R_SetupFrustum; points inside satisfy DotProduct(p, normal) >= dist
+static void setup_frustum(const refdef_t *rd, cplane_t frustum[4]) {
+	float ang = DEG2RAD(rd->fov_x * 0.5f);
+	float xs = sinf(ang), xc = cosf(ang);
+	VectorScale(rd->viewaxis[0], xs, frustum[0].normal);
+	VectorMA(frustum[0].normal, xc, rd->viewaxis[1], frustum[0].normal);
+	VectorScale(rd->viewaxis[0], xs, frustum[1].normal);
+	VectorMA(frustum[1].normal, -xc, rd->viewaxis[1], frustum[1].normal);
+
+	ang = DEG2RAD(rd->fov_y * 0.5f);
+	float ys = sinf(ang), yc = cosf(ang);
+	VectorScale(rd->viewaxis[0], ys, frustum[2].normal);
+	VectorMA(frustum[2].normal, yc, rd->viewaxis[2], frustum[2].normal);
+	VectorScale(rd->viewaxis[0], ys, frustum[3].normal);
+	VectorMA(frustum[3].normal, -yc, rd->viewaxis[2], frustum[3].normal);
+
+	for (int i = 0; i < 4; i++)
+		frustum[i].dist = DotProduct(rd->vieworg, frustum[i].normal);
+}
+
+static qboolean outside_frustum(const cplane_t frustum[4], const vec3_t mins, const vec3_t maxs) {
+	for (int i = 0; i < 4; i++) {
+		// the box corner furthest along the plane normal; if even that is behind the plane, the whole box is
+		vec3_t corner;
+		for (int j = 0; j < 3; j++)
+			corner[j] = frustum[i].normal[j] >= 0 ? maxs[j] : mins[j];
+		if (DotProduct(corner, frustum[i].normal) < frustum[i].dist)
+			return qtrue;
+	}
+	return qfalse;
+}
+
+static void draw(visBrushNode_t *brush, qhandle_t shader, visBrushType_t type, const vec3_t viewPos, const cplane_t frustum[4]) {
+	// covers the slick extrusion below and the anti z-fighting offset in gen_visible_brush
+	const vec3_t pad = { 4.0f, 4.0f, 4.0f };
 
 	while (brush) {
-		//don't do pvs optimization just check distance as well this gives better performance and results since pvs is expensive and oftentimes the edges are within structural brushes making it not reliable
-		if (DistanceSquared(viewPos, brush->faces[0].verts[0].xyz) < 8192 * 8192) {
-			for (int i = 0; i < brush->numFaces; ++i) {
-				if (type == SLICK_BRUSH) { // walk slightly along normal to make more visible
-					static polyVert_t extruded[800];
-					memcpy(extruded, brush->faces[i].verts, Q_min(sizeof(polyVert_t) * 800, sizeof(polyVert_t) * brush->faces[i].numVerts));
-					for (int j = 0; j < brush->faces[i].numVerts && j < 800; j++)
-					{
-						extruded[j].xyz[2] += 3.0f;
-					}
-					re->AddPolyToScene(shader, brush->faces[i].numVerts, extruded, 1);
+		for (int i = 0; i < brush->numFaces; ++i) {
+			visFace_t *face = &brush->faces[i];
+			// slick brushes keep a face per side but only walkable ones get verts, and every AddPolyToScene call uses a poly slot
+			if (face->numVerts < 3)
+				continue;
+
+			//don't do pvs optimization just check distance as well this gives better performance and results since pvs is expensive and oftentimes the edges are within structural brushes making it not reliable
+			if (DistanceSquared(viewPos, face->verts[0].xyz) >= 8192 * 8192)
+				continue;
+
+			// off-screen faces would still eat into the renderer's poly budget (600 on upstream renderers)
+			vec3_t mins, maxs;
+			VectorSubtract(face->mins, pad, mins);
+			VectorAdd(face->maxs, pad, maxs);
+			if (outside_frustum(frustum, mins, maxs))
+				continue;
+
+			if (type == SLICK_BRUSH) { // walk slightly along normal to make more visible
+				static polyVert_t extruded[800];
+				memcpy(extruded, face->verts, Q_min(sizeof(polyVert_t) * 800, sizeof(polyVert_t) * face->numVerts));
+				for (int j = 0; j < face->numVerts && j < 800; j++)
+				{
+					extruded[j].xyz[2] += 3.0f;
 				}
-				else {
-					re->AddPolyToScene(shader, brush->faces[i].numVerts, brush->faces[i].verts, 1);
-				}
+				re->AddPolyToScene(shader, face->numVerts, extruded, 1);
+			}
+			else {
+				re->AddPolyToScene(shader, face->numVerts, face->verts, 1);
 			}
 		}
 		brush = brush->next;
