@@ -1,7 +1,7 @@
 ---
 title: "Console scripting"
 layout: reference
-nav_order: 10
+nav_order: 11
 parent: "Features"
 description: "Nested quotes, conditional commands with ifCvar, cvar substitution with strSub, and the delay and waitf timers."
 toc: true

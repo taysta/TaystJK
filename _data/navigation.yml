@@ -44,6 +44,10 @@ sections:
             url: /features/movement-styles/
             description: The movement styles a server can run, and how each one plays.
             cta: Movement styles
+          - title: Racing on jaPRO
+            url: /features/racing/
+            description: Racemode, practice, accounts and leaderboards, HUD setup, and strafe trails.
+            cta: Racing guide
           - title: Tribes
             url: /features/tribes/
             description: Skiing, jetpacks, classes and packs. Experimental and lightly played.

@@ -1,7 +1,7 @@
 ---
 title: "Tribes"
 layout: reference
-nav_order: 8
+nav_order: 9
 parent: "Features"
 description: "The Tribes movement mode: skiing, jetpack, IFF markers, its own HUD and weapons. Experimental and lightly played."
 toc: true

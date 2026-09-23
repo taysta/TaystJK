@@ -1,7 +1,7 @@
 ---
 title: "Shipped configs"
 layout: reference
-nav_order: 9
+nav_order: 10
 parent: "Features"
 description: "The fourteen configuration files that ship with the client, what each one sets up, and how to apply one."
 toc: true

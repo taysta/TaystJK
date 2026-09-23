@@ -82,7 +82,9 @@ everyone, clamped to the enum. Below the first style it falls back to `siege`, a
 past the end of it to `jka`
 ([`bg_pmove.c`](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/bg_pmove.c#L445)).
 In racemode your own `STAT_MOVEMENTSTYLE` wins instead, which is how one race server runs
-different physics per player and keeps a leaderboard per style.
+different physics per player and keeps a leaderboard per style. [Racing on
+jaPRO](/TaystJK/features/racing/) covers the rest of a race server: practice mode, accounts,
+leaderboards and strafe trails.
 
 Style is a game-module concern, so what you can select depends on the server. The client
 draws what it is told; see [the overview](/TaystJK/overview/) for where that boundary runs.
