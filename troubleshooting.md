@@ -115,8 +115,8 @@ you.
 
 A third cause is the mod's own assets rather than its code. An oversized texture can
 exhaust a 32-bit client's memory while loading. If a single mod fails everywhere and others
-are fine, that belongs with the mod's author; see
-[where to report](/TaystJK/where-to-report/).
+are fine, check it fails on another client too. If it does, it belongs with the mod's
+author; if only TaystJK fails, it is ours. See [where to report](/TaystJK/where-to-report/#before-you-send-it-elsewhere).
 
 If the client connects but a *feature* is missing rather than crashing, that is a different
 question. See [mod compatibility](/TaystJK/install/mod-compatibility/).

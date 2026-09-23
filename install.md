@@ -74,7 +74,7 @@ For a non-Steam copy, locate the directory containing `base`, `jamp.exe`, and `j
 
 ### Optional: update automatically
 
-[TaystJK Updater](https://github.com/slash-fr/taystjk-updater) is a third-party launcher by Slash; it is not part of TaystJK, so report problems with it on its own repository. Each time you start it, it checks the `latest` TaystJK release, downloads and installs a newer Windows build if there is one, and then launches the game. It also keeps itself up to date.
+[TaystJK Updater](https://github.com/slash-fr/taystjk-updater) is a third-party launcher by Slash; it is not part of TaystJK. If something goes wrong only when you start the game through the updater, report it on the updater's repository; if it also happens when you start TaystJK directly, it is ours. Each time you start it, it checks the `latest` TaystJK release, downloads and installs a newer Windows build if there is one, and then launches the game. It also keeps itself up to date.
 
 <figure class="media-figure">
   <video controls muted playsinline preload="none" width="1280" height="720" poster="{{ '/assets/media/taystjk-updater-demo-poster.jpg' | relative_url }}">

@@ -20,11 +20,21 @@ toc: true
 | What is wrong | Where it goes |
 |:--|:--|
 | The client crashes, will not start, will not connect, mis-renders, or mishandles files, keys or configs | [taysta/TaystJK](https://github.com/taysta/TaystJK) |
-| How the game *plays*: movement, saber behaviour, scoring, admin commands, race and defrag | [videoP/jaPRO](https://github.com/videoP/jaPRO) |
-| Something only wrong on the Vulkan renderer | [JKSunny/EternalJK](https://github.com/JKSunny/EternalJK) |
-| Something only wrong on the rend2 renderer, and also on SomaZ's own build | [SomaZ/OpenJK](https://github.com/SomaZ/OpenJK) |
-| Something only wrong on rend2 in TaystJK | [taysta/TaystJK](https://github.com/taysta/TaystJK) |
+| How the game *plays*: movement, saber behaviour, scoring, admin commands, race and defrag | [videoP/jaPRO](https://github.com/videoP/jaPRO), if it also happens without TaystJK |
+| Something only wrong on the Vulkan renderer | [JKSunny/EternalJK](https://github.com/JKSunny/EternalJK), if it also happens on EternalJK |
+| Something only wrong on the rend2 renderer | [SomaZ/OpenJK](https://github.com/SomaZ/OpenJK), if it also happens on SomaZ's build |
+| Any of those, but only in TaystJK | [taysta/TaystJK](https://github.com/taysta/TaystJK) |
 | Something only wrong on a JA+ server | Nowhere; see below |
+
+## Before you send it elsewhere
+
+Every time this site tells you to report something to another project, the same condition
+applies: **reproduce it there first.** TaystJK carries its own copy of jaPRO's game code and
+of both renderers, and changes them and the engine around them, so a bug that looks like
+theirs can be one TaystJK introduced. The sections below say how to check for each project.
+
+If it happens in their own build too, report it to them. If it only happens in TaystJK, it
+is ours: report it at <https://github.com/taysta/TaystJK/issues>, and say that you checked.
 
 ## How to tell which
 
@@ -40,7 +50,8 @@ server and silently do nothing on another.
 
 **Does it survive switching renderer?** Run `cl_renderer rd-taystjk` then `vid_restart` and
 try again. If the problem disappears, it belongs to the renderer you were using: if that
-was Vulkan it belongs to JKSunny, and if rend2, see [the rend2 renderer](#the-rend2-renderer).
+was Vulkan see [the Vulkan renderer](#the-vulkan-renderer), and if rend2,
+[the rend2 renderer](#the-rend2-renderer).
 If it persists on the default renderer it is not a renderer bug. See
 [Renderers](/TaystJK/features/renderers/).
 
@@ -65,28 +76,33 @@ truncated warp list, an emote that does not animate, a missing admin command, wh
 powers a duel gives you. All of those are rules. Fixes made in jaPRO reach TaystJK when it
 is pulled downstream, so filing in the right place is also the faster route.
 
+Before filing with jaPRO, check it happens without TaystJK: for a player on the same server
+using another client, and, if you host with TaystJK's bundled game module, on a server
+running jaPRO's own build. If it only happens with TaystJK, it is ours.
+
 ## The Vulkan renderer
 
-The Vulkan backend is developed upstream by JKSunny and fixes flow from there to TaystJK, so
-Vulkan-specific rendering problems belong at
-<https://github.com/JKSunny/EternalJK>.
+The Vulkan backend is developed upstream by JKSunny, and fixes flow from there to TaystJK.
+Check two things before filing:
 
-Check first that it really is Vulkan-specific by switching to `rd-taystjk`. "Only happens on
-Vulkan" is the single most useful sentence such a report can contain.
+1. It does not happen on `rd-taystjk`, so it really is Vulkan. "Only happens on Vulkan" is
+   the single most useful sentence such a report can contain.
+2. It also happens on JKSunny's own EternalJK build with its Vulkan renderer.
+
+If both hold, report it at <https://github.com/JKSunny/EternalJK/issues>. If it only happens
+in TaystJK, it is ours.
 
 ## The rend2 renderer
 
 rend2 is developed upstream by SomaZ, on the `rend2-unified-wip` branch of SomaZ's OpenJK
-fork, and fixes are ported down from there. TaystJK can still introduce a rend2 bug of its
-own, in its copy of the backend or in the engine around it, so check two things before
-filing:
+fork, and fixes are ported down from there. Check two things before filing:
 
 1. It does not happen on `rd-taystjk`, so it really is rend2.
 2. It also happens on a build of SomaZ's
    [`rend2-unified-wip`](https://github.com/SomaZ/OpenJK/tree/rend2-unified-wip) branch.
 
 If both hold, report it at <https://github.com/SomaZ/OpenJK/issues>. If it only happens in
-TaystJK, it is ours: report it at <https://github.com/taysta/TaystJK/issues>.
+TaystJK, it is ours.
 
 ## JA+
 
@@ -95,7 +111,8 @@ cannot work around what it does not have source for. If a problem happens only o
 servers, there is usually no project to report it to.
 
 What *is* worth reporting here is the client failing to cope, such as crashing or mis-detecting
-the server mod. That is our side of the boundary even when the trigger is JA+.
+the server mod. That is our side of the boundary even when the trigger is JA+. The same check
+tells them apart: if another client copes with the same JA+ server, the fault is TaystJK's.
 
 Moderation is the usual example. Chat and bans are handled by the game module rather than
 the engine, so on a JA+ server the tools you want are in code nobody else can change. The

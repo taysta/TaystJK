@@ -65,7 +65,9 @@ differently from server to server. See
 
 **This matters when something is wrong.** Gameplay belongs to the game module, and that
 code is maintained upstream at <https://github.com/videoP/jaPRO> and pulled down here, so
-that is where a rules problem goes, even though a copy of the module ships with this client.
+that is where a rules problem goes, even though a copy of the module ships with this client,
+once you have checked it also happens without TaystJK
+([where to report](/TaystJK/where-to-report/#before-you-send-it-elsewhere)).
 How the client renders, connects, binds keys or loads files belongs here. The reference's
 **network scope** field is the quickest way to tell which side owns a given cvar.
 

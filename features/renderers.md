@@ -69,12 +69,14 @@ backends, so a shader override does not depend on your choice. See
 
 ## Where a renderer bug goes
 
-The Vulkan backend is developed upstream by JKSunny, and fixes flow from there to TaystJK. Report
-Vulkan-specific rendering problems to
-<https://github.com/JKSunny/EternalJK>, not here.
-
-Anything you can also reproduce on `rd-taystjk` is not a Vulkan bug. Switch backends before
+Anything you can also reproduce on `rd-taystjk` is not a renderer bug. Switch backends before
 reporting. It is the single most useful thing you can say in the report.
+
+The Vulkan backend is developed upstream by JKSunny, and fixes flow from there to TaystJK.
+A Vulkan-only problem belongs at <https://github.com/JKSunny/EternalJK/issues> only if it
+also happens on JKSunny's own EternalJK build. If it happens only in TaystJK, TaystJK
+introduced it; report it at [taysta/TaystJK](https://github.com/taysta/TaystJK/issues).
+[Where to report](/TaystJK/where-to-report/#before-you-send-it-elsewhere) explains the check.
 
 rend2 is also developed upstream. `rd-rend2t` is built from SomaZ's rend2, on the
 [`rend2-unified-wip`](https://github.com/SomaZ/OpenJK/tree/rend2-unified-wip) branch of
@@ -82,5 +84,4 @@ SomaZ's OpenJK fork, not from the older rend2 in OpenJK itself, and its fixes ar
 there and ported down. A rend2-only problem belongs at
 [SomaZ/OpenJK](https://github.com/SomaZ/OpenJK/issues) only if it also happens on a build
 of that branch. If it happens only in TaystJK, TaystJK introduced it; report it at
-[taysta/TaystJK](https://github.com/taysta/TaystJK/issues). Either way, check first that it
-does not happen on `rd-taystjk`.
+[taysta/TaystJK](https://github.com/taysta/TaystJK/issues).

@@ -148,5 +148,6 @@ This mode is experimental and lightly played. It carries more bespoke code than 
 movement style, some of it carrying the author's own notes about ground detection being
 unreliable while skiing
 ([`bg_pmove.c`](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/codemp/game/bg_pmove.c#L5439)).
-Treat rough edges as expected rather than as bugs worth reporting, and report gameplay
-problems to [videoP/jaPRO](https://github.com/videoP/jaPRO) rather than here.
+Treat rough edges as expected rather than as bugs worth reporting. Gameplay problems belong
+to [videoP/jaPRO](https://github.com/videoP/jaPRO) if they also happen without TaystJK;
+[where to report](/TaystJK/where-to-report/#before-you-send-it-elsewhere) explains the check.

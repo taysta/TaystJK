@@ -261,6 +261,14 @@ first" carries the whole of it.
 Linking <https://github.com/taysta/TaystJK/issues> as somewhere to *file* a report is fine.
 Citing individual numbers is not.
 
+### Sending a report to another project
+
+Whenever a page tells readers to report something to another project (jaPRO, JKSunny's
+Vulkan, SomaZ's rend2, a mod's author, a third-party tool), make it conditional on
+reproducing it there: TaystJK carries and changes its own copies, so a bug that looks like
+theirs can be ours. Say what to check, say that a TaystJK-only problem comes here, and link
+[where to report](where-to-report.md#before-you-send-it-elsewhere), which states the rule once.
+
 ## 6a. Devlog posts
 
 A post is one file in `_devlog/`. Nothing else needs editing; the index, the Atom feed and
