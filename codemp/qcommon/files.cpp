@@ -4139,11 +4139,11 @@ const char *FS_ReferencedPakChecksums( void ) {
 	return info;
 }
 
-static qboolean fs_baseJKAPureBypass = qfalse;
+static qboolean fs_pureBaseBypass = qfalse;
 
-void FS_SetBaseJKAPureBypass( qboolean enabled )
+void FS_SetPureBaseBypass( qboolean enabled )
 {
-	fs_baseJKAPureBypass = enabled;
+	fs_pureBaseBypass = enabled;
 }
 
 /*
@@ -4160,7 +4160,7 @@ const char *FS_ReferencedPakPureChecksums( void ) {
 	static char	info[BIG_INFO_STRING];
 	searchpath_t	*search;
 	int nFlags, numPaks, checksum, lastPack, refPacks;
-	const qboolean bypass = fs_baseJKAPureBypass;
+	const qboolean bypass = fs_pureBaseBypass;
 	info[0] = 0;
 
 	checksum = fs_checksumFeed;

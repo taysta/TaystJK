@@ -768,7 +768,7 @@ const char *FS_LoadedPakPureChecksums( void );
 
 const char *FS_ReferencedPakNames( void );
 const char *FS_ReferencedPakChecksums( void );
-void FS_SetBaseJKAPureBypass( qboolean enabled );
+void FS_SetPureBaseBypass( qboolean enabled );
 const char *FS_ReferencedPakPureChecksums( void );
 // Returns a space separated string containing the checksums of all loaded
 // AND referenced pk3 files. Servers with sv_pure set will get this string
