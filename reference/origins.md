@@ -17,7 +17,7 @@ description: "Every cvar and command grouped by the project it first appeared in
 </div>
 
 <div class="directory-grid">
-<a class="directory-card" href="/TaystJK/reference/origins/taystjk/"><span class="label ref-origin ref-origin-taystjk">TaystJK</span><strong>TaystJK</strong><span>73 entries</span></a>
+<a class="directory-card" href="/TaystJK/reference/origins/taystjk/"><span class="label ref-origin ref-origin-taystjk">TaystJK</span><strong>TaystJK</strong><span>74 entries</span></a>
 <a class="directory-card" href="/TaystJK/reference/origins/eternaljk/"><span class="label ref-origin ref-origin-eternaljk">EternalJK</span><strong>EternalJK</strong><span>122 entries</span></a>
 <a class="directory-card" href="/TaystJK/reference/origins/japro/"><span class="label ref-origin ref-origin-japro">jaPRO</span><strong>jaPRO</strong><span>481 entries</span></a>
 <a class="directory-card" href="/TaystJK/reference/origins/newjk/"><span class="label ref-origin ref-origin-newjk">NewJK / NewMod</span><strong>NewJK / NewMod</strong><span>12 entries</span></a>

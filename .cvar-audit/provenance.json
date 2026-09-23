@@ -188916,6 +188916,72 @@
         "vulkan"
       ]
     },
+    "cl_purebasebypass": {
+      "confidence": "high",
+      "downstream_introductions": [],
+      "first_commit": "d376304c07aeb5d324354f8a78c7f44f83237b25",
+      "first_ref": "origin/master",
+      "integration_pr": null,
+      "integration_pr_url": null,
+      "introduction_evidence": [
+        {
+          "author": "tayst",
+          "author_timestamp": 1790139229,
+          "content_author": "tayst",
+          "content_author_timestamp": 1790138453,
+          "content_email": "taylor.brough13@gmail.com",
+          "content_sha": "c773dba5631b2b48073bd0230e768aecdb5b10de",
+          "content_subject": "[client] adjust the pure base bypass to be gated on `cl_pureBaseBypass` cvar instead of trying to detect when to bypass",
+          "content_timestamp": 1790138576,
+          "email": "taylor.brough13@gmail.com",
+          "history_search": "\"cl_pureBaseBypass\"",
+          "line": 3460,
+          "line_commit_sha": "c773dba5631b2b48073bd0230e768aecdb5b10de",
+          "path": "codemp/client/cl_main.cpp",
+          "ref": "origin/master",
+          "sha": "d376304c07aeb5d324354f8a78c7f44f83237b25",
+          "source": "taystjk",
+          "subject": "Merge pull request #374 from taysta/pure-fix",
+          "timestamp": 1790139229
+        }
+      ],
+      "method": "earliest-authored-project-introduction",
+      "modified_by": [],
+      "notes": "",
+      "origin_evidence": {
+        "kind": "Cvar_Get",
+        "line": 3460,
+        "path": "codemp/client/cl_main.cpp",
+        "ref": "origin/master"
+      },
+      "origin_introduction": {
+        "author": "tayst",
+        "author_timestamp": 1790139229,
+        "content_author": "tayst",
+        "content_author_timestamp": 1790138453,
+        "content_email": "taylor.brough13@gmail.com",
+        "content_sha": "c773dba5631b2b48073bd0230e768aecdb5b10de",
+        "content_subject": "[client] adjust the pure base bypass to be gated on `cl_pureBaseBypass` cvar instead of trying to detect when to bypass",
+        "content_timestamp": 1790138576,
+        "email": "taylor.brough13@gmail.com",
+        "history_search": "\"cl_pureBaseBypass\"",
+        "line": 3460,
+        "line_commit_sha": "c773dba5631b2b48073bd0230e768aecdb5b10de",
+        "path": "codemp/client/cl_main.cpp",
+        "ref": "origin/master",
+        "sha": "d376304c07aeb5d324354f8a78c7f44f83237b25",
+        "source": "taystjk",
+        "subject": "Merge pull request #374 from taysta/pure-fix",
+        "timestamp": 1790139229
+      },
+      "ported_via": [],
+      "pr": null,
+      "pr_url": null,
+      "source": "taystjk",
+      "squash_bullet": null,
+      "status": "documented",
+      "upstream_presence": []
+    },
     "cl_ratiofix": {
       "confidence": "medium",
       "downstream_introductions": [
@@ -397094,7 +397160,7 @@
   },
   "meta": {
     "basejka_ref": "14cea1563762076974bee277afadbd5bf234c494",
-    "current_ref": "6ff04c0baf588a89e5ec9361ad7a0992941d7655",
+    "current_ref": "origin/master",
     "extractor_version": 7,
     "provenance_schema_version": 6,
     "resolver_version": 40

@@ -38,10 +38,10 @@ Controls physics applied to FX system particles - 0: Disable all FX physics - 1:
 
 | Value | Meaning | Evidence |
 |:--|:--|:--|
-| `0` | Disable all FX physics. | [codemp/client/FxUtil.cpp:117](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/FxUtil.cpp#L117) |
-| `1` | Use non-expensive physics only. | [codemp/client/FxUtil.cpp:117](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/FxUtil.cpp#L117) |
-| `2` | Use flags in the fx file (Default behavior). | [codemp/client/FxUtil.cpp:117](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/FxUtil.cpp#L117) |
-| `3` | Force expensive physics on all particles. | [codemp/client/FxUtil.cpp:117](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/FxUtil.cpp#L117) |
+| `0` | Disable all FX physics. | [codemp/client/FxUtil.cpp:117](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/codemp/client/FxUtil.cpp#L117) |
+| `1` | Use non-expensive physics only. | [codemp/client/FxUtil.cpp:117](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/codemp/client/FxUtil.cpp#L117) |
+| `2` | Use flags in the fx file (Default behavior). | [codemp/client/FxUtil.cpp:117](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/codemp/client/FxUtil.cpp#L117) |
+| `3` | Force expensive physics on all particles. | [codemp/client/FxUtil.cpp:117](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/codemp/client/FxUtil.cpp#L117) |
 
 ## Flags
 
@@ -79,8 +79,8 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 ## Evidence
 
-- registration: [codemp/client/FxUtil.cpp:117](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/FxUtil.cpp#L117) (Cvar_Get)
-- behavior: [codemp/client/FxPrimitives.cpp:228](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/FxPrimitives.cpp#L228)
-- behavior: [codemp/client/FxPrimitives.cpp:230](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/FxPrimitives.cpp#L230)
+- registration: [codemp/client/FxUtil.cpp:117](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/codemp/client/FxUtil.cpp#L117) (Cvar_Get)
+- behavior: [codemp/client/FxPrimitives.cpp:228](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/codemp/client/FxPrimitives.cpp#L228)
+- behavior: [codemp/client/FxPrimitives.cpp:230](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/codemp/client/FxPrimitives.cpp#L230)
 
-<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/6ff04c0baf588a89e5ec9361ad7a0992941d7655"><code>6ff04c0baf58</code></a> on 2026-09-09. Anything merged after that is not reflected here.</p>
+<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/77d84176b3b94356d189a4420e1bc5e68c88e1ea"><code>77d84176b3b9</code></a> on 2026-09-23. Anything merged after that is not reflected here.</p>

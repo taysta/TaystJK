@@ -21,7 +21,7 @@ This is the deliberately untidy review queue behind the published reference. `un
 | JK2MV | 16 |
 | NewJK / NewMod | 12 |
 | OpenJK | 172 |
-| TaystJK | 73 |
+| TaystJK | 74 |
 | Vulkan | 24 |
 | jaPRO | 481 |
 | rend2 | 90 |

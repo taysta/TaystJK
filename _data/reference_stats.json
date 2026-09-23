@@ -1,6 +1,6 @@
 {
-  "entries": "2,014",
-  "cvars": "1,441",
+  "entries": "2,015",
+  "cvars": "1,442",
   "commands": "573",
   "needs_review": "1,651",
   "provenance_needs_review": "774",
@@ -74,10 +74,10 @@
     {
       "id": "taystjk",
       "label": "TaystJK",
-      "count": "73",
+      "count": "74",
       "modules": {
         "cgame": "60",
-        "engine-client": "10",
+        "engine-client": "11",
         "engine-shared": "2",
         "engine-server": "1"
       }
@@ -174,10 +174,10 @@
     },
     "taystjk": {
       "label": "TaystJK",
-      "count": "73",
+      "count": "74",
       "modules": {
         "cgame": "60",
-        "engine-client": "10",
+        "engine-client": "11",
         "engine-shared": "2",
         "engine-server": "1"
       }

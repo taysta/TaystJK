@@ -3,6 +3,7 @@
 
 from __future__ import annotations
 
+import argparse
 import json
 from pathlib import Path
 from typing import Any
@@ -171,12 +172,23 @@ def validate(path: Path, expected_kind: str) -> list[str]:
 
 
 BASELINES = ("eternaljk", "openjk", "basejka")
-# Counts compare independent inventories, pinned in reference-meta.json.
-# Update deliberately when those snapshots or extracted registrations change.
-EXPECTED_BASELINE_TOTALS = {"eternaljk": 261, "openjk": 746, "basejka": 990}
+BASELINE_TOTALS_PATH = Path("tools/cvar_audit/baseline-totals.json")
 
 
-def validate_baselines(entries: list[dict[str, Any]]) -> list[str]:
+def baseline_totals(entries: list[dict[str, Any]]) -> dict[str, int]:
+    """Count entries absent from each independently pinned baseline inventory."""
+    return {
+        name: sum(
+            1 for entry in entries
+            if isinstance(entry.get("baselines"), list) and name in entry["baselines"]
+        )
+        for name in BASELINES
+    }
+
+
+def validate_baselines(
+    entries: list[dict[str, Any]], expected_totals: dict[str, int],
+) -> list[str]:
     """Check independent baseline membership and totals."""
     errors: list[str] = []
     for entry in entries:
@@ -185,15 +197,18 @@ def validate_baselines(entries: list[dict[str, Any]]) -> list[str]:
             errors.append(f"{entry['name']}: invalid baselines {values!r}")
         elif len(values) != len(set(values)):
             errors.append(f"{entry['name']}: duplicate baselines {values!r}")
+    actual_totals = baseline_totals(entries)
     for name in BASELINES:
-        total = sum(1 for entry in entries
-                    if isinstance(entry.get("baselines"), list) and name in entry["baselines"])
-        expected = EXPECTED_BASELINE_TOTALS[name]
+        total = actual_totals[name]
+        expected = expected_totals.get(name)
+        if expected is None:
+            errors.append(f"baseline totals: missing expected count for {name}")
+            continue
         if total != expected:
             errors.append(
                 f"baseline total for {name}: expected {expected}, found {total}. "
                 "Inventory comparisons changed; confirm the shift is intended, then update "
-                "EXPECTED_BASELINE_TOTALS and the documented counts."
+                f"{BASELINE_TOTALS_PATH} and the documented counts."
             )
     return errors
 
@@ -218,19 +233,39 @@ def validate_bit_pairing(entries: list[dict[str, Any]]) -> list[str]:
 
 
 def main() -> None:
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument(
+        "--update-baseline-totals", action="store_true",
+        help="record current independent-baseline totals after regenerating the reference",
+    )
+    args = parser.parse_args()
+
     errors = validate(Path("_data/cvars.json"), "cvar")
     errors += validate(Path("_data/commands.json"), "command")
     entries = (
         json.loads(Path("_data/cvars.json").read_text())
         + json.loads(Path("_data/commands.json").read_text())
     )
-    errors += validate_baselines(entries)
+    actual_baseline_totals = baseline_totals(entries)
+    if args.update_baseline_totals:
+        expected_baseline_totals = actual_baseline_totals
+    elif BASELINE_TOTALS_PATH.exists():
+        expected_baseline_totals = json.loads(BASELINE_TOTALS_PATH.read_text())
+    else:
+        expected_baseline_totals = {}
+        errors.append(f"missing baseline totals file {BASELINE_TOTALS_PATH}")
+    errors += validate_baselines(entries, expected_baseline_totals)
     errors += validate_bit_pairing(entries)
     # Checked here as well as at generation time so CI catches a hand-tuning
     # file that has rotted against renamed entries, without regenerating.
     errors += validate_whats_new_overrides(entries, load_whats_new_overrides())
     if errors:
         raise SystemExit("\n".join(errors))
+    if args.update_baseline_totals:
+        BASELINE_TOTALS_PATH.write_text(
+            json.dumps(actual_baseline_totals, indent=2, sort_keys=True) + "\n"
+        )
+        print(f"updated {BASELINE_TOTALS_PATH}")
     print("reference data is valid")
 
 

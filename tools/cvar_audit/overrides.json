@@ -148,6 +148,15 @@
       "summary": "Select the on-screen movement-key overlay style.",
       "value_type": "enum"
     },
+    "cg_racestart": {
+      "value_type": "bool"
+    },
+    "cg_racetimer": {
+      "value_type": "enum"
+    },
+    "cg_showpos": {
+      "value_type": "bool"
+    },
     "r_drawfog": {
       "description": "Controls fog rendering. The Vulkan registration documents 0 as disabled, 1 as software fog, and 2 as hardware fog; the same cvar is registered by vanilla, rend2, Vulkan, and the dedicated renderer stub.",
       "derivation": "mixed",

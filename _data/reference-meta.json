@@ -2,20 +2,20 @@
   "basejka_commit": "14cea1563762076974bee277afadbd5bf234c494",
   "counts": {
     "commands": 573,
-    "cvars": 1441
+    "cvars": 1442
   },
   "extractor_version": 7,
-  "source_commit": "6ff04c0baf588a89e5ec9361ad7a0992941d7655",
-  "source_commit_date": "2026-09-09T00:43:14+08:00",
+  "source_commit": "77d84176b3b94356d189a4420e1bc5e68c88e1ea",
+  "source_commit_date": "2026-09-23T13:43:13+08:00",
   "upstream_commits": {
     "14cea1563762076974bee277afadbd5bf234c494": "14cea1563762076974bee277afadbd5bf234c494",
-    "Sunny/master": "b50059618803346a918f57220f856f1d0651dc39",
+    "Sunny/master": "878e4ad087779c379c5925fed27c9d56efdf3faa",
     "eternaljk/master": "a40e793a802c8db8df6132b711eea2fc846e5dd1",
     "japro/main": "33d1f1e22ac6db0c17beedbcc419ffef98bbe3c3",
     "jk2mv/master": "7d601454c3db68492289d4d4e3dc30bff39e4246",
     "newjk/master": "ad8d071f714ab1bbcd7b6bb4bb8ceaeee6e57541",
     "openjk/master": "1a6a643427aa347553e9073dac5570b33337c4d9",
-    "origin/master": "6ff04c0baf588a89e5ec9361ad7a0992941d7655",
+    "origin/master": "77d84176b3b94356d189a4420e1bc5e68c88e1ea",
     "somaz/rend2-unified-wip": "788c19e97f02c0b68db29d63060305b6ad1580e5"
   }
 }

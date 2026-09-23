@@ -40,9 +40,9 @@ No discrete value list is enforced or documented in the inspected source.
 
 ## Enforced ranges
 
-- `0` through `3` (integer; Cvar_CheckRange). Evidence: [codemp/rd-dedicated/tr_init.cpp:383](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-dedicated/tr_init.cpp#L383)
-- `0` through `3` (integer; Cvar_CheckRange). Evidence: [codemp/rd-vanilla/tr_init.cpp:1692](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-vanilla/tr_init.cpp#L1692)
-- `0` through `3` (integer; Cvar_CheckRange). Evidence: [codemp/rd-vulkan/tr_init.cpp:850](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-vulkan/tr_init.cpp#L850)
+- `0` through `3` (integer; Cvar_CheckRange). Evidence: [codemp/rd-dedicated/tr_init.cpp:383](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/codemp/rd-dedicated/tr_init.cpp#L383)
+- `0` through `3` (integer; Cvar_CheckRange). Evidence: [codemp/rd-vanilla/tr_init.cpp:1692](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/codemp/rd-vanilla/tr_init.cpp#L1692)
+- `0` through `3` (integer; Cvar_CheckRange). Evidence: [codemp/rd-vulkan/tr_init.cpp:850](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/codemp/rd-vulkan/tr_init.cpp#L850)
 
 ## Flags
 
@@ -87,13 +87,13 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 ## Evidence
 
-- registration: [codemp/rd-dedicated/tr_init.cpp:382](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-dedicated/tr_init.cpp#L382) (Cvar_Get)
-- registration: [codemp/rd-vanilla/tr_init.cpp:1691](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-vanilla/tr_init.cpp#L1691) (Cvar_Get)
-- registration: [codemp/rd-vulkan/tr_init.cpp:849](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-vulkan/tr_init.cpp#L849) (Cvar_Get)
-- behavior: [codemp/rd-vanilla/tr_init.cpp:1496](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-vanilla/tr_init.cpp#L1496)
-- behavior: [codemp/rd-vanilla/tr_shade.cpp:176](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-vanilla/tr_shade.cpp#L176)
-- behavior: [codemp/rd-dedicated/tr_init.cpp:383](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-dedicated/tr_init.cpp#L383)
-- behavior: [codemp/rd-vanilla/tr_init.cpp:1692](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-vanilla/tr_init.cpp#L1692)
-- behavior: [codemp/rd-vulkan/tr_init.cpp:850](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-vulkan/tr_init.cpp#L850)
+- registration: [codemp/rd-dedicated/tr_init.cpp:382](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/codemp/rd-dedicated/tr_init.cpp#L382) (Cvar_Get)
+- registration: [codemp/rd-vanilla/tr_init.cpp:1691](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/codemp/rd-vanilla/tr_init.cpp#L1691) (Cvar_Get)
+- registration: [codemp/rd-vulkan/tr_init.cpp:849](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/codemp/rd-vulkan/tr_init.cpp#L849) (Cvar_Get)
+- behavior: [codemp/rd-vanilla/tr_init.cpp:1496](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/codemp/rd-vanilla/tr_init.cpp#L1496)
+- behavior: [codemp/rd-vanilla/tr_shade.cpp:176](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/codemp/rd-vanilla/tr_shade.cpp#L176)
+- behavior: [codemp/rd-dedicated/tr_init.cpp:383](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/codemp/rd-dedicated/tr_init.cpp#L383)
+- behavior: [codemp/rd-vanilla/tr_init.cpp:1692](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/codemp/rd-vanilla/tr_init.cpp#L1692)
+- behavior: [codemp/rd-vulkan/tr_init.cpp:850](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/codemp/rd-vulkan/tr_init.cpp#L850)
 
-<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/6ff04c0baf588a89e5ec9361ad7a0992941d7655"><code>6ff04c0baf58</code></a> on 2026-09-09. Anything merged after that is not reflected here.</p>
+<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/77d84176b3b94356d189a4420e1bc5e68c88e1ea"><code>77d84176b3b9</code></a> on 2026-09-23. Anything merged after that is not reflected here.</p>

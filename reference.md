@@ -13,9 +13,9 @@ description: "Search and filter every cvar and console command available in Tays
 
 <h1>Console reference</h1>
 
-<p class="page-lede">Search 2,014 cvars and commands across the client, dedicated server, game, cgame, UI, platform code, and every renderer backend.</p>
+<p class="page-lede">Search 2,015 cvars and commands across the client, dedicated server, game, cgame, UI, platform code, and every renderer backend.</p>
 
-<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/6ff04c0baf588a89e5ec9361ad7a0992941d7655"><code>6ff04c0baf58</code></a> on 2026-09-09. Anything merged after that is not reflected here.</p>
+<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/77d84176b3b94356d189a4420e1bc5e68c88e1ea"><code>77d84176b3b9</code></a> on 2026-09-23. Anything merged after that is not reflected here.</p>
 </div>
 
 <section class="reference-catalog" id="catalog" data-reference-app data-mode="all" data-catalog-url="{{ '/assets/data/catalog.json' | relative_url }}" aria-labelledby="catalog-title">

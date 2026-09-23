@@ -7,8 +7,8 @@ on:
     branches: [gh-pages]
   # No `schedule:` here, deliberately. GitHub only runs scheduled workflows from the
   # repository's default branch, which is `master`; a cron in a workflow that exists only
-  # on `gh-pages` would never fire. The weekly run lives on `master` instead, in
-  # `weekly-reference-check.yml`, and checks this branch out to run the same script.
+  # on `gh-pages` would never fire. The automated refresh lives on `master` instead, in
+  # `reference-check.yml`, and opens a generated pull request against this branch.
   workflow_dispatch:
 
 permissions:

@@ -39,7 +39,7 @@ Controls `g_fullAdminLevel` in the game module. Consult the cited behavior reads
 
 ## Bits
 
-Use [`toggleAdmin`](/TaystJK/reference/commands/toggleadmin-b7c3f7b/) to toggle one option at a time; see the command page for syntax. The value column is that bit on its own. [The labels come from the source table](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_svcmds.c#L1305).
+Use [`toggleAdmin`](/TaystJK/reference/commands/toggleadmin-b7c3f7b/) to toggle one option at a time; see the command page for syntax. The value column is that bit on its own. [The labels come from the source table](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/codemp/game/g_svcmds.c#L1305).
 
 | Bit | Value | Meaning | Read by |
 |:--|:--|:--|:--|
@@ -63,7 +63,7 @@ Use [`toggleAdmin`](/TaystJK/reference/commands/toggleadmin-b7c3f7b/) to toggle 
 | 17 | `131072` | Amlookup | — |
 | 18 | `262144` | Use hide | — |
 | 19 | `524288` | See hiders | — |
-| 20 | `1048576` | Callvote | [codemp/game/g_local.h:368](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_local.h#L368) |
+| 20 | `1048576` | Callvote | [codemp/game/g_local.h:368](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/codemp/game/g_local.h#L368) |
 | 21 | `2097152` | Killvote | — |
 | 22 | `4194304` | Read Amsay | — |
 ## Flags
@@ -109,11 +109,11 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 ## Evidence
 
-- registration: [codemp/game/g_xcvar.h:263](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_xcvar.h#L263) (XCVAR_DEF)
-- behavior: [codemp/game/g_account.c:7086](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_account.c#L7086)
-- behavior: [codemp/game/g_account.c:7203](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_account.c#L7203)
-- behavior: [codemp/game/g_cmds.c:3151](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_cmds.c#L3151)
-- behavior: [codemp/game/g_cmds.c:4932](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_cmds.c#L4932)
-- behavior: [codemp/game/g_svcmds.c:794](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_svcmds.c#L794)
+- registration: [codemp/game/g_xcvar.h:263](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/codemp/game/g_xcvar.h#L263) (XCVAR_DEF)
+- behavior: [codemp/game/g_account.c:7086](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/codemp/game/g_account.c#L7086)
+- behavior: [codemp/game/g_account.c:7203](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/codemp/game/g_account.c#L7203)
+- behavior: [codemp/game/g_cmds.c:3151](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/codemp/game/g_cmds.c#L3151)
+- behavior: [codemp/game/g_cmds.c:4932](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/codemp/game/g_cmds.c#L4932)
+- behavior: [codemp/game/g_svcmds.c:794](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/codemp/game/g_svcmds.c#L794)
 
-<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/6ff04c0baf588a89e5ec9361ad7a0992941d7655"><code>6ff04c0baf58</code></a> on 2026-09-09. Anything merged after that is not reflected here.</p>
+<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/77d84176b3b94356d189a4420e1bc5e68c88e1ea"><code>77d84176b3b9</code></a> on 2026-09-23. Anything merged after that is not reflected here.</p>

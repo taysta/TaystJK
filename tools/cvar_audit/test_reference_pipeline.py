@@ -20,6 +20,7 @@ from provenance import (
     reusable_provenance,
     reusable_provenance_entry,
 )
+from validate import baseline_totals, validate_baselines
 
 
 class PipelineTests(unittest.TestCase):
@@ -96,6 +97,19 @@ r = ri.Cvar_Get("cl_renderer", DEFAULT_RENDER_LIBRARY, CVAR_ARCHIVE);
         inventories = {"eternaljk": {"cg_camerafps"}, "openjk": {"removed_upstream"}, "basejka": set()}
         self.assertEqual(registration_baselines("cg_cameraFPS", inventories), ["openjk", "basejka"])
         self.assertEqual(registration_baselines("removed_upstream", inventories), ["eternaljk", "basejka"])
+
+    def test_baseline_totals_are_reviewed_separately_from_membership(self):
+        entries = [
+            {"name": "one", "baselines": ["eternaljk", "openjk"]},
+            {"name": "two", "baselines": ["basejka"]},
+        ]
+        totals = {"eternaljk": 1, "openjk": 1, "basejka": 1}
+        self.assertEqual(baseline_totals(entries), totals)
+        self.assertEqual(validate_baselines(entries, totals), [])
+        self.assertIn(
+            "baseline total for openjk: expected 0, found 1",
+            validate_baselines(entries, {**totals, "openjk": 0})[0],
+        )
 
     def test_engine_state_is_separated_from_a_settable_cvar(self):
         registered = [{"kind": "Cvar_Get"}]

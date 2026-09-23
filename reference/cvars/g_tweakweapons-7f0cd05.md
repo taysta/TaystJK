@@ -39,7 +39,7 @@ Configured with /tweakWeapons command
 
 ## Bits
 
-Use [`tweakWeapons`](/TaystJK/reference/commands/tweakweapons-fd5860d/) to toggle one option at a time; see the command page for syntax. The value column is that bit on its own. [The labels come from the source table](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_svcmds.c#L843).
+Use [`tweakWeapons`](/TaystJK/reference/commands/tweakweapons-fd5860d/) to toggle one option at a time; see the command page for syntax. The value column is that bit on its own. [The labels come from the source table](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/codemp/game/g_svcmds.c#L843).
 
 | Bit | Value | Meaning | Read by |
 |:--|:--|:--|:--|
@@ -62,15 +62,15 @@ Use [`tweakWeapons`](/TaystJK/reference/commands/tweakweapons-fd5860d/) to toggl
 | 16 | `65536` | Rocket alt fire redeemer | — |
 | 17 | `131072` | Infinite ammo | — |
 | 18 | `262144` | Stun baton heal gun | — |
-| 19 | `524288` | Weapons can damage vehicles | [codemp/game/g_local.h:213](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_local.h#L213) |
+| 19 | `524288` | Weapons can damage vehicles | [codemp/game/g_local.h:213](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/codemp/game/g_local.h#L213) |
 | 20 | `1048576` | Allow gunroll | — |
 | 21 | `2097152` | Fast weaponswitch | — |
 | 22 | `4194304` | Impact nitrons | — |
 | 23 | `8388608` | Flechette stake gun | — |
 | 24 | `16777216` | Fix dropped mine ammo count | — |
 | 25 | `33554432` | JK2 Style Alt Tripmine | — |
-| 26 | `67108864` | Projectile Sniper | [codemp/game/g_local.h:220](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_local.h#L220) |
-| 27 | `134217728` | Tribes tweaks | [codemp/game/g_local.h:221](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_local.h#L221) |
+| 26 | `67108864` | Projectile Sniper | [codemp/game/g_local.h:220](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/codemp/game/g_local.h#L220) |
+| 27 | `134217728` | Tribes tweaks | [codemp/game/g_local.h:221](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/codemp/game/g_local.h#L221) |
 | 28 | `268435456` | Slow sniper fire rate | — |
 | 29 | `536870912` | Make rockets solid for their owners | — |
 | 30 | `1073741824` | Lower max damage for pistol alt fire | — |
@@ -161,12 +161,12 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 ## Evidence
 
-- registration: [codemp/game/g_xcvar.h:218](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_xcvar.h#L218) (XCVAR_DEF)
-- behavior: [codemp/game/NPC_AI_Jedi.c:6310](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/NPC_AI_Jedi.c#L6310)
-- behavior: [codemp/game/NPC_spawn.c:1539](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/NPC_spawn.c#L1539)
-- behavior: [codemp/game/ai_main.c:4639](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/ai_main.c#L4639)
-- behavior: [codemp/game/ai_main.c:4653](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/ai_main.c#L4653)
-- behavior: [codemp/game/ai_main.c:4657](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/ai_main.c#L4657)
-- documentation: [docs/japro_docs.md:38](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/docs/japro_docs.md#L38)
+- registration: [codemp/game/g_xcvar.h:218](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/codemp/game/g_xcvar.h#L218) (XCVAR_DEF)
+- behavior: [codemp/game/NPC_AI_Jedi.c:6310](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/codemp/game/NPC_AI_Jedi.c#L6310)
+- behavior: [codemp/game/NPC_spawn.c:1539](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/codemp/game/NPC_spawn.c#L1539)
+- behavior: [codemp/game/ai_main.c:4639](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/codemp/game/ai_main.c#L4639)
+- behavior: [codemp/game/ai_main.c:4653](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/codemp/game/ai_main.c#L4653)
+- behavior: [codemp/game/ai_main.c:4657](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/codemp/game/ai_main.c#L4657)
+- documentation: [docs/japro_docs.md:38](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/docs/japro_docs.md#L38)
 
-<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/6ff04c0baf588a89e5ec9361ad7a0992941d7655"><code>6ff04c0baf58</code></a> on 2026-09-09. Anything merged after that is not reflected here.</p>
+<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/77d84176b3b94356d189a4420e1bc5e68c88e1ea"><code>77d84176b3b9</code></a> on 2026-09-23. Anything merged after that is not reflected here.</p>

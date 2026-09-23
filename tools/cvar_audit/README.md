@@ -163,6 +163,7 @@ python3 tools/cvar_audit/runtime_check.py \
   --commands /path/to/cmdlist-output.txt \
   --build BUILD_IDENTIFIER
 python3 tools/cvar_audit/generate_docs.py
+python3 tools/cvar_audit/validate.py --update-baseline-totals
 node tools/cvar_audit/test_reference_app.js
 python3 tools/cvar_audit/test_provenance.py
 python3 tools/cvar_audit/validate.py
@@ -177,6 +178,27 @@ extractor-only changes preserve the existing PR attribution. Use `--refresh` whe
 re-resolving provenance, and supply the original PR exports to retain that evidence.
 Caches are ignored; the state,
 provenance, and runtime reconciliation reports are retained as audit artifacts.
+
+The default branch's `reference-check.yml` automates the static portion of this
+sequence after a release and on its weekly schedule. It checks out `gh-pages`,
+fetches every configured upstream, downloads public pull-request metadata,
+regenerates the reference, updates the reviewed baseline-total and changelog
+coverage ratchets, runs the complete checks and site build, then opens or updates
+an `automation/reference-refresh` pull request. It then dispatches this branch's
+own reference workflow on the bot commit, because events created with
+`GITHUB_TOKEN` do not recursively start workflows. It never pushes generated
+output directly to `gh-pages`.
+
+The automation deliberately retains the checked-in runtime report. A runner has
+not launched a real client or dedicated server, so it cannot truthfully replace
+that capture. Supply fresh `cvarlist` and `cmdlist` output and run
+`runtime_check.py` manually when a new runtime reconciliation is available.
+
+`baseline-totals.json` records the three independently compared inventory totals.
+The refresh workflow updates it in the generated pull request, where a reviewer
+can confirm that the shift matches the added or removed registrations. Running
+`validate.py` without `--update-baseline-totals` continues to fail on an
+unreviewed count change.
 
 To rebuild the existing source snapshot without advancing it, pass its full
 `_data/reference-meta.json` `source_commit` as `--ref <sha>` to both `provenance.py`

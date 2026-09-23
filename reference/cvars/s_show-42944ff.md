@@ -38,8 +38,8 @@ Controls `s_show` in the engine-client module. Consult the cited behavior reads 
 
 | Value | Meaning | Evidence |
 |:--|:--|:--|
-| `1` | Selects the code path tested for value 1. | [codemp/client/snd_dma.cpp:1153](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/snd_dma.cpp#L1153) |
-| `4` | Selects the code path tested for value 4. | [codemp/client/snd_dma.cpp:1153](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/snd_dma.cpp#L1153) |
+| `1` | Selects the code path tested for value 1. | [codemp/client/snd_dma.cpp:1153](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/codemp/client/snd_dma.cpp#L1153) |
+| `4` | Selects the code path tested for value 4. | [codemp/client/snd_dma.cpp:1153](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/codemp/client/snd_dma.cpp#L1153) |
 
 ## Flags
 
@@ -68,11 +68,11 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 ## Evidence
 
-- registration: [codemp/client/snd_dma.cpp:468](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/snd_dma.cpp#L468) (Cvar_Get)
-- behavior: [codemp/client/snd_dma.cpp:1153](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/snd_dma.cpp#L1153)
-- behavior: [codemp/client/snd_dma.cpp:1178](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/snd_dma.cpp#L1178)
-- behavior: [codemp/client/snd_dma.cpp:1215](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/snd_dma.cpp#L1215)
-- behavior: [codemp/client/snd_dma.cpp:1348](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/snd_dma.cpp#L1348)
-- behavior: [codemp/client/snd_dma.cpp:1495](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/snd_dma.cpp#L1495)
+- registration: [codemp/client/snd_dma.cpp:468](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/codemp/client/snd_dma.cpp#L468) (Cvar_Get)
+- behavior: [codemp/client/snd_dma.cpp:1153](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/codemp/client/snd_dma.cpp#L1153)
+- behavior: [codemp/client/snd_dma.cpp:1178](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/codemp/client/snd_dma.cpp#L1178)
+- behavior: [codemp/client/snd_dma.cpp:1215](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/codemp/client/snd_dma.cpp#L1215)
+- behavior: [codemp/client/snd_dma.cpp:1348](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/codemp/client/snd_dma.cpp#L1348)
+- behavior: [codemp/client/snd_dma.cpp:1495](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/codemp/client/snd_dma.cpp#L1495)
 
-<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/6ff04c0baf588a89e5ec9361ad7a0992941d7655"><code>6ff04c0baf58</code></a> on 2026-09-09. Anything merged after that is not reflected here.</p>
+<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/77d84176b3b94356d189a4420e1bc5e68c88e1ea"><code>77d84176b3b9</code></a> on 2026-09-23. Anything merged after that is not reflected here.</p>

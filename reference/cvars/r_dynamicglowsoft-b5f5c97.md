@@ -38,8 +38,8 @@ Controls `r_DynamicGlowSoft` in the renderer module. Consult the cited behavior 
 
 | Value | Meaning | Evidence |
 |:--|:--|:--|
-| `0` | Disabled. | [codemp/rd-vanilla/tr_backend.cpp:2298](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-vanilla/tr_backend.cpp#L2298) |
-| `1` | Enabled. | [codemp/rd-vanilla/tr_backend.cpp:2298](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-vanilla/tr_backend.cpp#L2298) |
+| `0` | Disabled. | [codemp/rd-vanilla/tr_backend.cpp:2298](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/codemp/rd-vanilla/tr_backend.cpp#L2298) |
+| `1` | Enabled. | [codemp/rd-vanilla/tr_backend.cpp:2298](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/codemp/rd-vanilla/tr_backend.cpp#L2298) |
 
 ## Flags
 
@@ -89,11 +89,11 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 ## Evidence
 
-- registration: [codemp/rd-dedicated/tr_init.cpp:330](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-dedicated/tr_init.cpp#L330) (Cvar_Get)
-- registration: [codemp/rd-rend2/tr_init.cpp:1511](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-rend2/tr_init.cpp#L1511) (Cvar_Get)
-- registration: [codemp/rd-vanilla/tr_init.cpp:1647](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-vanilla/tr_init.cpp#L1647) (Cvar_Get)
-- registration: [codemp/rd-vulkan/tr_init.cpp:799](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-vulkan/tr_init.cpp#L799) (Cvar_Get)
-- behavior: [codemp/rd-vanilla/tr_backend.cpp:2298](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-vanilla/tr_backend.cpp#L2298)
-- behavior: [shared/rd-rend2/tr_backend.cpp:3327](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/shared/rd-rend2/tr_backend.cpp#L3327)
+- registration: [codemp/rd-dedicated/tr_init.cpp:330](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/codemp/rd-dedicated/tr_init.cpp#L330) (Cvar_Get)
+- registration: [codemp/rd-rend2/tr_init.cpp:1511](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/codemp/rd-rend2/tr_init.cpp#L1511) (Cvar_Get)
+- registration: [codemp/rd-vanilla/tr_init.cpp:1647](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/codemp/rd-vanilla/tr_init.cpp#L1647) (Cvar_Get)
+- registration: [codemp/rd-vulkan/tr_init.cpp:799](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/codemp/rd-vulkan/tr_init.cpp#L799) (Cvar_Get)
+- behavior: [codemp/rd-vanilla/tr_backend.cpp:2298](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/codemp/rd-vanilla/tr_backend.cpp#L2298)
+- behavior: [shared/rd-rend2/tr_backend.cpp:3327](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/shared/rd-rend2/tr_backend.cpp#L3327)
 
-<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/6ff04c0baf588a89e5ec9361ad7a0992941d7655"><code>6ff04c0baf58</code></a> on 2026-09-09. Anything merged after that is not reflected here.</p>
+<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/77d84176b3b94356d189a4420e1bc5e68c88e1ea"><code>77d84176b3b9</code></a> on 2026-09-23. Anything merged after that is not reflected here.</p>

@@ -39,17 +39,17 @@ Configured with /saberDisable command.
 
 ## Bits
 
-Use [`saberDisable`](/TaystJK/reference/commands/saberdisable-cf2b094/) to toggle one option at a time; see the command page for syntax. The value column is that bit on its own. [The labels come from the source table](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_svcmds.c#L1251).
+Use [`saberDisable`](/TaystJK/reference/commands/saberdisable-cf2b094/) to toggle one option at a time; see the command page for syntax. The value column is that bit on its own. [The labels come from the source table](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/codemp/game/g_svcmds.c#L1251).
 
 | Bit | Value | Meaning | Read by |
 |:--|:--|:--|:--|
-| 0 | `1` | Disable blue style | [codemp/game/g_local.h:296](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_local.h#L296) |
-| 1 | `2` | Disable yellow style | [codemp/game/g_local.h:297](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_local.h#L297) |
+| 0 | `1` | Disable blue style | [codemp/game/g_local.h:296](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/codemp/game/g_local.h#L296) |
+| 1 | `2` | Disable yellow style | [codemp/game/g_local.h:297](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/codemp/game/g_local.h#L297) |
 | 2 | `4` | Disable red style | — |
 | 3 | `8` | Disable duals | — |
 | 4 | `16` | Distable staff | — |
-| 5 | `32` | Force desann style | [codemp/game/g_local.h:301](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_local.h#L301) |
-| 6 | `64` | Force tavion style | [codemp/game/g_local.h:302](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_local.h#L302) |
+| 5 | `32` | Force desann style | [codemp/game/g_local.h:301](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/codemp/game/g_local.h#L301) |
+| 6 | `64` | Force tavion style | [codemp/game/g_local.h:302](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/codemp/game/g_local.h#L302) |
 ## Flags
 
 - `CVAR_ARCHIVE`: saved to the user configuration
@@ -89,12 +89,12 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 ## Evidence
 
-- registration: [codemp/game/g_xcvar.h:201](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_xcvar.h#L201) (XCVAR_DEF)
-- behavior: [codemp/game/g_active.c:3482](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_active.c#L3482)
-- behavior: [codemp/game/g_active.c:3505](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_active.c#L3505)
-- behavior: [codemp/game/g_active.c:3508](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_active.c#L3508)
-- behavior: [codemp/game/g_active.c:3512](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_active.c#L3512)
-- behavior: [codemp/game/g_active.c:3516](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_active.c#L3516)
-- documentation: [docs/japro_docs.md:21](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/docs/japro_docs.md#L21)
+- registration: [codemp/game/g_xcvar.h:201](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/codemp/game/g_xcvar.h#L201) (XCVAR_DEF)
+- behavior: [codemp/game/g_active.c:3482](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/codemp/game/g_active.c#L3482)
+- behavior: [codemp/game/g_active.c:3505](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/codemp/game/g_active.c#L3505)
+- behavior: [codemp/game/g_active.c:3508](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/codemp/game/g_active.c#L3508)
+- behavior: [codemp/game/g_active.c:3512](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/codemp/game/g_active.c#L3512)
+- behavior: [codemp/game/g_active.c:3516](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/codemp/game/g_active.c#L3516)
+- documentation: [docs/japro_docs.md:21](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/docs/japro_docs.md#L21)
 
-<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/6ff04c0baf588a89e5ec9361ad7a0992941d7655"><code>6ff04c0baf58</code></a> on 2026-09-09. Anything merged after that is not reflected here.</p>
+<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/77d84176b3b94356d189a4420e1bc5e68c88e1ea"><code>77d84176b3b9</code></a> on 2026-09-23. Anything merged after that is not reflected here.</p>

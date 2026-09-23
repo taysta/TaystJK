@@ -23,7 +23,7 @@ description: "Every cvar and command grouped by subject, from audio and HUD thro
 <a class="directory-card" href="/TaystJK/reference/categories/chat-social/"><span class="directory-code">Chat &amp; social</span><strong>63</strong><span>33 cvars · 30 commands</span></a>
 <a class="directory-card" href="/TaystJK/reference/categories/crosshair-aiming/"><span class="directory-code">Crosshair &amp; aiming</span><strong>19</strong><span>19 cvars · 0 commands</span></a>
 <a class="directory-card" href="/TaystJK/reference/categories/demos-media/"><span class="directory-code">Demos &amp; media</span><strong>48</strong><span>28 cvars · 20 commands</span></a>
-<a class="directory-card" href="/TaystJK/reference/categories/engine-diagnostics/"><span class="directory-code">Engine &amp; diagnostics</span><strong>252</strong><span>137 cvars · 115 commands</span></a>
+<a class="directory-card" href="/TaystJK/reference/categories/engine-diagnostics/"><span class="directory-code">Engine &amp; diagnostics</span><strong>253</strong><span>138 cvars · 115 commands</span></a>
 <a class="directory-card" href="/TaystJK/reference/categories/files-downloads/"><span class="directory-code">Files &amp; downloads</span><strong>35</strong><span>29 cvars · 6 commands</span></a>
 <a class="directory-card" href="/TaystJK/reference/categories/gameplay-combat/"><span class="directory-code">Gameplay &amp; combat</span><strong>712</strong><span>466 cvars · 246 commands</span></a>
 <a class="directory-card" href="/TaystJK/reference/categories/graphics-rendering/"><span class="directory-code">Graphics &amp; rendering</span><strong>296</strong><span>274 cvars · 22 commands</span></a>

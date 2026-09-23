@@ -453,6 +453,7 @@ description: "A no-JavaScript index of every TaystJK cvar and console command."
 <a href="/TaystJK/reference/cvars/cl_packetdup-86b0e4b/"><code>cl_packetdup</code></a>
 <a href="/TaystJK/reference/cvars/cl_paused-2461a17/"><code>cl_paused</code></a>
 <a href="/TaystJK/reference/cvars/cl_pitchspeed-c2c603e/"><code>cl_pitchspeed</code></a>
+<a href="/TaystJK/reference/cvars/cl_purebasebypass-b099e31/"><code>cl_pureBaseBypass</code></a>
 <a href="/TaystJK/reference/cvars/cl_ratiofix-67440df/"><code>cl_ratioFix</code></a>
 <a href="/TaystJK/reference/cvars/cl_reconnectargs-fbdecc0/"><code>cl_reconnectArgs</code></a>
 <a href="/TaystJK/reference/cvars/cl_renderer-dc9f64f/"><code>cl_renderer</code></a>

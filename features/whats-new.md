@@ -15,7 +15,7 @@ description: "Every cvar and console command TaystJK adds, grouped by topic and 
 
 <p class="page-lede">What TaystJK adds over the client you already know. Pick that client below to compare console entries against its recorded source snapshot, alongside the documented feature additions.</p>
 
-<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/6ff04c0baf588a89e5ec9361ad7a0992941d7655"><code>6ff04c0baf58</code></a> on 2026-09-09. Anything merged after that is not reflected here.</p>
+<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/77d84176b3b94356d189a4420e1bc5e68c88e1ea"><code>77d84176b3b9</code></a> on 2026-09-23. Anything merged after that is not reflected here.</p>
 </div>
 
 ## How to tell what your build has
@@ -42,15 +42,15 @@ entry is real; treat the date as approximate.
   <div class="baseline-selector-shell platform-selector-shell">
     <p class="platform-selector-label">Coming from</p>
     <div class="baseline-selector platform-selector" role="tablist" aria-label="Baseline client">
-      <button type="button" id="baseline-tab-eternaljk" role="tab" aria-controls="baseline-panel-eternaljk" aria-selected="false" tabindex="-1" data-baseline-choice="eternaljk">EternalJK (266)</button>
-      <button type="button" id="baseline-tab-openjk" role="tab" aria-controls="baseline-panel-openjk" aria-selected="false" tabindex="-1" data-baseline-choice="openjk">OpenJK (753)</button>
-      <button type="button" id="baseline-tab-basejka" role="tab" aria-controls="baseline-panel-basejka" aria-selected="false" tabindex="-1" data-baseline-choice="basejka">base Jedi Academy (997)</button>
+      <button type="button" id="baseline-tab-eternaljk" role="tab" aria-controls="baseline-panel-eternaljk" aria-selected="false" tabindex="-1" data-baseline-choice="eternaljk">EternalJK (267)</button>
+      <button type="button" id="baseline-tab-openjk" role="tab" aria-controls="baseline-panel-openjk" aria-selected="false" tabindex="-1" data-baseline-choice="openjk">OpenJK (754)</button>
+      <button type="button" id="baseline-tab-basejka" role="tab" aria-controls="baseline-panel-basejka" aria-selected="false" tabindex="-1" data-baseline-choice="basejka">base Jedi Academy (998)</button>
     </div>
   </div>
 
   <section class="baseline-panel platform-panel" id="baseline-panel-eternaljk" role="tabpanel" aria-labelledby="baseline-tab-eternaljk" tabindex="0" data-baseline-panel="eternaljk" markdown="1">
 
-## New since EternalJK (266)
+## New since EternalJK (267)
 
 ### Audio & music (2)
 
@@ -85,12 +85,13 @@ entry is real; treat the date as approximate.
 - [`svdemoclearprerecord`](/TaystJK/reference/commands/svdemoclearprerecord-4d3a794/) <span class="label ref-origin ref-origin-eternaljk">EternalJK</span> <span class="meta-chip">2023-06-23</span>: Clears pre-record data for a particular client. Call with clientnum.
 - [`svdemometa`](/TaystJK/reference/commands/svdemometa-0715ee6/) <span class="label ref-origin ref-origin-eternaljk">EternalJK</span> <span class="meta-chip">2023-06-23</span>: Sets a new metadata entry for server-side demos for one player. Call with clientnum, metakey, [data]
 
-### Engine & diagnostics (21)
+### Engine & diagnostics (22)
 
 - [Nested quotation marks](/TaystJK/features/console-scripting/) <span class="label ref-origin ref-origin-newjk">NewJK / NewMod</span> <span class="meta-chip">feature</span>: Quoted strings can contain quoted strings, so a bind can set another bind and a semicolon inside quotes no longer splits the command.
 - [`cl_consoleShiftRequirement`](/TaystJK/reference/cvars/cl_consoleshiftrequirement-95eb4a1/) <span class="label ref-origin ref-origin-jk2mv">JK2MV</span> <span class="meta-chip">2024-02-19</span>: Require shift key to be pressed for native console key detection
 - [`cl_exitCommand`](/TaystJK/reference/cvars/cl_exitcommand-0f11b0a/) <span class="label ref-origin ref-origin-taystjk">TaystJK</span> <span class="meta-chip">2024-02-28</span>: Enables the /exit command
 - [`cl_filterGames`](/TaystJK/reference/cvars/cl_filtergames-7e85224/) <span class="label ref-origin ref-origin-openjk">OpenJK</span> <span class="meta-chip">2023-11-28</span>: List of fs_game to filter (space separated)
+- [`cl_pureBaseBypass`](/TaystJK/reference/cvars/cl_purebasebypass-b099e31/) <span class="label ref-origin ref-origin-taystjk">TaystJK</span> <span class="meta-chip">2026-09-23</span>: Bypass pure checks on pure base servers, takes effect on next connect
 - [`com_timestamps`](/TaystJK/reference/cvars/com_timestamps-e16da1a/) <span class="label ref-origin ref-origin-jk2mv">JK2MV</span> <span class="status-chip">2024-02-27 · needs review</span>: Show timestamps in terminal and qconsole.log
 - [`com_unpackLibraries`](/TaystJK/reference/cvars/com_unpacklibraries-27a5b09/) <span class="label ref-origin ref-origin-openjk">OpenJK</span> <span class="meta-chip">2023-11-29</span>: Controls `com_unpackLibraries` in the engine-shared module.
 - [`con_datetime`](/TaystJK/reference/cvars/con_datetime-fb79998/) <span class="label ref-origin ref-origin-taystjk">TaystJK</span> <span class="meta-chip">2026-06-02</span>: Display human readable date/time in console
@@ -361,7 +362,7 @@ entry is real; treat the date as approximate.
 
   <section class="baseline-panel platform-panel" id="baseline-panel-openjk" role="tabpanel" aria-labelledby="baseline-tab-openjk" tabindex="0" data-baseline-panel="openjk" markdown="1">
 
-## New since OpenJK (753)
+## New since OpenJK (754)
 
 ### Administration (34)
 
@@ -503,7 +504,7 @@ entry is real; treat the date as approximate.
 - [`svdemometa`](/TaystJK/reference/commands/svdemometa-0715ee6/) <span class="label ref-origin ref-origin-eternaljk">EternalJK</span> <span class="meta-chip">2023-06-23</span>: Sets a new metadata entry for server-side demos for one player. Call with clientnum, metakey, [data]
 - [`svrenamedemo`](/TaystJK/reference/commands/svrenamedemo-6d02cec/) <span class="label ref-origin ref-origin-eternaljk">EternalJK</span> <span class="status-chip">2017-12-28 · needs review</span>: Rename a server-side demo
 
-### Engine & diagnostics (45)
+### Engine & diagnostics (46)
 
 - [Nested quotation marks](/TaystJK/features/console-scripting/) <span class="label ref-origin ref-origin-newjk">NewJK / NewMod</span> <span class="meta-chip">feature</span>: Quoted strings can contain quoted strings, so a bind can set another bind and a semicolon inside quotes no longer splits the command.
 - [`afk`](/TaystJK/reference/commands/afk-aec4e2a/) <span class="label ref-origin ref-origin-eternaljk">EternalJK</span> <span class="status-chip">2016-03-05 · needs review</span>: Rename to or from afk
@@ -518,6 +519,7 @@ entry is real; treat the date as approximate.
 - [`cl_discordRichPresenceSharePassword`](/TaystJK/reference/cvars/cl_discordrichpresencesharepassword-79479cd/) <span class="label ref-origin ref-origin-eternaljk">EternalJK</span> <span class="status-chip">2019-03-20 · needs review</span>: If set, sends password to Discord friends who request to join your game
 - [`cl_exitCommand`](/TaystJK/reference/cvars/cl_exitcommand-0f11b0a/) <span class="label ref-origin ref-origin-taystjk">TaystJK</span> <span class="meta-chip">2024-02-28</span>: Enables the /exit command
 - [`cl_idrive`](/TaystJK/reference/cvars/cl_idrive-a66b0b8/) <span class="label ref-origin ref-origin-japro">jaPRO</span> <span class="meta-chip">2017-12-04</span>: Controls `cl_idrive` in the engine-client module.
+- [`cl_pureBaseBypass`](/TaystJK/reference/cvars/cl_purebasebypass-b099e31/) <span class="label ref-origin ref-origin-taystjk">TaystJK</span> <span class="meta-chip">2026-09-23</span>: Bypass pure checks on pure base servers, takes effect on next connect
 - [`cl_ratioFix`](/TaystJK/reference/cvars/cl_ratiofix-67440df/) <span class="label ref-origin ref-origin-japro">jaPRO</span> <span class="status-chip">2017-12-03 · needs review</span>: Widescreen aspect ratio correction
 - [`colorname`](/TaystJK/reference/commands/colorname-eccdd14/) <span class="label ref-origin ref-origin-eternaljk">EternalJK</span> <span class="status-chip">2016-03-11 · needs review</span>: Color name
 - [`colorstring`](/TaystJK/reference/commands/colorstring-ff62b1e/) <span class="label ref-origin ref-origin-eternaljk">EternalJK</span> <span class="status-chip">2016-03-11 · needs review</span>: Color say text
@@ -1162,7 +1164,7 @@ entry is real; treat the date as approximate.
 
   <section class="baseline-panel platform-panel" id="baseline-panel-basejka" role="tabpanel" aria-labelledby="baseline-tab-basejka" tabindex="0" data-baseline-panel="basejka" markdown="1">
 
-## New since base Jedi Academy (997)
+## New since base Jedi Academy (998)
 
 ### Administration (37)
 
@@ -1329,7 +1331,7 @@ entry is real; treat the date as approximate.
 - [`ui_screenshotType`](/TaystJK/reference/cvars/ui_screenshottype-77cec01/) <span class="label ref-origin ref-origin-openjk">OpenJK</span> <span class="status-chip">2017-08-31 · needs review</span>: Controls `ui_screenshotType` in the ui module.
 - [`video`](/TaystJK/reference/commands/video-ffbaf58/) <span class="label ref-origin ref-origin-openjk">OpenJK</span> <span class="status-chip">2013-04-12 · needs review</span>: Record demo to avi
 
-### Engine & diagnostics (91)
+### Engine & diagnostics (92)
 
 - [Nested quotation marks](/TaystJK/features/console-scripting/) <span class="label ref-origin ref-origin-newjk">NewJK / NewMod</span> <span class="meta-chip">feature</span>: Quoted strings can contain quoted strings, so a bind can set another bind and a semicolon inside quotes no longer splits the command.
 - [`_dedicated`](/TaystJK/reference/cvars/entry-_dedicated-f30b22a/) <span class="label ref-origin ref-origin-openjk">OpenJK</span> <span class="status-chip">2013-05-11 · needs review</span>: Controls `com_dedicated` in the engine-shared module.
@@ -1351,6 +1353,7 @@ entry is real; treat the date as approximate.
 - [`cl_exitCommand`](/TaystJK/reference/cvars/cl_exitcommand-0f11b0a/) <span class="label ref-origin ref-origin-taystjk">TaystJK</span> <span class="meta-chip">2024-02-28</span>: Enables the /exit command
 - [`cl_filterGames`](/TaystJK/reference/cvars/cl_filtergames-7e85224/) <span class="label ref-origin ref-origin-openjk">OpenJK</span> <span class="meta-chip">2023-11-28</span>: List of fs_game to filter (space separated)
 - [`cl_idrive`](/TaystJK/reference/cvars/cl_idrive-a66b0b8/) <span class="label ref-origin ref-origin-japro">jaPRO</span> <span class="meta-chip">2017-12-04</span>: Controls `cl_idrive` in the engine-client module.
+- [`cl_pureBaseBypass`](/TaystJK/reference/cvars/cl_purebasebypass-b099e31/) <span class="label ref-origin ref-origin-taystjk">TaystJK</span> <span class="meta-chip">2026-09-23</span>: Bypass pure checks on pure base servers, takes effect on next connect
 - [`cl_ratioFix`](/TaystJK/reference/cvars/cl_ratiofix-67440df/) <span class="label ref-origin ref-origin-japro">jaPRO</span> <span class="status-chip">2017-12-03 · needs review</span>: Widescreen aspect ratio correction
 - [`cm_extraVerbose`](/TaystJK/reference/cvars/cm_extraverbose-f870864/) <span class="label ref-origin ref-origin-openjk">OpenJK</span> <span class="status-chip">2014-02-05 · needs review</span>: Controls `cm_extraVerbose` in the engine-shared module.
 - [`colorname`](/TaystJK/reference/commands/colorname-eccdd14/) <span class="label ref-origin ref-origin-eternaljk">EternalJK</span> <span class="status-chip">2016-03-11 · needs review</span>: Color name

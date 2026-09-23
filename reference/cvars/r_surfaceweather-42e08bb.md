@@ -77,12 +77,12 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 ## Evidence
 
-- registration: [codemp/rd-dedicated/tr_init.cpp:394](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-dedicated/tr_init.cpp#L394) (Cvar_Get)
-- registration: [codemp/rd-vanilla/tr_init.cpp:1703](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-vanilla/tr_init.cpp#L1703) (Cvar_Get)
-- registration: [codemp/rd-vulkan/tr_init.cpp:861](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-vulkan/tr_init.cpp#L861) (Cvar_Get)
-- behavior: [codemp/rd-vulkan/vk_vbo_surfacesprites.cpp:574](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-vulkan/vk_vbo_surfacesprites.cpp#L574)
-- behavior: [codemp/rd-vanilla/tr_surfacesprites.cpp:193](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-vanilla/tr_surfacesprites.cpp#L193)
-- behavior: [codemp/rd-vulkan/tr_surfacesprites.cpp:193](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-vulkan/tr_surfacesprites.cpp#L193)
-- behavior: [codemp/rd-vulkan/vk_vbo_surfacesprites.cpp:580](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-vulkan/vk_vbo_surfacesprites.cpp#L580)
+- registration: [codemp/rd-dedicated/tr_init.cpp:394](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/codemp/rd-dedicated/tr_init.cpp#L394) (Cvar_Get)
+- registration: [codemp/rd-vanilla/tr_init.cpp:1703](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/codemp/rd-vanilla/tr_init.cpp#L1703) (Cvar_Get)
+- registration: [codemp/rd-vulkan/tr_init.cpp:861](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/codemp/rd-vulkan/tr_init.cpp#L861) (Cvar_Get)
+- behavior: [codemp/rd-vulkan/vk_vbo_surfacesprites.cpp:574](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/codemp/rd-vulkan/vk_vbo_surfacesprites.cpp#L574)
+- behavior: [codemp/rd-vanilla/tr_surfacesprites.cpp:193](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/codemp/rd-vanilla/tr_surfacesprites.cpp#L193)
+- behavior: [codemp/rd-vulkan/tr_surfacesprites.cpp:193](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/codemp/rd-vulkan/tr_surfacesprites.cpp#L193)
+- behavior: [codemp/rd-vulkan/vk_vbo_surfacesprites.cpp:580](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/codemp/rd-vulkan/vk_vbo_surfacesprites.cpp#L580)
 
-<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/6ff04c0baf588a89e5ec9361ad7a0992941d7655"><code>6ff04c0baf58</code></a> on 2026-09-09. Anything merged after that is not reflected here.</p>
+<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/77d84176b3b94356d189a4420e1bc5e68c88e1ea"><code>77d84176b3b9</code></a> on 2026-09-23. Anything merged after that is not reflected here.</p>
