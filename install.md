@@ -67,6 +67,32 @@ This is the simplest layout when TaystJK is your only modded client.
 4. Optionally create a desktop shortcut to that executable.
 
 For a non-Steam copy, locate the directory containing `base`, `jamp.exe`, and `jasp.exe`; that is the `GameData` directory.
+
+### Optional: update automatically
+
+[TaystJK Updater](https://github.com/slash-fr/taystjk-updater) is a third-party launcher by Slash; it is not part of TaystJK, so report problems with it on its own repository. Each time you start it, it checks the `latest` TaystJK release, downloads and installs a newer Windows build if there is one, and then launches the game. It also keeps itself up to date.
+
+<figure class="media-figure">
+  <video controls muted playsinline preload="none" width="1280" height="720" poster="{{ '/assets/media/taystjk-updater-demo-poster.jpg' | relative_url }}">
+    <source src="{{ '/assets/media/taystjk-updater-demo.mp4' | relative_url }}" type="video/mp4">
+    <a href="{{ '/assets/media/taystjk-updater-demo.mp4' | relative_url }}">Download the updater demo video</a>.
+  </video>
+  <figcaption>An older build is closed and the <code>TaystJK</code> desktop shortcut, which points at the updater, installs the new release and starts it. The <code>version</code> command then shows the new build. Video by Slash.</figcaption>
+</figure>
+
+1. Download `TaystJK_Updater.exe` from its [releases page](https://github.com/slash-fr/taystjk-updater/releases).
+2. Put it in the same directory as `taystjk.x86_64.exe` or `taystjk.x86.exe`.
+3. Start the game from the updater, or from a shortcut to it, instead of from the TaystJK executable. You can rename the shortcut to `TaystJK` and pick the TaystJK executable as its icon.
+
+It needs .NET Framework 4.8, which Windows 10 and 11 already include. The TaystJK directory must be writable without administrator rights. Do not run the updater as administrator, because it would then start TaystJK as administrator too.
+
+Arguments after the updater's name are passed on to TaystJK, so the launch options elsewhere on this page work through it. If the directory holds both builds, or the updater lives somewhere else, give the executable's path first:
+
+```bat
+TaystJK_Updater.exe taystjk.x86_64.exe +set fs_cdPath "../JediAcademy"
+```
+
+The updater's [advanced usage notes](https://github.com/slash-fr/taystjk-updater/blob/main/doc/advanced-usage.md) cover the arguments in more detail.
   </section>
 
   <section class="platform-panel" id="platform-panel-macos" role="tabpanel" aria-labelledby="platform-tab-macos" tabindex="0" data-platform-panel="macos" markdown="1">

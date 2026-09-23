@@ -984,6 +984,25 @@ kbd { padding: .15rem .42rem; color: var(--text-soft); background: var(--surface
   text-align: center;
 }
 
+.media-figure {
+  margin: 1.25rem 0;
+}
+
+.media-figure video {
+  display: block;
+  width: 100%;
+  height: auto;
+  background: var(--surface-sunken);
+  border: 1px solid var(--line);
+  border-radius: var(--control-radius);
+}
+
+.media-figure figcaption {
+  margin-top: .5rem;
+  color: var(--text-soft);
+  font-size: .85rem;
+}
+
 .page-provenance {
   margin: 1.1rem 0 0;
   color: var(--muted);
