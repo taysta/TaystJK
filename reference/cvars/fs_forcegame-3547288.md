@@ -86,13 +86,13 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 ## Evidence
 
-- registration: [codemp/qcommon/files.cpp:3913](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/codemp/qcommon/files.cpp#L3913) (Cvar_Get); condition `defined(DEDICATED)`
-- registration: [codemp/qcommon/files.cpp:3915](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/codemp/qcommon/files.cpp#L3915) (Cvar_Get); condition `else(defined(DEDICATED))`
-- behavior: [codemp/qcommon/files.cpp:3752](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/codemp/qcommon/files.cpp#L3752)
-- behavior: [codemp/qcommon/files.cpp:3753](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/codemp/qcommon/files.cpp#L3753)
-- behavior: [codemp/qcommon/files.cpp:3988](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/codemp/qcommon/files.cpp#L3988)
-- behavior: [codemp/qcommon/files.cpp:3989](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/codemp/qcommon/files.cpp#L3989)
-- behavior: [codemp/qcommon/files.cpp:4480](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/codemp/qcommon/files.cpp#L4480)
+- registration: [codemp/qcommon/files.cpp:3913](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/qcommon/files.cpp#L3913) (Cvar_Get); condition `defined(DEDICATED)`
+- registration: [codemp/qcommon/files.cpp:3915](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/qcommon/files.cpp#L3915) (Cvar_Get); condition `else(defined(DEDICATED))`
+- behavior: [codemp/qcommon/files.cpp:3752](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/qcommon/files.cpp#L3752)
+- behavior: [codemp/qcommon/files.cpp:3753](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/qcommon/files.cpp#L3753)
+- behavior: [codemp/qcommon/files.cpp:3988](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/qcommon/files.cpp#L3988)
+- behavior: [codemp/qcommon/files.cpp:3989](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/qcommon/files.cpp#L3989)
+- behavior: [codemp/qcommon/files.cpp:4480](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/qcommon/files.cpp#L4480)
 - upstream-documentation: [CVARS.rst:36](https://github.com/mvdevs/jk2mv/blame/7d601454c3db68492289d4d4e3dc30bff39e4246/CVARS.rst#L36)
 
-<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/77d84176b3b94356d189a4420e1bc5e68c88e1ea"><code>77d84176b3b9</code></a> on 2026-09-23. Anything merged after that is not reflected here.</p>
+<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/f4643281440c626cb7e30444c8c392606167a7f8"><code>f4643281440c</code></a> on 2026-09-23. Anything merged after that is not reflected here.</p>

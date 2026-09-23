@@ -79,14 +79,14 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 ## Evidence
 
-- registration: [codemp/rd-dedicated/tr_init.cpp:376](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/codemp/rd-dedicated/tr_init.cpp#L376) (Cvar_Get)
-- registration: [codemp/rd-rend2/tr_init.cpp:1625](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/codemp/rd-rend2/tr_init.cpp#L1625) (Cvar_Get)
-- registration: [codemp/rd-vanilla/tr_init.cpp:1685](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/codemp/rd-vanilla/tr_init.cpp#L1685) (Cvar_Get)
-- registration: [codemp/rd-vulkan/tr_init.cpp:843](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/codemp/rd-vulkan/tr_init.cpp#L843) (Cvar_Get)
-- behavior: [codemp/rd-vanilla/tr_decals.cpp:103](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/codemp/rd-vanilla/tr_decals.cpp#L103)
-- behavior: [codemp/rd-vanilla/tr_decals.cpp:117](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/codemp/rd-vanilla/tr_decals.cpp#L117)
-- behavior: [codemp/rd-vanilla/tr_decals.cpp:140](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/codemp/rd-vanilla/tr_decals.cpp#L140)
-- behavior: [codemp/rd-vanilla/tr_decals.cpp:174](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/codemp/rd-vanilla/tr_decals.cpp#L174)
-- behavior: [codemp/rd-vanilla/tr_decals.cpp:264](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/codemp/rd-vanilla/tr_decals.cpp#L264)
+- registration: [codemp/rd-dedicated/tr_init.cpp:376](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/rd-dedicated/tr_init.cpp#L376) (Cvar_Get)
+- registration: [codemp/rd-rend2/tr_init.cpp:1625](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/rd-rend2/tr_init.cpp#L1625) (Cvar_Get)
+- registration: [codemp/rd-vanilla/tr_init.cpp:1685](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/rd-vanilla/tr_init.cpp#L1685) (Cvar_Get)
+- registration: [codemp/rd-vulkan/tr_init.cpp:843](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/rd-vulkan/tr_init.cpp#L843) (Cvar_Get)
+- behavior: [codemp/rd-vanilla/tr_decals.cpp:103](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/rd-vanilla/tr_decals.cpp#L103)
+- behavior: [codemp/rd-vanilla/tr_decals.cpp:117](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/rd-vanilla/tr_decals.cpp#L117)
+- behavior: [codemp/rd-vanilla/tr_decals.cpp:140](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/rd-vanilla/tr_decals.cpp#L140)
+- behavior: [codemp/rd-vanilla/tr_decals.cpp:174](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/rd-vanilla/tr_decals.cpp#L174)
+- behavior: [codemp/rd-vanilla/tr_decals.cpp:264](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/rd-vanilla/tr_decals.cpp#L264)
 
-<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/77d84176b3b94356d189a4420e1bc5e68c88e1ea"><code>77d84176b3b9</code></a> on 2026-09-23. Anything merged after that is not reflected here.</p>
+<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/f4643281440c626cb7e30444c8c392606167a7f8"><code>f4643281440c</code></a> on 2026-09-23. Anything merged after that is not reflected here.</p>

@@ -38,14 +38,14 @@ Latch cuz of calculateRanks? not sure man
 
 ## Bits
 
-Use [`tweakVote`](/TaystJK/reference/commands/tweakvote-97236e2/) to toggle one option at a time; see the command page for syntax. The value column is that bit on its own. [The labels come from the source table](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/codemp/game/g_svcmds.c#L1473).
+Use [`tweakVote`](/TaystJK/reference/commands/tweakvote-97236e2/) to toggle one option at a time; see the command page for syntax. The value column is that bit on its own. [The labels come from the source table](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/game/g_svcmds.c#L1473).
 
 | Bit | Value | Meaning | Read by |
 |:--|:--|:--|:--|
-| 0 | `1` | Allow spec callvote in siege gametype | [codemp/game/g_local.h:333](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/codemp/game/g_local.h#L333) |
+| 0 | `1` | Allow spec callvote in siege gametype | [codemp/game/g_local.h:333](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/game/g_local.h#L333) |
 | 1 | `2` | Allow spec callvote in CTF/TFFA gametypes | — |
-| 2 | `4` | Clear vote when going to spectate | [codemp/game/g_local.h:335](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/codemp/game/g_local.h#L335) |
-| 3 | `8` | Dont allow callvote for 30s after mapload | [codemp/game/g_local.h:336](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/codemp/game/g_local.h#L336) |
+| 2 | `4` | Clear vote when going to spectate | [codemp/game/g_local.h:335](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/game/g_local.h#L335) |
+| 3 | `8` | Dont allow callvote for 30s after mapload | [codemp/game/g_local.h:336](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/game/g_local.h#L336) |
 | 4 | `16` | Floodprotect callvotes by IP | — |
 | 5 | `32` | Dont allow map callvotes for 10 minutes at start of each map | — |
 | 6 | `64` | Add vote delay for map callvotes only | — |
@@ -53,7 +53,7 @@ Use [`tweakVote`](/TaystJK/reference/commands/tweakvote-97236e2/) to toggle one 
 | 8 | `256` | Show votes in console | — |
 | 9 | `512` | Only count voters in pass/fail calculation | — |
 | 10 | `1024` | Fix mapchange after gametype vote | — |
-| 11 | `2048` | Ignore gametype restrictions for map callvote | [codemp/game/g_local.h:344](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/codemp/game/g_local.h#L344) |
+| 11 | `2048` | Ignore gametype restrictions for map callvote | [codemp/game/g_local.h:344](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/game/g_local.h#L344) |
 ## Flags
 
 - `CVAR_ARCHIVE`: saved to the user configuration
@@ -92,12 +92,12 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 ## Evidence
 
-- registration: [codemp/game/g_xcvar.h:309](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/codemp/game/g_xcvar.h#L309) (XCVAR_DEF)
-- behavior: [codemp/game/g_cmds.c:1488](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/codemp/game/g_cmds.c#L1488)
-- behavior: [codemp/game/g_cmds.c:2746](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/codemp/game/g_cmds.c#L2746)
-- behavior: [codemp/game/g_cmds.c:2917](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/codemp/game/g_cmds.c#L2917)
-- behavior: [codemp/game/g_cmds.c:3146](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/codemp/game/g_cmds.c#L3146)
-- behavior: [codemp/game/g_cmds.c:3165](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/codemp/game/g_cmds.c#L3165)
-- documentation: [docs/japro_docs.md:110](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/docs/japro_docs.md#L110)
+- registration: [codemp/game/g_xcvar.h:309](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/game/g_xcvar.h#L309) (XCVAR_DEF)
+- behavior: [codemp/game/g_cmds.c:1488](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/game/g_cmds.c#L1488)
+- behavior: [codemp/game/g_cmds.c:2746](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/game/g_cmds.c#L2746)
+- behavior: [codemp/game/g_cmds.c:2917](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/game/g_cmds.c#L2917)
+- behavior: [codemp/game/g_cmds.c:3146](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/game/g_cmds.c#L3146)
+- behavior: [codemp/game/g_cmds.c:3165](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/game/g_cmds.c#L3165)
+- documentation: [docs/japro_docs.md:110](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/docs/japro_docs.md#L110)
 
-<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/77d84176b3b94356d189a4420e1bc5e68c88e1ea"><code>77d84176b3b9</code></a> on 2026-09-23. Anything merged after that is not reflected here.</p>
+<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/f4643281440c626cb7e30444c8c392606167a7f8"><code>f4643281440c</code></a> on 2026-09-23. Anything merged after that is not reflected here.</p>

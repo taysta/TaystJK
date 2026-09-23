@@ -24,7 +24,7 @@ Disable/enable reading deluxemaps when compiled with q3map2
 | Confidence | `high` |
 | Added | 2023-10-03 in [`86c075638`](https://github.com/taysta/TaystJK/commit/86c0756385efd1e0c24b5c435739ccba3bee3919) ([how to compare this against your build](/TaystJK/features/whats-new/#how-to-tell-what-your-build-has)) |
 | In-game xdocs | No |
-| In-game menu | Yes: [ingame_setup.menu:1917](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/assets/japro/ui/jamp/ingame_setup.menu#L1917) |
+| In-game menu | Yes: [ingame_setup.menu:1917](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/assets/japro/ui/jamp/ingame_setup.menu#L1917) |
 | Default | `1` |
 | Value type | `bool` |
 | Restart | Yes; the value is latched. |
@@ -35,8 +35,8 @@ Disable/enable reading deluxemaps when compiled with q3map2
 
 | Value | Meaning | Evidence |
 |:--|:--|:--|
-| `0` | Disabled. | [shared/rd-rend2/tr_bsp.cpp:578](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/shared/rd-rend2/tr_bsp.cpp#L578) |
-| `1` | Enabled. | [shared/rd-rend2/tr_bsp.cpp:578](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/shared/rd-rend2/tr_bsp.cpp#L578) |
+| `0` | Disabled. | [shared/rd-rend2/tr_bsp.cpp:578](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/shared/rd-rend2/tr_bsp.cpp#L578) |
+| `1` | Enabled. | [shared/rd-rend2/tr_bsp.cpp:578](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/shared/rd-rend2/tr_bsp.cpp#L578) |
 
 ## Flags
 
@@ -76,11 +76,11 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 ## Evidence
 
-- registration: [codemp/rd-rend2/tr_init.cpp:1560](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/codemp/rd-rend2/tr_init.cpp#L1560) (Cvar_Get)
-- behavior: [shared/rd-rend2/tr_bsp.cpp:578](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/shared/rd-rend2/tr_bsp.cpp#L578)
-- behavior: [shared/rd-rend2/tr_glsl.cpp:1844](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/shared/rd-rend2/tr_glsl.cpp#L1844)
-- behavior: [shared/rd-rend2/tr_shade.cpp:1981](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/shared/rd-rend2/tr_shade.cpp#L1981)
-- behavior: [shared/rd-rend2/tr_shader.cpp:1260](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/shared/rd-rend2/tr_shader.cpp#L1260)
-- behavior: [shared/rd-rend2/tr_shader.cpp:3124](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/shared/rd-rend2/tr_shader.cpp#L3124)
+- registration: [codemp/rd-rend2/tr_init.cpp:1560](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/rd-rend2/tr_init.cpp#L1560) (Cvar_Get)
+- behavior: [shared/rd-rend2/tr_bsp.cpp:578](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/shared/rd-rend2/tr_bsp.cpp#L578)
+- behavior: [shared/rd-rend2/tr_glsl.cpp:1844](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/shared/rd-rend2/tr_glsl.cpp#L1844)
+- behavior: [shared/rd-rend2/tr_shade.cpp:1981](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/shared/rd-rend2/tr_shade.cpp#L1981)
+- behavior: [shared/rd-rend2/tr_shader.cpp:1260](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/shared/rd-rend2/tr_shader.cpp#L1260)
+- behavior: [shared/rd-rend2/tr_shader.cpp:3124](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/shared/rd-rend2/tr_shader.cpp#L3124)
 
-<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/77d84176b3b94356d189a4420e1bc5e68c88e1ea"><code>77d84176b3b9</code></a> on 2026-09-23. Anything merged after that is not reflected here.</p>
+<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/f4643281440c626cb7e30444c8c392606167a7f8"><code>f4643281440c</code></a> on 2026-09-23. Anything merged after that is not reflected here.</p>

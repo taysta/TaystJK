@@ -61,10 +61,10 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 ## Evidence
 
-- registration: [codemp/client/snd_dma.cpp:473](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/codemp/client/snd_dma.cpp#L473) (Cvar_Get)
-- behavior: [codemp/client/snd_dma.cpp:2528](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/codemp/client/snd_dma.cpp#L2528)
-- behavior: [codemp/client/snd_dma.cpp:3649](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/codemp/client/snd_dma.cpp#L3649)
-- behavior: [codemp/client/snd_mem.cpp:1008](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/codemp/client/snd_mem.cpp#L1008)
-- behavior: [codemp/client/snd_mem.cpp:1041](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/codemp/client/snd_mem.cpp#L1041)
+- registration: [codemp/client/snd_dma.cpp:473](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/client/snd_dma.cpp#L473) (Cvar_Get)
+- behavior: [codemp/client/snd_dma.cpp:2528](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/client/snd_dma.cpp#L2528)
+- behavior: [codemp/client/snd_dma.cpp:3649](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/client/snd_dma.cpp#L3649)
+- behavior: [codemp/client/snd_mem.cpp:1008](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/client/snd_mem.cpp#L1008)
+- behavior: [codemp/client/snd_mem.cpp:1041](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/client/snd_mem.cpp#L1041)
 
-<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/77d84176b3b94356d189a4420e1bc5e68c88e1ea"><code>77d84176b3b9</code></a> on 2026-09-23. Anything merged after that is not reflected here.</p>
+<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/f4643281440c626cb7e30444c8c392606167a7f8"><code>f4643281440c</code></a> on 2026-09-23. Anything merged after that is not reflected here.</p>

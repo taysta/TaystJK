@@ -28,7 +28,7 @@ Controls `ui_sha_a` in the ui module. Consult the cited behavior reads before re
 | Confidence | `medium` |
 | Added | 2015-04-10 in [`6d7bc5b9e`](https://github.com/taysta/TaystJK/commit/6d7bc5b9ec6885510f41f500aa62bb0da1a0e770) <span class="status-chip">needs review</span> ([how to compare this against your build](/TaystJK/features/whats-new/#how-to-tell-what-your-build-has)) |
 | In-game xdocs | No |
-| In-game menu | Yes: [ingame_strafehelper.menu:247](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/assets/japro/ui/jamp/ingame_strafehelper.menu#L247), [ingame_strafehelper.menu:267](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/assets/japro/ui/jamp/ingame_strafehelper.menu#L267), [ingame_strafehelper.menu:290](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/assets/japro/ui/jamp/ingame_strafehelper.menu#L290) |
+| In-game menu | Yes: [ingame_strafehelper.menu:247](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/assets/japro/ui/jamp/ingame_strafehelper.menu#L247), [ingame_strafehelper.menu:267](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/assets/japro/ui/jamp/ingame_strafehelper.menu#L267), [ingame_strafehelper.menu:290](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/assets/japro/ui/jamp/ingame_strafehelper.menu#L290) |
 | Default | `200` |
 | Value type | `int` |
 | Restart | No latch flag is registered. |
@@ -80,8 +80,8 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 ## Evidence
 
-- registration: [codemp/ui/ui_xcvar.h:155](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/codemp/ui/ui_xcvar.h#L155) (XCVAR_DEF)
-- behavior: [codemp/ui/ui_cvar.c:91](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/codemp/ui/ui_cvar.c#L91)
-- behavior: [codemp/cgame/cg_cvar.c:124](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/codemp/cgame/cg_cvar.c#L124)
+- registration: [codemp/ui/ui_xcvar.h:155](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/ui/ui_xcvar.h#L155) (XCVAR_DEF)
+- behavior: [codemp/ui/ui_cvar.c:91](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/ui/ui_cvar.c#L91)
+- behavior: [codemp/cgame/cg_cvar.c:124](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/cgame/cg_cvar.c#L124)
 
-<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/77d84176b3b94356d189a4420e1bc5e68c88e1ea"><code>77d84176b3b9</code></a> on 2026-09-23. Anything merged after that is not reflected here.</p>
+<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/f4643281440c626cb7e30444c8c392606167a7f8"><code>f4643281440c</code></a> on 2026-09-23. Anything merged after that is not reflected here.</p>

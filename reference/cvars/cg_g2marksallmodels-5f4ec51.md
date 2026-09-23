@@ -35,8 +35,8 @@ Render marks on all G2 models
 
 | Value | Meaning | Evidence |
 |:--|:--|:--|
-| `0` | Disabled. | [codemp/rd-dedicated/G2_misc.cpp:558](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/codemp/rd-dedicated/G2_misc.cpp#L558) |
-| `1` | Enabled. | [codemp/rd-dedicated/G2_misc.cpp:558](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/codemp/rd-dedicated/G2_misc.cpp#L558) |
+| `0` | Disabled. | [codemp/rd-dedicated/G2_misc.cpp:558](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/rd-dedicated/G2_misc.cpp#L558) |
+| `1` | Enabled. | [codemp/rd-dedicated/G2_misc.cpp:558](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/rd-dedicated/G2_misc.cpp#L558) |
 
 ## Flags
 
@@ -79,18 +79,18 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 ## Evidence
 
-- registration: [codemp/rd-dedicated/G2_misc.cpp:554](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/codemp/rd-dedicated/G2_misc.cpp#L554) (Cvar_Get); condition `defined(_G2_GORE)`
-- registration: [codemp/rd-dedicated/G2_misc.cpp:1503](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/codemp/rd-dedicated/G2_misc.cpp#L1503) (Cvar_Get); condition `defined(_G2_GORE)`
-- registration: [codemp/rd-rend2/G2_misc.cpp:545](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/codemp/rd-rend2/G2_misc.cpp#L545) (Cvar_Get); condition `defined(_G2_GORE)`
-- registration: [codemp/rd-rend2/G2_misc.cpp:1485](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/codemp/rd-rend2/G2_misc.cpp#L1485) (Cvar_Get); condition `defined(_G2_GORE)`
-- registration: [codemp/rd-vanilla/G2_misc.cpp:554](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/codemp/rd-vanilla/G2_misc.cpp#L554) (Cvar_Get); condition `defined(_G2_GORE)`
-- registration: [codemp/rd-vanilla/G2_misc.cpp:1504](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/codemp/rd-vanilla/G2_misc.cpp#L1504) (Cvar_Get); condition `defined(_G2_GORE)`
-- registration: [codemp/rd-vulkan/G2_misc.cpp:562](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/codemp/rd-vulkan/G2_misc.cpp#L562) (Cvar_Get); condition `defined(_G2_GORE)`
-- registration: [codemp/rd-vulkan/G2_misc.cpp:1569](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/codemp/rd-vulkan/G2_misc.cpp#L1569) (Cvar_Get); condition `defined(_G2_GORE)`
-- behavior: [codemp/rd-dedicated/G2_misc.cpp:558](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/codemp/rd-dedicated/G2_misc.cpp#L558)
-- behavior: [codemp/rd-dedicated/G2_misc.cpp:1507](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/codemp/rd-dedicated/G2_misc.cpp#L1507)
-- behavior: [codemp/rd-rend2/G2_misc.cpp:549](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/codemp/rd-rend2/G2_misc.cpp#L549)
-- behavior: [codemp/rd-rend2/G2_misc.cpp:1489](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/codemp/rd-rend2/G2_misc.cpp#L1489)
-- behavior: [codemp/rd-vanilla/G2_misc.cpp:558](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/codemp/rd-vanilla/G2_misc.cpp#L558)
+- registration: [codemp/rd-dedicated/G2_misc.cpp:554](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/rd-dedicated/G2_misc.cpp#L554) (Cvar_Get); condition `defined(_G2_GORE)`
+- registration: [codemp/rd-dedicated/G2_misc.cpp:1503](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/rd-dedicated/G2_misc.cpp#L1503) (Cvar_Get); condition `defined(_G2_GORE)`
+- registration: [codemp/rd-rend2/G2_misc.cpp:545](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/rd-rend2/G2_misc.cpp#L545) (Cvar_Get); condition `defined(_G2_GORE)`
+- registration: [codemp/rd-rend2/G2_misc.cpp:1485](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/rd-rend2/G2_misc.cpp#L1485) (Cvar_Get); condition `defined(_G2_GORE)`
+- registration: [codemp/rd-vanilla/G2_misc.cpp:554](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/rd-vanilla/G2_misc.cpp#L554) (Cvar_Get); condition `defined(_G2_GORE)`
+- registration: [codemp/rd-vanilla/G2_misc.cpp:1504](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/rd-vanilla/G2_misc.cpp#L1504) (Cvar_Get); condition `defined(_G2_GORE)`
+- registration: [codemp/rd-vulkan/G2_misc.cpp:562](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/rd-vulkan/G2_misc.cpp#L562) (Cvar_Get); condition `defined(_G2_GORE)`
+- registration: [codemp/rd-vulkan/G2_misc.cpp:1569](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/rd-vulkan/G2_misc.cpp#L1569) (Cvar_Get); condition `defined(_G2_GORE)`
+- behavior: [codemp/rd-dedicated/G2_misc.cpp:558](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/rd-dedicated/G2_misc.cpp#L558)
+- behavior: [codemp/rd-dedicated/G2_misc.cpp:1507](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/rd-dedicated/G2_misc.cpp#L1507)
+- behavior: [codemp/rd-rend2/G2_misc.cpp:549](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/rd-rend2/G2_misc.cpp#L549)
+- behavior: [codemp/rd-rend2/G2_misc.cpp:1489](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/rd-rend2/G2_misc.cpp#L1489)
+- behavior: [codemp/rd-vanilla/G2_misc.cpp:558](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/rd-vanilla/G2_misc.cpp#L558)
 
-<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/77d84176b3b94356d189a4420e1bc5e68c88e1ea"><code>77d84176b3b9</code></a> on 2026-09-23. Anything merged after that is not reflected here.</p>
+<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/f4643281440c626cb7e30444c8c392606167a7f8"><code>f4643281440c</code></a> on 2026-09-23. Anything merged after that is not reflected here.</p>

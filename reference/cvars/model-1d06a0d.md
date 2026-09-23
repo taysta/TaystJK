@@ -25,7 +25,7 @@ Player model
 | Confidence | `high` |
 | Added | 2013-04-08 in [`14cea1563`](https://github.com/taysta/TaystJK/commit/14cea1563762076974bee277afadbd5bf234c494) ([how to compare this against your build](/TaystJK/features/whats-new/#how-to-tell-what-your-build-has)) |
 | In-game xdocs | No |
-| In-game menu | Yes: [ingame_player.menu:194](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/assets/japro/ui/jamp/ingame_player.menu#L194), [ingame_player.menu:388](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/assets/japro/ui/jamp/ingame_player.menu#L388), [ingame_player.menu:490](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/assets/japro/ui/jamp/ingame_player.menu#L490) |
+| In-game menu | Yes: [ingame_player.menu:194](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/assets/japro/ui/jamp/ingame_player.menu#L194), [ingame_player.menu:388](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/assets/japro/ui/jamp/ingame_player.menu#L388), [ingame_player.menu:490](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/assets/japro/ui/jamp/ingame_player.menu#L490) |
 | Default | `kyle` <span class="meta-chip">from DEFAULT_MODEL</span> |
 | Value type | `string` |
 | Restart | No latch flag is registered. |
@@ -70,12 +70,12 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 ## Evidence
 
-- registration: [codemp/cgame/cg_xcvar.h:378](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/codemp/cgame/cg_xcvar.h#L378) (XCVAR_DEF)
-- registration: [codemp/client/cl_main.cpp:3421](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/codemp/client/cl_main.cpp#L3421) (Cvar_Get)
-- behavior: [codemp/cgame/cg_ents.c:2621](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/codemp/cgame/cg_ents.c#L2621)
-- behavior: [codemp/botlib/be_aas_reach.cpp:233](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/codemp/botlib/be_aas_reach.cpp#L233)
-- behavior: [codemp/botlib/be_aas_reach.cpp:2963](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/codemp/botlib/be_aas_reach.cpp#L2963)
-- behavior: [codemp/botlib/be_aas_reach.cpp:3298](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/codemp/botlib/be_aas_reach.cpp#L3298)
-- behavior: [codemp/botlib/be_aas_reach.cpp:3530](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/codemp/botlib/be_aas_reach.cpp#L3530)
+- registration: [codemp/cgame/cg_xcvar.h:378](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/cgame/cg_xcvar.h#L378) (XCVAR_DEF)
+- registration: [codemp/client/cl_main.cpp:3421](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/client/cl_main.cpp#L3421) (Cvar_Get)
+- behavior: [codemp/cgame/cg_ents.c:2621](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/cgame/cg_ents.c#L2621)
+- behavior: [codemp/botlib/be_aas_reach.cpp:233](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/botlib/be_aas_reach.cpp#L233)
+- behavior: [codemp/botlib/be_aas_reach.cpp:2963](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/botlib/be_aas_reach.cpp#L2963)
+- behavior: [codemp/botlib/be_aas_reach.cpp:3298](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/botlib/be_aas_reach.cpp#L3298)
+- behavior: [codemp/botlib/be_aas_reach.cpp:3530](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/botlib/be_aas_reach.cpp#L3530)
 
-<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/77d84176b3b94356d189a4420e1bc5e68c88e1ea"><code>77d84176b3b9</code></a> on 2026-09-23. Anything merged after that is not reflected here.</p>
+<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/f4643281440c626cb7e30444c8c392606167a7f8"><code>f4643281440c</code></a> on 2026-09-23. Anything merged after that is not reflected here.</p>
