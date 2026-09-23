@@ -84,7 +84,7 @@ Inside a long description, the helpers mirror what a reader sees:
 
 ## Coverage
 
-117 of 1,441 cvars have an entry. The [console reference](/TaystJK/reference/) tracks this
+{{ site.data.reference_stats.cvars_with_xdocs }} of {{ site.data.reference_stats.cvars }} cvars have an entry. The [console reference](/TaystJK/reference/) tracks this
 per entry: each detail page shows an **xdocs** badge, and the search filters include *Has
 xdocs entry* and *Missing from xdocs*, so the gap is a list you can work from rather than a
 guess.

@@ -1331,6 +1331,40 @@ def static_index_page(cvars: list[dict[str, Any]], commands: list[dict[str, Any]
     return "\n".join(lines)
 
 
+def reference_stats(cvars: list[dict[str, Any]], commands: list[dict[str, Any]]) -> dict[str, Any]:
+    """Figures the hand-written pages quote, read there as `site.data.reference_stats`.
+
+    Counts are pre-formatted strings because Liquid has no thousands separator. The
+    definitions match the audit page's, so a page and the audit never disagree.
+    """
+    entries = cvars + commands
+    origins = Counter(entry["origin"]["source"] for entry in entries)
+    by_origin = {
+        origin: {
+            "label": ORIGIN_LABELS.get(origin, origin),
+            "count": f"{count:,}",
+            "modules": {
+                module: f"{module_count:,}"
+                for module, module_count in Counter(
+                    entry["module"] for entry in entries if entry["origin"]["source"] == origin
+                ).most_common()
+            },
+        }
+        for origin, count in origins.most_common()
+    }
+    return {
+        "entries": f"{len(entries):,}",
+        "cvars": f"{len(cvars):,}",
+        "commands": f"{len(commands):,}",
+        "needs_review": f"{sum(entry['status'] != 'documented' for entry in entries):,}",
+        "provenance_needs_review": f"{sum(entry['origin']['confidence'] != 'high' for entry in entries):,}",
+        "cvars_with_xdocs": f"{sum(bool(entry.get('xdocs')) for entry in cvars):,}",
+        "cvars_in_menus": f"{sum(bool(entry.get('menu_entries')) for entry in cvars):,}",
+        "origins": [{"id": origin, **fields} for origin, fields in by_origin.items()],
+        "by_origin": by_origin,
+    }
+
+
 def home_page(cvars: list[dict[str, Any]], commands: list[dict[str, Any]]) -> str:
     entries = cvars + commands
     total_count = len(entries)
@@ -1643,6 +1677,7 @@ def main() -> None:
     refs = load(Path("_data/reference-meta.json"))["upstream_commits"]
 
     write(Path("index.md"), home_page(cvars, commands))
+    write(Path("_data/reference_stats.json"), json.dumps(reference_stats(cvars, commands), indent=2))
     emoji, emoji_warnings = emoji_page(cvars[0]["source_commit"])
     write(Path("features/emoji.md"), emoji)
     for warning in emoji_warnings:

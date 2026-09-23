@@ -24,7 +24,7 @@ This disclosure applies to the wiki content. It does not mean that the TaystJK s
 
 The aim is that you never have to take a page's word for anything.
 
-**The [console reference](/TaystJK/reference/) is not written, it is extracted.** All 2,014
+**The [console reference](/TaystJK/reference/) is not written, it is extracted.** All {{ site.data.reference_stats.entries }}
 cvars and commands are parsed out of the engine source, and each entry links to the exact
 line that registers it. Origin is resolved from the commit history of every upstream this
 fork descends from, rather than assumed. Nothing there is an AI summary of what a cvar
@@ -35,8 +35,8 @@ line in GitHub's blame view at a pinned commit, so the claim can be checked and 
 attached to the code it came from. Where a page relies on someone else's documentation it
 says whose, rather than absorbing it.
 
-**What could not be verified is marked rather than guessed at.** 1,653 of the 2,014 entries
-carry a *needs review* status, and 775 have only medium-confidence provenance. Those figures
+**What could not be verified is marked rather than guessed at.** {{ site.data.reference_stats.needs_review }} of the {{ site.data.reference_stats.entries }} entries
+carry a *needs review* status, and {{ site.data.reference_stats.provenance_needs_review }} have only medium-confidence provenance. Those figures
 are published on the [audit page](/TaystJK/reference/audit/) instead of being rounded away.
 When a page cannot answer something from source, the convention is to leave a visible note
 saying so rather than write a plausible sentence.

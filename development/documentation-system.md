@@ -22,7 +22,8 @@ The site lives on the `gh-pages` branch; the engine lives on `master`. The pipel
 
 **Never edit these by hand.** They are rewritten wholesale:
 
-- `_data/cvars.json`, `_data/commands.json`, `_data/reference-meta.json`
+- `_data/cvars.json`, `_data/commands.json`, `_data/reference-meta.json`,
+  `_data/reference_stats.json`
 - `reference/cvars/*.md`, `reference/commands/*.md`
 - `reference/{all,audit,categories,features,modules,origins,removed}.md`
 - `features/whats-new.md`, `features/emoji.md`, `assets/data/catalog.json`
@@ -31,6 +32,10 @@ The site lives on the `gh-pages` branch; the engine lives on `master`. The pipel
 Everything else is hand-written: the guides, the Features pages, this page.
 `check_generated.py` fails if a generated file has been edited, so a mistake here is caught
 rather than silently lost.
+
+Hand-written pages that quote a count from the reference read it from
+`_data/reference_stats.json` rather than typing it, so the figure changes when the
+reference does.
 
 ## The pipeline
 

@@ -8,11 +8,35 @@ import re
 import subprocess
 from pathlib import Path
 
-from generate_docs import collection_slug, compact_catalog_entry, home_page, resolve_url, slug
+from generate_docs import collection_slug, compact_catalog_entry, home_page, reference_stats, resolve_url, slug
 
 
 ROOT = Path(".")
 LINK = re.compile(r"(?:\]\(|href=[\"'])(/TaystJK/[^)\"'#?]*)")
+STATS_KEY = re.compile(r"site\.data\.reference_stats((?:\.\w+)+)")
+
+
+def stats_errors(page: Path, text: str, stats: dict) -> list:
+    """A misspelt key renders as nothing, so check every figure a page quotes exists."""
+    errors = []
+    for match in STATS_KEY.finditer(text):
+        value = stats
+        for key in match.group(1).strip(".").split("."):
+            value = value.get(key) if isinstance(value, dict) else None
+        if value is None:
+            errors.append(f"unknown reference_stats key in {page}: {match.group(0)}")
+    return errors
+
+
+def stats_claim_errors(stats: dict) -> list:
+    """Prose around the generated figures that the figures themselves can falsify."""
+    ranked = [origin["id"] for origin in stats.get("origins", [])]
+    if ranked[:2] != ["basejka", "japro"]:
+        return [
+            "index.md and overview.md call jaPRO the largest source after the base game, "
+            f"but the origins now rank {ranked[:3]}"
+        ]
+    return []
 
 
 def missing_description_errors() -> list:
@@ -140,6 +164,11 @@ def main() -> None:
     expected_catalog = [compact_catalog_entry(entry) for entry in datasets["cvar"] + datasets["command"]]
     if catalog != expected_catalog:
         errors.append("assets/data/catalog.json differs from the compact reference records")
+    stats_path = Path("_data/reference_stats.json")
+    stats = json.loads(stats_path.read_text()) if stats_path.exists() else {}
+    if stats != reference_stats(datasets["cvar"], datasets["command"]):
+        errors.append("_data/reference_stats.json differs from the reference records")
+    errors.extend(stats_claim_errors(stats))
 
     retired_pages = [Path("cvars.md"), Path("commands.md"), Path("reference/renderers.md"), *Path("reference/renderers").glob("*.md")]
     for page in retired_pages:
@@ -154,7 +183,7 @@ def main() -> None:
         Path("overview.md"), Path("glossary.md"),
         Path("troubleshooting.md"), Path("where-to-report.md"),
         Path("mod-compatibility.md"), Path("devlog.md"), Path("licensing.md"),
-        Path("help.md"), Path("ai-disclosure.md"),
+        Path("help.md"), Path("ai-disclosure.md"), Path("404.md"),
         *Path("_devlog").glob("*.md"),
     ]
     for page in pages:
@@ -166,6 +195,7 @@ def main() -> None:
             if resolve_url(url) is None:
                 errors.append(f"broken internal link in {page}: {url}")
         errors.extend(tab_panel_errors(page, text))
+        errors.extend(stats_errors(page, text, stats))
 
     errors.extend(missing_description_errors())
 

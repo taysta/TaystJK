@@ -114,12 +114,12 @@ Use `XDOCS_CMD_DEF` for a command, and the `BITFLAG` and `KEYVALUE` variants for
 shaped that way. They print a header explaining how to combine or format values, which is
 exactly what a reader cannot guess.
 
-Only 117 of 1,441 cvars have an entry today, so this is a backlog rather than a rule that
+Only {{ site.data.reference_stats.cvars_with_xdocs }} of {{ site.data.reference_stats.cvars }} cvars have an entry today, so this is a backlog rather than a rule that
 has always been kept. New ones should have one.
 
 ### Menu entries
 
-229 cvars are reachable from the in-game menus, defined under
+{{ site.data.reference_stats.cvars_in_menus }} cvars are reachable from the in-game menus, defined under
 `assets/japro/ui/jamp/`. If your cvar is something a player would plausibly want to change
 without the console, add it there too. If it is a developer or diagnostic setting, do not.
 

@@ -36,15 +36,15 @@ The [glossary](/TaystJK/glossary/) defines the terms both halves assume.
 ## What jaPRO is
 
 jaPRO is a Jedi Academy mod, and the single largest source of what this client can do:
-**458 of the 2,014** entries in the reference originate there, more than any project other
+**{{ site.data.reference_stats.by_origin.japro.count }} of the {{ site.data.reference_stats.entries }}** entries in the reference originate there, more than any project other
 than the base game itself.
 
 **TaystJK bundles both halves of jaPRO**, not just the client side. The build produces the
 client-side gamecode (`cgame`) *and* the server-side gamecode (`jampgame`), along with the
 UI and the engine
 ([`CMakeLists.txt`](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/CMakeLists.txt#L42)).
-The split shows in the reference: of those 458 entries, 261 are in the `cgame` module and
-**190 are in `game`**, the module that decides the rules.
+The split shows in the reference: of those {{ site.data.reference_stats.by_origin.japro.count }} entries, {{ site.data.reference_stats.by_origin.japro.modules.cgame }} are in the `cgame` module and
+**{{ site.data.reference_stats.by_origin.japro.modules.game }} are in `game`**, the module that decides the rules.
 
 | What you get | Where it lives | What it gives you |
 |:--|:--|:--|

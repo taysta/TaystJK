@@ -30,21 +30,13 @@ code is not permitted.
 
 TaystJK is a fork several generations deep, and almost nothing here originated with it.
 The [console reference](/TaystJK/reference/) records an **origin** for every one of its
-2,014 entries: the project where that cvar or command first appeared, resolved from commit
+{{ site.data.reference_stats.entries }} entries: the project where that cvar or command first appeared, resolved from commit
 history rather than assumed:
 
 | Origin | Entries |
 |:--|--:|
-| Base Jedi Academy | 1,024 |
-| jaPRO | 458 |
-| OpenJK | 167 |
-| EternalJK | 148 |
-| rend2 | 90 |
-| TaystJK | 79 |
-| Vulkan | 24 |
-| JK2MV | 14 |
-| NewJK / NewMod | 10 |
-
+{% for origin in site.data.reference_stats.origins %}| {{ origin.label }} | {{ origin.count }} |
+{% endfor %}
 The method, including how attribution is decided when a change moved between projects, is
 on [sources and methodology](/TaystJK/reference/sources/). Origin means *first appeared
 there*, not *only exists there*.

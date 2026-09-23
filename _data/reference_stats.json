@@ -1,0 +1,212 @@
+{
+  "entries": "2,014",
+  "cvars": "1,441",
+  "commands": "573",
+  "needs_review": "1,651",
+  "provenance_needs_review": "774",
+  "cvars_with_xdocs": "117",
+  "cvars_in_menus": "229",
+  "origins": [
+    {
+      "id": "basejka",
+      "label": "Base Jedi Academy",
+      "count": "1,024",
+      "modules": {
+        "engine-client": "232",
+        "cgame": "210",
+        "ui": "144",
+        "renderer": "143",
+        "game": "140",
+        "engine-server": "78",
+        "engine-shared": "77"
+      }
+    },
+    {
+      "id": "japro",
+      "label": "jaPRO",
+      "count": "481",
+      "modules": {
+        "cgame": "276",
+        "game": "198",
+        "engine-client": "3",
+        "ui": "2",
+        "renderer": "1",
+        "engine-server": "1"
+      }
+    },
+    {
+      "id": "openjk",
+      "label": "OpenJK",
+      "count": "172",
+      "modules": {
+        "engine-shared": "41",
+        "game": "32",
+        "engine-client": "30",
+        "engine-server": "28",
+        "cgame": "15",
+        "renderer": "14",
+        "ui": "12"
+      }
+    },
+    {
+      "id": "eternaljk",
+      "label": "EternalJK",
+      "count": "122",
+      "modules": {
+        "ui": "37",
+        "cgame": "30",
+        "engine-client": "28",
+        "engine-server": "13",
+        "engine-shared": "8",
+        "renderer": "6"
+      }
+    },
+    {
+      "id": "rend2",
+      "label": "rend2",
+      "count": "90",
+      "modules": {
+        "renderer": "78",
+        "ui": "11",
+        "engine-shared": "1"
+      }
+    },
+    {
+      "id": "taystjk",
+      "label": "TaystJK",
+      "count": "73",
+      "modules": {
+        "cgame": "60",
+        "engine-client": "10",
+        "engine-shared": "2",
+        "engine-server": "1"
+      }
+    },
+    {
+      "id": "vulkan",
+      "label": "Vulkan",
+      "count": "24",
+      "modules": {
+        "renderer": "24"
+      }
+    },
+    {
+      "id": "jk2mv",
+      "label": "JK2MV",
+      "count": "16",
+      "modules": {
+        "engine-client": "6",
+        "engine-server": "6",
+        "engine-shared": "2",
+        "cgame": "1",
+        "renderer": "1"
+      }
+    },
+    {
+      "id": "newjk",
+      "label": "NewJK / NewMod",
+      "count": "12",
+      "modules": {
+        "engine-shared": "11",
+        "engine-client": "1"
+      }
+    }
+  ],
+  "by_origin": {
+    "basejka": {
+      "label": "Base Jedi Academy",
+      "count": "1,024",
+      "modules": {
+        "engine-client": "232",
+        "cgame": "210",
+        "ui": "144",
+        "renderer": "143",
+        "game": "140",
+        "engine-server": "78",
+        "engine-shared": "77"
+      }
+    },
+    "japro": {
+      "label": "jaPRO",
+      "count": "481",
+      "modules": {
+        "cgame": "276",
+        "game": "198",
+        "engine-client": "3",
+        "ui": "2",
+        "renderer": "1",
+        "engine-server": "1"
+      }
+    },
+    "openjk": {
+      "label": "OpenJK",
+      "count": "172",
+      "modules": {
+        "engine-shared": "41",
+        "game": "32",
+        "engine-client": "30",
+        "engine-server": "28",
+        "cgame": "15",
+        "renderer": "14",
+        "ui": "12"
+      }
+    },
+    "eternaljk": {
+      "label": "EternalJK",
+      "count": "122",
+      "modules": {
+        "ui": "37",
+        "cgame": "30",
+        "engine-client": "28",
+        "engine-server": "13",
+        "engine-shared": "8",
+        "renderer": "6"
+      }
+    },
+    "rend2": {
+      "label": "rend2",
+      "count": "90",
+      "modules": {
+        "renderer": "78",
+        "ui": "11",
+        "engine-shared": "1"
+      }
+    },
+    "taystjk": {
+      "label": "TaystJK",
+      "count": "73",
+      "modules": {
+        "cgame": "60",
+        "engine-client": "10",
+        "engine-shared": "2",
+        "engine-server": "1"
+      }
+    },
+    "vulkan": {
+      "label": "Vulkan",
+      "count": "24",
+      "modules": {
+        "renderer": "24"
+      }
+    },
+    "jk2mv": {
+      "label": "JK2MV",
+      "count": "16",
+      "modules": {
+        "engine-client": "6",
+        "engine-server": "6",
+        "engine-shared": "2",
+        "cgame": "1",
+        "renderer": "1"
+      }
+    },
+    "newjk": {
+      "label": "NewJK / NewMod",
+      "count": "12",
+      "modules": {
+        "engine-shared": "11",
+        "engine-client": "1"
+      }
+    }
+  }
+}

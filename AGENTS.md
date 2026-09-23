@@ -53,8 +53,10 @@ ownership and change its inputs or rendering code instead. Its outputs include:
 - The public reference JSON copies and compact catalog under `assets/data/`.
 
 `_data/cvars.json`, `_data/commands.json`, and `_data/reference-meta.json` come from the
-reference pipeline. `_data/page_updated.json` comes from `page_dates.py`. Update their
-source or generator rather than editing those files directly.
+reference pipeline. `_data/reference_stats.json` comes from `generate_docs.py`; hand-written
+pages quote reference counts from it instead of typing them. `_data/page_updated.json`
+comes from `page_dates.py`. Update their source or generator rather than editing those
+files directly.
 
 For editorial changes to what's-new rows, use `tools/cvar_audit/whats-new-overrides.json`
 as described in CONVENTIONS.md. For rendering or editorial-input changes that do not

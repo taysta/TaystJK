@@ -198,6 +198,11 @@ Prose style, matching `install.md` and `server-hosting.md`:
 - State constraints as constraints ("do not copy only the executable, because …") and give
   the reason.
 - Do not restate a cvar table the generated reference already produces. Link to the entry.
+- Do not type a count taken from the reference, such as how many entries there are or how
+  many came from jaPRO. Quote it from `_data/reference_stats.json`, for example
+  `{{ site.data.reference_stats.entries }}`, so it follows the next regeneration. If the
+  figure you need is not there, add it to `reference_stats()` in `generate_docs.py`.
+  Devlog posts are the exception: they record the numbers as of their date.
 
 ## 6. Source links
 
