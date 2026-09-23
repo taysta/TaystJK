@@ -25,7 +25,7 @@ Selects crosshair-name coloring. Zero strips player color codes and uses green f
 | Derivation | `mixed` |
 | Confidence | `high` |
 | Added | 2025-12-11 in [`24fb55d23`](https://github.com/taysta/TaystJK/commit/24fb55d23bfe18d3bcc3315232b310469cd23705) ([how to compare this against your build](/TaystJK/features/whats-new/#how-to-tell-what-your-build-has)) |
-| In-game xdocs | Yes: [codemp/ui/ui_xdocs.h:595](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/codemp/ui/ui_xdocs.h#L595) |
+| In-game xdocs | Yes: [codemp/ui/ui_xdocs.h:595](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/ui/ui_xdocs.h#L595) |
 | In-game menu | No |
 | Default | `1` |
 | Value type | `enum` |
@@ -37,8 +37,8 @@ Selects crosshair-name coloring. Zero strips player color codes and uses green f
 
 | Value | Meaning | Evidence |
 |:--|:--|:--|
-| `0` | Use green/red ally/enemy colors and sanitize name color codes. | [codemp/cgame/cg_draw.c:9530](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/codemp/cgame/cg_draw.c#L9530) |
-| `1` | Preserve color codes in player names. | [codemp/cgame/cg_draw.c:9596](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/codemp/cgame/cg_draw.c#L9596) |
+| `0` | Use green/red ally/enemy colors and sanitize name color codes. | [codemp/cgame/cg_draw.c:9530](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/cgame/cg_draw.c#L9530) |
+| `1` | Preserve color codes in player names. | [codemp/cgame/cg_draw.c:9596](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/cgame/cg_draw.c#L9596) |
 
 ## Flags
 
@@ -73,13 +73,13 @@ Authored dates come from the exact registration's first content commit, PR dates
 
 ## Evidence
 
-- registration: [codemp/cgame/cg_xcvar.h:275](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/codemp/cgame/cg_xcvar.h#L275) (XCVAR_DEF)
-- registration: [codemp/ui/ui_xcvar.h:41](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/codemp/ui/ui_xcvar.h#L41) (XCVAR_DEF)
-- behavior: [codemp/cgame/cg_draw.c:9530](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/codemp/cgame/cg_draw.c#L9530)
-- behavior: [codemp/cgame/cg_draw.c:9587](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/codemp/cgame/cg_draw.c#L9587)
-- behavior: [codemp/cgame/cg_draw.c:9594](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/codemp/cgame/cg_draw.c#L9594)
-- behavior: [codemp/cgame/cg_draw.c:9604](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/codemp/cgame/cg_draw.c#L9604)
-- behavior: [codemp/ui/ui_xdocs.h:595](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/codemp/ui/ui_xdocs.h#L595)
-- documentation: [codemp/ui/ui_xdocs.h:595](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/codemp/ui/ui_xdocs.h#L595)
+- registration: [codemp/cgame/cg_xcvar.h:275](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/cgame/cg_xcvar.h#L275) (XCVAR_DEF)
+- registration: [codemp/ui/ui_xcvar.h:41](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/ui/ui_xcvar.h#L41) (XCVAR_DEF)
+- behavior: [codemp/cgame/cg_draw.c:9530](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/cgame/cg_draw.c#L9530)
+- behavior: [codemp/cgame/cg_draw.c:9587](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/cgame/cg_draw.c#L9587)
+- behavior: [codemp/cgame/cg_draw.c:9594](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/cgame/cg_draw.c#L9594)
+- behavior: [codemp/cgame/cg_draw.c:9604](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/cgame/cg_draw.c#L9604)
+- behavior: [codemp/ui/ui_xdocs.h:595](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/ui/ui_xdocs.h#L595)
+- documentation: [codemp/ui/ui_xdocs.h:595](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/ui/ui_xdocs.h#L595)
 
-<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/77d84176b3b94356d189a4420e1bc5e68c88e1ea"><code>77d84176b3b9</code></a> on 2026-09-23. Anything merged after that is not reflected here.</p>
+<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/f4643281440c626cb7e30444c8c392606167a7f8"><code>f4643281440c</code></a> on 2026-09-23. Anything merged after that is not reflected here.</p>

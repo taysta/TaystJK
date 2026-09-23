@@ -29,13 +29,13 @@ Controls `ui_r_ssao` in the ui module. Consult the cited behavior reads before r
 | Confidence | `high` |
 | Added | 2023-10-14 in [`aa48e28a7`](https://github.com/taysta/TaystJK/commit/aa48e28a7d4ffa414d33f0815542c29f8aae8d75) ([how to compare this against your build](/TaystJK/features/whats-new/#how-to-tell-what-your-build-has)) |
 | In-game xdocs | No |
-| In-game menu | Yes: [ingame_setup.menu:2111](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/assets/japro/ui/jamp/ingame_setup.menu#L2111), [setup.menu:1901](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/assets/japro/ui/jamp/setup.menu#L1901) |
+| In-game menu | Yes: [ingame_setup.menu:2111](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/assets/japro/ui/jamp/ingame_setup.menu#L2111), [setup.menu:1901](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/assets/japro/ui/jamp/setup.menu#L1901) |
 | Default | `0` |
 | Value type | `int` |
 | Restart | No latch flag is registered. |
 | Cheat protected | No |
 | Player-settable | No; the game writes this value. |
-| Staging copy of | [`r_ssao`](/TaystJK/reference/cvars/r_ssao-5b8c581/); [written through](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/codemp/ui/ui_main.c#L6252), [read back](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/codemp/ui/ui_main.c#L6423) |
+| Staging copy of | [`r_ssao`](/TaystJK/reference/cvars/r_ssao-5b8c581/); [written through](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/ui/ui_main.c#L6252), [read back](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/ui/ui_main.c#L6423) |
 
 ## Values
 
@@ -67,8 +67,8 @@ Authored dates come from the exact registration's first content commit, PR dates
 
 ## Evidence
 
-- registration: [codemp/ui/ui_main.c:6380](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/codemp/ui/ui_main.c#L6380) (Cvar_Register)
-- behavior: [codemp/ui/ui_main.c:6252](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/codemp/ui/ui_main.c#L6252)
-- behavior: [codemp/ui/ui_main.c:6423](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/codemp/ui/ui_main.c#L6423)
+- registration: [codemp/ui/ui_main.c:6380](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/ui/ui_main.c#L6380) (Cvar_Register)
+- behavior: [codemp/ui/ui_main.c:6252](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/ui/ui_main.c#L6252)
+- behavior: [codemp/ui/ui_main.c:6423](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/ui/ui_main.c#L6423)
 
-<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/77d84176b3b94356d189a4420e1bc5e68c88e1ea"><code>77d84176b3b9</code></a> on 2026-09-23. Anything merged after that is not reflected here.</p>
+<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/f4643281440c626cb7e30444c8c392606167a7f8"><code>f4643281440c</code></a> on 2026-09-23. Anything merged after that is not reflected here.</p>

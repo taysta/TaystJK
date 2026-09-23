@@ -38,8 +38,8 @@ Controls `g_saberRealisticCombat` in the game module. Consult the cited behavior
 
 | Value | Meaning | Evidence |
 |:--|:--|:--|
-| `0` | Disabled. | [codemp/game/NPC.c:90](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/codemp/game/NPC.c#L90) |
-| `1` | Enabled. | [codemp/game/NPC.c:90](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/codemp/game/NPC.c#L90) |
+| `0` | Disabled. | [codemp/game/NPC.c:90](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/game/NPC.c#L90) |
+| `1` | Enabled. | [codemp/game/NPC.c:90](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/game/NPC.c#L90) |
 
 ## Flags
 
@@ -67,11 +67,11 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 ## Evidence
 
-- registration: [codemp/game/g_xcvar.h:143](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/codemp/game/g_xcvar.h#L143) (XCVAR_DEF)
-- behavior: [codemp/game/NPC.c:90](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/codemp/game/NPC.c#L90)
-- behavior: [codemp/game/w_saber.c:4161](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/codemp/game/w_saber.c#L4161)
-- behavior: [codemp/game/w_saber.c:4163](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/codemp/game/w_saber.c#L4163)
-- behavior: [codemp/game/NPC_AI_Jedi.c:2290](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/codemp/game/NPC_AI_Jedi.c#L2290)
-- behavior: [codemp/game/NPC_AI_Jedi.c:2319](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/codemp/game/NPC_AI_Jedi.c#L2319)
+- registration: [codemp/game/g_xcvar.h:143](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/game/g_xcvar.h#L143) (XCVAR_DEF)
+- behavior: [codemp/game/NPC.c:90](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/game/NPC.c#L90)
+- behavior: [codemp/game/w_saber.c:4161](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/game/w_saber.c#L4161)
+- behavior: [codemp/game/w_saber.c:4163](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/game/w_saber.c#L4163)
+- behavior: [codemp/game/NPC_AI_Jedi.c:2290](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/game/NPC_AI_Jedi.c#L2290)
+- behavior: [codemp/game/NPC_AI_Jedi.c:2319](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/game/NPC_AI_Jedi.c#L2319)
 
-<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/77d84176b3b94356d189a4420e1bc5e68c88e1ea"><code>77d84176b3b9</code></a> on 2026-09-23. Anything merged after that is not reflected here.</p>
+<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/f4643281440c626cb7e30444c8c392606167a7f8"><code>f4643281440c</code></a> on 2026-09-23. Anything merged after that is not reflected here.</p>

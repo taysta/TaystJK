@@ -26,8 +26,8 @@ Score counter on HUD
 | Derivation | `documented` |
 | Confidence | `medium` |
 | Added | 2018-09-03 in [`bdcd618c6`](https://github.com/taysta/TaystJK/commit/bdcd618c67713b86946b720d791c382d3908d97c) <span class="status-chip">needs review</span> ([how to compare this against your build](/TaystJK/features/whats-new/#how-to-tell-what-your-build-has)) |
-| In-game xdocs | Yes: [codemp/ui/ui_xdocs.h:265](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/codemp/ui/ui_xdocs.h#L265) |
-| In-game menu | Yes: [ingame_setup.menu:4289](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/assets/japro/ui/jamp/ingame_setup.menu#L4289) |
+| In-game xdocs | Yes: [codemp/ui/ui_xdocs.h:265](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/ui/ui_xdocs.h#L265) |
+| In-game menu | Yes: [ingame_setup.menu:4289](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/assets/japro/ui/jamp/ingame_setup.menu#L4289) |
 | Default | `2` |
 | Value type | `enum` |
 | Restart | No latch flag is registered. |
@@ -38,9 +38,9 @@ Score counter on HUD
 
 | Value | Meaning | Evidence |
 |:--|:--|:--|
-| `0` | Score is hidden | [codemp/ui/ui_xdocs.h:265](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/codemp/ui/ui_xdocs.h#L265) |
-| `1` | Score is drawn beside the HUD | [codemp/ui/ui_xdocs.h:266](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/codemp/ui/ui_xdocs.h#L266) |
-| `2` | Score, team score, and bias is drawn | [codemp/ui/ui_xdocs.h:267](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/codemp/ui/ui_xdocs.h#L267) |
+| `0` | Score is hidden | [codemp/ui/ui_xdocs.h:265](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/ui/ui_xdocs.h#L265) |
+| `1` | Score is drawn beside the HUD | [codemp/ui/ui_xdocs.h:266](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/ui/ui_xdocs.h#L266) |
+| `2` | Score, team score, and bias is drawn | [codemp/ui/ui_xdocs.h:267](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/ui/ui_xdocs.h#L267) |
 
 ## Flags
 
@@ -83,12 +83,12 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 ## Evidence
 
-- registration: [codemp/cgame/cg_xcvar.h:84](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/codemp/cgame/cg_xcvar.h#L84) (XCVAR_DEF)
-- behavior: [codemp/cgame/cg_draw.c:1979](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/codemp/cgame/cg_draw.c#L1979)
-- behavior: [codemp/cgame/cg_draw.c:2019](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/codemp/cgame/cg_draw.c#L2019)
-- behavior: [codemp/cgame/cg_draw.c:2088](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/codemp/cgame/cg_draw.c#L2088)
-- behavior: [codemp/cgame/cg_draw.c:2202](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/codemp/cgame/cg_draw.c#L2202)
-- behavior: [codemp/cgame/cg_draw.c:2218](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/codemp/cgame/cg_draw.c#L2218)
-- documentation: [codemp/ui/ui_xdocs.h:265](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/codemp/ui/ui_xdocs.h#L265)
+- registration: [codemp/cgame/cg_xcvar.h:84](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/cgame/cg_xcvar.h#L84) (XCVAR_DEF)
+- behavior: [codemp/cgame/cg_draw.c:1979](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/cgame/cg_draw.c#L1979)
+- behavior: [codemp/cgame/cg_draw.c:2019](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/cgame/cg_draw.c#L2019)
+- behavior: [codemp/cgame/cg_draw.c:2088](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/cgame/cg_draw.c#L2088)
+- behavior: [codemp/cgame/cg_draw.c:2202](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/cgame/cg_draw.c#L2202)
+- behavior: [codemp/cgame/cg_draw.c:2218](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/cgame/cg_draw.c#L2218)
+- documentation: [codemp/ui/ui_xdocs.h:265](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/ui/ui_xdocs.h#L265)
 
-<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/77d84176b3b94356d189a4420e1bc5e68c88e1ea"><code>77d84176b3b9</code></a> on 2026-09-23. Anything merged after that is not reflected here.</p>
+<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/f4643281440c626cb7e30444c8c392606167a7f8"><code>f4643281440c</code></a> on 2026-09-23. Anything merged after that is not reflected here.</p>

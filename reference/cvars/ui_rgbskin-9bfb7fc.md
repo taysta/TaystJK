@@ -29,7 +29,7 @@ Controls `ui_RGBSkin` in the ui module. Consult the cited behavior reads before 
 | Confidence | `medium` |
 | Added | 2018-03-22 in [`852cd1037`](https://github.com/taysta/TaystJK/commit/852cd10374272a0195a05ac15e9b69c2313ecaff) <span class="status-chip">needs review</span> ([how to compare this against your build](/TaystJK/features/whats-new/#how-to-tell-what-your-build-has)) |
 | In-game xdocs | No |
-| In-game menu | Yes: [ingame_player.menu:399](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/assets/japro/ui/jamp/ingame_player.menu#L399), [ingame_player.menu:422](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/assets/japro/ui/jamp/ingame_player.menu#L422), [ingame_player.menu:450](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/assets/japro/ui/jamp/ingame_player.menu#L450) |
+| In-game menu | Yes: [ingame_player.menu:399](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/assets/japro/ui/jamp/ingame_player.menu#L399), [ingame_player.menu:422](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/assets/japro/ui/jamp/ingame_player.menu#L422), [ingame_player.menu:450](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/assets/japro/ui/jamp/ingame_player.menu#L450) |
 | Default | `0` |
 | Value type | `int` |
 | Restart | No latch flag is registered. |
@@ -76,11 +76,11 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 ## Evidence
 
-- registration: [codemp/ui/ui_xcvar.h:161](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/codemp/ui/ui_xcvar.h#L161) (XCVAR_DEF)
-- behavior: [codemp/ui/ui_main.c:8897](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/codemp/ui/ui_main.c#L8897)
-- behavior: [codemp/ui/ui_main.c:8899](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/codemp/ui/ui_main.c#L8899)
-- behavior: [codemp/ui/ui_main.c:8904](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/codemp/ui/ui_main.c#L8904)
-- behavior: [codemp/ui/ui_main.c:8906](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/codemp/ui/ui_main.c#L8906)
-- behavior: [codemp/ui/ui_main.c:8910](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/codemp/ui/ui_main.c#L8910)
+- registration: [codemp/ui/ui_xcvar.h:161](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/ui/ui_xcvar.h#L161) (XCVAR_DEF)
+- behavior: [codemp/ui/ui_main.c:8897](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/ui/ui_main.c#L8897)
+- behavior: [codemp/ui/ui_main.c:8899](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/ui/ui_main.c#L8899)
+- behavior: [codemp/ui/ui_main.c:8904](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/ui/ui_main.c#L8904)
+- behavior: [codemp/ui/ui_main.c:8906](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/ui/ui_main.c#L8906)
+- behavior: [codemp/ui/ui_main.c:8910](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/ui/ui_main.c#L8910)
 
-<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/77d84176b3b94356d189a4420e1bc5e68c88e1ea"><code>77d84176b3b9</code></a> on 2026-09-23. Anything merged after that is not reflected here.</p>
+<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/f4643281440c626cb7e30444c8c392606167a7f8"><code>f4643281440c</code></a> on 2026-09-23. Anything merged after that is not reflected here.</p>

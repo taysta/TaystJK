@@ -57,8 +57,8 @@ Origin: <span class="label ref-origin ref-origin-basejka">Base Jedi Academy</spa
 
 ## Evidence
 
-- registration: [codemp/server/sv_init.cpp:1005](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/codemp/server/sv_init.cpp#L1005) (Cvar_Get)
-- behavior: [codemp/client/cl_parse.cpp:464](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/codemp/client/cl_parse.cpp#L464)
-- behavior: [codemp/server/sv_init.cpp:727](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/codemp/server/sv_init.cpp#L727)
+- registration: [codemp/server/sv_init.cpp:1005](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/server/sv_init.cpp#L1005) (Cvar_Get)
+- behavior: [codemp/client/cl_parse.cpp:464](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/client/cl_parse.cpp#L464)
+- behavior: [codemp/server/sv_init.cpp:727](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/server/sv_init.cpp#L727)
 
-<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/77d84176b3b94356d189a4420e1bc5e68c88e1ea"><code>77d84176b3b9</code></a> on 2026-09-23. Anything merged after that is not reflected here.</p>
+<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/f4643281440c626cb7e30444c8c392606167a7f8"><code>f4643281440c</code></a> on 2026-09-23. Anything merged after that is not reflected here.</p>

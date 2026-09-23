@@ -26,8 +26,8 @@ Enable disruptor spiral effect
 | Derivation | `documented` |
 | Confidence | `medium` |
 | Added | 2022-04-20 in [`1dd571383`](https://github.com/taysta/TaystJK/commit/1dd571383a0d16520e69ce209f8a2d21b2943a62) <span class="status-chip">needs review</span> ([how to compare this against your build](/TaystJK/features/whats-new/#how-to-tell-what-your-build-has)) |
-| In-game xdocs | Yes: [codemp/ui/ui_xdocs.h:350](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/codemp/ui/ui_xdocs.h#L350) |
-| In-game menu | Yes: [ingame_setup.menu:3851](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/assets/japro/ui/jamp/ingame_setup.menu#L3851) |
+| In-game xdocs | Yes: [codemp/ui/ui_xdocs.h:350](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/ui/ui_xdocs.h#L350) |
+| In-game menu | Yes: [ingame_setup.menu:3851](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/assets/japro/ui/jamp/ingame_setup.menu#L3851) |
 | Default | `0` |
 | Value type | `bool` |
 | Restart | No latch flag is registered. |
@@ -38,8 +38,8 @@ Enable disruptor spiral effect
 
 | Value | Meaning | Evidence |
 |:--|:--|:--|
-| `0` | Disabled. | [codemp/cgame/cg_event.c:2858](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/codemp/cgame/cg_event.c#L2858) |
-| `1` | Enabled. | [codemp/cgame/cg_event.c:2858](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/codemp/cgame/cg_event.c#L2858) |
+| `0` | Disabled. | [codemp/cgame/cg_event.c:2858](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/cgame/cg_event.c#L2858) |
+| `1` | Enabled. | [codemp/cgame/cg_event.c:2858](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/cgame/cg_event.c#L2858) |
 
 ## Flags
 
@@ -66,12 +66,12 @@ Authored dates come from the exact registration's first content commit, PR dates
 
 ## Evidence
 
-- registration: [codemp/cgame/cg_xcvar.h:421](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/codemp/cgame/cg_xcvar.h#L421) (XCVAR_DEF)
-- behavior: [codemp/cgame/cg_event.c:2858](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/codemp/cgame/cg_event.c#L2858)
-- behavior: [codemp/cgame/cg_event.c:2896](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/codemp/cgame/cg_event.c#L2896)
-- behavior: [codemp/cgame/cg_weapons.c:2689](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/codemp/cgame/cg_weapons.c#L2689)
-- behavior: [codemp/ui/ui_xdocs.h:344](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/codemp/ui/ui_xdocs.h#L344)
-- behavior: [codemp/ui/ui_xdocs.h:350](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/codemp/ui/ui_xdocs.h#L350)
-- documentation: [codemp/ui/ui_xdocs.h:350](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/codemp/ui/ui_xdocs.h#L350)
+- registration: [codemp/cgame/cg_xcvar.h:421](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/cgame/cg_xcvar.h#L421) (XCVAR_DEF)
+- behavior: [codemp/cgame/cg_event.c:2858](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/cgame/cg_event.c#L2858)
+- behavior: [codemp/cgame/cg_event.c:2896](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/cgame/cg_event.c#L2896)
+- behavior: [codemp/cgame/cg_weapons.c:2689](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/cgame/cg_weapons.c#L2689)
+- behavior: [codemp/ui/ui_xdocs.h:344](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/ui/ui_xdocs.h#L344)
+- behavior: [codemp/ui/ui_xdocs.h:350](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/ui/ui_xdocs.h#L350)
+- documentation: [codemp/ui/ui_xdocs.h:350](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/ui/ui_xdocs.h#L350)
 
-<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/77d84176b3b94356d189a4420e1bc5e68c88e1ea"><code>77d84176b3b9</code></a> on 2026-09-23. Anything merged after that is not reflected here.</p>
+<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/f4643281440c626cb7e30444c8c392606167a7f8"><code>f4643281440c</code></a> on 2026-09-23. Anything merged after that is not reflected here.</p>

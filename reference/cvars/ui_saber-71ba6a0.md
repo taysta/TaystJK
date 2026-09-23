@@ -29,13 +29,13 @@ Controls `ui_saber` in the ui module. Consult the cited behavior reads before re
 | Confidence | `high` |
 | Added | 2013-04-08 in [`14cea1563`](https://github.com/taysta/TaystJK/commit/14cea1563762076974bee277afadbd5bf234c494) ([how to compare this against your build](/TaystJK/features/whats-new/#how-to-tell-what-your-build-has)) |
 | In-game xdocs | No |
-| In-game menu | Yes: [ingame_saber.menu:178](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/assets/japro/ui/jamp/ingame_saber.menu#L178), [ingame_saber.menu:222](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/assets/japro/ui/jamp/ingame_saber.menu#L222), [ingame_saber.menu:266](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/assets/japro/ui/jamp/ingame_saber.menu#L266) |
+| In-game menu | Yes: [ingame_saber.menu:178](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/assets/japro/ui/jamp/ingame_saber.menu#L178), [ingame_saber.menu:222](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/assets/japro/ui/jamp/ingame_saber.menu#L222), [ingame_saber.menu:266](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/assets/japro/ui/jamp/ingame_saber.menu#L266) |
 | Default | `Kyle` <span class="meta-chip">from DEFAULT_SABER</span> |
 | Value type | `string` |
 | Restart | No latch flag is registered. |
 | Cheat protected | No |
 | Player-settable | No; the game writes this value. |
-| Staging copy of | [`saber1`](/TaystJK/reference/cvars/saber1-5e6205e/); [written through](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/codemp/ui/ui_main.c#L6784), [read back](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/codemp/ui/ui_main.c#L6982) |
+| Staging copy of | [`saber1`](/TaystJK/reference/cvars/saber1-5e6205e/); [written through](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/ui/ui_main.c#L6784), [read back](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/ui/ui_main.c#L6982) |
 
 ## Values
 
@@ -77,11 +77,11 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 ## Evidence
 
-- registration: [codemp/ui/ui_xcvar.h:121](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/codemp/ui/ui_xcvar.h#L121) (XCVAR_DEF)
-- behavior: [codemp/ui/ui_main.c:6810](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/codemp/ui/ui_main.c#L6810)
-- behavior: [codemp/ui/ui_main.c:6784](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/codemp/ui/ui_main.c#L6784)
-- behavior: [codemp/ui/ui_main.c:6833](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/codemp/ui/ui_main.c#L6833)
-- behavior: [codemp/ui/ui_main.c:6840](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/codemp/ui/ui_main.c#L6840)
-- behavior: [codemp/ui/ui_main.c:6982](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/codemp/ui/ui_main.c#L6982)
+- registration: [codemp/ui/ui_xcvar.h:121](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/ui/ui_xcvar.h#L121) (XCVAR_DEF)
+- behavior: [codemp/ui/ui_main.c:6810](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/ui/ui_main.c#L6810)
+- behavior: [codemp/ui/ui_main.c:6784](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/ui/ui_main.c#L6784)
+- behavior: [codemp/ui/ui_main.c:6833](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/ui/ui_main.c#L6833)
+- behavior: [codemp/ui/ui_main.c:6840](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/ui/ui_main.c#L6840)
+- behavior: [codemp/ui/ui_main.c:6982](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/ui/ui_main.c#L6982)
 
-<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/77d84176b3b94356d189a4420e1bc5e68c88e1ea"><code>77d84176b3b9</code></a> on 2026-09-23. Anything merged after that is not reflected here.</p>
+<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/f4643281440c626cb7e30444c8c392606167a7f8"><code>f4643281440c</code></a> on 2026-09-23. Anything merged after that is not reflected here.</p>

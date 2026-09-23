@@ -38,8 +38,8 @@ Controls `cg_repeaterOrb` in the cgame module. Consult the cited behavior reads 
 
 | Value | Meaning | Evidence |
 |:--|:--|:--|
-| `0` | Disabled. | [codemp/cgame/fx_heavyrepeater.c:150](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/codemp/cgame/fx_heavyrepeater.c#L150) |
-| `1` | Enabled. | [codemp/cgame/fx_heavyrepeater.c:150](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/codemp/cgame/fx_heavyrepeater.c#L150) |
+| `0` | Disabled. | [codemp/cgame/fx_heavyrepeater.c:150](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/cgame/fx_heavyrepeater.c#L150) |
+| `1` | Enabled. | [codemp/cgame/fx_heavyrepeater.c:150](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/cgame/fx_heavyrepeater.c#L150) |
 
 ## Flags
 
@@ -65,7 +65,7 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 ## Evidence
 
-- registration: [codemp/cgame/cg_xcvar.h:327](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/codemp/cgame/cg_xcvar.h#L327) (XCVAR_DEF)
-- behavior: [codemp/cgame/fx_heavyrepeater.c:150](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/codemp/cgame/fx_heavyrepeater.c#L150)
+- registration: [codemp/cgame/cg_xcvar.h:327](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/cgame/cg_xcvar.h#L327) (XCVAR_DEF)
+- behavior: [codemp/cgame/fx_heavyrepeater.c:150](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/cgame/fx_heavyrepeater.c#L150)
 
-<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/77d84176b3b94356d189a4420e1bc5e68c88e1ea"><code>77d84176b3b9</code></a> on 2026-09-23. Anything merged after that is not reflected here.</p>
+<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/f4643281440c626cb7e30444c8c392606167a7f8"><code>f4643281440c</code></a> on 2026-09-23. Anything merged after that is not reflected here.</p>

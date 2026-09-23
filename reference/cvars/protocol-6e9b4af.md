@@ -65,11 +65,11 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 ## Evidence
 
-- registration: [codemp/server/sv_init.cpp:979](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/codemp/server/sv_init.cpp#L979) (Cvar_Get)
-- behavior: [codemp/ui/ui_main.c:12396](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/codemp/ui/ui_main.c#L12396)
-- behavior: [codemp/server/sv_main.cpp:542](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/codemp/server/sv_main.cpp#L542)
-- behavior: [codemp/cgame/cg_servercmds.c:289](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/codemp/cgame/cg_servercmds.c#L289)
-- behavior: [codemp/game/NPC_spawn.c:615](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/codemp/game/NPC_spawn.c#L615)
-- behavior: [codemp/game/NPC_spawn.c:4096](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/codemp/game/NPC_spawn.c#L4096)
+- registration: [codemp/server/sv_init.cpp:979](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/server/sv_init.cpp#L979) (Cvar_Get)
+- behavior: [codemp/ui/ui_main.c:12396](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/ui/ui_main.c#L12396)
+- behavior: [codemp/server/sv_main.cpp:542](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/server/sv_main.cpp#L542)
+- behavior: [codemp/cgame/cg_servercmds.c:289](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/cgame/cg_servercmds.c#L289)
+- behavior: [codemp/game/NPC_spawn.c:615](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/game/NPC_spawn.c#L615)
+- behavior: [codemp/game/NPC_spawn.c:4096](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/game/NPC_spawn.c#L4096)
 
-<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/77d84176b3b94356d189a4420e1bc5e68c88e1ea"><code>77d84176b3b9</code></a> on 2026-09-23. Anything merged after that is not reflected here.</p>
+<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/f4643281440c626cb7e30444c8c392606167a7f8"><code>f4643281440c</code></a> on 2026-09-23. Anything merged after that is not reflected here.</p>

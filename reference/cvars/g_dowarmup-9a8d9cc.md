@@ -27,7 +27,7 @@ Controls `g_doWarmup` in the game module. Consult the cited behavior reads befor
 | Confidence | `high` |
 | Added | 2013-04-08 in [`14cea1563`](https://github.com/taysta/TaystJK/commit/14cea1563762076974bee277afadbd5bf234c494) ([how to compare this against your build](/TaystJK/features/whats-new/#how-to-tell-what-your-build-has)) |
 | In-game xdocs | No |
-| In-game menu | Yes: [ingame_callvote.menu:371](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/assets/japro/ui/jamp/ingame_callvote.menu#L371), [ingame_callvote_japro.menu:417](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/assets/japro/ui/jamp/ingame_callvote_japro.menu#L417) |
+| In-game menu | Yes: [ingame_callvote.menu:371](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/assets/japro/ui/jamp/ingame_callvote.menu#L371), [ingame_callvote_japro.menu:417](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/assets/japro/ui/jamp/ingame_callvote_japro.menu#L417) |
 | Default | `0` |
 | Value type | `bool` |
 | Restart | No latch flag is registered. |
@@ -38,8 +38,8 @@ Controls `g_doWarmup` in the game module. Consult the cited behavior reads befor
 
 | Value | Meaning | Evidence |
 |:--|:--|:--|
-| `0` | Disabled. | [codemp/game/g_spawn.c:1565](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/codemp/game/g_spawn.c#L1565) |
-| `1` | Enabled. | [codemp/game/g_spawn.c:1565](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/codemp/game/g_spawn.c#L1565) |
+| `0` | Disabled. | [codemp/game/g_spawn.c:1565](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/game/g_spawn.c#L1565) |
+| `1` | Enabled. | [codemp/game/g_spawn.c:1565](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/game/g_spawn.c#L1565) |
 
 ## Flags
 
@@ -73,11 +73,11 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 ## Evidence
 
-- registration: [codemp/game/g_xcvar.h:89](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/codemp/game/g_xcvar.h#L89) (XCVAR_DEF)
-- behavior: [codemp/game/g_spawn.c:1565](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/codemp/game/g_spawn.c#L1565)
-- behavior: [codemp/cgame/cg_draw.c:9735](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/codemp/cgame/cg_draw.c#L9735)
-- behavior: [codemp/game/g_cmds.c:3089](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/codemp/game/g_cmds.c#L3089)
-- behavior: [codemp/ui/ui_main.c:5751](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/codemp/ui/ui_main.c#L5751)
-- behavior: [codemp/ui/ui_main.c:5760](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/codemp/ui/ui_main.c#L5760)
+- registration: [codemp/game/g_xcvar.h:89](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/game/g_xcvar.h#L89) (XCVAR_DEF)
+- behavior: [codemp/game/g_spawn.c:1565](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/game/g_spawn.c#L1565)
+- behavior: [codemp/cgame/cg_draw.c:9735](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/cgame/cg_draw.c#L9735)
+- behavior: [codemp/game/g_cmds.c:3089](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/game/g_cmds.c#L3089)
+- behavior: [codemp/ui/ui_main.c:5751](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/ui/ui_main.c#L5751)
+- behavior: [codemp/ui/ui_main.c:5760](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/ui/ui_main.c#L5760)
 
-<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/77d84176b3b94356d189a4420e1bc5e68c88e1ea"><code>77d84176b3b9</code></a> on 2026-09-23. Anything merged after that is not reflected here.</p>
+<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/f4643281440c626cb7e30444c8c392606167a7f8"><code>f4643281440c</code></a> on 2026-09-23. Anything merged after that is not reflected here.</p>

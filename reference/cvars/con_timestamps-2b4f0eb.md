@@ -39,8 +39,8 @@ Draw local timestamps in console and condump output.
 
 | Value | Meaning | Evidence |
 |:--|:--|:--|
-| `0` | Selects the code path tested for value 0. | [codemp/client/cl_console.cpp:935](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/codemp/client/cl_console.cpp#L935) |
-| `2` | Selects the code path tested for value 2. | [codemp/client/cl_console.cpp:935](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/codemp/client/cl_console.cpp#L935) |
+| `0` | Selects the code path tested for value 0. | [codemp/client/cl_console.cpp:935](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/client/cl_console.cpp#L935) |
+| `2` | Selects the code path tested for value 2. | [codemp/client/cl_console.cpp:935](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/client/cl_console.cpp#L935) |
 
 ## Flags
 
@@ -81,11 +81,11 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 ## Evidence
 
-- registration: [codemp/client/cl_console.cpp:667](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/codemp/client/cl_console.cpp#L667) (Cvar_Get)
-- behavior: [codemp/client/cl_console.cpp:399](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/codemp/client/cl_console.cpp#L399)
-- behavior: [codemp/client/cl_console.cpp:935](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/codemp/client/cl_console.cpp#L935)
-- behavior: [codemp/client/cl_console.cpp:1157](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/codemp/client/cl_console.cpp#L1157)
-- behavior: [codemp/client/cl_console.cpp:615](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/codemp/client/cl_console.cpp#L615)
+- registration: [codemp/client/cl_console.cpp:667](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/client/cl_console.cpp#L667) (Cvar_Get)
+- behavior: [codemp/client/cl_console.cpp:399](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/client/cl_console.cpp#L399)
+- behavior: [codemp/client/cl_console.cpp:935](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/client/cl_console.cpp#L935)
+- behavior: [codemp/client/cl_console.cpp:1157](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/client/cl_console.cpp#L1157)
+- behavior: [codemp/client/cl_console.cpp:615](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/client/cl_console.cpp#L615)
 - upstream-documentation: [CVARS.rst:161](https://github.com/mvdevs/jk2mv/blame/7d601454c3db68492289d4d4e3dc30bff39e4246/CVARS.rst#L161)
 
-<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/77d84176b3b94356d189a4420e1bc5e68c88e1ea"><code>77d84176b3b9</code></a> on 2026-09-23. Anything merged after that is not reflected here.</p>
+<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/f4643281440c626cb7e30444c8c392606167a7f8"><code>f4643281440c</code></a> on 2026-09-23. Anything merged after that is not reflected here.</p>

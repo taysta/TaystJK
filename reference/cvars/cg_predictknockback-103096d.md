@@ -26,7 +26,7 @@ Predict self-inflicted rocket-jump knockback clientside (racemode only). Use wit
 | Derivation | `documented` |
 | Confidence | `medium` |
 | Added | 2018-09-03 in [`bdcd618c6`](https://github.com/taysta/TaystJK/commit/bdcd618c67713b86946b720d791c382d3908d97c) <span class="status-chip">needs review</span> ([how to compare this against your build](/TaystJK/features/whats-new/#how-to-tell-what-your-build-has)) |
-| In-game xdocs | Yes: [codemp/ui/ui_xdocs.h:600](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/codemp/ui/ui_xdocs.h#L600) |
+| In-game xdocs | Yes: [codemp/ui/ui_xdocs.h:600](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/ui/ui_xdocs.h#L600) |
 | In-game menu | No |
 | Default | `0` |
 | Value type | `enum` |
@@ -38,12 +38,12 @@ Predict self-inflicted rocket-jump knockback clientside (racemode only). Use wit
 
 | Value | Meaning | Evidence |
 |:--|:--|:--|
-| `0` | Knockback is not predicted (default) | [codemp/ui/ui_xdocs.h:601](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/codemp/ui/ui_xdocs.h#L601) |
-| `1` | Predict and apply rocket-jump knockback | [codemp/ui/ui_xdocs.h:601](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/codemp/ui/ui_xdocs.h#L601) |
-| `2` | Verbose trajectory/timing logging (fire, detect, render, clear, actual) | [codemp/ui/ui_xdocs.h:601](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/codemp/ui/ui_xdocs.h#L601) |
-| `3` | Maximum logging; adds forward-trace detection and per-command injection | [codemp/ui/ui_xdocs.h:603](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/codemp/ui/ui_xdocs.h#L603) |
-| `4` | Damage/distance logging only (trajectory spam suppressed) | [codemp/ui/ui_xdocs.h:604](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/codemp/ui/ui_xdocs.h#L604) |
-| `5` | Impulse/injection logging; adds per-command injection trace | [codemp/ui/ui_xdocs.h:605](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/codemp/ui/ui_xdocs.h#L605) |
+| `0` | Knockback is not predicted (default) | [codemp/ui/ui_xdocs.h:601](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/ui/ui_xdocs.h#L601) |
+| `1` | Predict and apply rocket-jump knockback | [codemp/ui/ui_xdocs.h:601](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/ui/ui_xdocs.h#L601) |
+| `2` | Verbose trajectory/timing logging (fire, detect, render, clear, actual) | [codemp/ui/ui_xdocs.h:601](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/ui/ui_xdocs.h#L601) |
+| `3` | Maximum logging; adds forward-trace detection and per-command injection | [codemp/ui/ui_xdocs.h:603](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/ui/ui_xdocs.h#L603) |
+| `4` | Damage/distance logging only (trajectory spam suppressed) | [codemp/ui/ui_xdocs.h:604](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/ui/ui_xdocs.h#L604) |
+| `5` | Impulse/injection logging; adds per-command injection trace | [codemp/ui/ui_xdocs.h:605](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/ui/ui_xdocs.h#L605) |
 
 ## Flags
 
@@ -81,12 +81,12 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 ## Evidence
 
-- registration: [codemp/cgame/cg_xcvar.h:193](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/codemp/cgame/cg_xcvar.h#L193) (XCVAR_DEF)
-- behavior: [codemp/cgame/cg_event.c:3415](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/codemp/cgame/cg_event.c#L3415)
-- behavior: [codemp/cgame/cg_event.c:3422](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/codemp/cgame/cg_event.c#L3422)
-- behavior: [codemp/cgame/cg_event.c:3442](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/codemp/cgame/cg_event.c#L3442)
-- behavior: [codemp/cgame/cg_event.c:3493](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/codemp/cgame/cg_event.c#L3493)
-- behavior: [codemp/cgame/cg_event.c:3500](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/codemp/cgame/cg_event.c#L3500)
-- documentation: [codemp/ui/ui_xdocs.h:600](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/codemp/ui/ui_xdocs.h#L600)
+- registration: [codemp/cgame/cg_xcvar.h:193](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/cgame/cg_xcvar.h#L193) (XCVAR_DEF)
+- behavior: [codemp/cgame/cg_event.c:3415](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/cgame/cg_event.c#L3415)
+- behavior: [codemp/cgame/cg_event.c:3422](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/cgame/cg_event.c#L3422)
+- behavior: [codemp/cgame/cg_event.c:3442](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/cgame/cg_event.c#L3442)
+- behavior: [codemp/cgame/cg_event.c:3493](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/cgame/cg_event.c#L3493)
+- behavior: [codemp/cgame/cg_event.c:3500](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/cgame/cg_event.c#L3500)
+- documentation: [codemp/ui/ui_xdocs.h:600](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/ui/ui_xdocs.h#L600)
 
-<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/77d84176b3b94356d189a4420e1bc5e68c88e1ea"><code>77d84176b3b9</code></a> on 2026-09-23. Anything merged after that is not reflected here.</p>
+<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/f4643281440c626cb7e30444c8c392606167a7f8"><code>f4643281440c</code></a> on 2026-09-23. Anything merged after that is not reflected here.</p>

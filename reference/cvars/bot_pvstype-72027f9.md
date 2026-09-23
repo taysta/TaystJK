@@ -38,8 +38,8 @@ Controls `bot_pvstype` in the game module. Consult the cited behavior reads befo
 
 | Value | Meaning | Evidence |
 |:--|:--|:--|
-| `0` | Disabled. | [codemp/game/ai_main.c:1125](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/codemp/game/ai_main.c#L1125) |
-| `1` | Enabled. | [codemp/game/ai_main.c:1125](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/codemp/game/ai_main.c#L1125) |
+| `0` | Disabled. | [codemp/game/ai_main.c:1125](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/game/ai_main.c#L1125) |
+| `1` | Enabled. | [codemp/game/ai_main.c:1125](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/game/ai_main.c#L1125) |
 
 ## Flags
 
@@ -66,7 +66,7 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 ## Evidence
 
-- registration: [codemp/game/ai_main.c:10691](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/codemp/game/ai_main.c#L10691) (Cvar_Register)
-- behavior: [codemp/game/ai_main.c:1125](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/codemp/game/ai_main.c#L1125)
+- registration: [codemp/game/ai_main.c:10691](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/game/ai_main.c#L10691) (Cvar_Register)
+- behavior: [codemp/game/ai_main.c:1125](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/game/ai_main.c#L1125)
 
-<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/77d84176b3b94356d189a4420e1bc5e68c88e1ea"><code>77d84176b3b9</code></a> on 2026-09-23. Anything merged after that is not reflected here.</p>
+<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/f4643281440c626cb7e30444c8c392606167a7f8"><code>f4643281440c</code></a> on 2026-09-23. Anything merged after that is not reflected here.</p>

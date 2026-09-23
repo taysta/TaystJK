@@ -39,12 +39,12 @@ search_exclude: false
 
 ## Bits
 
-Use [`plugin`](/TaystJK/reference/commands/plugin-fd8c7c8/) or [`pluginDisable`](/TaystJK/reference/commands/plugindisable-98b2c24/) to toggle one option at a time; see the command pages for syntax. The value column is that bit on its own. [The labels come from the source table](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/codemp/cgame/cg_consolecmds.c#L1257).
+Use [`plugin`](/TaystJK/reference/commands/plugin-fd8c7c8/) or [`pluginDisable`](/TaystJK/reference/commands/plugindisable-98b2c24/) to toggle one option at a time; see the command pages for syntax. The value column is that bit on its own. [The labels come from the source table](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/cgame/cg_consolecmds.c#L1257).
 
 | Bit | Value | Meaning | Read by |
 |:--|:--|:--|:--|
 | 0 | `1` | New drain FX | — |
-| 1 | `2` | Duel see others | [codemp/game/bg_public.h:516](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/codemp/game/bg_public.h#L516) |
+| 1 | `2` | Duel see others | [codemp/game/bg_public.h:516](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/game/bg_public.h#L516) |
 | 2 | `4` | End duel rotation | — |
 | 3 | `8` | No black sabers | — |
 | 4 | `16` | No auto replier | — |
@@ -62,15 +62,15 @@ Use [`plugin`](/TaystJK/reference/commands/plugin-fd8c7c8/) or [`pluginDisable`]
 | 16 | `65536` | No Butterfly | — |
 | 17 | `131072` | No Stab | — |
 | 18 | `262144` | No DFA | — |
-| 19 | `524288` | Disable forcejumps | [codemp/game/bg_public.h:538](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/codemp/game/bg_public.h#L538) |
-| 20 | `1048576` | Disable rolls | [codemp/game/bg_public.h:539](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/codemp/game/bg_public.h#L539) |
+| 19 | `524288` | Disable forcejumps | [codemp/game/bg_public.h:538](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/game/bg_public.h#L538) |
+| 20 | `1048576` | Disable rolls | [codemp/game/bg_public.h:539](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/game/bg_public.h#L539) |
 | 21 | `2097152` | Disable cartwheels | — |
 | 22 | `4194304` | New run animation | — |
 | 23 | `8388608` | Disable duel tele | — |
 | 24 | `16777216` | Disable centerprint checkpoints | — |
 | 25 | `33554432` | Show chatbox checkpoints | — |
 | 26 | `67108864` | Disable damage numbers | — |
-| 27 | `134217728` | Centermuzzle | [codemp/game/bg_public.h:546](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/codemp/game/bg_public.h#L546) |
+| 27 | `134217728` | Centermuzzle | [codemp/game/bg_public.h:546](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/game/bg_public.h#L546) |
 | 28 | `268435456` | Show checkpoints in console only | — |
 ## Flags
 
@@ -126,11 +126,11 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 ## Evidence
 
-- registration: [codemp/cgame/cg_xcvar.h:195](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/codemp/cgame/cg_xcvar.h#L195) (XCVAR_DEF)
-- behavior: [codemp/cgame/cg_ents.c:933](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/codemp/cgame/cg_ents.c#L933)
-- behavior: [codemp/cgame/cg_players.c:10782](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/codemp/cgame/cg_players.c#L10782)
-- behavior: [codemp/cgame/cg_weapons.c:2390](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/codemp/cgame/cg_weapons.c#L2390)
-- behavior: [codemp/game/bg_pmove.c:3546](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/codemp/game/bg_pmove.c#L3546)
-- behavior: [codemp/game/bg_pmove.c:6220](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/codemp/game/bg_pmove.c#L6220)
+- registration: [codemp/cgame/cg_xcvar.h:195](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/cgame/cg_xcvar.h#L195) (XCVAR_DEF)
+- behavior: [codemp/cgame/cg_ents.c:933](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/cgame/cg_ents.c#L933)
+- behavior: [codemp/cgame/cg_players.c:10782](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/cgame/cg_players.c#L10782)
+- behavior: [codemp/cgame/cg_weapons.c:2390](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/cgame/cg_weapons.c#L2390)
+- behavior: [codemp/game/bg_pmove.c:3546](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/game/bg_pmove.c#L3546)
+- behavior: [codemp/game/bg_pmove.c:6220](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/game/bg_pmove.c#L6220)
 
-<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/77d84176b3b94356d189a4420e1bc5e68c88e1ea"><code>77d84176b3b9</code></a> on 2026-09-23. Anything merged after that is not reflected here.</p>
+<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/f4643281440c626cb7e30444c8c392606167a7f8"><code>f4643281440c</code></a> on 2026-09-23. Anything merged after that is not reflected here.</p>

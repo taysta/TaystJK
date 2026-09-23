@@ -25,7 +25,7 @@ Disable/enable/scale the specular response from deluxemaps
 | Confidence | `high` |
 | Added | 2023-10-03 in [`86c075638`](https://github.com/taysta/TaystJK/commit/86c0756385efd1e0c24b5c435739ccba3bee3919) ([how to compare this against your build](/TaystJK/features/whats-new/#how-to-tell-what-your-build-has)) |
 | In-game xdocs | No |
-| In-game menu | Yes: [ingame_setup.menu:1907](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/assets/japro/ui/jamp/ingame_setup.menu#L1907), [setup.menu:1697](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/assets/japro/ui/jamp/setup.menu#L1697) |
+| In-game menu | Yes: [ingame_setup.menu:1907](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/assets/japro/ui/jamp/ingame_setup.menu#L1907), [setup.menu:1697](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/assets/japro/ui/jamp/setup.menu#L1697) |
 | Default | `1` |
 | Value type | `float` |
 | Restart | Yes; the value is latched. |
@@ -75,8 +75,8 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 ## Evidence
 
-- registration: [codemp/rd-rend2/tr_init.cpp:1561](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/codemp/rd-rend2/tr_init.cpp#L1561) (Cvar_Get)
-- behavior: [shared/rd-rend2/tr_glsl.cpp:379](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/shared/rd-rend2/tr_glsl.cpp#L379)
-- behavior: [shared/rd-rend2/tr_glsl.cpp:380](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/shared/rd-rend2/tr_glsl.cpp#L380)
+- registration: [codemp/rd-rend2/tr_init.cpp:1561](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/rd-rend2/tr_init.cpp#L1561) (Cvar_Get)
+- behavior: [shared/rd-rend2/tr_glsl.cpp:379](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/shared/rd-rend2/tr_glsl.cpp#L379)
+- behavior: [shared/rd-rend2/tr_glsl.cpp:380](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/shared/rd-rend2/tr_glsl.cpp#L380)
 
-<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/77d84176b3b94356d189a4420e1bc5e68c88e1ea"><code>77d84176b3b9</code></a> on 2026-09-23. Anything merged after that is not reflected here.</p>
+<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/f4643281440c626cb7e30444c8c392606167a7f8"><code>f4643281440c</code></a> on 2026-09-23. Anything merged after that is not reflected here.</p>

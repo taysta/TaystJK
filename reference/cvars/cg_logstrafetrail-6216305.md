@@ -66,11 +66,11 @@ Authored dates come from the exact registration's first content commit, PR dates
 
 ## Evidence
 
-- registration: [codemp/cgame/cg_xcvar.h:234](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/codemp/cgame/cg_xcvar.h#L234) (XCVAR_DEF); condition `1`
-- behavior: [codemp/cgame/cg_snapshot.c:778](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/codemp/cgame/cg_snapshot.c#L778)
-- behavior: [codemp/cgame/cg_snapshot.c:829](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/codemp/cgame/cg_snapshot.c#L829)
-- behavior: [codemp/cgame/cg_snapshot.c:784](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/codemp/cgame/cg_snapshot.c#L784)
-- behavior: [codemp/cgame/cg_snapshot.c:795](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/codemp/cgame/cg_snapshot.c#L795)
-- behavior: [codemp/cgame/cg_snapshot.c:33](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/codemp/cgame/cg_snapshot.c#L33)
+- registration: [codemp/cgame/cg_xcvar.h:234](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/cgame/cg_xcvar.h#L234) (XCVAR_DEF); condition `1`
+- behavior: [codemp/cgame/cg_snapshot.c:778](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/cgame/cg_snapshot.c#L778)
+- behavior: [codemp/cgame/cg_snapshot.c:829](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/cgame/cg_snapshot.c#L829)
+- behavior: [codemp/cgame/cg_snapshot.c:784](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/cgame/cg_snapshot.c#L784)
+- behavior: [codemp/cgame/cg_snapshot.c:795](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/cgame/cg_snapshot.c#L795)
+- behavior: [codemp/cgame/cg_snapshot.c:33](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/cgame/cg_snapshot.c#L33)
 
-<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/77d84176b3b94356d189a4420e1bc5e68c88e1ea"><code>77d84176b3b9</code></a> on 2026-09-23. Anything merged after that is not reflected here.</p>
+<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/f4643281440c626cb7e30444c8c392606167a7f8"><code>f4643281440c</code></a> on 2026-09-23. Anything merged after that is not reflected here.</p>

@@ -27,7 +27,7 @@ Wether to use simulated projectiles so bullets appear instantly. Values > 1 don'
 | Confidence | `medium` |
 | Added | 2018-09-03 in [`bdcd618c6`](https://github.com/taysta/TaystJK/commit/bdcd618c67713b86946b720d791c382d3908d97c) <span class="status-chip">needs review</span> ([how to compare this against your build](/TaystJK/features/whats-new/#how-to-tell-what-your-build-has)) |
 | In-game xdocs | No |
-| In-game menu | Yes: [ingame_setup.menu:4937](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/assets/japro/ui/jamp/ingame_setup.menu#L4937) |
+| In-game menu | Yes: [ingame_setup.menu:4937](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/assets/japro/ui/jamp/ingame_setup.menu#L4937) |
 | Default | `0` |
 | Value type | `bool` |
 | Restart | No latch flag is registered. |
@@ -38,8 +38,8 @@ Wether to use simulated projectiles so bullets appear instantly. Values > 1 don'
 
 | Value | Meaning | Evidence |
 |:--|:--|:--|
-| `0` | Disabled. | [codemp/cgame/cg_weapons.c:2758](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/codemp/cgame/cg_weapons.c#L2758) |
-| `1` | Enabled. | [codemp/cgame/cg_weapons.c:2758](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/codemp/cgame/cg_weapons.c#L2758) |
+| `0` | Disabled. | [codemp/cgame/cg_weapons.c:2758](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/cgame/cg_weapons.c#L2758) |
+| `1` | Enabled. | [codemp/cgame/cg_weapons.c:2758](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/cgame/cg_weapons.c#L2758) |
 
 ## Flags
 
@@ -78,11 +78,11 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 ## Evidence
 
-- registration: [codemp/cgame/cg_xcvar.h:146](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/codemp/cgame/cg_xcvar.h#L146) (XCVAR_DEF)
-- behavior: [codemp/cgame/cg_weapons.c:2758](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/codemp/cgame/cg_weapons.c#L2758)
-- behavior: [codemp/cgame/cg_localents.c:1215](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/codemp/cgame/cg_localents.c#L1215)
-- behavior: [codemp/cgame/cg_weapons.c:2433](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/codemp/cgame/cg_weapons.c#L2433)
-- behavior: [codemp/ui/ui_xdocs.h:600](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/codemp/ui/ui_xdocs.h#L600)
-- documentation: [docs/japro_docs.md:479](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/docs/japro_docs.md#L479)
+- registration: [codemp/cgame/cg_xcvar.h:146](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/cgame/cg_xcvar.h#L146) (XCVAR_DEF)
+- behavior: [codemp/cgame/cg_weapons.c:2758](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/cgame/cg_weapons.c#L2758)
+- behavior: [codemp/cgame/cg_localents.c:1215](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/cgame/cg_localents.c#L1215)
+- behavior: [codemp/cgame/cg_weapons.c:2433](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/cgame/cg_weapons.c#L2433)
+- behavior: [codemp/ui/ui_xdocs.h:600](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/ui/ui_xdocs.h#L600)
+- documentation: [docs/japro_docs.md:479](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/docs/japro_docs.md#L479)
 
-<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/77d84176b3b94356d189a4420e1bc5e68c88e1ea"><code>77d84176b3b9</code></a> on 2026-09-23. Anything merged after that is not reflected here.</p>
+<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/f4643281440c626cb7e30444c8c392606167a7f8"><code>f4643281440c</code></a> on 2026-09-23. Anything merged after that is not reflected here.</p>

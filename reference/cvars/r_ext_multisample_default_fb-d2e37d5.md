@@ -41,8 +41,8 @@ Controls `r_ext_multisample_default_fb` in the engine-shared module. Consult the
 
 | Value | Meaning | Evidence |
 |:--|:--|:--|
-| `0` | Disabled. | [shared/sdl/sdl_window.cpp:475](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/shared/sdl/sdl_window.cpp#L475) |
-| `1` | Enabled. | [shared/sdl/sdl_window.cpp:475](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/shared/sdl/sdl_window.cpp#L475) |
+| `0` | Disabled. | [shared/sdl/sdl_window.cpp:475](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/shared/sdl/sdl_window.cpp#L475) |
+| `1` | Enabled. | [shared/sdl/sdl_window.cpp:475](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/shared/sdl/sdl_window.cpp#L475) |
 
 ## Flags
 
@@ -73,9 +73,9 @@ Authored dates come from the exact registration's first content commit, PR dates
 
 ## Evidence
 
-- registration: [shared/sdl/sdl_window.cpp:817](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/shared/sdl/sdl_window.cpp#L817) (Cvar_Get)
-- behavior: [shared/sdl/sdl_window.cpp:475](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/shared/sdl/sdl_window.cpp#L475)
-- behavior: [codemp/rd-rend2/tr_init.cpp:1498](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/codemp/rd-rend2/tr_init.cpp#L1498)
-- behavior: [codemp/rd-vanilla/tr_init.cpp:1640](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/codemp/rd-vanilla/tr_init.cpp#L1640)
+- registration: [shared/sdl/sdl_window.cpp:817](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/shared/sdl/sdl_window.cpp#L817) (Cvar_Get)
+- behavior: [shared/sdl/sdl_window.cpp:475](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/shared/sdl/sdl_window.cpp#L475)
+- behavior: [codemp/rd-rend2/tr_init.cpp:1498](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/rd-rend2/tr_init.cpp#L1498)
+- behavior: [codemp/rd-vanilla/tr_init.cpp:1640](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/rd-vanilla/tr_init.cpp#L1640)
 
-<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/77d84176b3b94356d189a4420e1bc5e68c88e1ea"><code>77d84176b3b9</code></a> on 2026-09-23. Anything merged after that is not reflected here.</p>
+<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/f4643281440c626cb7e30444c8c392606167a7f8"><code>f4643281440c</code></a> on 2026-09-23. Anything merged after that is not reflected here.</p>

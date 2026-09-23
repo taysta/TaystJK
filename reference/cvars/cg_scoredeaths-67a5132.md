@@ -26,7 +26,7 @@ Display score AND deaths on the scoreboard
 | Derivation | `documented` |
 | Confidence | `medium` |
 | Added | 2018-09-03 in [`bdcd618c6`](https://github.com/taysta/TaystJK/commit/bdcd618c67713b86946b720d791c382d3908d97c) <span class="status-chip">needs review</span> ([how to compare this against your build](/TaystJK/features/whats-new/#how-to-tell-what-your-build-has)) |
-| In-game xdocs | Yes: [codemp/ui/ui_xdocs.h:198](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/codemp/ui/ui_xdocs.h#L198) |
+| In-game xdocs | Yes: [codemp/ui/ui_xdocs.h:198](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/ui/ui_xdocs.h#L198) |
 | In-game menu | No |
 | Default | `1` |
 | Value type | `enum` |
@@ -38,9 +38,9 @@ Display score AND deaths on the scoreboard
 
 | Value | Meaning | Evidence |
 |:--|:--|:--|
-| `0` | Scoreboard only shows score (Base JAMP behavior) | [codemp/ui/ui_xdocs.h:198](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/codemp/ui/ui_xdocs.h#L198) |
-| `1` | Scoreboard shows score and deaths on JA+ or jaPRO servers (default) | [codemp/ui/ui_xdocs.h:200](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/codemp/ui/ui_xdocs.h#L200) |
-| `2` | Scoreboard shows score and locally counted deaths | [codemp/ui/ui_xdocs.h:201](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/codemp/ui/ui_xdocs.h#L201) |
+| `0` | Scoreboard only shows score (Base JAMP behavior) | [codemp/ui/ui_xdocs.h:198](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/ui/ui_xdocs.h#L198) |
+| `1` | Scoreboard shows score and deaths on JA+ or jaPRO servers (default) | [codemp/ui/ui_xdocs.h:200](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/ui/ui_xdocs.h#L200) |
+| `2` | Scoreboard shows score and locally counted deaths | [codemp/ui/ui_xdocs.h:201](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/ui/ui_xdocs.h#L201) |
 
 ## Flags
 
@@ -78,10 +78,10 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 ## Evidence
 
-- registration: [codemp/cgame/cg_xcvar.h:70](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/codemp/cgame/cg_xcvar.h#L70) (XCVAR_DEF)
-- behavior: [codemp/cgame/cg_scoreboard.c:188](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/codemp/cgame/cg_scoreboard.c#L188)
-- behavior: [codemp/cgame/cg_scoreboard.c:190](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/codemp/cgame/cg_scoreboard.c#L190)
-- behavior: [codemp/ui/ui_xdocs.h:198](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/codemp/ui/ui_xdocs.h#L198)
-- documentation: [codemp/ui/ui_xdocs.h:198](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/codemp/ui/ui_xdocs.h#L198)
+- registration: [codemp/cgame/cg_xcvar.h:70](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/cgame/cg_xcvar.h#L70) (XCVAR_DEF)
+- behavior: [codemp/cgame/cg_scoreboard.c:188](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/cgame/cg_scoreboard.c#L188)
+- behavior: [codemp/cgame/cg_scoreboard.c:190](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/cgame/cg_scoreboard.c#L190)
+- behavior: [codemp/ui/ui_xdocs.h:198](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/ui/ui_xdocs.h#L198)
+- documentation: [codemp/ui/ui_xdocs.h:198](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/ui/ui_xdocs.h#L198)
 
-<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/77d84176b3b94356d189a4420e1bc5e68c88e1ea"><code>77d84176b3b9</code></a> on 2026-09-23. Anything merged after that is not reflected here.</p>
+<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/f4643281440c626cb7e30444c8c392606167a7f8"><code>f4643281440c</code></a> on 2026-09-23. Anything merged after that is not reflected here.</p>

@@ -37,9 +37,9 @@ Color extraction mode: 0: (r|g|b) >= threshold 1: (r + g + b ) / 3 >= threshold 
 
 | Value | Meaning | Evidence |
 |:--|:--|:--|
-| `0` | (r|g|b) >= threshold. | [codemp/rd-vulkan/tr_init.cpp:942](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/codemp/rd-vulkan/tr_init.cpp#L942) |
-| `1` | (r + g + b ) / 3 >= threshold. | [codemp/rd-vulkan/tr_init.cpp:942](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/codemp/rd-vulkan/tr_init.cpp#L942) |
-| `2` | Luma(r, g, b) >= threshold. | [codemp/rd-vulkan/tr_init.cpp:942](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/codemp/rd-vulkan/tr_init.cpp#L942) |
+| `0` | (r|g|b) >= threshold. | [codemp/rd-vulkan/tr_init.cpp:942](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/rd-vulkan/tr_init.cpp#L942) |
+| `1` | (r + g + b ) / 3 >= threshold. | [codemp/rd-vulkan/tr_init.cpp:942](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/rd-vulkan/tr_init.cpp#L942) |
+| `2` | Luma(r, g, b) >= threshold. | [codemp/rd-vulkan/tr_init.cpp:942](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/rd-vulkan/tr_init.cpp#L942) |
 
 ## Flags
 
@@ -68,7 +68,7 @@ Authored dates come from the exact registration's first content commit, PR dates
 
 ## Evidence
 
-- registration: [codemp/rd-vulkan/tr_init.cpp:942](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/codemp/rd-vulkan/tr_init.cpp#L942) (Cvar_Get)
-- behavior: [codemp/rd-vulkan/vk_pipelines.cpp:1524](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/codemp/rd-vulkan/vk_pipelines.cpp#L1524)
+- registration: [codemp/rd-vulkan/tr_init.cpp:942](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/rd-vulkan/tr_init.cpp#L942) (Cvar_Get)
+- behavior: [codemp/rd-vulkan/vk_pipelines.cpp:1524](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/rd-vulkan/vk_pipelines.cpp#L1524)
 
-<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/77d84176b3b94356d189a4420e1bc5e68c88e1ea"><code>77d84176b3b9</code></a> on 2026-09-23. Anything merged after that is not reflected here.</p>
+<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/f4643281440c626cb7e30444c8c392606167a7f8"><code>f4643281440c</code></a> on 2026-09-23. Anything merged after that is not reflected here.</p>

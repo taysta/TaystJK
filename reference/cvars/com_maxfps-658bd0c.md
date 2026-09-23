@@ -25,7 +25,7 @@ Maximum frames per second
 | Confidence | `high` |
 | Added | 2013-04-08 in [`14cea1563`](https://github.com/taysta/TaystJK/commit/14cea1563762076974bee277afadbd5bf234c494) ([how to compare this against your build](/TaystJK/features/whats-new/#how-to-tell-what-your-build-has)) |
 | In-game xdocs | No |
-| In-game menu | Yes: [ingame_setup.menu:1543](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/assets/japro/ui/jamp/ingame_setup.menu#L1543) |
+| In-game menu | Yes: [ingame_setup.menu:1543](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/assets/japro/ui/jamp/ingame_setup.menu#L1543) |
 | Default | `125` |
 | Value type | `int` |
 | Restart | No latch flag is registered. |
@@ -76,13 +76,13 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 ## Evidence
 
-- registration: [codemp/cgame/cg_xcvar.h:196](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/codemp/cgame/cg_xcvar.h#L196) (XCVAR_DEF)
-- registration: [shared/sys/sys_main.cpp:172](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/shared/sys/sys_main.cpp#L172) (Cvar_Get); condition `defined(_JK2EXE)`
-- registration: [shared/sys/sys_main.cpp:174](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/shared/sys/sys_main.cpp#L174) (Cvar_Get); condition `else(defined(_JK2EXE))`
-- behavior: [codemp/qcommon/common.cpp:1759](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/codemp/qcommon/common.cpp#L1759)
-- behavior: [codemp/cgame/cg_view.c:2627](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/codemp/cgame/cg_view.c#L2627)
-- behavior: [codemp/qcommon/common.cpp:1760](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/codemp/qcommon/common.cpp#L1760)
-- behavior: [codemp/cgame/hud_strafehelper.c:862](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/codemp/cgame/hud_strafehelper.c#L862)
-- behavior: [codemp/cgame/hud_strafehelper.c:2549](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/codemp/cgame/hud_strafehelper.c#L2549)
+- registration: [codemp/cgame/cg_xcvar.h:196](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/cgame/cg_xcvar.h#L196) (XCVAR_DEF)
+- registration: [shared/sys/sys_main.cpp:172](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/shared/sys/sys_main.cpp#L172) (Cvar_Get); condition `defined(_JK2EXE)`
+- registration: [shared/sys/sys_main.cpp:174](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/shared/sys/sys_main.cpp#L174) (Cvar_Get); condition `else(defined(_JK2EXE))`
+- behavior: [codemp/qcommon/common.cpp:1759](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/qcommon/common.cpp#L1759)
+- behavior: [codemp/cgame/cg_view.c:2627](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/cgame/cg_view.c#L2627)
+- behavior: [codemp/qcommon/common.cpp:1760](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/qcommon/common.cpp#L1760)
+- behavior: [codemp/cgame/hud_strafehelper.c:862](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/cgame/hud_strafehelper.c#L862)
+- behavior: [codemp/cgame/hud_strafehelper.c:2549](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/cgame/hud_strafehelper.c#L2549)
 
-<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/77d84176b3b94356d189a4420e1bc5e68c88e1ea"><code>77d84176b3b9</code></a> on 2026-09-23. Anything merged after that is not reflected here.</p>
+<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/f4643281440c626cb7e30444c8c392606167a7f8"><code>f4643281440c</code></a> on 2026-09-23. Anything merged after that is not reflected here.</p>

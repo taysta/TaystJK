@@ -26,7 +26,7 @@ Enables/disables announcer/center print at the start of private duels
 | Derivation | `documented` |
 | Confidence | `medium` |
 | Added | 2019-07-28 in [`8e774f08b`](https://github.com/taysta/TaystJK/commit/8e774f08bc0d3e98a127b1c2b8e90438e3e1580e) <span class="status-chip">needs review</span> ([how to compare this against your build](/TaystJK/features/whats-new/#how-to-tell-what-your-build-has)) |
-| In-game xdocs | Yes: [codemp/ui/ui_xdocs.h:413](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/codemp/ui/ui_xdocs.h#L413) |
+| In-game xdocs | Yes: [codemp/ui/ui_xdocs.h:413](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/ui/ui_xdocs.h#L413) |
 | In-game menu | No |
 | Default | `1` |
 | Value type | `enum` |
@@ -38,10 +38,10 @@ Enables/disables announcer/center print at the start of private duels
 
 | Value | Meaning | Evidence |
 |:--|:--|:--|
-| `0` | Do not announce the start of duel | [codemp/ui/ui_xdocs.h:413](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/codemp/ui/ui_xdocs.h#L413) |
-| `1` | Announce and center print \"BEGIN\" (baseJKA behavior) | [codemp/ui/ui_xdocs.h:413](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/codemp/ui/ui_xdocs.h#L413) |
-| `2` | Announce, but do not center print | [codemp/ui/ui_xdocs.h:414](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/codemp/ui/ui_xdocs.h#L414) |
-| `3` | Center print, but do not announce | [codemp/ui/ui_xdocs.h:415](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/codemp/ui/ui_xdocs.h#L415) |
+| `0` | Do not announce the start of duel | [codemp/ui/ui_xdocs.h:413](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/ui/ui_xdocs.h#L413) |
+| `1` | Announce and center print \"BEGIN\" (baseJKA behavior) | [codemp/ui/ui_xdocs.h:413](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/ui/ui_xdocs.h#L413) |
+| `2` | Announce, but do not center print | [codemp/ui/ui_xdocs.h:414](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/ui/ui_xdocs.h#L414) |
+| `3` | Center print, but do not announce | [codemp/ui/ui_xdocs.h:415](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/ui/ui_xdocs.h#L415) |
 
 ## Flags
 
@@ -70,11 +70,11 @@ Authored dates come from the exact registration's first content commit, PR dates
 
 ## Evidence
 
-- registration: [codemp/cgame/cg_xcvar.h:124](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/codemp/cgame/cg_xcvar.h#L124) (XCVAR_DEF)
-- behavior: [codemp/cgame/cg_event.c:1770](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/codemp/cgame/cg_event.c#L1770)
-- behavior: [codemp/cgame/cg_event.c:1772](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/codemp/cgame/cg_event.c#L1772)
-- behavior: [codemp/cgame/cg_event.c:1773](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/codemp/cgame/cg_event.c#L1773)
-- behavior: [codemp/ui/ui_xdocs.h:413](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/codemp/ui/ui_xdocs.h#L413)
-- documentation: [codemp/ui/ui_xdocs.h:413](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/codemp/ui/ui_xdocs.h#L413)
+- registration: [codemp/cgame/cg_xcvar.h:124](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/cgame/cg_xcvar.h#L124) (XCVAR_DEF)
+- behavior: [codemp/cgame/cg_event.c:1770](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/cgame/cg_event.c#L1770)
+- behavior: [codemp/cgame/cg_event.c:1772](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/cgame/cg_event.c#L1772)
+- behavior: [codemp/cgame/cg_event.c:1773](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/cgame/cg_event.c#L1773)
+- behavior: [codemp/ui/ui_xdocs.h:413](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/ui/ui_xdocs.h#L413)
+- documentation: [codemp/ui/ui_xdocs.h:413](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/ui/ui_xdocs.h#L413)
 
-<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/77d84176b3b94356d189a4420e1bc5e68c88e1ea"><code>77d84176b3b9</code></a> on 2026-09-23. Anything merged after that is not reflected here.</p>
+<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/f4643281440c626cb7e30444c8c392606167a7f8"><code>f4643281440c</code></a> on 2026-09-23. Anything merged after that is not reflected here.</p>

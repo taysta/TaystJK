@@ -38,9 +38,9 @@ Controls `sv_legacyFixes` in the engine-server module. Consult the cited behavio
 
 | Value | Meaning | Evidence |
 |:--|:--|:--|
-| `128` | Rancor/wampa skins | [codemp/server/server.h:356](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/codemp/server/server.h#L356) |
-| `8` | Enables the `SVFIXES_ALLOW_INVALID_FORCEPOWERS` code path. | [codemp/server/server.h:352](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/codemp/server/server.h#L352) |
-| `64` | Enables the `SVFIXES_ALLOW_INVALID_PLAYER_NAMES` code path. | [codemp/server/server.h:355](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/codemp/server/server.h#L355) |
+| `128` | Rancor/wampa skins | [codemp/server/server.h:356](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/server/server.h#L356) |
+| `8` | Enables the `SVFIXES_ALLOW_INVALID_FORCEPOWERS` code path. | [codemp/server/server.h:352](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/server/server.h#L352) |
+| `64` | Enables the `SVFIXES_ALLOW_INVALID_PLAYER_NAMES` code path. | [codemp/server/server.h:355](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/server/server.h#L355) |
 
 ## Flags
 
@@ -97,12 +97,12 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 ## Evidence
 
-- registration: [codemp/server/sv_init.cpp:1044](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/codemp/server/sv_init.cpp#L1044) (Cvar_Get); condition `!defined(DEDICATED)`
-- registration: [codemp/server/sv_init.cpp:1046](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/codemp/server/sv_init.cpp#L1046) (Cvar_Get); condition `else(!defined(DEDICATED))`
-- behavior: [codemp/server/sv_client.cpp:1181](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/codemp/server/sv_client.cpp#L1181)
-- behavior: [codemp/server/sv_client.cpp:1286](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/codemp/server/sv_client.cpp#L1286)
-- behavior: [codemp/server/sv_client.cpp:1304](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/codemp/server/sv_client.cpp#L1304)
-- behavior: [codemp/server/sv_client.cpp:1477](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/codemp/server/sv_client.cpp#L1477)
-- behavior: [codemp/server/sv_client.cpp:1483](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/codemp/server/sv_client.cpp#L1483)
+- registration: [codemp/server/sv_init.cpp:1044](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/server/sv_init.cpp#L1044) (Cvar_Get); condition `!defined(DEDICATED)`
+- registration: [codemp/server/sv_init.cpp:1046](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/server/sv_init.cpp#L1046) (Cvar_Get); condition `else(!defined(DEDICATED))`
+- behavior: [codemp/server/sv_client.cpp:1181](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/server/sv_client.cpp#L1181)
+- behavior: [codemp/server/sv_client.cpp:1286](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/server/sv_client.cpp#L1286)
+- behavior: [codemp/server/sv_client.cpp:1304](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/server/sv_client.cpp#L1304)
+- behavior: [codemp/server/sv_client.cpp:1477](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/server/sv_client.cpp#L1477)
+- behavior: [codemp/server/sv_client.cpp:1483](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/server/sv_client.cpp#L1483)
 
-<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/77d84176b3b94356d189a4420e1bc5e68c88e1ea"><code>77d84176b3b9</code></a> on 2026-09-23. Anything merged after that is not reflected here.</p>
+<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/f4643281440c626cb7e30444c8c392606167a7f8"><code>f4643281440c</code></a> on 2026-09-23. Anything merged after that is not reflected here.</p>

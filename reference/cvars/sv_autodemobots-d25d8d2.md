@@ -38,8 +38,8 @@ Record server-side demos for bots
 
 | Value | Meaning | Evidence |
 |:--|:--|:--|
-| `0` | Disabled. | [codemp/server/sv_ccmds.cpp:2043](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/codemp/server/sv_ccmds.cpp#L2043) |
-| `1` | Enabled. | [codemp/server/sv_ccmds.cpp:2043](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/codemp/server/sv_ccmds.cpp#L2043) |
+| `0` | Disabled. | [codemp/server/sv_ccmds.cpp:2043](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/server/sv_ccmds.cpp#L2043) |
+| `1` | Enabled. | [codemp/server/sv_ccmds.cpp:2043](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/server/sv_ccmds.cpp#L2043) |
 
 ## Flags
 
@@ -81,8 +81,8 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 ## Evidence
 
-- registration: [codemp/server/sv_init.cpp:1039](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/codemp/server/sv_init.cpp#L1039) (Cvar_Get); condition `defined(DEDICATED)`
-- behavior: [codemp/server/sv_ccmds.cpp:2043](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/codemp/server/sv_ccmds.cpp#L2043)
-- behavior: [codemp/server/sv_snapshot.cpp:1026](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/codemp/server/sv_snapshot.cpp#L1026)
+- registration: [codemp/server/sv_init.cpp:1039](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/server/sv_init.cpp#L1039) (Cvar_Get); condition `defined(DEDICATED)`
+- behavior: [codemp/server/sv_ccmds.cpp:2043](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/server/sv_ccmds.cpp#L2043)
+- behavior: [codemp/server/sv_snapshot.cpp:1026](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/server/sv_snapshot.cpp#L1026)
 
-<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/77d84176b3b94356d189a4420e1bc5e68c88e1ea"><code>77d84176b3b9</code></a> on 2026-09-23. Anything merged after that is not reflected here.</p>
+<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/f4643281440c626cb7e30444c8c392606167a7f8"><code>f4643281440c</code></a> on 2026-09-23. Anything merged after that is not reflected here.</p>
