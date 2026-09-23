@@ -2468,7 +2468,7 @@ void DF_DrawShowPos(void)
 		CG_Text_Paint((float)cg_pitchHelperX.integer, (float)cg_pitchHelperY.integer, 1.0f, colorPitch, showPitchString, 0, 0, ITEM_TEXTSTYLE_OUTLINESHADOWED, FONT_SMALL2);
 	}
 
-	if (!cg_showpos.integer)
+	if (!cg_showpos.integer || cl_paused.integer)
 		return;
 
 	const float vel = sqrtf(state.cgaz.v * state.cgaz.v + state.velocity[2] * state.velocity[2]);
