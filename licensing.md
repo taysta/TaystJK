@@ -1,7 +1,8 @@
 ---
 title: "Licensing and attribution"
 layout: reference
-nav_order: 13
+nav_order: 5
+parent: "Help"
 description: "The licence TaystJK is distributed under, the projects it descends from, and what that means if you want to reuse any of it."
 toc: true
 ---

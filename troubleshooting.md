@@ -1,7 +1,8 @@
 ---
 title: "Troubleshooting"
 layout: reference
-nav_order: 9
+nav_order: 1
+parent: "Help"
 description: "Fixes for the problems players and server admins hit most often, listed by what you actually see."
 toc: true
 ---

@@ -1,0 +1,96 @@
+# Grouped cards on the section hub pages, rendered by _includes/browse-grid.html.
+# The header tabs are not here; they are hardcoded in _layouts/reference.html.
+#
+# Keep each hub's card order the same as its pages' `nav_order`, so the hub and the
+# previous/next links at the foot of each page walk the section in one order.
+
+sections:
+  features:
+    groups:
+      - title: Coming from another client
+        description: Compare TaystJK with the client you already know.
+        items:
+          - title: What's new
+            url: /features/whats-new/
+            description: Every cvar and command this fork adds, filtered by the client you are coming from.
+            cta: Generated comparison
+      - title: Interface and customization
+        description: Change how the client looks, presents information, and behaves in everyday use.
+        items:
+          - title: Client behaviour
+            url: /features/client-behaviour/
+            description: Shader overrides, modifier binds, console editing, and widescreen assets.
+            cta: Behaviour changes
+          - title: HUD and movement tools
+            url: /features/hud-and-movement/
+            description: Killfeed, team overlays, SnapHUD, PitchHUD, strafe helper, and speedometer.
+            cta: HUD tools
+          - title: Cosmetics
+            url: /features/cosmetics/
+            description: Hats and capes, how to add one, and the offsets format that positions it.
+            cta: Cosmetics guide
+          - title: Chat emoji
+            url: /features/emoji/
+            description: Every emoji the client ships, and the text you type to send it.
+            cta: Emoji index
+          - title: Renderers
+            url: /features/renderers/
+            description: What each backend is for, how to switch, and where to report a renderer bug.
+            cta: Renderer guide
+      - title: Gameplay modes
+        description: Movement and game modes that depend on the server you join.
+        items:
+          - title: Movement styles
+            url: /features/movement-styles/
+            description: The movement styles a server can run, and how each one plays.
+            cta: Movement styles
+          - title: Tribes
+            url: /features/tribes/
+            description: Skiing, jetpacks, classes and packs. Experimental and lightly played.
+            cta: Tribes mode
+      - title: Configuration and scripting
+        description: Work with the files and scripting tools that configure the client.
+        items:
+          - title: Shipped configs
+            url: /features/shipped-configs/
+            description: The configuration files that ship with the client and what each one sets up.
+            cta: Config presets
+          - title: Console scripting
+            url: /features/console-scripting/
+            description: Nested quotes, conditional commands, cvar substitution, and command timers.
+            cta: Scripting guide
+  help:
+    groups:
+      - title: Solve a problem
+        description: Start with the symptom, then work out which project owns the behaviour.
+        items:
+          - title: Troubleshooting
+            url: /troubleshooting/
+            description: Fixes for the problems players and server administrators hit most often.
+            cta: Troubleshooting guide
+          - title: Where to report
+            url: /where-to-report/
+            description: Decide whether a problem belongs to TaystJK, a game module, or a renderer.
+            cta: Find the right project
+      - title: Understand the documentation
+        description: Learn how the site is organized and look up unfamiliar terminology.
+        items:
+          - title: Documentation overview
+            url: /overview/
+            description: How the handwritten guides and generated console reference fit together.
+            cta: How this site works
+          - title: Glossary
+            url: /glossary/
+            description: Terms used throughout the guides and console reference.
+            cta: Browse definitions
+      - title: Project information
+        description: The project's licence, attribution, and disclosure.
+        items:
+          - title: Licensing and attribution
+            url: /licensing/
+            description: The licence, upstream projects, and requirements for reuse.
+            cta: Licensing details
+          - title: AI disclosure
+            url: /ai-disclosure/
+            description: How AI-assisted tools have been used in this documentation.
+            cta: Read the disclosure

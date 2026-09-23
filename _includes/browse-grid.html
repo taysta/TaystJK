@@ -1,0 +1,22 @@
+{%- comment -%}
+  Grouped hub cards from _data/navigation.yml. Pass the hub's key there as `section`.
+{%- endcomment -%}
+{% assign section = site.data.navigation.sections[include.section] %}
+{% for group in section.groups %}
+{% assign group_id = group.title | slugify %}
+<section class="browse-group" aria-labelledby="{{ group_id }}">
+  <div class="browse-group-heading">
+    <h2 id="{{ group_id }}">{{ group.title }}</h2>
+    {% if group.description %}<p>{{ group.description }}</p>{% endif %}
+  </div>
+  <div class="browse-grid">
+    {% for item in group.items %}
+    <a class="browse-card" href="{{ item.url | relative_url }}">
+      <h3>{{ item.title }}</h3>
+      {% if item.description %}<p>{{ item.description }}</p>{% endif %}
+      {% if item.cta %}<b>{{ item.cta }} →</b>{% endif %}
+    </a>
+    {% endfor %}
+  </div>
+</section>
+{% endfor %}

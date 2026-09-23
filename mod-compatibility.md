@@ -1,7 +1,8 @@
 ---
 title: "Mod compatibility"
 layout: reference
-nav_order: 11
+nav_order: 3
+parent: "Install TaystJK"
 description: "Why a client feature works on one server and silently does nothing on another, which mod the client thinks you are on, and how a server turns features back on."
 toc: true
 ---

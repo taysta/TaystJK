@@ -1,7 +1,8 @@
 ---
 title: "Where to report"
 layout: reference
-nav_order: 10
+nav_order: 2
+parent: "Help"
 description: "Which project owns a problem: the client, the server's game module, the Vulkan renderer, or a closed-source mod."
 toc: true
 ---

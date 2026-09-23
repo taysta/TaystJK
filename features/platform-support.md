@@ -1,8 +1,8 @@
 ---
 title: "Platform support"
 layout: reference
-nav_order: 10
-parent: "Features"
+nav_order: 1
+parent: "Install TaystJK"
 description: "Features whose availability depends on your operating system or processor architecture."
 toc: true
 ---

@@ -154,6 +154,7 @@ def main() -> None:
         Path("overview.md"), Path("glossary.md"),
         Path("troubleshooting.md"), Path("where-to-report.md"),
         Path("mod-compatibility.md"), Path("devlog.md"), Path("licensing.md"),
+        Path("help.md"), Path("ai-disclosure.md"),
         *Path("_devlog").glob("*.md"),
     ]
     for page in pages:

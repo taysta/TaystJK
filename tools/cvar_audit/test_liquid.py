@@ -64,7 +64,7 @@ def check(path):
 
 
 def main():
-    targets = sorted(ROOT.glob("_layouts/*.html"))
+    targets = sorted(ROOT.glob("_layouts/*.html")) + sorted(ROOT.glob("_includes/*.html"))
     for extra in ("search-index.json", "devlog.md", "devlog/feed.xml"):
         path = ROOT / extra
         if path.exists():

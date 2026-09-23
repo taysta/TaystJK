@@ -23,7 +23,7 @@ The generated console reference does not follow this document. It is produced by
 | `toc` | bool | no | Adds the collapsible "On this page" rail. See §3a for when a page wants one. |
 | `wide` | bool | no | `true` opts into the wider content column (`--wide`, 1180px). Used by index, development, reference. |
 | `reference_app` | bool | no | `reference.md` only. Adds `has-reference-app` to `<body>` and mounts the search app. |
-| `parent` | string | no | Parent page title for breadcrumbs and, with `nav_order`, section previous/next links. |
+| `parent` | string | no | Parent page title for breadcrumbs and, with `nav_order`, section previous/next links. It also picks the highlighted header tab, so a page belongs to its parent's section wherever its file sits. |
 | `nav_exclude` | bool | no | No longer affects navigation. The layout reuses it to decide whether to draw the reference breadcrumb. |
 | `search_exclude` | bool | no | Keeps a page out of `/search-index.json`, and so out of the header search. |
 

@@ -1,5 +1,8 @@
 ---
 title: "AI disclosure"
+layout: reference
+nav_order: 6
+parent: "Help"
 description: "How AI-assisted tools have been used in the TaystJK documentation wiki."
 toc: true
 nav_exclude: true

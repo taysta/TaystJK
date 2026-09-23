@@ -1,7 +1,7 @@
 ---
 title: "Cosmetics"
 layout: reference
-nav_order: 3
+nav_order: 4
 parent: "Features"
 description: "Hats, capes, and masks: jaPRO's fixed set with optional account unlocks and the separate global cosmetics available on other servers."
 toc: true

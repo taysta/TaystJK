@@ -1,7 +1,7 @@
 ---
 title: "Renderers"
 layout: reference
-nav_order: 5
+nav_order: 6
 parent: "Features"
 description: "The three renderer backends, what each is for, how to switch between them, and where renderer bugs belong."
 toc: true

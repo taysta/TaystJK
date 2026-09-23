@@ -437,7 +437,7 @@ def emoji_page(sha: str) -> tuple[str, list[str]]:
         )
     head = frontmatter(
         "Chat emoji",
-        9,
+        5,
         "Features",
         wide=True,
         description=(

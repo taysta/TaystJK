@@ -1,7 +1,8 @@
 ---
 title: "Overview"
 layout: reference
-nav_order: 7
+nav_order: 3
+parent: "Help"
 description: "How this documentation is organised, what jaPRO is, and how to read an entry in the generated console reference."
 toc: true
 ---
@@ -11,16 +12,16 @@ toc: true
 
 # How this documentation works
 
-<p class="page-lede">Four hand-written guides, one generated reference, and a glossary. This page explains which is which, and how to read the parts of an entry that are not obvious.</p>
+<p class="page-lede">Hand-written guides, one generated reference, and a glossary. This page explains which is which, and how to read the parts of an entry that are not obvious.</p>
 </div>
 
 ## The guides and the reference
 
-Five sections, written by different means:
+The sections are written by different means:
 
-- [**Install**](/TaystJK/install/), [**Host**](/TaystJK/server-hosting/), [**Features**](/TaystJK/features/) and
-  [**Develop**](/TaystJK/development/) are written by hand. They explain how to do something,
-  or how a feature works.
+- [**Install**](/TaystJK/install/), [**Host**](/TaystJK/server-hosting/), [**Features**](/TaystJK/features/),
+  [**Develop**](/TaystJK/development/) and [**Help**](/TaystJK/help/) are written by hand.
+  They explain how to do something, or how a feature works.
 - [**Console reference**](/TaystJK/reference/) is generated from the source code. It has one
   page per cvar and console command: what it is, what it defaults to, where it is
   registered, and where it came from.

@@ -53,22 +53,34 @@
           <span><strong>TaystJK</strong><small>Documentation</small></span>
         </a>
 
-        {% assign nav_section = '' %}
-        {% if page.url == '/' %}{% assign nav_section = 'home' %}
-        {% elsif page.url contains '/install/' %}{% assign nav_section = 'install' %}
-        {% elsif page.url contains '/server-hosting/' %}{% assign nav_section = 'server' %}
-        {% elsif page.url contains '/features' %}{% assign nav_section = 'features' %}
-        {% elsif page.url contains '/development' %}{% assign nav_section = 'development' %}
-        {% elsif page.url contains '/reference' %}{% assign nav_section = 'reference' %}
-        {% elsif page.url contains '/devlog' %}{% assign nav_section = 'devlog' %}
-        {% endif %}
+        {%- comment -%}
+          The active tab is the page's top-level ancestor, found by following `parent`
+          titles up to two levels. A section is what its pages declare, not where their
+          files sit: /features/platform-support/ belongs to Install. The reference and the
+          devlog are matched by URL because their entry pages and posts carry no parent.
+        {%- endcomment -%}
+        {%- assign nav_root = page.url -%}
+        {%- if page.parent -%}
+          {%- assign parent_page = site.pages | where: "title", page.parent | first -%}
+          {%- if parent_page -%}
+            {%- assign nav_root = parent_page.url -%}
+            {%- if parent_page.parent -%}
+              {%- assign grandparent_page = site.pages | where: "title", parent_page.parent | first -%}
+              {%- if grandparent_page %}{% assign nav_root = grandparent_page.url %}{% endif -%}
+            {%- endif -%}
+          {%- endif -%}
+        {%- endif -%}
+        {%- assign url_head = page.url | slice: 0, 11 -%}
+        {%- if url_head == '/reference/' %}{% assign nav_root = '/reference/' %}{% endif -%}
+        {%- if page.collection == 'devlog' %}{% assign nav_root = '/devlog/' %}{% endif %}
         <nav class="site-nav" aria-label="Primary navigation">
-          <a href="{{ '/install/' | relative_url }}"{% if nav_section == 'install' %} class="active"{% endif %}>Install</a>
-          <a href="{{ '/server-hosting/' | relative_url }}"{% if nav_section == 'server' %} class="active"{% endif %}>Host</a>
-          <a href="{{ '/features/' | relative_url }}"{% if nav_section == 'features' %} class="active"{% endif %}>Features</a>
-          <a href="{{ '/development/' | relative_url }}"{% if nav_section == 'development' %} class="active"{% endif %}>Develop</a>
-          <a href="{{ '/reference/' | relative_url }}"{% if nav_section == 'reference' %} class="active"{% endif %}>Reference</a>
-          <a href="{{ '/devlog/' | relative_url }}"{% if nav_section == 'devlog' %} class="active"{% endif %}>Devlog</a>
+          <a href="{{ '/install/' | relative_url }}"{% if nav_root == '/install/' %} class="active"{% endif %}>Install</a>
+          <a href="{{ '/server-hosting/' | relative_url }}"{% if nav_root == '/server-hosting/' %} class="active"{% endif %}>Host</a>
+          <a href="{{ '/features/' | relative_url }}"{% if nav_root == '/features/' %} class="active"{% endif %}>Features</a>
+          <a href="{{ '/development/' | relative_url }}"{% if nav_root == '/development/' %} class="active"{% endif %}>Develop</a>
+          <a href="{{ '/reference/' | relative_url }}"{% if nav_root == '/reference/' %} class="active"{% endif %}>Reference</a>
+          <a href="{{ '/devlog/' | relative_url }}"{% if nav_root == '/devlog/' %} class="active"{% endif %}>Devlog</a>
+          <a href="{{ '/help/' | relative_url }}"{% if nav_root == '/help/' %} class="active"{% endif %}>Help</a>
         </nav>
 
         <form class="site-search" role="search" data-baseurl="{{ site.baseurl }}" autocomplete="off">
@@ -105,10 +117,10 @@
       <article class="page-content"{% if page.toc %} data-toc{% endif %}>
       {%- comment -%}
           Child pages say where they sit and offer a way back up. The parent's title is
-          matched against the section index pages, which carry the same title.
+          matched against the section index pages, which carry the same title; the header
+          has already looked it up as parent_page.
         {%- endcomment -%}
         {% if page.parent %}
-        {%- assign parent_page = site.pages | where: "title", page.parent | first %}
         <nav class="breadcrumbs" aria-label="Breadcrumb">
           {%- if parent_page %}
           <a href="{{ parent_page.url | relative_url }}">{{ page.parent }}</a>
@@ -192,9 +204,8 @@
         <p>A cross-platform, mod-aware client focused on compatibility, performance, and everyday quality of life.</p>
       </div>
       {%- comment -%}
-        Deliberately short, and deliberately not a copy of the top nav: Install, Host,
-        Features, Develop, Reference and Devlog are already up there. What is left is the
-        orientation and meta pages that have nowhere else to live.
+        Deliberately short, and deliberately not a copy of the top nav. These are shortcuts
+        to the Help pages readers look for at the foot of a page; the full list is on /help/.
       {%- endcomment -%}
       <nav aria-label="Footer navigation">
         <a href="{{ '/overview/' | relative_url }}">Overview</a>

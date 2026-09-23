@@ -1,8 +1,8 @@
 ---
 title: "Builds and versioning"
 layout: reference
-nav_order: 11
-parent: "Features"
+nav_order: 2
+parent: "Install TaystJK"
 description: "How TaystJK releases are identified, what your build reports, and how to read it in a bug report."
 toc: true
 ---

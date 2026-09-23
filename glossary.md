@@ -1,7 +1,8 @@
 ---
 title: "Glossary"
 layout: reference
-nav_order: 8
+nav_order: 4
+parent: "Help"
 description: "Terms the guides and the console reference assume you already know."
 toc: true
 ---

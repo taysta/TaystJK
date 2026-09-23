@@ -2,7 +2,7 @@
 title: "Chat emoji"
 layout: reference
 generated: true
-nav_order: 9
+nav_order: 5
 parent: "Features"
 wide: true
 description: "Every chat emoji TaystJK ships, and the text you type to send each one."

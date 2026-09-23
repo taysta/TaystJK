@@ -94,11 +94,14 @@ render rather than being byte-identical to production.
 
 ## Adding a page
 
-Create a Markdown file, give it front matter per `CONVENTIONS.md`, and add it to the nav.
+Create a Markdown file, give it front matter per `CONVENTIONS.md`, and place it in a section.
 
-The nav is **hardcoded** in `_layouts/reference.html`; there is no theme and nothing reads
-`nav_order`. A new top-level page therefore means editing that file. Add hand-written pages to the
-list in `check_generated.py` too, or their internal links are never validated.
+The header tabs are **hardcoded** in `_layouts/reference.html`; there is no theme. A page joins
+a section through its `parent` (the section page's title) and `nav_order`, which give it a
+breadcrumb, previous/next links, and the section's highlighted header tab. On the Features and
+Help sections, also add a card for it to `_data/navigation.yml`, which draws their hub pages.
+Only a new top-level section means editing the layout. Add hand-written pages to the list in
+`check_generated.py` too, or their internal links are never validated.
 
 Everything else is automatic: the page is picked up by the site search through
 `search-index.json`, and its headings become linkable anchors.
