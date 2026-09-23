@@ -14,7 +14,7 @@ status: experimental
 
 # Tribes
 
-<p class="page-lede">A movement style that replaces running with skiing and adds a jetpack, its own HUD and its own weapons. It is experimental, few servers run it, and one of its models does not ship with the client.</p>
+<p class="page-lede">A movement style that replaces running with skiing and adds a jetpack, its own HUD and its own weapons. It is experimental and few servers run it.</p>
 </div>
 
 Tribes is one of the nineteen [movement styles](/TaystJK/features/movement-styles/); the
@@ -26,15 +26,8 @@ assets)"
 ([`cg_consolecmds.c`](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/codemp/cgame/cg_consolecmds.c#L1431)); turn it on with
 `stylePlayer 22`.
 
-Most of the assets it needs already ship in `japro-assets.pk3`: the jetpack and mortar
-effects under `effects/tribes/`, the ski and thrust sounds, the Tribes menu and the two
-configs. One does not. With the bit on, the spinfusor's projectile is drawn with
-`models/weapons2/concussion/disc.md3`
-([`cg_weaponinit.c`](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/codemp/cgame/cg_weaponinit.c#L190)), which is not in TaystJK's
-source tree.
-
-TODO: confirm where players get `disc.md3`, how the projectile draws without it, and whether
-any other Tribes asset is missing from the release.
+The assets it uses ship in `japro-assets.pk3`: the jetpack and mortar effects under
+`effects/tribes/`, the ski and thrust sounds, the Tribes menu and the two configs.
 
 ## Skiing
 
