@@ -76,8 +76,11 @@ Vulkan-specific rendering problems to
 Anything you can also reproduce on `rd-taystjk` is not a Vulkan bug. Switch backends before
 reporting. It is the single most useful thing you can say in the report.
 
-rend2 is different. `rd-rend2t` is built from TaystJK's own copy of the backend, and its
-fixes, including those from SomaZ, whose rend2 work it is based on, are made in this
-repository ([its history](https://github.com/taysta/TaystJK/commits/master/shared/rd-rend2)).
-Report a rend2-only problem to [taysta/TaystJK](https://github.com/taysta/TaystJK/issues),
-again after checking that it does not happen on `rd-taystjk`.
+rend2 is also developed upstream. `rd-rend2t` is built from SomaZ's rend2, on the
+[`rend2-unified-wip`](https://github.com/SomaZ/OpenJK/tree/rend2-unified-wip) branch of
+SomaZ's OpenJK fork, not from the older rend2 in OpenJK itself, and its fixes are written
+there and ported down. A rend2-only problem belongs at
+[SomaZ/OpenJK](https://github.com/SomaZ/OpenJK/issues) only if it also happens on a build
+of that branch. If it happens only in TaystJK, TaystJK introduced it; report it at
+[taysta/TaystJK](https://github.com/taysta/TaystJK/issues). Either way, check first that it
+does not happen on `rd-taystjk`.

@@ -3,7 +3,7 @@ title: "Where to report"
 layout: reference
 nav_order: 2
 parent: "Help"
-description: "Which project owns a problem: the client, the server's game module, the Vulkan renderer, or a closed-source mod."
+description: "Which project owns a problem: the client, the server's game module, the Vulkan or rend2 renderer, or a closed-source mod."
 toc: true
 ---
 
@@ -22,7 +22,8 @@ toc: true
 | The client crashes, will not start, will not connect, mis-renders, or mishandles files, keys or configs | [taysta/TaystJK](https://github.com/taysta/TaystJK) |
 | How the game *plays*: movement, saber behaviour, scoring, admin commands, race and defrag | [videoP/jaPRO](https://github.com/videoP/jaPRO) |
 | Something only wrong on the Vulkan renderer | [JKSunny/EternalJK](https://github.com/JKSunny/EternalJK) |
-| Something only wrong on the rend2 renderer | [taysta/TaystJK](https://github.com/taysta/TaystJK); see [Renderers](/TaystJK/features/renderers/#where-a-renderer-bug-goes) |
+| Something only wrong on the rend2 renderer, and also on SomaZ's own build | [SomaZ/OpenJK](https://github.com/SomaZ/OpenJK) |
+| Something only wrong on rend2 in TaystJK | [taysta/TaystJK](https://github.com/taysta/TaystJK) |
 | Something only wrong on a JA+ server | Nowhere; see below |
 
 ## How to tell which
@@ -38,9 +39,10 @@ game module those servers run. The rules live there, not in your client. The
 server and silently do nothing on another.
 
 **Does it survive switching renderer?** Run `cl_renderer rd-taystjk` then `vid_restart` and
-try again. If the problem disappears, it belongs to the renderer you were using, and if that
-was Vulkan it belongs to JKSunny. If it persists on the default renderer it is not a
-renderer bug. See [Renderers](/TaystJK/features/renderers/).
+try again. If the problem disappears, it belongs to the renderer you were using: if that
+was Vulkan it belongs to JKSunny, and if rend2, see [the rend2 renderer](#the-rend2-renderer).
+If it persists on the default renderer it is not a renderer bug. See
+[Renderers](/TaystJK/features/renderers/).
 
 **Is it drawn, or is it decided?** Broadly: if the client got it wrong on screen it is ours;
 if the outcome itself was wrong, the server decided it.
@@ -71,6 +73,20 @@ Vulkan-specific rendering problems belong at
 
 Check first that it really is Vulkan-specific by switching to `rd-taystjk`. "Only happens on
 Vulkan" is the single most useful sentence such a report can contain.
+
+## The rend2 renderer
+
+rend2 is developed upstream by SomaZ, on the `rend2-unified-wip` branch of SomaZ's OpenJK
+fork, and fixes are ported down from there. TaystJK can still introduce a rend2 bug of its
+own, in its copy of the backend or in the engine around it, so check two things before
+filing:
+
+1. It does not happen on `rd-taystjk`, so it really is rend2.
+2. It also happens on a build of SomaZ's
+   [`rend2-unified-wip`](https://github.com/SomaZ/OpenJK/tree/rend2-unified-wip) branch.
+
+If both hold, report it at <https://github.com/SomaZ/OpenJK/issues>. If it only happens in
+TaystJK, it is ours: report it at <https://github.com/taysta/TaystJK/issues>.
 
 ## JA+
 
