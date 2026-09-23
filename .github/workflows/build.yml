@@ -544,7 +544,7 @@ jobs:
       # A release made with GITHUB_TOKEN does not fire `release` events for other
       # workflows, so reference-check's release trigger never sees this one. Dispatch
       # is exempt from that rule.
-      - name: Trigger reference check
+      - name: Trigger reference refresh
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |

@@ -1,16 +1,13 @@
-name: Reference check
+name: Reference refresh
 
-# The console reference is generated from this branch but lives on gh-pages, and its own
-# workflow only runs when someone touches that branch. A cvar added here would otherwise go
-# unnoticed until the docs branch happened to be edited.
+# The console reference is generated from this branch but lives on gh-pages. Refresh its
+# static evidence after a release and weekly, then put the generated changes through review
+# instead of pushing them directly to the published branch.
 #
 # This has to live on the default branch: GitHub only runs scheduled workflows from the
-# default branch, so the same cron sitting in the gh-pages workflow would never fire. It
-# checks gh-pages out and runs that branch's own script, so the two cannot drift apart.
-#
-# It cannot regenerate the reference. That needs eight upstream remotes, GitHub PR metadata
-# supplied by hand, and a runtime capture from a client that has actually launched -- none
-# of which a runner can do. So it reports staleness and leaves regeneration to a person.
+# default branch, so the same cron sitting in the gh-pages workflow would never fire.
+# Runtime reconciliation remains manual: a runner has not launched the game and must not
+# relabel an older cvarlist/cmdlist capture as current.
 
 on:
   schedule:
@@ -28,11 +25,14 @@ on:
         default: ""
 
 permissions:
-  contents: read
+  actions: write
+  contents: write
+  pull-requests: write
 
 jobs:
-  check:
+  refresh-reference:
     runs-on: ubuntu-latest
+    timeout-minutes: 120
     steps:
       - name: Check out the docs branch
         uses: actions/checkout@v4
@@ -40,18 +40,134 @@ jobs:
           ref: gh-pages
           fetch-depth: 0
 
-      - name: Make this branch available to the drift check
-        run: git fetch origin master:refs/remotes/origin/master
+      - name: Fetch source and provenance histories
+        run: |
+          set -euo pipefail
+          git fetch origin +refs/heads/master:refs/remotes/origin/master
+          git fetch --no-tags https://github.com/jacoders/openjk.git +refs/heads/master:refs/remotes/openjk/master
+          git fetch --no-tags https://github.com/eternalcodes/EternalJK.git +refs/heads/master:refs/remotes/eternaljk/master
+          git fetch --no-tags https://github.com/videop/japro.git +refs/heads/main:refs/remotes/japro/main
+          git fetch --no-tags https://github.com/mvdevs/jk2mv.git +refs/heads/master:refs/remotes/jk2mv/master
+          git fetch --no-tags https://github.com/jkanewmod/NewJK.git +refs/heads/master:refs/remotes/newjk/master
+          git fetch --no-tags https://github.com/SomaZ/OpenJK.git +refs/heads/rend2-unified-wip:refs/remotes/somaz/rend2-unified-wip
+          git fetch --no-tags https://github.com/JKSunny/EternalJK.git +refs/heads/master:refs/remotes/Sunny/master
 
       - uses: actions/setup-node@v4
         with:
           node-version: "20"
 
-      - name: Run every check
-        run: tools/cvar_audit/run_all.sh --ref origin/master
+      - name: Collect pull-request provenance
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          set -euo pipefail
+          destination="${RUNNER_TEMP}/reference-prs"
+          mkdir -p "$destination"
+          repositories=(
+            taysta/TaystJK
+            jacoders/openjk
+            eternalcodes/EternalJK
+            videop/japro
+            mvdevs/jk2mv
+            jkanewmod/NewJK
+            SomaZ/OpenJK
+            JKSunny/EternalJK
+          )
+          for repository in "${repositories[@]}"; do
+            filename="${repository//\//-}.json"
+            gh api --paginate \
+              "repos/${repository}/pulls?state=all&per_page=100" \
+              --jq '.[]' | jq -s '.' > "${destination}/${filename}"
+          done
+
+      - name: Regenerate static reference evidence
+        run: |
+          set -euo pipefail
+          python3 tools/cvar_audit/provenance.py \
+            --ref origin/master \
+            --pr-json "${RUNNER_TEMP}/reference-prs/*.json"
+          python3 tools/cvar_audit/build_reference.py --ref origin/master
+          python3 tools/cvar_audit/generate_docs.py
+          python3 tools/cvar_audit/validate.py --update-baseline-totals
+
+          # Refuse to increase the missing-changelog ceiling. If coverage has
+          # legitimately improved, record the lower value in the generated PR.
+          python3 tools/cvar_audit/changelog_coverage.py --ref origin/master
+          python3 tools/cvar_audit/changelog_coverage.py \
+            --ref origin/master --update-ratchet
+
+          tools/cvar_audit/run_all.sh --ref origin/master
+
+      - name: Reject unexpected generated paths
+        run: |
+          set -euo pipefail
+          while IFS= read -r path; do
+            case "$path" in
+              .cvar-audit/provenance.json|.cvar-audit/state.json|\
+              _data/*|assets/data/*|assets/emoji/*|features/emoji.md|features/whats-new.md|\
+              index.md|reference.md|reference/*|\
+              tools/cvar_audit/baseline-totals.json|\
+              tools/cvar_audit/changelog-coverage-ratchet.json)
+                ;;
+              *)
+                echo "unexpected path changed by reference regeneration: $path" >&2
+                exit 1
+                ;;
+            esac
+          done < <(git status --porcelain | cut -c4-)
+
+      - uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: "3.4"
+          bundler-cache: true
+
+      - name: Build the generated site
+        run: |
+          bundle exec jekyll build
+          python3 tools/cvar_audit/check_feed.py
+
+      - name: Open or update the refresh pull request
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          REPO: ${{ github.repository }}
+          RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+        run: |
+          set -euo pipefail
+          if git diff --quiet && [ -z "$(git ls-files --others --exclude-standard)" ]; then
+            echo "The console reference is already current." >> "$GITHUB_STEP_SUMMARY"
+            exit 0
+          fi
+
+          source_sha=$(git rev-parse origin/master)
+          short_sha=$(git rev-parse --short=11 origin/master)
+          branch="automation/reference-refresh"
+          title="[docs] refresh console reference to ${short_sha}"
+          body=$(printf '%s\n\n%s\n\n%s\n\n%s' \
+            "Automated static console-reference refresh from source commit \`${source_sha}\`." \
+            "The existing runtime reconciliation is retained because this runner did not launch a game client or dedicated server." \
+            "All reference checks, changelog coverage, and the Jekyll build passed before this branch was pushed." \
+            "Workflow run: ${RUN_URL}")
+
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git switch -C "$branch"
+          git add -A
+          git commit -m "$title"
+          git push --force origin "HEAD:refs/heads/${branch}"
+
+          pr_url=$(gh pr list --repo "$REPO" --base gh-pages --head "$branch" \
+            --state open --json url --jq '.[0].url // empty')
+          if [ -z "$pr_url" ]; then
+            pr_url=$(gh pr create --repo "$REPO" --base gh-pages --head "$branch" \
+              --title "$title" --body "$body")
+          fi
+          # Pushes and pull requests made with GITHUB_TOKEN do not recursively
+          # trigger workflows, so dispatch the docs branch's own verification.
+          gh workflow run reference-drift.yml --repo "$REPO" --ref "$branch"
+          echo "Reference refresh PR: ${pr_url}" >> "$GITHUB_STEP_SUMMARY"
 
   report-failure:
-    needs: check
+    needs: refresh-reference
     if: failure()
     runs-on: ubuntu-latest
     permissions:
@@ -68,15 +184,15 @@ jobs:
           set -euo pipefail
 
           if [ -n "$RELEASE_TAG" ]; then
-            context="The reference check failed for release ${RELEASE_TAG}."
+            context="The automated reference refresh failed for release ${RELEASE_TAG}."
           else
-            context="The scheduled console reference check failed."
+            context="The scheduled console reference refresh failed."
           fi
 
           # Create the label first: listing by a label that does not exist is an error,
           # and `set -e` would abort before anything got reported.
           gh label create reference-drift --repo "$REPO" \
-            --description "Weekly console reference check is failing" \
+            --description "Automated console reference refresh is failing" \
             --color D93F0B 2>/dev/null || true
 
           existing=$(gh issue list --repo "$REPO" --state open --label reference-drift \
@@ -86,16 +202,13 @@ jobs:
             gh issue comment "$existing" --repo "$REPO" \
               --body "$context Still failing as of $(date -u '+%Y-%m-%d'). Run: $RUN_URL"
           else
-            gh issue create --repo "$REPO" --title "Console reference check is failing" \
+            gh issue create --repo "$REPO" --title "Console reference refresh is failing" \
               --label reference-drift \
               --body "$context
 
-          The likely cause is that \`master\` has moved and the reference data checked in on
-          \`gh-pages\` no longer matches the registrations in the source. Regenerating on the
-          docs branch fixes it; \`tools/cvar_audit/README.md\` there has the order to run
-          things in.
-
-          It can also be an ordinary test failure. Read the run before assuming drift.
+          The workflow fetches the configured upstream histories and pull-request metadata,
+          regenerates the static reference on a bot branch, verifies it, and opens or updates
+          a pull request against \`gh-pages\`. Read the run to see which stage needs attention.
 
           Run: $RUN_URL
 
