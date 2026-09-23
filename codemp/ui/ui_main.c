@@ -12445,6 +12445,11 @@ static void UI_CvarHelp(const char *cvarName, qboolean enter, char *helpBuffer, 
 	}
 }
 
+// Tells the engine this module's uiExport_t has the CvarHelp slot.
+Q_EXPORT qboolean QDECL UI_ExportsCvarHelp( void ) {
+	return qtrue;
+}
+
 /*
 ============
 GetModuleAPI
