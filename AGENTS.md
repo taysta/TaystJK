@@ -83,15 +83,16 @@ Check the generator and `generated: true` front matter before editing an unfamil
   `parent` and `nav_order`. `_data/navigation.yml` holds the grouped cards on the Install,
   Features, Development and Help hubs, rendered by `_includes/browse-grid.html`.
 - `_layouts/devlog.html` supplies post headings. `_layouts/none.html` handles raw output
-  and redirect stubs. Follow CONVENTIONS.md's distinct guide and devlog structures.
+  such as the devlog feed and the search index. Follow CONVENTIONS.md's distinct guide
+  and devlog structures.
 - `assets/js/reference-app.js` handles reference filters and platform selection;
   `assets/js/site-search.js` handles header search and heading anchors. Search data comes
   from `search-index.json`. Preserve keyboard behavior and existing ARIA patterns.
 - `assets/css/reference.css` is the shared stylesheet. Reuse color tokens and check
   both themes when changing presentation.
-- Preserve retired URL stubs, including the published `cvars/miscellanous/` spelling
-  and the old what's-new and emoji paths. Use `relative_url` for template links and
-  keep `/TaystJK/` links valid in generated Markdown.
+- The site keeps no redirect stubs; when a page moves, update every link to it. Use
+  `relative_url` for template links and keep `/TaystJK/` links valid in generated
+  Markdown.
 - `_config.yml`'s `exclude` list replaces Jekyll defaults. Keep agent guides, tooling,
   and local build artifacts excluded from publication. Keep non-page Markdown out of
   `page_dates.py` and `check_generated.py`'s page inventories too.
@@ -129,7 +130,7 @@ bundle exec jekyll build
 The Gemfile provides local Jekyll tooling; run `bundle install` if dependencies are
 missing. GitHub Pages builds separately, so local output does not prove production
 rendering is identical. Preview visible changes with `bundle exec jekyll serve` and
-check the affected pages, navigation, search, and redirects. For exclusion changes,
+check the affected pages, navigation, and search. For exclusion changes,
 inspect `_site` and its search index to ensure internal files are absent.
 
 Record existing failures before changing behavior. Report any unavailable dependencies

@@ -1,5 +1,5 @@
 # No theme. Every layout this site uses lives in _layouts/ -- `reference` for every
-# page, `none` for raw output such as the redirect stubs and search-index.json.
+# page, `none` for raw output such as the devlog feed and search-index.json.
 # Navigation is hardcoded in _layouts/reference.html, and search is built from
 # search-index.json by assets/js/site-search.js.
 
@@ -22,9 +22,6 @@ collections:
 exclude: ["node_modules/", "*.gemspec", "*.gem", "Gemfile", "Gemfile.lock", "package.json", "package-lock.json", "script/", "tools/", ".cvar-audit/", "LICENSE.txt", "lib/", "bin/", "README.md", "CONVENTIONS.md", "AGENTS.md", "CLAUDE.md", "Rakefile", "docs/tests/",
           "vendor/", ".bundle/", "_site/", "build/", "cmake-build-debug/", "cmake-build-release/", "cmake-build-relwithdebinfo/", "compile_commands.json", ".idea/", "CMakeLists.txt", "CMakePresets.json"]
 
-# The former hand-written topic pages remain reachable through old links, but
-# the generated exhaustive reference is now the canonical navigation/search
-# surface. Keeping the legacy pages out of both prevents conflicting advice.
 defaults:
   - scope:
       path: ""
@@ -36,16 +33,6 @@ defaults:
     values:
       layout: devlog
       toc: true
-  - scope:
-      path: "cvars"
-    values:
-      nav_exclude: true
-      search_exclude: true
-  - scope:
-      path: "commands"
-    values:
-      nav_exclude: true
-      search_exclude: true
 
 # Regression tests
 # By default, the pages in /docs/tests are excluded when the ste is built.

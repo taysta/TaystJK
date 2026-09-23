@@ -27,9 +27,6 @@ The generated console reference does not follow this document. It is produced by
 | `nav_exclude` | bool | no | No longer affects navigation. The layout reuses it to decide whether to draw the reference breadcrumb. |
 | `search_exclude` | bool | no | Keeps a page out of `/search-index.json`, and so out of the header search. |
 
-`has_children` and anchor-target `permalink` appear only on the legacy orphaned pages
-(`hardcoded-changes.md` and its child stubs). Do not use them on new pages.
-
 ### New optional fields
 
 | Field | Values | Purpose |
@@ -417,79 +414,12 @@ as any other factual claim (§6).
 5. Run `python3 tools/cvar_audit/validate.py` and
    `python3 tools/cvar_audit/check_generated.py`.
 
-## 10. Redirects
+## 10. Moving or removing a page
 
-Three page trees left over from an older Just-the-Docs structure were retired: they were
-unreachable from the navigation, their content had gone stale (the
-`cg_drawTeamOverlay 3` / `4` description predated the overlay overhaul), and the
-`hardcoded-changes/` children were front-matter-only stubs whose `permalink` pointed at
-anchors on their own parent.
-
-The prose of `hardcoded-changes.md` is preserved verbatim at
-`.migration/hardcoded-changes-original.md`; the retired trees are preserved at
-`.migration/orphaned-trees/`. `.migration/` is a scratch directory, not part of the site;
-Jekyll ignores dot-directories.
-
-**Approach: hand-written meta-refresh stubs, no plugin.** A redirect on GitHub Pages needs
-a file at the old path. Pages serves static files and has no server-side redirect
-configuration. `jekyll-redirect-from` is on the GitHub Pages allowed-plugin list, but it
-does not help here: its `redirect_from` form puts the mapping on the *destination* page,
-and the destination does not exist yet, while its `redirect_to` form generates exactly the
-same stub file we would write by hand. That left a new build-time dependency, on a site
-with no local Jekyll build to catch a misconfiguration, in exchange for nothing. If the
-Features section later makes `redirect_from` natural, revisit this.
-
-Destinations point at the Features page that covers each topic. Two entries route to the
-console reference instead, because no feature page covers demos or sound.
-
-| Retired URL | Destination |
-|:--|:--|
-| `/TaystJK/hardcoded-changes/` | `/TaystJK/features/client-behaviour/` |
-| `/TaystJK/cvars/crosshair/` | `/TaystJK/features/hud-and-movement/` |
-| `/TaystJK/cvars/hud/` | `/TaystJK/features/hud-and-movement/` |
-| `/TaystJK/cvars/strafe/` | `/TaystJK/features/hud-and-movement/` |
-| `/TaystJK/commands/strafe/` | `/TaystJK/features/hud-and-movement/` |
-| `/TaystJK/cvars/demos/` | `/TaystJK/reference/` |
-| `/TaystJK/cvars/sound/` | `/TaystJK/reference/` |
-| `/TaystJK/cvars/miscellanous/` | `/TaystJK/reference/` |
-| `/TaystJK/commands/miscellaneous/` | `/TaystJK/reference/` |
-| `/TaystJK/whats-new/` | `/TaystJK/features/whats-new/` |
-| `/TaystJK/emoji/` | `/TaystJK/features/emoji/` |
-| `/TaystJK/features/platform-support/` | `/TaystJK/install/platform-support/` |
-| `/TaystJK/features/builds-and-versioning/` | `/TaystJK/install/builds-and-versioning/` |
-| `/TaystJK/mod-compatibility/` | `/TaystJK/install/mod-compatibility/` |
-
-The what's-new and emoji entries are not retired content: both pages are generated, and moved
-into the Features section when it was built. The old URLs were published in the interim, so
-they redirect. The last three are Install pages that were published at the root or under
-`/features/` before the Install section had its own directory.
-
-`/TaystJK/cvars/miscellanous/` keeps the original misspelling, because that is the URL
-that was published.
-
-The retired child pages carried `permalink` values containing a `#`, such as
-`/cvars/strafe#speedometer` and `/hardcoded-changes#vulkan`. Those are not separately
-retrievable URLs. A browser reads everything after `#` as a fragment and requests the
-parent path, so the parent stub above covers them. They needed no stub of their own. The
-full list of retired anchor permalinks, for reference:
-
-```text
-/commands/miscellaneous#delay          /cvars/crosshair#crosshair-scope
-/commands/miscellaneous#delay-cancel   /cvars/hud#hud-updates
-/commands/miscellaneous#if-cvar        /cvars/hud#movement-keys
-/commands/miscellaneous#music-controls /cvars/hud#pitch-helper
-/commands/miscellaneous#string-substitution
-/commands/miscellaneous#wait-freely    /cvars/sound#ambient-sounds
-/commands/miscellaneous#wait-freely-cancel
-                                       /cvars/strafe#race-timer
-/hardcoded-changes#keybinds--commands  /cvars/strafe#speedometer
-/hardcoded-changes#miscellaneous       /cvars/strafe#strafe-helper
-/hardcoded-changes#shader-overrides    /cvars/strafe#trigger-slick-clip-rendering
-/hardcoded-changes#vulkan
-```
-
-A stub is a `layout: none` page whose only job is to hold a URL. Build the target with the
-`relative_url` filter rather than hardcoding `/TaystJK`, so the baseurl stays in one place.
+The site keeps no redirect stubs. When a page moves or is removed, update every link to it
+in the same change; `check_generated.py` fails on a broken internal link or `#` anchor, so
+it finds the ones you missed. A reader following an old outside link lands on the 404
+page, which points them at search and the section indexes.
 
 ## 11. Verification
 
