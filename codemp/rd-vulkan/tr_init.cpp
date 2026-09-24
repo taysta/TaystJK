@@ -1154,7 +1154,7 @@ void RE_Shutdown( qboolean destroyWindow, qboolean restarting ) {
 				SaveGhoul2InfoArray();
 		}
 
-		if (vk.device != VK_NULL_HANDLE) {
+		if (vk.active) {
 			vk_delete_textures();
 			vk_release_resources();
 		}
