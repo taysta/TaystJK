@@ -2272,16 +2272,6 @@ static void GetRealRes( int *w, int *h ) {
 	*h = glConfig.vidHeight;
 }
 
-static const cplane_t* RE_GetFrustum(void)
-{
-    return tr.viewParms.frustum;
-}
-
-static const vec_t* RE_GetViewPosition(void)
-{
-    return tr.viewParms.ori.origin;
-}
-
 
 // STUBS, REPLACEME
 qboolean stub_InitializeWireframeAutomap() { return qtrue; }
@@ -2558,10 +2548,6 @@ Q_EXPORT refexport_t* QDECL GetRefAPI ( int apiVersion, refimport_t *rimp ) {
 	/*
 	Ghoul2 Insert End
 	*/
-
-    // Custom
-    re.ext.GetFrustum						= RE_GetFrustum;
-    re.ext.GetViewPosition                  = RE_GetViewPosition;
 
 	re.ext.Font_StrLenPixels = RE_Font_StrLenPixelsNew;
 

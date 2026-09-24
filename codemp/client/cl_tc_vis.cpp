@@ -6,6 +6,7 @@
 /* kindly adapted from XPC32 and breadsticks */
 
 #include "client.h"
+#include "FxSystem.h"
 #include "../qcommon/cm_local.h"
 #include "../qcommon/cm_patch.h"
 
@@ -68,8 +69,6 @@ static qhandle_t slick_shader;
 static vec4_t trigger_color = { 0, 128, 0, 255 };
 static vec4_t clip_color = { 128, 0, 0, 255 };
 static vec4_t slick_color = { 0, 64, 128, 255 };
-
-static const cplane_t *frustum;
 
 void tc_vis_init(void) {
 	free_vis_brushes(trigger_head);
@@ -134,7 +133,7 @@ static qboolean InPVS(const vec3_t p)
 } */
 
 void tc_vis_render(void) {
-	//SetPVSLocation(re->ext.GetViewPosition());
+	//SetPVSLocation(theFxHelper.refdef->vieworg);
 	if (triggers_draw->integer) {
 		draw(trigger_head, trigger_shader, TRIGGER_BRUSH);
 	}
@@ -419,9 +418,10 @@ static void free_vis_brushes(visBrushNode_t *brushes) {
 }
 
 static void draw(visBrushNode_t *brush, qhandle_t shader, visBrushType_t type) {
-	frustum = re->ext.GetFrustum();
+	if (!theFxHelper.refdef)
+		return;
 	vec3_t viewPos;
-	VectorCopy(re->ext.GetViewPosition(), viewPos);
+	VectorCopy(theFxHelper.refdef->vieworg, viewPos);
 
 	while (brush) {
 		//don't do pvs optimization just check distance as well this gives better performance and results since pvs is expensive and oftentimes the edges are within structural brushes making it not reliable

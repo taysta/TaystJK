@@ -28,6 +28,7 @@ along with this program; if not, see <http://www.gnu.org/licenses/>.
 #include "snd_ambient.h"
 #include "FXExport.h"
 #include "FxUtil.h"
+#include "sys/sys_loadlib.h"
 
 extern IHeapAllocator *G2VertSpaceClient;
 extern botlib_export_t *botlib_export;
@@ -35,6 +36,7 @@ extern botlib_export_t *botlib_export;
 // ui interface
 static uiExport_t *uie; // ui export table
 static vm_t *uivm; // ui vm, valid for legacy and new api
+static qboolean uieHasCvarHelp; // uie extends past MenuReset with CvarHelp
 
 //
 // ui vmMain calls
@@ -143,6 +145,8 @@ void UIVM_CvarHelp( const char *cvarName, qboolean enter, char *helpBuffer, size
 		VM_Call( uivm, UI_CVAR_HELP, reinterpret_cast< intptr_t >( cvarName ), enter, reinterpret_cast< intptr_t >( helpBuffer ), helpBufferSize );
 		return;
 	}
+	if ( !uieHasCvarHelp )
+		return;
 	VMSwap v(uivm);
 
 	uie->CvarHelp(cvarName, enter, helpBuffer, helpBufferSize);
@@ -156,6 +160,8 @@ void UIVM_CommandHelp( const char *commandName, char *helpBuffer, size_t helpBuf
 		VM_Call( uivm, UI_CMD_HELP, reinterpret_cast< intptr_t >( commandName ), reinterpret_cast< intptr_t >( helpBuffer ), helpBufferSize );
 		return;
 	}
+	if ( !uieHasCvarHelp )
+		return;
 	VMSwap v(uivm);
 
 	uie->CvarHelp(commandName, qfalse, helpBuffer, helpBufferSize);
@@ -1469,11 +1475,15 @@ void CL_BindUI( void ) {
 			Com_Error( ERR_FATAL, "GetGameAPI failed on %s", dllName );
 		}
 		uie = ret;
+		uieHasCvarHelp = (qboolean)( Sys_LoadFunction( uivm->dllHandle, "UI_ExportsCvarHelp" ) != NULL );
+		if ( !uieHasCvarHelp )
+			Com_DPrintf( "CL_BindUI: %s has no CvarHelp export, using engine cvar descriptions\n", dllName );
 
 		return;
 	}
 
 	// fall back to legacy syscall/vm_call api
+	uieHasCvarHelp = qfalse;
 	uivm = VM_CreateLegacy( VM_UI, CL_UISystemCalls );
 	if ( !uivm ) {
 		cls.uiStarted = qfalse;

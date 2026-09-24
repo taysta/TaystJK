@@ -2035,16 +2035,6 @@ extern qboolean R_InitializeWireframeAutomap( void ); //tr_world.cpp
 
 extern qhandle_t RE_RegisterServerSkin( const char *name );
 
-static const cplane_t* RE_GetFrustum(void)
-{
-	return tr.viewParms.frustum;
-}
-
-static const vec_t* RE_GetViewPosition(void)
-{
-	return tr.viewParms.ori.origin;
-}
-
 /*
 @@@@@@@@@@@@@@@@@@@@@
 GetRefAPI
@@ -2241,10 +2231,6 @@ Q_EXPORT refexport_t* QDECL GetRefAPI( int apiVersion, refimport_t *rimp ) {
 	//re.G2VertSpaceServer	= G2VertSpaceServer;
 
 	re.ext.Font_StrLenPixels				= RE_Font_StrLenPixelsNew;
-
-	// Custom
-	re.ext.GetFrustum						= RE_GetFrustum;
-	re.ext.GetViewPosition                  = RE_GetViewPosition;
 
 	return &re;
 }
