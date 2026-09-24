@@ -480,6 +480,24 @@ void AddScore( gentity_t *ent, vec3_t origin, int score )
 
 /*
 =================
+G_ClearDisruptorZoom
+
+Drop the disruptor scope when ps.weapon is swapped directly, which skips the zoom reset in PM_BeginWeaponChange
+=================
+*/
+void G_ClearDisruptorZoom(playerState_t *ps)
+{
+	if (ps->zoomMode != 1)
+		return;
+
+	ps->zoomFov = 0;
+	ps->zoomMode = 0;
+	ps->zoomLocked = qfalse;
+	ps->zoomTime = 0;
+}
+
+/*
+=================
 TossClientItems
 
 rww - Toss the weapon away from the player in the specified direction.  Only ever called by being force-pullled(?)
@@ -570,6 +588,8 @@ void TossClientWeapon(gentity_t *self, vec3_t direction, float speed)
 		int weap = -1;
 
 		self->client->ps.stats[STAT_WEAPONS] &= ~(1 << weapon);
+
+		G_ClearDisruptorZoom(&self->client->ps);
 
 		while (i < WP_NUM_WEAPONS)
 		{

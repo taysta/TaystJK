@@ -3425,6 +3425,32 @@ qboolean CanFireGrapple( gentity_t *ent ) { // Adapt for new hold-to-use jetpack
 	return qtrue;
 }
 
+static void G_GunDuelEndWeapon(gentity_t *ent)
+{
+	int weapon, weap;
+
+	if (ent->health < 1 || ent->client->sess.raceMode || dueltypes[ent->client->ps.clientNum] <= 2)
+		return;
+
+	weapon = ent->client->ps.weapon;
+	if (weapon <= WP_NONE || weapon >= WP_NUM_WEAPONS || (ent->client->ps.stats[STAT_WEAPONS] & (1 << weapon)))
+		return;
+
+	// pick like ClientSpawn: the saber if they have it, otherwise their highest weapon
+	if ((ent->client->ps.stats[STAT_WEAPONS] & (1 << WP_SABER)) && !(g_tweakWeapons.integer & WT_TRIBES)) {
+		weap = WP_SABER;
+	}
+	else {
+		for (weap = LAST_USEABLE_WEAPON; weap > WP_NONE; weap--) {
+			if (ent->client->ps.stats[STAT_WEAPONS] & (1 << weap))
+				break;
+		}
+	}
+
+	G_ClearDisruptorZoom(&ent->client->ps);
+	ent->client->ps.weapon = ent->s.weapon = weap;
+}
+
 void Cmd_RaceTele_f(gentity_t *ent, qboolean useForce);
 void ClientThink_real( gentity_t *ent ) {
 	gclient_t	*client;
@@ -4441,6 +4467,7 @@ void ClientThink_real( gentity_t *ent ) {
 		{
 			ent->client->ps.duelInProgress = qfalse;
 			G_AddEvent(ent, EV_PRIVATE_DUEL, 0);
+			G_GunDuelEndWeapon(ent);
 		}
 		else if (duelAgainst->health < 1 || duelAgainst->client->ps.stats[STAT_HEALTH] < 1)
 		{
@@ -4522,6 +4549,7 @@ void ClientThink_real( gentity_t *ent ) {
 				duelAgainst->client->pers.stats.duelDamageGiven = 0;
 			}
 //[JAPRO - Serverside - Duel - Improve/fix duel end print - End]
+			G_GunDuelEndWeapon(ent);
 		}
 		else if (!ent->client->sess.raceMode && g_duelDistanceLimit.integer)
 		{
@@ -4538,6 +4566,8 @@ void ClientThink_real( gentity_t *ent ) {
 
 				G_AddEvent(ent, EV_PRIVATE_DUEL, 0);
 				G_AddEvent(duelAgainst, EV_PRIVATE_DUEL, 0);
+				G_GunDuelEndWeapon(ent);
+				G_GunDuelEndWeapon(duelAgainst);
 
 				trap->SendServerCommand( -1, va("print \"%s\n\"", G_GetStringEdString("MP_SVGAME", "PLDUELSTOP")) );
 			}
