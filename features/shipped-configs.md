@@ -3,7 +3,7 @@ title: "Shipped configs"
 layout: reference
 nav_order: 10
 parent: "Features"
-description: "The fourteen configuration files that ship with the client, what each one sets up, and how to apply one."
+description: "The thirteen configuration files that ship with the client, what each one sets up, and how to apply one."
 toc: true
 ---
 
@@ -25,7 +25,7 @@ exec strafehelper_tayst
 anything. They set cvars and nothing more: run one, and you can undo it by running another
 or setting the cvars back by hand. Nothing here is locked in.
 
-All fourteen live at the top level of `assets/japro/`, which the build packages into
+All thirteen live at the top level of `assets/japro/`, which the build packages into
 `japro-assets.pk3` in your `taystjk/` directory. Read one before running it if you want to
 know exactly what it will change. They are short.
 
@@ -76,13 +76,13 @@ head-bob makes you unwell and you have never changed them, there is nothing to u
 | Config | What it does |
 |:--|:--|
 | `japro_tribes` | Client-side setup for the Tribes movement style, including the key binds the mode expects. |
-| `japro_tribes_server` | Server-side settings for hosting Tribes, including force-power restrictions. |
 
-The second is for whoever runs the server, not for players. See
-[Tribes](/TaystJK/features/tribes/).
+The server side is not a client config. The Docker image's
+[bundled server configs](/TaystJK/server-hosting/bundled-configs/#game-modes), written for
+TaystJK's jaPRO game module, include the Tribes modes. See [Tribes](/TaystJK/features/tribes/).
 
 ## Files that are not presets
 
 `assets/japro/` contains other `.cfg` files that are not meant to be `exec`ed. Per-model
 `sounds.cfg`, `animation.cfg` and `animevents_japlus.cfg` are asset descriptions the engine
-reads on its own. Only the fourteen at the top level are user-facing presets.
+reads on its own. Only the thirteen at the top level are user-facing presets.

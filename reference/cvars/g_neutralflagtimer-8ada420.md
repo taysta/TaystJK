@@ -10,9 +10,7 @@ search_exclude: false
 
 <span class="label ref-origin ref-origin-japro">jaPRO</span>
 
-<p class="ref-warning"><strong>Needs review.</strong> The inventory/provenance evidence is recorded, but some behavior, options, or attribution still lacks a direct user-facing source.</p>
-
-Controls `g_neutralFlagTimer` in the game module. Consult the cited behavior reads before relying on values not listed here.
+Milliseconds a capture takes in the one-flag CTF modes of `g_neutralFlag`. In modes 4 and 5 the carrying team's progress rises while it holds the flag in a capture zone and falls while it does not; in mode 6 it counts from the moment a team's flag is placed at its base. `OneFlagCTFCheckTimers` updates the progress every 250 milliseconds and prints a countdown to every player. A negative value is treated as 0 for that countdown. The rabbit modes do not use it.
 
 ## At a glance
 

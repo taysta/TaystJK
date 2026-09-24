@@ -1399,7 +1399,7 @@ def home_page(cvars: list[dict[str, Any]], commands: list[dict[str, Any]]) -> st
     <h2 id="quick-links-heading" data-toc-skip>Quick links</h2>
     <a href="{{{{ '/server-hosting/' | relative_url }}}}">
       <strong>Run a server</strong>
-      <span>Docker Compose, server.cfg, downloads, and reflists</span>
+      <span>Docker Compose, bundled game modes, downloads, and reflists</span>
     </a>
     <a href="{{{{ '/development/' | relative_url }}}}">
       <strong>Work on TaystJK</strong>
@@ -1492,7 +1492,7 @@ def home_page(cvars: list[dict[str, Any]], commands: list[dict[str, Any]]) -> st
     </a>
     <a class="home-guide" href="{{{{ '/server-hosting/' | relative_url }}}}">
       <h3>Server administration</h3>
-      <p>Dedicated server deployment, map rotation, downloads, and PK3 references.</p>
+      <p>Dedicated server deployment, bundled game modes, downloads, and PK3 references.</p>
       <span>Server guide →</span>
     </a>
     <a class="home-guide" href="{{{{ '/features/' | relative_url }}}}">

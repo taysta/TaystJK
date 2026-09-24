@@ -2,7 +2,7 @@
 title: "Server hosting"
 layout: reference
 nav_order: 3
-description: "Run a TaystJK dedicated server with Docker Compose or a native binary, configure rotations, and serve PK3 downloads."
+description: "Run a TaystJK dedicated server with Docker Compose or a native binary, use the bundled game-mode configs, and serve PK3 downloads."
 toc: true
 ---
 
@@ -11,7 +11,7 @@ toc: true
 
 # Host a TaystJK server
 
-<p class="page-lede">Start with a small, private server; confirm its map rotation and download list; then expose the game and HTTP ports to the internet.</p>
+<p class="page-lede">Start with a small, private server; confirm its settings and download list; then expose the game and HTTP ports to the internet.</p>
 </div>
 
 ## What you need
@@ -90,11 +90,11 @@ docker compose --profile build up -d --build taystjk-build
 docker compose logs -f taystjk-build
 ```
 
-Both services use the same ports, asset mount, homepath mount, architecture, and mod selection as TaystJK's checked-in definition; do not start both at once. The image already contains TaystJK's [shipped `server.cfg`](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/scripts/docker/server.cfg), installs it under `basepath/taystjk/`, and automatically launches with `+exec server.cfg`. Start the container once with that configuration before changing it.
+Both services use the same ports, asset mount, homepath mount, architecture, and mod selection as TaystJK's checked-in definition; do not start both at once. The image already contains TaystJK's [shipped `server.cfg`](https://github.com/taysta/TaystJK/blame/60fcb9cf68d38c3fede638fac4a8e42eb1123eaf/scripts/docker/server.cfg) and the game-mode, vote and ban configs that go with it, installs them under `basepath/taystjk/`, and automatically launches with `+exec server.cfg`. They are written for TaystJK's bundled jaPRO game module; [bundled server configs](/TaystJK/server-hosting/bundled-configs/) describes each file. Start the container once with that configuration before changing it.
 
 The remaining commands in this guide use the published-image service name, `taystjk`. Substitute `taystjk-build` when you are running the source-build profile.
 
-To customize the exact configuration shipped by your image, copy it into the mounted homepath:
+To customize the configuration shipped by your image, copy the file you want to change into the mounted homepath:
 
 ```bash
 mkdir -p homepath/taystjk
@@ -103,11 +103,11 @@ docker compose cp \
   ./homepath/taystjk/server.cfg
 ```
 
-Edit the copied file, then apply it with `docker compose restart taystjk`. The homepath copy takes priority over the image's basepath copy and persists across image updates. Custom PK3s, reflists, logs, and configuration also belong under `homepath/taystjk/`. Use `docker compose down` to stop the server.
+Edit the copied file, then apply it with `docker compose restart taystjk`. The homepath copy takes priority over the image's basepath copy and persists across image updates. The same works for `bans.cfg`, `votes.cfg`, `default.cfg` and the mode files. Custom PK3s, reflists, logs, and configuration also belong under `homepath/taystjk/`. Use `docker compose down` to stop the server.
 
 ## Native dedicated server
 
-Extract the server files and retain all libraries included with the release. Put the retail assets under `base/`, TaystJK assets under `taystjk/`, and customize the `server.cfg` supplied with TaystJK instead of replacing it with a minimal configuration. Then launch:
+Extract the server files and retain all libraries included with the release. Put the retail assets under `base/` and TaystJK assets under `taystjk/`. Native releases do not include a `server.cfg`: copy the Docker image's configs from [`scripts/docker/`](https://github.com/taysta/TaystJK/tree/60fcb9cf68d38c3fede638fac4a8e42eb1123eaf/scripts/docker) into `taystjk/`, as [bundled server configs](/TaystJK/server-hosting/bundled-configs/) explains, or write your own. Then launch:
 
 ```bash
 ./taystjkded.x86_64 \
@@ -148,33 +148,58 @@ JA+ and some older or custom mod builds use the legacy native `dllEntry`/`vmMain
 
 `vm_legacy 1` still loads a native `.dll`, `.so`, or `.dylib`; it does not load a QVM. Omit it for a mod that implements the newer `GetModuleAPI` interface. On a successful legacy start, the console reports `VM_CreateLegacy: jampgame... succeeded`. Also check `path` to confirm that `japlus/` is active and inspect the mod's version cvar before opening the server publicly.
 
-For Docker, put the mod and its configuration under the mounted `homepath/japlus/`, set `TJK_MOD=japlus`, and add `TJK_OPTS=+set vm_legacy 1` only for a legacy game module. The image does not include third-party mod files; supply and maintain them yourself. Test upgrades privately because a mod may depend on engine-specific behavior outside the standard module interface.
+For Docker, put the mod and its configuration under the mounted `homepath/japlus/`, set `TJK_MOD=japlus`, and for a legacy game module set `TJK_OPTS=+exec server.cfg +set vm_legacy 1`. Keep `+exec server.cfg` in that value: the image's default `TJK_OPTS` is just that command ([`Dockerfile`](https://github.com/taysta/TaystJK/blame/60fcb9cf68d38c3fede638fac4a8e42eb1123eaf/Dockerfile#L69)), and setting the variable replaces it. The image's bundled configs live in `taystjk/`, so they do not load for another mod; supply that mod's own `server.cfg`. The image does not include third-party mod files; supply and maintain them yourself. Test upgrades privately because a mod may depend on engine-specific behavior outside the standard module interface.
 
 ## Customize the shipped `server.cfg`
 
-The supplied file already defines a working stock-map rotation. Change its example identity and access settings, then add download settings only if the server needs to distribute custom PK3s:
+The supplied file starts the server on one map, `mp/ffa3` in FFA, and already turns on
+downloads: the built-in HTTP server on TCP `18200`, and the UDP downloader for clients that
+cannot use HTTP.
+Change its example identity and fill in the passwords, which ship empty:
 
 ```cfg
-// Identity and access
+// Identity
 seta sv_hostname "My TaystJK server"
 seta g_motd "Welcome! Have fun"
-seta rconPassword "replace-with-a-long-random-secret"
 
-// Downloads: UDP fallback plus the built-in HTTP server
+// Passwords. Keep rconpassword on a "set" line: docker stop reads it from here.
+set rconpassword "replace-with-a-long-random-secret"
+seta g_fullAdminPass "replace-with-another-secret"
+seta g_juniorAdminPass "and-a-third"
+```
+
+Keep server settings in this file and gameplay in `default.cfg` and the mode files, so that
+loading a mode never changes them. [Bundled server configs](/TaystJK/server-hosting/bundled-configs/)
+covers the game modes, the vote options, bans, and what to do if you want the map to change
+by itself.
+
+Changes to `sv_httpDownloads` and `sv_httpServerPort` are latched; restart the dedicated
+server after changing them. Clients connect to the port number the server advertises, so
+keep the same number on both sides of the Compose port mapping: to use `18300`, publish
+`18300:18300/tcp` and set `sv_httpServerPort 18300`.
+
+## Automatic PK3 downloads
+
+TaystJK can serve required PK3 files over HTTP, and over the older UDP downloader for
+clients that cannot use HTTP. The shipped `server.cfg` turns both on:
+
+```cfg
 seta sv_allowDownload 1
 seta sv_httpDownloads 1
 seta sv_httpServerPort 18200
 ```
 
-Edit the existing `d1`, `d2`, and subsequent rotation definitions rather than adding a second rotation beneath them. Changes to `sv_httpDownloads` and `sv_httpServerPort` are latched; restart the dedicated server after changing them.
-
-## Automatic PK3 downloads
-
-TaystJK can serve required PK3 files over fast HTTP and optionally fall back to the legacy UDP downloader.
+A TaystJK client uses HTTP whenever the server advertises it
+([`cl_main.cpp`](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/client/cl_main.cpp#L1548)), and if an HTTP download fails it
+disconnects with a download error rather than retrying over UDP
+([`cl_parse.cpp`](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/client/cl_parse.cpp#L749)). The UDP downloader serves clients
+without HTTP support, such as OpenJK, EternalJK and the original game, and only while
+`sv_allowDownload` is on
+([`sv_client.cpp`](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/server/sv_client.cpp#L766)).
 
 ### Built-in HTTP server
 
-The settings above enable HTTP on TCP `18200`. Forward that TCP port through NAT and allow it through the host firewall, independently of UDP `29070`. With `sv_httpServerPort 0`, the server selects the first free port from `18200` through `18215`; a fixed port is easier to expose from a container or router.
+These settings enable HTTP on TCP `18200`. Forward that TCP port through NAT and allow it through the host firewall, independently of UDP `29070`. With `sv_httpServerPort 0`, the server selects the first free port from `18200` through `18215`; a fixed port is easier to expose from a container or router.
 
 Clients need `cl_allowDownload 1`, which is the default. By default TaystJK asks before downloading, saves each download with a `dl_` prefix that is only loaded while a server references it, and adds a checksum to the name when a file of that name already exists, so content from one server does not silently replace content used elsewhere. See [a map I downloaded is missing everywhere else](/TaystJK/troubleshooting/#a-map-i-downloaded-is-missing-everywhere-else).
 
@@ -283,6 +308,13 @@ commands exist only in the dedicated build
 
 Demos are written under `demos/` in the server's game directory.
 
+The shipped `server.cfg` turns on `sv_autoRaceDemo`, which records race runs automatically.
+Each run by a player logged in to an account is recorded into `demos/temp/`
+([`g_trigger.c`](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/game/g_trigger.c#L1489)), and a run that sets that player's
+personal best on the course is kept as `demos/races/<account>/<account>-<course>-<style>`
+([`g_account.c`](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/game/g_account.c#L2104)). Keep an eye on disk space on a busy
+race server.
+
 ### Pre-recording
 
 The problem with recording on demand is that the interesting thing has already happened by
@@ -304,13 +336,14 @@ Buffering runs per connected client, so the memory cost scales with your player 
 well as with the time window. Raise `sv_demoPreRecordTime` deliberately.
 
 `sv_demoWriteMeta` controls whether the metadata set by `svdemometa` and by the game
-module is written into the demo. It is on by default and invisible to ordinary playback.
+module is written into the demo. It is on by default and invisible to ordinary playback;
+the shipped `server.cfg` turns it off.
 
 ## Verify before going public
 
 1. Join from a second machine or network, not only `localhost`.
 2. Confirm UDP `29070` is reachable and the server appears in the expected master list.
-3. Load every map in the rotation and watch the server console for missing files.
+3. Load every map you plan to run, and every game mode you plan to offer, and watch the server console for missing files.
 4. Run `sv_referencedPakNames`; make sure it contains every required client PK3 and no private or unnecessary archive.
 5. Join with a clean client and accept the download prompt. Confirm the transfer uses HTTP and the downloaded map loads.
 6. Test RCON, then keep the password out of screenshots, logs, and public configuration files.

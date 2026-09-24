@@ -58,6 +58,12 @@ Keep your settings in a file of your own and load it explicitly:
 Your file is then the source of truth and the generated config is just a dump. Do not edit
 the generated one. See [Server hosting](/TaystJK/server-hosting/).
 
+The same dump explains a server that starts up with the previous game mode's weapons or force
+powers still applied: the mode's settings were saved at shutdown and loaded again. The Docker
+image's `server.cfg` avoids this by running `exec default` before the first map, which puts
+gameplay back to its baseline; see
+[bundled server configs](/TaystJK/server-hosting/bundled-configs/#server-settings-and-gameplay-are-kept-apart).
+
 ## The game will not open on macOS after an update
 
 macOS re-applies the quarantine attribute to every fresh download, so an update quarantines

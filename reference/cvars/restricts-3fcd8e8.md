@@ -12,7 +12,7 @@ search_exclude: false
 
 <p class="ref-warning"><strong>Needs review.</strong> The inventory/provenance evidence is recorded, but some behavior, options, or attribution still lacks a direct user-facing source.</p>
 
-Controls `restricts` in the game module. Consult the cited behavior reads before relying on values not listed here.
+Bitmask of client-side restrictions a jaPRO server advertises in its server info. The game module only registers it as a server-info cvar; TaystJK and jaPRO clients read the `restricts` key when they parse server info and enforce the bits themselves, so a client that ignores the key is not restricted. Add the values of the bits you want. Bits 1, 3 and 5 are defined in the client but never read, so they have no effect, and the yaw-speed, third-person-angle and strafe-bot bits apply only while racing.
 
 ## At a glance
 
@@ -28,14 +28,26 @@ Controls `restricts` in the game module. Consult the cited behavior reads before
 | In-game xdocs | No |
 | In-game menu | No |
 | Default | `0` |
-| Value type | `int` |
+| Value type | `bitmask` |
 | Restart | No latch flag is registered. |
 | Cheat protected | No |
 | Player-settable | Yes |
 
 ## Values
 
-No discrete value list is enforced or documented in the inspected source.
+| Value | Meaning | Evidence |
+|:--|:--|:--|
+| `1` | Disable the client-side strafe bot in race mode. | [codemp/game/bg_pmove.c:15276](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/game/bg_pmove.c#L15276) |
+| `2` | No effect: defined but never read. | [codemp/cgame/cg_local.h:119](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/cgame/cg_local.h#L119) |
+| `4` | Hide the lead indicator. | [codemp/cgame/cg_draw.c:12051](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/cgame/cg_draw.c#L12051) |
+| `8` | No effect: defined but never read. | [codemp/cgame/cg_local.h:121](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/cgame/cg_local.h#L121) |
+| `16` | Force `cl_yawspeed` to 0 while racing on a jaPRO server. | [codemp/cgame/cg_view.c:2846](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/cgame/cg_view.c#L2846) |
+| `32` | No effect: defined but never read. | [codemp/cgame/cg_local.h:123](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/cgame/cg_local.h#L123) |
+| `64` | Hide player name labels. | [codemp/cgame/cg_draw.c:12152](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/cgame/cg_draw.c#L12152) |
+| `128` | Disable the `flipkick` command. | [codemp/cgame/cg_consolecmds.c:1002](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/cgame/cg_consolecmds.c#L1002) |
+| `256` | Hide other players' strafe trails. | [codemp/cgame/cg_snapshot.c:741](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/cgame/cg_snapshot.c#L741) |
+| `512` | Disable `/do`, and make `lowjump` and the `+duck` no-roll bind fall back to `wait`-based sequences instead of the client's timed follow-up. | [codemp/cgame/cg_consolecmds.c:786](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/cgame/cg_consolecmds.c#L786) |
+| `1024` | Reset `cg_thirdPersonAngle` to 0 while moving in a race on a jaPRO server. | [codemp/cgame/cg_view.c:2868](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/cgame/cg_view.c#L2868) |
 
 ## Flags
 

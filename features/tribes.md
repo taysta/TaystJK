@@ -27,7 +27,7 @@ assets)"
 `stylePlayer 22`.
 
 The assets it uses ship in `japro-assets.pk3`: the jetpack and mortar effects under
-`effects/tribes/`, the ski and thrust sounds, the Tribes menu and the two configs.
+`effects/tribes/`, the ski and thrust sounds, the Tribes menu and the client config.
 
 ## Skiing
 
@@ -128,12 +128,28 @@ team in a team gametype
 
 ## Setting it up
 
-Two shipped configs, described on [shipped configs](/TaystJK/features/shipped-configs/):
+Players run the client config, `japro_tribes`, described on
+[shipped configs](/TaystJK/features/shipped-configs/#tribes):
 
-- `japro_tribes`: client-side setup, including the binds the mode expects.
-- `japro_tribes_server`: for whoever runs the server, including force-power restrictions.
+```text
+exec japro_tribes
+```
 
-Run the client one with `exec japro_tribes`. Read it first: it rebinds number keys.
+Read it first: it rebinds number keys.
+
+Servers running the Docker image's [bundled server configs](/TaystJK/server-hosting/bundled-configs/#game-modes)
+have four Tribes modes. They are written for TaystJK's bundled jaPRO game module. Load one
+with `rcon exec <mode>`, or let players vote for it with `callvote vstr <mode>`:
+
+| Mode | Plays as |
+|:--|:--|
+| `tribes` | Tribes in FFA. |
+| `tribesctf` | Tribes in CTF. |
+| `tribes1flag` | Tribes in one-flag CTF, which needs a map with a neutral flag and capture zones. |
+| `midair` | `tribesctf` with projectiles also carrying the shooter's sideways movement. |
+
+All four restrict force powers, set the Tribes weapon tweaks, including projectile disruptor
+shots, and give every player a jetpack.
 
 ## Expectations
 

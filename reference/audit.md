@@ -476,7 +476,7 @@ The dump was captured from stdout after loading `mp/ffa3`; stdout does not use t
 | [`r_volumetricFogDefaultScale`](/TaystJK/reference/cvars/r_volumetricfogdefaultscale-2014496/) | cvar | renderer | Scales volumetric fog density unless scale has been explicitly defined |
 | [`r_volumetricFogSamples`](/TaystJK/reference/cvars/r_volumetricfogsamples-c2f3eaa/) | cvar | renderer | How many ray samples to take |
 | [`r_volumetricFogScale`](/TaystJK/reference/cvars/r_volumetricfogscale-e8d339c/) | cvar | renderer | Temporarily scales volumetric fog density |
-| [`restricts`](/TaystJK/reference/cvars/restricts-3fcd8e8/) | cvar | game | Controls `restricts` in the game module. |
+| [`restricts`](/TaystJK/reference/cvars/restricts-3fcd8e8/) | cvar | game | Advertise client-side restrictions that TaystJK and jaPRO clients enforce. |
 | [`s_doppler`](/TaystJK/reference/cvars/s_doppler-affddec/) | cvar | engine-client | Controls `s_doppler` in the engine-client module. |
 | [`s_sdlBits`](/TaystJK/reference/cvars/s_sdlbits-5a722c9/) | cvar | engine-shared | Controls `s_sdlBits` in the engine-shared module. |
 | [`s_sdlChannels`](/TaystJK/reference/cvars/s_sdlchannels-db8bbb9/) | cvar | engine-shared | Controls `s_sdlChannels` in the engine-shared module. |
@@ -829,7 +829,7 @@ The dump was captured from stdout after loading `mp/ffa3`; stdout does not use t
 | [`write`](/TaystJK/reference/commands/write-e1d0c6c/) | command | engine-shared | Write the configuration to file |
 | [`ysal`](/TaystJK/reference/commands/ysal-49fb494/) | command | cgame | Forwards this command to the connected game server. |
 
-## Semantics or options needing review (1651)
+## Semantics or options needing review (1649)
 
 | Name | Kind | Module | Summary |
 |:--|:--|:--|:--|
@@ -1417,8 +1417,6 @@ The dump was captured from stdout after loading `mp/ffa3`; stdout does not use t
 | [`g_mercyRule`](/TaystJK/reference/cvars/g_mercyrule-186f0be/) | cvar | game | If the difference is greater than X percent of the frag limit... then end match. |
 | [`g_motd`](/TaystJK/reference/cvars/g_motd-6d67b6c/) | cvar | game | Controls `g_motd` in the game module. |
 | [`g_movementStyle`](/TaystJK/reference/cvars/g_movementstyle-cf714d4/) | cvar | game | Force movement style for players. 0=SIEGE 1=JKA 2=QW 3=CPM 4=Q3 5=PJK 6=WSW |
-| [`g_neutralFlag`](/TaystJK/reference/cvars/g_neutralflag-55bb88d/) | cvar | game | Controls `g_neutralFlag` in the game module. |
-| [`g_neutralFlagTimer`](/TaystJK/reference/cvars/g_neutralflagtimer-8ada420/) | cvar | game | Controls `g_neutralFlagTimer` in the game module. |
 | [`g_newBotAI`](/TaystJK/reference/cvars/g_newbotai-156e15f/) | cvar | game | Controls `g_newBotAI` in the game module. |
 | [`g_newBotAITarget`](/TaystJK/reference/cvars/g_newbotaitarget-9625e4f/) | cvar | game | -2=Target closest excluding otherbots. -1=target closest. 0-31=target clientnum. |
 | [`g_newVehicleDamageScale`](/TaystJK/reference/cvars/g_newvehicledamagescale-1f63b01/) | cvar | game | Controls `g_newVehicleDamageScale` in the game module. |
@@ -1770,7 +1768,7 @@ The dump was captured from stdout after loading `mp/ffa3`; stdout does not use t
 | [`r_windSpeed`](/TaystJK/reference/cvars/r_windspeed-85cb1e1/) | cvar | renderer | Controls `r_windSpeed` in the renderer module. |
 | [`r_znear`](/TaystJK/reference/cvars/r_znear-eeed2b7/) | cvar | renderer | Controls `r_znear` in the renderer module. |
 | [`r_zproj`](/TaystJK/reference/cvars/r_zproj-3cfee13/) | cvar | renderer | Controls `r_zproj` in the renderer module. |
-| [`restricts`](/TaystJK/reference/cvars/restricts-3fcd8e8/) | cvar | game | Controls `restricts` in the game module. |
+| [`restricts`](/TaystJK/reference/cvars/restricts-3fcd8e8/) | cvar | game | Advertise client-side restrictions that TaystJK and jaPRO clients enforce. |
 | [`RMG`](/TaystJK/reference/cvars/rmg-7504210/) | cvar | game | Controls `RMG` in the game module. |
 | [`s_allowDynamicMusic`](/TaystJK/reference/cvars/s_allowdynamicmusic-a2b0b0a/) | cvar | engine-client | Controls `s_allowDynamicMusic` in the engine-client module. |
 | [`s_debugdynamic`](/TaystJK/reference/cvars/s_debugdynamic-6580034/) | cvar | engine-client | Controls `s_debugdynamic` in the engine-client module. |
@@ -3007,8 +3005,8 @@ These entries have dated post-origin registration or behavior evidence on TaystJ
 | [`g_motd`](/TaystJK/reference/cvars/g_motd-6d67b6c/) | cvar | game | Controls `g_motd` in the game module. |
 | [`g_movementStyle`](/TaystJK/reference/cvars/g_movementstyle-cf714d4/) | cvar | game | Force movement style for players. 0=SIEGE 1=JKA 2=QW 3=CPM 4=Q3 5=PJK 6=WSW |
 | [`g_needpass`](/TaystJK/reference/cvars/g_needpass-d848438/) | cvar | game | Server needs password to join |
-| [`g_neutralFlag`](/TaystJK/reference/cvars/g_neutralflag-55bb88d/) | cvar | game | Controls `g_neutralFlag` in the game module. |
-| [`g_neutralFlagTimer`](/TaystJK/reference/cvars/g_neutralflagtimer-8ada420/) | cvar | game | Controls `g_neutralFlagTimer` in the game module. |
+| [`g_neutralFlag`](/TaystJK/reference/cvars/g_neutralflag-55bb88d/) | cvar | game | Choose a rabbit or one-flag CTF mode built around a neutral flag. |
+| [`g_neutralFlagTimer`](/TaystJK/reference/cvars/g_neutralflagtimer-8ada420/) | cvar | game | Set how long a one-flag CTF capture takes, in milliseconds. |
 | [`g_newBotAI`](/TaystJK/reference/cvars/g_newbotai-156e15f/) | cvar | game | Controls `g_newBotAI` in the game module. |
 | [`g_newBotAITarget`](/TaystJK/reference/cvars/g_newbotaitarget-9625e4f/) | cvar | game | -2=Target closest excluding otherbots. -1=target closest. 0-31=target clientnum. |
 | [`g_nonRandomKnockdown`](/TaystJK/reference/cvars/g_nonrandomknockdown-6cb5a5c/) | cvar | game | 1=Nonrandom knockdowns based on forcepoints. 2=Pseudorandom with less variance. 3=Nonrandom based on viewangle of target. 4=Random based on viewangle of target. |
@@ -3356,7 +3354,7 @@ These entries have dated post-origin registration or behavior evidence on TaystJ
 | [`rate`](/TaystJK/reference/cvars/rate-1e01d21/) | cvar | engine-client | Data rate |
 | [`rconAddress`](/TaystJK/reference/cvars/rconaddress-8180670/) | cvar | engine-client | Alternate server address to remotely access via rcon protocol |
 | [`rconPassword`](/TaystJK/reference/cvars/rconpassword-39e4dc3/) | cvar | engine-client | Password for remote console access |
-| [`restricts`](/TaystJK/reference/cvars/restricts-3fcd8e8/) | cvar | game | Controls `restricts` in the game module. |
+| [`restricts`](/TaystJK/reference/cvars/restricts-3fcd8e8/) | cvar | game | Advertise client-side restrictions that TaystJK and jaPRO clients enforce. |
 | [`RMG`](/TaystJK/reference/cvars/rmg-7504210/) | cvar | game | Controls `RMG` in the game module. |
 | [`s_allowDynamicMusic`](/TaystJK/reference/cvars/s_allowdynamicmusic-a2b0b0a/) | cvar | engine-client | Controls `s_allowDynamicMusic` in the engine-client module. |
 | [`s_debugdynamic`](/TaystJK/reference/cvars/s_debugdynamic-6580034/) | cvar | engine-client | Controls `s_debugdynamic` in the engine-client module. |

@@ -10,9 +10,7 @@ search_exclude: false
 
 <span class="label ref-origin ref-origin-japro">jaPRO</span>
 
-<p class="ref-warning"><strong>Needs review.</strong> The inventory/provenance evidence is recorded, but some behavior, options, or attribution still lacks a direct user-facing source.</p>
-
-Controls `g_neutralFlag` in the game module. Consult the cited behavior reads before relying on values not listed here.
+Selects a neutral-flag game mode. Values 1 to 3 are rabbit variants for FFA and team FFA; values 4 to 6 are one-flag CTF variants for the CTF gametype, and a value outside a gametype's range leaves that gametype's normal flags in place. Changing the value swaps the flags immediately through `CVU_Rabbit`, without a map restart. Every mode needs a map with a `team_CTF_neutralflag`, and the one-flag modes also need `trigger_multiple` capture zones: spawnflag 16384 for values 4 and 5, spawnflag 32768 for value 6. The stock maps have neither. `g_neutralFlagTimer` sets how long a capture takes.
 
 ## At a glance
 
@@ -37,7 +35,13 @@ Controls `g_neutralFlag` in the game module. Consult the cited behavior reads be
 
 | Value | Meaning | Evidence |
 |:--|:--|:--|
-| `3` | Selects the code path tested for value 3. | [codemp/game/g_active.c:1783](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/game/g_active.c#L1783) |
+| `0` | Off. The map's neutral flag is removed at load, and CTF keeps its red and blue flags. | [codemp/game/g_items.c:3160](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/game/g_items.c#L3160) |
+| `1` | Rabbit, in FFA and team FFA: a neutral flag spawns and players fight to carry it. | [codemp/game/g_cvar.c:472](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/game/g_cvar.c#L472) |
+| `2` | Sniper rabbit: as 1, but picking up the flag leaves the carrier with only a disruptor and 300 ammo. | [codemp/game/g_team.c:1181](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/game/g_team.c#L1181) |
+| `3` | Rabbit where the carrier scores a point for every five seconds they hold the flag. | [codemp/game/g_active.c:1783](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/game/g_active.c#L1783) |
+| `4` | One-flag CTF: score by holding the neutral flag inside your own team's capture zone for `g_neutralFlagTimer`. | [codemp/game/g_trigger.c:212](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/game/g_trigger.c#L212) |
+| `5` | One-flag CTF: score by holding the neutral flag inside the other team's capture zone for `g_neutralFlagTimer`. | [codemp/game/g_trigger.c:214](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/game/g_trigger.c#L214) |
+| `6` | One-flag CTF with capture points: bringing the neutral flag into a team's capture point puts that team's flag at its base, and the team scores when `g_neutralFlagTimer` runs out unless the other team takes that flag first. | [codemp/game/g_trigger.c:234](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/game/g_trigger.c#L234) |
 
 ## Flags
 

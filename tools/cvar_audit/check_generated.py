@@ -225,7 +225,7 @@ def main() -> None:
 
     pages = [
         Path("index.md"), Path("install.md"), *Path("install").rglob("*.md"),
-        Path("server-hosting.md"),
+        Path("server-hosting.md"), *Path("server-hosting").rglob("*.md"),
         Path("development.md"), *Path("development").rglob("*.md"),
         Path("reference.md"), *Path("reference").rglob("*.md"),
         Path("features.md"), *Path("features").rglob("*.md"),
