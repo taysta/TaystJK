@@ -31,6 +31,11 @@ assets3.pk3
 
 Download the build for your operating system from the [latest TaystJK release](https://github.com/taysta/TaystJK/releases/tag/latest). Extract the whole archive; do not copy only the executable, because the renderer and game libraries beside it are also required.
 
+If you also install an older mod, check whether it keeps its native modules inside a
+PK3. TaystJK does not unpack those modules by default; see
+[mods that package native libraries inside a PK3](#mods-that-package-native-libraries-inside-a-pk3)
+before assuming that the mod is incompatible.
+
 ## Install for your platform
 
 Choose your operating system to see its prerequisites and installation steps. Your selection is saved on this device.
@@ -238,6 +243,51 @@ The TaystJK executable is the engine. The game, client-game, and UI modules are 
 | UI | `uix86_64.dll` | `uix86_64.so` | Menus and other UI behavior. |
 
 macOS uses the equivalent `.dylib` files. TaystJK does not currently execute QVM bytecode; both its current module API and the older `dllEntry`/`vmMain` API load native libraries. A module must match the operating system and CPU architecture of the TaystJK executable.
+
+### Mods that package native libraries inside a PK3
+
+Many older mods put `cgame`, `ui`, or `jampgame` native libraries inside a PK3. TaystJK
+still mounts the PK3 and reads its assets, but it does not unpack and execute those
+libraries by default: [`com_unpackLibraries`](/TaystJK/reference/cvars/com_unpacklibraries-27a5b09/)
+defaults to `0`, and both module loaders only try PK3 unpacking when it is enabled
+([registration](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/shared/sys/sys_main.cpp#L179),
+[legacy loader](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/shared/sys/sys_main.cpp#L493),
+[OpenJK-style loader](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/shared/sys/sys_main.cpp#L575)).
+This can make an old mod's assets appear while its custom HUD, menus, or game code does
+not load.
+
+The preferred fix is to extract the native libraries from the mod's PK3 and place them
+beside that PK3 in the mod directory. Keep the PK3 because the mod may still need its
+maps, menus, shaders, and other assets. For a 32-bit Windows mod, the result commonly
+looks like this:
+
+```text
+japlus/
+├── mod-assets.pk3
+├── cgamex86.dll
+├── uix86.dll
+└── jampgamex86.dll
+```
+
+Only extract files from a mod you trust. Native modules are executable code, not passive
+assets. The names and architecture must match the TaystJK build: an `x86.dll` from an old
+mod cannot be loaded by the 64-bit client. Use the 32-bit Windows build for a mod that
+provides only 32-bit Windows modules, or obtain modules built for your platform and
+architecture.
+
+On Windows, you can instead opt back into the old unpacking behavior for a trusted mod by
+setting the cvar at startup:
+
+```text
+taystjk.x86.exe +set fs_game japlus +set fs_forcegame japlus +set com_unpackLibraries 1
+```
+
+`com_unpackLibraries` is an initialization cvar, so put it on the command line rather
+than changing it after launch. This fallback is implemented on Windows. It does not
+extract ordinary `.so` or `.dylib` modules on Linux or macOS, so install those as loose
+native libraries
+([Windows unpacker](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/shared/sys/sys_win32.cpp#L603),
+[Unix behavior](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/shared/sys/sys_unix.cpp#L566)).
 
 ### What `fs_forcegame` does
 

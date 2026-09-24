@@ -3,7 +3,7 @@ title: "Mod compatibility"
 layout: reference
 nav_order: 3
 parent: "Install TaystJK"
-description: "Why a client feature works on one server and silently does nothing on another, which mod the client thinks you are on, and how a server turns features back on."
+description: "How TaystJK loads older mods, why a client feature can silently do nothing on another server, and how a server turns features back on."
 toc: true
 ---
 
@@ -12,8 +12,20 @@ toc: true
 
 # Mod compatibility
 
-<p class="page-lede">Several client features are switched off unless the server's game module is known to support them. Nothing tells you this has happened; the feature simply does nothing. This page explains what the client decides and why.</p>
+<p class="page-lede">Mod compatibility has two layers: loading the mod's native modules, then deciding which server features those modules support. This page explains both checks and why a feature can silently do nothing.</p>
 </div>
+
+## First check whether the mod's modules load
+
+Older mods commonly shipped their native `cgame`, `ui`, or `jampgame` libraries inside a
+PK3. TaystJK still loads assets from those PK3s, but does not unpack their executable
+libraries by default. The result can look partly correct while the mod's custom HUD,
+menus, or game code is missing.
+
+See [mods that package native libraries inside a PK3](/TaystJK/install/#mods-that-package-native-libraries-inside-a-pk3)
+for the preferred loose-library layout, architecture requirements, and the Windows-only
+`com_unpackLibraries` compatibility switch. The server feature checks below matter only
+after the intended client module has loaded.
 
 ## What the client decides
 
