@@ -3436,9 +3436,15 @@ static void G_GunDuelEndWeapon(gentity_t *ent)
 	if (weapon <= WP_NONE || weapon >= WP_NUM_WEAPONS || (ent->client->ps.stats[STAT_WEAPONS] & (1 << weapon)))
 		return;
 
-	for (weap = LAST_USEABLE_WEAPON; weap > WP_NONE; weap--) {
-		if (ent->client->ps.stats[STAT_WEAPONS] & (1 << weap))
-			break;
+	// pick like ClientSpawn: the saber if they have it, otherwise their highest weapon
+	if ((ent->client->ps.stats[STAT_WEAPONS] & (1 << WP_SABER)) && !(g_tweakWeapons.integer & WT_TRIBES)) {
+		weap = WP_SABER;
+	}
+	else {
+		for (weap = LAST_USEABLE_WEAPON; weap > WP_NONE; weap--) {
+			if (ent->client->ps.stats[STAT_WEAPONS] & (1 << weap))
+				break;
+		}
 	}
 
 	G_ClearDisruptorZoom(&ent->client->ps);
