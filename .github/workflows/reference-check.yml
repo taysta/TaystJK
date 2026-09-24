@@ -1,8 +1,9 @@
 name: Reference refresh
 
-# The console reference is generated from this branch but lives on gh-pages. Refresh its
-# static evidence after a release and weekly, then put the generated changes through review
-# instead of pushing them directly to the published branch.
+# The console reference is generated from this branch but lives on gh-pages. Check it after
+# each automatic release, refresh it only when its meaningful source data drifted, and run a
+# full audit weekly or for an independently published release. Generated changes go through
+# review instead of being pushed directly to the published branch.
 #
 # This has to live on the default branch: GitHub only runs scheduled workflows from the
 # default branch, so the same cron sitting in the gh-pages workflow would never fire.
@@ -52,11 +53,60 @@ jobs:
           git fetch --no-tags https://github.com/SomaZ/OpenJK.git +refs/heads/rend2-unified-wip:refs/remotes/somaz/rend2-unified-wip
           git fetch --no-tags https://github.com/JKSunny/EternalJK.git +refs/heads/master:refs/remotes/Sunny/master
 
+      # build.yml dispatches this workflow after every successful master release. Before
+      # doing the expensive provenance/API work, compare a temporary assembly with the
+      # checked-in reference. Moving source pins and line numbers remain valid at their
+      # old commit, so they do not by themselves justify a refresh PR. Scheduled, manual,
+      # and independently published-release runs remain full audits so they can discover
+      # provenance changes outside TaystJK.
+      - name: Check whether the source reference drifted
+        id: source-drift
+        if: github.event_name == 'workflow_dispatch' && inputs.release_tag == 'latest'
+        run: |
+          set -euo pipefail
+          candidate="${RUNNER_TEMP}/reference-preflight"
+          mkdir -p "$candidate"
+          python3 tools/cvar_audit/build_reference.py \
+            --ref origin/master --output-dir "$candidate"
+
+          normalize() {
+            jq --sort-keys '
+              walk(
+                if type == "object" then
+                  del(.line, .source_commit, .url)
+                else
+                  .
+                end
+              )
+            ' "$1"
+          }
+
+          drift=false
+          for kind in cvars commands; do
+            if ! diff -u \
+              <(normalize "_data/${kind}.json") \
+              <(normalize "${candidate}/${kind}.json") \
+              > "${RUNNER_TEMP}/${kind}-drift.diff"; then
+              drift=true
+            fi
+          done
+
+          echo "refresh=${drift}" >> "$GITHUB_OUTPUT"
+          if [ "$drift" = false ]; then
+            echo "The console reference has no semantic source drift; refresh skipped." \
+              >> "$GITHUB_STEP_SUMMARY"
+          else
+            echo "Semantic source drift found; running the full reference refresh." \
+              >> "$GITHUB_STEP_SUMMARY"
+          fi
+
       - uses: actions/setup-node@v4
+        if: steps.source-drift.outputs.refresh != 'false'
         with:
           node-version: "20"
 
       - name: Collect pull-request provenance
+        if: steps.source-drift.outputs.refresh != 'false'
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
@@ -81,6 +131,7 @@ jobs:
           done
 
       - name: Regenerate static reference evidence
+        if: steps.source-drift.outputs.refresh != 'false'
         run: |
           set -euo pipefail
           python3 tools/cvar_audit/provenance.py \
@@ -99,6 +150,7 @@ jobs:
           tools/cvar_audit/run_all.sh --ref origin/master
 
       - name: Reject unexpected generated paths
+        if: steps.source-drift.outputs.refresh != 'false'
         run: |
           set -euo pipefail
           while IFS= read -r path; do
@@ -117,16 +169,19 @@ jobs:
           done < <(git status --porcelain | cut -c4-)
 
       - uses: ruby/setup-ruby@v1
+        if: steps.source-drift.outputs.refresh != 'false'
         with:
           ruby-version: "3.4"
           bundler-cache: true
 
       - name: Build the generated site
+        if: steps.source-drift.outputs.refresh != 'false'
         run: |
           bundle exec jekyll build
           python3 tools/cvar_audit/check_feed.py
 
       - name: Open or update the refresh pull request
+        if: steps.source-drift.outputs.refresh != 'false'
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           REPO: ${{ github.repository }}
