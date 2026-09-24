@@ -2048,6 +2048,8 @@ Ghoul2 Insert Start
 
 	item = &bg_itemlist[ es->modelindex ];
 
+	CG_RegisterItemVisuals( es->modelindex );
+
 	if ((item->giType == IT_WEAPON || item->giType == IT_POWERUP) &&
 		!(cent->currentState.eFlags & EF_DROPPEDWEAPON) &&
 		!cg_simpleItems.integer)
