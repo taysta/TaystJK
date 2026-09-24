@@ -24,7 +24,7 @@ Mouse sensitivity value
 | Confidence | `high` |
 | Added | 2013-04-08 in [`14cea1563`](https://github.com/taysta/TaystJK/commit/14cea1563762076974bee277afadbd5bf234c494) ([how to compare this against your build](/TaystJK/features/whats-new/#how-to-tell-what-your-build-has)) |
 | In-game xdocs | No |
-| In-game menu | Yes: [controls.menu:2915](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/assets/japro/ui/jamp/controls.menu#L2915), [ingame_controls.menu:2581](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/assets/japro/ui/jamp/ingame_controls.menu#L2581), [ingame_controls.menu:2612](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/assets/japro/ui/jamp/ingame_controls.menu#L2612) |
+| In-game menu | Yes: [controls.menu:2915](https://github.com/taysta/TaystJK/blame/a15beafad337a07e6a965e5063053ed265a96fe2/assets/japro/ui/jamp/controls.menu#L2915), [ingame_controls.menu:2581](https://github.com/taysta/TaystJK/blame/a15beafad337a07e6a965e5063053ed265a96fe2/assets/japro/ui/jamp/ingame_controls.menu#L2581), [ingame_controls.menu:2612](https://github.com/taysta/TaystJK/blame/a15beafad337a07e6a965e5063053ed265a96fe2/assets/japro/ui/jamp/ingame_controls.menu#L2612) |
 | Default | `5` |
 | Value type | `float` |
 | Restart | No latch flag is registered. |
@@ -61,11 +61,11 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 ## Evidence
 
-- registration: [codemp/client/cl_main.cpp:3351](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/client/cl_main.cpp#L3351) (Cvar_Get)
-- behavior: [codemp/client/cl_input.cpp:1117](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/client/cl_input.cpp#L1117)
-- behavior: [codemp/client/cl_input.cpp:1122](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/client/cl_input.cpp#L1122)
-- behavior: [codemp/client/cl_input.cpp:1156](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/client/cl_input.cpp#L1156)
-- behavior: [codemp/client/cl_input.cpp:1157](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/client/cl_input.cpp#L1157)
-- behavior: [codemp/client/cl_input.cpp:1162](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/client/cl_input.cpp#L1162)
+- registration: [codemp/client/cl_main.cpp:3351](https://github.com/taysta/TaystJK/blame/a15beafad337a07e6a965e5063053ed265a96fe2/codemp/client/cl_main.cpp#L3351) (Cvar_Get)
+- behavior: [codemp/client/cl_input.cpp:1117](https://github.com/taysta/TaystJK/blame/a15beafad337a07e6a965e5063053ed265a96fe2/codemp/client/cl_input.cpp#L1117)
+- behavior: [codemp/client/cl_input.cpp:1122](https://github.com/taysta/TaystJK/blame/a15beafad337a07e6a965e5063053ed265a96fe2/codemp/client/cl_input.cpp#L1122)
+- behavior: [codemp/client/cl_input.cpp:1156](https://github.com/taysta/TaystJK/blame/a15beafad337a07e6a965e5063053ed265a96fe2/codemp/client/cl_input.cpp#L1156)
+- behavior: [codemp/client/cl_input.cpp:1157](https://github.com/taysta/TaystJK/blame/a15beafad337a07e6a965e5063053ed265a96fe2/codemp/client/cl_input.cpp#L1157)
+- behavior: [codemp/client/cl_input.cpp:1162](https://github.com/taysta/TaystJK/blame/a15beafad337a07e6a965e5063053ed265a96fe2/codemp/client/cl_input.cpp#L1162)
 
-<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/f4643281440c626cb7e30444c8c392606167a7f8"><code>f4643281440c</code></a> on 2026-09-23. Anything merged after that is not reflected here.</p>
+<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/a15beafad337a07e6a965e5063053ed265a96fe2"><code>a15beafad337</code></a> on 2026-09-24. Anything merged after that is not reflected here.</p>

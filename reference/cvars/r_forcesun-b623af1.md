@@ -74,11 +74,11 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 ## Evidence
 
-- registration: [codemp/rd-rend2/tr_init.cpp:1576](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/rd-rend2/tr_init.cpp#L1576) (Cvar_Get)
-- behavior: [shared/rd-rend2/tr_main.cpp:2916](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/shared/rd-rend2/tr_main.cpp#L2916)
-- behavior: [shared/rd-rend2/tr_scene.cpp:379](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/shared/rd-rend2/tr_scene.cpp#L379)
-- behavior: [shared/rd-rend2/tr_scene.cpp:391](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/shared/rd-rend2/tr_scene.cpp#L391)
-- behavior: [shared/rd-rend2/tr_scene.cpp:364](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/shared/rd-rend2/tr_scene.cpp#L364)
-- behavior: [shared/rd-rend2/tr_scene.cpp:374](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/shared/rd-rend2/tr_scene.cpp#L374)
+- registration: [codemp/rd-rend2/tr_init.cpp:1576](https://github.com/taysta/TaystJK/blame/a15beafad337a07e6a965e5063053ed265a96fe2/codemp/rd-rend2/tr_init.cpp#L1576) (Cvar_Get)
+- behavior: [shared/rd-rend2/tr_main.cpp:2916](https://github.com/taysta/TaystJK/blame/a15beafad337a07e6a965e5063053ed265a96fe2/shared/rd-rend2/tr_main.cpp#L2916)
+- behavior: [shared/rd-rend2/tr_scene.cpp:379](https://github.com/taysta/TaystJK/blame/a15beafad337a07e6a965e5063053ed265a96fe2/shared/rd-rend2/tr_scene.cpp#L379)
+- behavior: [shared/rd-rend2/tr_scene.cpp:391](https://github.com/taysta/TaystJK/blame/a15beafad337a07e6a965e5063053ed265a96fe2/shared/rd-rend2/tr_scene.cpp#L391)
+- behavior: [shared/rd-rend2/tr_scene.cpp:364](https://github.com/taysta/TaystJK/blame/a15beafad337a07e6a965e5063053ed265a96fe2/shared/rd-rend2/tr_scene.cpp#L364)
+- behavior: [shared/rd-rend2/tr_scene.cpp:374](https://github.com/taysta/TaystJK/blame/a15beafad337a07e6a965e5063053ed265a96fe2/shared/rd-rend2/tr_scene.cpp#L374)
 
-<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/f4643281440c626cb7e30444c8c392606167a7f8"><code>f4643281440c</code></a> on 2026-09-23. Anything merged after that is not reflected here.</p>
+<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/a15beafad337a07e6a965e5063053ed265a96fe2"><code>a15beafad337</code></a> on 2026-09-24. Anything merged after that is not reflected here.</p>

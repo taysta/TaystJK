@@ -37,8 +37,8 @@ search_exclude: false
 
 | Value | Meaning | Evidence |
 |:--|:--|:--|
-| `1` | Tarzan style. | [docs/japro_docs.md:58](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/docs/japro_docs.md#L58) |
-| `2` | JA+ Style. | [docs/japro_docs.md:58](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/docs/japro_docs.md#L58) |
+| `1` | Tarzan style. | [docs/japro_docs.md:58](https://github.com/taysta/TaystJK/blame/a15beafad337a07e6a965e5063053ed265a96fe2/docs/japro_docs.md#L58) |
+| `2` | JA+ Style. | [docs/japro_docs.md:58](https://github.com/taysta/TaystJK/blame/a15beafad337a07e6a965e5063053ed265a96fe2/docs/japro_docs.md#L58) |
 
 ## Flags
 
@@ -78,12 +78,12 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 ## Evidence
 
-- registration: [codemp/game/g_xcvar.h:243](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/game/g_xcvar.h#L243) (XCVAR_DEF)
-- behavior: [codemp/game/bg_pmove.c:15393](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/game/bg_pmove.c#L15393)
-- behavior: [codemp/game/bg_pmove.c:15396](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/game/bg_pmove.c#L15396)
-- behavior: [codemp/game/g_active.c:3391](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/game/g_active.c#L3391)
-- behavior: [codemp/game/g_active.c:3407](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/game/g_active.c#L3407)
-- behavior: [codemp/game/g_cmds.c:5756](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/game/g_cmds.c#L5756)
-- documentation: [docs/japro_docs.md:58](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/docs/japro_docs.md#L58)
+- registration: [codemp/game/g_xcvar.h:243](https://github.com/taysta/TaystJK/blame/a15beafad337a07e6a965e5063053ed265a96fe2/codemp/game/g_xcvar.h#L243) (XCVAR_DEF)
+- behavior: [codemp/game/bg_pmove.c:15393](https://github.com/taysta/TaystJK/blame/a15beafad337a07e6a965e5063053ed265a96fe2/codemp/game/bg_pmove.c#L15393)
+- behavior: [codemp/game/bg_pmove.c:15396](https://github.com/taysta/TaystJK/blame/a15beafad337a07e6a965e5063053ed265a96fe2/codemp/game/bg_pmove.c#L15396)
+- behavior: [codemp/game/g_active.c:3391](https://github.com/taysta/TaystJK/blame/a15beafad337a07e6a965e5063053ed265a96fe2/codemp/game/g_active.c#L3391)
+- behavior: [codemp/game/g_active.c:3407](https://github.com/taysta/TaystJK/blame/a15beafad337a07e6a965e5063053ed265a96fe2/codemp/game/g_active.c#L3407)
+- behavior: [codemp/game/g_cmds.c:5756](https://github.com/taysta/TaystJK/blame/a15beafad337a07e6a965e5063053ed265a96fe2/codemp/game/g_cmds.c#L5756)
+- documentation: [docs/japro_docs.md:58](https://github.com/taysta/TaystJK/blame/a15beafad337a07e6a965e5063053ed265a96fe2/docs/japro_docs.md#L58)
 
-<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/f4643281440c626cb7e30444c8c392606167a7f8"><code>f4643281440c</code></a> on 2026-09-23. Anything merged after that is not reflected here.</p>
+<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/a15beafad337a07e6a965e5063053ed265a96fe2"><code>a15beafad337</code></a> on 2026-09-24. Anything merged after that is not reflected here.</p>

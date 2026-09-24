@@ -102,13 +102,13 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 ## Evidence
 
-- registration: [codemp/game/g_xcvar.h:179](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/game/g_xcvar.h#L179) (XCVAR_DEF)
-- registration: [codemp/server/sv_init.cpp:245](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/server/sv_init.cpp#L245) (Cvar_Get)
-- registration: [codemp/server/sv_init.cpp:984](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/server/sv_init.cpp#L984) (Cvar_Get)
-- behavior: [codemp/game/g_bot.c:483](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/game/g_bot.c#L483)
-- behavior: [codemp/game/g_bot.c:515](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/game/g_bot.c#L515)
-- behavior: [codemp/game/g_bot.c:657](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/game/g_bot.c#L657)
-- behavior: [codemp/game/g_bot.c:694](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/game/g_bot.c#L694)
-- behavior: [codemp/game/g_bot.c:727](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/game/g_bot.c#L727)
+- registration: [codemp/game/g_xcvar.h:179](https://github.com/taysta/TaystJK/blame/a15beafad337a07e6a965e5063053ed265a96fe2/codemp/game/g_xcvar.h#L179) (XCVAR_DEF)
+- registration: [codemp/server/sv_init.cpp:245](https://github.com/taysta/TaystJK/blame/a15beafad337a07e6a965e5063053ed265a96fe2/codemp/server/sv_init.cpp#L245) (Cvar_Get)
+- registration: [codemp/server/sv_init.cpp:984](https://github.com/taysta/TaystJK/blame/a15beafad337a07e6a965e5063053ed265a96fe2/codemp/server/sv_init.cpp#L984) (Cvar_Get)
+- behavior: [codemp/game/g_bot.c:483](https://github.com/taysta/TaystJK/blame/a15beafad337a07e6a965e5063053ed265a96fe2/codemp/game/g_bot.c#L483)
+- behavior: [codemp/game/g_bot.c:515](https://github.com/taysta/TaystJK/blame/a15beafad337a07e6a965e5063053ed265a96fe2/codemp/game/g_bot.c#L515)
+- behavior: [codemp/game/g_bot.c:657](https://github.com/taysta/TaystJK/blame/a15beafad337a07e6a965e5063053ed265a96fe2/codemp/game/g_bot.c#L657)
+- behavior: [codemp/game/g_bot.c:694](https://github.com/taysta/TaystJK/blame/a15beafad337a07e6a965e5063053ed265a96fe2/codemp/game/g_bot.c#L694)
+- behavior: [codemp/game/g_bot.c:727](https://github.com/taysta/TaystJK/blame/a15beafad337a07e6a965e5063053ed265a96fe2/codemp/game/g_bot.c#L727)
 
-<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/f4643281440c626cb7e30444c8c392606167a7f8"><code>f4643281440c</code></a> on 2026-09-23. Anything merged after that is not reflected here.</p>
+<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/a15beafad337a07e6a965e5063053ed265a96fe2"><code>a15beafad337</code></a> on 2026-09-24. Anything merged after that is not reflected here.</p>

@@ -37,8 +37,8 @@ Min bandwidth rate allowed on server. Use 0 for unlimited.
 
 | Value | Meaning | Evidence |
 |:--|:--|:--|
-| `0` | Disabled. | [codemp/server/sv_snapshot.cpp:773](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/server/sv_snapshot.cpp#L773) |
-| `1` | Enabled. | [codemp/server/sv_snapshot.cpp:773](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/server/sv_snapshot.cpp#L773) |
+| `0` | Disabled. | [codemp/server/sv_snapshot.cpp:773](https://github.com/taysta/TaystJK/blame/a15beafad337a07e6a965e5063053ed265a96fe2/codemp/server/sv_snapshot.cpp#L773) |
+| `1` | Enabled. | [codemp/server/sv_snapshot.cpp:773](https://github.com/taysta/TaystJK/blame/a15beafad337a07e6a965e5063053ed265a96fe2/codemp/server/sv_snapshot.cpp#L773) |
 
 ## Flags
 
@@ -72,11 +72,11 @@ Authored dates come from the exact registration's first content commit, PR dates
 
 ## Evidence
 
-- registration: [codemp/server/sv_init.cpp:992](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/server/sv_init.cpp#L992) (Cvar_Get)
-- behavior: [codemp/server/sv_snapshot.cpp:773](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/server/sv_snapshot.cpp#L773)
-- behavior: [codemp/server/sv_snapshot.cpp:774](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/server/sv_snapshot.cpp#L774)
-- behavior: [codemp/server/sv_snapshot.cpp:777](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/server/sv_snapshot.cpp#L777)
-- behavior: [codemp/server/sv_client.cpp:1218](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/server/sv_client.cpp#L1218)
-- behavior: [codemp/server/sv_main.cpp:1099](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/server/sv_main.cpp#L1099)
+- registration: [codemp/server/sv_init.cpp:992](https://github.com/taysta/TaystJK/blame/a15beafad337a07e6a965e5063053ed265a96fe2/codemp/server/sv_init.cpp#L992) (Cvar_Get)
+- behavior: [codemp/server/sv_snapshot.cpp:773](https://github.com/taysta/TaystJK/blame/a15beafad337a07e6a965e5063053ed265a96fe2/codemp/server/sv_snapshot.cpp#L773)
+- behavior: [codemp/server/sv_snapshot.cpp:774](https://github.com/taysta/TaystJK/blame/a15beafad337a07e6a965e5063053ed265a96fe2/codemp/server/sv_snapshot.cpp#L774)
+- behavior: [codemp/server/sv_snapshot.cpp:777](https://github.com/taysta/TaystJK/blame/a15beafad337a07e6a965e5063053ed265a96fe2/codemp/server/sv_snapshot.cpp#L777)
+- behavior: [codemp/server/sv_client.cpp:1218](https://github.com/taysta/TaystJK/blame/a15beafad337a07e6a965e5063053ed265a96fe2/codemp/server/sv_client.cpp#L1218)
+- behavior: [codemp/server/sv_main.cpp:1099](https://github.com/taysta/TaystJK/blame/a15beafad337a07e6a965e5063053ed265a96fe2/codemp/server/sv_main.cpp#L1099)
 
-<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/f4643281440c626cb7e30444c8c392606167a7f8"><code>f4643281440c</code></a> on 2026-09-23. Anything merged after that is not reflected here.</p>
+<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/a15beafad337a07e6a965e5063053ed265a96fe2"><code>a15beafad337</code></a> on 2026-09-24. Anything merged after that is not reflected here.</p>

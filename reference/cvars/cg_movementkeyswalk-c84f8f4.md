@@ -24,7 +24,7 @@ Display walk movement key input
 | Derivation | `documented` |
 | Confidence | `high` |
 | Added | 2026-06-07 in [`77a255000`](https://github.com/taysta/TaystJK/commit/77a255000dd43e3884ccd2651364f23284fc0161) ([how to compare this against your build](/TaystJK/features/whats-new/#how-to-tell-what-your-build-has)) |
-| In-game xdocs | Yes: [codemp/ui/ui_xdocs.h:104](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/ui/ui_xdocs.h#L104) |
+| In-game xdocs | Yes: [codemp/ui/ui_xdocs.h:104](https://github.com/taysta/TaystJK/blame/a15beafad337a07e6a965e5063053ed265a96fe2/codemp/ui/ui_xdocs.h#L104) |
 | In-game menu | No |
 | Default | `0` |
 | Value type | `float` |
@@ -61,12 +61,12 @@ Authored dates come from the exact registration's first content commit, PR dates
 
 ## Evidence
 
-- registration: [codemp/cgame/cg_xcvar.h:45](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/cgame/cg_xcvar.h#L45) (XCVAR_DEF)
-- behavior: [codemp/cgame/hud_strafehelper.c:2325](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/cgame/hud_strafehelper.c#L2325)
-- behavior: [codemp/cgame/hud_strafehelper.c:2365](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/cgame/hud_strafehelper.c#L2365)
-- behavior: [codemp/cgame/hud_strafehelper.c:2282](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/cgame/hud_strafehelper.c#L2282)
-- behavior: [codemp/cgame/hud_strafehelper.c:2288](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/cgame/hud_strafehelper.c#L2288)
-- behavior: [codemp/ui/ui_xdocs.h:104](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/ui/ui_xdocs.h#L104)
-- documentation: [codemp/ui/ui_xdocs.h:104](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/ui/ui_xdocs.h#L104)
+- registration: [codemp/cgame/cg_xcvar.h:45](https://github.com/taysta/TaystJK/blame/a15beafad337a07e6a965e5063053ed265a96fe2/codemp/cgame/cg_xcvar.h#L45) (XCVAR_DEF)
+- behavior: [codemp/cgame/hud_strafehelper.c:2325](https://github.com/taysta/TaystJK/blame/a15beafad337a07e6a965e5063053ed265a96fe2/codemp/cgame/hud_strafehelper.c#L2325)
+- behavior: [codemp/cgame/hud_strafehelper.c:2365](https://github.com/taysta/TaystJK/blame/a15beafad337a07e6a965e5063053ed265a96fe2/codemp/cgame/hud_strafehelper.c#L2365)
+- behavior: [codemp/cgame/hud_strafehelper.c:2282](https://github.com/taysta/TaystJK/blame/a15beafad337a07e6a965e5063053ed265a96fe2/codemp/cgame/hud_strafehelper.c#L2282)
+- behavior: [codemp/cgame/hud_strafehelper.c:2288](https://github.com/taysta/TaystJK/blame/a15beafad337a07e6a965e5063053ed265a96fe2/codemp/cgame/hud_strafehelper.c#L2288)
+- behavior: [codemp/ui/ui_xdocs.h:104](https://github.com/taysta/TaystJK/blame/a15beafad337a07e6a965e5063053ed265a96fe2/codemp/ui/ui_xdocs.h#L104)
+- documentation: [codemp/ui/ui_xdocs.h:104](https://github.com/taysta/TaystJK/blame/a15beafad337a07e6a965e5063053ed265a96fe2/codemp/ui/ui_xdocs.h#L104)
 
-<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/f4643281440c626cb7e30444c8c392606167a7f8"><code>f4643281440c</code></a> on 2026-09-23. Anything merged after that is not reflected here.</p>
+<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/a15beafad337a07e6a965e5063053ed265a96fe2"><code>a15beafad337</code></a> on 2026-09-24. Anything merged after that is not reflected here.</p>

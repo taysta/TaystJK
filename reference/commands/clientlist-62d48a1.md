@@ -25,7 +25,7 @@ Displays a list of all connected clients and their real client numbers
 | Derivation | `documented` |
 | Confidence | `medium` |
 | Added | 2013-04-24 in [`3e986be9a`](https://github.com/taysta/TaystJK/commit/3e986be9ab0dff376102717e0a693d58f048a66b) <span class="status-chip">needs review</span> ([how to compare this against your build](/TaystJK/features/whats-new/#how-to-tell-what-your-build-has)) |
-| In-game xdocs | Yes: [codemp/ui/ui_xdocs.h:619](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/ui/ui_xdocs.h#L619) |
+| In-game xdocs | Yes: [codemp/ui/ui_xdocs.h:619](https://github.com/taysta/TaystJK/blame/a15beafad337a07e6a965e5063053ed265a96fe2/codemp/ui/ui_xdocs.h#L619) |
 | In-game menu | No |
 | Syntax | `clientlist` |
 | Cheat protected | No |
@@ -71,8 +71,8 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 ## Evidence
 
-- registration: [codemp/cgame/cg_consolecmds.c:2451](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/cgame/cg_consolecmds.c#L2451) (cgame command table)
-- handler: [codemp/cgame/cg_consolecmds.c:158](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/cgame/cg_consolecmds.c#L158)
-- documentation: [codemp/ui/ui_xdocs.h:619](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/ui/ui_xdocs.h#L619)
+- registration: [codemp/cgame/cg_consolecmds.c:2451](https://github.com/taysta/TaystJK/blame/a15beafad337a07e6a965e5063053ed265a96fe2/codemp/cgame/cg_consolecmds.c#L2451) (cgame command table)
+- handler: [codemp/cgame/cg_consolecmds.c:158](https://github.com/taysta/TaystJK/blame/a15beafad337a07e6a965e5063053ed265a96fe2/codemp/cgame/cg_consolecmds.c#L158)
+- documentation: [codemp/ui/ui_xdocs.h:619](https://github.com/taysta/TaystJK/blame/a15beafad337a07e6a965e5063053ed265a96fe2/codemp/ui/ui_xdocs.h#L619)
 
-<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/f4643281440c626cb7e30444c8c392606167a7f8"><code>f4643281440c</code></a> on 2026-09-23. Anything merged after that is not reflected here.</p>
+<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/a15beafad337a07e6a965e5063053ed265a96fe2"><code>a15beafad337</code></a> on 2026-09-24. Anything merged after that is not reflected here.</p>

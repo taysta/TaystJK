@@ -24,7 +24,7 @@ Swap victim/killer sides
 | Derivation | `documented` |
 | Confidence | `high` |
 | Added | 2026-08-06 in [`17085eaea`](https://github.com/taysta/TaystJK/commit/17085eaeadd029b670346330588de005c6c41158) ([how to compare this against your build](/TaystJK/features/whats-new/#how-to-tell-what-your-build-has)) |
-| In-game xdocs | Yes: [codemp/ui/ui_xdocs.h:546](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/ui/ui_xdocs.h#L546) |
+| In-game xdocs | Yes: [codemp/ui/ui_xdocs.h:546](https://github.com/taysta/TaystJK/blame/a15beafad337a07e6a965e5063053ed265a96fe2/codemp/ui/ui_xdocs.h#L546) |
 | In-game menu | No |
 | Default | `0` |
 | Value type | `bool` |
@@ -36,8 +36,8 @@ Swap victim/killer sides
 
 | Value | Meaning | Evidence |
 |:--|:--|:--|
-| `0` | Disabled. | [codemp/cgame/hud_obituary.c:83](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/cgame/hud_obituary.c#L83) |
-| `1` | Enabled. | [codemp/cgame/hud_obituary.c:83](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/cgame/hud_obituary.c#L83) |
+| `0` | Disabled. | [codemp/cgame/hud_obituary.c:83](https://github.com/taysta/TaystJK/blame/a15beafad337a07e6a965e5063053ed265a96fe2/codemp/cgame/hud_obituary.c#L83) |
+| `1` | Enabled. | [codemp/cgame/hud_obituary.c:83](https://github.com/taysta/TaystJK/blame/a15beafad337a07e6a965e5063053ed265a96fe2/codemp/cgame/hud_obituary.c#L83) |
 
 ## Flags
 
@@ -63,9 +63,9 @@ Authored dates come from the exact registration's first content commit, PR dates
 
 ## Evidence
 
-- registration: [codemp/cgame/cg_xcvar.h:434](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/cgame/cg_xcvar.h#L434) (XCVAR_DEF)
-- behavior: [codemp/cgame/hud_obituary.c:83](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/cgame/hud_obituary.c#L83)
-- behavior: [codemp/ui/ui_xdocs.h:546](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/ui/ui_xdocs.h#L546)
-- documentation: [codemp/ui/ui_xdocs.h:546](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/ui/ui_xdocs.h#L546)
+- registration: [codemp/cgame/cg_xcvar.h:434](https://github.com/taysta/TaystJK/blame/a15beafad337a07e6a965e5063053ed265a96fe2/codemp/cgame/cg_xcvar.h#L434) (XCVAR_DEF)
+- behavior: [codemp/cgame/hud_obituary.c:83](https://github.com/taysta/TaystJK/blame/a15beafad337a07e6a965e5063053ed265a96fe2/codemp/cgame/hud_obituary.c#L83)
+- behavior: [codemp/ui/ui_xdocs.h:546](https://github.com/taysta/TaystJK/blame/a15beafad337a07e6a965e5063053ed265a96fe2/codemp/ui/ui_xdocs.h#L546)
+- documentation: [codemp/ui/ui_xdocs.h:546](https://github.com/taysta/TaystJK/blame/a15beafad337a07e6a965e5063053ed265a96fe2/codemp/ui/ui_xdocs.h#L546)
 
-<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/f4643281440c626cb7e30444c8c392606167a7f8"><code>f4643281440c</code></a> on 2026-09-23. Anything merged after that is not reflected here.</p>
+<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/a15beafad337a07e6a965e5063053ed265a96fe2"><code>a15beafad337</code></a> on 2026-09-24. Anything merged after that is not reflected here.</p>

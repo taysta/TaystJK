@@ -39,8 +39,8 @@ Controls `com_waitingForKey` in the engine-shared module. Consult the cited beha
 
 | Value | Meaning | Evidence |
 |:--|:--|:--|
-| `0` | Disabled. | [shared/sdl/sdl_input.cpp:203](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/shared/sdl/sdl_input.cpp#L203) |
-| `1` | Enabled. | [shared/sdl/sdl_input.cpp:203](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/shared/sdl/sdl_input.cpp#L203) |
+| `0` | Disabled. | [shared/sdl/sdl_input.cpp:203](https://github.com/taysta/TaystJK/blame/a15beafad337a07e6a965e5063053ed265a96fe2/shared/sdl/sdl_input.cpp#L203) |
+| `1` | Enabled. | [shared/sdl/sdl_input.cpp:203](https://github.com/taysta/TaystJK/blame/a15beafad337a07e6a965e5063053ed265a96fe2/shared/sdl/sdl_input.cpp#L203) |
 
 ## Flags
 
@@ -67,12 +67,12 @@ Authored dates come from the exact registration's first content commit, PR dates
 
 ## Evidence
 
-- registration: [shared/sdl/sdl_input.cpp:201](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/shared/sdl/sdl_input.cpp#L201) (Cvar_Get)
-- registration: [shared/sys/sys_main.cpp:181](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/shared/sys/sys_main.cpp#L181) (Cvar_Get)
-- behavior: [shared/sdl/sdl_input.cpp:203](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/shared/sdl/sdl_input.cpp#L203)
-- behavior: [codemp/ui/ui_shared.c:1480](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/ui/ui_shared.c#L1480)
-- behavior: [codemp/ui/ui_shared.c:4389](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/ui/ui_shared.c#L4389)
-- behavior: [codemp/ui/ui_shared.c:4449](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/ui/ui_shared.c#L4449)
-- behavior: [codemp/ui/ui_shared.c:5286](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/ui/ui_shared.c#L5286)
+- registration: [shared/sdl/sdl_input.cpp:201](https://github.com/taysta/TaystJK/blame/a15beafad337a07e6a965e5063053ed265a96fe2/shared/sdl/sdl_input.cpp#L201) (Cvar_Get)
+- registration: [shared/sys/sys_main.cpp:181](https://github.com/taysta/TaystJK/blame/a15beafad337a07e6a965e5063053ed265a96fe2/shared/sys/sys_main.cpp#L181) (Cvar_Get)
+- behavior: [shared/sdl/sdl_input.cpp:203](https://github.com/taysta/TaystJK/blame/a15beafad337a07e6a965e5063053ed265a96fe2/shared/sdl/sdl_input.cpp#L203)
+- behavior: [codemp/ui/ui_shared.c:1480](https://github.com/taysta/TaystJK/blame/a15beafad337a07e6a965e5063053ed265a96fe2/codemp/ui/ui_shared.c#L1480)
+- behavior: [codemp/ui/ui_shared.c:4389](https://github.com/taysta/TaystJK/blame/a15beafad337a07e6a965e5063053ed265a96fe2/codemp/ui/ui_shared.c#L4389)
+- behavior: [codemp/ui/ui_shared.c:4449](https://github.com/taysta/TaystJK/blame/a15beafad337a07e6a965e5063053ed265a96fe2/codemp/ui/ui_shared.c#L4449)
+- behavior: [codemp/ui/ui_shared.c:5286](https://github.com/taysta/TaystJK/blame/a15beafad337a07e6a965e5063053ed265a96fe2/codemp/ui/ui_shared.c#L5286)
 
-<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/f4643281440c626cb7e30444c8c392606167a7f8"><code>f4643281440c</code></a> on 2026-09-23. Anything merged after that is not reflected here.</p>
+<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/a15beafad337a07e6a965e5063053ed265a96fe2"><code>a15beafad337</code></a> on 2026-09-24. Anything merged after that is not reflected here.</p>

@@ -26,7 +26,7 @@ Controls `in_mouse` in the engine-shared module. Consult the cited behavior read
 | Confidence | `high` |
 | Added | 2013-04-08 in [`14cea1563`](https://github.com/taysta/TaystJK/commit/14cea1563762076974bee277afadbd5bf234c494) ([how to compare this against your build](/TaystJK/features/whats-new/#how-to-tell-what-your-build-has)) |
 | In-game xdocs | No |
-| In-game menu | Yes: [ingame_controls.menu:2543](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/assets/japro/ui/jamp/ingame_controls.menu#L2543) |
+| In-game menu | Yes: [ingame_controls.menu:2543](https://github.com/taysta/TaystJK/blame/a15beafad337a07e6a965e5063053ed265a96fe2/assets/japro/ui/jamp/ingame_controls.menu#L2543) |
 | Default | `1` |
 | Value type | `float` |
 | Restart | No latch flag is registered. |
@@ -71,9 +71,9 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 ## Evidence
 
-- registration: [shared/sdl/sdl_input.cpp:644](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/shared/sdl/sdl_input.cpp#L644) (Cvar_Get)
-- behavior: [shared/sdl/sdl_input.cpp:652](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/shared/sdl/sdl_input.cpp#L652)
-- behavior: [shared/sdl/sdl_input.cpp:650](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/shared/sdl/sdl_input.cpp#L650)
-- behavior: [shared/sdl/sdl_input.cpp:908](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/shared/sdl/sdl_input.cpp#L908)
+- registration: [shared/sdl/sdl_input.cpp:644](https://github.com/taysta/TaystJK/blame/a15beafad337a07e6a965e5063053ed265a96fe2/shared/sdl/sdl_input.cpp#L644) (Cvar_Get)
+- behavior: [shared/sdl/sdl_input.cpp:652](https://github.com/taysta/TaystJK/blame/a15beafad337a07e6a965e5063053ed265a96fe2/shared/sdl/sdl_input.cpp#L652)
+- behavior: [shared/sdl/sdl_input.cpp:650](https://github.com/taysta/TaystJK/blame/a15beafad337a07e6a965e5063053ed265a96fe2/shared/sdl/sdl_input.cpp#L650)
+- behavior: [shared/sdl/sdl_input.cpp:908](https://github.com/taysta/TaystJK/blame/a15beafad337a07e6a965e5063053ed265a96fe2/shared/sdl/sdl_input.cpp#L908)
 
-<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/f4643281440c626cb7e30444c8c392606167a7f8"><code>f4643281440c</code></a> on 2026-09-23. Anything merged after that is not reflected here.</p>
+<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/a15beafad337a07e6a965e5063053ed265a96fe2"><code>a15beafad337</code></a> on 2026-09-24. Anything merged after that is not reflected here.</p>

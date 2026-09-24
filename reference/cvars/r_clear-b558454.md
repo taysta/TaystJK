@@ -37,8 +37,8 @@ Controls `r_clear` in the renderer module. Consult the cited behavior reads befo
 
 | Value | Meaning | Evidence |
 |:--|:--|:--|
-| `0` | Disabled. | [codemp/rd-vanilla/tr_backend.cpp:1743](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/rd-vanilla/tr_backend.cpp#L1743) |
-| `1` | Enabled. | [codemp/rd-vanilla/tr_backend.cpp:1743](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/rd-vanilla/tr_backend.cpp#L1743) |
+| `0` | Disabled. | [codemp/rd-vanilla/tr_backend.cpp:1743](https://github.com/taysta/TaystJK/blame/a15beafad337a07e6a965e5063053ed265a96fe2/codemp/rd-vanilla/tr_backend.cpp#L1743) |
+| `1` | Enabled. | [codemp/rd-vanilla/tr_backend.cpp:1743](https://github.com/taysta/TaystJK/blame/a15beafad337a07e6a965e5063053ed265a96fe2/codemp/rd-vanilla/tr_backend.cpp#L1743) |
 
 ## Flags
 
@@ -85,14 +85,14 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 ## Evidence
 
-- registration: [codemp/rd-dedicated/tr_init.cpp:424](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/rd-dedicated/tr_init.cpp#L424) (Cvar_Get)
-- registration: [codemp/rd-rend2/tr_init.cpp:1677](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/rd-rend2/tr_init.cpp#L1677) (Cvar_Get)
-- registration: [codemp/rd-vanilla/tr_init.cpp:1734](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/rd-vanilla/tr_init.cpp#L1734) (Cvar_Get)
-- registration: [codemp/rd-vulkan/tr_init.cpp:896](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/rd-vulkan/tr_init.cpp#L896) (Cvar_Get)
-- behavior: [codemp/rd-vanilla/tr_backend.cpp:1743](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/rd-vanilla/tr_backend.cpp#L1743)
-- behavior: [codemp/rd-vulkan/tr_backend.cpp:1134](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/rd-vulkan/tr_backend.cpp#L1134)
-- behavior: [shared/rd-rend2/tr_backend.cpp:587](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/shared/rd-rend2/tr_backend.cpp#L587)
-- behavior: [codemp/rd-vanilla/tr_backend.cpp:1744](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/rd-vanilla/tr_backend.cpp#L1744)
-- behavior: [codemp/rd-vulkan/vk_swapchain.cpp:113](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/rd-vulkan/vk_swapchain.cpp#L113)
+- registration: [codemp/rd-dedicated/tr_init.cpp:424](https://github.com/taysta/TaystJK/blame/a15beafad337a07e6a965e5063053ed265a96fe2/codemp/rd-dedicated/tr_init.cpp#L424) (Cvar_Get)
+- registration: [codemp/rd-rend2/tr_init.cpp:1677](https://github.com/taysta/TaystJK/blame/a15beafad337a07e6a965e5063053ed265a96fe2/codemp/rd-rend2/tr_init.cpp#L1677) (Cvar_Get)
+- registration: [codemp/rd-vanilla/tr_init.cpp:1734](https://github.com/taysta/TaystJK/blame/a15beafad337a07e6a965e5063053ed265a96fe2/codemp/rd-vanilla/tr_init.cpp#L1734) (Cvar_Get)
+- registration: [codemp/rd-vulkan/tr_init.cpp:896](https://github.com/taysta/TaystJK/blame/a15beafad337a07e6a965e5063053ed265a96fe2/codemp/rd-vulkan/tr_init.cpp#L896) (Cvar_Get)
+- behavior: [codemp/rd-vanilla/tr_backend.cpp:1743](https://github.com/taysta/TaystJK/blame/a15beafad337a07e6a965e5063053ed265a96fe2/codemp/rd-vanilla/tr_backend.cpp#L1743)
+- behavior: [codemp/rd-vulkan/tr_backend.cpp:1134](https://github.com/taysta/TaystJK/blame/a15beafad337a07e6a965e5063053ed265a96fe2/codemp/rd-vulkan/tr_backend.cpp#L1134)
+- behavior: [shared/rd-rend2/tr_backend.cpp:587](https://github.com/taysta/TaystJK/blame/a15beafad337a07e6a965e5063053ed265a96fe2/shared/rd-rend2/tr_backend.cpp#L587)
+- behavior: [codemp/rd-vanilla/tr_backend.cpp:1744](https://github.com/taysta/TaystJK/blame/a15beafad337a07e6a965e5063053ed265a96fe2/codemp/rd-vanilla/tr_backend.cpp#L1744)
+- behavior: [codemp/rd-vulkan/vk_swapchain.cpp:113](https://github.com/taysta/TaystJK/blame/a15beafad337a07e6a965e5063053ed265a96fe2/codemp/rd-vulkan/vk_swapchain.cpp#L113)
 
-<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/f4643281440c626cb7e30444c8c392606167a7f8"><code>f4643281440c</code></a> on 2026-09-23. Anything merged after that is not reflected here.</p>
+<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/a15beafad337a07e6a965e5063053ed265a96fe2"><code>a15beafad337</code></a> on 2026-09-24. Anything merged after that is not reflected here.</p>

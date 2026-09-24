@@ -37,8 +37,8 @@ Controls `bot_team` in the game module. Consult the cited behavior reads before 
 
 | Value | Meaning | Evidence |
 |:--|:--|:--|
-| `0` | Disabled. | [codemp/game/g_bot.c:980](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/game/g_bot.c#L980) |
-| `1` | Enabled. | [codemp/game/g_bot.c:980](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/game/g_bot.c#L980) |
+| `0` | Disabled. | [codemp/game/g_bot.c:980](https://github.com/taysta/TaystJK/blame/a15beafad337a07e6a965e5063053ed265a96fe2/codemp/game/g_bot.c#L980) |
+| `1` | Enabled. | [codemp/game/g_bot.c:980](https://github.com/taysta/TaystJK/blame/a15beafad337a07e6a965e5063053ed265a96fe2/codemp/game/g_bot.c#L980) |
 
 ## Flags
 
@@ -66,10 +66,10 @@ Authored dates come from the exact registration's first content commit, PR dates
 
 ## Evidence
 
-- registration: [codemp/game/g_xcvar.h:343](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/game/g_xcvar.h#L343) (XCVAR_DEF)
-- behavior: [codemp/game/g_bot.c:980](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/game/g_bot.c#L980)
-- behavior: [codemp/game/g_bot.c:982](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/game/g_bot.c#L982)
-- behavior: [codemp/game/g_client.c:3054](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/game/g_client.c#L3054)
-- behavior: [codemp/game/g_client.c:3058](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/game/g_client.c#L3058)
+- registration: [codemp/game/g_xcvar.h:343](https://github.com/taysta/TaystJK/blame/a15beafad337a07e6a965e5063053ed265a96fe2/codemp/game/g_xcvar.h#L343) (XCVAR_DEF)
+- behavior: [codemp/game/g_bot.c:980](https://github.com/taysta/TaystJK/blame/a15beafad337a07e6a965e5063053ed265a96fe2/codemp/game/g_bot.c#L980)
+- behavior: [codemp/game/g_bot.c:982](https://github.com/taysta/TaystJK/blame/a15beafad337a07e6a965e5063053ed265a96fe2/codemp/game/g_bot.c#L982)
+- behavior: [codemp/game/g_client.c:3054](https://github.com/taysta/TaystJK/blame/a15beafad337a07e6a965e5063053ed265a96fe2/codemp/game/g_client.c#L3054)
+- behavior: [codemp/game/g_client.c:3058](https://github.com/taysta/TaystJK/blame/a15beafad337a07e6a965e5063053ed265a96fe2/codemp/game/g_client.c#L3058)
 
-<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/f4643281440c626cb7e30444c8c392606167a7f8"><code>f4643281440c</code></a> on 2026-09-23. Anything merged after that is not reflected here.</p>
+<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/a15beafad337a07e6a965e5063053ed265a96fe2"><code>a15beafad337</code></a> on 2026-09-24. Anything merged after that is not reflected here.</p>

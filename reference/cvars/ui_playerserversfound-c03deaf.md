@@ -28,7 +28,7 @@ Registered by the current source, but no user-facing behavior description has be
 | Confidence | `high` |
 | Added | 2013-04-08 in [`14cea1563`](https://github.com/taysta/TaystJK/commit/14cea1563762076974bee277afadbd5bf234c494) ([how to compare this against your build](/TaystJK/features/whats-new/#how-to-tell-what-your-build-has)) |
 | In-game xdocs | No |
-| In-game menu | Yes: [ingame_server.menu:1772](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/assets/japro/ui/jamp/ingame_server.menu#L1772) |
+| In-game menu | Yes: [ingame_server.menu:1772](https://github.com/taysta/TaystJK/blame/a15beafad337a07e6a965e5063053ed265a96fe2/assets/japro/ui/jamp/ingame_server.menu#L1772) |
 | Default | `va( holdSPString,uiInfo.pendingServerStatus.num, numFound)` |
 | Value type | `string` |
 | Restart | No latch flag is registered. |
@@ -63,10 +63,10 @@ Origin: <span class="label ref-origin ref-origin-basejka">Base Jedi Academy</spa
 
 ## Evidence
 
-- registration: [codemp/ui/ui_main.c:9416](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/ui/ui_main.c#L9416) (implicit Cvar_Set)
-- registration: [codemp/ui/ui_main.c:9459](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/ui/ui_main.c#L9459) (implicit Cvar_Set)
-- registration: [codemp/ui/ui_main.c:9489](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/ui/ui_main.c#L9489) (implicit Cvar_Set)
-- registration: [codemp/ui/ui_main.c:9511](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/ui/ui_main.c#L9511) (implicit Cvar_Set)
-- registration: [codemp/ui/ui_main.c:9518](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/ui/ui_main.c#L9518) (implicit Cvar_Set)
+- registration: [codemp/ui/ui_main.c:9416](https://github.com/taysta/TaystJK/blame/a15beafad337a07e6a965e5063053ed265a96fe2/codemp/ui/ui_main.c#L9416) (implicit Cvar_Set)
+- registration: [codemp/ui/ui_main.c:9459](https://github.com/taysta/TaystJK/blame/a15beafad337a07e6a965e5063053ed265a96fe2/codemp/ui/ui_main.c#L9459) (implicit Cvar_Set)
+- registration: [codemp/ui/ui_main.c:9489](https://github.com/taysta/TaystJK/blame/a15beafad337a07e6a965e5063053ed265a96fe2/codemp/ui/ui_main.c#L9489) (implicit Cvar_Set)
+- registration: [codemp/ui/ui_main.c:9511](https://github.com/taysta/TaystJK/blame/a15beafad337a07e6a965e5063053ed265a96fe2/codemp/ui/ui_main.c#L9511) (implicit Cvar_Set)
+- registration: [codemp/ui/ui_main.c:9518](https://github.com/taysta/TaystJK/blame/a15beafad337a07e6a965e5063053ed265a96fe2/codemp/ui/ui_main.c#L9518) (implicit Cvar_Set)
 
-<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/f4643281440c626cb7e30444c8c392606167a7f8"><code>f4643281440c</code></a> on 2026-09-23. Anything merged after that is not reflected here.</p>
+<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/a15beafad337a07e6a965e5063053ed265a96fe2"><code>a15beafad337</code></a> on 2026-09-24. Anything merged after that is not reflected here.</p>

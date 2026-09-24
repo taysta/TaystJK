@@ -26,7 +26,7 @@ Controls `r_flares` in the renderer module. Consult the cited behavior reads bef
 | Confidence | `high` |
 | Added | 2013-04-08 in [`14cea1563`](https://github.com/taysta/TaystJK/commit/14cea1563762076974bee277afadbd5bf234c494) ([how to compare this against your build](/TaystJK/features/whats-new/#how-to-tell-what-your-build-has)) |
 | In-game xdocs | No |
-| In-game menu | Yes: [ingame_setup.menu:2711](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/assets/japro/ui/jamp/ingame_setup.menu#L2711), [setup.menu:2271](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/assets/japro/ui/jamp/setup.menu#L2271) |
+| In-game menu | Yes: [ingame_setup.menu:2711](https://github.com/taysta/TaystJK/blame/a15beafad337a07e6a965e5063053ed265a96fe2/assets/japro/ui/jamp/ingame_setup.menu#L2711), [setup.menu:2271](https://github.com/taysta/TaystJK/blame/a15beafad337a07e6a965e5063053ed265a96fe2/assets/japro/ui/jamp/setup.menu#L2271) |
 | Default | `1` |
 | Value type | `bool` |
 | Restart | No latch flag is registered. |
@@ -37,8 +37,8 @@ Controls `r_flares` in the renderer module. Consult the cited behavior reads bef
 
 | Value | Meaning | Evidence |
 |:--|:--|:--|
-| `0` | Disabled. | [codemp/rd-vanilla/tr_surface.cpp:1695](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/rd-vanilla/tr_surface.cpp#L1695) |
-| `1` | Enabled. | [codemp/rd-vanilla/tr_surface.cpp:1695](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/rd-vanilla/tr_surface.cpp#L1695) |
+| `0` | Disabled. | [codemp/rd-vanilla/tr_surface.cpp:1695](https://github.com/taysta/TaystJK/blame/a15beafad337a07e6a965e5063053ed265a96fe2/codemp/rd-vanilla/tr_surface.cpp#L1695) |
+| `1` | Enabled. | [codemp/rd-vanilla/tr_surface.cpp:1695](https://github.com/taysta/TaystJK/blame/a15beafad337a07e6a965e5063053ed265a96fe2/codemp/rd-vanilla/tr_surface.cpp#L1695) |
 
 ## Flags
 
@@ -87,14 +87,14 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 ## Evidence
 
-- registration: [codemp/rd-dedicated/tr_init.cpp:363](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/rd-dedicated/tr_init.cpp#L363) (Cvar_Get)
-- registration: [codemp/rd-rend2/tr_init.cpp:1612](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/rd-rend2/tr_init.cpp#L1612) (Cvar_Get)
-- registration: [codemp/rd-vanilla/tr_init.cpp:1672](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/rd-vanilla/tr_init.cpp#L1672) (Cvar_Get)
-- registration: [codemp/rd-vulkan/tr_init.cpp:825](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/rd-vulkan/tr_init.cpp#L825) (Cvar_Get)
-- behavior: [codemp/rd-vanilla/tr_surface.cpp:1695](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/rd-vanilla/tr_surface.cpp#L1695)
-- behavior: [codemp/rd-vanilla/tr_surface.cpp:1718](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/rd-vanilla/tr_surface.cpp#L1718)
-- behavior: [codemp/rd-vulkan/tr_surface.cpp:2168](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/rd-vulkan/tr_surface.cpp#L2168)
-- behavior: [codemp/rd-vulkan/tr_surface.cpp:2185](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/rd-vulkan/tr_surface.cpp#L2185)
-- behavior: [codemp/rd-vulkan/tr_surface.cpp:2201](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/rd-vulkan/tr_surface.cpp#L2201)
+- registration: [codemp/rd-dedicated/tr_init.cpp:363](https://github.com/taysta/TaystJK/blame/a15beafad337a07e6a965e5063053ed265a96fe2/codemp/rd-dedicated/tr_init.cpp#L363) (Cvar_Get)
+- registration: [codemp/rd-rend2/tr_init.cpp:1612](https://github.com/taysta/TaystJK/blame/a15beafad337a07e6a965e5063053ed265a96fe2/codemp/rd-rend2/tr_init.cpp#L1612) (Cvar_Get)
+- registration: [codemp/rd-vanilla/tr_init.cpp:1672](https://github.com/taysta/TaystJK/blame/a15beafad337a07e6a965e5063053ed265a96fe2/codemp/rd-vanilla/tr_init.cpp#L1672) (Cvar_Get)
+- registration: [codemp/rd-vulkan/tr_init.cpp:825](https://github.com/taysta/TaystJK/blame/a15beafad337a07e6a965e5063053ed265a96fe2/codemp/rd-vulkan/tr_init.cpp#L825) (Cvar_Get)
+- behavior: [codemp/rd-vanilla/tr_surface.cpp:1695](https://github.com/taysta/TaystJK/blame/a15beafad337a07e6a965e5063053ed265a96fe2/codemp/rd-vanilla/tr_surface.cpp#L1695)
+- behavior: [codemp/rd-vanilla/tr_surface.cpp:1718](https://github.com/taysta/TaystJK/blame/a15beafad337a07e6a965e5063053ed265a96fe2/codemp/rd-vanilla/tr_surface.cpp#L1718)
+- behavior: [codemp/rd-vulkan/tr_surface.cpp:2168](https://github.com/taysta/TaystJK/blame/a15beafad337a07e6a965e5063053ed265a96fe2/codemp/rd-vulkan/tr_surface.cpp#L2168)
+- behavior: [codemp/rd-vulkan/tr_surface.cpp:2185](https://github.com/taysta/TaystJK/blame/a15beafad337a07e6a965e5063053ed265a96fe2/codemp/rd-vulkan/tr_surface.cpp#L2185)
+- behavior: [codemp/rd-vulkan/tr_surface.cpp:2201](https://github.com/taysta/TaystJK/blame/a15beafad337a07e6a965e5063053ed265a96fe2/codemp/rd-vulkan/tr_surface.cpp#L2201)
 
-<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/f4643281440c626cb7e30444c8c392606167a7f8"><code>f4643281440c</code></a> on 2026-09-23. Anything merged after that is not reflected here.</p>
+<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/a15beafad337a07e6a965e5063053ed265a96fe2"><code>a15beafad337</code></a> on 2026-09-24. Anything merged after that is not reflected here.</p>

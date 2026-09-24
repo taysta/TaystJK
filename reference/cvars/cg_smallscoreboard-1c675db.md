@@ -25,8 +25,8 @@ Always use the small version of the scoreboard
 | Derivation | `documented` |
 | Confidence | `medium` |
 | Added | 2018-09-03 in [`bdcd618c6`](https://github.com/taysta/TaystJK/commit/bdcd618c67713b86946b720d791c382d3908d97c) <span class="status-chip">needs review</span> ([how to compare this against your build](/TaystJK/features/whats-new/#how-to-tell-what-your-build-has)) |
-| In-game xdocs | Yes: [codemp/ui/ui_xdocs.h:193](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/ui/ui_xdocs.h#L193) |
-| In-game menu | Yes: [ingame_setup.menu:4074](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/assets/japro/ui/jamp/ingame_setup.menu#L4074) |
+| In-game xdocs | Yes: [codemp/ui/ui_xdocs.h:193](https://github.com/taysta/TaystJK/blame/a15beafad337a07e6a965e5063053ed265a96fe2/codemp/ui/ui_xdocs.h#L193) |
+| In-game menu | Yes: [ingame_setup.menu:4074](https://github.com/taysta/TaystJK/blame/a15beafad337a07e6a965e5063053ed265a96fe2/assets/japro/ui/jamp/ingame_setup.menu#L4074) |
 | Default | `0` |
 | Value type | `bool` |
 | Restart | No latch flag is registered. |
@@ -37,8 +37,8 @@ Always use the small version of the scoreboard
 
 | Value | Meaning | Evidence |
 |:--|:--|:--|
-| `0` | Scoreboard scales depending on number of players (Base behavior) | [codemp/ui/ui_xdocs.h:193](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/ui/ui_xdocs.h#L193) |
-| `1` | Scoreboard is always small | [codemp/ui/ui_xdocs.h:194](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/ui/ui_xdocs.h#L194) |
+| `0` | Scoreboard scales depending on number of players (Base behavior) | [codemp/ui/ui_xdocs.h:193](https://github.com/taysta/TaystJK/blame/a15beafad337a07e6a965e5063053ed265a96fe2/codemp/ui/ui_xdocs.h#L193) |
+| `1` | Scoreboard is always small | [codemp/ui/ui_xdocs.h:194](https://github.com/taysta/TaystJK/blame/a15beafad337a07e6a965e5063053ed265a96fe2/codemp/ui/ui_xdocs.h#L194) |
 
 ## Flags
 
@@ -67,12 +67,12 @@ Authored dates come from the exact registration's first content commit, PR dates
 
 ## Evidence
 
-- registration: [codemp/cgame/cg_xcvar.h:68](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/cgame/cg_xcvar.h#L68) (XCVAR_DEF)
-- behavior: [codemp/cgame/cg_scoreboard.c:101](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/cgame/cg_scoreboard.c#L101)
-- behavior: [codemp/cgame/cg_scoreboard.c:536](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/cgame/cg_scoreboard.c#L536)
-- behavior: [codemp/cgame/cg_scoreboard.c:88](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/cgame/cg_scoreboard.c#L88)
-- behavior: [codemp/cgame/cg_scoreboard.c:89](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/cgame/cg_scoreboard.c#L89)
-- behavior: [codemp/cgame/cg_scoreboard.c:127](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/cgame/cg_scoreboard.c#L127)
-- documentation: [codemp/ui/ui_xdocs.h:193](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/ui/ui_xdocs.h#L193)
+- registration: [codemp/cgame/cg_xcvar.h:68](https://github.com/taysta/TaystJK/blame/a15beafad337a07e6a965e5063053ed265a96fe2/codemp/cgame/cg_xcvar.h#L68) (XCVAR_DEF)
+- behavior: [codemp/cgame/cg_scoreboard.c:101](https://github.com/taysta/TaystJK/blame/a15beafad337a07e6a965e5063053ed265a96fe2/codemp/cgame/cg_scoreboard.c#L101)
+- behavior: [codemp/cgame/cg_scoreboard.c:536](https://github.com/taysta/TaystJK/blame/a15beafad337a07e6a965e5063053ed265a96fe2/codemp/cgame/cg_scoreboard.c#L536)
+- behavior: [codemp/cgame/cg_scoreboard.c:88](https://github.com/taysta/TaystJK/blame/a15beafad337a07e6a965e5063053ed265a96fe2/codemp/cgame/cg_scoreboard.c#L88)
+- behavior: [codemp/cgame/cg_scoreboard.c:89](https://github.com/taysta/TaystJK/blame/a15beafad337a07e6a965e5063053ed265a96fe2/codemp/cgame/cg_scoreboard.c#L89)
+- behavior: [codemp/cgame/cg_scoreboard.c:127](https://github.com/taysta/TaystJK/blame/a15beafad337a07e6a965e5063053ed265a96fe2/codemp/cgame/cg_scoreboard.c#L127)
+- documentation: [codemp/ui/ui_xdocs.h:193](https://github.com/taysta/TaystJK/blame/a15beafad337a07e6a965e5063053ed265a96fe2/codemp/ui/ui_xdocs.h#L193)
 
-<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/f4643281440c626cb7e30444c8c392606167a7f8"><code>f4643281440c</code></a> on 2026-09-23. Anything merged after that is not reflected here.</p>
+<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/a15beafad337a07e6a965e5063053ed265a96fe2"><code>a15beafad337</code></a> on 2026-09-24. Anything merged after that is not reflected here.</p>

@@ -27,7 +27,7 @@ Is a server running?
 | Confidence | `high` |
 | Added | 2013-04-08 in [`14cea1563`](https://github.com/taysta/TaystJK/commit/14cea1563762076974bee277afadbd5bf234c494) ([how to compare this against your build](/TaystJK/features/whats-new/#how-to-tell-what-your-build-has)) |
 | In-game xdocs | No |
-| In-game menu | Yes: [ingame.menu:412](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/assets/japro/ui/jamp/ingame.menu#L412) |
+| In-game menu | Yes: [ingame.menu:412](https://github.com/taysta/TaystJK/blame/a15beafad337a07e6a965e5063053ed265a96fe2/assets/japro/ui/jamp/ingame.menu#L412) |
 | Default | `0` |
 | Value type | `bool` |
 | Restart | No latch flag is registered. |
@@ -38,8 +38,8 @@ Is a server running?
 
 | Value | Meaning | Evidence |
 |:--|:--|:--|
-| `0` | Disabled. | [codemp/client/cl_cgame.cpp:551](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/client/cl_cgame.cpp#L551) |
-| `1` | Enabled. | [codemp/client/cl_cgame.cpp:551](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/client/cl_cgame.cpp#L551) |
+| `0` | Disabled. | [codemp/client/cl_cgame.cpp:551](https://github.com/taysta/TaystJK/blame/a15beafad337a07e6a965e5063053ed265a96fe2/codemp/client/cl_cgame.cpp#L551) |
+| `1` | Enabled. | [codemp/client/cl_cgame.cpp:551](https://github.com/taysta/TaystJK/blame/a15beafad337a07e6a965e5063053ed265a96fe2/codemp/client/cl_cgame.cpp#L551) |
 
 ## Flags
 
@@ -98,12 +98,12 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 ## Evidence
 
-- registration: [codemp/cgame/cg_xcvar.h:387](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/cgame/cg_xcvar.h#L387) (XCVAR_DEF)
-- registration: [codemp/qcommon/common.cpp:1480](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/qcommon/common.cpp#L1480) (Cvar_Get)
-- behavior: [codemp/client/cl_cgame.cpp:551](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/client/cl_cgame.cpp#L551)
-- behavior: [codemp/client/cl_cgame.cpp:813](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/client/cl_cgame.cpp#L813)
-- behavior: [codemp/client/cl_cgame.cpp:963](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/client/cl_cgame.cpp#L963)
-- behavior: [codemp/client/cl_discordrpc.cpp:254](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/client/cl_discordrpc.cpp#L254)
-- behavior: [codemp/client/cl_discordrpc.cpp:482](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/client/cl_discordrpc.cpp#L482)
+- registration: [codemp/cgame/cg_xcvar.h:387](https://github.com/taysta/TaystJK/blame/a15beafad337a07e6a965e5063053ed265a96fe2/codemp/cgame/cg_xcvar.h#L387) (XCVAR_DEF)
+- registration: [codemp/qcommon/common.cpp:1480](https://github.com/taysta/TaystJK/blame/a15beafad337a07e6a965e5063053ed265a96fe2/codemp/qcommon/common.cpp#L1480) (Cvar_Get)
+- behavior: [codemp/client/cl_cgame.cpp:551](https://github.com/taysta/TaystJK/blame/a15beafad337a07e6a965e5063053ed265a96fe2/codemp/client/cl_cgame.cpp#L551)
+- behavior: [codemp/client/cl_cgame.cpp:814](https://github.com/taysta/TaystJK/blame/a15beafad337a07e6a965e5063053ed265a96fe2/codemp/client/cl_cgame.cpp#L814)
+- behavior: [codemp/client/cl_cgame.cpp:964](https://github.com/taysta/TaystJK/blame/a15beafad337a07e6a965e5063053ed265a96fe2/codemp/client/cl_cgame.cpp#L964)
+- behavior: [codemp/client/cl_discordrpc.cpp:254](https://github.com/taysta/TaystJK/blame/a15beafad337a07e6a965e5063053ed265a96fe2/codemp/client/cl_discordrpc.cpp#L254)
+- behavior: [codemp/client/cl_discordrpc.cpp:482](https://github.com/taysta/TaystJK/blame/a15beafad337a07e6a965e5063053ed265a96fe2/codemp/client/cl_discordrpc.cpp#L482)
 
-<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/f4643281440c626cb7e30444c8c392606167a7f8"><code>f4643281440c</code></a> on 2026-09-23. Anything merged after that is not reflected here.</p>
+<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/a15beafad337a07e6a965e5063053ed265a96fe2"><code>a15beafad337</code></a> on 2026-09-24. Anything merged after that is not reflected here.</p>

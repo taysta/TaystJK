@@ -28,13 +28,13 @@ Controls `ui_char_color_green` in the ui module. Consult the cited behavior read
 | Confidence | `high` |
 | Added | 2013-04-08 in [`14cea1563`](https://github.com/taysta/TaystJK/commit/14cea1563762076974bee277afadbd5bf234c494) ([how to compare this against your build](/TaystJK/features/whats-new/#how-to-tell-what-your-build-has)) |
 | In-game xdocs | No |
-| In-game menu | Yes: [ingame_player.menu:664](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/assets/japro/ui/jamp/ingame_player.menu#L664), [ingame_player.menu:744](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/assets/japro/ui/jamp/ingame_player.menu#L744), [ingame_player2.menu:299](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/assets/japro/ui/jamp/ingame_player2.menu#L299) |
+| In-game menu | Yes: [ingame_player.menu:664](https://github.com/taysta/TaystJK/blame/a15beafad337a07e6a965e5063053ed265a96fe2/assets/japro/ui/jamp/ingame_player.menu#L664), [ingame_player.menu:744](https://github.com/taysta/TaystJK/blame/a15beafad337a07e6a965e5063053ed265a96fe2/assets/japro/ui/jamp/ingame_player.menu#L744), [ingame_player2.menu:299](https://github.com/taysta/TaystJK/blame/a15beafad337a07e6a965e5063053ed265a96fe2/assets/japro/ui/jamp/ingame_player2.menu#L299) |
 | Default | `255` |
 | Value type | `int` |
 | Restart | No latch flag is registered. |
 | Cheat protected | No |
 | Player-settable | No; the game writes this value. |
-| Staging copy of | [`char_color_green`](/TaystJK/reference/cvars/char_color_green-bfa51ee/); [written through](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/ui/ui_main.c#L7759), [read back](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/ui/ui_main.c#L6510) |
+| Staging copy of | [`char_color_green`](/TaystJK/reference/cvars/char_color_green-bfa51ee/); [written through](https://github.com/taysta/TaystJK/blame/a15beafad337a07e6a965e5063053ed265a96fe2/codemp/ui/ui_main.c#L7759), [read back](https://github.com/taysta/TaystJK/blame/a15beafad337a07e6a965e5063053ed265a96fe2/codemp/ui/ui_main.c#L6510) |
 
 ## Values
 
@@ -73,11 +73,11 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 ## Evidence
 
-- registration: [codemp/ui/ui_xcvar.h:70](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/ui/ui_xcvar.h#L70) (XCVAR_DEF)
-- behavior: [codemp/ui/ui_shared.c:747](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/ui/ui_shared.c#L747)
-- behavior: [codemp/ui/ui_shared.c:5584](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/ui/ui_shared.c#L5584)
-- behavior: [codemp/ui/ui_shared.c:5774](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/ui/ui_shared.c#L5774)
-- behavior: [codemp/ui/ui_shared.c:5888](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/ui/ui_shared.c#L5888)
-- behavior: [codemp/ui/ui_main.c:6493](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/ui/ui_main.c#L6493)
+- registration: [codemp/ui/ui_xcvar.h:70](https://github.com/taysta/TaystJK/blame/a15beafad337a07e6a965e5063053ed265a96fe2/codemp/ui/ui_xcvar.h#L70) (XCVAR_DEF)
+- behavior: [codemp/ui/ui_shared.c:747](https://github.com/taysta/TaystJK/blame/a15beafad337a07e6a965e5063053ed265a96fe2/codemp/ui/ui_shared.c#L747)
+- behavior: [codemp/ui/ui_shared.c:5584](https://github.com/taysta/TaystJK/blame/a15beafad337a07e6a965e5063053ed265a96fe2/codemp/ui/ui_shared.c#L5584)
+- behavior: [codemp/ui/ui_shared.c:5774](https://github.com/taysta/TaystJK/blame/a15beafad337a07e6a965e5063053ed265a96fe2/codemp/ui/ui_shared.c#L5774)
+- behavior: [codemp/ui/ui_shared.c:5888](https://github.com/taysta/TaystJK/blame/a15beafad337a07e6a965e5063053ed265a96fe2/codemp/ui/ui_shared.c#L5888)
+- behavior: [codemp/ui/ui_main.c:6493](https://github.com/taysta/TaystJK/blame/a15beafad337a07e6a965e5063053ed265a96fe2/codemp/ui/ui_main.c#L6493)
 
-<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/f4643281440c626cb7e30444c8c392606167a7f8"><code>f4643281440c</code></a> on 2026-09-23. Anything merged after that is not reflected here.</p>
+<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/a15beafad337a07e6a965e5063053ed265a96fe2"><code>a15beafad337</code></a> on 2026-09-24. Anything merged after that is not reflected here.</p>

@@ -29,7 +29,7 @@ Configure with the /strafehelper command
 | Derivation | `documented` |
 | Confidence | `medium` |
 | Added | 2018-04-19 in [`1d5acfc05`](https://github.com/taysta/TaystJK/commit/1d5acfc05276cbb6032b5fd9ccd01a8d41233763) <span class="status-chip">needs review</span> ([how to compare this against your build](/TaystJK/features/whats-new/#how-to-tell-what-your-build-has)) |
-| In-game xdocs | Yes: [codemp/ui/ui_xdocs.h:323](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/ui/ui_xdocs.h#L323) |
+| In-game xdocs | Yes: [codemp/ui/ui_xdocs.h:323](https://github.com/taysta/TaystJK/blame/a15beafad337a07e6a965e5063053ed265a96fe2/codemp/ui/ui_xdocs.h#L323) |
 | In-game menu | No |
 | Default | `3008` |
 | Value type | `bitmask` |
@@ -40,12 +40,12 @@ Configure with the /strafehelper command
 
 ## Bits
 
-Use [`strafeHelper`](/TaystJK/reference/commands/strafehelper-bdb34b4/) to toggle one option at a time; see the command page for syntax. The value column is that bit on its own. [The labels come from the source table](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/cgame/cg_consolecmds.c#L1108).
+Use [`strafeHelper`](/TaystJK/reference/commands/strafehelper-bdb34b4/) to toggle one option at a time; see the command page for syntax. The value column is that bit on its own. [The labels come from the source table](https://github.com/taysta/TaystJK/blame/a15beafad337a07e6a965e5063053ed265a96fe2/codemp/cgame/cg_consolecmds.c#L1108).
 
 | Bit | Value | Meaning | Read by |
 |:--|:--|:--|:--|
 | 0 | `1` | Original style | — |
-| 1 | `2` | Updated style | [codemp/cgame/hud_strafehelper.h:63](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/cgame/hud_strafehelper.h#L63) |
+| 1 | `2` | Updated style | [codemp/cgame/hud_strafehelper.h:63](https://github.com/taysta/TaystJK/blame/a15beafad337a07e6a965e5063053ed265a96fe2/codemp/cgame/hud_strafehelper.h#L63) |
 | 2 | `4` | Cgaz style | — |
 | 3 | `8` | Warsow style | — |
 | 4 | `16` | Sound | — |
@@ -58,7 +58,7 @@ Use [`strafeHelper`](/TaystJK/reference/commands/strafehelper-bdb34b4/) to toggl
 | 11 | `2048` | Center | — |
 | 12 | `4096` | Accel bar | — |
 | 13 | `8192` | Weze style | — |
-| 14 | `16384` | Line Crosshair | [codemp/cgame/hud_strafehelper.h:76](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/cgame/hud_strafehelper.h#L76) |
+| 14 | `16384` | Line Crosshair | [codemp/cgame/hud_strafehelper.h:76](https://github.com/taysta/TaystJK/blame/a15beafad337a07e6a965e5063053ed265a96fe2/codemp/cgame/hud_strafehelper.h#L76) |
 | 15 | `32768` | S | — |
 | 16 | `65536` | SA | — |
 | 17 | `131072` | SD | — |
@@ -129,13 +129,13 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 ## Evidence
 
-- registration: [codemp/cgame/cg_xcvar.h:109](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/cgame/cg_xcvar.h#L109) (XCVAR_DEF)
-- registration: [codemp/ui/ui_xcvar.h:162](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/ui/ui_xcvar.h#L162) (XCVAR_DEF)
-- behavior: [codemp/cgame/cg_draw.c:1962](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/cgame/cg_draw.c#L1962)
-- behavior: [codemp/cgame/cg_draw.c:7872](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/cgame/cg_draw.c#L7872)
-- behavior: [codemp/cgame/cg_draw.c:9197](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/cgame/cg_draw.c#L9197)
-- behavior: [codemp/cgame/cg_view.c:567](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/cgame/cg_view.c#L567)
-- behavior: [codemp/cgame/cg_view.c:621](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/cgame/cg_view.c#L621)
-- documentation: [codemp/ui/ui_xdocs.h:323](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/ui/ui_xdocs.h#L323)
+- registration: [codemp/cgame/cg_xcvar.h:109](https://github.com/taysta/TaystJK/blame/a15beafad337a07e6a965e5063053ed265a96fe2/codemp/cgame/cg_xcvar.h#L109) (XCVAR_DEF)
+- registration: [codemp/ui/ui_xcvar.h:162](https://github.com/taysta/TaystJK/blame/a15beafad337a07e6a965e5063053ed265a96fe2/codemp/ui/ui_xcvar.h#L162) (XCVAR_DEF)
+- behavior: [codemp/cgame/cg_draw.c:1962](https://github.com/taysta/TaystJK/blame/a15beafad337a07e6a965e5063053ed265a96fe2/codemp/cgame/cg_draw.c#L1962)
+- behavior: [codemp/cgame/cg_draw.c:7872](https://github.com/taysta/TaystJK/blame/a15beafad337a07e6a965e5063053ed265a96fe2/codemp/cgame/cg_draw.c#L7872)
+- behavior: [codemp/cgame/cg_draw.c:9197](https://github.com/taysta/TaystJK/blame/a15beafad337a07e6a965e5063053ed265a96fe2/codemp/cgame/cg_draw.c#L9197)
+- behavior: [codemp/cgame/cg_view.c:567](https://github.com/taysta/TaystJK/blame/a15beafad337a07e6a965e5063053ed265a96fe2/codemp/cgame/cg_view.c#L567)
+- behavior: [codemp/cgame/cg_view.c:621](https://github.com/taysta/TaystJK/blame/a15beafad337a07e6a965e5063053ed265a96fe2/codemp/cgame/cg_view.c#L621)
+- documentation: [codemp/ui/ui_xdocs.h:323](https://github.com/taysta/TaystJK/blame/a15beafad337a07e6a965e5063053ed265a96fe2/codemp/ui/ui_xdocs.h#L323)
 
-<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/f4643281440c626cb7e30444c8c392606167a7f8"><code>f4643281440c</code></a> on 2026-09-23. Anything merged after that is not reflected here.</p>
+<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/a15beafad337a07e6a965e5063053ed265a96fe2"><code>a15beafad337</code></a> on 2026-09-24. Anything merged after that is not reflected here.</p>

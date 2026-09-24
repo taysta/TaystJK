@@ -28,8 +28,8 @@ Configure with the /stylePlayer command
 | Derivation | `documented` |
 | Confidence | `medium` |
 | Added | 2018-04-19 in [`1d5acfc05`](https://github.com/taysta/TaystJK/commit/1d5acfc05276cbb6032b5fd9ccd01a8d41233763) <span class="status-chip">needs review</span> ([how to compare this against your build](/TaystJK/features/whats-new/#how-to-tell-what-your-build-has)) |
-| In-game xdocs | Yes: [codemp/ui/ui_xdocs.h:464](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/ui/ui_xdocs.h#L464) |
-| In-game menu | Yes: [ingame_setup.menu:3060](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/assets/japro/ui/jamp/ingame_setup.menu#L3060), [ingame_setup.menu:3082](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/assets/japro/ui/jamp/ingame_setup.menu#L3082), [ingame_setup.menu:3208](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/assets/japro/ui/jamp/ingame_setup.menu#L3208) |
+| In-game xdocs | Yes: [codemp/ui/ui_xdocs.h:464](https://github.com/taysta/TaystJK/blame/a15beafad337a07e6a965e5063053ed265a96fe2/codemp/ui/ui_xdocs.h#L464) |
+| In-game menu | Yes: [ingame_setup.menu:3060](https://github.com/taysta/TaystJK/blame/a15beafad337a07e6a965e5063053ed265a96fe2/assets/japro/ui/jamp/ingame_setup.menu#L3060), [ingame_setup.menu:3082](https://github.com/taysta/TaystJK/blame/a15beafad337a07e6a965e5063053ed265a96fe2/assets/japro/ui/jamp/ingame_setup.menu#L3082), [ingame_setup.menu:3208](https://github.com/taysta/TaystJK/blame/a15beafad337a07e6a965e5063053ed265a96fe2/assets/japro/ui/jamp/ingame_setup.menu#L3208) |
 | Default | `0` |
 | Value type | `bitmask` |
 | Restart | No latch flag is registered. |
@@ -39,13 +39,13 @@ Configure with the /stylePlayer command
 
 ## Bits
 
-Use [`stylePlayer`](/TaystJK/reference/commands/styleplayer-33ef966/) to toggle one option at a time; see the command page for syntax. The value column is that bit on its own. [The labels come from the source table](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/cgame/cg_consolecmds.c#L1408).
+Use [`stylePlayer`](/TaystJK/reference/commands/styleplayer-33ef966/) to toggle one option at a time; see the command page for syntax. The value column is that bit on its own. [The labels come from the source table](https://github.com/taysta/TaystJK/blame/a15beafad337a07e6a965e5063053ed265a96fe2/codemp/cgame/cg_consolecmds.c#L1408).
 
 | Bit | Value | Meaning | Read by |
 |:--|:--|:--|:--|
 | 0 | `1` | Fullbright skins | — |
 | 1 | `2` | Private duel shell | — |
-| 2 | `4` | Hide duelers in FFA | [codemp/cgame/cg_local.h:133](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/cgame/cg_local.h#L133) |
+| 2 | `4` | Hide duelers in FFA | [codemp/cgame/cg_local.h:133](https://github.com/taysta/TaystJK/blame/a15beafad337a07e6a965e5063053ed265a96fe2/codemp/cgame/cg_local.h#L133) |
 | 3 | `8` | Hide racers in FFA | — |
 | 4 | `16` | Hide non-racers in race mode | — |
 | 5 | `32` | Hide racers in race mode | — |
@@ -53,8 +53,8 @@ Use [`stylePlayer`](/TaystJK/reference/commands/styleplayer-33ef966/) to toggle 
 | 7 | `128` | Disable non-racer VFX in race mode | — |
 | 8 | `256` | VFX duelers 1 | — |
 | 9 | `512` | VFX am alt dim 1 | — |
-| 10 | `1024` | Hide non duelers | [codemp/cgame/cg_local.h:141](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/cgame/cg_local.h#L141) |
-| 11 | `2048` | Hide ysal shell | [codemp/cgame/cg_local.h:142](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/cgame/cg_local.h#L142) |
+| 10 | `1024` | Hide non duelers | [codemp/cgame/cg_local.h:141](https://github.com/taysta/TaystJK/blame/a15beafad337a07e6a965e5063053ed265a96fe2/codemp/cgame/cg_local.h#L141) |
+| 11 | `2048` | Hide ysal shell | [codemp/cgame/cg_local.h:142](https://github.com/taysta/TaystJK/blame/a15beafad337a07e6a965e5063053ed265a96fe2/codemp/cgame/cg_local.h#L142) |
 | 12 | `4096` | LOD player model | — |
 | 13 | `8192` | Fade corpses immediately | — |
 | 14 | `16384` | Disable corpse fading SFX | — |
@@ -140,13 +140,13 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 ## Evidence
 
-- registration: [codemp/cgame/cg_xcvar.h:136](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/cgame/cg_xcvar.h#L136) (XCVAR_DEF)
-- registration: [codemp/ui/ui_xcvar.h:163](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/ui/ui_xcvar.h#L163) (XCVAR_DEF)
-- behavior: [codemp/cgame/cg_draw.c:9564](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/cgame/cg_draw.c#L9564)
-- behavior: [codemp/cgame/cg_draw.c:9572](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/cgame/cg_draw.c#L9572)
-- behavior: [codemp/cgame/cg_draw.c:11399](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/cgame/cg_draw.c#L11399)
-- behavior: [codemp/cgame/cg_draw.c:11433](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/cgame/cg_draw.c#L11433)
-- behavior: [codemp/cgame/cg_ents.c:930](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/cgame/cg_ents.c#L930)
-- documentation: [codemp/ui/ui_xdocs.h:464](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/ui/ui_xdocs.h#L464)
+- registration: [codemp/cgame/cg_xcvar.h:136](https://github.com/taysta/TaystJK/blame/a15beafad337a07e6a965e5063053ed265a96fe2/codemp/cgame/cg_xcvar.h#L136) (XCVAR_DEF)
+- registration: [codemp/ui/ui_xcvar.h:163](https://github.com/taysta/TaystJK/blame/a15beafad337a07e6a965e5063053ed265a96fe2/codemp/ui/ui_xcvar.h#L163) (XCVAR_DEF)
+- behavior: [codemp/cgame/cg_draw.c:9564](https://github.com/taysta/TaystJK/blame/a15beafad337a07e6a965e5063053ed265a96fe2/codemp/cgame/cg_draw.c#L9564)
+- behavior: [codemp/cgame/cg_draw.c:9572](https://github.com/taysta/TaystJK/blame/a15beafad337a07e6a965e5063053ed265a96fe2/codemp/cgame/cg_draw.c#L9572)
+- behavior: [codemp/cgame/cg_draw.c:11399](https://github.com/taysta/TaystJK/blame/a15beafad337a07e6a965e5063053ed265a96fe2/codemp/cgame/cg_draw.c#L11399)
+- behavior: [codemp/cgame/cg_draw.c:11433](https://github.com/taysta/TaystJK/blame/a15beafad337a07e6a965e5063053ed265a96fe2/codemp/cgame/cg_draw.c#L11433)
+- behavior: [codemp/cgame/cg_ents.c:930](https://github.com/taysta/TaystJK/blame/a15beafad337a07e6a965e5063053ed265a96fe2/codemp/cgame/cg_ents.c#L930)
+- documentation: [codemp/ui/ui_xdocs.h:464](https://github.com/taysta/TaystJK/blame/a15beafad337a07e6a965e5063053ed265a96fe2/codemp/ui/ui_xdocs.h#L464)
 
-<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/f4643281440c626cb7e30444c8c392606167a7f8"><code>f4643281440c</code></a> on 2026-09-23. Anything merged after that is not reflected here.</p>
+<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/a15beafad337a07e6a965e5063053ed265a96fe2"><code>a15beafad337</code></a> on 2026-09-24. Anything merged after that is not reflected here.</p>

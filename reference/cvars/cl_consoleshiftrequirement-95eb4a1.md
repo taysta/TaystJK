@@ -35,8 +35,8 @@ Require shift key to be pressed for native console key detection
 
 | Value | Meaning | Evidence |
 |:--|:--|:--|
-| `0` | Disabled. | [shared/sdl/sdl_input.cpp:269](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/shared/sdl/sdl_input.cpp#L269) |
-| `1` | Enabled. | [shared/sdl/sdl_input.cpp:269](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/shared/sdl/sdl_input.cpp#L269) |
+| `0` | Disabled. | [shared/sdl/sdl_input.cpp:269](https://github.com/taysta/TaystJK/blame/a15beafad337a07e6a965e5063053ed265a96fe2/shared/sdl/sdl_input.cpp#L269) |
+| `1` | Enabled. | [shared/sdl/sdl_input.cpp:269](https://github.com/taysta/TaystJK/blame/a15beafad337a07e6a965e5063053ed265a96fe2/shared/sdl/sdl_input.cpp#L269) |
 
 ## Flags
 
@@ -66,7 +66,7 @@ Authored dates come from the exact registration's first content commit, PR dates
 
 ## Evidence
 
-- registration: [codemp/client/cl_main.cpp:3406](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/client/cl_main.cpp#L3406) (Cvar_Get)
-- behavior: [shared/sdl/sdl_input.cpp:269](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/shared/sdl/sdl_input.cpp#L269)
+- registration: [codemp/client/cl_main.cpp:3406](https://github.com/taysta/TaystJK/blame/a15beafad337a07e6a965e5063053ed265a96fe2/codemp/client/cl_main.cpp#L3406) (Cvar_Get)
+- behavior: [shared/sdl/sdl_input.cpp:269](https://github.com/taysta/TaystJK/blame/a15beafad337a07e6a965e5063053ed265a96fe2/shared/sdl/sdl_input.cpp#L269)
 
-<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/f4643281440c626cb7e30444c8c392606167a7f8"><code>f4643281440c</code></a> on 2026-09-23. Anything merged after that is not reflected here.</p>
+<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/a15beafad337a07e6a965e5063053ed265a96fe2"><code>a15beafad337</code></a> on 2026-09-24. Anything merged after that is not reflected here.</p>

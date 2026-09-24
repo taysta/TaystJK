@@ -28,7 +28,7 @@ Menu-only state the UI keeps while reading server info. `UI_UpdateCurrentServerI
 | Confidence | `medium` |
 | Added | 2018-09-10 in [`dbfd735d1`](https://github.com/taysta/TaystJK/commit/dbfd735d1da2aa590f5aa453a330e6ab1ed94cdd) <span class="status-chip">needs review</span> ([how to compare this against your build](/TaystJK/features/whats-new/#how-to-tell-what-your-build-has)) |
 | In-game xdocs | No |
-| In-game menu | Yes: [ingame.menu:151](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/assets/japro/ui/jamp/ingame.menu#L151), [ingame.menu:184](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/assets/japro/ui/jamp/ingame.menu#L184), [ingame.menu:805](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/assets/japro/ui/jamp/ingame.menu#L805) |
+| In-game menu | Yes: [ingame.menu:151](https://github.com/taysta/TaystJK/blame/a15beafad337a07e6a965e5063053ed265a96fe2/assets/japro/ui/jamp/ingame.menu#L151), [ingame.menu:184](https://github.com/taysta/TaystJK/blame/a15beafad337a07e6a965e5063053ed265a96fe2/assets/japro/ui/jamp/ingame.menu#L184), [ingame.menu:805](https://github.com/taysta/TaystJK/blame/a15beafad337a07e6a965e5063053ed265a96fe2/assets/japro/ui/jamp/ingame.menu#L805) |
 | Default | `0` |
 | Value type | `bool` |
 | Restart | No latch flag is registered. |
@@ -39,8 +39,8 @@ Menu-only state the UI keeps while reading server info. `UI_UpdateCurrentServerI
 
 | Value | Meaning | Evidence |
 |:--|:--|:--|
-| `0` | The server does not advertise race mode, or its info has not been read yet. | [codemp/ui/ui_main.c:629](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/ui/ui_main.c#L629) |
-| `1` | The connected jaPRO server advertises race mode. | [codemp/ui/ui_main.c:656](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/ui/ui_main.c#L656) |
+| `0` | The server does not advertise race mode, or its info has not been read yet. | [codemp/ui/ui_main.c:629](https://github.com/taysta/TaystJK/blame/a15beafad337a07e6a965e5063053ed265a96fe2/codemp/ui/ui_main.c#L629) |
+| `1` | The connected jaPRO server advertises race mode. | [codemp/ui/ui_main.c:656](https://github.com/taysta/TaystJK/blame/a15beafad337a07e6a965e5063053ed265a96fe2/codemp/ui/ui_main.c#L656) |
 
 ## Flags
 
@@ -76,7 +76,7 @@ Authored dates come from the exact registration's first content commit, PR dates
 
 ## Evidence
 
-- registration: [codemp/ui/ui_main.c:629](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/ui/ui_main.c#L629) (implicit Cvar_Set)
-- registration: [codemp/ui/ui_main.c:656](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/ui/ui_main.c#L656) (implicit Cvar_Set)
+- registration: [codemp/ui/ui_main.c:629](https://github.com/taysta/TaystJK/blame/a15beafad337a07e6a965e5063053ed265a96fe2/codemp/ui/ui_main.c#L629) (implicit Cvar_Set)
+- registration: [codemp/ui/ui_main.c:656](https://github.com/taysta/TaystJK/blame/a15beafad337a07e6a965e5063053ed265a96fe2/codemp/ui/ui_main.c#L656) (implicit Cvar_Set)
 
-<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/f4643281440c626cb7e30444c8c392606167a7f8"><code>f4643281440c</code></a> on 2026-09-23. Anything merged after that is not reflected here.</p>
+<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/a15beafad337a07e6a965e5063053ed265a96fe2"><code>a15beafad337</code></a> on 2026-09-24. Anything merged after that is not reflected here.</p>

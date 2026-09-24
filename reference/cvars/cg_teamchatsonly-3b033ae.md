@@ -23,8 +23,8 @@ Hide non-team chat messages
 | Derivation | `documented` |
 | Confidence | `high` |
 | Added | 2013-04-08 in [`14cea1563`](https://github.com/taysta/TaystJK/commit/14cea1563762076974bee277afadbd5bf234c494) ([how to compare this against your build](/TaystJK/features/whats-new/#how-to-tell-what-your-build-has)) |
-| In-game xdocs | Yes: [codemp/ui/ui_xdocs.h:222](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/ui/ui_xdocs.h#L222) |
-| In-game menu | Yes: [setup.menu:2736](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/assets/japro/ui/jamp/setup.menu#L2736) |
+| In-game xdocs | Yes: [codemp/ui/ui_xdocs.h:222](https://github.com/taysta/TaystJK/blame/a15beafad337a07e6a965e5063053ed265a96fe2/codemp/ui/ui_xdocs.h#L222) |
+| In-game menu | Yes: [setup.menu:2736](https://github.com/taysta/TaystJK/blame/a15beafad337a07e6a965e5063053ed265a96fe2/assets/japro/ui/jamp/setup.menu#L2736) |
 | Default | `0` |
 | Value type | `enum` |
 | Restart | No latch flag is registered. |
@@ -35,9 +35,9 @@ Hide non-team chat messages
 
 | Value | Meaning | Evidence |
 |:--|:--|:--|
-| `0` | Show all chat | [codemp/ui/ui_xdocs.h:223](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/ui/ui_xdocs.h#L223) |
-| `1` | Hide global chat from all players | [codemp/ui/ui_xdocs.h:223](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/ui/ui_xdocs.h#L223) |
-| `2` | Hide global chat from spectators while you are in-game (requires compatible server mod) | [codemp/ui/ui_xdocs.h:225](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/ui/ui_xdocs.h#L225) |
+| `0` | Show all chat | [codemp/ui/ui_xdocs.h:223](https://github.com/taysta/TaystJK/blame/a15beafad337a07e6a965e5063053ed265a96fe2/codemp/ui/ui_xdocs.h#L223) |
+| `1` | Hide global chat from all players | [codemp/ui/ui_xdocs.h:223](https://github.com/taysta/TaystJK/blame/a15beafad337a07e6a965e5063053ed265a96fe2/codemp/ui/ui_xdocs.h#L223) |
+| `2` | Hide global chat from spectators while you are in-game (requires compatible server mod) | [codemp/ui/ui_xdocs.h:225](https://github.com/taysta/TaystJK/blame/a15beafad337a07e6a965e5063053ed265a96fe2/codemp/ui/ui_xdocs.h#L225) |
 
 ## Flags
 
@@ -65,10 +65,10 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 ## Evidence
 
-- registration: [codemp/cgame/cg_xcvar.h:355](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/cgame/cg_xcvar.h#L355) (XCVAR_DEF)
-- behavior: [codemp/cgame/cg_servercmds.c:1691](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/cgame/cg_servercmds.c#L1691)
-- behavior: [codemp/cgame/cg_servercmds.c:1763](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/cgame/cg_servercmds.c#L1763)
-- behavior: [codemp/ui/ui_xdocs.h:222](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/ui/ui_xdocs.h#L222)
-- documentation: [codemp/ui/ui_xdocs.h:222](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/ui/ui_xdocs.h#L222)
+- registration: [codemp/cgame/cg_xcvar.h:355](https://github.com/taysta/TaystJK/blame/a15beafad337a07e6a965e5063053ed265a96fe2/codemp/cgame/cg_xcvar.h#L355) (XCVAR_DEF)
+- behavior: [codemp/cgame/cg_servercmds.c:1691](https://github.com/taysta/TaystJK/blame/a15beafad337a07e6a965e5063053ed265a96fe2/codemp/cgame/cg_servercmds.c#L1691)
+- behavior: [codemp/cgame/cg_servercmds.c:1763](https://github.com/taysta/TaystJK/blame/a15beafad337a07e6a965e5063053ed265a96fe2/codemp/cgame/cg_servercmds.c#L1763)
+- behavior: [codemp/ui/ui_xdocs.h:222](https://github.com/taysta/TaystJK/blame/a15beafad337a07e6a965e5063053ed265a96fe2/codemp/ui/ui_xdocs.h#L222)
+- documentation: [codemp/ui/ui_xdocs.h:222](https://github.com/taysta/TaystJK/blame/a15beafad337a07e6a965e5063053ed265a96fe2/codemp/ui/ui_xdocs.h#L222)
 
-<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/f4643281440c626cb7e30444c8c392606167a7f8"><code>f4643281440c</code></a> on 2026-09-23. Anything merged after that is not reflected here.</p>
+<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/a15beafad337a07e6a965e5063053ed265a96fe2"><code>a15beafad337</code></a> on 2026-09-24. Anything merged after that is not reflected here.</p>

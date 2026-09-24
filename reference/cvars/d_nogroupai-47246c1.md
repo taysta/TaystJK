@@ -37,8 +37,8 @@ Controls `d_noGroupAI` in the game module. Consult the cited behavior reads befo
 
 | Value | Meaning | Evidence |
 |:--|:--|:--|
-| `0` | Disabled. | [codemp/game/NPC_AI_Utils.c:441](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/game/NPC_AI_Utils.c#L441) |
-| `1` | Enabled. | [codemp/game/NPC_AI_Utils.c:441](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/game/NPC_AI_Utils.c#L441) |
+| `0` | Disabled. | [codemp/game/NPC_AI_Utils.c:441](https://github.com/taysta/TaystJK/blame/a15beafad337a07e6a965e5063053ed265a96fe2/codemp/game/NPC_AI_Utils.c#L441) |
+| `1` | Enabled. | [codemp/game/NPC_AI_Utils.c:441](https://github.com/taysta/TaystJK/blame/a15beafad337a07e6a965e5063053ed265a96fe2/codemp/game/NPC_AI_Utils.c#L441) |
 
 ## Flags
 
@@ -65,8 +65,8 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 ## Evidence
 
-- registration: [codemp/game/g_xcvar.h:42](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/game/g_xcvar.h#L42) (XCVAR_DEF)
-- behavior: [codemp/game/NPC_AI_Utils.c:441](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/game/NPC_AI_Utils.c#L441)
-- behavior: [codemp/game/NPC_AI_Utils.c:955](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/game/NPC_AI_Utils.c#L955)
+- registration: [codemp/game/g_xcvar.h:42](https://github.com/taysta/TaystJK/blame/a15beafad337a07e6a965e5063053ed265a96fe2/codemp/game/g_xcvar.h#L42) (XCVAR_DEF)
+- behavior: [codemp/game/NPC_AI_Utils.c:441](https://github.com/taysta/TaystJK/blame/a15beafad337a07e6a965e5063053ed265a96fe2/codemp/game/NPC_AI_Utils.c#L441)
+- behavior: [codemp/game/NPC_AI_Utils.c:955](https://github.com/taysta/TaystJK/blame/a15beafad337a07e6a965e5063053ed265a96fe2/codemp/game/NPC_AI_Utils.c#L955)
 
-<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/f4643281440c626cb7e30444c8c392606167a7f8"><code>f4643281440c</code></a> on 2026-09-23. Anything merged after that is not reflected here.</p>
+<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/a15beafad337a07e6a965e5063053ed265a96fe2"><code>a15beafad337</code></a> on 2026-09-24. Anything merged after that is not reflected here.</p>

@@ -37,8 +37,8 @@ Controls `showEvents` in the game module. Consult the cited behavior reads befor
 
 | Value | Meaning | Evidence |
 |:--|:--|:--|
-| `0` | Disabled. | [codemp/game/bg_misc.c:2782](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/game/bg_misc.c#L2782) |
-| `1` | Enabled. | [codemp/game/bg_misc.c:2782](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/game/bg_misc.c#L2782) |
+| `0` | Disabled. | [codemp/game/bg_misc.c:2782](https://github.com/taysta/TaystJK/blame/a15beafad337a07e6a965e5063053ed265a96fe2/codemp/game/bg_misc.c#L2782) |
+| `1` | Enabled. | [codemp/game/bg_misc.c:2782](https://github.com/taysta/TaystJK/blame/a15beafad337a07e6a965e5063053ed265a96fe2/codemp/game/bg_misc.c#L2782) |
 
 ## Flags
 
@@ -65,7 +65,7 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 ## Evidence
 
-- registration: [codemp/game/bg_misc.c:2778](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/game/bg_misc.c#L2778) (Cvar_Register); condition `defined(_DEBUG)`
-- behavior: [codemp/game/bg_misc.c:2782](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/game/bg_misc.c#L2782)
+- registration: [codemp/game/bg_misc.c:2778](https://github.com/taysta/TaystJK/blame/a15beafad337a07e6a965e5063053ed265a96fe2/codemp/game/bg_misc.c#L2778) (Cvar_Register); condition `defined(_DEBUG)`
+- behavior: [codemp/game/bg_misc.c:2782](https://github.com/taysta/TaystJK/blame/a15beafad337a07e6a965e5063053ed265a96fe2/codemp/game/bg_misc.c#L2782)
 
-<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/f4643281440c626cb7e30444c8c392606167a7f8"><code>f4643281440c</code></a> on 2026-09-23. Anything merged after that is not reflected here.</p>
+<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/a15beafad337a07e6a965e5063053ed265a96fe2"><code>a15beafad337</code></a> on 2026-09-24. Anything merged after that is not reflected here.</p>

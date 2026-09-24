@@ -27,8 +27,8 @@ Configure with the /speedometer command
 | Derivation | `documented` |
 | Confidence | `high` |
 | Added | 2018-11-04 in [`ead7c2c37`](https://github.com/taysta/TaystJK/commit/ead7c2c37109a313e0f3994b832e627636e0fa06) ([how to compare this against your build](/TaystJK/features/whats-new/#how-to-tell-what-your-build-has)) |
-| In-game xdocs | Yes: [codemp/ui/ui_xdocs.h:107](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/ui/ui_xdocs.h#L107) |
-| In-game menu | Yes: [ingame_setup.menu:3998](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/assets/japro/ui/jamp/ingame_setup.menu#L3998) |
+| In-game xdocs | Yes: [codemp/ui/ui_xdocs.h:107](https://github.com/taysta/TaystJK/blame/a15beafad337a07e6a965e5063053ed265a96fe2/codemp/ui/ui_xdocs.h#L107) |
+| In-game menu | Yes: [ingame_setup.menu:3998](https://github.com/taysta/TaystJK/blame/a15beafad337a07e6a965e5063053ed265a96fe2/assets/japro/ui/jamp/ingame_setup.menu#L3998) |
 | Default | `0` |
 | Value type | `bitmask` |
 | Restart | No latch flag is registered. |
@@ -38,17 +38,17 @@ Configure with the /speedometer command
 
 ## Bits
 
-Use [`speedometer`](/TaystJK/reference/commands/speedometer-b0e26e4/) to toggle one option at a time; see the command page for syntax. The value column is that bit on its own. [The labels come from the source table](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/cgame/cg_consolecmds.c#L1509).
+Use [`speedometer`](/TaystJK/reference/commands/speedometer-b0e26e4/) to toggle one option at a time; see the command page for syntax. The value column is that bit on its own. [The labels come from the source table](https://github.com/taysta/TaystJK/blame/a15beafad337a07e6a965e5063053ed265a96fe2/codemp/cgame/cg_consolecmds.c#L1509).
 
 | Bit | Value | Meaning | Read by |
 |:--|:--|:--|:--|
-| 0 | `1` | Enable speedometer | [codemp/cgame/hud_strafehelper.h:84](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/cgame/hud_strafehelper.h#L84) |
+| 0 | `1` | Enable speedometer | [codemp/cgame/hud_strafehelper.h:84](https://github.com/taysta/TaystJK/blame/a15beafad337a07e6a965e5063053ed265a96fe2/codemp/cgame/hud_strafehelper.h#L84) |
 | 1 | `2` | Pre-speed display | — |
-| 2 | `4` | Jump height display | [codemp/cgame/hud_strafehelper.h:86](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/cgame/hud_strafehelper.h#L86) |
-| 3 | `8` | Jump distance display | [codemp/cgame/hud_strafehelper.h:87](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/cgame/hud_strafehelper.h#L87) |
+| 2 | `4` | Jump height display | [codemp/cgame/hud_strafehelper.h:86](https://github.com/taysta/TaystJK/blame/a15beafad337a07e6a965e5063053ed265a96fe2/codemp/cgame/hud_strafehelper.h#L86) |
+| 3 | `8` | Jump distance display | [codemp/cgame/hud_strafehelper.h:87](https://github.com/taysta/TaystJK/blame/a15beafad337a07e6a965e5063053ed265a96fe2/codemp/cgame/hud_strafehelper.h#L87) |
 | 4 | `16` | Vertical speed indicator | — |
 | 5 | `32` | Yaw speed indicator | — |
-| 6 | `64` | Accel meter | [codemp/cgame/hud_strafehelper.h:90](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/cgame/hud_strafehelper.h#L90) |
+| 6 | `64` | Accel meter | [codemp/cgame/hud_strafehelper.h:90](https://github.com/taysta/TaystJK/blame/a15beafad337a07e6a965e5063053ed265a96fe2/codemp/cgame/hud_strafehelper.h#L90) |
 | 7 | `128` | Speed graph | — |
 | 8 | `256` | Display speed in kilometers instead of units | — |
 | 9 | `512` | Display speed in imperial miles instead of units | — |
@@ -107,13 +107,13 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 ## Evidence
 
-- registration: [codemp/cgame/cg_xcvar.h:46](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/cgame/cg_xcvar.h#L46) (XCVAR_DEF)
-- registration: [codemp/ui/ui_xcvar.h:164](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/ui/ui_xcvar.h#L164) (XCVAR_DEF)
-- behavior: [codemp/cgame/cg_draw.c:1962](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/cgame/cg_draw.c#L1962)
-- behavior: [codemp/cgame/hud_strafehelper.c:418](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/cgame/hud_strafehelper.c#L418)
-- behavior: [codemp/cgame/hud_strafehelper.c:422](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/cgame/hud_strafehelper.c#L422)
-- behavior: [codemp/cgame/hud_strafehelper.c:424](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/cgame/hud_strafehelper.c#L424)
-- behavior: [codemp/cgame/hud_strafehelper.c:426](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/cgame/hud_strafehelper.c#L426)
-- documentation: [codemp/ui/ui_xdocs.h:107](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/ui/ui_xdocs.h#L107)
+- registration: [codemp/cgame/cg_xcvar.h:46](https://github.com/taysta/TaystJK/blame/a15beafad337a07e6a965e5063053ed265a96fe2/codemp/cgame/cg_xcvar.h#L46) (XCVAR_DEF)
+- registration: [codemp/ui/ui_xcvar.h:164](https://github.com/taysta/TaystJK/blame/a15beafad337a07e6a965e5063053ed265a96fe2/codemp/ui/ui_xcvar.h#L164) (XCVAR_DEF)
+- behavior: [codemp/cgame/cg_draw.c:1962](https://github.com/taysta/TaystJK/blame/a15beafad337a07e6a965e5063053ed265a96fe2/codemp/cgame/cg_draw.c#L1962)
+- behavior: [codemp/cgame/hud_strafehelper.c:418](https://github.com/taysta/TaystJK/blame/a15beafad337a07e6a965e5063053ed265a96fe2/codemp/cgame/hud_strafehelper.c#L418)
+- behavior: [codemp/cgame/hud_strafehelper.c:422](https://github.com/taysta/TaystJK/blame/a15beafad337a07e6a965e5063053ed265a96fe2/codemp/cgame/hud_strafehelper.c#L422)
+- behavior: [codemp/cgame/hud_strafehelper.c:424](https://github.com/taysta/TaystJK/blame/a15beafad337a07e6a965e5063053ed265a96fe2/codemp/cgame/hud_strafehelper.c#L424)
+- behavior: [codemp/cgame/hud_strafehelper.c:426](https://github.com/taysta/TaystJK/blame/a15beafad337a07e6a965e5063053ed265a96fe2/codemp/cgame/hud_strafehelper.c#L426)
+- documentation: [codemp/ui/ui_xdocs.h:107](https://github.com/taysta/TaystJK/blame/a15beafad337a07e6a965e5063053ed265a96fe2/codemp/ui/ui_xdocs.h#L107)
 
-<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/f4643281440c626cb7e30444c8c392606167a7f8"><code>f4643281440c</code></a> on 2026-09-23. Anything merged after that is not reflected here.</p>
+<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/a15beafad337a07e6a965e5063053ed265a96fe2"><code>a15beafad337</code></a> on 2026-09-24. Anything merged after that is not reflected here.</p>

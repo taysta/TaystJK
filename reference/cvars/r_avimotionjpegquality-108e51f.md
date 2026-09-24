@@ -39,8 +39,8 @@ No discrete value list is enforced or documented in the inspected source.
 
 ## Enforced ranges
 
-- `10` through `100` (integer; Cvar_CheckRange). Evidence: [codemp/rd-vanilla/tr_init.cpp:1777](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/rd-vanilla/tr_init.cpp#L1777)
-- `10` through `100` (integer; Cvar_CheckRange). Evidence: [codemp/rd-vulkan/tr_init.cpp:1009](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/rd-vulkan/tr_init.cpp#L1009)
+- `10` through `100` (integer; Cvar_CheckRange). Evidence: [codemp/rd-vanilla/tr_init.cpp:1777](https://github.com/taysta/TaystJK/blame/a15beafad337a07e6a965e5063053ed265a96fe2/codemp/rd-vanilla/tr_init.cpp#L1777)
+- `10` through `100` (integer; Cvar_CheckRange). Evidence: [codemp/rd-vulkan/tr_init.cpp:1009](https://github.com/taysta/TaystJK/blame/a15beafad337a07e6a965e5063053ed265a96fe2/codemp/rd-vulkan/tr_init.cpp#L1009)
 
 ## Flags
 
@@ -97,13 +97,13 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 ## Evidence
 
-- registration: [codemp/rd-rend2/tr_init.cpp:1691](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/rd-rend2/tr_init.cpp#L1691) (Cvar_Get)
-- registration: [codemp/rd-vanilla/tr_init.cpp:1774](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/rd-vanilla/tr_init.cpp#L1774) (Cvar_Get)
-- registration: [codemp/rd-vulkan/tr_init.cpp:1006](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/rd-vulkan/tr_init.cpp#L1006) (Cvar_Get)
-- behavior: [codemp/rd-rend2/tr_init.cpp:1147](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/rd-rend2/tr_init.cpp#L1147)
-- behavior: [codemp/rd-vanilla/tr_init.cpp:1304](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/rd-vanilla/tr_init.cpp#L1304)
-- behavior: [codemp/rd-vulkan/tr_init.cpp:676](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/rd-vulkan/tr_init.cpp#L676)
-- behavior: [codemp/rd-vanilla/tr_init.cpp:1777](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/rd-vanilla/tr_init.cpp#L1777)
-- behavior: [codemp/rd-vulkan/tr_init.cpp:1009](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/rd-vulkan/tr_init.cpp#L1009)
+- registration: [codemp/rd-rend2/tr_init.cpp:1691](https://github.com/taysta/TaystJK/blame/a15beafad337a07e6a965e5063053ed265a96fe2/codemp/rd-rend2/tr_init.cpp#L1691) (Cvar_Get)
+- registration: [codemp/rd-vanilla/tr_init.cpp:1774](https://github.com/taysta/TaystJK/blame/a15beafad337a07e6a965e5063053ed265a96fe2/codemp/rd-vanilla/tr_init.cpp#L1774) (Cvar_Get)
+- registration: [codemp/rd-vulkan/tr_init.cpp:1006](https://github.com/taysta/TaystJK/blame/a15beafad337a07e6a965e5063053ed265a96fe2/codemp/rd-vulkan/tr_init.cpp#L1006) (Cvar_Get)
+- behavior: [codemp/rd-rend2/tr_init.cpp:1147](https://github.com/taysta/TaystJK/blame/a15beafad337a07e6a965e5063053ed265a96fe2/codemp/rd-rend2/tr_init.cpp#L1147)
+- behavior: [codemp/rd-vanilla/tr_init.cpp:1304](https://github.com/taysta/TaystJK/blame/a15beafad337a07e6a965e5063053ed265a96fe2/codemp/rd-vanilla/tr_init.cpp#L1304)
+- behavior: [codemp/rd-vulkan/tr_init.cpp:676](https://github.com/taysta/TaystJK/blame/a15beafad337a07e6a965e5063053ed265a96fe2/codemp/rd-vulkan/tr_init.cpp#L676)
+- behavior: [codemp/rd-vanilla/tr_init.cpp:1777](https://github.com/taysta/TaystJK/blame/a15beafad337a07e6a965e5063053ed265a96fe2/codemp/rd-vanilla/tr_init.cpp#L1777)
+- behavior: [codemp/rd-vulkan/tr_init.cpp:1009](https://github.com/taysta/TaystJK/blame/a15beafad337a07e6a965e5063053ed265a96fe2/codemp/rd-vulkan/tr_init.cpp#L1009)
 
-<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/f4643281440c626cb7e30444c8c392606167a7f8"><code>f4643281440c</code></a> on 2026-09-23. Anything merged after that is not reflected here.</p>
+<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/a15beafad337a07e6a965e5063053ed265a96fe2"><code>a15beafad337</code></a> on 2026-09-24. Anything merged after that is not reflected here.</p>

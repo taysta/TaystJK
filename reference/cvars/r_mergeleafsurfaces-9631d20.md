@@ -37,8 +37,8 @@ Controls `r_mergeLeafSurfaces` in the renderer module. Consult the cited behavio
 
 | Value | Meaning | Evidence |
 |:--|:--|:--|
-| `0` | Disabled. | [shared/rd-rend2/tr_bsp.cpp:4457](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/shared/rd-rend2/tr_bsp.cpp#L4457) |
-| `1` | Enabled. | [shared/rd-rend2/tr_bsp.cpp:4457](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/shared/rd-rend2/tr_bsp.cpp#L4457) |
+| `0` | Disabled. | [shared/rd-rend2/tr_bsp.cpp:4457](https://github.com/taysta/TaystJK/blame/a15beafad337a07e6a965e5063053ed265a96fe2/shared/rd-rend2/tr_bsp.cpp#L4457) |
+| `1` | Enabled. | [shared/rd-rend2/tr_bsp.cpp:4457](https://github.com/taysta/TaystJK/blame/a15beafad337a07e6a965e5063053ed265a96fe2/shared/rd-rend2/tr_bsp.cpp#L4457) |
 
 ## Flags
 
@@ -77,10 +77,10 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 ## Evidence
 
-- registration: [codemp/rd-rend2/tr_init.cpp:1636](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/rd-rend2/tr_init.cpp#L1636) (Cvar_Get)
-- behavior: [shared/rd-rend2/tr_bsp.cpp:4457](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/shared/rd-rend2/tr_bsp.cpp#L4457)
-- behavior: [shared/rd-rend2/tr_bsp.cpp:3376](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/shared/rd-rend2/tr_bsp.cpp#L3376)
-- behavior: [shared/rd-rend2/tr_bsp.cpp:3381](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/shared/rd-rend2/tr_bsp.cpp#L3381)
-- behavior: [shared/rd-rend2/tr_bsp.cpp:4459](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/shared/rd-rend2/tr_bsp.cpp#L4459)
+- registration: [codemp/rd-rend2/tr_init.cpp:1636](https://github.com/taysta/TaystJK/blame/a15beafad337a07e6a965e5063053ed265a96fe2/codemp/rd-rend2/tr_init.cpp#L1636) (Cvar_Get)
+- behavior: [shared/rd-rend2/tr_bsp.cpp:4457](https://github.com/taysta/TaystJK/blame/a15beafad337a07e6a965e5063053ed265a96fe2/shared/rd-rend2/tr_bsp.cpp#L4457)
+- behavior: [shared/rd-rend2/tr_bsp.cpp:3376](https://github.com/taysta/TaystJK/blame/a15beafad337a07e6a965e5063053ed265a96fe2/shared/rd-rend2/tr_bsp.cpp#L3376)
+- behavior: [shared/rd-rend2/tr_bsp.cpp:3381](https://github.com/taysta/TaystJK/blame/a15beafad337a07e6a965e5063053ed265a96fe2/shared/rd-rend2/tr_bsp.cpp#L3381)
+- behavior: [shared/rd-rend2/tr_bsp.cpp:4459](https://github.com/taysta/TaystJK/blame/a15beafad337a07e6a965e5063053ed265a96fe2/shared/rd-rend2/tr_bsp.cpp#L4459)
 
-<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/f4643281440c626cb7e30444c8c392606167a7f8"><code>f4643281440c</code></a> on 2026-09-23. Anything merged after that is not reflected here.</p>
+<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/a15beafad337a07e6a965e5063053ed265a96fe2"><code>a15beafad337</code></a> on 2026-09-24. Anything merged after that is not reflected here.</p>

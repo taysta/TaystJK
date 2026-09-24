@@ -24,8 +24,8 @@ Server gametype value
 | Derivation | `documented` |
 | Confidence | `high` |
 | Added | 2013-04-08 in [`14cea1563`](https://github.com/taysta/TaystJK/commit/14cea1563762076974bee277afadbd5bf234c494) ([how to compare this against your build](/TaystJK/features/whats-new/#how-to-tell-what-your-build-has)) |
-| In-game xdocs | Yes: [codemp/ui/ui_xdocs.h:511](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/ui/ui_xdocs.h#L511) |
-| In-game menu | Yes: [ingame.menu:229](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/assets/japro/ui/jamp/ingame.menu#L229), [ingame.menu:274](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/assets/japro/ui/jamp/ingame.menu#L274), [ingame.menu:320](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/assets/japro/ui/jamp/ingame.menu#L320) |
+| In-game xdocs | Yes: [codemp/ui/ui_xdocs.h:511](https://github.com/taysta/TaystJK/blame/a15beafad337a07e6a965e5063053ed265a96fe2/codemp/ui/ui_xdocs.h#L511) |
+| In-game menu | Yes: [ingame.menu:229](https://github.com/taysta/TaystJK/blame/a15beafad337a07e6a965e5063053ed265a96fe2/assets/japro/ui/jamp/ingame.menu#L229), [ingame.menu:274](https://github.com/taysta/TaystJK/blame/a15beafad337a07e6a965e5063053ed265a96fe2/assets/japro/ui/jamp/ingame.menu#L274), [ingame.menu:320](https://github.com/taysta/TaystJK/blame/a15beafad337a07e6a965e5063053ed265a96fe2/assets/japro/ui/jamp/ingame.menu#L320) |
 | Default | `0` |
 | Value type | `string` |
 | Restart | Yes; the value is latched. |
@@ -36,16 +36,16 @@ Server gametype value
 
 | Value | Meaning | Evidence |
 |:--|:--|:--|
-| `0` | FFA | [codemp/ui/ui_xdocs.h:511](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/ui/ui_xdocs.h#L511) |
-| `1` | Holocron | [codemp/ui/ui_xdocs.h:511](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/ui/ui_xdocs.h#L511) |
-| `2` | Jedi Master | [codemp/ui/ui_xdocs.h:511](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/ui/ui_xdocs.h#L511) |
-| `3` | Duel | [codemp/ui/ui_xdocs.h:513](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/ui/ui_xdocs.h#L513) |
-| `4` | Powerduel | [codemp/ui/ui_xdocs.h:513](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/ui/ui_xdocs.h#L513) |
-| `5` | SP FFA | [codemp/ui/ui_xdocs.h:514](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/ui/ui_xdocs.h#L514) |
-| `6` | TFFA | [codemp/ui/ui_xdocs.h:515](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/ui/ui_xdocs.h#L515) |
-| `7` | Siege | [codemp/ui/ui_xdocs.h:516](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/ui/ui_xdocs.h#L516) |
-| `8` | CTF | [codemp/ui/ui_xdocs.h:517](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/ui/ui_xdocs.h#L517) |
-| `9` | CTY | [codemp/ui/ui_xdocs.h:518](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/ui/ui_xdocs.h#L518) |
+| `0` | FFA | [codemp/ui/ui_xdocs.h:511](https://github.com/taysta/TaystJK/blame/a15beafad337a07e6a965e5063053ed265a96fe2/codemp/ui/ui_xdocs.h#L511) |
+| `1` | Holocron | [codemp/ui/ui_xdocs.h:511](https://github.com/taysta/TaystJK/blame/a15beafad337a07e6a965e5063053ed265a96fe2/codemp/ui/ui_xdocs.h#L511) |
+| `2` | Jedi Master | [codemp/ui/ui_xdocs.h:511](https://github.com/taysta/TaystJK/blame/a15beafad337a07e6a965e5063053ed265a96fe2/codemp/ui/ui_xdocs.h#L511) |
+| `3` | Duel | [codemp/ui/ui_xdocs.h:513](https://github.com/taysta/TaystJK/blame/a15beafad337a07e6a965e5063053ed265a96fe2/codemp/ui/ui_xdocs.h#L513) |
+| `4` | Powerduel | [codemp/ui/ui_xdocs.h:513](https://github.com/taysta/TaystJK/blame/a15beafad337a07e6a965e5063053ed265a96fe2/codemp/ui/ui_xdocs.h#L513) |
+| `5` | SP FFA | [codemp/ui/ui_xdocs.h:514](https://github.com/taysta/TaystJK/blame/a15beafad337a07e6a965e5063053ed265a96fe2/codemp/ui/ui_xdocs.h#L514) |
+| `6` | TFFA | [codemp/ui/ui_xdocs.h:515](https://github.com/taysta/TaystJK/blame/a15beafad337a07e6a965e5063053ed265a96fe2/codemp/ui/ui_xdocs.h#L515) |
+| `7` | Siege | [codemp/ui/ui_xdocs.h:516](https://github.com/taysta/TaystJK/blame/a15beafad337a07e6a965e5063053ed265a96fe2/codemp/ui/ui_xdocs.h#L516) |
+| `8` | CTF | [codemp/ui/ui_xdocs.h:517](https://github.com/taysta/TaystJK/blame/a15beafad337a07e6a965e5063053ed265a96fe2/codemp/ui/ui_xdocs.h#L517) |
+| `9` | CTY | [codemp/ui/ui_xdocs.h:518](https://github.com/taysta/TaystJK/blame/a15beafad337a07e6a965e5063053ed265a96fe2/codemp/ui/ui_xdocs.h#L518) |
 
 ## Flags
 
@@ -113,15 +113,15 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 ## Evidence
 
-- registration: [codemp/game/g_svcmds.c:656](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/game/g_svcmds.c#L656) (Cvar_Register)
-- registration: [codemp/game/g_xcvar.h:108](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/game/g_xcvar.h#L108) (XCVAR_DEF)
-- registration: [codemp/server/sv_ccmds.cpp:204](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/server/sv_ccmds.cpp#L204) (Cvar_Get)
-- registration: [codemp/server/sv_init.cpp:976](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/server/sv_init.cpp#L976) (Cvar_Get)
-- behavior: [codemp/game/ai_main.c:7977](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/game/ai_main.c#L7977)
-- behavior: [codemp/game/ai_main.c:8125](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/game/ai_main.c#L8125)
-- behavior: [codemp/game/g_cmds.c:3504](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/game/g_cmds.c#L3504)
-- behavior: [codemp/game/g_main.c:173](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/game/g_main.c#L173)
-- behavior: [codemp/game/g_main.c:184](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/game/g_main.c#L184)
-- documentation: [codemp/ui/ui_xdocs.h:511](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/ui/ui_xdocs.h#L511)
+- registration: [codemp/game/g_svcmds.c:656](https://github.com/taysta/TaystJK/blame/a15beafad337a07e6a965e5063053ed265a96fe2/codemp/game/g_svcmds.c#L656) (Cvar_Register)
+- registration: [codemp/game/g_xcvar.h:108](https://github.com/taysta/TaystJK/blame/a15beafad337a07e6a965e5063053ed265a96fe2/codemp/game/g_xcvar.h#L108) (XCVAR_DEF)
+- registration: [codemp/server/sv_ccmds.cpp:204](https://github.com/taysta/TaystJK/blame/a15beafad337a07e6a965e5063053ed265a96fe2/codemp/server/sv_ccmds.cpp#L204) (Cvar_Get)
+- registration: [codemp/server/sv_init.cpp:976](https://github.com/taysta/TaystJK/blame/a15beafad337a07e6a965e5063053ed265a96fe2/codemp/server/sv_init.cpp#L976) (Cvar_Get)
+- behavior: [codemp/game/ai_main.c:7977](https://github.com/taysta/TaystJK/blame/a15beafad337a07e6a965e5063053ed265a96fe2/codemp/game/ai_main.c#L7977)
+- behavior: [codemp/game/ai_main.c:8125](https://github.com/taysta/TaystJK/blame/a15beafad337a07e6a965e5063053ed265a96fe2/codemp/game/ai_main.c#L8125)
+- behavior: [codemp/game/g_cmds.c:3504](https://github.com/taysta/TaystJK/blame/a15beafad337a07e6a965e5063053ed265a96fe2/codemp/game/g_cmds.c#L3504)
+- behavior: [codemp/game/g_main.c:173](https://github.com/taysta/TaystJK/blame/a15beafad337a07e6a965e5063053ed265a96fe2/codemp/game/g_main.c#L173)
+- behavior: [codemp/game/g_main.c:184](https://github.com/taysta/TaystJK/blame/a15beafad337a07e6a965e5063053ed265a96fe2/codemp/game/g_main.c#L184)
+- documentation: [codemp/ui/ui_xdocs.h:511](https://github.com/taysta/TaystJK/blame/a15beafad337a07e6a965e5063053ed265a96fe2/codemp/ui/ui_xdocs.h#L511)
 
-<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/f4643281440c626cb7e30444c8c392606167a7f8"><code>f4643281440c</code></a> on 2026-09-23. Anything merged after that is not reflected here.</p>
+<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/a15beafad337a07e6a965e5063053ed265a96fe2"><code>a15beafad337</code></a> on 2026-09-24. Anything merged after that is not reflected here.</p>

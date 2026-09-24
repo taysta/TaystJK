@@ -37,12 +37,12 @@ Determines which policy of enforcement is used for client's \"snaps\" cvar
 
 | Value | Meaning | Evidence |
 |:--|:--|:--|
-| `1` | Selects the code path tested for value 1. | [codemp/server/sv_client.cpp:1233](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/server/sv_client.cpp#L1233) |
-| `2` | Selects the code path tested for value 2. | [codemp/server/sv_client.cpp:1243](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/server/sv_client.cpp#L1243) |
+| `1` | Selects the code path tested for value 1. | [codemp/server/sv_client.cpp:1233](https://github.com/taysta/TaystJK/blame/a15beafad337a07e6a965e5063053ed265a96fe2/codemp/server/sv_client.cpp#L1233) |
+| `2` | Selects the code path tested for value 2. | [codemp/server/sv_client.cpp:1243](https://github.com/taysta/TaystJK/blame/a15beafad337a07e6a965e5063053ed265a96fe2/codemp/server/sv_client.cpp#L1243) |
 
 ## Enforced ranges
 
-- `0` through `2` (integer; Cvar_CheckRange). Evidence: [codemp/server/sv_init.cpp:1013](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/server/sv_init.cpp#L1013)
+- `0` through `2` (integer; Cvar_CheckRange). Evidence: [codemp/server/sv_init.cpp:1013](https://github.com/taysta/TaystJK/blame/a15beafad337a07e6a965e5063053ed265a96fe2/codemp/server/sv_init.cpp#L1013)
 
 ## Flags
 
@@ -84,11 +84,11 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 ## Evidence
 
-- registration: [codemp/server/sv_init.cpp:1012](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/server/sv_init.cpp#L1012) (Cvar_Get)
-- behavior: [codemp/server/sv_client.cpp:1233](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/server/sv_client.cpp#L1233)
-- behavior: [codemp/server/sv_client.cpp:1243](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/server/sv_client.cpp#L1243)
-- behavior: [codemp/server/sv_main.cpp:1119](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/server/sv_main.cpp#L1119)
-- behavior: [codemp/server/sv_main.cpp:1133](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/server/sv_main.cpp#L1133)
-- behavior: [codemp/server/sv_main.cpp:1112](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/server/sv_main.cpp#L1112)
+- registration: [codemp/server/sv_init.cpp:1012](https://github.com/taysta/TaystJK/blame/a15beafad337a07e6a965e5063053ed265a96fe2/codemp/server/sv_init.cpp#L1012) (Cvar_Get)
+- behavior: [codemp/server/sv_client.cpp:1233](https://github.com/taysta/TaystJK/blame/a15beafad337a07e6a965e5063053ed265a96fe2/codemp/server/sv_client.cpp#L1233)
+- behavior: [codemp/server/sv_client.cpp:1243](https://github.com/taysta/TaystJK/blame/a15beafad337a07e6a965e5063053ed265a96fe2/codemp/server/sv_client.cpp#L1243)
+- behavior: [codemp/server/sv_main.cpp:1119](https://github.com/taysta/TaystJK/blame/a15beafad337a07e6a965e5063053ed265a96fe2/codemp/server/sv_main.cpp#L1119)
+- behavior: [codemp/server/sv_main.cpp:1133](https://github.com/taysta/TaystJK/blame/a15beafad337a07e6a965e5063053ed265a96fe2/codemp/server/sv_main.cpp#L1133)
+- behavior: [codemp/server/sv_main.cpp:1112](https://github.com/taysta/TaystJK/blame/a15beafad337a07e6a965e5063053ed265a96fe2/codemp/server/sv_main.cpp#L1112)
 
-<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/f4643281440c626cb7e30444c8c392606167a7f8"><code>f4643281440c</code></a> on 2026-09-23. Anything merged after that is not reflected here.</p>
+<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/a15beafad337a07e6a965e5063053ed265a96fe2"><code>a15beafad337</code></a> on 2026-09-24. Anything merged after that is not reflected here.</p>

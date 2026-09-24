@@ -38,8 +38,8 @@ Controls `r_centerWindow` in the renderer module. Consult the cited behavior rea
 
 | Value | Meaning | Evidence |
 |:--|:--|:--|
-| `0` | Disabled. | [shared/sdl/sdl_window.cpp:423](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/shared/sdl/sdl_window.cpp#L423) |
-| `1` | Enabled. | [shared/sdl/sdl_window.cpp:423](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/shared/sdl/sdl_window.cpp#L423) |
+| `0` | Disabled. | [shared/sdl/sdl_window.cpp:423](https://github.com/taysta/TaystJK/blame/a15beafad337a07e6a965e5063053ed265a96fe2/shared/sdl/sdl_window.cpp#L423) |
+| `1` | Enabled. | [shared/sdl/sdl_window.cpp:423](https://github.com/taysta/TaystJK/blame/a15beafad337a07e6a965e5063053ed265a96fe2/shared/sdl/sdl_window.cpp#L423) |
 
 ## Flags
 
@@ -94,8 +94,8 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 ## Evidence
 
-- registration: [codemp/rd-dedicated/tr_init.cpp:348](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/rd-dedicated/tr_init.cpp#L348) (Cvar_Get)
-- registration: [shared/sdl/sdl_window.cpp:800](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/shared/sdl/sdl_window.cpp#L800) (Cvar_Get)
-- behavior: [shared/sdl/sdl_window.cpp:423](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/shared/sdl/sdl_window.cpp#L423)
+- registration: [codemp/rd-dedicated/tr_init.cpp:348](https://github.com/taysta/TaystJK/blame/a15beafad337a07e6a965e5063053ed265a96fe2/codemp/rd-dedicated/tr_init.cpp#L348) (Cvar_Get)
+- registration: [shared/sdl/sdl_window.cpp:800](https://github.com/taysta/TaystJK/blame/a15beafad337a07e6a965e5063053ed265a96fe2/shared/sdl/sdl_window.cpp#L800) (Cvar_Get)
+- behavior: [shared/sdl/sdl_window.cpp:423](https://github.com/taysta/TaystJK/blame/a15beafad337a07e6a965e5063053ed265a96fe2/shared/sdl/sdl_window.cpp#L423)
 
-<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/f4643281440c626cb7e30444c8c392606167a7f8"><code>f4643281440c</code></a> on 2026-09-23. Anything merged after that is not reflected here.</p>
+<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/a15beafad337a07e6a965e5063053ed265a96fe2"><code>a15beafad337</code></a> on 2026-09-24. Anything merged after that is not reflected here.</p>

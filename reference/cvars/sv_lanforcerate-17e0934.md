@@ -37,8 +37,8 @@ Controls `sv_lanForceRate` in the engine-server module. Consult the cited behavi
 
 | Value | Meaning | Evidence |
 |:--|:--|:--|
-| `1` | Selects the code path tested for value 1. | [codemp/server/sv_client.cpp:1202](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/server/sv_client.cpp#L1202) |
-| `2` | Selects the code path tested for value 2. | [codemp/server/sv_client.cpp:1202](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/server/sv_client.cpp#L1202) |
+| `1` | Selects the code path tested for value 1. | [codemp/server/sv_client.cpp:1202](https://github.com/taysta/TaystJK/blame/a15beafad337a07e6a965e5063053ed265a96fe2/codemp/server/sv_client.cpp#L1202) |
+| `2` | Selects the code path tested for value 2. | [codemp/server/sv_client.cpp:1202](https://github.com/taysta/TaystJK/blame/a15beafad337a07e6a965e5063053ed265a96fe2/codemp/server/sv_client.cpp#L1202) |
 
 ## Flags
 
@@ -79,11 +79,11 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 ## Evidence
 
-- registration: [codemp/server/sv_init.cpp:1032](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/server/sv_init.cpp#L1032) (Cvar_Get)
-- behavior: [codemp/server/sv_client.cpp:1202](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/server/sv_client.cpp#L1202)
-- behavior: [codemp/server/sv_main.cpp:1070](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/server/sv_main.cpp#L1070)
-- behavior: [codemp/server/sv_main.cpp:1090](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/server/sv_main.cpp#L1090)
-- behavior: [codemp/server/sv_snapshot.cpp:930](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/server/sv_snapshot.cpp#L930)
-- behavior: [codemp/server/sv_snapshot.cpp:929](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/server/sv_snapshot.cpp#L929)
+- registration: [codemp/server/sv_init.cpp:1032](https://github.com/taysta/TaystJK/blame/a15beafad337a07e6a965e5063053ed265a96fe2/codemp/server/sv_init.cpp#L1032) (Cvar_Get)
+- behavior: [codemp/server/sv_client.cpp:1202](https://github.com/taysta/TaystJK/blame/a15beafad337a07e6a965e5063053ed265a96fe2/codemp/server/sv_client.cpp#L1202)
+- behavior: [codemp/server/sv_main.cpp:1070](https://github.com/taysta/TaystJK/blame/a15beafad337a07e6a965e5063053ed265a96fe2/codemp/server/sv_main.cpp#L1070)
+- behavior: [codemp/server/sv_main.cpp:1090](https://github.com/taysta/TaystJK/blame/a15beafad337a07e6a965e5063053ed265a96fe2/codemp/server/sv_main.cpp#L1090)
+- behavior: [codemp/server/sv_snapshot.cpp:930](https://github.com/taysta/TaystJK/blame/a15beafad337a07e6a965e5063053ed265a96fe2/codemp/server/sv_snapshot.cpp#L930)
+- behavior: [codemp/server/sv_snapshot.cpp:929](https://github.com/taysta/TaystJK/blame/a15beafad337a07e6a965e5063053ed265a96fe2/codemp/server/sv_snapshot.cpp#L929)
 
-<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/f4643281440c626cb7e30444c8c392606167a7f8"><code>f4643281440c</code></a> on 2026-09-23. Anything merged after that is not reflected here.</p>
+<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/a15beafad337a07e6a965e5063053ed265a96fe2"><code>a15beafad337</code></a> on 2026-09-24. Anything merged after that is not reflected here.</p>

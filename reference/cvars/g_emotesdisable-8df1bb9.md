@@ -38,7 +38,7 @@ Configured with /toggleEmotes command
 
 ## Bits
 
-Use [`toggleEmotes`](/TaystJK/reference/commands/toggleemotes-c7d169a/) to toggle one option at a time; see the command page for syntax. The value column is that bit on its own. [The labels come from the source table](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/game/g_svcmds.c#L1532).
+Use [`toggleEmotes`](/TaystJK/reference/commands/toggleemotes-c7d169a/) to toggle one option at a time; see the command page for syntax. The value column is that bit on its own. [The labels come from the source table](https://github.com/taysta/TaystJK/blame/a15beafad337a07e6a965e5063053ed265a96fe2/codemp/game/g_svcmds.c#L1532).
 
 | Bit | Value | Meaning | Read by |
 |:--|:--|:--|:--|
@@ -100,12 +100,12 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 ## Evidence
 
-- registration: [codemp/game/g_xcvar.h:299](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/game/g_xcvar.h#L299) (XCVAR_DEF)
-- behavior: [codemp/game/bg_pmove.c:8500](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/game/bg_pmove.c#L8500)
-- behavior: [codemp/game/bg_pmove.c:8515](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/game/bg_pmove.c#L8515)
-- behavior: [codemp/game/bg_pmove.c:8530](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/game/bg_pmove.c#L8530)
-- behavior: [codemp/game/bg_pmove.c:8545](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/game/bg_pmove.c#L8545)
-- behavior: [codemp/game/bg_pmove.c:8560](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/game/bg_pmove.c#L8560)
-- documentation: [docs/japro_docs.md:91](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/docs/japro_docs.md#L91)
+- registration: [codemp/game/g_xcvar.h:299](https://github.com/taysta/TaystJK/blame/a15beafad337a07e6a965e5063053ed265a96fe2/codemp/game/g_xcvar.h#L299) (XCVAR_DEF)
+- behavior: [codemp/game/bg_pmove.c:8500](https://github.com/taysta/TaystJK/blame/a15beafad337a07e6a965e5063053ed265a96fe2/codemp/game/bg_pmove.c#L8500)
+- behavior: [codemp/game/bg_pmove.c:8515](https://github.com/taysta/TaystJK/blame/a15beafad337a07e6a965e5063053ed265a96fe2/codemp/game/bg_pmove.c#L8515)
+- behavior: [codemp/game/bg_pmove.c:8530](https://github.com/taysta/TaystJK/blame/a15beafad337a07e6a965e5063053ed265a96fe2/codemp/game/bg_pmove.c#L8530)
+- behavior: [codemp/game/bg_pmove.c:8545](https://github.com/taysta/TaystJK/blame/a15beafad337a07e6a965e5063053ed265a96fe2/codemp/game/bg_pmove.c#L8545)
+- behavior: [codemp/game/bg_pmove.c:8560](https://github.com/taysta/TaystJK/blame/a15beafad337a07e6a965e5063053ed265a96fe2/codemp/game/bg_pmove.c#L8560)
+- documentation: [docs/japro_docs.md:91](https://github.com/taysta/TaystJK/blame/a15beafad337a07e6a965e5063053ed265a96fe2/docs/japro_docs.md#L91)
 
-<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/f4643281440c626cb7e30444c8c392606167a7f8"><code>f4643281440c</code></a> on 2026-09-23. Anything merged after that is not reflected here.</p>
+<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/a15beafad337a07e6a965e5063053ed265a96fe2"><code>a15beafad337</code></a> on 2026-09-24. Anything merged after that is not reflected here.</p>
