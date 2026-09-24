@@ -1,9 +1,9 @@
 name: Reference refresh
 
 # The console reference is generated from this branch but lives on gh-pages. Check it after
-# each automatic release, refresh it only when its meaningful source data drifted, and run a
-# full audit weekly or for an independently published release. Generated changes go through
-# review instead of being pushed directly to the published branch.
+# each automatic release and weekly, but refresh it only when master advanced and its
+# meaningful source data drifted. Independently published releases still run a full audit.
+# Generated changes go through review instead of being pushed directly to the published branch.
 #
 # This has to live on the default branch: GitHub only runs scheduled workflows from the
 # default branch, so the same cron sitting in the gh-pages workflow would never fire.
@@ -53,17 +53,28 @@ jobs:
           git fetch --no-tags https://github.com/SomaZ/OpenJK.git +refs/heads/rend2-unified-wip:refs/remotes/somaz/rend2-unified-wip
           git fetch --no-tags https://github.com/JKSunny/EternalJK.git +refs/heads/master:refs/remotes/Sunny/master
 
-      # build.yml dispatches this workflow after every successful master release. Before
-      # doing the expensive provenance/API work, compare a temporary assembly with the
-      # checked-in reference. Moving source pins and line numbers remain valid at their
-      # old commit, so they do not by themselves justify a refresh PR. Scheduled, manual,
-      # and independently published-release runs remain full audits so they can discover
-      # provenance changes outside TaystJK.
+      # build.yml dispatches this workflow after every successful master release, and the
+      # schedule checks again weekly. Before doing the expensive provenance/API work, require
+      # master to have advanced and compare a temporary assembly with the checked-in reference.
+      # Moving source pins and line numbers remain valid at their old commit, so they do not by
+      # themselves justify a refresh PR. Explicit manual and independently published-release
+      # runs remain full audits.
       - name: Check whether the source reference drifted
         id: source-drift
-        if: github.event_name == 'workflow_dispatch' && inputs.release_tag == 'latest'
+        if: >-
+          github.event_name == 'schedule' ||
+          (github.event_name == 'workflow_dispatch' && inputs.release_tag == 'latest')
         run: |
           set -euo pipefail
+          pinned_sha=$(jq -r '.source_commit' _data/reference-meta.json)
+          current_sha=$(git rev-parse origin/master)
+          if [ "$pinned_sha" = "$current_sha" ]; then
+            echo "refresh=false" >> "$GITHUB_OUTPUT"
+            echo "Master has no commits beyond the pinned reference; refresh skipped." \
+              >> "$GITHUB_STEP_SUMMARY"
+            exit 0
+          fi
+
           candidate="${RUNNER_TEMP}/reference-preflight"
           mkdir -p "$candidate"
           python3 tools/cvar_audit/build_reference.py \
