@@ -3441,6 +3441,7 @@ static void G_GunDuelEndWeapon(gentity_t *ent)
 			break;
 	}
 
+	G_ClearDisruptorZoom(&ent->client->ps);
 	ent->client->ps.weapon = ent->s.weapon = weap;
 }
 
