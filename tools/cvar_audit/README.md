@@ -180,14 +180,22 @@ Caches are ignored; the state,
 provenance, and runtime reconciliation reports are retained as audit artifacts.
 
 The default branch's `reference-check.yml` automates the static portion of this
-sequence after a release and on its weekly schedule. It checks out `gh-pages`,
-fetches every configured upstream, downloads public pull-request metadata,
-regenerates the reference, updates the reviewed baseline-total and changelog
-coverage ratchets, runs the complete checks and site build, then opens or updates
-an `automation/reference-refresh` pull request. It then dispatches this branch's
-own reference workflow on the bot commit, because events created with
-`GITHUB_TOKEN` do not recursively start workflows. It never pushes generated
-output directly to `gh-pages`.
+sequence after a release and on its weekly schedule. An automatic `latest` release
+from `build.yml` first assembles a temporary reference and compares the meaningful
+cvar and command fields with the checked-in data. Moving source commit pins, URLs,
+and line numbers do not count as source drift because their old blame links remain
+valid at the pinned commit. When that comparison is unchanged, the workflow skips
+provenance collection, regeneration, and PR creation.
+
+Scheduled, manually dispatched, and independently published-release runs remain
+full audits so they can discover provenance changes outside TaystJK. A full run
+checks out `gh-pages`, fetches every configured upstream, downloads public
+pull-request metadata, regenerates the reference, updates the reviewed
+baseline-total and changelog coverage ratchets, runs the complete checks and site
+build, then opens or updates an `automation/reference-refresh` pull request. It
+then dispatches this branch's own reference workflow on the bot commit, because
+events created with `GITHUB_TOKEN` do not recursively start workflows. It never
+pushes generated output directly to `gh-pages`.
 
 The automation deliberately retains the checked-in runtime report. A runner has
 not launched a real client or dedicated server, so it cannot truthfully replace
