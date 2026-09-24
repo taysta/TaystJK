@@ -1154,8 +1154,10 @@ void RE_Shutdown( qboolean destroyWindow, qboolean restarting ) {
 				SaveGhoul2InfoArray();
 		}
 
-		vk_delete_textures();
-		vk_release_resources();
+		if (vk.device != VK_NULL_HANDLE) {
+			vk_delete_textures();
+			vk_release_resources();
+		}
 	//}
 
 	//vk_release_resources(); not merged yet (https://github.com/ec-/Quake3e/commit/d31b84ebf2ab702686e98dff40b7673473026b30)
@@ -1165,10 +1167,9 @@ void RE_Shutdown( qboolean destroyWindow, qboolean restarting ) {
 
 		Com_Memset(&glState, 0, sizeof(glState));
 
-		if (destroyWindow && !restarting) {
+		if (!restarting)
 			ri.VK_destroyWindow();
-			Com_Memset(&glConfig, 0, sizeof(glConfig));
-		}
+		Com_Memset(&glConfig, 0, sizeof(glConfig));
 	}
 
 	tr.registered = qfalse;
