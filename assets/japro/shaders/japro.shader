@@ -523,3 +523,18 @@ models/map_objects/mp/flan
         rgbGen lightingDiffuse
     }
 }
+
+models/weapons2/concussion/Disc
+{
+    q3map_nolightmap
+    {
+        map models/weapons2/concussion/Disc
+        rgbGen lightingDiffuse
+        tcMod rotate -100
+    }
+    {
+        map models/weapons2/concussion/Disc_effect
+        blendFunc GL_ONE GL_ONE
+        tcMod rotate 250
+    }
+}
