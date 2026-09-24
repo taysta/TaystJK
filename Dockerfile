@@ -57,7 +57,7 @@ RUN mkdir -p /opt/taystjk/cdpath/base /opt/taystjk/cdpath/taystjk /opt/taystjk/b
 COPY --from=builder /opt/JediAcademy/taystjkded.* /opt/taystjk/
 COPY --from=builder /opt/JediAcademy/taystjk/ /opt/taystjk/cdpath/taystjk/
 COPY scripts/docker/*.sh /opt/taystjk/
-COPY scripts/docker/server.cfg /opt/taystjk/basepath/taystjk/server.cfg
+COPY scripts/docker/*.cfg /opt/taystjk/basepath/taystjk/
 RUN chmod +x /opt/taystjk/taystjkded.* /opt/taystjk/*.sh \
     && chown -R container:container /opt/taystjk
 
