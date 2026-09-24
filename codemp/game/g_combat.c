@@ -571,6 +571,14 @@ void TossClientWeapon(gentity_t *self, vec3_t direction, float speed)
 
 		self->client->ps.stats[STAT_WEAPONS] &= ~(1 << weapon);
 
+		if (weapon == WP_DISRUPTOR && self->client->ps.zoomMode == 1)
+		{
+			self->client->ps.zoomFov = 0;
+			self->client->ps.zoomMode = 0;
+			self->client->ps.zoomLocked = qfalse;
+			self->client->ps.zoomTime = 0;
+		}
+
 		while (i < WP_NUM_WEAPONS)
 		{
 			if ((self->client->ps.stats[STAT_WEAPONS] & (1 << i)) && i != WP_NONE)
