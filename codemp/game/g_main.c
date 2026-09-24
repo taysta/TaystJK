@@ -3443,7 +3443,7 @@ void OneFlagCTFCheckTimers() {
 	if (g_neutralFlag.integer < 4)
 		return;
 
-	if (g_neutralFlag.integer == 5 || g_neutralFlag.integer == 5) {
+	if (g_neutralFlag.integer == 4 || g_neutralFlag.integer == 5) {
 		if (level.time > level.flagCapturingDebounce) {
 			int timer = g_neutralFlagTimer.integer;
 			if (timer < 0)
