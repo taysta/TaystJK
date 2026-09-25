@@ -242,6 +242,7 @@ void CG_ParseServerinfo( void ) {
 	cgs.jcinfo = 0;
 	cgs.pluginSet = qfalse;
 	cgs.legacyProtocol = qfalse;
+	cgs.baseGame = qfalse;
 	cgs.restricts = 0;
 	cgs.taystJKinfo =  atoi(Info_ValueForKey(info, "taystJKinfo")); // taystjk feature flags
 
@@ -278,6 +279,7 @@ void CG_ParseServerinfo( void ) {
 		else if (!Q_stricmpn(gamename, "basejk", 6))
 		{
 			cgs.serverMod = SVMOD_BASEJKA;
+			cgs.baseGame = qtrue;
 		}
 		else if (!Q_stricmp(gamename, "^5L^7ugormod ^5v3") || !Q_stricmp(gamename, "Lugormod"))
 		{
@@ -289,6 +291,7 @@ void CG_ParseServerinfo( void ) {
 	if (atoi(Info_ValueForKey(info, "protocol")) < 26) {
 		cgs.legacyProtocol = qtrue; //v1.00
 		cgs.serverMod = SVMOD_BASEJKA;
+		cgs.baseGame = qtrue;
 	}
 		
 
