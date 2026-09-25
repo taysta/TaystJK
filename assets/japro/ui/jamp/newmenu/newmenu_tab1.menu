@@ -1,0 +1,555 @@
+#include "ui/jamp/newmenu/newmenuext.h"
+#include "ui/jamp/newmenu/newmenuconfig.h"
+
+//----------------------------------------------------------------------------------------------
+//
+//	newmenu_tab1 (TAB1)
+//
+//----------------------------------------------------------------------------------------------
+{
+    menuDef
+    {
+        name                    newmenu_tab1
+        rect                    MENU_X 0 MENU_WIDTH SCREEN_HEIGHT
+        outOfBoundsClick
+        focusColor              COL_WHITE
+        descX                   DESC_TEXT_X
+        descY                   DESC_TEXT_Y
+        descScale               DESC_TEXT_SCALE
+        descColor               COL_DESC_TEXT
+        descAlignment           ITEM_ALIGN_LEFT
+
+        // Menu lifecycle.
+        onOpen
+        {
+            uiScript            getvideosetup ;
+            setcvar             ui_newmenu_textscroll_fixture "Cvar textscroll fixture value with enough words to wrap across lines." ;
+            HIDE_PAGE_UI
+            HIDE_APPLY
+            show                MENU_CHROME_GROUP ;
+            show                options_tab_1_pages ;
+            show                newmenu_options_tab_1_page_1 ;
+            setitemrect         newmenu_selected_tab_highlight HEADER_OPTIONS_TAB_1_RECT ;
+            setitemrect         newmenu_selected_page_highlight OPTIONS_TAB_1_PAGE_1_RECT ;
+        }
+
+        onClose
+        {
+            play                "sound/interface/button1" ;
+            hide                MENU_CHROME_GROUP ;
+            HIDE_PAGE_UI
+            HIDE_APPLY
+        }
+
+        onESC
+        {
+            defer               VideoSetup NEWMENU_VIDEO_WARNING ;
+            close               newmenu_tab1 ;
+        }
+
+        // Shared menu chrome.
+        // HEADER BACKGROUND
+        ITEM_BACKGROUND(background_header,      MENU_CHROME_GROUP, 0 0 MENU_WIDTH HEADER_HEIGHT,                       COL_MENU_HEADER_BACK)
+
+        // MAIN PANEL BACKGROUND
+        ITEM_BACKGROUND(background_main_panel,  MENU_CHROME_GROUP, 0 HEADER_HEIGHT MENU_WIDTH HEADER_HEIGHT_REMAINING, COL_MENU_PANEL_BACK)
+
+        // Hover/focus helpers.
+        SELECTEDHIGHLIGHT(newmenu_selected_tab_highlight)
+        SELECTEDHIGHLIGHT(newmenu_selected_page_highlight)
+        HIGHLIGHT
+        DUMMYHIGHLIGHT
+
+        // HEADER TITLE
+        TEXT_BOX_HEADER(header_title, MENU_CHROME_GROUP, 0 0 HEADER_TITLE_WIDTH HEADER_HEIGHT_HALF, VISIBLE, HEADER_TITLE)
+
+        // EXIT MENU BUTTON
+        ITEM_EXIT(header_exit_button, MENU_CHROME_GROUP, HEADER_EXIT_ICON_X HEADER_PADDING HEADER_EXIT_ICON_SIZE HEADER_EXIT_ICON_SIZE, COL_WHITE, HEADER_EXIT_ICON_SHADER, newmenu_tab1)
+
+        // APPLY VIDEO BUTTON
+        ITEM_APPLY_CHANGES
+
+        // TOP-LEVEL MENU TABS
+        ITEM_TAB_BUTTON(options_tab_1_button,   MENU_CHROME_GROUP, HEADER_OPTIONS_TAB_1_TEXT,  HEADER_OPTIONS_TAB_1_RECT,  HEADER_OPTIONS_TAB_HALF_WIDTH,  HEADER_OPTIONS_TAB_1_DESC_TEXT,  newmenu_options_tab_1_page_1,  OPTIONS_TAB_1_PAGE_1_RECT,  options_tab_1_pages,  VISIBLE)
+        ITEM_TAB_NAV   (options_tab_2_button,   MENU_CHROME_GROUP, HEADER_OPTIONS_TAB_2_TEXT,  HEADER_OPTIONS_TAB_2_RECT,  HEADER_OPTIONS_TAB_HALF_WIDTH,  HEADER_OPTIONS_TAB_2_DESC_TEXT,  newmenu_tab1,  newmenu_tab2,  VISIBLE)
+        ITEM_TAB_NAV   (options_tab_3_button,   MENU_CHROME_GROUP, HEADER_OPTIONS_TAB_3_TEXT,  HEADER_OPTIONS_TAB_3_RECT,  HEADER_OPTIONS_TAB_HALF_WIDTH,  HEADER_OPTIONS_TAB_3_DESC_TEXT,  newmenu_tab1,  newmenu_tab3,  VISIBLE)
+        ITEM_TAB_NAV   (options_tab_4_button,   MENU_CHROME_GROUP, HEADER_OPTIONS_TAB_4_TEXT,  HEADER_OPTIONS_TAB_4_RECT,  HEADER_OPTIONS_TAB_HALF_WIDTH,  HEADER_OPTIONS_TAB_4_DESC_TEXT,  newmenu_tab1,  newmenu_tab4,  VISIBLE)
+        ITEM_TAB_NAV   (options_tab_5_button,   MENU_CHROME_GROUP, HEADER_OPTIONS_TAB_5_TEXT,  HEADER_OPTIONS_TAB_5_RECT,  HEADER_OPTIONS_TAB_HALF_WIDTH,  HEADER_OPTIONS_TAB_5_DESC_TEXT,  newmenu_tab1,  newmenu_tab5,  VISIBLE)
+
+        // Current tab page buttons.
+        ITEM_PAGE_BUTTON(options_tab_1_page_1_button,  options_tab_1_pages,  OPTIONS_TAB_1_PAGE_1_TEXT,  OPTIONS_TAB_1_PAGE_1_RECT,  OPTIONS_TAB_1_PAGE_HALF_WIDTH,  OPTIONS_TAB_1_PAGE_1_DESC_TEXT,  newmenu_options_tab_1_page_1)
+        ITEM_PAGE_BUTTON(options_tab_1_page_2_button,  options_tab_1_pages,  OPTIONS_TAB_1_PAGE_2_TEXT,  OPTIONS_TAB_1_PAGE_2_RECT,  OPTIONS_TAB_1_PAGE_HALF_WIDTH,  OPTIONS_TAB_1_PAGE_2_DESC_TEXT,  newmenu_options_tab_1_page_2)
+        ITEM_PAGE_BUTTON(options_tab_1_page_3_button,  options_tab_1_pages,  OPTIONS_TAB_1_PAGE_3_TEXT,  OPTIONS_TAB_1_PAGE_3_RECT,  OPTIONS_TAB_1_PAGE_HALF_WIDTH,  OPTIONS_TAB_1_PAGE_3_DESC_TEXT,  newmenu_options_tab_1_page_3)
+        ITEM_PAGE_BUTTON(options_tab_1_page_4_button,  options_tab_1_pages,  OPTIONS_TAB_1_PAGE_4_TEXT,  OPTIONS_TAB_1_PAGE_4_RECT,  OPTIONS_TAB_1_PAGE_HALF_WIDTH,  OPTIONS_TAB_1_PAGE_4_DESC_TEXT,  newmenu_options_tab_1_page_4)
+        ITEM_PAGE_BUTTON(options_tab_1_page_5_button,  options_tab_1_pages,  OPTIONS_TAB_1_PAGE_5_TEXT,  OPTIONS_TAB_1_PAGE_5_RECT,  OPTIONS_TAB_1_PAGE_HALF_WIDTH,  OPTIONS_TAB_1_PAGE_5_DESC_TEXT,  newmenu_options_tab_1_page_5)
+
+        // Page body rows.
+        // Page 1
+        // TEXT
+        ROW_TEXT(TAB1_PAGE1, 1, "Text", "ROW_TEXT")
+
+        // TEXT2
+        ROW_TEXT2(TAB1_PAGE1, 2,
+            "Text 2",
+            "Secondary text",
+            "ROW_TEXT2")
+
+        // SECTION
+        ROW_SECTION(TAB1_PAGE1, 4,
+            "Section",
+            "ROW_SECTION")
+
+        // SECTION2
+        ROW_SECTION2(TAB1_PAGE1, 5,
+            "Section 2",
+            "Secondary text",
+            "ROW_SECTION2")
+
+        // YESNO
+        ROW_YESNO(TAB1_PAGE1, 7,
+            "Yes/No",
+            "ROW_YESNO",
+            "cg_drawFPS",
+            ACT_NONE)
+
+        // CHECKBOX
+        ROW_CHECKBOX(TAB1_PAGE1, 8,
+            "Checkbox",
+            "ROW_CHECKBOX",
+            "cg_strafeHelper",
+            4,
+            ACT_NONE)
+
+        // MULTI (string)
+        ROW_MULTI(TAB1_PAGE1, 9,
+            "Multi",
+            "ROW_MULTI",
+            "ui_r_texturemode",
+            { "Bilinear" "GL_LINEAR_MIPMAP_NEAREST" "Trilinear" "GL_LINEAR_MIPMAP_LINEAR" },
+            ACT_DIRTY)
+
+        // MULTI (float)
+        ROW_MULTIFL(TAB1_PAGE1, 10,
+            "Multi Float",
+            "ROW_MULTIFL",
+            "ui_r_picmip",
+            { "Low" 3 "Medium" 2 "High" 1 "Very High" 0 },
+            ACT_RESTART)
+
+        // MULTI (feeder)
+        ROW_MULTI_FEEDER(TAB1_PAGE1, 11,
+            "Feeder",
+            "ROW_MULTI_FEEDER",
+            "ui_language",
+            40,
+            ACT_NONE)
+
+        // NUMERIC
+        ROW_NUMERIC(TAB1_PAGE1, 12,
+            "Numeric",
+            "ROW_NUMERIC",
+            "cg_fov",
+            ACT_NONE)
+
+        // EDITFIELD
+        ROW_EDITFIELD(TAB1_PAGE1, 13,
+            "Editfield",
+            "ROW_EDITFIELD",
+            "name",
+            MAX_CHARS,
+            ACT_NONE)
+
+        // SLIDER FLOAT
+        ROW_SLIDERFL(TAB1_PAGE1, 14,
+            "Slider Float",
+            "ROW_SLIDERFL",
+            "ui_r_gamma",
+            1.0,
+            0.5,
+            3.0,
+            ACT_DIRTY)
+
+        // SLIDER INT
+        ROW_SLIDERINT(TAB1_PAGE1, 15,
+            "Slider Int",
+            "ROW_SLIDERINT",
+            "cg_crosshairSize",
+            24,
+            8,
+            64,
+            ACT_NONE)
+
+        // BIND
+        ROW_BIND(TAB1_PAGE1, 16,
+            "Bind",
+            "ROW_BIND",
+            "+scores",
+            ACT_NONE)
+
+        // CMD
+        ROW_CMD(TAB1_PAGE1, 17,
+            "Command",
+            "ROW_CMD",
+            "echo test")
+
+        // ACTION
+        ROW_ACTION(TAB1_PAGE1, 18,
+            "Action",
+            "ROW_ACTION",
+            setcvar ui_newmenu_action_test 1 ;)
+
+        // DIRTY
+        ROW_YESNO(TAB1_PAGE1, 19,
+            "Dirty",
+            "ACT_DIRTY",
+            "cg_simpleItems",
+            ACT_DIRTY)
+
+        // RESTART
+        ROW_YESNO(TAB1_PAGE1, 20,
+            "Restart",
+            "ACT_RESTART",
+            "r_fullscreen",
+            ACT_RESTART)
+
+        // Leave some empty rows to check spacing
+        ROW_TEXT(TAB1_PAGE1, 21, "21", "21")
+        ROW_TEXT(TAB1_PAGE1, 22, "22", "22")
+        ROW_TEXT(TAB1_PAGE1, 23, "23", "23")
+        ROW_TEXT(TAB1_PAGE1, 24, "24", "24")
+
+        // Page 2 - ROW_* _EX variants and two-line variants
+        ROW_TEXT_EX(TAB1_PAGE2, 1, "Text EX", "ROW_TEXT_EX", cvarTest cg_drawFPS showCvar { 1 })
+        ROW_SECTION_EX(TAB1_PAGE2, 2, "Section EX", "ROW_SECTION_EX", cvarTest cg_drawTimer hideCvar { 1 })
+
+        ROW_MULTI_EX(TAB1_PAGE2, 3,
+            "Multi EX", "ROW_MULTI_EX",
+            "ui_r_texturemode",
+            { "Bilinear" "GL_LINEAR_MIPMAP_NEAREST" "Trilinear" "GL_LINEAR_MIPMAP_LINEAR" },
+            cvarTest cg_dynamicCrosshair enableCvar { 1 },
+            ACT_DIRTY)
+
+        ROW_MULTIFL_EX(TAB1_PAGE2, 4,
+            "Multi Float EX", "ROW_MULTIFL_EX",
+            "ui_r_picmip",
+            { "Low" 3 "Medium" 2 "High" 1 "Very High" 0 },
+            cvarTest cg_crosshairIdentifyTarget disableCvar { 1 },
+            ACT_RESTART)
+
+        ROW_MULTI_FEEDER_EX(TAB1_PAGE2, 5,
+            "Feeder EX", "ROW_MULTI_FEEDER_EX",
+            "ui_language", 40,
+            cvarTest cg_drawFPS showCvar { 1 },
+            ACT_NONE)
+
+        ROW_NUMERIC_EX(TAB1_PAGE2, 6, "Numeric EX", "ROW_NUMERIC_EX", "cg_fov", cvarTest cg_dynamicCrosshair enableCvar { 1 }, ACT_NONE)
+        ROW_SLIDERFL_EX(TAB1_PAGE2, 7, "Slider Float EX", "ROW_SLIDERFL_EX", "ui_r_gamma", 1.0, 0.5, 3.0, cvarTest cg_dynamicCrosshair enableCvar { 1 }, ACT_DIRTY)
+        ROW_SLIDERINT_EX(TAB1_PAGE2, 8, "Slider Int EX", "ROW_SLIDERINT_EX", "cg_crosshairSize", 24, 8, 64, cvarTest cg_dynamicCrosshair enableCvar { 1 }, ACT_NONE)
+        ROW_CHECKBOX_EX(TAB1_PAGE2, 9, "Checkbox EX", "ROW_CHECKBOX_EX", "cg_strafeHelper", 4, cvarTest cg_dynamicCrosshair enableCvar { 1 }, ACT_NONE)
+        ROW_YESNO_EX(TAB1_PAGE2, 10, "Yes/No EX", "ROW_YESNO_EX", "cg_drawFPS", cvarTest cg_dynamicCrosshair enableCvar { 1 }, ACT_NONE)
+        ROW_EDITFIELD_EX(TAB1_PAGE2, 11, "Editfield EX", "ROW_EDITFIELD_EX", "name", MAX_CHARS, cvarTest cg_dynamicCrosshair enableCvar { 1 }, ACT_NONE)
+        ROW_BIND_EX(TAB1_PAGE2, 12, "Bind EX", "ROW_BIND_EX", "+scores", cvarTest cg_dynamicCrosshair enableCvar { 1 }, ACT_NONE)
+
+        ROW_ACTION_EX(TAB1_PAGE2, 13,
+            "Action EX", "ROW_ACTION_EX",
+            cvarTest cg_dynamicCrosshair enableCvar { 1 },
+            setcvar ui_newmenu_action_ex_test 1 ;)
+
+        ROW_TEXT2(TAB1_PAGE2, 15, "Text2", "Second line", "ROW_TEXT2")
+        ROW_SECTION2(TAB1_PAGE2, 17, "Section2", "Second line", "ROW_SECTION2")
+        ROW_TEXT2Y(TAB1_PAGE2, 19, "Text2Y", "Custom Y", 8, "ROW_TEXT2Y")
+        ROW_SECTION2Y(TAB1_PAGE2, 21, "Section2Y", "Custom Y", 8, "ROW_SECTION2Y")
+        ROW_BUTTON(TAB1_PAGE2, 23, "Button Alias", "ROW_BUTTON", setcvar ui_newmenu_button_test 1 ;)
+        ROW_CMD(TAB1_PAGE2, 24, "Command", "ROW_CMD", "echo ROW_CMD_PAGE2")
+
+
+        // Page 3 - standalone ITEM_* widget helpers
+        ITEM_SHADER(tab1_page3_shader, TAB1_PAGE3, BODY_FULL_X BODY_ROW_1_Y BODY_FULL_W BODY_ROW_H, "white", INVISIBLE)
+        ITEM_SHADER_EX(tab1_page3_shader_ex, TAB1_PAGE3, BODY_FULL_X BODY_ROW_2_Y BODY_FULL_W BODY_ROW_H, "white", INVISIBLE, cvarTest cg_drawFPS showCvar { 1 })
+        ITEM_IMAGE(tab1_page3_image, TAB1_PAGE3, BODY_FULL_X BODY_ROW_3_Y BODY_FULL_W BODY_ROW_H, "white", INVISIBLE)
+        ITEM_IMAGE_EX(tab1_page3_image_ex, TAB1_PAGE3, BODY_FULL_X BODY_ROW_4_Y BODY_FULL_W BODY_ROW_H, "white", INVISIBLE, cvarTest cg_drawFPS showCvar { 1 })
+        ITEM_IMAGE_COLOR(tab1_page3_image_color, TAB1_PAGE3, BODY_FULL_X BODY_ROW_5_Y BODY_FULL_W BODY_ROW_H, "white", COL_TEXT_PRIMARY, INVISIBLE)
+
+        ITEM_OWNERDRAW(tab1_page3_ownerdraw, TAB1_PAGE3, BODY_FULL_X BODY_ROW_6_Y BODY_FULL_W BODY_ROW_H, UI_VERSION, INVISIBLE)
+        ITEM_OWNERDRAW_EX(tab1_page3_ownerdraw_ex, TAB1_PAGE3, BODY_FULL_X BODY_ROW_7_Y BODY_FULL_W BODY_ROW_H, UI_GLINFO, INVISIBLE, cvarTest cg_drawFPS showCvar { 1 })
+
+        ITEM_LISTBOX_TEXT(
+            tab1_page3_listbox,
+            TAB1_PAGE3,
+            BODY_FULL_X BODY_ROW_8_Y BODY_FULL_W BODY_ROW_H2,
+            FEEDER_SERVERS,
+            BODY_ROW_H,
+            INVISIBLE)
+
+        ITEM_LISTBOX_TEXT_EX(
+            tab1_page3_listbox_ex,
+            TAB1_PAGE3,
+            BODY_FULL_X BODY_ROW_10_Y BODY_FULL_W BODY_ROW_H2,
+            FEEDER_SERVERS,
+            BODY_ROW_H,
+            INVISIBLE,
+            cvarTest cg_drawFPS showCvar { 1 })
+
+        ITEM_MODEL(tab1_page3_model, TAB1_PAGE3, BODY_FULL_X BODY_ROW_12_Y BODY_FULL_W BODY_ROW_H2, "models/players/kyle/model.glm", INVISIBLE)
+        ITEM_MODEL_EX(tab1_page3_model_ex, TAB1_PAGE3, BODY_FULL_X BODY_ROW_14_Y BODY_FULL_W BODY_ROW_H2, "models/players/kyle/model.glm", INVISIBLE, cvarTest cg_drawFPS showCvar { 1 })
+
+        ITEM_TEXTSCROLL(tab1_page3_textscroll, TAB1_PAGE3, BODY_FULL_X BODY_ROW_16_Y BODY_FULL_W BODY_ROW_H2, "Static textscroll fixture with enough words to wrap across multiple lines in the menu panel.", 32, BODY_ROW_H, INVISIBLE)
+        ITEM_TEXTSCROLL_EX(tab1_page3_textscroll_ex, TAB1_PAGE3, BODY_FULL_X BODY_ROW_18_Y BODY_FULL_W BODY_ROW_H2, "Static textscroll EX fixture with a condition and enough words to wrap.", 32, BODY_ROW_H, INVISIBLE, cvarTest cg_drawFPS showCvar { 1 })
+        ITEM_TEXTSCROLL_CVAR(tab1_page3_textscroll_cvar, TAB1_PAGE3, BODY_FULL_X BODY_ROW_20_Y BODY_FULL_W BODY_ROW_H2, "ui_newmenu_textscroll_fixture", "Cvar textscroll fallback text.", 32, BODY_ROW_H, INVISIBLE)
+        ITEM_TEXTSCROLL_CVAR_EX(tab1_page3_textscroll_cvar_ex, TAB1_PAGE3, BODY_FULL_X BODY_ROW_22_Y BODY_FULL_W BODY_ROW_H2, "ui_newmenu_textscroll_fixture", "Cvar textscroll EX fallback text.", 32, BODY_ROW_H, INVISIBLE, cvarTest cg_drawFPS showCvar { 1 })
+
+        // Page 4 - direct-use helper fixtures
+        ROW_ACTION(TAB1_PAGE4, 1, "ACT_NONE", "Empty action fragment", ACT_NONE)
+        ROW_ACTION(TAB1_PAGE4, 2, "ACT_DIRTY", "MARK_VIDEO_DIRTY", ACT_DIRTY)
+        ROW_ACTION(TAB1_PAGE4, 3, "ACT_RESTART", "MARK_VIDEO_RESTART", ACT_RESTART)
+
+        itemDef
+        {
+            name                tab1_page4_act_cmd
+            group               TAB1_PAGE4
+            text                "ACT_CMD"
+            type                ITEM_TYPE_BUTTON
+            rect                BODY_FULL_X BODY_ROW_4_Y BODY_FULL_W BODY_ROW_H
+            style               WINDOW_STYLE_FILLED
+            textalign           ITEM_ALIGN_CENTER
+            textalignx          MENU_WIDTH_HALF
+            textaligny          BODY_OPTION_OFFSET
+            textscale           BODY_OPTION_SCALE
+            font                BODY_OPTION_FONT
+            forecolor           COL_TEXT_PRIMARY
+            backcolor           COL_ROW_CONTROL_BACK
+            border              1
+            bordercolor         COL_ROW_CONTROL_BORDER
+            visible             INVISIBLE
+            descText            "Direct ACT_CMD helper"
+            MAKE_INTERACTIVE(BODY_FULL_X BODY_ROW_4_Y BODY_FULL_W BODY_ROW_H)
+            action
+            {
+                play            "sound/interface/button1" ;
+                ACT_CMD("echo direct_act_cmd")
+            }
+        }
+
+        itemDef
+        {
+            name                tab1_page4_act_open
+            group               TAB1_PAGE4
+            text                "ACT_OPEN"
+            type                ITEM_TYPE_BUTTON
+            rect                BODY_FULL_X BODY_ROW_5_Y BODY_FULL_W BODY_ROW_H
+            style               WINDOW_STYLE_FILLED
+            textalign           ITEM_ALIGN_CENTER
+            textalignx          MENU_WIDTH_HALF
+            textaligny          BODY_OPTION_OFFSET
+            textscale           BODY_OPTION_SCALE
+            font                BODY_OPTION_FONT
+            forecolor           COL_TEXT_PRIMARY
+            backcolor           COL_ROW_CONTROL_BACK
+            border              1
+            bordercolor         COL_ROW_CONTROL_BORDER
+            visible             INVISIBLE
+            descText            "Direct ACT_OPEN helper"
+            MAKE_INTERACTIVE(BODY_FULL_X BODY_ROW_5_Y BODY_FULL_W BODY_ROW_H)
+            action
+            {
+                play            "sound/interface/button1" ;
+                ACT_OPEN(NEWMENU_VIDEO_RESTART)
+            }
+        }
+
+        itemDef
+        {
+            name                tab1_page4_act_close
+            group               TAB1_PAGE4
+            text                "ACT_CLOSE"
+            type                ITEM_TYPE_BUTTON
+            rect                BODY_FULL_X BODY_ROW_6_Y BODY_FULL_W BODY_ROW_H
+            style               WINDOW_STYLE_FILLED
+            textalign           ITEM_ALIGN_CENTER
+            textalignx          MENU_WIDTH_HALF
+            textaligny          BODY_OPTION_OFFSET
+            textscale           BODY_OPTION_SCALE
+            font                BODY_OPTION_FONT
+            forecolor           COL_TEXT_PRIMARY
+            backcolor           COL_ROW_CONTROL_BACK
+            border              1
+            bordercolor         COL_ROW_CONTROL_BORDER
+            visible             INVISIBLE
+            descText            "Direct ACT_CLOSE helper"
+            MAKE_INTERACTIVE(BODY_FULL_X BODY_ROW_6_Y BODY_FULL_W BODY_ROW_H)
+            action
+            {
+                play            "sound/interface/button1" ;
+                ACT_CLOSE(NEWMENU_VIDEO_RESTART)
+            }
+        }
+
+        TEXT_BOX_BODY(tab1_page4_choices_1_label, TAB1_PAGE4, BODY_LABEL_X BODY_ROW_7_Y BODY_COLUMN_W BODY_ROW_H, INVISIBLE, "ROW_CHOICES_1", "Direct cvarStrList helper")
+        itemDef { type ITEM_TYPE_MULTI cvar "cg_drawGun" cvarStrList ROW_CHOICES_1("Drawn", "1") ITEM_BODY_CONTROL_IMPL(tab1_page4_choices_1, TAB1_PAGE4, BODY_CONTROL_X BODY_ROW_7_Y BODY_COLUMN_W BODY_ROW_H, "Direct ROW_CHOICES_1 helper", ACT_NONE) }
+
+        TEXT_BOX_BODY(tab1_page4_choices_2_label, TAB1_PAGE4, BODY_LABEL_X BODY_ROW_8_Y BODY_COLUMN_W BODY_ROW_H, INVISIBLE, "ROW_CHOICES_2", "Direct cvarStrList helper")
+        itemDef { type ITEM_TYPE_MULTI cvar "cg_dynamicCrosshair" cvarStrList ROW_CHOICES_2("Off", "0", "On", "1") ITEM_BODY_CONTROL_IMPL(tab1_page4_choices_2, TAB1_PAGE4, BODY_CONTROL_X BODY_ROW_8_Y BODY_COLUMN_W BODY_ROW_H, "Direct ROW_CHOICES_2 helper", ACT_NONE) }
+
+        TEXT_BOX_BODY(tab1_page4_choices_3_label, TAB1_PAGE4, BODY_LABEL_X BODY_ROW_9_Y BODY_COLUMN_W BODY_ROW_H, INVISIBLE, "ROW_CHOICES_3", "Direct cvarStrList helper")
+        itemDef { type ITEM_TYPE_MULTI cvar "cg_drawFPS" cvarStrList ROW_CHOICES_3("Off", "0", "On", "1", "Small", "2") ITEM_BODY_CONTROL_IMPL(tab1_page4_choices_3, TAB1_PAGE4, BODY_CONTROL_X BODY_ROW_9_Y BODY_COLUMN_W BODY_ROW_H, "Direct ROW_CHOICES_3 helper", ACT_NONE) }
+
+        TEXT_BOX_BODY(tab1_page4_choices_4_label, TAB1_PAGE4, BODY_LABEL_X BODY_ROW_10_Y BODY_COLUMN_W BODY_ROW_H, INVISIBLE, "ROW_CHOICES_4", "Direct cvarStrList helper")
+        itemDef { type ITEM_TYPE_MULTI cvar "cg_drawTimer" cvarStrList ROW_CHOICES_4("Off", "0", "On", "1", "Small", "2", "HUD", "7") ITEM_BODY_CONTROL_IMPL(tab1_page4_choices_4, TAB1_PAGE4, BODY_CONTROL_X BODY_ROW_10_Y BODY_COLUMN_W BODY_ROW_H, "Direct ROW_CHOICES_4 helper", ACT_NONE) }
+
+        TEXT_BOX_BODY(tab1_page4_choices_5_label, TAB1_PAGE4, BODY_LABEL_X BODY_ROW_11_Y BODY_COLUMN_W BODY_ROW_H, INVISIBLE, "ROW_CHOICES_5", "Direct cvarStrList helper")
+        itemDef { type ITEM_TYPE_MULTI cvar "cg_drawcrosshair" cvarStrList ROW_CHOICES_5("Off", "0", "One", "1", "Two", "2", "Three", "3", "Four", "4") ITEM_BODY_CONTROL_IMPL(tab1_page4_choices_5, TAB1_PAGE4, BODY_CONTROL_X BODY_ROW_11_Y BODY_COLUMN_W BODY_ROW_H, "Direct ROW_CHOICES_5 helper", ACT_NONE) }
+
+        TEXT_BOX_BODY(tab1_page4_choices_6_label, TAB1_PAGE4, BODY_LABEL_X BODY_ROW_12_Y BODY_COLUMN_W BODY_ROW_H, INVISIBLE, "ROW_CHOICES_6", "Direct cvarStrList helper")
+        itemDef { type ITEM_TYPE_MULTI cvar "cg_drawcrosshair" cvarStrList ROW_CHOICES_6("Off", "0", "One", "1", "Two", "2", "Three", "3", "Four", "4", "Five", "5") ITEM_BODY_CONTROL_IMPL(tab1_page4_choices_6, TAB1_PAGE4, BODY_CONTROL_X BODY_ROW_12_Y BODY_COLUMN_W BODY_ROW_H, "Direct ROW_CHOICES_6 helper", ACT_NONE) }
+
+        TEXT_BOX_BODY(tab1_page4_choices_7_label, TAB1_PAGE4, BODY_LABEL_X BODY_ROW_13_Y BODY_COLUMN_W BODY_ROW_H, INVISIBLE, "ROW_CHOICES_7", "Direct cvarStrList helper")
+        itemDef { type ITEM_TYPE_MULTI cvar "cg_drawcrosshair" cvarStrList ROW_CHOICES_7("Off", "0", "One", "1", "Two", "2", "Three", "3", "Four", "4", "Five", "5", "Six", "6") ITEM_BODY_CONTROL_IMPL(tab1_page4_choices_7, TAB1_PAGE4, BODY_CONTROL_X BODY_ROW_13_Y BODY_COLUMN_W BODY_ROW_H, "Direct ROW_CHOICES_7 helper", ACT_NONE) }
+
+        TEXT_BOX_BODY(tab1_page4_choices_8_label, TAB1_PAGE4, BODY_LABEL_X BODY_ROW_14_Y BODY_COLUMN_W BODY_ROW_H, INVISIBLE, "ROW_CHOICES_8", "Direct cvarStrList helper")
+        itemDef { type ITEM_TYPE_MULTI cvar "cg_drawcrosshair" cvarStrList ROW_CHOICES_8("Off", "0", "One", "1", "Two", "2", "Three", "3", "Four", "4", "Five", "5", "Six", "6", "Seven", "7") ITEM_BODY_CONTROL_IMPL(tab1_page4_choices_8, TAB1_PAGE4, BODY_CONTROL_X BODY_ROW_14_Y BODY_COLUMN_W BODY_ROW_H, "Direct ROW_CHOICES_8 helper", ACT_NONE) }
+
+        itemDef
+        {
+            name                tab1_page4_cond_show
+            group               TAB1_PAGE4
+            text                "ROW_COND_SHOW"
+            type                ITEM_TYPE_BUTTON
+            rect                BODY_FULL_X BODY_ROW_15_Y BODY_FULL_W BODY_ROW_H
+            style               WINDOW_STYLE_FILLED
+            textalign           ITEM_ALIGN_CENTER
+            textalignx          MENU_WIDTH_HALF
+            textaligny          BODY_OPTION_OFFSET
+            textscale           BODY_OPTION_SCALE
+            font                BODY_OPTION_FONT
+            forecolor           COL_TEXT_PRIMARY
+            backcolor           COL_ROW_CONTROL_BACK
+            border              1
+            bordercolor         COL_ROW_CONTROL_BORDER
+            visible             INVISIBLE
+            descText            "Visible while cg_drawFPS is 0"
+            ROW_COND_SHOW(cg_drawFPS, { 0 })
+            MAKE_INTERACTIVE(BODY_FULL_X BODY_ROW_15_Y BODY_FULL_W BODY_ROW_H)
+            action { play "sound/interface/button1" ; }
+        }
+
+        itemDef
+        {
+            name                tab1_page4_cond_hide
+            group               TAB1_PAGE4
+            text                "ROW_COND_HIDE"
+            type                ITEM_TYPE_BUTTON
+            rect                BODY_FULL_X BODY_ROW_16_Y BODY_FULL_W BODY_ROW_H
+            style               WINDOW_STYLE_FILLED
+            textalign           ITEM_ALIGN_CENTER
+            textalignx          MENU_WIDTH_HALF
+            textaligny          BODY_OPTION_OFFSET
+            textscale           BODY_OPTION_SCALE
+            font                BODY_OPTION_FONT
+            forecolor           COL_TEXT_PRIMARY
+            backcolor           COL_ROW_CONTROL_BACK
+            border              1
+            bordercolor         COL_ROW_CONTROL_BORDER
+            visible             INVISIBLE
+            descText            "Hidden while cg_drawTimer is 1"
+            ROW_COND_HIDE(cg_drawTimer, { 1 })
+            MAKE_INTERACTIVE(BODY_FULL_X BODY_ROW_16_Y BODY_FULL_W BODY_ROW_H)
+            action { play "sound/interface/button1" ; }
+        }
+
+        itemDef
+        {
+            name                tab1_page4_cond_enable
+            group               TAB1_PAGE4
+            text                "ROW_COND_ENABLE"
+            type                ITEM_TYPE_BUTTON
+            rect                BODY_FULL_X BODY_ROW_17_Y BODY_FULL_W BODY_ROW_H
+            style               WINDOW_STYLE_FILLED
+            textalign           ITEM_ALIGN_CENTER
+            textalignx          MENU_WIDTH_HALF
+            textaligny          BODY_OPTION_OFFSET
+            textscale           BODY_OPTION_SCALE
+            font                BODY_OPTION_FONT
+            forecolor           COL_TEXT_PRIMARY
+            backcolor           COL_ROW_CONTROL_BACK
+            border              1
+            bordercolor         COL_ROW_CONTROL_BORDER
+            visible             INVISIBLE
+            descText            "Enabled while cg_dynamicCrosshair is 0"
+            ROW_COND_ENABLE(cg_dynamicCrosshair, { 0 })
+            MAKE_INTERACTIVE(BODY_FULL_X BODY_ROW_17_Y BODY_FULL_W BODY_ROW_H)
+            action { play "sound/interface/button1" ; }
+        }
+
+        itemDef
+        {
+            name                tab1_page4_cond_disable
+            group               TAB1_PAGE4
+            text                "ROW_COND_DISABLE"
+            type                ITEM_TYPE_BUTTON
+            rect                BODY_FULL_X BODY_ROW_18_Y BODY_FULL_W BODY_ROW_H
+            style               WINDOW_STYLE_FILLED
+            textalign           ITEM_ALIGN_CENTER
+            textalignx          MENU_WIDTH_HALF
+            textaligny          BODY_OPTION_OFFSET
+            textscale           BODY_OPTION_SCALE
+            font                BODY_OPTION_FONT
+            forecolor           COL_TEXT_PRIMARY
+            backcolor           COL_ROW_CONTROL_BACK
+            border              1
+            bordercolor         COL_ROW_CONTROL_BORDER
+            visible             INVISIBLE
+            descText            "Disabled while cg_crosshairIdentifyTarget is 1"
+            ROW_COND_DISABLE(cg_crosshairIdentifyTarget, { 1 })
+            MAKE_INTERACTIVE(BODY_FULL_X BODY_ROW_18_Y BODY_FULL_W BODY_ROW_H)
+            action { play "sound/interface/button1" ; }
+        }
+
+        ROW_YESNO(TAB1_PAGE4, 20, "Draw FPS", "Toggle cg_drawFPS", "cg_drawFPS", ACT_NONE)
+        ROW_YESNO(TAB1_PAGE4, 21, "Draw Timer", "Toggle cg_drawTimer", "cg_drawTimer", ACT_NONE)
+        ROW_YESNO(TAB1_PAGE4, 22, "Dynamic Crosshair", "Toggle cg_dynamicCrosshair", "cg_dynamicCrosshair", ACT_NONE)
+        ROW_YESNO(TAB1_PAGE4, 23, "Identify Target", "Toggle cg_crosshairIdentifyTarget", "cg_crosshairIdentifyTarget", ACT_NONE)
+        ROW_TEXT(TAB1_PAGE4, 24, "Direct Only", "Nested helper macros are not row arguments")
+
+
+        // Page 5 - low-level body wrapper fixtures
+        ROW_SECTION(TAB1_PAGE5, 1, "Low-Level Body", "Direct ITEM_BODY_* wrappers")
+
+        TEXT_BOX_BODY(tab1_page5_body_generic_label, TAB1_PAGE5, BODY_LABEL_X BODY_ROW_2_Y BODY_COLUMN_W BODY_ROW_H, INVISIBLE, "ITEM_BODY_GENERIC", "Back-compat ACT_NONE body")
+        itemDef { type ITEM_TYPE_BUTTON ITEM_BODY_GENERIC(tab1_page5_body_generic, TAB1_PAGE5, BODY_CONTROL_X BODY_ROW_2_Y BODY_COLUMN_W BODY_ROW_H, "ITEM_BODY_GENERIC") }
+
+        TEXT_BOX_BODY(tab1_page5_body_d_label, TAB1_PAGE5, BODY_LABEL_X BODY_ROW_3_Y BODY_COLUMN_W BODY_ROW_H, INVISIBLE, "ITEM_BODY_D", "Back-compat dirty body")
+        itemDef { type ITEM_TYPE_BUTTON ITEM_BODY_D(tab1_page5_body_d, TAB1_PAGE5, BODY_CONTROL_X BODY_ROW_3_Y BODY_COLUMN_W BODY_ROW_H, "ITEM_BODY_D") }
+
+        TEXT_BOX_BODY(tab1_page5_body_dr_label, TAB1_PAGE5, BODY_LABEL_X BODY_ROW_4_Y BODY_COLUMN_W BODY_ROW_H, INVISIBLE, "ITEM_BODY_DR", "Back-compat restart body")
+        itemDef { type ITEM_TYPE_BUTTON ITEM_BODY_DR(tab1_page5_body_dr, TAB1_PAGE5, BODY_CONTROL_X BODY_ROW_4_Y BODY_COLUMN_W BODY_ROW_H, "ITEM_BODY_DR") }
+
+        TEXT_BOX_BODY(tab1_page5_body_action_label, TAB1_PAGE5, BODY_LABEL_X BODY_ROW_5_Y BODY_COLUMN_W BODY_ROW_H, INVISIBLE, "ACTION_IMPL", "Custom action body")
+        itemDef { type ITEM_TYPE_BUTTON ITEM_BODY_ACTION_IMPL(tab1_page5_body_action, TAB1_PAGE5, BODY_CONTROL_X BODY_ROW_5_Y BODY_COLUMN_W BODY_ROW_H, "ITEM_BODY_ACTION_IMPL", setcvar ui_newmenu_body_action_impl 1 ;) }
+
+        TEXT_BOX_BODY(tab1_page5_body_cmd_label, TAB1_PAGE5, BODY_LABEL_X BODY_ROW_6_Y BODY_COLUMN_W BODY_ROW_H, INVISIBLE, "CMD_IMPL", "Exec command body")
+        itemDef { type ITEM_TYPE_BUTTON ITEM_BODY_CMD_IMPL(tab1_page5_body_cmd, TAB1_PAGE5, BODY_CONTROL_X BODY_ROW_6_Y BODY_COLUMN_W BODY_ROW_H, "ITEM_BODY_CMD_IMPL", "echo body_cmd_impl") }
+
+        TEXT_BOX_BODY(tab1_page5_body_button_label, TAB1_PAGE5, BODY_LABEL_X BODY_ROW_7_Y BODY_COLUMN_W BODY_ROW_H, INVISIBLE, "BUTTON_IMPL", "Button alias body")
+        itemDef { type ITEM_TYPE_BUTTON ITEM_BODY_BUTTON_IMPL(tab1_page5_body_button, TAB1_PAGE5, BODY_CONTROL_X BODY_ROW_7_Y BODY_COLUMN_W BODY_ROW_H, "ITEM_BODY_BUTTON_IMPL", setcvar ui_newmenu_body_button_impl 1 ;) }
+
+        TEXT_BOX_BODY(tab1_page5_body_generic_cond_label, TAB1_PAGE5, BODY_LABEL_X BODY_ROW_8_Y BODY_COLUMN_W BODY_ROW_H, INVISIBLE, "GENERIC_COND", "Conditional ACT_NONE body")
+        itemDef { type ITEM_TYPE_BUTTON ITEM_BODY_GENERIC_COND(tab1_page5_body_generic_cond, TAB1_PAGE5, BODY_CONTROL_X BODY_ROW_8_Y BODY_COLUMN_W BODY_ROW_H, "ITEM_BODY_GENERIC_COND", cvarTest cg_drawFPS showCvar { 0 }) }
+
+        TEXT_BOX_BODY(tab1_page5_body_d_cond_label, TAB1_PAGE5, BODY_LABEL_X BODY_ROW_9_Y BODY_COLUMN_W BODY_ROW_H, INVISIBLE, "D_COND", "Conditional dirty body")
+        itemDef { type ITEM_TYPE_BUTTON ITEM_BODY_D_COND(tab1_page5_body_d_cond, TAB1_PAGE5, BODY_CONTROL_X BODY_ROW_9_Y BODY_COLUMN_W BODY_ROW_H, "ITEM_BODY_D_COND", cvarTest cg_dynamicCrosshair enableCvar { 0 }) }
+
+        TEXT_BOX_BODY(tab1_page5_body_dr_cond_label, TAB1_PAGE5, BODY_LABEL_X BODY_ROW_10_Y BODY_COLUMN_W BODY_ROW_H, INVISIBLE, "DR_COND", "Conditional restart body")
+        itemDef { type ITEM_TYPE_BUTTON ITEM_BODY_DR_COND(tab1_page5_body_dr_cond, TAB1_PAGE5, BODY_CONTROL_X BODY_ROW_10_Y BODY_COLUMN_W BODY_ROW_H, "ITEM_BODY_DR_COND", cvarTest cg_crosshairIdentifyTarget disableCvar { 1 }) }
+
+        TEXT_BOX_BODY(tab1_page5_body_action_cond_label, TAB1_PAGE5, BODY_LABEL_X BODY_ROW_11_Y BODY_COLUMN_W BODY_ROW_H, INVISIBLE, "ACTION_COND", "Conditional custom action body")
+        itemDef { type ITEM_TYPE_BUTTON ITEM_BODY_ACTION_COND_IMPL(tab1_page5_body_action_cond, TAB1_PAGE5, BODY_CONTROL_X BODY_ROW_11_Y BODY_COLUMN_W BODY_ROW_H, "ITEM_BODY_ACTION_COND_IMPL", cvarTest cg_drawTimer hideCvar { 1 }, setcvar ui_newmenu_body_action_cond 1 ;) }
+
+        ITEM_BODY_TEXT_BOX(tab1_page5_direct_text_box, TAB1_PAGE5, BODY_ROW_12_Y, "ITEM_BODY_TEXT_BOX", "Direct body text wrapper")
+        ITEM_BODY_TEXT_BOX_EX(tab1_page5_direct_text_box_ex, TAB1_PAGE5, BODY_ROW_13_Y, "ITEM_BODY_TEXT_BOX_EX", "Direct body text EX wrapper", cvarTest cg_drawFPS showCvar { 0 })
+
+        TEXT_BOX_BODY(tab1_page5_text_box_body, TAB1_PAGE5, BODY_FULL_X BODY_ROW_15_Y BODY_FULL_W BODY_ROW_H, INVISIBLE, "TEXT_BOX_BODY", "Direct full text box")
+        TEXT_BOX_BODY_EX(tab1_page5_text_box_body_ex, TAB1_PAGE5, BODY_FULL_X BODY_ROW_16_Y BODY_FULL_W BODY_ROW_H, INVISIBLE, "TEXT_BOX_BODY_EX", "Direct full text box EX", cvarTest cg_drawTimer hideCvar { 1 })
+        TEXT_BOX_BODY2(tab1_page5_text_box_body2, TAB1_PAGE5, BODY_FULL_X BODY_ROW_18_Y BODY_FULL_W BODY_ROW_H2, INVISIBLE, "TEXT_BOX_BODY2", "Second line", "Direct two-line text box")
+        TEXT_BOX_BODY2Y(tab1_page5_text_box_body2y, TAB1_PAGE5, BODY_FULL_X BODY_ROW_21_Y BODY_FULL_W BODY_ROW_H2, INVISIBLE, "TEXT_BOX_BODY2Y", "Y=8", 8, "Direct two-line text box custom Y")
+    }
+}
