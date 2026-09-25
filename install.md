@@ -313,7 +313,9 @@ Setting both values loads the mod from the beginning, including a custom UI, and
 
 ### When to use `vm_legacy`
 
-TaystJK first expects the newer OpenJK-style `GetModuleAPI` interface and normally falls back to the older `dllEntry`/`vmMain` interface. `vm_legacy` skips the newer interface for selected module slots. Use it when the particular native mod library requires the older interface or crashes while the engine probes it as a newer module; it does not enable QVM support.
+You should not need it. For each native module, TaystJK looks for the newer OpenJK-style `GetModuleAPI` entry point and, when the library does not export one, loads it through the older `dllEntry`/`vmMain` interface instead ([`sys_main.cpp`](https://github.com/taysta/TaystJK/blame/60fcb9cf68d38c3fede638fac4a8e42eb1123eaf/shared/sys/sys_main.cpp#L628), [`cl_uiapi.cpp`](https://github.com/taysta/TaystJK/blame/60fcb9cf68d38c3fede638fac4a8e42eb1123eaf/codemp/client/cl_uiapi.cpp#L1485)). Older mods such as JA+ load this way with no setting. UI libraries built for other OpenJK-based clients load through `GetModuleAPI`: the engine only asks a UI library for cvar help when the library says it provides it, and otherwise uses its own descriptions ([`cl_uiapi.cpp`](https://github.com/taysta/TaystJK/blame/60fcb9cf68d38c3fede638fac4a8e42eb1123eaf/codemp/client/cl_uiapi.cpp#L1478)).
+
+`vm_legacy` forces the older interface for selected module slots, on a library that exports both. That matters in one case: the library's `GetModuleAPI` rejects the engine's API version, and the client stops with `GetGameAPI failed on` followed by the library name ([`cl_uiapi.cpp`](https://github.com/taysta/TaystJK/blame/60fcb9cf68d38c3fede638fac4a8e42eb1123eaf/codemp/client/cl_uiapi.cpp#L1475)). It still loads a native library; it does not enable QVM support.
 
 `vm_legacy` is a bitmask:
 
@@ -323,15 +325,9 @@ TaystJK first expects the newer OpenJK-style `GetModuleAPI` interface and normal
 | 1 | `2` | Client game (`cgame`). |
 | 2 | `4` | UI (`ui`). |
 
-Add values to force more than one module. For example, an older JA++ build with a legacy custom UI can be launched with:
+Add values to force more than one module, so `6` forces both `cgame` and UI. Put it on the command line, for example `+set vm_legacy 4` for the UI library: it is read when a module loads, and changing it afterwards does not convert a module that is already running.
 
-```text
-taystjk.x86_64.exe +set fs_game japlus +set fs_forcegame japlus +set vm_legacy 4
-```
-
-Use `vm_legacy 6` only when both the JA++ `cgame` and UI libraries require the legacy interface. Use `vm_legacy 0` for modern libraries, including JA++ builds that implement `GetModuleAPI`. Put this setting on the command line so it is applied before the UI and client-game modules load; changing it after a module has loaded does not convert that running module.
-
-If the console reports `VM_CreateLegacy: ... succeeded`, the requested legacy interface loaded. If it reports an architecture mismatch, a missing entry point, or repeated load failures, recheck the mod build and directory rather than trying unrelated bit values.
+If the console then reports `VM_CreateLegacy: ... succeeded`, the older interface loaded. If it reports `failed`, the library has no older interface; remove the setting and check that the mod build matches your platform.
 
 ## Steam playtime and overlay
 

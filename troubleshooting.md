@@ -99,14 +99,12 @@ keeping TaystJK separate from an older installation. The common case is a 32-bit
 library against a 64-bit client: run the 32-bit build if you want that mod's client-side
 pieces.
 
-**If the architecture already matches and it still crashes**, the mod is probably built
-against the older module API. The giveaway is that the client dies on the first console
-command you type. The fix is `vm_legacy`, set on the command line before the modules load;
-the install guide explains which bits to use for which module in
-[when to use `vm_legacy`](/TaystJK/install/#when-to-use-vm_legacy). Nothing detects this for
-you.
+**If the architecture already matches and it still crashes**, take a current build first.
+The engine picks between a mod's older and newer module interfaces by itself, so
+`vm_legacy` is not the fix for a crash
+([when to use `vm_legacy`](/TaystJK/install/#when-to-use-vm_legacy)).
 
-A third cause is the mod's own assets rather than its code. An oversized texture can
+The other common cause is the mod's own assets rather than its code. An oversized texture can
 exhaust a 32-bit client's memory while loading. If a single mod fails everywhere and others
 are fine, check it fails on another client too. If it does, it belongs with the mod's
 author; if only TaystJK fails, it is ours. See [where to report](/TaystJK/where-to-report/#before-you-send-it-elsewhere).
