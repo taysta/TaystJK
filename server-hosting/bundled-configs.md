@@ -1,7 +1,7 @@
 ---
 title: "Bundled server configs"
 layout: reference
-nav_order: 1
+nav_order: 5
 parent: "Server hosting"
 description: "The server.cfg, game modes, vote options and ban list in the Docker image, written for TaystJK's bundled jaPRO game module."
 toc: true
@@ -30,7 +30,7 @@ because dedicated builds leave `fs_forcegame` empty
 ([`files.cpp`](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/qcommon/files.cpp#L3913)).
 If you set `TJK_MOD` to another mod, none of these files load, and the server starts from
 that mod's own configuration instead; see
-[running another mod](/TaystJK/server-hosting/#run-the-taystjk-server-engine-with-another-mod).
+[running another mod](/TaystJK/server-hosting/run-a-server/#run-the-taystjk-server-engine-with-another-mod).
 
 Native releases do not include them. To use them outside Docker, copy the `.cfg` files
 from [`scripts/docker/`](https://github.com/taysta/TaystJK/tree/60fcb9cf68d38c3fede638fac4a8e42eb1123eaf/scripts/docker)
@@ -100,13 +100,8 @@ seta g_fullAdminPass "replace-with-another-secret"
 seta g_juniorAdminPass "and-a-third"
 ```
 
-An empty value disables that login: `amlogin` with an empty password only prints its usage
-([`g_cmds.c`](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/game/g_cmds.c#L4927)).
-Admin passwords are compared without regard to case
-([`g_cmds.c`](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/game/g_cmds.c#L4930)),
-so make them long rather than relying on capital letters. What each admin login may do is
-set by [`g_fullAdminLevel`](/TaystJK/reference/cvars/g_fulladminlevel-baac21c/) and
-`g_juniorAdminLevel` further down the same file.
+An empty value disables that login. [jaPRO server setup](/TaystJK/server-hosting/japro-setup/#admins)
+explains what the two admin logins grant and the other ways to give out admin rights.
 
 Keep `rconpassword` in `server.cfg`, on a line that starts with `set` or `seta`. When Docker
 stops the container, the run script sends `rcon quit` so the server shuts down cleanly
@@ -214,10 +209,8 @@ while options that change weapons or pickups on the map take effect after a `res
 
 To add an option, put a `set` line in `votes.cfg`, for example `set mymode "exec mymode"`.
 
-The vote only checks that a cvar of that name has a value
-([`g_cmds.c`](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/game/g_cmds.c#L3011)),
-so players can call `vstr` on any server cvar, not only these, and a passed vote runs its
-value as console commands. Keep that in mind before storing commands in cvars of your own.
+How voting works, including which votes the server allows and why a `vstr` vote can name
+any server cvar, is covered in [jaPRO server setup](/TaystJK/server-hosting/japro-setup/#voting).
 
 ## Bans
 
@@ -228,15 +221,8 @@ value as console commands. Keep that in mind before storing commands in cvars of
 - [`g_banIPs`](/TaystJK/reference/cvars/g_banips-5693b4b/) is the list itself. It ships
   commented out.
 
-Ban from the server console or through rcon with
-[`addip`](/TaystJK/reference/commands/addip-5d88fb5/), and use
-[`removeip`](/TaystJK/reference/commands/removeip-38af509/) and
-[`listip`](/TaystJK/reference/commands/listip-3cf3e51/) to manage the list. Leave numbers
-off the end to cover a range: `addip 1.2.3` bans every `1.2.3.x` address
-([`g_svcmds.c`](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/game/g_svcmds.c#L40)).
-`addip` stores the list in `g_banIPs`, which the server saves, so the bans survive a
-restart
-([`g_xcvar.h`](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/game/g_xcvar.h#L76)).
+Bans you add with `addip` or `amBan` are saved in `g_banIPs` and survive a restart; see
+[bans](/TaystJK/server-hosting/japro-setup/#bans) for the commands and address ranges.
 
 To keep the list in the file instead, uncomment the `g_banIPs` line. It then replaces the
 saved list at every start, so copy any `addip` bans into it first. Separate the addresses

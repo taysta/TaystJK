@@ -56,7 +56,7 @@ Keep your settings in a file of your own and load it explicitly:
 ```
 
 Your file is then the source of truth and the generated config is just a dump. Do not edit
-the generated one. See [Server hosting](/TaystJK/server-hosting/).
+the generated one. See [run a server](/TaystJK/server-hosting/run-a-server/#customize-the-shipped-servercfg).
 
 The same dump explains a server that starts up with the previous game mode's weapons or force
 powers still applied: the mode's settings were saved at shutdown and loaded again. The Docker
@@ -135,7 +135,7 @@ send. That is the server's to fix; tell its administrator
 ([`cl_main.cpp`](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/codemp/client/cl_main.cpp#L1622)).
 
 Server operators: the setup, including HTTP downloads and reflists, is on
-[Server hosting](/TaystJK/server-hosting/#automatic-pk3-downloads).
+[Server hosting](/TaystJK/server-hosting/downloads/#automatic-pk3-downloads).
 
 ## A map I downloaded is missing everywhere else
 

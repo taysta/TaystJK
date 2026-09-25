@@ -184,7 +184,7 @@ Every guide page opens with the same heading block:
 - `page-lede` is the opening sentence, set larger than body text.
 - `markdown="1"` is required on the wrapper or the Markdown inside will not render.
 
-Prose style, matching `install.md` and `server-hosting.md`:
+Prose style, matching `install.md` and `server-hosting/run-a-server.md`:
 
 - Direct and second person for instructions: "You need a legal Jedi Academy installation",
   "Choose your operating system", "Start with a small, private server".

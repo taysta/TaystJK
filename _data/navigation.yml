@@ -22,6 +22,34 @@ sections:
             url: /install/mod-compatibility/
             description: Why a client feature works on one server and silently does nothing on another.
             cta: Server differences
+  server-hosting:
+    groups:
+      - title: The dedicated server
+        description: The TaystJK server engine, whichever game module it loads.
+        items:
+          - title: Run a server
+            url: /server-hosting/run-a-server/
+            description: Docker Compose, a native binary, or another mod's game module, and the checks to run before going public.
+            cta: Start a server
+          - title: Downloads and PK3 references
+            url: /server-hosting/downloads/
+            description: HTTP and UDP downloads, reflists, and running a pure server.
+            cta: Serve files
+          - title: Server-side demos
+            url: /server-hosting/demos/
+            description: Recording demos on the server, on demand or retroactively.
+            cta: Record demos
+      - title: The jaPRO game module
+        description: TaystJK's bundled jampgame in the taystjk directory.
+        items:
+          - title: jaPRO server setup
+            url: /server-hosting/japro-setup/
+            description: Accounts, admins, clans, voting, bans, and the commands that tweak gameplay.
+            cta: Set up jaPRO
+          - title: Bundled server configs
+            url: /server-hosting/bundled-configs/
+            description: The Docker image's server.cfg, game modes and vote options.
+            cta: Game modes
   features:
     groups:
       - title: Coming from another client

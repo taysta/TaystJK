@@ -111,13 +111,13 @@ client prefers a widescreen version at `levelshots_16_9/<mapname>` when one exis
 only from pk3 files the server also has. On a stock client it stops mismatched or modified
 assets, and it is why a custom pk3 can leave you unable to join. TaystJK clients skip the
 restriction by default; see
-[`sv_pure` does not constrain TaystJK clients](/TaystJK/server-hosting/#sv_pure-does-not-constrain-taystjk-clients-by-default).
+[`sv_pure` does not constrain TaystJK clients](/TaystJK/server-hosting/downloads/#sv_pure-does-not-constrain-taystjk-clients-by-default).
 
 **Referenced pk3s, reflists:** the referenced pk3s are the ones a server tells clients it
 is using, which drives what they must download or already have. Reflists are the
 `ref_forcelist.txt`, `ref_blacklist.txt` and `ref_whitelist.txt` files a server operator
 uses to correct that list. See
-[PK3 referencing and reflists](/TaystJK/server-hosting/#pk3-referencing-and-reflists).
+[PK3 referencing and reflists](/TaystJK/server-hosting/downloads/#pk3-referencing-and-reflists).
 
 ## Client and server code
 
