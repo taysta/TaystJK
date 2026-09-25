@@ -1,0 +1,195 @@
+{
+  "_comment": [
+    "Gameplay presets for the server config generator. Each fills default.cfg; `server` lines go to server.cfg.",
+    "`default` entries are [cvar, value, note] or {\"section\": title}. `flow` suggests the game-flow step's starting values.",
+    "Every preset sets OpenJK's four legacy fixes explicitly, except the bundled one, which keeps the Docker image's file.",
+    "Sources: base-like and JA+-like come from the saber feel and force powers audits in the config generator design doc,",
+    "which compared jaPRO with the Jedi Academy MP SDK, retail jampded 1.011 and JA+ 2.4 Build 7, and took values from",
+    "a real base server's configs and a real JA+ server's configs. The base presets come from the same base server."
+  ],
+  "japro": [
+    {
+      "id": "bundled",
+      "label": "Bundled",
+      "summary": "The Docker image's default.cfg: jaPRO's tweaks, race mode, unlagged weapons and fast force regeneration.",
+      "from_docker": "default.cfg",
+      "flow": {"gametype": 0, "map": "mp/ffa3"}
+    },
+    {
+      "id": "base-like",
+      "label": "Close to base",
+      "summary": "Base Jedi Academy sabering: SP-style damage, no jaPRO tweaks, no private duels, force limited to jumping and saber skills, and no race mode.",
+      "flow": {"gametype": 6, "map": "mp/ffa3", "fraglimit": 20, "timelimit": 10},
+      "server": [
+        ["sv_fps", "30", "The base server's frame rate; retail defaulted to 20"],
+        ["sv_maxRate", "25000", "The base server's cap; the TaystJK engine's default is higher"]
+      ],
+      "default": [
+        {"section": "Saber and force: take base's code paths"},
+        ["d_saberSPStyleDamage", "1", "SP-style saber damage, base's default"],
+        ["g_tweakSaber", "0", "Every bit changes base behaviour"],
+        ["g_tweakForce", "0", "Every bit changes base behaviour"],
+        ["g_slideOnPlayer", "1", "No friction while standing on a player, as in base"],
+        ["dmflags", "256", "Base's stand-up check after crouching"],
+        ["g_forceClientUpdateRate", "0", "Freeze a client that stops sending commands, as base does"],
+        {"section": "OpenJK legacy fixes: off, except the dual-saber disarm buff"},
+        ["g_fixSaberMoveData", "0", "Base's parry and knockaway animations"],
+        ["g_fixSaberDisarmBonus", "1", "Kept on: counts the second saber's disarm bonus"],
+        ["g_fixRunWalkAnims", "0", "Base's torso animation while the saber is thrown"],
+        ["g_fixWeaponAttackAnim", "0", "Base's gun attack animations"],
+        {"section": "The base server's gameplay values"},
+        ["g_maxForceRank", "7", null],
+        ["g_forcePowerDisable", "163837", "Jump, saber offense and saber defense only"],
+        ["g_forceRegenTime", "200", null],
+        ["g_saberLocking", "0", null],
+        ["g_saberLockFactor", "2", null],
+        ["g_privateDuel", "0", null],
+        ["g_friendlyFire", "1", null],
+        ["g_friendlySaber", "1", null],
+        ["d_saberKickTweak", "1", null],
+        ["g_debugMelee", "0", null],
+        ["g_dismember", "0", null],
+        ["g_locationBasedDamage", "1", null],
+        ["g_speed", "250", null],
+        ["g_gravity", "800", null],
+        ["g_stepSlideFix", "1", null],
+        ["g_weaponDisable", "524279", "Sabers only"],
+        ["g_duelWeaponDisable", "524279", "Sabers only in duels"],
+        {"section": "No race mode"},
+        ["g_raceMode", "0", null],
+        ["restricts", "0", null],
+        {"section": "Pickups: no health or shields, no force items"},
+        ["disable_item_shield_lrg_instant", "1", null],
+        ["disable_item_shield_sm_instant", "1", null],
+        ["disable_item_medpak_instant", "1", null],
+        ["disable_item_medpac", "1", null],
+        ["disable_item_force_boon", "1", null],
+        ["disable_item_force_enlighten_light", "1", null],
+        ["disable_item_force_enlighten_dark", "1", null]
+      ],
+      "notes": [
+        "Not matched by any setting: legs sticking on slopes, standing up out of a roll under a brush, and lagged players being extrapolated rather than frozen in place."
+      ]
+    },
+    {
+      "id": "japlus-like",
+      "label": "Close to JA+",
+      "summary": "A standard JA+ server's saber and force settings translated to jaPRO: MP damage, JA+-style kicks, rolls and hook, and instant force regeneration.",
+      "flow": {"gametype": 0, "map": "mp/ffa3"},
+      "server": [
+        ["sv_fps", "30", "JA+ servers ran retail jampded at 30"]
+      ],
+      "default": [
+        {"section": "Saber: JA+'s MP damage path"},
+        ["d_saberSPStyleDamage", "0", "MP-style damage"],
+        ["g_saberDuelSPDamage", "0", "Keep MP damage in private duels too"],
+        ["g_tweakSaber", "513", "No MP damage interpolation (1) and JA+'s improved yellow DFA (512)"],
+        ["g_reducesaberblock", "0", "jp_reduceSaberBlock 0"],
+        ["d_saberKickTweak", "0", "Full kick damage"],
+        ["g_saberLocking", "0", null],
+        ["g_debugMelee", "1", null],
+        {"section": "Force"},
+        ["g_tweakForce", "388", "Push and pull reach knocked-down players (4), fast grip (128), push and pull move items (256)"],
+        ["g_forcePowerDisable", "0", null],
+        ["g_maxForceRank", "7", null],
+        ["g_forceRegenTime", "0", "Instant regeneration"],
+        ["g_saberDuelForceRegenTime", "0", "jp_privateDuelForceRegen 0"],
+        ["g_godChat", "1", "jp_allowGodTalk 1"],
+        {"section": "Moves and hook"},
+        ["g_fixRoll", "1", "JA+ roll"],
+        ["g_flipKick", "1", "JA+ flip kick"],
+        ["g_slideOnPlayer", "0", null],
+        ["g_allowGrapple", "2", "JA+ hook for every player"],
+        ["g_hookSpeed", "10000", null],
+        ["g_hookFloodProtect", "750", null],
+        ["dmflags", "0", null],
+        {"section": "Duels"},
+        ["g_privateDuel", "1", null],
+        ["g_duelDistanceLimit", "0", "jp_removeDistanceDuelLimit 1"],
+        ["g_duelStartHealth", "100", "Needed for private duels to start with armor"],
+        ["g_duelStartArmor", "100", "jp_duelStartArmor 100"],
+        ["g_startingItems", "8192", "Armor at the start of duel gametypes"],
+        {"section": "OpenJK legacy fixes: off, as in JA+"},
+        ["g_fixSaberMoveData", "0", null],
+        ["g_fixSaberDisarmBonus", "0", null],
+        ["g_fixRunWalkAnims", "0", null],
+        ["g_fixWeaponAttackAnim", "0", null],
+        {"section": "Sabers only, no race mode"},
+        ["g_weaponDisable", "524279", null],
+        ["g_raceMode", "0", null],
+        ["restricts", "0", null]
+      ],
+      "notes": [
+        "Not emulated: JA+'s MP damage table and its returning-swing contact, lightning and drain timing, jp_fixAbsorb, JA+'s SP attacks and force animations, the alternate dimension, and JA+'s admin ranks.",
+        "jp_gripOpenSaber 3 has only an approximate equivalent, g_fixSaberInGrip, so it is left at jaPRO's default."
+      ]
+    }
+  ],
+  "base": [
+    {
+      "id": "saber-tffa",
+      "label": "Saber team FFA",
+      "summary": "A base server's rules: sabers only, force limited to jumping and saber skills, no health or shield pickups, friendly fire on.",
+      "flow": {"gametype": 6, "map": "mp/ffa2", "fraglimit": 20, "timelimit": 10},
+      "server": [
+        ["sv_fps", "30", null],
+        ["sv_maxRate", "25000", null]
+      ],
+      "default": [
+        {"section": "Saber"},
+        ["d_saberKickTweak", "1", null],
+        ["g_saberDamageScale", "1", null],
+        ["g_saberLocking", "0", null],
+        ["g_saberLockFactor", "2", null],
+        ["g_saberWallDamageScale", "0.4", null],
+        ["g_debugMelee", "0", null],
+        ["g_dismember", "0", null],
+        ["g_locationBasedDamage", "1", null],
+        {"section": "Force"},
+        ["g_forcePowerDisable", "163837", "Jump, saber offense and saber defense only"],
+        ["g_forceRegenTime", "200", null],
+        ["g_maxForceRank", "7", null],
+        ["g_forceBasedTeams", "0", null],
+        {"section": "Weapons"},
+        ["g_weaponDisable", "524279", "Sabers only"],
+        ["g_duelWeaponDisable", "524279", "Sabers only in duels"],
+        {"section": "Teams and duels"},
+        ["g_friendlyFire", "1", null],
+        ["g_friendlySaber", "1", null],
+        ["g_teamAutoJoin", "0", null],
+        ["g_teamForceBalance", "0", null],
+        ["g_privateDuel", "0", null],
+        ["g_allowDuelSuicide", "1", null],
+        {"section": "Movement"},
+        ["g_speed", "250", null],
+        ["g_gravity", "800", null],
+        ["g_stepSlideFix", "1", null],
+        ["bg_fighterAltControl", "0", null],
+        {"section": "Pickups: no health or shields, no force items"},
+        ["disable_item_shield_lrg_instant", "1", null],
+        ["disable_item_shield_sm_instant", "1", null],
+        ["disable_item_medpak_instant", "1", null],
+        ["disable_item_medpac", "1", null],
+        ["disable_item_force_boon", "1", null],
+        ["disable_item_force_enlighten_light", "1", null],
+        ["disable_item_force_enlighten_dark", "1", null]
+      ]
+    },
+    {
+      "id": "defaults",
+      "label": "Defaults",
+      "summary": "Nothing: the game module's own defaults.",
+      "flow": {"gametype": 0, "map": "mp/ffa3"},
+      "default": []
+    }
+  ],
+  "other": [
+    {
+      "id": "none",
+      "label": "The mod's own defaults",
+      "summary": "The generator writes engine settings and base cvars only; add the mod's own settings as free-form lines.",
+      "flow": {"gametype": 0, "map": "mp/ffa3"},
+      "default": []
+    }
+  ]
+}

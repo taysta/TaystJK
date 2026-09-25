@@ -1,0 +1,17 @@
+{
+  "_comment": [
+    "Where the generator's jaPRO data comes from. The bundled Docker configs are read from `docker_commit` with",
+    "git show, never copied by hand; bump the commit and rerun build.py to pick up changes. Item classnames and the",
+    "weapon and force-power enums are read from the reference's source_commit (_data/reference-meta.json).",
+    "`dropped` lists names the bundled configs set that the generator leaves out, each with the reason.",
+    "`settable` lists cvars the reference marks engine-managed that configs can in fact set, each with the reason."
+  ],
+  "docker_commit": "60fcb9cf68d38c3fede638fac4a8e42eb1123eaf",
+  "docker_dir": "scripts/docker",
+  "dropped": {
+    "disable_item_medpak": "No item has the classname item_medpak, so this cvar does nothing (bg_misc.c item list)."
+  },
+  "settable": {
+    "g_npcspskill": "The reference counts it as engine-managed because it has CVAR_INTERNAL, but that flag only hides a cvar from listings and completion (cvar.cpp); configs can set it, and the bundled default.cfg and tribesbase.cfg do."
+  }
+}

@@ -50,6 +50,13 @@ sections:
             url: /server-hosting/bundled-configs/
             description: The Docker image's server.cfg, game modes and vote options.
             cta: Game modes
+      - title: Configuration tools
+        description: For the jaPRO module, base game rules or another mod.
+        items:
+          - title: Server config generator
+            url: /server-hosting/config-generator/
+            description: Build a server.cfg, a gameplay baseline, game modes and vote options in your browser.
+            cta: Generate configs
   features:
     groups:
       - title: Coming from another client

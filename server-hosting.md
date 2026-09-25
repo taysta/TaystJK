@@ -23,6 +23,8 @@ settings the bundled configs use. You can also run the TaystJK engine with
 in which case only the engine pages apply.
 
 Start with [run a server](/TaystJK/server-hosting/run-a-server/), then set up the game module
-with [jaPRO server setup](/TaystJK/server-hosting/japro-setup/).
+with [jaPRO server setup](/TaystJK/server-hosting/japro-setup/). The
+[server config generator](/TaystJK/server-hosting/config-generator/) writes a starting set of
+configs for any of them.
 
 {% include browse-grid.html section="server-hosting" %}

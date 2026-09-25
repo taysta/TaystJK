@@ -52,6 +52,10 @@ ownership and change its inputs or rendering code instead. Its outputs include:
 - `features/whats-new.md` and `features/emoji.md`.
 - The public reference JSON copies and compact catalog under `assets/data/`.
 
+`assets/data/config-generator.json` comes from `tools/config_generator/build.py`, which reads
+the bundled Docker configs from a pinned commit and the curated JSON beside it; edit those and
+rerun it.
+
 `_data/cvars.json`, `_data/commands.json`, and `_data/reference-meta.json` come from the
 reference pipeline. `_data/reference_stats.json` comes from `generate_docs.py`; hand-written
 pages quote reference counts from it instead of typing them. `_data/page_updated.json`

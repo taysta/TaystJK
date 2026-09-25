@@ -1,0 +1,285 @@
+{
+  "_comment": [
+    "Mode catalogue. jaPRO modes come from the bundled Docker configs (see sources.json); this file only labels them",
+    "and records what they depend on. Base modes are templates taken from a real base server's mode configs, with",
+    "`disable_item_medpak` left out because no item has that classname.",
+    "`baseline_resets` gives base's own default for cvars base modes change where jaPRO's default differs; the reference records jaPRO's (g_forceRegenTime is 200 in the MP SDK's g_main.c)."
+  ],
+  "japro": {
+    "modes": [
+      {
+        "id": "saberonly",
+        "summary": "Team FFA with sabers only, no pickups and single-player-style saber damage. Force limited to jumping and saber skills."
+      },
+      {
+        "id": "fftffa",
+        "summary": "Team FFA with sabers only and no pickups. Team heal and team energize are disabled."
+      },
+      {
+        "id": "saberctf",
+        "summary": "CTF with sabers, thermal detonators and trip mines, JK2-style saber combat and no pickups. Force limited to saber skills; capture limit 5."
+      },
+      {
+        "id": "predator",
+        "summary": "Team FFA with sabers only, no pickups and single-player-style saber damage. Force limited to jumping and saber skills."
+      },
+      {
+        "id": "predator2",
+        "summary": "predator with multiplayer saber damage doubled, backslashes at a hundred times damage, the JK2 lunge and no friendly fire."
+      },
+      {
+        "id": "prize",
+        "summary": "Sabers only: saber damage cut to a tenth, but backslashes at two hundred times damage. Race mode is off."
+      },
+      {
+        "id": "jk2",
+        "summary": "JK2 1.02-style saber combat and force, single saber only. Weapons stay on the map."
+      },
+      {
+        "id": "jk2104",
+        "summary": "The JK2 saber damage system and rescaled stances: yellow at half damage, red at 0.7."
+      },
+      {
+        "id": "lugorff",
+        "summary": "Single-player-style saber damage with jaPRO's saber and force tweaks turned off."
+      },
+      {
+        "id": "merc",
+        "summary": "Every weapon except the concussion rifle, no health or armor pickups, double saber damage and force at rank 1, limited to jumping, protect and saber skills. Sets a capture limit of 7 for playing it as CTF."
+      },
+      {
+        "id": "instagib",
+        "summary": "Only the disruptor, at ten times weapon damage, and a faster run speed. Force limited to jumping and saber skills."
+      },
+      {
+        "id": "airshot",
+        "summary": "Only the rocket launcher and no splash damage, so only direct hits count. Force limited to jumping and saber skills."
+      },
+      {
+        "id": "gungame",
+        "summary": "Gun game (g_gunGame 2) with no pickups, no self damage and no falling damage. Force limited to jumping and saber skills."
+      },
+      {
+        "id": "instagibrabbit",
+        "summary": "Sniper rabbit: the flag carrier gets a disruptor, everyone else fights with sabers at ten times saber damage. No health or armor pickups; frag limit 50.",
+        "maps_note": "Needs a map with a neutral flag; the stock maps have none."
+      },
+      {
+        "id": "saberrabbit",
+        "summary": "Rabbit where holding the flag scores points, with sabers at double damage, backslashes at a hundred times, the JK2 lunge and red DFA. Force limited to saber skills; 30-minute time limit and frag limit 200.",
+        "maps_note": "Needs a map with a neutral flag; the stock maps have none."
+      },
+      {
+        "id": "wswrabbit",
+        "summary": "Rabbit with Warsow movement and sabers only, at double saber damage and four times backslash damage. Frag limit 50.",
+        "maps_note": "Needs a map with a neutral flag; the stock maps have none."
+      },
+      {
+        "id": "theone",
+        "summary": "Rabbit with Q3 movement at a slow run speed and only the bowcaster, whose shots travel at a fifth of their normal speed. Frag limit 50.",
+        "maps_note": "Needs a map with a neutral flag; the stock maps have none."
+      },
+      {
+        "id": "tribes",
+        "summary": "Tribes movement, classes and weapons."
+      },
+      {
+        "id": "tribesctf",
+        "summary": "Tribes in CTF."
+      },
+      {
+        "id": "tribes1flag",
+        "summary": "Tribes in one-flag CTF: carry the neutral flag into the other team's capture zone (g_neutralFlag 5).",
+        "maps_note": "Needs a map with a neutral flag and capture zones; the stock maps have neither."
+      },
+      {
+        "id": "midair",
+        "summary": "tribesctf, with projectiles also carrying the shooter's sideways movement (g_fullInheritance)."
+      }
+    ],
+    "addons": [
+      {
+        "id": "pickups",
+        "label": "Pickups on",
+        "summary": "Turns health, shield and force pickups on."
+      },
+      {
+        "id": "nopickups",
+        "label": "Pickups off",
+        "summary": "Turns health, shield and force pickups off."
+      },
+      {
+        "id": "noboons",
+        "label": "No force boons",
+        "summary": "Turns force boon and enlightenment pickups off."
+      }
+    ],
+    "helpers": {
+      "tribesbase": "Settings shared by the Tribes modes; not meant to be run on its own."
+    }
+  },
+  "base": {
+    "pickup_items": [
+      "item_shield_lrg_instant",
+      "item_shield_sm_instant",
+      "item_medpak_instant",
+      "item_medpac"
+    ],
+    "modes": [
+      {
+        "id": "ffa",
+        "label": "FFA",
+        "gametype": 0,
+        "fraglimit": 30,
+        "timelimit": 20,
+        "regen": 200,
+        "pickups": false,
+        "map": "mp/ffa3"
+      },
+      {
+        "id": "duel",
+        "label": "Duel",
+        "gametype": 3,
+        "fraglimit": 10,
+        "timelimit": 10,
+        "regen": 200,
+        "pickups": false,
+        "map": "mp/duel1"
+      },
+      {
+        "id": "tffa",
+        "label": "Team FFA",
+        "gametype": 6,
+        "fraglimit": 21,
+        "timelimit": 10,
+        "regen": 200,
+        "pickups": false,
+        "map": "mp/ffa3"
+      },
+      {
+        "id": "rounds",
+        "label": "Rounds",
+        "gametype": 6,
+        "fraglimit": 0,
+        "timelimit": 0,
+        "regen": 200,
+        "pickups": true,
+        "map": "ffa_CloudShark"
+      },
+      {
+        "id": "training",
+        "label": "Training",
+        "gametype": 0,
+        "fraglimit": 0,
+        "timelimit": 0,
+        "regen": 0,
+        "pickups": false,
+        "map": "t3home2"
+      },
+      {
+        "id": "training2",
+        "label": "Training 2",
+        "gametype": 0,
+        "fraglimit": 0,
+        "timelimit": 0,
+        "regen": 0,
+        "pickups": false,
+        "map": "duel_training"
+      },
+      {
+        "id": "jumptraining",
+        "label": "Jump training",
+        "gametype": 6,
+        "fraglimit": 0,
+        "timelimit": 0,
+        "regen": 0,
+        "pickups": false,
+        "map": "asms",
+        "bots": [
+          "alora 10 red"
+        ]
+      },
+      {
+        "id": "jumptraining2",
+        "label": "Jump training 2",
+        "gametype": 6,
+        "fraglimit": 0,
+        "timelimit": 0,
+        "regen": 0,
+        "pickups": false,
+        "map": "asms",
+        "bots": [
+          "cultist 10 red"
+        ]
+      },
+      {
+        "id": "jumptraining3",
+        "label": "Jump training 3",
+        "gametype": 6,
+        "fraglimit": 0,
+        "timelimit": 0,
+        "regen": 0,
+        "pickups": false,
+        "map": "cp_xtreme",
+        "bots": [
+          "alora 10 red",
+          "cultist 10 red"
+        ]
+      }
+    ],
+    "baseline_resets": {
+      "g_forceRegenTime": "200"
+    }
+  },
+  "stock_maps": [
+    "mp/ctf1",
+    "mp/ctf2",
+    "mp/ctf3",
+    "mp/ctf4",
+    "mp/ctf5",
+    "mp/duel1",
+    "mp/duel2",
+    "mp/duel3",
+    "mp/duel4",
+    "mp/duel5",
+    "mp/duel6",
+    "mp/duel7",
+    "mp/duel8",
+    "mp/duel9",
+    "mp/duel10",
+    "mp/ffa1",
+    "mp/ffa2",
+    "mp/ffa3",
+    "mp/ffa4",
+    "mp/ffa5",
+    "mp/siege_desert",
+    "mp/siege_hoth",
+    "mp/siege_korriban"
+  ],
+  "gametypes": [
+    {
+      "value": 0,
+      "label": "FFA"
+    },
+    {
+      "value": 3,
+      "label": "Duel"
+    },
+    {
+      "value": 4,
+      "label": "Power duel"
+    },
+    {
+      "value": 6,
+      "label": "Team FFA"
+    },
+    {
+      "value": 7,
+      "label": "Siege"
+    },
+    {
+      "value": 8,
+      "label": "CTF"
+    }
+  ]
+}

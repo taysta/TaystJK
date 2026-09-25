@@ -1,0 +1,323 @@
+{
+  "_comment": [
+    "jaPRO vote options, from the bundled votes.cfg (see sources.json). Players run one with /callvote vstr <id>.",
+    "Mode and add-on options are generated for ticked modes only. On/off settings come in explicit pairs; single-bit",
+    "startingitems changes stay toggles. {baseline:<cvar>} is replaced with the generated default.cfg's value.",
+    "`left_out` lists bundled options not carried over: the bare numeric frag-limit aliases, which duplicate frag0 to frag61."
+  ],
+  "always": [
+    {
+      "id": "default",
+      "run": "exec default",
+      "note": "Back to the baseline"
+    },
+    {
+      "id": "restart",
+      "run": "map_restart",
+      "note": "Reload the map"
+    }
+  ],
+  "mode_extras": {
+    "gungame": [
+      {
+        "id": "teamgungame",
+        "run": "exec gungame;gametype 6;g_friendlyFire 0",
+        "note": "Gun game as team FFA without friendly fire"
+      }
+    ]
+  },
+  "groups": [
+    {
+      "id": "fraglimit",
+      "label": "Frag limits",
+      "options": [
+        {
+          "id": "frag0",
+          "run": "fraglimit 0"
+        },
+        {
+          "id": "frag10",
+          "run": "fraglimit 10"
+        },
+        {
+          "id": "frag21",
+          "run": "fraglimit 21"
+        },
+        {
+          "id": "frag31",
+          "run": "fraglimit 31"
+        },
+        {
+          "id": "frag41",
+          "run": "fraglimit 41"
+        },
+        {
+          "id": "frag51",
+          "run": "fraglimit 51"
+        },
+        {
+          "id": "frag61",
+          "run": "fraglimit 61"
+        }
+      ]
+    },
+    {
+      "id": "capturelimit",
+      "label": "Capture limits",
+      "options": [
+        {
+          "id": "cap0",
+          "run": "capturelimit 0"
+        },
+        {
+          "id": "cap3",
+          "run": "capturelimit 3"
+        },
+        {
+          "id": "cap5",
+          "run": "capturelimit 5"
+        },
+        {
+          "id": "cap7",
+          "run": "capturelimit 7"
+        }
+      ]
+    },
+    {
+      "id": "teamsize",
+      "label": "Team size",
+      "options": [
+        {
+          "id": "0v0",
+          "run": "sv_maxTeamSize 0"
+        },
+        {
+          "id": "1v1",
+          "run": "sv_maxTeamSize 1"
+        },
+        {
+          "id": "2v2",
+          "run": "sv_maxTeamSize 2"
+        },
+        {
+          "id": "3v3",
+          "run": "sv_maxTeamSize 3"
+        },
+        {
+          "id": "4v4",
+          "run": "sv_maxTeamSize 4"
+        },
+        {
+          "id": "5v5",
+          "run": "sv_maxTeamSize 5"
+        },
+        {
+          "id": "6v6",
+          "run": "sv_maxTeamSize 6"
+        }
+      ]
+    },
+    {
+      "id": "gametype",
+      "label": "Gametypes",
+      "options": [
+        {
+          "id": "ffa",
+          "run": "gametype 0"
+        },
+        {
+          "id": "tffa",
+          "run": "gametype 6"
+        },
+        {
+          "id": "ctf",
+          "run": "gametype 8"
+        },
+        {
+          "id": "1flagctf",
+          "run": "gametype 8;g_neutralFlag 6"
+        }
+      ]
+    },
+    {
+      "id": "movement",
+      "label": "Movement styles",
+      "options": [
+        {
+          "id": "jka",
+          "run": "g_movementStyle 1"
+        },
+        {
+          "id": "qw",
+          "run": "g_movementStyle 2"
+        },
+        {
+          "id": "cpm",
+          "run": "g_movementStyle 3"
+        },
+        {
+          "id": "q3",
+          "run": "g_movementStyle 4"
+        },
+        {
+          "id": "pjk",
+          "run": "g_movementStyle 5"
+        },
+        {
+          "id": "wsw",
+          "run": "g_movementStyle 6"
+        },
+        {
+          "id": "sp",
+          "run": "g_movementStyle 12"
+        },
+        {
+          "id": "slick",
+          "run": "g_movementStyle 13"
+        },
+        {
+          "id": "ocpm",
+          "run": "g_movementStyle 16"
+        }
+      ]
+    },
+    {
+      "id": "rabbit",
+      "label": "Rabbit",
+      "options": [
+        {
+          "id": "rabbit",
+          "run": "g_neutralFlag 1;g_allowGrapple 0"
+        },
+        {
+          "id": "bkrabbit",
+          "run": "g_neutralFlag 3;g_allowGrapple 0"
+        },
+        {
+          "id": "norabbit",
+          "run": "g_neutralFlag 0"
+        }
+      ]
+    },
+    {
+      "id": "loadout",
+      "label": "Loadout",
+      "options": [
+        {
+          "id": "noguns",
+          "run": "g_startingWeapons 8;g_weaponDisable 524279"
+        },
+        {
+          "id": "guns",
+          "run": "g_startingWeapons 28;g_weaponDisable 0"
+        },
+        {
+          "id": "all",
+          "run": "g_startingWeapons 131070;g_startingItems 7612;g_tweakWeapons 1083928043"
+        },
+        {
+          "id": "togglefullhp",
+          "run": "startingItems 15",
+          "note": "Flips full health after each kill"
+        },
+        {
+          "id": "togglejetpack",
+          "run": "startingItems 7",
+          "note": "Flips the starting jetpack"
+        }
+      ]
+    },
+    {
+      "id": "toggles",
+      "label": "On and off",
+      "options": [
+        {
+          "id": "friendlyfire",
+          "run": "g_friendlyFire 0.5"
+        },
+        {
+          "id": "nofriendlyfire",
+          "run": "g_friendlyFire 0"
+        },
+        {
+          "id": "flagthrow",
+          "run": "g_allowFlagThrow 1"
+        },
+        {
+          "id": "noflagthrow",
+          "run": "g_allowFlagThrow 0"
+        },
+        {
+          "id": "fixflagsuicide",
+          "run": "g_fixFlagSuicide 1"
+        },
+        {
+          "id": "nofixflagsuicide",
+          "run": "g_fixFlagSuicide 0"
+        },
+        {
+          "id": "damagenumbers",
+          "run": "g_damageNumbers 2"
+        },
+        {
+          "id": "nodamagenumbers",
+          "run": "g_damageNumbers 7"
+        },
+        {
+          "id": "fastregen",
+          "run": "g_forceRegenTime 33"
+        },
+        {
+          "id": "normalregen",
+          "run": "g_forceRegenTime {baseline:g_forceRegenTime}"
+        },
+        {
+          "id": "race",
+          "run": "g_raceMode 2"
+        },
+        {
+          "id": "norace",
+          "run": "g_raceMode 0"
+        },
+        {
+          "id": "splat",
+          "run": "g_maxFallDmg 0"
+        },
+        {
+          "id": "nosplat",
+          "run": "g_maxFallDmg 50"
+        }
+      ]
+    },
+    {
+      "id": "bots",
+      "label": "Bots",
+      "options": [
+        {
+          "id": "kickbots",
+          "run": "kick allplayingbots"
+        }
+      ]
+    }
+  ],
+  "default_groups": [
+    "fraglimit",
+    "capturelimit",
+    "teamsize",
+    "gametype",
+    "movement",
+    "rabbit",
+    "loadout",
+    "toggles",
+    "bots"
+  ],
+  "left_out": [
+    "0",
+    "10",
+    "21",
+    "31",
+    "41",
+    "51",
+    "61"
+  ]
+}

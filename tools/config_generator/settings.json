@@ -1,0 +1,51 @@
+{
+  "_comment": [
+    "Curated common settings for the generator's fine-tuning step, grouped by topic. Seeded from the settings the",
+    "bundled Docker configs, a real base server and a real JA+ server change. Each target shows only the names it has:",
+    "engine cvars everywhere, base-game cvars for the base and other-mod targets, and every game cvar for jaPRO.",
+    "`server_scope` lists game-module cvars that belong in server.cfg; every game cvar the bundled server.cfg sets is",
+    "added to it automatically. All other game cvars go in default.cfg, so loading a mode never changes server settings."
+  ],
+  "server_scope": ["g_password", "g_motd", "g_filterBan", "g_banIPs"],
+  "groups": [
+    {"title": "Players and connections", "names": ["sv_privateClients", "g_antiFakePlayer", "g_maxConnPerIP", "g_allowSamePlayerNames", "g_inactivity", "g_timeouttospec", "sv_maxPing", "sv_reconnectlimit", "sv_floodProtect"]},
+    {"title": "Network", "names": ["sv_fps", "sv_snapsMax", "sv_maxRate", "sv_ratePolicy", "sv_timeout", "sv_hibernateTime", "sv_legacyFixes"]},
+    {"title": "Bots", "names": ["bot_minplayers", "bot_maxbots", "bot_team"]},
+    {"title": "Voting rules", "names": ["g_allowTeamVote", "g_voteDelay", "g_voteTimeout", "g_tweakVote"]},
+    {"title": "Admins and accounts", "names": ["g_fullAdminLevel", "g_juniorAdminLevel", "g_allowRegistration", "g_eloRanking"]},
+    {"title": "Logs and demos", "names": ["g_log", "g_logSync", "g_statLog", "g_duelLog", "g_raceLog", "g_playerLog", "sv_autoDemo", "sv_autoRaceDemo", "sv_demoPreRecord"]},
+    {"title": "Match", "names": ["g_doWarmup", "g_warmup", "g_teamAutoJoin", "g_teamForceBalance", "g_friendlyFire", "g_friendlySaber", "g_spawnInvulnerability", "g_allowTeamSuicide", "sv_maxTeamSize", "g_neutralFlag"]},
+    {"title": "Saber", "names": ["d_saberSPStyleDamage", "g_saberDamageScale", "g_tweakSaber", "g_saberLocking", "g_saberLockFactor", "d_saberKickTweak", "g_reducesaberblock", "g_saberDisable", "g_dismember", "g_locationBasedDamage", "g_debugMelee"]},
+    {"title": "Force", "names": ["g_forcePowerDisable", "g_maxForceRank", "g_forceRegenTime", "g_tweakForce", "g_forceBasedTeams", "g_fixSaberInGrip", "g_godChat"]},
+    {"title": "Weapons and items", "names": ["g_weaponDisable", "g_duelWeaponDisable", "g_startingWeapons", "g_startingItems", "g_tweakWeapons", "g_weaponDamageScale", "g_selfDamageScale", "g_knockback", "g_allowGrapple"]},
+    {"title": "Movement", "names": ["g_movementStyle", "g_speed", "g_gravity", "g_flipKick", "g_fixRoll", "g_slideOnPlayer", "g_onlyBhop", "g_fixHighFPSAbuse", "g_stepSlideFix", "g_maxFallDmg", "dmflags"]},
+    {"title": "Duels", "names": ["g_privateDuel", "g_duelStartHealth", "g_duelStartArmor", "g_saberDuelSPDamage", "g_forceDuelSPDamage", "g_duelDistanceLimit", "g_saberDuelForceRegenTime", "g_allowDuelSuicide", "duel_fraglimit"]},
+    {"title": "Race mode", "names": ["g_raceMode", "restricts", "g_allowRaceTele"]},
+    {"title": "OpenJK legacy fixes", "names": ["g_fixSaberMoveData", "g_fixSaberDisarmBonus", "g_fixRunWalkAnims", "g_fixWeaponAttackAnim"]}
+  ],
+  "pickups": ["item_medpak_instant", "item_medpac", "item_medpac_big", "item_shield_sm_instant", "item_shield_lrg_instant", "item_shield", "item_seeker", "item_force_boon", "item_force_enlighten_light", "item_force_enlighten_dark", "item_jetpack", "item_cloak", "item_ysalimari", "weapon_det_pack"],
+  "bit_overrides": {
+    "dmflags": {
+      "note": "Bits from the game module's DF_ flags; jaPRO honours 8, 32 and 256, and only base clients apply 16.",
+      "options": [
+        {"bit": 3, "meaning": "No falling damage"},
+        {"bit": 4, "meaning": "Fixed field of view (base clients only)"},
+        {"bit": 5, "meaning": "No footsteps"},
+        {"bit": 8, "meaning": "Base's stand-up check after crouching"}
+      ]
+    }
+  },
+  "weapon_labels": {
+    "WP_NONE": "None (unused)", "WP_STUN_BATON": "Stun baton", "WP_MELEE": "Melee", "WP_SABER": "Saber",
+    "WP_BRYAR_PISTOL": "Bryar pistol", "WP_BLASTER": "E-11 blaster", "WP_DISRUPTOR": "Disruptor", "WP_BOWCASTER": "Bowcaster",
+    "WP_REPEATER": "Repeater", "WP_DEMP2": "DEMP 2", "WP_FLECHETTE": "Flechette", "WP_ROCKET_LAUNCHER": "Rocket launcher",
+    "WP_THERMAL": "Thermal detonator", "WP_TRIP_MINE": "Trip mine", "WP_DET_PACK": "Det pack", "WP_CONCUSSION": "Concussion rifle",
+    "WP_BRYAR_OLD": "Old Bryar pistol", "WP_EMPLACED_GUN": "Emplaced gun", "WP_TURRET": "Turret"
+  },
+  "force_labels": {
+    "FP_HEAL": "Heal", "FP_LEVITATION": "Jump", "FP_SPEED": "Speed", "FP_PUSH": "Push", "FP_PULL": "Pull",
+    "FP_TELEPATHY": "Mind trick", "FP_GRIP": "Grip", "FP_LIGHTNING": "Lightning", "FP_RAGE": "Rage", "FP_PROTECT": "Protect",
+    "FP_ABSORB": "Absorb", "FP_TEAM_HEAL": "Team heal", "FP_TEAM_FORCE": "Team energize", "FP_DRAIN": "Drain", "FP_SEE": "Seeing",
+    "FP_SABER_OFFENSE": "Saber offense", "FP_SABER_DEFENSE": "Saber defense", "FP_SABERTHROW": "Saber throw"
+  }
+}
