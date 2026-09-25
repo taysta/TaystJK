@@ -288,7 +288,10 @@
       });
     }
     if (target === "other" && typeof raw.extra === "string") {
-      state.extra = String(raw.extra).replace(/\r/g, "").split("\n").map(clean).join("\n").trim().slice(0, 8000);
+      // The host's own config lines keep their quotes, which group values holding spaces or semicolons.
+      state.extra = String(raw.extra).replace(/\r/g, "").split("\n").map(function (line) {
+        return line.replace(/\t/g, " ").replace(/[^\x20-\x7e]/g, "").trim();
+      }).join("\n").trim().slice(0, 8000);
     }
     return state;
   }
@@ -305,8 +308,45 @@
     return RESERVED.indexOf(String(name).toLowerCase()) !== -1;
   }
 
+  // A bitmask override stores the whole value, built from the old preset's bits, so it would carry
+  // that preset's other bits into the new one. Scalar overrides mean the same under any preset.
+  function switchPreset(data, state, presetId) {
+    var dropped = [];
+    state.preset = presetId;
+    applyPresetFlow(data, state);
+    Object.keys(state.tune).forEach(function (name) {
+      var entry = cvarEntry(data, name);
+      if (entry && entry.bits) {
+        dropped.push(name);
+        delete state.tune[name];
+      }
+    });
+    return dropped;
+  }
+
+  // Lines of the mod's own settings that name a password stay out of storage and share links,
+  // like the password fields.
+  function isSecretLine(line) {
+    var words = String(line).trim().split(/\s+/);
+    var name = /^seta?$/i.test(words[0] || "") ? words[1] : words[0];
+    return /pass/i.test(name || "");
+  }
+
   function persistable(state) {
-    return JSON.parse(JSON.stringify(state));
+    var copy = JSON.parse(JSON.stringify(state));
+    if (copy.extra) copy.extra = copy.extra.split("\n").filter(function (line) { return !isSecretLine(line); }).join("\n");
+    return copy;
+  }
+
+  // What a config cannot hold: a double quote ends the quoted value, and the engine reads bytes,
+  // so anything outside printable ASCII or surrounding spaces would change the password.
+  function secretProblem(value) {
+    var text = String(value == null ? "" : value);
+    if (!text) return "";
+    if (/"/.test(text)) return "Double quotes cannot be used: they would end the value early.";
+    if (/[^\x20-\x7e]/.test(text)) return "Use printable ASCII only: letters, digits, spaces and punctuation.";
+    if (text !== text.trim()) return "Leading or trailing spaces would be dropped.";
+    return "";
   }
 
   // --- Config text -------------------------------------------------------------------------------
@@ -458,6 +498,20 @@
     });
   }
 
+  // Every cvar a vote option changes, so the baseline can put it back. The startingItems command
+  // flips a g_startingItems bit.
+  function voteCvars(data, state) {
+    var names = [];
+    voteOptions(data, state, null).forEach(function (option) {
+      option.run.split(";").forEach(function (part) {
+        var word = part.trim().split(/\s+/)[0] || "";
+        if (word.toLowerCase() === "startingitems") names.push("g_startingItems");
+        else if (cvarEntry(data, word) || isItemCvar(data, word)) names.push(canonicalName(data, word));
+      });
+    });
+    return unique(names);
+  }
+
   // --- Generation --------------------------------------------------------------------------------
 
   function tuneFor(state, data, scope) {
@@ -491,10 +545,10 @@
     tuneFor(state, data, "default").forEach(function (pair) { set.put("Fine-tuning", pair[0], pair[1]); });
 
     var resets = state.target === "base" ? data.modes.base.baseline_resets : {};
-    modeCvars(data, state).forEach(function (name) {
+    modeCvars(data, state).concat(voteCvars(data, state)).forEach(function (name) {
       if (set.get(name)) return;
       var value = has(resets, name) ? resets[name] : referenceDefault(data, name);
-      set.put("Reset what the modes change", name, value, "Game default");
+      set.put("Reset what modes and votes change", name, value, "Game default");
     });
     return set;
   }
@@ -587,8 +641,11 @@
     var set = new SectionSet();
     if (state.target === "japro") {
       data.docker.server.forEach(function (section) {
-        section.lines.forEach(function (line) { set.put(section.title, line[0], line[1], line[2]); });
+        // The template's logging notes describe the Docker image's run.sh, which a dedicated server lacks.
+        var title = state.run === "dedicated" ? section.title.replace(/\s*\(run\.sh[^)]*\)/, "") : section.title;
+        section.lines.forEach(function (line) { set.put(title, line[0], line[1], line[2]); });
       });
+      if (state.run === "dedicated" && set.get("logfile")) set.put("", "logfile", "1", "Console log in qconsole.log");
     }
     var preset = findPreset(data, state.target, state.preset);
     (preset.server || []).forEach(function (line) {
@@ -768,6 +825,8 @@
       out.push("-----------");
       out.push("This bundle includes no game module. Install the jampgame library for " + (state.target === "base" ? "base game rules" : modDir(state)));
       out.push("in " + (state.run === "docker" ? installDir(state) : modDir(state)) + "/, built for the server's operating system and architecture.");
+      out.push("If the library is missing, the engine falls back to TaystJK's own jaPRO module without warning:");
+      out.push("check that serverinfo shows the mod's gamename, not japro, before opening the server.");
       out.push("The engine uses the library's GetModuleAPI entry point, or the older dllEntry/vmMain interface");
       out.push("when that is all it has, so no setting is needed for older modules such as JA+.");
       if (state.arch32) out.push("It is a 32-bit library, so the server runs taystjkded.i386" + (state.run === "docker" ? " (TJK_ARCH=i386)." : "."));
@@ -1127,6 +1186,13 @@
     return html;
   }
 
+  function secretInput(secrets, key) {
+    var problem = secretProblem(secrets[key]);
+    return '<input type="password" autocomplete="new-password" data-secret="' + key + '" value="' + escapeHtml(secrets[key] || "") + '"' +
+      (problem ? ' aria-invalid="true"' : "") + ' aria-describedby="cfg-secret-' + key + '">' +
+      '<span class="cfg-error" id="cfg-secret-' + key + '" data-secret-error="' + key + '">' + escapeHtml(problem) + "</span>";
+  }
+
   function renderBasics(data, state, secrets) {
     var html = '<div class="cfg-grid">';
     html += field("Server name", textInput("hostname", state.hostname, ' maxlength="64"'), "Colour codes such as <code>^1</code> work.");
@@ -1136,11 +1202,11 @@
     html += '<fieldset class="cfg-group"><legend>Passwords</legend>';
     html += '<p class="cfg-note">Passwords stay in this page: they are not saved on this device or put in the share link, so enter them again after reloading.</p>';
     html += '<div class="cfg-grid">';
-    html += field("Rcon password", '<input type="password" autocomplete="new-password" data-secret="rcon" value="' + escapeHtml(secrets.rcon || "") + '">', "Remote console access. Leave empty to disable rcon.");
-    html += field("Join password", '<input type="password" autocomplete="new-password" data-secret="password" value="' + escapeHtml(secrets.password || "") + '">', "Leave empty for an open server.");
+    html += field("Rcon password", secretInput(secrets, "rcon"), "Remote console access. Leave empty to disable rcon.");
+    html += field("Join password", secretInput(secrets, "password"), "Leave empty for an open server.");
     if (state.target === "japro") {
-      html += field("Full admin password", '<input type="password" autocomplete="new-password" data-secret="fullAdmin" value="' + escapeHtml(secrets.fullAdmin || "") + '">', "Empty disables this login.");
-      html += field("Junior admin password", '<input type="password" autocomplete="new-password" data-secret="juniorAdmin" value="' + escapeHtml(secrets.juniorAdmin || "") + '">', "Empty disables this login.");
+      html += field("Full admin password", secretInput(secrets, "fullAdmin"), "Empty disables this login.");
+      html += field("Junior admin password", secretInput(secrets, "juniorAdmin"), "Empty disables this login.");
     }
     html += "</div></fieldset>";
     html += '<fieldset class="cfg-group"><legend>Listing and downloads</legend>';
@@ -1161,8 +1227,13 @@
     return html;
   }
 
-  function renderPreset(data, state) {
-    var html = '<div class="cfg-choices">';
+  function renderPreset(data, state, ui) {
+    var html = "";
+    if (ui.dropped && ui.dropped.length) {
+      html += '<p class="cfg-banner">Your tick-box changes to ' + ui.dropped.map(function (n) { return "<code>" + escapeHtml(n) + "</code>"; }).join(", ") +
+        " were cleared: they held the previous preset's whole value. Make them again in Fine-tuning if you still want them.</p>";
+    }
+    html += '<div class="cfg-choices">';
     presetsFor(data, state.target).forEach(function (preset) {
       html += radioCard("preset", preset.id, state.preset === preset.id, escapeHtml(preset.label), escapeHtml(preset.summary));
     });
@@ -1321,7 +1392,7 @@
       html += checkbox('data-tune-item="' + escapeHtml(name) + '"', current === "1", "Disabled", null);
     } else {
       var list = entry && entry.v ? ' list="cfg-values-' + escapeHtml(key) + '"' : "";
-      html += '<input type="text" class="cfg-setting-input" data-tune="' + escapeHtml(name) + '" value="' + escapeHtml(changed ? current : "") + '" placeholder="' + escapeHtml(shown === "" ? "(empty)" : shown) + '"' + list + ' spellcheck="false" autocomplete="off">';
+      html += '<input type="text" class="cfg-setting-input" aria-label="' + escapeHtml(canonicalName(data, name)) + ' value" data-tune="' + escapeHtml(name) + '" value="' + escapeHtml(changed ? current : "") + '" placeholder="' + escapeHtml(shown === "" ? "(empty)" : shown) + '"' + list + ' spellcheck="false" autocomplete="off">';
       if (entry && entry.v) {
         html += '<datalist id="cfg-values-' + escapeHtml(key) + '">' + entry.v.map(function (v) {
           return '<option value="' + escapeHtml(v[0]) + '">' + escapeHtml(v[1]) + "</option>";
@@ -1387,13 +1458,17 @@
 
     if (state.target === "other") {
       html += field("The mod's own settings", '<textarea rows="8" data-field="extra" spellcheck="false" placeholder="set jp_fixRoll 1">' + escapeHtml(state.extra) + "</textarea>",
-        "Written into <code>server.cfg</code> as entered, before the map loads. Use <code>set</code> or <code>seta</code> on every line; a bare name and value is ignored before the first map.");
+        "Written into <code>server.cfg</code> as entered, before the map loads. Use <code>set</code> or <code>seta</code> on every line; a bare name and value is ignored before the first map. Lines that set a password, such as <code>jp_councilPass</code>, are kept for this visit only, like the password fields.");
     }
     return html;
   }
 
-  function renderOutput(data, state, result) {
+  function renderOutput(data, state, secrets, result, ui) {
     var html = '<p class="cfg-note">Everything is generated in this page; nothing is uploaded.</p>';
+    var problems = SECRET_FIELDS.filter(function (key) { return secretProblem(secrets[key]); });
+    if (problems.length) {
+      html += '<p class="cfg-banner cfg-banner-warning">A password in Server basics has a character a config cannot hold, so the files would set a different password. Change it there first.</p>';
+    }
     html += '<div class="cfg-actions">';
     html += '<button type="button" class="button button-primary" data-action="download">Download the ' + result.files.length + " files (.zip)</button>";
     html += '<button type="button" class="button button-secondary" data-action="copy-shell">Copy a paste-in shell command</button>';
@@ -1414,21 +1489,21 @@
     if (result.maps.custom.length) html += "<li>Custom, which you install on the server and players download: " + result.maps.custom.map(function (m) { return "<code>" + escapeHtml(m) + "</code>"; }).join(", ") + "</li>";
     html += "</ul>";
     if (state.target !== "japro") {
-      html += '<p class="cfg-note">The bundle includes no game module; install the mod\'s own <code>jampgame</code> library as its documentation says.</p>';
+      html += '<p class="cfg-note">The bundle includes no game module; install the mod\'s own <code>jampgame</code> library as its documentation says. If it is missing, the engine falls back to TaystJK\'s own jaPRO module without warning, so check that <code>serverinfo</code> shows the mod\'s gamename, not <code>japro</code>.</p>';
     }
-    html += '<p><button type="button" class="button button-quiet" data-action="reset">Start over</button></p>';
+    html += '<p><button type="button" class="button button-quiet" data-action="reset">' + (ui.confirmReset ? "Click again to clear every choice" : "Start over") + "</button></p>";
     return html;
   }
 
   function renderStepBody(data, state, secrets, id, result, ui) {
     if (id === "target") return renderTarget(data, state);
     if (id === "basics") return renderBasics(data, state, secrets);
-    if (id === "preset") return renderPreset(data, state);
+    if (id === "preset") return renderPreset(data, state, ui);
     if (id === "flow") return renderFlow(data, state);
     if (id === "modes") return renderModes(data, state);
     if (id === "votes") return renderVotes(data, state, result);
     if (id === "tune") return renderTune(data, state, ui);
-    return renderOutput(data, state, result);
+    return renderOutput(data, state, secrets, result, ui);
   }
 
   function readStored() {
@@ -1639,11 +1714,24 @@
         shareUrl.searchParams.set(QUERY_KEY, encodeShare(state));
         copyText(shareUrl.toString()).then(function () { setStatus("Link copied. It holds every choice except the passwords."); }, function () { setStatus("Copying failed."); });
       } else if (kind === "reset") {
+        if (!ui.confirmReset) {
+          ui.confirmReset = true;
+          action.textContent = "Click again to clear every choice";
+          clearTimeout(ui.resetTimer);
+          ui.resetTimer = setTimeout(function () {
+            ui.confirmReset = false;
+            var button = stepsEl.querySelector('[data-action="reset"]');
+            if (button) button.textContent = "Start over";
+          }, 4000);
+          return;
+        }
+        ui.confirmReset = false;
         state = defaultState(data, "japro");
         secrets = {};
         ui.step = "target";
         ui.search = "";
         ui.openGroups = {};
+        ui.dropped = [];
         update({ rerender: true });
       }
     });
@@ -1656,7 +1744,13 @@
     function onChange(event, typing) {
       var el = event.target;
       if (el.hasAttribute("data-secret")) {
-        secrets[el.getAttribute("data-secret")] = el.value;
+        var secretKey = el.getAttribute("data-secret");
+        secrets[secretKey] = el.value;
+        var problem = secretProblem(el.value);
+        var errorEl = stepsEl.querySelector('[data-secret-error="' + secretKey + '"]');
+        if (errorEl) errorEl.textContent = problem;
+        if (problem) el.setAttribute("aria-invalid", "true");
+        else el.removeAttribute("aria-invalid");
         update();
         return;
       }
@@ -1731,9 +1825,9 @@
         ["run", "hostname", "motd", "maxclients", "listed", "downloads", "http", "httpPort", "bans", "banList"].forEach(function (k) { fresh[k] = state[k]; });
         state = fresh;
         ui.search = "";
+        ui.dropped = [];
       } else if (key === "preset") {
-        state.preset = el.value;
-        applyPresetFlow(data, state);
+        ui.dropped = switchPreset(data, state, el.value);
       } else if (el.type === "checkbox") {
         state[key] = el.checked;
       } else if (key === "gametype") {
@@ -1805,6 +1899,9 @@
     modesFor: modesFor,
     addonsFor: addonsFor,
     generate: generate,
+    switchPreset: switchPreset,
+    persistable: persistable,
+    secretProblem: secretProblem,
     shellScript: shellScript,
     zip: zip,
     crc32: crc32,

@@ -68,7 +68,8 @@
         ["disable_item_force_enlighten_dark", "1", null]
       ],
       "notes": [
-        "Not matched by any setting: legs sticking on slopes, standing up out of a roll under a brush, and lagged players being extrapolated rather than frozen in place."
+        "Not matched by any setting: legs sticking on slopes, and standing up out of a roll under a brush.",
+        "Base servers send each player's movement for clients to extrapolate up to 50 ms; jaPRO sends plain positions, so other players can look a little behind. This only changes what players see, not where hits land."
       ]
     },
     {
@@ -121,7 +122,8 @@
       ],
       "notes": [
         "Not emulated: JA+'s MP damage table and its returning-swing contact, lightning and drain timing, jp_fixAbsorb, JA+'s SP attacks and force animations, the alternate dimension, and JA+'s admin ranks.",
-        "jp_gripOpenSaber 3 has only an approximate equivalent, g_fixSaberInGrip, so it is left at jaPRO's default."
+        "jp_gripOpenSaber 3 has only an approximate equivalent, g_fixSaberInGrip, so it is left at jaPRO's default.",
+        "JA+ servers send each player's movement for clients to extrapolate up to 50 ms; jaPRO sends plain positions, so other players can look a little behind. This only changes what players see, not where hits land."
       ]
     }
   ],

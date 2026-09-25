@@ -135,6 +135,15 @@ function checkBundle(state, result, label) {
         }
       }
     }
+    // The baseline puts back everything a vote option changes, so the default vote and every mode undo it.
+    const baselineNames = new Set(statements(files.get("default.cfg")).map((s) => parseSet(s.line)).filter(Boolean).map((s) => s.name.toLowerCase()));
+    for (const { line } of statements(files.get("votes.cfg"))) {
+      for (const part of parseSet(line).value.split(";")) {
+        const word = part.trim().split(/\s+/)[0].toLowerCase();
+        const cvarName = word === "startingitems" ? "g_startingitems" : (cvar(word) || isItem(word)) ? word : null;
+        if (cvarName) assert.ok(baselineNames.has(cvarName), `${label}: a vote changes ${cvarName}, which default.cfg never resets`);
+      }
+    }
     const allow = statements(files.get("default.cfg")).map((s) => parseSet(s.line)).find((s) => s && s.name === "g_allowVote");
     assert.ok(allow && Math.floor(Number(allow.value) / 4096) % 2 === 1, `${label}: g_allowVote allows vstr when there are vote options`);
   }
@@ -144,6 +153,13 @@ function checkBundle(state, result, label) {
   const readme = files.get("README.txt");
   const runs32 = /^  - TJK_ARCH=i386$/m.test(readme) || /^  \.\/taystjkded\.i386 /m.test(readme);
   assert.equal(runs32, state.target !== "japro" && state.arch32, `${label}: README picks the server matching the module's architecture`);
+
+  // A dedicated server has no Docker run.sh saving its console, so it keeps its own log.
+  if (state.target === "japro" && state.run === "dedicated") {
+    assert.ok(!files.get("server.cfg").includes("run.sh"), `${label}: dedicated server.cfg mentions Docker's run.sh`);
+    assert.match(files.get("server.cfg"), /^seta logfile "1"/m, `${label}: dedicated server.cfg writes a console log`);
+  }
+  if (state.target !== "japro") assert.ok(readme.includes("serverinfo shows the mod's gamename"), `${label}: README explains the module fallback`);
 
   // Passwords appear in server.cfg only.
   for (const [name, text] of files) {
@@ -259,6 +275,34 @@ for (const target of Object.keys(generator.targets)) {
   assert.ok(!JSON.stringify(decoded).includes("leak") && !JSON.stringify(decoded).includes("secret"), "normalizeState drops unknown fields, passwords included");
   assert.equal(generator.decodeShare("%%%"), null);
 }
+
+// Switching preset drops bitmask overrides, which hold the old preset's whole value, and keeps the rest.
+{
+  const state = generator.normalizeState(data, { target: "japro", preset: "bundled", tune: { g_tweakSaber: "396877", g_speed: "300", disable_item_seeker: "0" } });
+  const dropped = generator.switchPreset(data, state, "base-like");
+  assert.deepEqual(dropped, ["g_tweakSaber"]);
+  assert.deepEqual(state.tune, { disable_item_seeker: "0", g_speed: "300" });
+  const baseline = generator.generate(data, state, {}).files.find((f) => f.name === "default.cfg").text;
+  assert.match(baseline, /^seta g_tweakSaber "0"/m, "Close to base keeps its own g_tweakSaber after the switch");
+}
+
+// Password lines in the mod's own settings stay out of storage and share links, but reach server.cfg.
+{
+  const state = generator.normalizeState(data, { target: "other", extra: 'set jp_councilPass "hunter2"\nseta jp_fixRoll 1\nset jp_clanPass abc' });
+  const stored = generator.persistable(state);
+  assert.equal(stored.extra, "seta jp_fixRoll 1");
+  assert.ok(!generator.encodeShare(state).includes("hunter2") && !JSON.stringify(generator.decodeShare(generator.encodeShare(state))).includes("hunter2"));
+  assert.match(generator.generate(data, state, {}).files[0].text, /^set jp_councilPass "hunter2"$/m);
+  const quoted = generator.generate(data, { target: "other", extra: 'set jp_motd "Welcome; have fun"' }, {}).files[0].text;
+  assert.match(quoted, /^set jp_motd "Welcome; have fun"$/m, "free-form lines keep their quotes");
+}
+
+// Passwords a config cannot hold are flagged rather than silently rewritten.
+assert.equal(generator.secretProblem(""), "");
+assert.equal(generator.secretProblem("Correct-Horse_42!"), "");
+assert.ok(generator.secretProblem('ab"cd'));
+assert.ok(generator.secretProblem(" padded "));
+assert.ok(generator.secretProblem("caf\u00e9"));
 
 // Reserved, engine-managed and unknown settings never reach the files through fine-tuning.
 {

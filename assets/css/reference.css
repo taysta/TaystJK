@@ -1916,6 +1916,8 @@ kbd { padding: .15rem .42rem; color: var(--text-soft); background: var(--surface
 .js .cfg-nojs { display: none; }
 html:not(.js) .cfg-root { display: none; }
 .cfg-loading { color: var(--muted); }
+.cfg-error { color: var(--danger); font-size: .82rem; }
+.cfg-error:empty { display: none; }
 
 .cfg-banner {
   margin: 0 0 1rem;
@@ -1923,6 +1925,12 @@ html:not(.js) .cfg-root { display: none; }
   color: var(--text-soft);
   background: color-mix(in srgb, var(--accent) 8%, transparent);
   border: 1px solid color-mix(in srgb, var(--accent) 30%, transparent);
+}
+
+.cfg-banner-warning {
+  color: var(--text);
+  background: color-mix(in srgb, var(--warning) 10%, transparent);
+  border-color: color-mix(in srgb, var(--warning) 40%, transparent);
 }
 
 .cfg-app {
