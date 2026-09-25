@@ -418,6 +418,7 @@ def build() -> dict:
 
     for group in settings["groups"]:
         group["names"] = [names.cvar(n, f"settings.json {group['title']}") for n in group["names"]]
+    settings["notes"] = {names.cvar(n, "settings.json notes"): text for n, text in settings["notes"].items()}
 
     for option in votes["always"] + [o for extras in votes["mode_extras"].values() for o in extras]:
         names.check_run(option["run"], f"votes.json {option['id']}")

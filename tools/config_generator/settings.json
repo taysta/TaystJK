@@ -4,14 +4,16 @@
     "bundled Docker configs, a real base server and a real JA+ server change. Each target shows only the names it has:",
     "engine cvars everywhere, base-game cvars for the base and other-mod targets, and every game cvar for jaPRO.",
     "`server_scope` lists game-module cvars that belong in server.cfg; every game cvar the bundled server.cfg sets is",
-    "added to it automatically. All other game cvars go in default.cfg, so loading a mode never changes server settings."
+    "added to it automatically. All other game cvars go in default.cfg, so loading a mode never changes server settings.",
+    "A group with `step` is shown in that step instead of fine-tuning, for targets that have the step. `notes` replaces the",
+    "reference's one-line summary where it says too little; each was checked in the source at the reference's source_commit."
   ],
   "server_scope": ["g_password", "g_motd", "g_filterBan", "g_banIPs"],
   "groups": [
     {"title": "Players and connections", "names": ["sv_privateClients", "g_antiFakePlayer", "g_maxConnPerIP", "g_allowSamePlayerNames", "g_inactivity", "g_timeouttospec", "sv_maxPing", "sv_reconnectlimit", "sv_floodProtect"]},
     {"title": "Network", "names": ["sv_fps", "sv_snapsMax", "sv_maxRate", "sv_ratePolicy", "sv_timeout", "sv_hibernateTime", "sv_legacyFixes"]},
     {"title": "Bots", "names": ["bot_minplayers", "bot_maxbots", "bot_team"]},
-    {"title": "Voting rules", "names": ["g_allowTeamVote", "g_voteDelay", "g_voteTimeout", "g_tweakVote"]},
+    {"title": "Voting rules", "step": "votes", "names": ["g_voteDelay", "g_voteTimeout", "g_tweakVote", "g_allowTeamVote", "g_fraglimitVoteCorrection"]},
     {"title": "Admins and accounts", "names": ["g_fullAdminLevel", "g_juniorAdminLevel", "g_allowRegistration", "g_eloRanking"]},
     {"title": "Logs and demos", "names": ["g_log", "g_logSync", "g_statLog", "g_duelLog", "g_raceLog", "g_playerLog", "sv_autoDemo", "sv_autoRaceDemo", "sv_demoPreRecord"]},
     {"title": "Match", "names": ["g_doWarmup", "g_warmup", "g_teamAutoJoin", "g_teamForceBalance", "g_friendlyFire", "g_friendlySaber", "g_spawnInvulnerability", "g_allowTeamSuicide", "sv_maxTeamSize", "g_neutralFlag"]},
@@ -23,6 +25,13 @@
     {"title": "Race mode", "names": ["g_raceMode", "restricts", "g_allowRaceTele"]},
     {"title": "OpenJK legacy fixes", "names": ["g_fixSaberMoveData", "g_fixSaberDisarmBonus", "g_fixRunWalkAnims", "g_fixWeaponAttackAnim"]}
   ],
+  "notes": {
+    "g_voteDelay": "Milliseconds between a vote passing and its command running. With g_tweakVote bit 6 on, only map votes wait this long and other votes wait 3 seconds.",
+    "g_voteTimeout": "After a failed vote, the caller's IP cannot call another for this many seconds times the number of votes it has failed. The count drops by one after five timeouts without another failure; 0 turns this off.",
+    "g_tweakVote": "Vote behaviour: flood protection by IP, waits after a map loads, whether spectators can vote, and whether only players who voted count toward the result.",
+    "g_allowTeamVote": "Allow team votes with callteamvote.",
+    "g_fraglimitVoteCorrection": "Adjust the frag limit when a vote switches the gametype to or from duel."
+  },
   "pickups": ["item_medpak_instant", "item_medpac", "item_medpac_big", "item_shield_sm_instant", "item_shield_lrg_instant", "item_shield", "item_seeker", "item_force_boon", "item_force_enlighten_light", "item_force_enlighten_dark", "item_jetpack", "item_cloak", "item_ysalimari", "weapon_det_pack"],
   "bit_overrides": {
     "dmflags": {

@@ -1258,9 +1258,23 @@
     return html;
   }
 
+  // The settings a group moves into this step: vote timing, flood protection and counting.
+  function voteRules(data, state) {
+    var baseline = baselineValues(data, state);
+    var html = "";
+    data.settings.groups.forEach(function (group) {
+      if (group.step !== "votes") return;
+      var names = group.names.filter(function (name) { return available(data, state.target, name) && !isReserved(name); });
+      if (!names.length) return;
+      html += '<h4 class="cfg-subhead">' + escapeHtml(group.title) + "</h4>";
+      names.forEach(function (name) { html += settingRow(data, state, name, baseline); });
+    });
+    return html;
+  }
+
   function renderVotes(data, state, result) {
     if (state.target === "base") {
-      return checkbox('data-field="votes"', state.votes, "Allow players to call votes", "Base's map, gametype, kick and limit votes.");
+      return checkbox('data-field="votes"', state.votes, "Allow players to call votes", "Base's map, gametype, kick and limit votes.") + voteRules(data, state);
     }
     var html = checkbox('data-field="votes"', state.votes, "Offer vote options", "Players run them with <code>/callvote vstr &lt;name&gt;</code>. Every ticked mode and add-on gets one.");
     if (state.votes) {
@@ -1271,6 +1285,7 @@
       });
       html += "</div>";
     }
+    html += voteRules(data, state);
     var entry = cvarEntry(data, "g_allowVote");
     var value = effectiveAllowVote(data, state);
     html += '<h4 class="cfg-subhead">Vote types allowed (' + refLink(data, "g_allowVote") + " <code>" + value + "</code>)</h4>";
@@ -1294,7 +1309,8 @@
     html += '<span class="cfg-setting-where">' + (scopeOf(data, state.target, name) === "server" ? "server.cfg" : "default.cfg") + "</span>";
     html += '<button type="button" class="cfg-reset" data-untune="' + escapeHtml(name) + '"' + (changed ? "" : " hidden") + ">Undo</button>";
     html += "</div>";
-    if (entry && entry.s) html += '<p class="cfg-setting-summary">' + escapeHtml(entry.s) + "</p>";
+    var about = data.settings.notes[name] || (entry && entry.s);
+    if (about) html += '<p class="cfg-setting-summary">' + escapeHtml(about) + "</p>";
     if (entry && entry.bits) {
       html += '<div class="cfg-bits">';
       entry.bits.forEach(function (bit) {
@@ -1325,6 +1341,10 @@
     var curated = {};
     data.settings.groups.forEach(function (group) {
       var names = group.names.filter(function (name) { return available(data, state.target, name) && !isReserved(name); });
+      if (group.step && stepsFor(state).some(function (step) { return step.id === group.step; })) {
+        names.forEach(function (name) { curated[name.toLowerCase()] = true; });
+        return;
+      }
       if (!names.length) return;
       var changed = names.filter(function (name) { return has(state.tune, name); }).length;
       names.forEach(function (name) { curated[name.toLowerCase()] = true; });
