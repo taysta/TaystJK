@@ -5527,15 +5527,13 @@ void ClientThink_real( gentity_t *ent ) {
 	if ( ent->client->ps.eventSequence != oldEventSequence ) {
 		ent->eventTime = level.time;
 	}
-	/*
-	if (g_smoothClients.integer) {
+	if (g_smoothClients.integer == 2) {//base: send each player moving on from their last command, for clients that extrapolate
 		BG_PlayerStateToEntityStateExtraPolate( &ent->client->ps, &ent->s, ent->client->ps.commandTime, qfalse );
 		//rww - 12-03-02 - Don't snap the origin of players! It screws prediction all up.
 	}
 	else {
-	*/
 		BG_PlayerStateToEntityState( &ent->client->ps, &ent->s, qfalse );
-	//}
+	}
 
 	if (isNPC)
 	{
@@ -6283,15 +6281,13 @@ void ClientEndFrame( gentity_t *ent ) {
 	G_SetClientSound (ent);
 
 	// set the latest infor
-	/*
-	if (g_smoothClients.integer) {
+	if (g_smoothClients.integer == 2) {//base: send each player moving on from their last command, for clients that extrapolate
 		BG_PlayerStateToEntityStateExtraPolate( &ent->client->ps, &ent->s, ent->client->ps.commandTime, qfalse );
 		//rww - 12-03-02 - Don't snap the origin of players! It screws prediction all up.
 	}
 	else {
-	*/
 		BG_PlayerStateToEntityState( &ent->client->ps, &ent->s, qfalse );
-	//}
+	}
 
 	if (isNPC)
 	{
@@ -6319,7 +6315,7 @@ void ClientEndFrame( gentity_t *ent ) {
 	}
 
 	// did the client miss any frames?
-	if ( frames > 0 && g_smoothClients.integer && VectorLength(ent->client->ps.velocity) >= 90 && !(ent->r.svFlags & SVF_BOT)) { // loda - sad hack fix this
+	if ( frames > 0 && g_smoothClients.integer == 1 && VectorLength(ent->client->ps.velocity) >= 90 && !(ent->r.svFlags & SVF_BOT)) { // loda - sad hack fix this
 		// yep, missed one or more, so extrapolate the player's movement
 		//G_PredictPlayerMove( ent, (float)frames / sv_fps.integer );
 		G_PredictPlayerStepSlideMove( ent, (float)frames / sv_fps.integer );

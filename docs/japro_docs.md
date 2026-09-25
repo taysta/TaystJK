@@ -86,6 +86,7 @@
 	g_quakeStyleTeleport	0	//Preserve momentum during teleports.
 	g_screenShake			0 //Force screenshake so players can't disable it with jaPRO.
 	g_unlagged				0//Bitvalue. 1=Unlagged projectiles. 2=Unlagged hitscan.  4=Unlagged push/pull.
+	g_smoothClients			1 //1=Move lagging players on by up to two frames. 2=Send players moving on from their last command for clients to extrapolate, like base.
 	g_allowSaberSwitch		0	
 	g_allowTeamSuicide		0	
 	g_emotesDisable			0//Configured with /toggleEmotes command
@@ -521,6 +522,7 @@
 #### Network
 	cg_predictKnockback		0	
 	cg_predictRacemode		0	
+	cg_smoothClients		1 //0=Never extrapolate players. 1=Extrapolate players, and smooth the ones the server extrapolates. 2=Extrapolate players without smoothing.
 	cl_timeNudge			0	
 	cl_maxPackets			30	
 	cl_timenudgeDuration	0	
