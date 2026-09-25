@@ -142,7 +142,7 @@ def tab_panel_errors(page, text) -> list:
     previous = ""
 
     for number, line in enumerate(lines, start=1):
-        if "data-baseline-panel=" in line or "data-platform-panel=" in line:
+        if any(f"data-{kind}-panel=" in line for kind in ("baseline", "platform", "hosting")):
             open_panel = number
         elif line.strip() == "</section>" and open_panel is not None:
             if line.startswith((" ", "\t")) and previous.lstrip().startswith("- "):

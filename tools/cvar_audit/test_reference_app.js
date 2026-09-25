@@ -155,4 +155,13 @@ assert.equal(catalog.chooseBaseline("", "eternaljk"), "eternaljk");
 // The two selectors must not share a vocabulary: a platform is not a baseline.
 assert.equal(catalog.chooseBaseline("windows", ""), "eternaljk");
 
+// Server hosting method: query wins, then stored, then Docker Compose.
+assert.equal(catalog.chooseHosting("dedicated", "docker"), "dedicated");
+assert.equal(catalog.chooseHosting("", "dedicated"), "dedicated");
+assert.equal(catalog.chooseHosting("", ""), "docker");
+assert.equal(catalog.chooseHosting("nonsense", "nonsense"), "docker");
+assert.equal(catalog.chooseHosting("Dedicated", ""), "dedicated");
+// Another selector's vocabulary falls back to the default.
+assert.equal(catalog.chooseHosting("windows", "openjk"), "docker");
+
 console.log("reference app filtering is valid");

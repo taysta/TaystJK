@@ -132,7 +132,7 @@
         /* data-toc-skip marks a heading that labels furniture rather than a section of
            the page -- a sidebar caption, a mounted widget's title. */
         if (heading.hasAttribute("data-toc-skip")) return false;
-        return !heading.closest("[data-platform-panel], [data-baseline-panel]");
+        return !heading.closest("[data-platform-panel], [data-baseline-panel], [data-hosting-panel]");
       }
     );
 

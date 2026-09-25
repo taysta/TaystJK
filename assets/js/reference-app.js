@@ -778,9 +778,93 @@
     bindPanelFragment(panels, "baselinePanel", selectBaseline);
   }
 
+  function isHosting(value) {
+    return ["docker", "dedicated"].indexOf(value) !== -1;
+  }
+
+  function chooseHosting(queryHosting, storedHosting) {
+    queryHosting = normalize(queryHosting);
+    storedHosting = normalize(storedHosting);
+    if (isHosting(queryHosting)) return queryHosting;
+    if (isHosting(storedHosting)) return storedHosting;
+    // Docker Compose is the packaged route and leads the tab order.
+    return "docker";
+  }
+
+  // Server hosting's Docker Compose / dedicated server selector. Same tablist
+  // contract again, with its own storage key and query parameter.
+  function bindHostingGuide(root) {
+    var storageKey = "taystjk-hosting-method";
+    var choices = Array.prototype.slice.call(root.querySelectorAll("[data-hosting-choice]"));
+    var panels = Array.prototype.slice.call(root.querySelectorAll("[data-hosting-panel]"));
+    var queryHosting = "";
+    var storedHosting = "";
+
+    if (!choices.length || !panels.length) return;
+
+    try {
+      queryHosting = new global.URLSearchParams(global.location.search).get("hosting") || "";
+    } catch (error) {
+      queryHosting = "";
+    }
+    try {
+      storedHosting = global.localStorage.getItem(storageKey) || "";
+    } catch (error) {
+      storedHosting = "";
+    }
+
+    function selectHosting(hosting, persist) {
+      choices.forEach(function (choice) {
+        var selected = choice.dataset.hostingChoice === hosting;
+        choice.setAttribute("aria-selected", selected ? "true" : "false");
+        choice.tabIndex = selected ? 0 : -1;
+      });
+      panels.forEach(function (panel) {
+        panel.hidden = panel.dataset.hostingPanel !== hosting;
+      });
+
+      if (!persist) return;
+      try {
+        global.localStorage.setItem(storageKey, hosting);
+      } catch (error) {
+        // The selector still works when storage is unavailable.
+      }
+      try {
+        var url = new global.URL(global.location.href);
+        url.searchParams.set("hosting", hosting);
+        clearHiddenPanelFragment(url, panels);
+        global.history.replaceState(null, "", url.pathname + url.search + url.hash);
+      } catch (error) {
+        // URL updates are optional; selecting a panel is not.
+      }
+    }
+
+    choices.forEach(function (choice, index) {
+      choice.addEventListener("click", function () {
+        selectHosting(choice.dataset.hostingChoice, true);
+      });
+      choice.addEventListener("keydown", function (event) {
+        var nextIndex = index;
+        if (event.key === "ArrowRight") nextIndex = (index + 1) % choices.length;
+        else if (event.key === "ArrowLeft") nextIndex = (index - 1 + choices.length) % choices.length;
+        else if (event.key === "Home") nextIndex = 0;
+        else if (event.key === "End") nextIndex = choices.length - 1;
+        else return;
+
+        event.preventDefault();
+        choices[nextIndex].focus();
+        selectHosting(choices[nextIndex].dataset.hostingChoice, true);
+      });
+    });
+
+    selectHosting(chooseHosting(queryHosting, storedHosting), false);
+    bindPanelFragment(panels, "hostingPanel", selectHosting);
+  }
+
   function boot() {
     Array.prototype.forEach.call(document.querySelectorAll("[data-platform-guide]"), bindPlatformGuide);
     Array.prototype.forEach.call(document.querySelectorAll("[data-baseline-guide]"), bindBaselineToggle);
+    Array.prototype.forEach.call(document.querySelectorAll("[data-hosting-guide]"), bindHostingGuide);
     Array.prototype.forEach.call(document.querySelectorAll("[data-reference-app]"), function (root) {
       showSkeleton(root);
       fetch(root.dataset.catalogUrl, { credentials: "same-origin" })
@@ -807,6 +891,7 @@
     detectPlatform: detectPlatform,
     choosePlatform: choosePlatform,
     chooseBaseline: chooseBaseline,
+    chooseHosting: chooseHosting,
     selectKind: selectKind
   };
 

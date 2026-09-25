@@ -22,7 +22,27 @@ toc: true
 - TCP port `18200` for the built-in HTTP download server, which the Docker image's `server.cfg` turns on; see [downloads](/TaystJK/server-hosting/downloads/).
 - A strong `rconpassword` that is not committed to a public repository.
 
+## Choose how to run it
+
+Both run the same dedicated server and the same game module; they differ in how you install,
+update and restart it. Your selection is saved on this device.
+
+<section class="platform-guide" data-hosting-guide>
+  <div class="platform-selector-shell">
+    <p class="platform-selector-label">Run the server with</p>
+    <div class="platform-selector" role="tablist" aria-label="How to run the server">
+      <button type="button" id="hosting-tab-docker" role="tab" aria-controls="hosting-panel-docker" aria-selected="false" tabindex="-1" data-hosting-choice="docker">Docker Compose</button>
+      <button type="button" id="hosting-tab-dedicated" role="tab" aria-controls="hosting-panel-dedicated" aria-selected="false" tabindex="-1" data-hosting-choice="dedicated">Dedicated server</button>
+    </div>
+  </div>
+
+  <section class="platform-panel" id="hosting-panel-docker" role="tabpanel" aria-labelledby="hosting-tab-docker" tabindex="0" data-hosting-panel="docker" markdown="1">
 ## Docker Compose
+
+The published image contains the dedicated server for 64-bit Linux together with the
+[bundled server configs](/TaystJK/server-hosting/bundled-configs/), Compose restarts it
+automatically ([`docker-compose.yml`](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/docker-compose.yml#L36)), and your changes live in a mounted directory
+that survives image updates. You need Docker on the host.
 
 The repository ships a [Docker image and `docker-compose.yml`](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/docker-compose.yml). Use that definition from a TaystJK source checkout when possible; it supports both pulling the published image and building the server locally.
 
@@ -105,8 +125,13 @@ docker compose cp \
 ```
 
 Edit the copied file, then apply it with `docker compose restart taystjk`. The homepath copy takes priority over the image's basepath copy and persists across image updates. The same works for `bans.cfg`, `votes.cfg`, `default.cfg` and the mode files. Custom PK3s, reflists, logs, and configuration also belong under `homepath/taystjk/`. Use `docker compose down` to stop the server.
+  </section>
 
-## Native dedicated server
+  <section class="platform-panel" id="hosting-panel-dedicated" role="tabpanel" aria-labelledby="hosting-tab-dedicated" tabindex="0" data-hosting-panel="dedicated" markdown="1">
+## Dedicated server
+
+You start the dedicated server executable on the host yourself, and you manage its files, its
+configuration and restarting it after a crash or reboot.
 
 Extract the server files and retain all libraries included with the release. Put the retail assets under `base/` and TaystJK assets under `taystjk/`. Native releases do not include a `server.cfg`: copy the Docker image's configs from [`scripts/docker/`](https://github.com/taysta/TaystJK/tree/60fcb9cf68d38c3fede638fac4a8e42eb1123eaf/scripts/docker) into `taystjk/`, as [bundled server configs](/TaystJK/server-hosting/bundled-configs/) explains, or write your own. Then launch:
 
@@ -119,6 +144,9 @@ Extract the server files and retain all libraries included with the release. Put
 ```
 
 On Windows, use the `.exe` dedicated-server binary from the release. A service manager such as systemd or Docker should restart a public server after a crash or host reboot.
+  </section>
+
+</section>
 
 ## Run the TaystJK server engine with another mod
 

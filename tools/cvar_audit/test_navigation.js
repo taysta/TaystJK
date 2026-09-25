@@ -137,6 +137,7 @@ async function testCopiedHeadingQuery() {
 (async () => {
   testPanelLinks("platform", ["macos", "windows", "linux"]);
   testPanelLinks("baseline", ["eternaljk", "openjk", "basejka"]);
+  testPanelLinks("hosting", ["docker", "dedicated"]);
   await testSearchKeys();
   await testCopiedHeadingQuery();
   console.log("Tab links, search keyboard navigation, and copied headings are valid");
