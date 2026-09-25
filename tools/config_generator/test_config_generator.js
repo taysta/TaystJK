@@ -139,6 +139,12 @@ function checkBundle(state, result, label) {
     assert.ok(allow && Math.floor(Number(allow.value) / 4096) % 2 === 1, `${label}: g_allowVote allows vstr when there are vote options`);
   }
 
+  // No module needs vm_legacy: the engine falls back to the legacy interface by itself.
+  for (const [name, text] of files) assert.ok(!text.includes("vm_legacy 1"), `${label}: ${name} sets vm_legacy`);
+  const readme = files.get("README.txt");
+  const runs32 = /^  - TJK_ARCH=i386$/m.test(readme) || /^  \.\/taystjkded\.i386 /m.test(readme);
+  assert.equal(runs32, state.target !== "japro" && state.arch32, `${label}: README picks the server matching the module's architecture`);
+
   // Passwords appear in server.cfg only.
   for (const [name, text] of files) {
     if (name === "server.cfg") continue;
@@ -207,7 +213,7 @@ for (const target of Object.keys(generator.targets)) {
           Object.assign(raw, { run, modes: choice.modes, addons: choice.addons });
           if (variant === 1) {
             Object.assign(raw, {
-              listed: false, downloads: false, bans: false, votes: false, legacy: true,
+              listed: false, downloads: false, bans: false, votes: false, arch32: true,
               maps: ["mp/ffa1", "mp/ffa3", "ffa_custom"], rotation: true,
               bootMode: choice.modes[0] || "", motd: "Hi \"there\"\nsecond line", hostname: "^1Red ^7Server"
             });

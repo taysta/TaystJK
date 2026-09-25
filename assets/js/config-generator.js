@@ -204,7 +204,7 @@
       target: target,
       run: "docker",
       mod: target === "other" ? "japlus" : "",
-      legacy: false,
+      arch32: false,
       hostname: "My TaystJK server",
       motd: "",
       maxclients: 16,
@@ -246,7 +246,7 @@
       state.mod = cleanName(raw.mod) || state.mod;
       if (state.mod.toLowerCase() === "taystjk") state.mod = "japlus";
     }
-    if (target !== "japro") state.legacy = raw.legacy === true;
+    if (target !== "japro") state.arch32 = raw.arch32 === true;
     if (typeof raw.hostname === "string") state.hostname = clean(raw.hostname).slice(0, 64);
     if (typeof raw.motd === "string") state.motd = clean(raw.motd).slice(0, 256);
     if (raw.maxclients != null) state.maxclients = toInt(raw.maxclients, 16, 1, MAX_CLIENTS);
@@ -715,16 +715,15 @@
   }
 
   function launchLine(state) {
-    var parts = ["./taystjkded.x86_64", "+set dedicated 2", "+set net_port 29070", "+set fs_game " + modDir(state)];
-    if (state.legacy) parts.push("+set vm_legacy 1");
-    parts.push("+exec server.cfg");
+    var binary = state.arch32 ? "./taystjkded.i386" : "./taystjkded.x86_64";
+    var parts = [binary, "+set dedicated 2", "+set net_port 29070", "+set fs_game " + modDir(state), "+exec server.cfg"];
     return parts.join(" \\\n  ");
   }
 
   function dockerEnvironment(state) {
     if (state.target === "japro") return [];
     var env = ["TJK_MOD=" + modDir(state)];
-    if (state.legacy) env.push("TJK_OPTS=+exec server.cfg +set vm_legacy 1");
+    if (state.arch32) env.push("TJK_ARCH=i386");
     return env;
   }
 
@@ -769,8 +768,10 @@
       out.push("-----------");
       out.push("This bundle includes no game module. Install the jampgame library for " + (state.target === "base" ? "base game rules" : modDir(state)));
       out.push("in " + (state.run === "docker" ? installDir(state) : modDir(state)) + "/, built for the server's operating system and architecture.");
-      if (state.legacy) out.push("It uses the legacy module interface, so the launch options include +set vm_legacy 1.");
-      else out.push("If it uses the legacy dllEntry/vmMain interface, as JA+ does, also add +set vm_legacy 1.");
+      out.push("The engine uses the library's GetModuleAPI entry point, or the older dllEntry/vmMain interface");
+      out.push("when that is all it has, so no setting is needed for older modules such as JA+.");
+      if (state.arch32) out.push("It is a 32-bit library, so the server runs taystjkded.i386" + (state.run === "docker" ? " (TJK_ARCH=i386)." : "."));
+      else out.push("If the mod ships only a 32-bit library, as JA+ 2.4 does, run the 32-bit server: taystjkded.i386, or TJK_ARCH=i386 under Docker.");
     }
     out.push("");
     out.push("Maps");
@@ -1043,7 +1044,7 @@
     var target = TARGETS[state.target];
     if (id === "target") {
       var mod = state.target === "other" ? " (" + state.mod + ")" : "";
-      return target.label + mod + " · " + HOSTING[state.run];
+      return target.label + mod + (state.arch32 ? ", 32-bit" : "") + " · " + HOSTING[state.run];
     }
     if (id === "basics") {
       return (state.hostname || "Unnamed") + " · " + state.maxclients + " players · " +
@@ -1116,8 +1117,8 @@
         "The directory <code>fs_game</code> selects, such as <code>japlus</code>.");
     }
     if (state.target !== "japro") {
-      html += checkbox('data-field="legacy"', state.legacy, "The game module uses the legacy interface",
-        "JA+, retail modules and other older builds need <code>vm_legacy 1</code>; the launch options include it.");
+      html += checkbox('data-field="arch32"', state.arch32, "The game module is a 32-bit library",
+        "JA+ 2.4 and the retail base module ship only 32-bit Linux libraries (<code>jampgamei386.so</code>). The server then runs <code>taystjkded.i386</code>, or <code>TJK_ARCH=i386</code> under Docker.");
     }
     html += '<fieldset class="cfg-group"><legend>Run the server with</legend><div class="cfg-choices cfg-choices-two">';
     html += radioCard("run", "docker", state.run === "docker", "Docker Compose", "Files go in the mounted <code>homepath</code>.");

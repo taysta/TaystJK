@@ -152,9 +152,9 @@ On Windows, use the `.exe` dedicated-server binary from the release. A service m
 
 The dedicated executable and the server-side game rules are separate. You can use the TaystJK dedicated engine while loading another mod's native `jampgame` library, such as JA+ or JA++. In this arrangement TaystJK supplies engine features, networking, and server administration, while the selected mod supplies gameplay. TaystJK game-module commands and cvars are unavailable unless the other mod implements them too.
 
-Install the mod exactly as its own documentation requires, in a directory beside `base/`. The library must match the dedicated executable's operating system and architecture. For example, a 64-bit Linux server needs a compatible `japlus/jampgamex86_64.so`; it cannot load a 32-bit `jampgamei386.so`. If a mod is available only as a 32-bit library, use the matching 32-bit TaystJK dedicated build and its runtime dependencies.
+Install the mod exactly as its own documentation requires, in a directory beside `base/`. The library must match the dedicated executable's operating system and architecture. For example, a 64-bit Linux server needs a compatible `japlus/jampgamex86_64.so`; it cannot load a 32-bit `jampgamei386.so`. If a mod is available only as a 32-bit library, use the matching 32-bit TaystJK dedicated build and its runtime dependencies. JA+ 2.4 is one: it ships only `jampgamei386.so` for Linux, so it needs `taystjkded.i386`.
 
-Dedicated builds default `fs_forcegame` to an empty string so that `fs_game` can select the server mod. Leave it empty and launch a modern JA++ server module with:
+Dedicated builds default `fs_forcegame` to an empty string so that `fs_game` can select the server mod. Leave it empty and launch a 64-bit JA++ server module with:
 
 ```bash
 ./taystjkded.x86_64 \
@@ -164,20 +164,19 @@ Dedicated builds default `fs_forcegame` to an empty string so that `fs_game` can
   +exec server.cfg
 ```
 
-JA+ and some older or custom mod builds use the legacy native `dllEntry`/`vmMain` interface. Force that interface for the game-module slot by adding `+set vm_legacy 1`:
+or JA+ 2.4 on the 32-bit server with:
 
 ```bash
-./taystjkded.x86_64 \
+./taystjkded.i386 \
   +set dedicated 2 \
   +set net_port 29070 \
   +set fs_game japlus \
-  +set vm_legacy 1 \
   +exec server.cfg
 ```
 
-`vm_legacy 1` still loads a native `.dll`, `.so`, or `.dylib`; it does not load a QVM. Omit it for a mod that implements the newer `GetModuleAPI` interface. On a successful legacy start, the console reports `VM_CreateLegacy: jampgame... succeeded`. Also check `path` to confirm that `japlus/` is active and inspect the mod's version cvar before opening the server publicly.
+The engine loads either module interface by itself. It looks for the newer `GetModuleAPI` entry point first and, when a library does not export one, falls back to the older `dllEntry`/`vmMain` interface that JA+ and other older modules use ([`sv_gameapi.cpp`](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/server/sv_gameapi.cpp#L3178)). A legacy start is reported as `VM_CreateLegacy: jampgame... succeeded`. `vm_legacy` is not needed for this; it only forces the older interface on a library that has both ([when to use `vm_legacy`](/TaystJK/install/#when-to-use-vm_legacy)). Also check `path` to confirm that `japlus/` is active and inspect the mod's version cvar before opening the server publicly.
 
-For Docker, put the mod and its configuration under the mounted `homepath/japlus/`, set `TJK_MOD=japlus`, and for a legacy game module set `TJK_OPTS=+exec server.cfg +set vm_legacy 1`. Keep `+exec server.cfg` in that value: the image's default `TJK_OPTS` is just that command ([`Dockerfile`](https://github.com/taysta/TaystJK/blame/60fcb9cf68d38c3fede638fac4a8e42eb1123eaf/Dockerfile#L69)), and setting the variable replaces it. The image's bundled configs live in `taystjk/`, so they do not load for another mod; supply that mod's own `server.cfg`. The image does not include third-party mod files; supply and maintain them yourself. Test upgrades privately because a mod may depend on engine-specific behavior outside the standard module interface.
+For Docker, put the mod and its configuration under the mounted `homepath/japlus/` and set `TJK_MOD=japlus`. For a 32-bit module such as JA+ 2.4, also set `TJK_ARCH=i386`: the image contains both the `x86_64` and `i386` dedicated servers and runs the one `TJK_ARCH` names ([`run.sh`](https://github.com/taysta/TaystJK/blame/60fcb9cf68d38c3fede638fac4a8e42eb1123eaf/scripts/docker/run.sh#L14)). If you set `TJK_OPTS` for other launch options, keep `+exec server.cfg` in it: the image's default `TJK_OPTS` is just that command ([`Dockerfile`](https://github.com/taysta/TaystJK/blame/60fcb9cf68d38c3fede638fac4a8e42eb1123eaf/Dockerfile#L69)), and setting the variable replaces it. The image's bundled configs live in `taystjk/`, so they do not load for another mod; supply that mod's own `server.cfg`. The image does not include third-party mod files; supply and maintain them yourself. Test upgrades privately because a mod may depend on engine-specific behavior outside the standard module interface.
 
 ## Customize the shipped `server.cfg`
 
