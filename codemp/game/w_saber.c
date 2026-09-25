@@ -3849,6 +3849,9 @@ static QINLINE int SaberSPStyle(gentity_t *self)
 	if (JK2_DMGSYSTEM(self)) {
 		return 0;
 	}
+	if (g_tweakSaber.integer & ST_JAPLUS_DMG) {
+		return 0; //JA+ MP has one damage style for everyone (private duels included)
+	}
 
 	if (self->client && self->client->ps.duelInProgress) {
 		if (dueltypes[self->client->ps.clientNum] == 0)
@@ -3859,11 +3862,107 @@ static QINLINE int SaberSPStyle(gentity_t *self)
 	return d_saberSPStyleDamage.integer; //otherwise this
 }
 
+//JA+ scores a thrown saber's blade in MP with base's SP throw damage, which scales with how far the blade moved
+static int JP_JAPlusThrownSaberDamage(gentity_t *self, vec3_t saberStart, vec3_t saberEnd, float fraction)
+{
+	gentity_t *saberEnt = &g_entities[self->client->ps.saberEntityNum];
+	float fDmg, traceLength;
+
+	if (!saberEnt->s.saberInFlight)//does less damage on the way back
+		fDmg = 1.0f;
+	else
+		fDmg = 2.5f*self->client->ps.fd.forcePowerLevel[FP_SABERTHROW];
+	if (level.gametype != GT_DUEL && level.gametype != GT_POWERDUEL && level.gametype != GT_SIEGE)
+		fDmg *= 2.0f;
+	if (!fDmg)
+		return SABER_HITDAMAGE;
+
+	traceLength = Distance(saberEnd, saberStart);
+	if (fraction >= 1.0f)
+		return (int)ceil(fDmg*traceLength*0.1f*0.33f);
+	return (int)ceil(fDmg*traceLength*(1.0f-fraction)*0.1f*0.33f);
+}
+
+//JA+ 2.4's MP saber damage (g_tweakSaber ST_JAPLUS_DMG), as JA+ servers run it: jp_alterDMG 1 at its shipped values,
+//which also peaks the lunge and red DFA mid-swing
+static int JP_JAPlusSaberDamage(gentity_t *self)
+{
+	const int saberMove = self->client->ps.saberMove;
+	const int style = self->client->ps.fd.saberAnimLevel;
+	const qboolean saberInSpecial = BG_SaberInSpecial(saberMove);
+	const qboolean inBackAttack = G_SaberInBackAttack(saberMove);
+
+	if (BG_StabDownAnim(self->client->ps.torsoAnim))
+		return G_GetAttackDamage(self, 2, 50, 0.5f);
+	if (saberMove == LS_ROLL_STAB)
+		return G_GetAttackDamage(self, 2, 12, 0.5f);
+
+	if (style == SS_STAFF || style == SS_DUAL) {
+		if (inBackAttack) {
+			if (style == SS_STAFF)
+				return G_GetAttackDamage(self, 2, 30, 0.5f);
+			return G_GetAttackDamage(self, 2, 25, 0.5f);
+		}
+		if (!saberInSpecial)
+			return G_GetAttackDamage(self, 2, 60, 0.5f);
+		if (saberMove == LS_SPINATTACK || saberMove == LS_SPINATTACK_DUAL)
+			return 10;
+		if (saberMove == LS_SPINATTACK_ALORA)
+			return (int)(G_GetAttackDamage(self, 2, 60, 0.5f) * 0.25f);
+		if ((BG_KickingAnim(self->client->ps.legsAnim) || BG_KickingAnim(self->client->ps.torsoAnim)) && saberMove != LS_A_BACKFLIP_ATK)
+			return 2;
+		if (BG_SaberInKata(saberMove)) {
+			if (style == SS_DUAL)
+				return 50;
+			return G_GetAttackDamage(self, 30, 50, 0.5f);
+		}
+		return G_GetAttackDamage(self, 2, 45, 0.5f);
+	}
+
+	if (saberMove == LS_PULL_ATTACK_STAB)
+		return (int)(G_GetAttackDamage(self, 2, 50, 0.5f) * 0.2f);
+	if (saberMove == LS_PULL_ATTACK_SWING)
+		return G_GetAttackDamage(self, 2, 50, 0.5f);
+
+	if (style == SS_STRONG) {
+		if (!saberInSpecial && !inBackAttack)
+			return G_GetAttackDamage(self, 2, 110, 0.5f);
+		if (saberInSpecial && saberMove == LS_A_JUMP_T__B_)
+			return G_GetAttackDamage(self, 2, 180, 0.5f);
+		if (saberInSpecial && saberMove == LS_BUTTERFLY_LEFT)
+			return G_GetAttackDamage(self, 2, 60, 0.5f);
+		if (inBackAttack)
+			return G_GetAttackDamage(self, 2, 50, 0.5f);
+		if (BG_SaberInKata(saberMove))
+			return G_GetAttackDamage(self, 30, 50, 0.5f);
+		return 100;
+	}
+	if (style == SS_MEDIUM) {
+		if (saberInSpecial && (saberMove == LS_A_FLIP_STAB || saberMove == LS_A_FLIP_SLASH))
+			return G_GetAttackDamage(self, 2, 70, 0.5f);
+		if (inBackAttack)
+			return G_GetAttackDamage(self, 2, 35, 0.5f);
+		if (BG_SaberInKata(saberMove))
+			return G_GetAttackDamage(self, 30, 50, 0.5f);
+		return 60;
+	}
+	if (style == SS_FAST) {
+		if (saberInSpecial && saberMove == LS_A_LUNGE)
+			return G_GetAttackDamage(self, 2, 30, 0.5f);
+		if (inBackAttack)
+			return G_GetAttackDamage(self, 2, 30, 0.5f);
+		if (BG_SaberInKata(saberMove))
+			return G_GetAttackDamage(self, 30, 50, 0.5f);
+		return SABER_HITDAMAGE;
+	}
+	return SABER_HITDAMAGE;
+}
+
 static QINLINE int SaberKickTweak(gentity_t *self)
 {
 	if (self->client && self->client->ps.duelInProgress) { //not sure how to go about this.. i guess only force saberkicktweak in saberonly SP duels?
 		if (dueltypes[self->client->ps.clientNum] == 0) {//nf duel
-			if (g_saberDuelSPDamage.integer)//sp dmgs
+			if (g_saberDuelSPDamage.integer && !(g_tweakSaber.integer & ST_JAPLUS_DMG))//sp dmgs
 				return 1;
 			else
 				return d_saberKickTweak.integer;
@@ -3898,6 +3997,7 @@ static QINLINE qboolean CheckSaberDamage(gentity_t *self, int rSaberNum, int rBl
 	qboolean tryDeflectAgain = qfalse;
 
 	const qboolean jk2Damage = JK2_DMGSYSTEM(self);
+	const qboolean japlusDamage = (qboolean)(!jk2Damage && (g_tweakSaber.integer & ST_JAPLUS_DMG));
 
 	gentity_t *otherOwner;
 
@@ -4099,7 +4199,7 @@ static QINLINE qboolean CheckSaberDamage(gentity_t *self, int rSaberNum, int rBl
 	if ( self->client->ps.saberAttackWound < level.time
 		&& (SaberAttacking(self)
 			|| BG_SuperBreakWinAnim(self->client->ps.torsoAnim)
-			|| (SaberSPStyle(self) && self->client->ps.saberInFlight&&rSaberNum==0)
+			|| ((SaberSPStyle(self) || japlusDamage) && self->client->ps.saberInFlight&&rSaberNum==0)
 			|| (WP_SaberBladeDoTransitionDamage( &self->client->saber[rSaberNum], rBladeNum )&&BG_SaberInTransitionAny(self->client->ps.saberMove))
 			|| (self->client->ps.m_iVehicleNum && self->client->ps.saberMove > LS_READY) )
 	   )
@@ -4282,6 +4382,10 @@ static QINLINE qboolean CheckSaberDamage(gentity_t *self, int rSaberNum, int rBl
 
 			if (self->client->ps.forceHandExtend == HANDEXTEND_DUELCHALLENGE)//Remove dmg from swings while duel challenging
 				dmg = 1;
+			else if (japlusDamage && self->client->ps.saberInFlight)
+				dmg = JP_JAPlusThrownSaberDamage(self, saberStart, saberEnd, tr.fraction);
+			else if (japlusDamage)
+				dmg = JP_JAPlusSaberDamage(self);
 			else if (self->client->ps.saberMove == LS_ROLL_STAB)//All styles rollstab
 				dmg = G_GetAttackDamage(self, 2, 25, 0.5f);
 
@@ -4502,6 +4606,15 @@ static QINLINE qboolean CheckSaberDamage(gentity_t *self, int rSaberNum, int rBl
 				}
 			}
 		}
+		else if (japlusDamage)
+		{//JA+: no idle contact damage unless touch damage is on, and 1 on returning swings
+			if (g_saberTouchDmg.value > 0)
+				dmg = g_saberTouchDmg.value;
+			else if (BG_SaberInReturn(self->client->ps.saberMove))
+				dmg = SABER_NONATTACK_DAMAGE;
+			else
+				dmg = 0;
+		}
 //[JAPRO - Serverside - Saber - Remove Saber Touch Damage - Start]
 		else if (BG_SaberInReturn( self->client->ps.saberMove))
 			dmg = 10 * g_saberDamageScale.value;
@@ -4524,7 +4637,26 @@ static QINLINE qboolean CheckSaberDamage(gentity_t *self, int rSaberNum, int rBl
 		unblockable = qtrue;
 		self->client->ps.saberBlocked = 0;
 
-		if (!SaberSPStyle(self) && !inBackAttack && !jk2Damage)
+		if (!SaberSPStyle(self) && !inBackAttack && japlusDamage)
+		{//JA+ keeps base's extra damage for specials, with a lower off-peak cut on the flip and none on the lunge
+			if (self->client->ps.saberMove == LS_A_JUMP_T__B_)
+				dmg += 5;
+			else if (self->client->ps.saberMove == LS_A_FLIP_STAB || self->client->ps.saberMove == LS_A_FLIP_SLASH)
+			{
+				dmg += 5;
+				if (G_GetAnimPoint(self) <= 0.2f)
+					dmg = 2;
+			}
+			else if (self->client->ps.saberMove == LS_A_LUNGE)
+				dmg += 2;
+			else if (self->client->ps.saberMove == LS_SPINATTACK || self->client->ps.saberMove == LS_SPINATTACK_DUAL)
+				dmg = G_GetAttackDamage(self, 0, dmg+3, 0.5f) + 10;
+			else if ((BG_KickingAnim(self->client->ps.legsAnim) || BG_KickingAnim(self->client->ps.torsoAnim)) && self->client->ps.saberMove != LS_A_BACKFLIP_ATK)
+				dmg = 2;
+			else
+				dmg = G_GetAttackDamage(self, 5, dmg+5, 0.5f);
+		}
+		else if (!SaberSPStyle(self) && !inBackAttack && !jk2Damage)
 		{
 			if (self->client->ps.saberMove == LS_A_JUMP_T__B_)
 			{ //do extra damage for special unblockables
@@ -4827,7 +4959,7 @@ static QINLINE qboolean CheckSaberDamage(gentity_t *self, int rSaberNum, int rBl
 			qboolean doDismemberment = qfalse;
 			int	knockbackFlags = 0;
 
-			if (SaberSPStyle(self) && g_entities[tr.entityNum].client)//Japro - what? so all dmg gets buffed 1.5x in basejka here?
+			if ((SaberSPStyle(self) || japlusDamage) && g_entities[tr.entityNum].client)//Japro - what? so all dmg gets buffed 1.5x in basejka here?
 			{ //not a "jedi", so make them suffer more
 				if ( dmg > SABER_NONATTACK_DAMAGE )
 				{ //don't bother increasing just for idle touch damage
@@ -4845,6 +4977,15 @@ static QINLINE qboolean CheckSaberDamage(gentity_t *self, int rSaberNum, int rBl
 				}
 			}
 			*/
+
+			//JA+ keeps base's MP reduction against saber users; thrown sabers are exempt
+			//base and JA+ cut a 35 hit by 0.7 instead, but test for it after the 1.5 above, where no hit is still 35
+			if (japlusDamage && !SaberSPStyle(self) && !self->client->ps.saberInFlight
+				&& g_entities[tr.entityNum].client && g_entities[tr.entityNum].client->ps.weapon == WP_SABER
+				&& level.gametype != GT_SIEGE && dmg > SABER_NONATTACK_DAMAGE && !unblockable)
+			{
+				dmg *= 0.5;
+			}
 
 			/* //Get rid of weird damage scale here too
 			if ( !d_saberSPStyleDamage.integer )

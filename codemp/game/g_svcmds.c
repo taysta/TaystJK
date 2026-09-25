@@ -934,6 +934,7 @@ static bitInfo_T saberTweaks[] = {
 	{"New dmg calculation for SP damage (no vel dmg)"},//19
 	{"The slow blade penetrates the sheild"},//20
 	{ "New dmg calculation for SP damage (capped vel dmg)" },//19
+	{"JA+ MP damage"},//22
 };
 static const int MAX_SABER_TWEAKS = ARRAY_LEN( saberTweaks );
 

@@ -8293,11 +8293,15 @@ void Cmd_ServerConfig_f(gentity_t *ent) //loda fixme fix indenting on this, make
 
 	//Saber changes
 	Q_strncpyz(buf, " ^3Saber Changes:\n", sizeof(buf));
-	Q_strcat(buf, sizeof(buf), va("   ^5Saber style damage^3: ^2%s\n", (d_saberSPStyleDamage.integer) ? "SP" : "MP"));
-	if (d_saberSPStyleDamage.integer != g_saberDuelSPDamage.integer)
-		Q_strcat(buf, sizeof(buf), va("   ^5Saber style damage in saber duels^3: ^2%s\n", (g_saberDuelSPDamage.integer) ? "SP" : "MP"));
-	if ((d_saberSPStyleDamage.integer != g_forceDuelSPDamage.integer) && (level.gametype != GT_DUEL && level.gametype != GT_POWERDUEL && level.gametype < GT_TEAM))
-		Q_strcat(buf, sizeof(buf), va("   ^5Saber style damage in force duels^3: ^2%s\n", (g_forceDuelSPDamage.integer) ? "SP" : "MP"));
+	if (g_tweakSaber.integer & ST_JAPLUS_DMG)
+		Q_strcat(buf, sizeof(buf), "   ^5Saber style damage^3: ^2JA+ MP\n");
+	else {
+		Q_strcat(buf, sizeof(buf), va("   ^5Saber style damage^3: ^2%s\n", (d_saberSPStyleDamage.integer) ? "SP" : "MP"));
+		if (d_saberSPStyleDamage.integer != g_saberDuelSPDamage.integer)
+			Q_strcat(buf, sizeof(buf), va("   ^5Saber style damage in saber duels^3: ^2%s\n", (g_saberDuelSPDamage.integer) ? "SP" : "MP"));
+		if ((d_saberSPStyleDamage.integer != g_forceDuelSPDamage.integer) && (level.gametype != GT_DUEL && level.gametype != GT_POWERDUEL && level.gametype < GT_TEAM))
+			Q_strcat(buf, sizeof(buf), va("   ^5Saber style damage in force duels^3: ^2%s\n", (g_forceDuelSPDamage.integer) ? "SP" : "MP"));
+	}
 	if (g_saberDamageScale.value != 1.0f)
 		Q_strcat(buf, sizeof(buf), va("   ^5Saber damage scale: ^2%.2f\n", g_saberDamageScale.value));
 	if (g_blueDamageScale.value != 1.0f)
@@ -8345,9 +8349,9 @@ void Cmd_ServerConfig_f(gentity_t *ent) //loda fixme fix indenting on this, make
 		Q_strcat(buf, sizeof(buf), "   ^5JK2 style lunge\n");
 	if (g_maxSaberDefense.integer)
 		Q_strcat(buf, sizeof(buf), va("   ^5Saber defense level capped at^3: ^2%i\n", g_maxSaberDefense.integer));
-	if ((g_tweakSaber.integer & ST_REDUCE_SABERBLOCK) && (!d_saberSPStyleDamage.integer || !g_saberDuelSPDamage.integer))
+	if ((g_tweakSaber.integer & ST_REDUCE_SABERBLOCK) && ((g_tweakSaber.integer & ST_JAPLUS_DMG) || !d_saberSPStyleDamage.integer || !g_saberDuelSPDamage.integer))
 		Q_strcat(buf, sizeof(buf), "   ^5Reduced saber block for MP style damage\n");
-	if ((g_tweakSaber.integer & ST_REDUCE_SABERDROP) && (!d_saberSPStyleDamage.integer || !g_forceDuelSPDamage.integer))
+	if ((g_tweakSaber.integer & ST_REDUCE_SABERDROP) && ((g_tweakSaber.integer & ST_JAPLUS_DMG) || !d_saberSPStyleDamage.integer || !g_forceDuelSPDamage.integer))
 		Q_strcat(buf, sizeof(buf), "   ^5Reduced saber drop for MP style damage\n");
 	if (g_tweakSaber.integer & ST_FIXED_SABERSWITCH)
 		Q_strcat(buf, sizeof(buf), "   ^5Fixed saber switch swing\n");
