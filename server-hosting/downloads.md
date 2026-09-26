@@ -3,7 +3,7 @@ title: "Downloads and PK3 references"
 layout: reference
 nav_order: 2
 parent: "Server hosting"
-description: "Serve required PK3s over HTTP or UDP, control which PK3s are referenced with reflists, and run a pure server with a mod."
+description: "Serve required PK3s over HTTP or UDP, control which PK3s are referenced with reflists, and see what sv_pure does and does not check."
 toc: true
 ---
 
@@ -83,7 +83,12 @@ You may combine a force list with a whitelist or blacklist. Avoid using whitelis
 
 The behavior is inherited from JK2MV; its wiki has useful background on [downloaded files](https://github.com/mvdevs/jk2mv/wiki/Downloaded-Files), [HTTP downloads](https://github.com/mvdevs/jk2mv/wiki/HTTP-Downloads), and [PK3 referencing](https://github.com/mvdevs/jk2mv/wiki/PK3-Referencing).
 
-## Running a pure server with a mod
+## What `sv_pure` checks
+
+TaystJK's bundled `server.cfg` leaves `sv_pure` at `0`
+([`server.cfg`](https://github.com/taysta/TaystJK/blame/60fcb9cf68d38c3fede638fac4a8e42eb1123eaf/scripts/docker/server.cfg#L30)),
+and the [server config generator](/TaystJK/server-hosting/config-generator/) does not turn it
+on. This section is for servers that already run it.
 
 `sv_pure 1` checks the client's PK3 checksums against the server's expected files. The
 module checks specifically look for `cgamex86.dll` and `uix86.dll` inside PK3s
@@ -97,8 +102,8 @@ architectures can account for the expected pure-server PK3 checksums
 ([`files.cpp`](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/codemp/qcommon/files.cpp#L1862),
 [`vm.cpp`](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/codemp/qcommon/vm.cpp#L169)).
 
-Loose native libraries alone are therefore not a reason to disable `sv_pure`. If clients
-fail pure validation, check that the server and clients have the expected PK3s, including
+Loose native libraries do not fail these checks by themselves. If clients fail pure
+validation, check that the server and clients have the expected PK3s, including
 the legacy DLL entries used for these checks. Packing an x64 or ARM native library into a
 PK3 does not satisfy a check for an `x86.dll` entry.
 
