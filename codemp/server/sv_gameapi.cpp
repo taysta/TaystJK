@@ -2840,6 +2840,10 @@ void SV_InitGame( qboolean restart ) {
 			}
 		}
 	}
+
+	// tell clients whether the game module is Raven's SDK code or an OpenJK fork
+	Cvar_Get("sv_legacyGameAPI", "", CVAR_SERVERINFO|CVAR_ROM, "1 when the game module loaded through Raven's dllEntry/vmMain API, 0 through OpenJK's GetModuleAPI");
+	Cvar_Set("sv_legacyGameAPI", gvm ? (gvm->isLegacy ? "1" : "0") : "");
 }
 
 void SV_BindGame( void ) {

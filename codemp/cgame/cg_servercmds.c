@@ -293,7 +293,16 @@ void CG_ParseServerinfo( void ) {
 		cgs.serverMod = SVMOD_BASEJKA;
 		cgs.baseGame = qtrue;
 	}
-		
+
+	//Sad hack to detect Raven's SDK game code, it puts g_saberWallDamageScale in serverinfo, OpenJK's 2013 cleanup took it out
+	if (Info_ValueForKey(info, "g_saberWallDamageScale")[0])
+		cgs.baseGame = qtrue;
+
+	{//a TaystJK server says whether any game module is Raven's SDK code or an OpenJK fork, whatever its gamename; others leave the gamename to decide
+		const char *legacyAPI = Info_ValueForKey(info, "sv_legacyGameAPI");
+		if (legacyAPI[0])
+			cgs.baseGame = (qboolean)(atoi(legacyAPI) != 0);
+	}
 
 	restrictString[0] = 'r';
 	restrictString[1] = 'e';
