@@ -973,6 +973,7 @@ void Svcmd_ToggleTweakSaber_f( void ) {
 				trap->Print("%s %s^7\n", saberTweaks[index].string, ((g_tweakSaber.integer & (1 << index)) ? "^2Enabled" : "^1Disabled"));
 				CVU_TweakSaber();
 			}
+			return;
 		} //DM End: New -1 toggle all options.
 
 		trap->Cvar_Set( "g_tweakSaber", va( "%i", (1 << index) ^ (g_tweakSaber.integer & mask ) ) );
@@ -1048,6 +1049,7 @@ void Svcmd_ToggleTweakForce_f( void ) {
 				trap->Print("%s %s^7\n", forceTweaks[index].string, ((g_tweakForce.integer & (1 << index)) ? "^2Enabled" : "^1Disabled"));
 				CVU_TweakForce();
 			}
+			return;
 		} //DM End: New -1 toggle all options.
 
 		trap->Cvar_Set( "g_tweakForce", va( "%i", (1 << index) ^ (g_tweakForce.integer & mask ) ) );
@@ -1174,6 +1176,7 @@ void Svcmd_ToggleStartingWeapons_f( void ) {
 				trap->Print("%s %s^7\n", startingWeapons[index].string, ((g_startingWeapons.integer & (1 << index)) ? "^2Enabled" : "^1Disabled"));
 				CVU_StartingWeapons();
 			}
+			return;
 		} //DM End: New -1 toggle all options.
 
 		trap->Cvar_Set( "g_startingWeapons", va( "%i", (1 << index) ^ (g_startingWeapons.integer & mask ) ) );
@@ -1239,6 +1242,7 @@ void Svcmd_ToggleStartingItems_f( void ) {
 				trap->Cvar_Update(&g_startingItems);
 				trap->Print("%s %s^7\n", startingItems[index].string, ((g_startingItems.integer & (1 << index)) ? "^2Enabled" : "^1Disabled"));
 			}
+			return;
 		} //DM End: New -1 toggle all options.
 
 		trap->Cvar_Set( "g_startingItems", va( "%i", (1 << index) ^ (g_startingItems.integer & mask ) ) );
@@ -1293,6 +1297,7 @@ void Svcmd_ToggleSaberDisable_f( void ) {
 				trap->Cvar_Update(&g_saberDisable);
 				trap->Print("%s %s^7\n", saberDisables[index].string, ((g_saberDisable.integer & (1 << index)) ? "^2Enabled" : "^1Disabled"));
 			}
+			return;
 		} //DM End: New -1 toggle all options.
 
 		trap->Cvar_Set( "g_saberDisable", va( "%i", (1 << index) ^ (g_saberDisable.integer & mask ) ) );
@@ -1461,6 +1466,7 @@ void Svcmd_ToggleVote_f( void ) {
 				trap->Cvar_Update(&g_allowVote);
 				trap->Print("%s %s^7\n", voteOptions[index].string, ((g_allowVote.integer & (1 << index)) ? "^2Enabled" : "^1Disabled"));
 			}
+			return;
 		} //DM End: New -1 toggle all options.
 
 		trap->Cvar_Set( "g_allowVote", va( "%i", (1 << index) ^ (g_allowVote.integer & mask ) ) );
@@ -1520,6 +1526,7 @@ void Svcmd_ToggleTweakVote_f( void ) {
 				trap->Cvar_Update(&g_tweakVote);
 				trap->Print("%s %s^7\n", voteTweaks[index].string, ((g_tweakVote.integer & (1 << index)) ? "^2Enabled" : "^1Disabled"));
 			}
+			return;
 		} //DM End: New -1 toggle all options.
 
 		trap->Cvar_Set( "g_tweakVote", va( "%i", (1 << index) ^ (g_tweakVote.integer & mask ) ) );
@@ -1588,6 +1595,7 @@ void Svcmd_ToggleEmotes_f( void ) {
 				trap->Cvar_Update(&g_emotesDisable);
 				trap->Print("%s %s^7\n", emoteDisables[index].string, ((g_emotesDisable.integer & (1 << index)) ? "^2Enabled" : "^1Disabled"));
 			}
+			return;
 		} //DM End: New -1 toggle all options.
 
 		trap->Cvar_Set( "g_emotesDisable", va( "%i", (1 << index) ^ (g_emotesDisable.integer & mask ) ) );
