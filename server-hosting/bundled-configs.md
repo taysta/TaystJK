@@ -35,6 +35,8 @@ that mod's own configuration instead; see
 Native releases do not include them. To use them outside Docker, copy the `.cfg` files
 from [`scripts/docker/`](https://github.com/taysta/TaystJK/tree/60fcb9cf68d38c3fede638fac4a8e42eb1123eaf/scripts/docker)
 in the source repository into your `taystjk/` directory, then launch with `+exec server.cfg`.
+Or build a set with the [server config generator](/TaystJK/server-hosting/config-generator/):
+its Bundled preset and jaPRO modes come from these files, with your server settings filled in.
 
 ## What loads at startup
 

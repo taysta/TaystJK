@@ -176,7 +176,7 @@ or JA+ 2.4 on the 32-bit server with:
 
 The engine loads either module interface by itself. It looks for the newer `GetModuleAPI` entry point first and, when a library does not export one, falls back to the older `dllEntry`/`vmMain` interface that JA+ and other older modules use ([`sv_gameapi.cpp`](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/server/sv_gameapi.cpp#L3178)). A legacy start is reported as `VM_CreateLegacy: jampgame... succeeded`. `vm_legacy` is not needed for this; it only forces the older interface on a library that has both ([when to use `vm_legacy`](/TaystJK/install/#when-to-use-vm_legacy)). Also check `path` to confirm that `japlus/` is active and inspect the mod's version cvar before opening the server publicly.
 
-For Docker, put the mod and its configuration under the mounted `homepath/japlus/` and set `TJK_MOD=japlus`. For a 32-bit module such as JA+ 2.4, also set `TJK_ARCH=i386`: the image contains both the `x86_64` and `i386` dedicated servers and runs the one `TJK_ARCH` names ([`run.sh`](https://github.com/taysta/TaystJK/blame/60fcb9cf68d38c3fede638fac4a8e42eb1123eaf/scripts/docker/run.sh#L14)). If you set `TJK_OPTS` for other launch options, keep `+exec server.cfg` in it: the image's default `TJK_OPTS` is just that command ([`Dockerfile`](https://github.com/taysta/TaystJK/blame/60fcb9cf68d38c3fede638fac4a8e42eb1123eaf/Dockerfile#L69)), and setting the variable replaces it. The image's bundled configs live in `taystjk/`, so they do not load for another mod; supply that mod's own `server.cfg`. The image does not include third-party mod files; supply and maintain them yourself. Test upgrades privately because a mod may depend on engine-specific behavior outside the standard module interface.
+For Docker, put the mod and its configuration under the mounted `homepath/japlus/` and set `TJK_MOD=japlus`. For a 32-bit module such as JA+ 2.4, also set `TJK_ARCH=i386`: the image contains both the `x86_64` and `i386` dedicated servers and runs the one `TJK_ARCH` names ([`run.sh`](https://github.com/taysta/TaystJK/blame/60fcb9cf68d38c3fede638fac4a8e42eb1123eaf/scripts/docker/run.sh#L14)). If you set `TJK_OPTS` for other launch options, keep `+exec server.cfg` in it: the image's default `TJK_OPTS` is just that command ([`Dockerfile`](https://github.com/taysta/TaystJK/blame/60fcb9cf68d38c3fede638fac4a8e42eb1123eaf/Dockerfile#L69)), and setting the variable replaces it. The image's bundled configs live in `taystjk/`, so they do not load for another mod; supply that mod's own `server.cfg`, or build one from base Jedi Academy's settings with the [server config generator](/TaystJK/server-hosting/config-generator/). The image does not include third-party mod files; supply and maintain them yourself. Test upgrades privately because a mod may depend on engine-specific behavior outside the standard module interface.
 
 ## Customize the shipped `server.cfg`
 
@@ -195,6 +195,9 @@ set rconpassword "replace-with-a-long-random-secret"
 seta g_fullAdminPass "replace-with-another-secret"
 seta g_juniorAdminPass "and-a-third"
 ```
+
+To start from a full set with these already filled in, build it with the
+[server config generator](/TaystJK/server-hosting/config-generator/) instead.
 
 Keep server settings in this file and gameplay in `default.cfg` and the mode files, so that
 loading a mode never changes them. [Bundled server configs](/TaystJK/server-hosting/bundled-configs/)
