@@ -451,6 +451,19 @@ XDOCS_CVAR_DEF("cg_smoothCamera", "Smooth camera movement",
 	SETTING("1", "Camera movements are smooth")
 )
 
+XDOCS_CVAR_DEF("cg_smoothClients", "Extrapolate other players when a snapshot is late",
+	"Players are only extrapolated on base, JA+ and g_smoothClients 2 servers." NL
+	SETTING("0", "Never extrapolate players") NL
+	SETTING("1", "Extrapolate players, and smooth the ones the server extrapolates (Base behavior)") NL
+	SETTING("2", "Extrapolate players without smoothing")
+)
+
+XDOCS_CVAR_DEF("g_smoothClients", "How the server sends players who are moving",
+	SETTING("0", "Send each player where they are") NL
+	SETTING("1", "Move lagging players on by up to two frames") NL
+	SETTING("2", "Send players moving on from their last command, for clients to extrapolate (Base behavior)")
+)
+
 XDOCS_CVAR_DEF("cg_blood", "Show blood when shot by guns",
 	"Blood only shows from guns; gibs only show on JAPRO servers." NL
 	SETTING("0", "No blood and no gibs") NL
