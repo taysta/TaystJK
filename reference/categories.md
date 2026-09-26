@@ -30,5 +30,5 @@ description: "Every cvar and command grouped by subject, from audio and HUD thro
 <a class="directory-card" href="/TaystJK/reference/categories/hud-interface/"><span class="directory-code">HUD &amp; interface</span><strong>166</strong><span>155 cvars · 11 commands</span></a>
 <a class="directory-card" href="/TaystJK/reference/categories/input-controls/"><span class="directory-code">Input &amp; controls</span><strong>64</strong><span>27 cvars · 37 commands</span></a>
 <a class="directory-card" href="/TaystJK/reference/categories/movement-race/"><span class="directory-code">Movement &amp; race</span><strong>68</strong><span>58 cvars · 10 commands</span></a>
-<a class="directory-card" href="/TaystJK/reference/categories/server-networking/"><span class="directory-code">Server &amp; networking</span><strong>148</strong><span>115 cvars · 33 commands</span></a>
+<a class="directory-card" href="/TaystJK/reference/categories/server-networking/"><span class="directory-code">Server &amp; networking</span><strong>149</strong><span>116 cvars · 33 commands</span></a>
 </div>

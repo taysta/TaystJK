@@ -6,13 +6,13 @@ nav_order: 14
 parent: "By topic"
 wide: true
 reference_app: true
-description: "Browse 115 cvars, 33 commands in the TaystJK console reference."
+description: "Browse 116 cvars, 33 commands in the TaystJK console reference."
 ---
 
 <div class="page-heading" markdown="1">
 <p class="eyebrow">Filtered collection</p>
 <h1>Server &amp; networking</h1>
-<p class="page-lede">Entries in this broad functional area. This collection contains 115 cvars, 33 commands.</p>
+<p class="page-lede">Entries in this broad functional area. This collection contains 116 cvars, 33 commands.</p>
 </div>
 
 <section class="reference-catalog" id="catalog" data-reference-app data-mode="all" data-catalog-url="{{ '/assets/data/catalog.json' | relative_url }}" data-preset-category="Server &amp; networking" aria-labelledby="catalog-title">

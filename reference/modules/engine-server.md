@@ -6,13 +6,13 @@ nav_order: 3
 parent: "By module"
 wide: true
 reference_app: true
-description: "Browse 91 cvars, 36 commands in the TaystJK console reference."
+description: "Browse 92 cvars, 36 commands in the TaystJK console reference."
 ---
 
 <div class="page-heading" markdown="1">
 <p class="eyebrow">Filtered collection</p>
 <h1>engine-server</h1>
-<p class="page-lede">Entries whose primary registration or dispatch context is this module. This collection contains 91 cvars, 36 commands.</p>
+<p class="page-lede">Entries whose primary registration or dispatch context is this module. This collection contains 92 cvars, 36 commands.</p>
 </div>
 
 <section class="reference-catalog" id="catalog" data-reference-app data-mode="all" data-catalog-url="{{ '/assets/data/catalog.json' | relative_url }}" data-preset-module="engine-server" aria-labelledby="catalog-title">
