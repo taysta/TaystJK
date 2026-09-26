@@ -1181,6 +1181,7 @@ description: "A no-JavaScript index of every TaystJK cvar and console command."
 <a href="/TaystJK/reference/cvars/sv_killserver-7431ced/"><code>sv_killserver</code></a>
 <a href="/TaystJK/reference/cvars/sv_lanforcerate-17e0934/"><code>sv_lanForceRate</code></a>
 <a href="/TaystJK/reference/cvars/sv_legacyfixes-4f7fac8/"><code>sv_legacyFixes</code></a>
+<a href="/TaystJK/reference/cvars/sv_legacygameapi-d17df18/"><code>sv_legacyGameAPI</code></a>
 <a href="/TaystJK/reference/cvars/sv_mapchecksum-848ef8d/"><code>sv_mapChecksum</code></a>
 <a href="/TaystJK/reference/cvars/sv_master1-f9b0f7d/"><code>sv_master1</code></a>
 <a href="/TaystJK/reference/cvars/sv_master2-5450788/"><code>sv_master2</code></a>

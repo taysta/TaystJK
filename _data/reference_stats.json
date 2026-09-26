@@ -1,10 +1,10 @@
 {
-  "entries": "2,015",
-  "cvars": "1,442",
+  "entries": "2,016",
+  "cvars": "1,443",
   "commands": "573",
-  "needs_review": "1,649",
+  "needs_review": "1,647",
   "provenance_needs_review": "774",
-  "cvars_with_xdocs": "117",
+  "cvars_with_xdocs": "119",
   "cvars_in_menus": "229",
   "origins": [
     {
@@ -74,12 +74,12 @@
     {
       "id": "taystjk",
       "label": "TaystJK",
-      "count": "74",
+      "count": "75",
       "modules": {
         "cgame": "60",
         "engine-client": "11",
         "engine-shared": "2",
-        "engine-server": "1"
+        "engine-server": "2"
       }
     },
     {
@@ -174,12 +174,12 @@
     },
     "taystjk": {
       "label": "TaystJK",
-      "count": "74",
+      "count": "75",
       "modules": {
         "cgame": "60",
         "engine-client": "11",
         "engine-shared": "2",
-        "engine-server": "1"
+        "engine-server": "2"
       }
     },
     "vulkan": {

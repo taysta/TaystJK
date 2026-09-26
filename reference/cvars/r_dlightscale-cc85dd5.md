@@ -40,7 +40,7 @@ No discrete value list is enforced or documented in the inspected source.
 
 ## Enforced ranges
 
-- `0.1f` through `1` (numeric; Cvar_CheckRange). Evidence: [codemp/rd-vulkan/tr_init.cpp:950](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/rd-vulkan/tr_init.cpp#L950)
+- `0.1f` through `1` (numeric; Cvar_CheckRange). Evidence: [codemp/rd-vulkan/tr_init.cpp:950](https://github.com/taysta/TaystJK/blame/b35ed06fec41c53644352743c6b199a5d5d500f3/codemp/rd-vulkan/tr_init.cpp#L950)
 
 ## Flags
 
@@ -51,7 +51,7 @@ No discrete value list is enforced or documented in the inspected source.
 Origin: <span class="label ref-origin ref-origin-vulkan">Vulkan</span>
 
 - Ultimate-origin introduction: [`c4a9c87ef0e3`](https://github.com/JKSunny/EternalJK/commit/c4a9c87ef0e3171c80fd8c4e24df94e0fa1bcbe4) in <span class="label ref-origin ref-origin-vulkan">Vulkan</span> (content authored `2021-05-25`, integrated `2021-05-25`)
-- Upstream registration evidence: [codemp/rd-vulkan/tr_init.cpp:948](https://github.com/JKSunny/EternalJK/blame/878e4ad087779c379c5925fed27c9d56efdf3faa/codemp/rd-vulkan/tr_init.cpp#L948)
+- Upstream registration evidence: [codemp/rd-vulkan/tr_init.cpp:948](https://github.com/JKSunny/EternalJK/blame/a4ab639bdfb9da2a3d63e9748eb57a72fb988552/codemp/rd-vulkan/tr_init.cpp#L948)
 - Attribution method: `squash-feature-group-explicit-credit`
 - Attribution confidence: `medium`
 - Notes: The identifier's single-prefix squash feature group explicitly credits vulkan.
@@ -69,9 +69,9 @@ Authored dates come from the exact registration's first content commit, PR dates
 
 ## Evidence
 
-- registration: [codemp/rd-vulkan/tr_init.cpp:949](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/rd-vulkan/tr_init.cpp#L949) (Cvar_Get); condition `defined(USE_PMLIGHT)`
-- behavior: [codemp/rd-vulkan/tr_scene.cpp:318](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/rd-vulkan/tr_scene.cpp#L318)
-- behavior: [codemp/rd-vulkan/tr_scene.cpp:365](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/rd-vulkan/tr_scene.cpp#L365)
-- behavior: [codemp/rd-vulkan/tr_init.cpp:950](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/rd-vulkan/tr_init.cpp#L950)
+- registration: [codemp/rd-vulkan/tr_init.cpp:949](https://github.com/taysta/TaystJK/blame/b35ed06fec41c53644352743c6b199a5d5d500f3/codemp/rd-vulkan/tr_init.cpp#L949) (Cvar_Get); condition `defined(USE_PMLIGHT)`
+- behavior: [codemp/rd-vulkan/tr_scene.cpp:318](https://github.com/taysta/TaystJK/blame/b35ed06fec41c53644352743c6b199a5d5d500f3/codemp/rd-vulkan/tr_scene.cpp#L318)
+- behavior: [codemp/rd-vulkan/tr_scene.cpp:365](https://github.com/taysta/TaystJK/blame/b35ed06fec41c53644352743c6b199a5d5d500f3/codemp/rd-vulkan/tr_scene.cpp#L365)
+- behavior: [codemp/rd-vulkan/tr_init.cpp:950](https://github.com/taysta/TaystJK/blame/b35ed06fec41c53644352743c6b199a5d5d500f3/codemp/rd-vulkan/tr_init.cpp#L950)
 
-<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/f4643281440c626cb7e30444c8c392606167a7f8"><code>f4643281440c</code></a> on 2026-09-23. Anything merged after that is not reflected here.</p>
+<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/b35ed06fec41c53644352743c6b199a5d5d500f3"><code>b35ed06fec41</code></a> on 2026-09-27. Anything merged after that is not reflected here.</p>

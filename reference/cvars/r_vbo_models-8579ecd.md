@@ -37,8 +37,8 @@ Cache ghoul2 and md3 model surfaces
 
 | Value | Meaning | Evidence |
 |:--|:--|:--|
-| `0` | Disabled. | [codemp/rd-vulkan/vk_init.cpp:511](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/rd-vulkan/vk_init.cpp#L511) |
-| `1` | Enabled. | [codemp/rd-vulkan/vk_init.cpp:511](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/rd-vulkan/vk_init.cpp#L511) |
+| `0` | Disabled. | [codemp/rd-vulkan/vk_init.cpp:511](https://github.com/taysta/TaystJK/blame/b35ed06fec41c53644352743c6b199a5d5d500f3/codemp/rd-vulkan/vk_init.cpp#L511) |
+| `1` | Enabled. | [codemp/rd-vulkan/vk_init.cpp:511](https://github.com/taysta/TaystJK/blame/b35ed06fec41c53644352743c6b199a5d5d500f3/codemp/rd-vulkan/vk_init.cpp#L511) |
 
 ## Flags
 
@@ -52,7 +52,7 @@ Origin: <span class="label ref-origin ref-origin-vulkan">Vulkan</span>
 - Ultimate-origin introduction: [`f88d0ccd696d`](https://github.com/JKSunny/EternalJK/commit/f88d0ccd696dd70a37e46638d7790a68196e773e) in <span class="label ref-origin ref-origin-vulkan">Vulkan</span> (content authored `2025-07-18`, integrated `2025-07-18`)
 - TaystJK integration evidence: [`cc93ec8c4139`](https://github.com/taysta/TaystJK/commit/cc93ec8c413928bdfb94db470566c1ec44d88903)
 - Origin pull request: [#251](https://github.com/taysta/TaystJK/pull/251)
-- Upstream registration evidence: [codemp/rd-vulkan/tr_init.cpp:962](https://github.com/JKSunny/EternalJK/blame/878e4ad087779c379c5925fed27c9d56efdf3faa/codemp/rd-vulkan/tr_init.cpp#L962)
+- Upstream registration evidence: [codemp/rd-vulkan/tr_init.cpp:962](https://github.com/JKSunny/EternalJK/blame/a4ab639bdfb9da2a3d63e9748eb57a72fb988552/codemp/rd-vulkan/tr_init.cpp#L962)
 - Attribution method: `squash-feature-group-explicit-credit`
 - Attribution confidence: `medium`
 - Notes: The identifier's single-prefix squash feature group explicitly credits vulkan.
@@ -78,8 +78,8 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 ## Evidence
 
-- registration: [codemp/rd-vulkan/tr_init.cpp:963](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/rd-vulkan/tr_init.cpp#L963) (Cvar_Get); condition `defined(USE_VBO)`
-- behavior: [codemp/rd-vulkan/vk_init.cpp:511](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/rd-vulkan/vk_init.cpp#L511)
-- behavior: [codemp/rd-vulkan/vk_info.cpp:472](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/rd-vulkan/vk_info.cpp#L472)
+- registration: [codemp/rd-vulkan/tr_init.cpp:963](https://github.com/taysta/TaystJK/blame/b35ed06fec41c53644352743c6b199a5d5d500f3/codemp/rd-vulkan/tr_init.cpp#L963) (Cvar_Get); condition `defined(USE_VBO)`
+- behavior: [codemp/rd-vulkan/vk_init.cpp:511](https://github.com/taysta/TaystJK/blame/b35ed06fec41c53644352743c6b199a5d5d500f3/codemp/rd-vulkan/vk_init.cpp#L511)
+- behavior: [codemp/rd-vulkan/vk_info.cpp:472](https://github.com/taysta/TaystJK/blame/b35ed06fec41c53644352743c6b199a5d5d500f3/codemp/rd-vulkan/vk_info.cpp#L472)
 
-<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/f4643281440c626cb7e30444c8c392606167a7f8"><code>f4643281440c</code></a> on 2026-09-23. Anything merged after that is not reflected here.</p>
+<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/b35ed06fec41c53644352743c6b199a5d5d500f3"><code>b35ed06fec41</code></a> on 2026-09-27. Anything merged after that is not reflected here.</p>

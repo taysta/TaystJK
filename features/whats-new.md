@@ -15,7 +15,7 @@ description: "Every cvar and console command TaystJK adds, grouped by topic and 
 
 <p class="page-lede">What TaystJK adds over the client you already know. Pick that client below to compare console entries against its recorded source snapshot, alongside the documented feature additions.</p>
 
-<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/f4643281440c626cb7e30444c8c392606167a7f8"><code>f4643281440c</code></a> on 2026-09-23. Anything merged after that is not reflected here.</p>
+<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/b35ed06fec41c53644352743c6b199a5d5d500f3"><code>b35ed06fec41</code></a> on 2026-09-27. Anything merged after that is not reflected here.</p>
 </div>
 
 ## How to tell what your build has
@@ -42,15 +42,15 @@ entry is real; treat the date as approximate.
   <div class="baseline-selector-shell platform-selector-shell">
     <p class="platform-selector-label">Coming from</p>
     <div class="baseline-selector platform-selector" role="tablist" aria-label="Baseline client">
-      <button type="button" id="baseline-tab-eternaljk" role="tab" aria-controls="baseline-panel-eternaljk" aria-selected="false" tabindex="-1" data-baseline-choice="eternaljk">EternalJK (267)</button>
-      <button type="button" id="baseline-tab-openjk" role="tab" aria-controls="baseline-panel-openjk" aria-selected="false" tabindex="-1" data-baseline-choice="openjk">OpenJK (754)</button>
-      <button type="button" id="baseline-tab-basejka" role="tab" aria-controls="baseline-panel-basejka" aria-selected="false" tabindex="-1" data-baseline-choice="basejka">base Jedi Academy (998)</button>
+      <button type="button" id="baseline-tab-eternaljk" role="tab" aria-controls="baseline-panel-eternaljk" aria-selected="false" tabindex="-1" data-baseline-choice="eternaljk">EternalJK (268)</button>
+      <button type="button" id="baseline-tab-openjk" role="tab" aria-controls="baseline-panel-openjk" aria-selected="false" tabindex="-1" data-baseline-choice="openjk">OpenJK (755)</button>
+      <button type="button" id="baseline-tab-basejka" role="tab" aria-controls="baseline-panel-basejka" aria-selected="false" tabindex="-1" data-baseline-choice="basejka">base Jedi Academy (999)</button>
     </div>
   </div>
 
   <section class="baseline-panel platform-panel" id="baseline-panel-eternaljk" role="tabpanel" aria-labelledby="baseline-tab-eternaljk" tabindex="0" data-baseline-panel="eternaljk" markdown="1">
 
-## New since EternalJK (267)
+## New since EternalJK (268)
 
 ### Audio & music (2)
 
@@ -342,7 +342,7 @@ entry is real; treat the date as approximate.
 - [`cg_strafeTrailPlums`](/TaystJK/reference/cvars/cg_strafetrailplums-0f0679d/) <span class="label ref-origin ref-origin-japro">jaPRO</span> <span class="meta-chip">2024-04-15</span>: Controls `cg_strafeTrailPlums` in the cgame module.
 - [`migrateCheckpoints`](/TaystJK/reference/commands/migratecheckpoints-2796a98/) <span class="label ref-origin ref-origin-japro">jaPRO</span> <span class="meta-chip">2026-07-30</span>: Runs `SV_MigrateCheckpoints_f` in the game module.
 
-### Server & networking (13)
+### Server & networking (14)
 
 - [taystJKinfo feature flags](/TaystJK/development/feature-flags/) <span class="label ref-origin ref-origin-taystjk">TaystJK</span> <span class="meta-chip">feature</span>: A serverinfo key letting any server mod advertise which TaystJK client features it supports.
 - [`cl_reconnectArgs`](/TaystJK/reference/cvars/cl_reconnectargs-fbdecc0/) <span class="label ref-origin ref-origin-openjk">OpenJK</span> <span class="status-chip">2026-06-01 · needs review</span>: Arguments provided when last connecting to a server
@@ -353,6 +353,7 @@ entry is real; treat the date as approximate.
 - [`r_parallaxMapping`](/TaystJK/reference/cvars/r_parallaxmapping-2354566/) <span class="label ref-origin ref-origin-rend2">rend2</span> <span class="meta-chip">2023-10-03</span>: Disable/enable parallax mapping
 - [`r_specularMapping`](/TaystJK/reference/cvars/r_specularmapping-271a30a/) <span class="label ref-origin ref-origin-rend2">rend2</span> <span class="meta-chip">2023-10-03</span>: Disable/enable specular mapping
 - [`sv_httpServerPort`](/TaystJK/reference/cvars/sv_httpserverport-a8fe9d8/) <span class="label ref-origin ref-origin-jk2mv">JK2MV</span> <span class="meta-chip">2024-03-21</span>: Set the built-in HTTP download port or an external HTTP URL.
+- [`sv_legacyGameAPI`](/TaystJK/reference/cvars/sv_legacygameapi-d17df18/) <span class="label ref-origin ref-origin-taystjk">TaystJK</span> <span class="meta-chip">2026-09-27</span>: 1 when the game module loaded through Raven&#x27;s dllEntry/vmMain API, 0 through OpenJK&#x27;s GetModuleAPI
 - [`ui_r_cubemapping`](/TaystJK/reference/cvars/ui_r_cubemapping-fce2f9f/) <span class="label ref-origin ref-origin-rend2">rend2</span> <span class="meta-chip">2023-10-14</span>: Controls `ui_r_cubemapping` in the ui module.
 - [`ui_r_cubemappingBounces`](/TaystJK/reference/cvars/ui_r_cubemappingbounces-7eddb9f/) <span class="label ref-origin ref-origin-rend2">rend2</span> <span class="meta-chip">2023-10-14</span>: Controls `ui_r_cubemappingBounces` in the ui module.
 - [`ui_r_deluxemapping`](/TaystJK/reference/cvars/ui_r_deluxemapping-52635ff/) <span class="label ref-origin ref-origin-rend2">rend2</span> <span class="meta-chip">2023-10-14</span>: Controls `ui_r_deluxemapping` in the ui module.
@@ -362,7 +363,7 @@ entry is real; treat the date as approximate.
 
   <section class="baseline-panel platform-panel" id="baseline-panel-openjk" role="tabpanel" aria-labelledby="baseline-tab-openjk" tabindex="0" data-baseline-panel="openjk" markdown="1">
 
-## New since OpenJK (754)
+## New since OpenJK (755)
 
 ### Administration (34)
 
@@ -1131,7 +1132,7 @@ entry is real; treat the date as approximate.
 - [`strafeTrail`](/TaystJK/reference/commands/strafetrail-dddd025/) <span class="label ref-origin ref-origin-japro">jaPRO</span> <span class="status-chip">2018-09-03 · needs review</span>: Runs `CG_AddStrafeTrail_f` in the cgame module.
 - [`teleToCheckpoint`](/TaystJK/reference/commands/teletocheckpoint-7aa58eb/) <span class="label ref-origin ref-origin-japro">jaPRO</span> <span class="status-chip">2018-09-03 · needs review</span>: Runs `CG_TeleToCheckpoint_f` in the cgame module.
 
-### Server & networking (26)
+### Server & networking (27)
 
 - [taystJKinfo feature flags](/TaystJK/development/feature-flags/) <span class="label ref-origin ref-origin-taystjk">TaystJK</span> <span class="meta-chip">feature</span>: A serverinfo key letting any server mod advertise which TaystJK client features it supports.
 - [`cg_autoLoginServer1`](/TaystJK/reference/cvars/cg_autologinserver1-0ca4073/) <span class="label ref-origin ref-origin-japro">jaPRO</span> <span class="status-chip">2018-09-03 · needs review</span>: IP of server to try to autologin on, used with /autologin command. If you are not on the right server, the password will not be sent to the server.
@@ -1144,6 +1145,7 @@ entry is real; treat the date as approximate.
 - [`sv_hibernateFPS`](/TaystJK/reference/cvars/sv_hibernatefps-4c1b1a1/) <span class="label ref-origin ref-origin-jk2mv">JK2MV</span> <span class="meta-chip">2018-10-14</span>: FPS during hibernation mode
 - [`sv_hibernateTime`](/TaystJK/reference/cvars/sv_hibernatetime-940437b/) <span class="label ref-origin ref-origin-openjk">OpenJK</span> <span class="status-chip">2018-10-11 · needs review</span>: Time after which server will enter hibernation mode
 - [`sv_httpServerPort`](/TaystJK/reference/cvars/sv_httpserverport-a8fe9d8/) <span class="label ref-origin ref-origin-jk2mv">JK2MV</span> <span class="meta-chip">2024-03-21</span>: Set the built-in HTTP download port or an external HTTP URL.
+- [`sv_legacyGameAPI`](/TaystJK/reference/cvars/sv_legacygameapi-d17df18/) <span class="label ref-origin ref-origin-taystjk">TaystJK</span> <span class="meta-chip">2026-09-27</span>: 1 when the game module loaded through Raven&#x27;s dllEntry/vmMain API, 0 through OpenJK&#x27;s GetModuleAPI
 - [`sv_master3`](/TaystJK/reference/cvars/sv_master3-14c7d89/) <span class="label ref-origin ref-origin-basejka">Base Jedi Academy</span> <span class="meta-chip">2013-04-08</span>: Registered by the current source, but no user-facing behavior description has been verified.
 - [`sv_master4`](/TaystJK/reference/cvars/sv_master4-1ef6bb9/) <span class="label ref-origin ref-origin-basejka">Base Jedi Academy</span> <span class="meta-chip">2013-04-08</span>: Registered by the current source, but no user-facing behavior description has been verified.
 - [`sv_master5`](/TaystJK/reference/cvars/sv_master5-79a049a/) <span class="label ref-origin ref-origin-basejka">Base Jedi Academy</span> <span class="meta-chip">2013-04-08</span>: Registered by the current source, but no user-facing behavior description has been verified.
@@ -1164,7 +1166,7 @@ entry is real; treat the date as approximate.
 
   <section class="baseline-panel platform-panel" id="baseline-panel-basejka" role="tabpanel" aria-labelledby="baseline-tab-basejka" tabindex="0" data-baseline-panel="basejka" markdown="1">
 
-## New since base Jedi Academy (998)
+## New since base Jedi Academy (999)
 
 ### Administration (37)
 
@@ -2138,7 +2140,7 @@ entry is real; treat the date as approximate.
 - [`strafeTrail`](/TaystJK/reference/commands/strafetrail-dddd025/) <span class="label ref-origin ref-origin-japro">jaPRO</span> <span class="status-chip">2018-09-03 · needs review</span>: Runs `CG_AddStrafeTrail_f` in the cgame module.
 - [`teleToCheckpoint`](/TaystJK/reference/commands/teletocheckpoint-7aa58eb/) <span class="label ref-origin ref-origin-japro">jaPRO</span> <span class="status-chip">2018-09-03 · needs review</span>: Runs `CG_TeleToCheckpoint_f` in the cgame module.
 
-### Server & networking (65)
+### Server & networking (66)
 
 - [taystJKinfo feature flags](/TaystJK/development/feature-flags/) <span class="label ref-origin ref-origin-taystjk">TaystJK</span> <span class="meta-chip">feature</span>: A serverinfo key letting any server mod advertise which TaystJK client features it supports.
 - [`cg_autoLoginServer1`](/TaystJK/reference/cvars/cg_autologinserver1-0ca4073/) <span class="label ref-origin ref-origin-japro">jaPRO</span> <span class="status-chip">2018-09-03 · needs review</span>: IP of server to try to autologin on, used with /autologin command. If you are not on the right server, the password will not be sent to the server.
@@ -2177,6 +2179,7 @@ entry is real; treat the date as approximate.
 - [`sv_httpServerPort`](/TaystJK/reference/cvars/sv_httpserverport-a8fe9d8/) <span class="label ref-origin ref-origin-jk2mv">JK2MV</span> <span class="meta-chip">2024-03-21</span>: Set the built-in HTTP download port or an external HTTP URL.
 - [`sv_lanForceRate`](/TaystJK/reference/cvars/sv_lanforcerate-17e0934/) <span class="label ref-origin ref-origin-openjk">OpenJK</span> <span class="status-chip">2013-04-08 · needs review</span>: Controls `sv_lanForceRate` in the engine-server module.
 - [`sv_legacyFixes`](/TaystJK/reference/cvars/sv_legacyfixes-4f7fac8/) <span class="label ref-origin ref-origin-openjk">OpenJK</span> <span class="status-chip">2017-12-28 · needs review</span>: Controls `sv_legacyFixes` in the engine-server module.
+- [`sv_legacyGameAPI`](/TaystJK/reference/cvars/sv_legacygameapi-d17df18/) <span class="label ref-origin ref-origin-taystjk">TaystJK</span> <span class="meta-chip">2026-09-27</span>: 1 when the game module loaded through Raven&#x27;s dllEntry/vmMain API, 0 through OpenJK&#x27;s GetModuleAPI
 - [`sv_listbans`](/TaystJK/reference/commands/sv_listbans-720c4f8/) <span class="label ref-origin ref-origin-openjk">OpenJK</span> <span class="status-chip">2014-08-19 · needs review</span>: Lists bans
 - [`sv_maxOOBRate`](/TaystJK/reference/cvars/sv_maxoobrate-bbcc5ef/) <span class="label ref-origin ref-origin-jk2mv">JK2MV</span> <span class="meta-chip">2020-05-15</span>: Maximum rate of handling incoming server commands
 - [`sv_maxOOBRateIP`](/TaystJK/reference/cvars/sv_maxoobrateip-21dc800/) <span class="label ref-origin ref-origin-eternaljk">EternalJK</span> <span class="status-chip">2020-05-15 · needs review</span>: Maximum rate of handling incoming server commands per IP address

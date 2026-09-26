@@ -21,7 +21,7 @@ This is the deliberately untidy review queue behind the published reference. `un
 | JK2MV | 16 |
 | NewJK / NewMod | 12 |
 | OpenJK | 172 |
-| TaystJK | 74 |
+| TaystJK | 75 |
 | Vulkan | 24 |
 | jaPRO | 481 |
 | rend2 | 90 |
@@ -829,7 +829,7 @@ The dump was captured from stdout after loading `mp/ffa3`; stdout does not use t
 | [`write`](/TaystJK/reference/commands/write-e1d0c6c/) | command | engine-shared | Write the configuration to file |
 | [`ysal`](/TaystJK/reference/commands/ysal-49fb494/) | command | cgame | Forwards this command to the connected game server. |
 
-## Semantics or options needing review (1649)
+## Semantics or options needing review (1647)
 
 | Name | Kind | Module | Summary |
 |:--|:--|:--|:--|
@@ -1080,7 +1080,6 @@ The dump was captured from stdout after loading `mp/ffa3`; stdout does not use t
 | [`cg_simulatedHitscan`](/TaystJK/reference/cvars/cg_simulatedhitscan-8c02e38/) | cvar | cgame | Toggle predicted hitscan weapon effects. |
 | [`cg_simulatedProjectiles`](/TaystJK/reference/cvars/cg_simulatedprojectiles-e12d5f1/) | cvar | cgame | Wether to use simulated projectiles so bullets appear instantly. Values > 1 don't draw the projectile right away. |
 | [`cg_smallScoreboard`](/TaystJK/reference/cvars/cg_smallscoreboard-1c675db/) | cvar | cgame | Always use the small version of the scoreboard |
-| [`cg_smoothClients`](/TaystJK/reference/cvars/cg_smoothclients-baf7386/) | cvar | cgame | Controls `cg_smoothClients` in the cgame module. |
 | [`cg_snapHudDef`](/TaystJK/reference/cvars/cg_snaphuddef-c5f71a3/) | cvar | cgame | Controls `cg_snapHudDef` in the cgame module. |
 | [`cg_snapshotTimeout`](/TaystJK/reference/cvars/cg_snapshottimeout-6079a2a/) | cvar | cgame | Controls `cg_snapshotTimeout` in the cgame module. |
 | [`cg_specCameraMode`](/TaystJK/reference/cvars/cg_speccameramode-95baeef/) | cvar | cgame | Controls `cg_specCameraMode` in the cgame module. |
@@ -1473,7 +1472,6 @@ The dump was captured from stdout after loading `mp/ffa3`; stdout does not use t
 | [`g_siegeTeamSwitch`](/TaystJK/reference/cvars/g_siegeteamswitch-ec4e992/) | cvar | game | Controls `g_siegeTeamSwitch` in the game module. |
 | [`g_slideOnPlayer`](/TaystJK/reference/cvars/g_slideonplayer-57bcd53/) | cvar | game | Controls `g_slideOnPlayer` in the game module. |
 | [`g_slowmoDuelEnd`](/TaystJK/reference/cvars/g_slowmoduelend-b7759cf/) | cvar | game | Controls `g_slowmoDuelEnd` in the game module. |
-| [`g_smoothClients`](/TaystJK/reference/cvars/g_smoothclients-6772924/) | cvar | game | Controls `g_smoothClients` in the game module. |
 | [`g_spawnInvulnerability`](/TaystJK/reference/cvars/g_spawninvulnerability-ba2c93a/) | cvar | game | Controls `g_spawnInvulnerability` in the game module. |
 | [`g_speed`](/TaystJK/reference/cvars/g_speed-a067ac2/) | cvar | game | Controls `g_speed` in the game module. |
 | [`g_splashDamageScale`](/TaystJK/reference/cvars/g_splashdamagescale-562c534/) | cvar | game | Controls `g_splashDamageScale` in the game module. |
@@ -2704,7 +2702,7 @@ These entries have dated post-origin registration or behavior evidence on TaystJ
 | [`cg_simpleItems`](/TaystJK/reference/cvars/cg_simpleitems-b02935a/) | cvar | cgame | Controls `cg_simpleItems` in the cgame module. |
 | [`cg_simulatedHitscan`](/TaystJK/reference/cvars/cg_simulatedhitscan-8c02e38/) | cvar | cgame | Toggle predicted hitscan weapon effects. |
 | [`cg_simulatedProjectiles`](/TaystJK/reference/cvars/cg_simulatedprojectiles-e12d5f1/) | cvar | cgame | Wether to use simulated projectiles so bullets appear instantly. Values > 1 don't draw the projectile right away. |
-| [`cg_smoothClients`](/TaystJK/reference/cvars/cg_smoothclients-baf7386/) | cvar | cgame | Controls `cg_smoothClients` in the cgame module. |
+| [`cg_smoothClients`](/TaystJK/reference/cvars/cg_smoothclients-baf7386/) | cvar | cgame | Extrapolate other players when a snapshot is late |
 | [`cg_snapHudHeight`](/TaystJK/reference/cvars/cg_snaphudheight-d87b8e6/) | cvar | cgame | Vertical height |
 | [`cg_snapHudSpeed`](/TaystJK/reference/cvars/cg_snaphudspeed-1a22dbb/) | cvar | cgame | Basespeed for calculations (Leave default for auto) |
 | [`cg_snapHudY`](/TaystJK/reference/cvars/cg_snaphudy-cc550c0/) | cvar | cgame | Vertical position |
@@ -3050,7 +3048,7 @@ These entries have dated post-origin registration or behavior evidence on TaystJ
 | [`g_siegeTeamSwitch`](/TaystJK/reference/cvars/g_siegeteamswitch-ec4e992/) | cvar | game | Controls `g_siegeTeamSwitch` in the game module. |
 | [`g_slideOnPlayer`](/TaystJK/reference/cvars/g_slideonplayer-57bcd53/) | cvar | game | Controls `g_slideOnPlayer` in the game module. |
 | [`g_slowmoDuelEnd`](/TaystJK/reference/cvars/g_slowmoduelend-b7759cf/) | cvar | game | Controls `g_slowmoDuelEnd` in the game module. |
-| [`g_smoothClients`](/TaystJK/reference/cvars/g_smoothclients-6772924/) | cvar | game | Controls `g_smoothClients` in the game module. |
+| [`g_smoothClients`](/TaystJK/reference/cvars/g_smoothclients-6772924/) | cvar | game | How the server sends players who are moving |
 | [`g_spawnInvulnerability`](/TaystJK/reference/cvars/g_spawninvulnerability-ba2c93a/) | cvar | game | Controls `g_spawnInvulnerability` in the game module. |
 | [`g_speed`](/TaystJK/reference/cvars/g_speed-a067ac2/) | cvar | game | Controls `g_speed` in the game module. |
 | [`g_splashDamageScale`](/TaystJK/reference/cvars/g_splashdamagescale-562c534/) | cvar | game | Controls `g_splashDamageScale` in the game module. |
