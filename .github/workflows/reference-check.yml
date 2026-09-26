@@ -150,6 +150,8 @@ jobs:
             --pr-json "${RUNNER_TEMP}/reference-prs/*.json"
           python3 tools/cvar_audit/build_reference.py --ref origin/master
           python3 tools/cvar_audit/generate_docs.py
+          # The config generator's data file is built from the reference, so rebuild it with it.
+          python3 tools/config_generator/build.py
           python3 tools/cvar_audit/validate.py --update-baseline-totals
 
           # Refuse to increase the missing-changelog ceiling. If coverage has
