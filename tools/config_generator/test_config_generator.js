@@ -333,7 +333,8 @@ for (const fix of ["g_fixSaberMoveData", "g_fixRunWalkAnims", "g_fixWeaponAttack
 assert.equal(presetValue("japro", "japlus-like", "g_fixSaberDisarmBonus"), "0");
 assert.equal(presetValue("japro", "japlus-like", "g_tweakForce"), "388");
 assert.equal(presetValue("japro", "japlus-like", "g_tweakSaber"), "513");
-assert.equal(presetValue("japro", "base-like", "dmflags"), "256");
+// The crouch fix stays on: base's stand-up check lets players stand up into curved ceilings.
+for (const preset of ["base-like", "japlus-like"]) assert.equal(presetValue("japro", preset, "dmflags"), "0");
 assert.equal(presetValue("japro", "bundled", "disable_item_medpak"), null, "the bundled preset drops the dead disable_item_medpak");
 for (const target of Object.keys(generator.targets)) {
   for (const preset of data.presets[target]) {

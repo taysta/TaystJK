@@ -21,8 +21,7 @@
       "summary": "Base Jedi Academy sabering: SP-style damage, no jaPRO tweaks, no private duels, force limited to jumping and saber skills, and no race mode.",
       "flow": {"gametype": 6, "map": "mp/ffa3", "fraglimit": 20, "timelimit": 10},
       "server": [
-        ["sv_fps", "30", "The base server's frame rate; retail defaulted to 20"],
-        ["sv_maxRate", "25000", "The base server's cap; the TaystJK engine's default is higher"]
+        ["sv_fps", "30", "The base server's frame rate; retail defaulted to 20"]
       ],
       "default": [
         {"section": "Saber and force: take base's code paths"},
@@ -30,8 +29,9 @@
         ["g_tweakSaber", "0", "Every bit changes base behaviour"],
         ["g_tweakForce", "0", "Every bit changes base behaviour"],
         ["g_slideOnPlayer", "1", "No friction while standing on a player, as in base"],
-        ["dmflags", "256", "Base's stand-up check after crouching"],
-        ["g_forceClientUpdateRate", "0", "Freeze a client that stops sending commands, as base does"],
+        {"section": "Base bugs kept fixed: they don't change combat"},
+        ["dmflags", "0", "Keeps the crouch fix: base lets players stand up into curved ceilings"],
+        ["g_forceClientUpdateRate", "250", "Keeps moving a player who stops sending commands; base froze them, even in mid-air"],
         {"section": "OpenJK legacy fixes: off, except the dual-saber disarm buff"},
         ["g_fixSaberMoveData", "0", "Base's parry and knockaway animations"],
         ["g_fixSaberDisarmBonus", "1", "Kept on: counts the second saber's disarm bonus"],
@@ -68,7 +68,7 @@
         ["disable_item_force_enlighten_dark", "1", null]
       ],
       "notes": [
-        "Not matched by any setting: legs sticking on slopes, and standing up out of a roll under a brush.",
+        "Not matched by any setting: legs sticking on slopes. Kept fixed on purpose: standing up into a ceiling after a crouch or roll, and lagging players freezing in place.",
         "Base servers send each player's movement for clients to extrapolate up to 50 ms; jaPRO sends plain positions, so other players can look a little behind. This only changes what players see, not where hits land."
       ]
     },
@@ -134,8 +134,7 @@
       "summary": "A base server's rules: sabers only, force limited to jumping and saber skills, no health or shield pickups, friendly fire on.",
       "flow": {"gametype": 6, "map": "mp/ffa2", "fraglimit": 20, "timelimit": 10},
       "server": [
-        ["sv_fps", "30", null],
-        ["sv_maxRate", "25000", null]
+        ["sv_fps", "30", null]
       ],
       "default": [
         {"section": "Saber"},
