@@ -56,16 +56,7 @@ A few rules hold for every combination:
   [`g_needpass`](/TaystJK/reference/cvars/g_needpass-d848438/). The base and other-mod targets
   only offer cvars that exist in base Jedi Academy.
 
-## Where the presets come from
-
-- **Bundled** is the Docker image's `default.cfg`, read from the same pinned commit as the
-  mode files. It leaves out `disable_item_medpak`, which the image sets but which matches no
-  item, so it does nothing.
-- **Close to base** and **Close to JA+** come from comparing jaPRO's saber and force code
-  with the Jedi Academy MP SDK, retail `jampded` and JA+ 2.4, with the values a base server
-  and a JA+ server run. Each lists what no setting can match, such as JA+'s own MP damage
-  table.
-- **Saber team FFA** and the base modes come from a base server's configs.
+## Before you run it
 
 The generator writes configs for a game module; it does not ship one. For base rules or
 another mod, install that mod's `jampgame` library as

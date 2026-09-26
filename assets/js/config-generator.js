@@ -848,10 +848,7 @@
       return mode && mode.maps_note;
     });
     if (needsFlag) out.push("Rabbit and one-flag modes need a map with a neutral flag; the stock maps have none.");
-    var notes = (preset.notes || []).slice();
-    Object.keys(data.meta.dropped).forEach(function (name) {
-      if (state.target === "japro") notes.push("Left out of the bundled configs: " + name + ". " + data.meta.dropped[name]);
-    });
+    var notes = preset.notes || [];
     if (notes.length) {
       out.push("");
       out.push("Notes");

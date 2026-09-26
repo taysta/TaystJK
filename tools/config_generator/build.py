@@ -440,7 +440,6 @@ def build() -> dict:
             "docker_commit": docker_commit,
             "source_commit": source_commit,
             "docker_url": f"https://github.com/taysta/TaystJK/tree/{docker_commit}/{sources['docker_dir']}",
-            "dropped": sources["dropped"],
             "settable": sources["settable"],
         },
         "cvars": cvar_table,
