@@ -332,7 +332,9 @@ for (const fix of ["g_fixSaberMoveData", "g_fixRunWalkAnims", "g_fixWeaponAttack
 }
 assert.equal(presetValue("japro", "japlus-like", "g_fixSaberDisarmBonus"), "0");
 assert.equal(presetValue("japro", "japlus-like", "g_tweakForce"), "388");
-assert.equal(presetValue("japro", "japlus-like", "g_tweakSaber"), "513");
+assert.equal(presetValue("japro", "japlus-like", "g_tweakSaber"), "2097665", "JA+'s MP damage (bit 21) on top of 1 and 512");
+// Both presets send players for clients to extrapolate, as base and JA+ servers do.
+for (const preset of ["base-like", "japlus-like"]) assert.equal(presetValue("japro", preset, "g_smoothClients"), "2");
 // The crouch fix stays on: base's stand-up check lets players stand up into curved ceilings.
 for (const preset of ["base-like", "japlus-like"]) assert.equal(presetValue("japro", preset, "dmflags"), "0");
 assert.equal(presetValue("japro", "bundled", "disable_item_medpak"), null, "the bundled preset drops the dead disable_item_medpak");

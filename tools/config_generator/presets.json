@@ -53,6 +53,7 @@
         ["g_speed", "250", null],
         ["g_gravity", "800", null],
         ["g_stepSlideFix", "1", null],
+        ["g_smoothClients", "2", "Sends players for clients to extrapolate, as base does"],
         ["g_weaponDisable", "524279", "Sabers only"],
         ["g_duelWeaponDisable", "524279", "Sabers only in duels"],
         {"section": "No race mode"},
@@ -68,8 +69,7 @@
         ["disable_item_force_enlighten_dark", "1", null]
       ],
       "notes": [
-        "Not matched by any setting: legs sticking on slopes. Kept fixed on purpose: standing up into a ceiling after a crouch or roll, and lagging players freezing in place.",
-        "Base servers send each player's movement for clients to extrapolate up to 50 ms; jaPRO sends plain positions, so other players can look a little behind. This only changes what players see, not where hits land."
+        "Not matched by any setting: legs sticking on slopes. Kept fixed on purpose: standing up into a ceiling after a crouch or roll, and lagging players freezing in place."
       ]
     },
     {
@@ -84,7 +84,7 @@
         {"section": "Saber: JA+'s MP damage path"},
         ["d_saberSPStyleDamage", "0", "MP-style damage"],
         ["g_saberDuelSPDamage", "0", "Keep MP damage in private duels too"],
-        ["g_tweakSaber", "513", "No MP damage interpolation (1) and JA+'s improved yellow DFA (512)"],
+        ["g_tweakSaber", "2097665", "No MP damage interpolation (1), JA+'s improved yellow DFA (512) and JA+'s MP damage (2097152)"],
         ["g_reducesaberblock", "0", "jp_reduceSaberBlock 0"],
         ["d_saberKickTweak", "0", "Full kick damage"],
         ["g_saberLocking", "0", null],
@@ -104,6 +104,7 @@
         ["g_hookSpeed", "10000", null],
         ["g_hookFloodProtect", "750", null],
         ["dmflags", "0", null],
+        ["g_smoothClients", "2", "Sends players for clients to extrapolate, as JA+ does"],
         {"section": "Duels"},
         ["g_privateDuel", "1", null],
         ["g_duelDistanceLimit", "0", "jp_removeDistanceDuelLimit 1"],
@@ -121,9 +122,8 @@
         ["restricts", "0", null]
       ],
       "notes": [
-        "Not emulated: JA+'s MP damage table and its returning-swing contact, lightning and drain timing, jp_fixAbsorb, JA+'s SP attacks and force animations, the alternate dimension, and JA+'s admin ranks.",
-        "jp_gripOpenSaber 3 has only an approximate equivalent, g_fixSaberInGrip, so it is left at jaPRO's default.",
-        "JA+ servers send each player's movement for clients to extrapolate up to 50 ms; jaPRO sends plain positions, so other players can look a little behind. This only changes what players see, not where hits land."
+        "Not emulated: JA+'s lightning and drain timing, jp_fixAbsorb, JA+'s SP attacks and force animations, the alternate dimension, and JA+'s admin ranks.",
+        "jp_gripOpenSaber 3 has only an approximate equivalent, g_fixSaberInGrip, so it is left at jaPRO's default."
       ]
     }
   ],
