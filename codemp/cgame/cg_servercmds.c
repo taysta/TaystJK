@@ -242,6 +242,7 @@ void CG_ParseServerinfo( void ) {
 	cgs.jcinfo = 0;
 	cgs.pluginSet = qfalse;
 	cgs.legacyProtocol = qfalse;
+	cgs.baseGame = qfalse;
 	cgs.restricts = 0;
 	cgs.taystJKinfo =  atoi(Info_ValueForKey(info, "taystJKinfo")); // taystjk feature flags
 
@@ -278,6 +279,7 @@ void CG_ParseServerinfo( void ) {
 		else if (!Q_stricmpn(gamename, "basejk", 6))
 		{
 			cgs.serverMod = SVMOD_BASEJKA;
+			cgs.baseGame = qtrue;
 		}
 		else if (!Q_stricmp(gamename, "^5L^7ugormod ^5v3") || !Q_stricmp(gamename, "Lugormod"))
 		{
@@ -289,8 +291,18 @@ void CG_ParseServerinfo( void ) {
 	if (atoi(Info_ValueForKey(info, "protocol")) < 26) {
 		cgs.legacyProtocol = qtrue; //v1.00
 		cgs.serverMod = SVMOD_BASEJKA;
+		cgs.baseGame = qtrue;
 	}
-		
+
+	//Sad hack to detect Raven's SDK game code, it puts g_saberWallDamageScale in serverinfo, OpenJK's 2013 cleanup took it out
+	if (Info_ValueForKey(info, "g_saberWallDamageScale")[0])
+		cgs.baseGame = qtrue;
+
+	{//a TaystJK server says whether any game module is Raven's SDK code or an OpenJK fork, whatever its gamename; others leave the gamename to decide
+		const char *legacyAPI = Info_ValueForKey(info, "sv_legacyGameAPI");
+		if (legacyAPI[0])
+			cgs.baseGame = (qboolean)(atoi(legacyAPI) != 0);
+	}
 
 	restrictString[0] = 'r';
 	restrictString[1] = 'e';

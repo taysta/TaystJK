@@ -2265,6 +2265,7 @@ typedef struct cgs_s {
 	int         taystJKinfo;
 	qboolean	pluginSet;
 	qboolean	legacyProtocol; //for compatibility with 1.00 servers
+	qboolean	baseGame; //runs Raven's SDK game code (retail or an SDK-built mod), not OpenJK's
 	int			restricts;//make this a short?
 	int			svfps;
 	qboolean	takenscreenshot;

@@ -4464,7 +4464,7 @@ static qboolean PM_CheckJump( void )
 #ifdef _GAME
 	if ((g_tweakSaber.integer & ST_JK2RDFA) && !pm->ps->stats[STAT_RACEMODE])
 #else
-	if ((cgs.serverMod == SVMOD_JAPRO && !pm->ps->stats[STAT_RACEMODE] && (cgs.jcinfo & JAPRO_CINFO_JK2DFA)) || (cgs.serverMod == SVMOD_JAPLUS && (cgs.jcinfo & JAPLUS_CINFO_JK2DFA)))
+	if ((cgs.serverMod == SVMOD_JAPRO && !pm->ps->stats[STAT_RACEMODE] && (cgs.jcinfo & JAPRO_CINFO_JK2DFA)) || (cgs.serverMod == SVMOD_JAPLUS && (cgs.cinfo & JAPLUS_CINFO_JK2DFA)))
 #endif
 	{
 		if ( pm->cmd.upmove > 0
@@ -7229,6 +7229,17 @@ static qboolean PM_CanStand ( void )
     return canStand;
 }
 
+static qboolean PM_CrouchFixActive( void )
+{
+#if defined(_GAME)
+	return (qboolean)!(dmflags.integer & DF_NO_CROUCHFIX);
+#else
+	if ( cgs.serverMod == SVMOD_JAPRO || cgs.serverMod == SVMOD_JAPLUS )
+		return (qboolean)!(cgs.dmflags & DF_NO_CROUCHFIX);
+	return (qboolean)!cgs.baseGame;
+#endif
+}
+
 /*
 ==============
 PM_CheckDuck
@@ -7355,23 +7366,19 @@ static void PM_CheckDuck (void)
 		}
 		else if (pm->ps->pm_flags & PMF_ROLLING)
 		{
-			if ( PM_CanStand() ) {
+			if ( !PM_CrouchFixActive() )
+			{
+				trace_t	trace;
+				// try to stand up
+				pm->maxs[2] = pm->ps->standheight;//DEFAULT_MAXS_2;
+				pm->trace(&trace, pm->ps->origin, pm->mins, pm->maxs, pm->ps->origin, pm->ps->clientNum, pm->tracemask);
+				if (!trace.allsolid)
+					pm->ps->pm_flags &= ~PMF_ROLLING;
+			}
+			else if ( PM_CanStand() ) {
 				pm->maxs[2] = pm->ps->standheight;
 				pm->ps->pm_flags &= ~PMF_ROLLING;
 			}
-		}
-#ifdef _GAME
-		else if ((pm->ps->pm_flags & PMF_ROLLING) && dmflags.integer & DF_NO_CROUCHFIX)
-#else
-		else if ((pm->ps->pm_flags & PMF_ROLLING) && cgs.dmflags & DF_NO_CROUCHFIX)
-#endif
-		{
-			trace_t	trace;
-			// try to stand up
-			pm->maxs[2] = pm->ps->standheight;//DEFAULT_MAXS_2;
-			pm->trace(&trace, pm->ps->origin, pm->mins, pm->maxs, pm->ps->origin, pm->ps->clientNum, pm->tracemask);
-			if (!trace.allsolid)
-				pm->ps->pm_flags &= ~PMF_ROLLING;
 		}
 		else if (pm->cmd.upmove < 0 ||
 			pm->ps->forceHandExtend == HANDEXTEND_KNOCKDOWN ||
@@ -7431,15 +7438,7 @@ static void PM_CheckDuck (void)
 						}
 					}
 				}
-				else if ( PM_CanStand() ) {
-					pm->maxs[2] = pm->ps->standheight;
-					pm->ps->pm_flags &= ~PMF_DUCKED;
-				}
-#ifdef _GAME
-				else if ((pm->ps->pm_flags & PMF_DUCKED) && dmflags.integer & DF_NO_CROUCHFIX)
-#else
-				else if ((pm->ps->pm_flags & PMF_DUCKED) && cgs.dmflags & DF_NO_CROUCHFIX)
-#endif
+				else if ( !PM_CrouchFixActive() )
 				{
 					trace_t	trace;
 					// try to stand up
@@ -7447,6 +7446,10 @@ static void PM_CheckDuck (void)
 					pm->trace(&trace, pm->ps->origin, pm->mins, pm->maxs, pm->ps->origin, pm->ps->clientNum, pm->tracemask);
 					if (!trace.allsolid)
 						pm->ps->pm_flags &= ~PMF_DUCKED;
+				}
+				else if ( PM_CanStand() ) {
+					pm->maxs[2] = pm->ps->standheight;
+					pm->ps->pm_flags &= ~PMF_DUCKED;
 				}
 			}
 		}
