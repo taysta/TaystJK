@@ -291,6 +291,7 @@ extern int dueltypes[MAX_CLIENTS];//JAPRO - Serverside - Fullforce Duels y is th
 #define ST_NEWSPSABERDMG		(1<<18)
 #define ST_DUNESABER			(1<<19)
 #define ST_NEWSPSABERDMGCAP		(1<<20)
+#define ST_JAPLUS_DMG			(1<<21) //JA+ MP saber damage
 
 //Saberstyles
 #define SABERSTYLE_BLUE (1<<0)//no blue
