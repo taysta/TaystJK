@@ -43,6 +43,7 @@ Key: [-] removed, [+] added, [\*] modified
 * [+] You can now bind the right-side `Alt` / `Ctrl` / `Shift` keys separately from the left-side keys. For example, `bind rctrl kill` will make the right-side `Ctrl` key perform `kill`. Don't worry, your existing configuration is still 100% compatible — if no binding is specifically set for the right-side key, then the generic binding is used. The left-side key always uses the generic binding.
 * [+] `waitf` & `delay` from NewMod
 * [+] `ifCvar` & `strSub` from NewMod
+* [+] Servers report their game module's API in serverinfo (`sv_legacyGameAPI`) so clients predict the right stand-up check
 
 
 ## Single- and Multiplayer
