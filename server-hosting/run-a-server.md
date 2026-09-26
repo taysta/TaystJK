@@ -154,6 +154,8 @@ The dedicated executable and the server-side game rules are separate. You can us
 
 Install the mod exactly as its own documentation requires, in a directory beside `base/`. The library must match the dedicated executable's operating system and architecture. For example, a 64-bit Linux server needs a compatible `japlus/jampgamex86_64.so`; it cannot load a 32-bit `jampgamei386.so`. If a mod is available only as a 32-bit library, use the matching 32-bit TaystJK dedicated build and its runtime dependencies. JA+ 2.4 is one: it ships only `jampgamei386.so` for Linux, so it needs `taystjkded.i386`.
 
+Linux mods ship the server library loose, as JA+ 2.4's `jampgamei386.so` is, but Windows mods often pack `jampgamex86.dll` in a PK3; JA+ 2.4 ships it only in `jampgamex86.pk3`. The Windows dedicated server loads it from there with `+set com_unpackLibraries 1` on the command line, or you can extract it beside the PK3 as [mods that package native libraries inside a PK3](/TaystJK/install/#mods-that-package-native-libraries-inside-a-pk3) describes. Linux and macOS servers never unpack a library from a PK3 ([`sys_unix.cpp`](https://github.com/taysta/TaystJK/blame/60fcb9cf68d38c3fede638fac4a8e42eb1123eaf/shared/sys/sys_unix.cpp#L566)). When the mod directory has no library the server can load, the engine falls back to TaystJK's own jaPRO module in `taystjk/` ([`sys_main.cpp`](https://github.com/taysta/TaystJK/blame/60fcb9cf68d38c3fede638fac4a8e42eb1123eaf/shared/sys/sys_main.cpp#L421)), so check that `serverinfo` shows the mod's `gamename` before opening the server.
+
 Dedicated builds default `fs_forcegame` to an empty string so that `fs_game` can select the server mod. Leave it empty and launch a 64-bit JA++ server module with:
 
 ```bash

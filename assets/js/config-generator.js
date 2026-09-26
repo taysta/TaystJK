@@ -825,6 +825,10 @@
       out.push("-----------");
       out.push("This bundle includes no game module. Install the jampgame library for " + (state.target === "base" ? "base game rules" : modDir(state)));
       out.push("in " + (state.run === "docker" ? installDir(state) : modDir(state)) + "/, built for the server's operating system and architecture.");
+      if (state.run !== "docker") {
+        out.push("On Windows, a mod that packs jampgamex86.dll in a PK3, as JA+ 2.4 does, also needs");
+        out.push("+set com_unpackLibraries 1 on the command line, or the DLL extracted beside the PK3.");
+      }
       out.push("If the library is missing, the engine falls back to TaystJK's own jaPRO module without warning:");
       out.push("check that serverinfo shows the mod's gamename, not japro, before opening the server.");
       out.push("The engine uses the library's GetModuleAPI entry point, or the older dllEntry/vmMain interface");

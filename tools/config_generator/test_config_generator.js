@@ -160,6 +160,8 @@ function checkBundle(state, result, label) {
     assert.match(files.get("server.cfg"), /^seta logfile "1"/m, `${label}: dedicated server.cfg writes a console log`);
   }
   if (state.target !== "japro") assert.ok(readme.includes("serverinfo shows the mod's gamename"), `${label}: README explains the module fallback`);
+  // Only Windows unpacks a library from a PK3, and the Docker image runs Linux.
+  assert.equal(readme.includes("com_unpackLibraries 1"), state.target !== "japro" && state.run !== "docker", `${label}: README mentions PK3 unpacking only for another mod on a dedicated server`);
 
   // Passwords appear in server.cfg only.
   for (const [name, text] of files) {
