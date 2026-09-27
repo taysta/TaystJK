@@ -3069,6 +3069,12 @@ qboolean PM_CanDoKata( void )
 	{
 		return qfalse;
 	}
+#ifdef _CGAME
+	if ( JAPLUS_SERVER_HAS(JAPLUS_CINFO_NOKATA) )
+	{//jp_noKATA
+		return qfalse;
+	}
+#endif
 
 	if ( !pm->ps->saberInFlight//not throwing saber
 		&& PM_SaberMoveOkayForKata()
