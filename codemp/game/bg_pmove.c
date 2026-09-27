@@ -10157,6 +10157,12 @@ static void PM_Weapon( void )
 				else
 				{
 					desiredAnim = BOTH_FORCELIGHTNING_HOLD;
+#ifdef _CGAME
+					if ( (pm->ps->eFlags & EF_JAPLUS_FLAMETHROWER) && JAPLUS_GLA_MOVES(0) )
+					{//JA+'s flamethrower
+						desiredAnim = TORSO_MAND_FLAME;
+					}
+#endif
 				}
 			}
 			else if ( (pm->ps->fd.forcePowersActive&(1<<FP_DRAIN)) )

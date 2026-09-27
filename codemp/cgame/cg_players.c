@@ -11832,7 +11832,11 @@ skipTrail:
 
 		AnglesToAxis( fAng, axis );
 
-		if ( cent->currentState.activeForcePass > FORCE_LEVEL_2 )
+		if ( cgs.serverMod == SVMOD_JAPLUS && (cent->currentState.eFlags & EF_JAPLUS_FLAMETHROWER) )
+		{//JA+'s flamethrower replaces the lightning
+			trap->FX_PlayEntityEffectID(cgs.effects.japlusFlameJet, efOrg, axis, -1, -1, -1, -1);
+		}
+		else if ( cent->currentState.activeForcePass > FORCE_LEVEL_2 )
 		{//arc
 			//trap->FX_PlayEffectID( cgs.effects.forceLightningWide, efOrg, fxDir );
 			//trap->FX_PlayEntityEffectID(cgs.effects.forceLightningWide, efOrg, axis, cent->boltInfo, cent->currentState.number, -1, -1);
