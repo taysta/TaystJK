@@ -69,11 +69,19 @@ function checkBundle(state, result, label) {
     }
   }
 
-  // server.cfg: passwords on set lines, downloads explicit, the map (or the boot mode) last.
+  // server.cfg: admin passwords are archived, the join and rcon lines use set, downloads
+  // are explicit, and the map (or the boot mode) comes last.
   const server = statements(files.get("server.cfg")).map((s) => s.line);
   assert.ok(server.includes(`set rconpassword "${SECRETS.rcon}"`), `${label}: rconpassword on a set line`);
-  for (const secret of ["g_password", "g_fullAdminPass", "g_juniorAdminPass"]) {
-    for (const line of server) assert.ok(!line.startsWith(`seta ${secret} `), `${label}: ${secret} must not be archived`);
+  assert.ok(server.includes(`set g_password "${SECRETS.password}"`), `${label}: join password on a set line`);
+  assert.equal(files.get("server.cfg").includes("docker stop reads it from here"), state.run === "docker", `${label}: Docker-only rcon comment`);
+  if (target === "japro") {
+    assert.ok(server.includes(`seta g_fullAdminPass "${SECRETS.fullAdmin}" // Empty disables this login`), `${label}: full admin password is archived`);
+    assert.ok(server.includes(`seta g_juniorAdminPass "${SECRETS.juniorAdmin}" // Empty disables this login`), `${label}: junior admin password is archived`);
+  } else {
+    for (const name of ["g_fullAdminPass", "g_juniorAdminPass"]) {
+      assert.ok(!server.some((line) => line.includes(` ${name} `)), `${label}: no jaPRO admin password for ${target}`);
+    }
   }
   assert.ok(server.some((l) => /^seta sv_allowDownload "[01]"$/.test(l)), `${label}: sv_allowDownload written explicitly`);
   assert.ok(server.some((l) => /^seta sv_httpDownloads "[01]"$/.test(l)), `${label}: sv_httpDownloads written explicitly`);
@@ -254,6 +262,16 @@ for (const target of Object.keys(generator.targets)) {
       }
     }
   }
+}
+
+// Unfilled jaPRO admin passwords still use seta; an unfilled join password is omitted.
+{
+  const state = generator.defaultState(data, "japro");
+  const server = generator.generate(data, state, {}).files.find((file) => file.name === "server.cfg").text;
+  assert.match(server, /^set rconpassword ""$/m);
+  assert.doesNotMatch(server, /^(?:set|seta) g_password /m);
+  assert.match(server, /^seta g_fullAdminPass "" \/\/ Empty disables this login$/m);
+  assert.match(server, /^seta g_juniorAdminPass "" \/\/ Empty disables this login$/m);
 }
 
 // Zip and paste-in command carry exactly the generated files.

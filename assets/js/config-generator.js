@@ -668,13 +668,13 @@
     writer.set("seta", "sv_maxclients", String(state.maxclients));
 
     writer.blank();
-    writer.comment("Passwords. \"set\" keeps them out of the config the server saves on shutdown.");
+    writer.comment("Passwords");
     if (state.run === "docker") writer.comment("Keep rconpassword on a \"set\" line: docker stop reads it from here to shut down cleanly.");
     writer.set("set", "rconpassword", secrets.rcon || "");
     if (secrets.password) writer.set("set", "g_password", secrets.password);
     if (state.target === "japro") {
-      writer.set("set", "g_fullAdminPass", secrets.fullAdmin || "", "Empty disables this login");
-      writer.set("set", "g_juniorAdminPass", secrets.juniorAdmin || "", "Empty disables this login");
+      writer.set("seta", "g_fullAdminPass", secrets.fullAdmin || "", "Empty disables this login");
+      writer.set("seta", "g_juniorAdminPass", secrets.juniorAdmin || "", "Empty disables this login");
     }
 
     if (!state.listed) {

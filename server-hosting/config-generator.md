@@ -46,9 +46,14 @@ A few rules hold for every combination:
 - Every cvar is written with `set` or `seta`. A bare `name value` line only changes a cvar
   that already exists
   ([`cvar.cpp`](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/qcommon/cvar.cpp#L964)),
-  and the game module's cvars do not exist until it loads with the first map. Passwords use
-  `set`, so they stay out of the config the server saves on shutdown, and under Docker
-  `rconpassword` stays on the `set` line that
+  and the game module's cvars do not exist until it loads with the first map. The join
+  password, `g_password`, uses `set` and has `CVAR_NONE`
+  ([`g_xcvar.h`](https://github.com/taysta/TaystJK/blame/b35ed06fec41c53644352743c6b199a5d5d500f3/codemp/game/g_xcvar.h#L125)).
+  jaPRO's `g_fullAdminPass` and `g_juniorAdminPass` use `seta` and are archived
+  ([`g_xcvar.h`](https://github.com/taysta/TaystJK/blame/b35ed06fec41c53644352743c6b199a5d5d500f3/codemp/game/g_xcvar.h#L264-L265)),
+  so their values may also appear in the server's saved `taystjk_server.cfg`
+  ([config writeback](/TaystJK/troubleshooting/#the-dedicated-server-keeps-rewriting-my-config)).
+  The generator writes `rconpassword` with `set`; under Docker, keep it on the line that
   [`docker stop` reads](/TaystJK/server-hosting/bundled-configs/#passwords).
 - Only settings the [console reference](/TaystJK/reference/) lists for the chosen target are
   written, and never ones the engine manages itself, such as
