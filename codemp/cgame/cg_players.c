@@ -7717,7 +7717,10 @@ CheckTrail:
 	//FIXME: if trailStyle is 1, use the motion blur instead
 
 	saberTrail = &client->saber[saberNum].blade[bladeNum].trail;
-	saberTrail->duration = saberMoveData[cent->currentState.saberMove].trailLength;
+	if (cent->currentState.saberMove >= 0 && cent->currentState.saberMove < LS_MOVE_MAX)
+		saberTrail->duration = saberMoveData[cent->currentState.saberMove].trailLength;
+	else
+		saberTrail->duration = 0;
 
 	if (!sfxSabers) {
 		if (cent->currentState.saberMove < 0 || cent->currentState.saberMove >= LS_MOVE_MAX) {
