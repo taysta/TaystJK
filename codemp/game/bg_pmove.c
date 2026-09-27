@@ -5677,10 +5677,38 @@ static void PM_GetGrappleAnim( void ) {
 		if (pm->ps->weaponTime) {//FIXME: really only care if we're in a saber attack anim...
 			parts = SETANIM_LEGS;
 		}
+#ifdef _CGAME
+		if (cgs.serverMod == SVMOD_JAPLUS) {//JA+ only moves the legs
+			parts = SETANIM_LEGS;
+		}
+#endif
 
 		PM_SetAnim(parts, anim, SETANIM_FLAG_OVERRIDE | SETANIM_FLAG_HOLD);
 	}
 }
+
+#ifdef _CGAME
+//JA+ hangs off an attached hook once the hook button is let go: the rope pulls back
+//toward the hook and cancels any velocity along it
+static void PM_JAPlusGrappleSwingMove( void ) {
+	vec3_t toHook, dir, vel;
+	float dist;
+
+	VectorSubtract(pm->ps->lastHitLoc, pml.previous_origin, toHook);
+	dist = VectorLength(toHook);
+	if (dist > 0) {
+		const float height = fabsf(pm->ps->lastHitLoc[2] - pm->ps->origin[2]);
+
+		VectorSubtract(pm->ps->lastHitLoc, pm->ps->origin, dir);
+		VectorNormalize(dir);
+		VectorMA(pm->ps->velocity, pm->ps->gravity * height / dist * pml.frametime, dir, vel);
+		VectorMA(vel, -DotProduct(dir, vel), dir, pm->ps->velocity);
+	}
+
+	pml.groundPlane = qfalse;
+	PM_GetGrappleAnim();
+}
+#endif
 
 static void PM_GrappleMove( void ) {
 	vec3_t vel, v;
@@ -15540,6 +15568,22 @@ void PmoveSingle (pmove_t *pmove) {
 		{
 			PM_FlyVehicleMove();
 		}
+#ifdef _CGAME
+		else if (cgs.serverMod == SVMOD_JAPLUS && !(pm->ps->pm_flags & PMF_TIME_WATERJUMP)
+			&& ((pm->ps->pm_flags & PMF_GRAPPLE) || (pm->ps->eFlags & EF_GRAPPLE_SWING)))
+		{//JA+ always air moves while pulled in or hanging off the hook
+			if (pm->ps->pm_flags & PMF_GRAPPLE)
+			{
+				PM_GrappleMove();
+				PM_AirMove();
+			}
+			else
+			{
+				PM_AirMove();
+				PM_JAPlusGrappleSwingMove();
+			}
+		}
+#endif
 		else
 		{
 
@@ -15557,7 +15601,7 @@ void PmoveSingle (pmove_t *pmove) {
 #else
 			else if ((pm->ps->pm_flags & PMF_GRAPPLE) && !(pm->ps->pm_flags & PMF_DUCKED) && cgs.serverMod != SVMOD_JAPLUS && (!(cgs.jcinfo & JAPRO_CINFO_JAPLUSGRAPPLE) || IsRacemode(pm->ps)))
 				PM_GrappleMoveTarzan();
-			else if ((pm->ps->pm_flags & PMF_GRAPPLE) && !(pm->ps->pm_flags & PMF_DUCKED) && (cgs.serverMod == SVMOD_JAPLUS || (cgs.jcinfo & JAPRO_CINFO_JAPLUSGRAPPLE) || cgs.taystJKinfo & TAYSTJK_INFO_GRAPPLE))
+			else if ((pm->ps->pm_flags & PMF_GRAPPLE) && !(pm->ps->pm_flags & PMF_DUCKED) && cgs.serverMod != SVMOD_JAPLUS && ((cgs.jcinfo & JAPRO_CINFO_JAPLUSGRAPPLE) || cgs.taystJKinfo & TAYSTJK_INFO_GRAPPLE))
 				PM_GrappleMove();
 #endif
 

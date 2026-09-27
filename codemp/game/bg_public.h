@@ -803,6 +803,7 @@ typedef enum {
 #ifdef _CGAME //a few JA+ eFlags needed for client prediction
 #define EF_ALT_DIM				(1<<15) // Player is in the alternate dimension
 #define EF_GRAPPLE_SWING		(1<<16) // swinging on grapple hook
+#define EF2_JAPLUS_HOOK_OUT		(1<<9) // grapple hook fired and not yet freed
 #endif
 
 #define	EF_NOT_USED_6			(1<<15)		// not used
