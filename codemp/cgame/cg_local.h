@@ -115,6 +115,8 @@ along with this program; if not, see <http://www.gnu.org/licenses/>.
 #define JAPLUS_CINFO_LEDGEGRAB			(1<<16)	//Ledgegrab allowed
 #define JAPLUS_CINFO_ALTDIM				(1<<17)	//Any jp_altdim is set
 
+#define JAPLUS_SERVER_HAS(bit)			(cgs.serverMod == SVMOD_JAPLUS && (cgs.cinfo & (bit)))
+
 #define RESTRICT_SB					(1<<0)	//remove hackbots
 #define RESTRICT_COSBY				(1<<1)	//remove hackbots
 #define RESTRICT_LEAD				(1<<2)	//remove lead indicator

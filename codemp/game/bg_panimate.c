@@ -94,6 +94,7 @@ qboolean BG_InSpecialJump( int anim )
 	{
 		switch ( anim )
 		{
+		case BOTH_ALORA_SPIN_SLASH:
 		case BOTH_JUMP_BACKKICK_SPIN:
 		case BOTH_JUMP_BACKFLIP_ATCK:
 		case BOTH_FLIP_STAB:
@@ -449,6 +450,10 @@ qboolean BG_KickMove( int move )
 	case LS_FLIP_STAB:
 #endif
 		return qtrue;
+#ifdef _CGAME
+	case LS_A_BACKFLIP_ATK: //JA+ kicks with it when new DFAs are on
+		return (qboolean)JAPLUS_SERVER_HAS(JAPLUS_CINFO_NEWDFA);
+#endif
 	}
 	return qfalse;
 }
@@ -727,6 +732,12 @@ qboolean BG_KickingAnim( int anim )
 		case BOTH_JUMP_BACKFLIP_ATCK:
 		case BOTH_FLIP_STAB:
 			return qtrue;
+		case BOTH_JUMPATTACK7:
+			if ( cgs.cinfo & JAPLUS_CINFO_NEWDFA )
+			{
+				return qtrue;
+			}
+			break;
 		}
 	}
 #endif

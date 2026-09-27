@@ -1837,8 +1837,42 @@ int PM_SaberBackflipAttackMove( void )
 	return LS_A_BACKFLIP_ATK;
 }
 
+#ifdef _CGAME
+static qboolean PM_CheckEnemyPresence( int dir, float radius );
+
+//JA+ with jp_allowNewDFA, a jump attack started right in front of someone becomes a short hop instead
+static qboolean PM_JAPlusCloseRangeJumpAttack( saberMoveName_t normalMove, float upSpeed )
+{
+	vec3_t fwdAngles, jumpFwd;
+
+	if ( !JAPLUS_SERVER_HAS(JAPLUS_CINFO_NEWDFA)
+		|| (cp_pluginDisable.integer & JAPRO_PLUGIN_NEWDFAPRIM)
+		|| pm->ps->saberMove == normalMove
+		|| !PM_CheckEnemyPresence( DIR_FRONT, 100.0f ) )
+	{
+		return qfalse;
+	}
+
+	VectorSet( fwdAngles, 0, pm->ps->viewangles[YAW], 0 );
+	AngleVectors( fwdAngles, jumpFwd, NULL, NULL );
+	VectorScale( jumpFwd, 60, pm->ps->velocity );
+	pm->ps->velocity[2] = upSpeed;
+	PM_SetForceJumpZStart( pm->ps->origin[2] );
+	PM_AddEvent( EV_JUMP );
+	pm->ps->fd.forceJumpSound = 1;
+	pm->cmd.upmove = 0;
+	return qtrue;
+}
+#endif
+
 int PM_SaberDualJumpAttackMove( void )
 {
+#ifdef _CGAME
+	if ( PM_JAPlusCloseRangeJumpAttack( LS_JUMPATTACK_DUAL, 200 ) )
+	{
+		return LS_SPINATTACK_ALORA;
+	}
+#endif
 	//FIXME: to make this move easier to execute, should be allowed to do it
 	//		after you've already started your jump... but jump is delayed in
 	//		this anim, so how do we undo the jump?
@@ -1878,6 +1912,20 @@ qboolean PM_SomeoneInFront(trace_t *tr)
 
 	return qfalse;
 }
+
+#ifdef _CGAME
+//JA+ still starts the red DFA with JK2 DFAs on when new DFAs are on and someone is in front, for the close-range hop
+static qboolean PM_JAPlusRedDFAAllowed( void )
+{
+	trace_t tr;
+
+	if ( !(cgs.cinfo & JAPLUS_CINFO_JK2DFA) )
+	{
+		return qtrue;
+	}
+	return (qboolean)((cgs.cinfo & JAPLUS_CINFO_NEWDFA) && PM_SomeoneInFront( &tr ));
+}
+#endif
 
 saberMoveName_t PM_SaberAirLungeAttackMove( void )
 {
@@ -2030,6 +2078,12 @@ saberMoveName_t PM_SaberJumpAttackMove2( void )
 		}
 		else
 		*/
+#ifdef _CGAME
+		if ( PM_JAPlusCloseRangeJumpAttack( LS_JUMPATTACK_STAFF_RIGHT, 200 ) )
+		{
+			return LS_SPINATTACK_JAPLUS;
+		}
+#endif
 		{
 			return LS_JUMPATTACK_STAFF_RIGHT;
 		}
@@ -2094,6 +2148,12 @@ saberMoveName_t PM_SaberJumpAttackMove( void )
 		return LS_A_T2B;//LS_NONE;
 	}
 	//just do it
+#ifdef _CGAME
+	if ( PM_JAPlusCloseRangeJumpAttack( LS_A_JUMP_T__B_, 300 ) )
+	{
+		return LS_BUTTERFLY_LEFT;
+	}
+#endif
 	VectorCopy( pm->ps->viewangles, fwdAngles );
 	fwdAngles[PITCH] = fwdAngles[ROLL] = 0;
 	AngleVectors( fwdAngles, jumpFwd, NULL, NULL );
@@ -2646,7 +2706,7 @@ saberMoveName_t PM_SaberAttackForMovement(saberMoveName_t curmove)
 #ifdef _GAME
 				(!(g_tweakSaber.integer & ST_JK2RDFA) || pm->ps->stats[STAT_RACEMODE])
 #else
-				((cgs.serverMod == SVMOD_JAPRO && (!(cgs.jcinfo & JAPRO_CINFO_JK2DFA) || pm->ps->stats[STAT_RACEMODE])) || (cgs.serverMod == SVMOD_JAPLUS && !(cgs.cinfo & JAPLUS_CINFO_JK2DFA)) || cgs.serverMod < SVMOD_JAPLUS)
+				((cgs.serverMod == SVMOD_JAPRO && (!(cgs.jcinfo & JAPRO_CINFO_JK2DFA) || pm->ps->stats[STAT_RACEMODE])) || (cgs.serverMod == SVMOD_JAPLUS && PM_JAPlusRedDFAAllowed()) || cgs.serverMod < SVMOD_JAPLUS)
 #endif
 				&& !noSpecials&&
 				pm->ps->fd.saberAnimLevel == SS_STRONG &&
@@ -4233,6 +4293,9 @@ void PM_SetSaberMove(short newMove)
 				|| newMove == LS_UPSIDE_DOWN_ATTACK
 				|| newMove == LS_PULL_ATTACK_STAB
 				|| newMove == LS_PULL_ATTACK_SWING
+#ifdef _CGAME
+				|| (cgs.serverMod == SVMOD_JAPLUS && (newMove == LS_SPINATTACK_ALORA || newMove == LS_BUTTERFLY_LEFT || newMove == LS_SPINATTACK_JAPLUS))
+#endif
 				|| BG_KickMove( newMove ) )
 		{
 			parts = SETANIM_BOTH;
