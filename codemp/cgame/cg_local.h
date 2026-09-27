@@ -346,6 +346,7 @@ typedef struct clientInfo_s {
 
 	char			saberName[64];
 	char			saber2Name[64];
+	int				jpSaberScale; //iModelScale the sabers were last scaled for on a JA+ modelscale server, -1 to rescale
 
 	char			name[MAX_QPATH];
 	char			cleanname[MAX_QPATH];

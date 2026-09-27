@@ -2023,6 +2023,7 @@ CG_NewClientInfo
 ======================
 */
 void WP_SetSaber( int entNum, saberInfo_t *sabers, int saberNum, const char *saberName );
+void WP_ScaleSaber( int entNum, saberInfo_t *sabers, int saberNum, const char *saberName, float scale, qboolean speedScale );
 static QINLINE void ParseRGBSaber(char *str, vec3_t c);//rgb
 
 void CG_NewClientInfo( int clientNum, qboolean entitiesInitialized ) {
@@ -2075,6 +2076,7 @@ void CG_NewClientInfo( int clientNum, qboolean entitiesInitialized ) {
 	// build into a temp buffer so the defer checks can use
 	// the old value
 	memset( &newInfo, 0, sizeof( newInfo ) );
+	newInfo.jpSaberScale = -1; //rescale for a JA+ modelscale once we see the entity
 
 	// isolate the player's name
 	v = Info_ValueForKey(configstring, "n");
@@ -10046,6 +10048,22 @@ float CG_RadiusForCent( centity_t *cent )
 	return 64.0f;
 }
 
+//JA+ with jp_allowModelScale scales players' sabers to their model, which also changes their speed with jp_allowDmgSpeedScale
+static void CG_JAPlusUpdateSaberScale( const centity_t *cent, clientInfo_t *ci )
+{
+	const int iModelScale = JAPLUS_SERVER_HAS(JAPLUS_CINFO_MODELSCALE) ? cent->currentState.iModelScale : 0;
+	const float scale = (iModelScale > 0) ? iModelScale / 100.0f : 1.0f;
+	const qboolean speedScale = (qboolean)!!(cgs.cinfo & JAPLUS_CINFO_DMGSPEEDSCALE);
+
+	if ( cgs.serverMod != SVMOD_JAPLUS || cent->currentState.number >= MAX_CLIENTS || ci->jpSaberScale == iModelScale )
+	{
+		return;
+	}
+	ci->jpSaberScale = iModelScale;
+	WP_ScaleSaber( cent->currentState.number, ci->saber, 0, ci->saberName, scale, speedScale );
+	WP_ScaleSaber( cent->currentState.number, ci->saber, 1, ci->saber2Name, scale, speedScale );
+}
+
 static float cg_vehThirdPersonAlpha = 1.0f;
 extern vec3_t	cg_crosshairPos;
 void CG_CheckThirdPersonAlpha( centity_t *cent, refEntity_t *legs )
@@ -10547,6 +10565,11 @@ void CG_Player( centity_t *cent ) {
 	// not have valid clientinfo
 	if ( !ci->infoValid ) {
 		return;
+	}
+
+	if ( cent->currentState.eType != ET_NPC )
+	{
+		CG_JAPlusUpdateSaberScale( cent, ci );
 	}
 
 	// Add the player to the radar if on the same team and its a team game
