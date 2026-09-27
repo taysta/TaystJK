@@ -89,6 +89,19 @@ qboolean BG_CrouchAnim( int anim )
 
 qboolean BG_InSpecialJump( int anim )
 {
+#ifdef _CGAME
+	if ( cgs.serverMod == SVMOD_JAPLUS )
+	{
+		switch ( anim )
+		{
+		case BOTH_JUMP_BACKKICK_SPIN:
+		case BOTH_JUMP_BACKFLIP_ATCK:
+		case BOTH_FLIP_STAB:
+			return qtrue;
+		}
+	}
+#endif
+
 	switch ( (anim) )
 	{
 	case BOTH_WALL_RUN_RIGHT:
@@ -302,6 +315,14 @@ qboolean BG_SaberInAttack( int move )
 	case LS_DUAL_FB:
 	case LS_DUAL_LR:
 	case LS_HILT_BASH:
+#ifdef _CGAME
+	case LS_SPINATTACK_JAPLUS:
+	case LS_MELEE_BACKKICK:
+	case LS_MELEE_SPINKICK:
+	case LS_JUMP_BACKKICK_SPIN:
+	case LS_JUMP_BACKFLIP_ATCK:
+	case LS_FLIP_STAB:
+#endif
 		return qtrue;
 		break;
 	}
@@ -391,6 +412,14 @@ qboolean BG_SaberInSpecial( int move )
 	case LS_DUAL_FB:
 	case LS_DUAL_LR:
 	case LS_HILT_BASH:
+#ifdef _CGAME
+	case LS_SPINATTACK_JAPLUS:
+	case LS_MELEE_BACKKICK:
+	case LS_MELEE_SPINKICK:
+	case LS_JUMP_BACKKICK_SPIN:
+	case LS_JUMP_BACKFLIP_ATCK:
+	case LS_FLIP_STAB:
+#endif
 		return qtrue;
 	}
 	return qfalse;
@@ -412,6 +441,13 @@ qboolean BG_KickMove( int move )
 	case LS_KICK_R_AIR:
 	case LS_KICK_L_AIR:
 	case LS_HILT_BASH:
+#ifdef _CGAME
+	case LS_MELEE_BACKKICK:
+	case LS_MELEE_SPINKICK:
+	case LS_JUMP_BACKKICK_SPIN:
+	case LS_JUMP_BACKFLIP_ATCK:
+	case LS_FLIP_STAB:
+#endif
 		return qtrue;
 	}
 	return qfalse;
@@ -605,6 +641,22 @@ qboolean BG_SpinningSaberAnim( int anim )
 
 qboolean BG_SaberInSpecialAttack( int anim )
 {
+#ifdef _CGAME
+	if ( cgs.serverMod == SVMOD_JAPLUS )
+	{
+		switch ( anim )
+		{
+		case BOTH_MELEE_BACKKICK:
+		case BOTH_MELEE_SPINKICK:
+		case BOTH_BACK_FALLING_GETUP:
+		case BOTH_JUMP_BACKKICK_SPIN:
+		case BOTH_JUMP_BACKFLIP_ATCK:
+		case BOTH_FLIP_STAB:
+			return qtrue;
+		}
+	}
+#endif
+
 	switch ( anim )
 	{
 	case BOTH_A2_STABBACK1:
@@ -663,6 +715,22 @@ qboolean BG_SaberInSpecialAttack( int anim )
 
 qboolean BG_KickingAnim( int anim )
 {
+#ifdef _CGAME
+	if ( cgs.serverMod == SVMOD_JAPLUS )
+	{
+		switch ( anim )
+		{
+		case BOTH_MELEE_BACKKICK:
+		case BOTH_MELEE_SPINKICK:
+		case BOTH_BACK_FALLING_GETUP:
+		case BOTH_JUMP_BACKKICK_SPIN:
+		case BOTH_JUMP_BACKFLIP_ATCK:
+		case BOTH_FLIP_STAB:
+			return qtrue;
+		}
+	}
+#endif
+
 	switch ( anim )
 	{
 	case BOTH_A7_KICK_F:
