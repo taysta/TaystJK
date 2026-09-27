@@ -9914,6 +9914,39 @@ Generates weapon events and modifes the weapon counter
 ==============
 */
 extern int PM_KickMoveForConditions(void);
+
+#ifdef _CGAME
+extern qboolean PM_InCartwheel( int anim );
+extern qboolean BG_SaberInTransitionAny( int move );
+
+//JA+ doesn't make these special jumps wait for the legs anim before attacking
+static qboolean PM_JAPlusSpecialJumpCanAttack( void )
+{
+	const int legsAnim = pm->ps->legsAnim;
+	const qboolean saberFree = (qboolean)(!BG_SaberInAttack( pm->ps->saberMove ) && !BG_SaberInTransitionAny( pm->ps->saberMove ));
+
+	if ( cgs.serverMod != SVMOD_JAPLUS )
+	{
+		return qfalse;
+	}
+	if ( (cgs.cinfo & JAPLUS_CINFO_JK2DFA) && saberFree
+		&& (BG_InBackFlip( legsAnim ) || legsAnim == BOTH_WALL_FLIP_BACK1 || legsAnim == BOTH_WALL_FLIP_LEFT || legsAnim == BOTH_WALL_FLIP_RIGHT) )
+	{
+		return qtrue;
+	}
+	if ( legsAnim == BOTH_FORCELONGLEAP_START )
+	{
+		return qtrue;
+	}
+	if ( (cgs.cinfo & JAPLUS_CINFO_YELLOWDFA) && saberFree && BG_InBackFlip( legsAnim )
+		&& pm->ps->fd.saberAnimLevelBase == SS_STAFF && pm->ps->fd.saberAnimLevel == SS_STAFF )
+	{
+		return qtrue;
+	}
+	return (qboolean)(PM_InCartwheel( legsAnim ) && cgs.pluginSet && (cp_pluginDisable.integer & JAPRO_PLUGIN_NOSPCARTWHEEL));
+}
+#endif
+
 static void PM_Weapon( void )
 {
 	int		addTime;
@@ -10247,7 +10280,11 @@ static void PM_Weapon( void )
 		return;
 	}
 
-	if (BG_InSpecialJump(pm->ps->legsAnim) ||
+	if ((BG_InSpecialJump(pm->ps->legsAnim)
+#ifdef _CGAME
+		&& !PM_JAPlusSpecialJumpCanAttack()
+#endif
+		) ||
 		BG_InRoll(pm->ps, pm->ps->legsAnim) ||
 		PM_InRollComplete(pm->ps, pm->ps->legsAnim))
 	{
