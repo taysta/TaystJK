@@ -14008,6 +14008,67 @@ static QINLINE float bg_roundfloat(float n)
 	return (n < 0.0f) ? ceilf(n - 0.5f) : floorf(n + 0.5f);
 }*/
 
+#ifdef _CGAME
+#define PM_ANY_MOVE_INPUT() (pm->cmd.forwardmove || pm->cmd.rightmove || pm->cmd.upmove)
+
+//JA+ scripts movement through its jumping kicks and flip stab by how far into the anim you are
+static void PM_JAPlusNewMoveControl( qboolean *stiffenedUp )
+{
+	if ( pm->ps->legsAnim == BOTH_JUMP_BACKFLIP_ATCK || pm->ps->torsoAnim == BOTH_JUMP_BACKFLIP_ATCK )
+	{
+		const int elapsed = 3125 - pm->ps->legsTimer;
+
+		if ( elapsed >= 551 && elapsed <= 1074 )
+		{
+			pm->cmd.forwardmove = 127;
+			pm->cmd.rightmove = pm->cmd.upmove = 0;
+			*stiffenedUp = qfalse;
+		}
+		else if ( elapsed >= 1075 && elapsed <= 2099 )
+		{
+			pm->cmd.rightmove = pm->cmd.upmove = 0;
+			*stiffenedUp = qfalse;
+		}
+		else if ( elapsed > 2374 && PM_ANY_MOVE_INPUT() )
+		{//moving cuts the landing short
+			pm->ps->legsTimer = pm->ps->torsoTimer = 0;
+			*stiffenedUp = qfalse;
+		}
+		if ( 3125 - pm->ps->legsTimer > 1957 )
+		{
+			PM_SetPMViewAngle( pm->ps, pm->ps->viewangles, &pm->cmd );
+		}
+		//the server also switches to BOTH_JUMP_BACKFLIP_ATCK_MISSED when the grab caught no one, which only it knows
+	}
+
+	if ( (pm->ps->legsAnim == BOTH_JUMP_BACKKICK_SPIN || pm->ps->torsoAnim == BOTH_JUMP_BACKKICK_SPIN)
+		&& 3370 - pm->ps->legsTimer > 2185 && PM_ANY_MOVE_INPUT() )
+	{
+		pm->ps->legsTimer = pm->ps->torsoTimer = 0;
+		*stiffenedUp = qfalse;
+	}
+
+	if ( pm->ps->legsAnim == BOTH_FLIP_STAB || pm->ps->torsoAnim == BOTH_FLIP_STAB )
+	{
+		const int elapsed = 2000 - pm->ps->legsTimer;
+
+		if ( elapsed < 661 || elapsed >= 1410 )
+		{
+			pm->cmd.forwardmove = 127;
+			pm->cmd.rightmove = pm->cmd.upmove = 0;
+			*stiffenedUp = qfalse;
+		}
+		else if ( elapsed >= 1322 )
+		{
+			pm->cmd.forwardmove = pm->cmd.upmove = 127;
+			pm->cmd.rightmove = 0;
+			*stiffenedUp = qfalse;
+		}
+	}
+}
+#undef PM_ANY_MOVE_INPUT
+#endif
+
 void PmoveSingle (pmove_t *pmove) {
 	qboolean stiffenedUp = qfalse;
 	float gDist = 0;
@@ -14146,9 +14207,23 @@ void PmoveSingle (pmove_t *pmove) {
 	{
 		stiffenedUp = qtrue;
 	}
+#ifdef _CGAME
+	else if (cgs.serverMod == SVMOD_JAPLUS
+		&& (pm->ps->legsAnim == BOTH_JUMP_BACKFLIP_ATCK_MISSED || pm->ps->torsoAnim == BOTH_JUMP_BACKFLIP_ATCK_MISSED))
+	{//missed the grab, carry on forward
+		pm->cmd.forwardmove = 127;
+		pm->cmd.rightmove = pm->cmd.upmove = 0;
+	}
+#endif
 	else if (BG_KickMove(pm->ps->saberMove) || BG_KickingAnim(pm->ps->legsAnim))
 	{
 		stiffenedUp = qtrue;
+#ifdef _CGAME
+		if (cgs.serverMod == SVMOD_JAPLUS)
+		{
+			PM_JAPlusNewMoveControl(&stiffenedUp);
+		}
+#endif
 	}
 	else if (BG_InGrappleMove(pm->ps->torsoAnim))
 	{

@@ -3198,6 +3198,97 @@ qboolean PM_SwimmingAnim( int anim );
 int PM_SaberBounceForAttack( int move );
 qboolean BG_SuperBreakLoseAnim( int anim );
 qboolean BG_SuperBreakWinAnim( int anim );
+
+#ifdef _CGAME
+static qboolean PM_JAPlusCanStartAltJumpMove( void )
+{
+	if ( pm->ps->groundEntityNum == ENTITYNUM_NONE && PM_GroundDistance() > 40.0f )
+	{
+		return qfalse;
+	}
+	return (qboolean)(pm->ps->velocity[2] >= 0
+		&& (pm->cmd.upmove > 0 || (pm->ps->pm_flags & PMF_JUMP_HELD))
+		&& !BG_InSpecialJump( pm->ps->legsAnim )
+		&& !BG_SaberInAttack( pm->ps->saberMove )
+		&& !BG_SaberInTransitionAny( pm->ps->saberMove ));
+}
+
+static qboolean PM_JAPlusAltJumpMoveAllowed( int forcePowerNeeded )
+{
+	if ( pm->ps->fd.forcePower < forcePowerNeeded )
+	{
+		PM_AddEvent( EV_NOAMMO );
+		return qfalse;
+	}
+	return (qboolean)(!BG_KickingAnim( pm->ps->torsoAnim )
+		&& !BG_KickingAnim( pm->ps->legsAnim )
+		&& !BG_InRoll( pm->ps, pm->ps->legsAnim )
+		&& !(pm->cmd.buttons & BUTTON_ATTACK)
+		&& !pm->ps->saberInFlight
+		&& JAPLUS_SERVER_HAS(JAPLUS_CINFO_NEWDFA)
+		&& JAPLUS_GLA_MOVES(JAPRO_PLUGIN_NEWDFAALT));
+}
+
+static void PM_JAPlusAltJumpLaunch( float fwdSpeed, float upSpeed )
+{
+	vec3_t fwdAngles, jumpFwd;
+
+	VectorSet( fwdAngles, 0, pm->ps->viewangles[YAW], 0 );
+	AngleVectors( fwdAngles, jumpFwd, NULL, NULL );
+	VectorScale( jumpFwd, fwdSpeed, pm->ps->velocity );
+	pm->ps->velocity[2] = upSpeed;
+	PM_SetForceJumpZStart( pm->ps->origin[2] );
+	PM_AddEvent( EV_JUMP );
+	pm->ps->fd.forceJumpSound = 1;
+}
+
+//JA+ forward + jump + alt attack moves: a single-saber flip stab, a spinning back kick for staffs
+//and dual saber users in a single-saber stance, and a grabbing back kick up close
+static qboolean PM_JAPlusAltAttackJump( void )
+{
+	const int style = pm->ps->fd.saberAnimLevel;
+	const int baseStyle = pm->ps->fd.saberAnimLevelBase;
+	trace_t tr;
+
+	if ( !(pm->cmd.buttons & BUTTON_ALT_ATTACK) || pm->cmd.forwardmove <= 0 )
+	{
+		return qfalse;
+	}
+
+	if ( baseStyle != SS_DUAL && baseStyle != SS_STAFF && style == SS_STRONG
+		&& PM_JAPlusCanStartAltJumpMove() && PM_JAPlusAltJumpMoveAllowed( SABER_ALT_ATTACK_POWER_FB ) )
+	{
+		BG_ForcePowerDrain( pm->ps, FP_GRIP, SABER_ALT_ATTACK_POWER_FB );
+		pm->ps->velocity[2] = -150;
+		pm->cmd.upmove = 0;
+		PM_SetSaberMove( LS_FLIP_STAB );
+		return qtrue;
+	}
+
+	if ( ((baseStyle == SS_DUAL && style != SS_DUAL) || (baseStyle != SS_DUAL && style == SS_STAFF))
+		&& PM_JAPlusCanStartAltJumpMove() && PM_JAPlusAltJumpMoveAllowed( SABER_ALT_ATTACK_POWER_FB ) )
+	{
+		BG_ForcePowerDrain( pm->ps, FP_GRIP, SABER_ALT_ATTACK_POWER_FB );
+		PM_JAPlusAltJumpLaunch( 150, 280 );
+		pm->cmd.upmove = 0;
+		PM_SetSaberMove( LS_JUMP_BACKKICK_SPIN );
+		return qtrue;
+	}
+
+	if ( PM_SomeoneInFront( &tr ) && Distance( tr.endpos, pm->ps->origin ) <= 62.0f
+		&& ((style == SS_MEDIUM && baseStyle != SS_STAFF) || (baseStyle == SS_DUAL && style == SS_DUAL))
+		&& PM_JAPlusCanStartAltJumpMove() && PM_JAPlusAltJumpMoveAllowed( 30 ) )
+	{
+		PM_JAPlusAltJumpLaunch( 75, 140 );
+		BG_ForcePowerDrain( pm->ps, FP_GRIP, 30 );
+		pm->cmd.upmove = 0;
+		PM_SetSaberMove( LS_JUMP_BACKFLIP_ATCK );
+		return qtrue;
+	}
+	return qfalse;
+}
+#endif
+
 void PM_WeaponLightsaber(void)
 {
 	int			addTime;
@@ -3403,6 +3494,12 @@ void PM_WeaponLightsaber(void)
 			}
 		}
 		else {
+#ifdef _CGAME
+			if (cgs.serverMod == SVMOD_JAPLUS && PM_JAPlusAltAttackJump())
+			{
+				return;
+			}
+#endif
 			if (pm->ps->fd.saberAnimLevel == SS_STAFF)
 			{ //kick instead of doing a throw
 				//if in a saber attack return anim, can interrupt it with a kick

@@ -116,6 +116,8 @@ along with this program; if not, see <http://www.gnu.org/licenses/>.
 #define JAPLUS_CINFO_ALTDIM				(1<<17)	//Any jp_altdim is set
 
 #define JAPLUS_SERVER_HAS(bit)			(cgs.serverMod == SVMOD_JAPLUS && (cgs.cinfo & (bit)))
+//JA+ gives its GLA-animation moves only to clients that haven't opted out through cp_pluginDisable
+#define JAPLUS_GLA_MOVES(optOut)		(JAPLUS_SERVER_HAS(JAPLUS_CINFO_GLA_ANIMS) && cgs.pluginSet && !(cp_pluginDisable.integer & (optOut)))
 
 #define RESTRICT_SB					(1<<0)	//remove hackbots
 #define RESTRICT_COSBY				(1<<1)	//remove hackbots
