@@ -3617,6 +3617,12 @@ static qboolean PM_CheckJump( void )
 									if ( dotF > 150 )
 									{
 										anim = BOTH_FORCEJUMP1;
+#ifdef _CGAME
+										if ( JAPLUS_SERVER_HAS(JAPLUS_CINFO_SPATTACKS) && (pm->ps->fd.forcePowersActive & (1 << FP_SPEED)) )
+										{//JA+ does SP's long leap with jp_allowSPattacks while speeding (its PW_SPEED is only 100ms ahead, too short to predict with)
+											anim = (pm->cmd.buttons & BUTTON_ATTACK) ? BOTH_FORCELONGLEAP_ATTACK : BOTH_FORCELONGLEAP_START;
+										}
+#endif
 									}
 									else if ( dotF < -150 )
 									{
@@ -3647,6 +3653,15 @@ static qboolean PM_CheckJump( void )
 								case BOTH_FORCEJUMP1:
 									newAnim = BOTH_FORCELAND1;//BOTH_FORCEINAIR1;
 									break;
+#ifdef _CGAME
+								case BOTH_FORCELONGLEAP_START:
+								case BOTH_FORCELONGLEAP_ATTACK:
+									if ( cgs.serverMod == SVMOD_JAPLUS )
+									{
+										newAnim = BOTH_FORCELONGLEAP_LAND;
+									}
+									break;
+#endif
 								case BOTH_FORCEJUMPBACK1:
 									newAnim = BOTH_FORCELANDBACK1;//BOTH_FORCEINAIRBACK1;
 									break;

@@ -2312,6 +2312,31 @@ static qboolean PM_CheckEnemyPresence( int dir, float radius )
 extern qboolean PM_SaberInReturn( int move ); //bg_panimate.c
 saberMoveName_t PM_CheckPullAttack( void )
 {
+#ifdef _CGAME
+	if ( JAPLUS_SERVER_HAS(JAPLUS_CINFO_SPATTACKS) )
+	{//JA+ brings back SP's pull attacks with jp_allowSPattacks
+		if ( (pm->cmd.buttons & BUTTON_ATTACK)
+			&& (pm->ps->saberMove == LS_READY || PM_SaberInReturn(pm->ps->saberMove) || PM_SaberInReflect(pm->ps->saberMove))
+			&& pm->ps->fd.saberAnimLevel >= SS_FAST
+			&& pm->ps->fd.saberAnimLevel <= SS_STRONG
+			&& pm->ps->powerups[PW_DISINT_4] > pm->cmd.serverTime
+			&& !(pm->ps->fd.forcePowersActive & (1<<FP_GRIP))
+			&& pm->ps->powerups[PW_PULL] > pm->cmd.serverTime
+			&& pm->cmd.forwardmove < 0 )
+		{
+			if ( pm->ps->fd.forcePower < SABER_ALT_ATTACK_POWER_FB )
+			{
+				PM_AddEvent( EV_NOAMMO );
+			}
+			else
+			{
+				BG_ForcePowerDrain( pm->ps, FP_GRIP, SABER_ALT_ATTACK_POWER_FB );
+				return (pm->ps->fd.saberAnimLevel == SS_FAST) ? LS_PULL_ATTACK_STAB : LS_PULL_ATTACK_SWING;
+			}
+		}
+		return LS_NONE;
+	}
+#endif
 #if 0 //disabling these for MP, they aren't useful
 	if (!(pm->cmd.buttons & BUTTON_ATTACK))
 	{
@@ -2915,6 +2940,62 @@ saberMoveName_t PM_SaberAttackForMovement(saberMoveName_t curmove)
 int PM_KickMoveForConditions(void)
 {
 	int kickMove = -1;
+
+#ifdef _CGAME
+	if ( cgs.serverMod == SVMOD_JAPLUS )
+	{//JA+ kicks
+		if ( pm->cmd.rightmove )
+		{
+			kickMove = (pm->cmd.rightmove > 0) ? LS_KICK_R : LS_KICK_L;
+			pm->cmd.rightmove = 0;
+		}
+		else if ( pm->cmd.forwardmove )
+		{
+			if ( pm->cmd.forwardmove < 0 )
+			{
+				kickMove = LS_KICK_B;
+			}
+			else if ( JAPLUS_SERVER_HAS(JAPLUS_CINFO_SPATTACKS)
+				&& pm->ps->groundEntityNum != ENTITYNUM_NONE
+				&& PM_CheckEnemyPresence( DIR_FRONT, 64.0f ) )
+			{
+				kickMove = LS_HILT_BASH;
+			}
+			else
+			{
+				kickMove = LS_KICK_F;
+			}
+			pm->cmd.forwardmove = 0;
+		}
+		else
+		{//with jp_allowSPattacks, kick toward whoever is around
+			kickMove = LS_KICK_F;
+			if ( JAPLUS_SERVER_HAS(JAPLUS_CINFO_SPATTACKS) )
+			{
+				const int front = (int)PM_CheckEnemyPresence( DIR_FRONT, 100.0f );
+				const int back = (int)PM_CheckEnemyPresence( DIR_BACK, 100.0f );
+				const int right = (int)PM_CheckEnemyPresence( DIR_RIGHT, 100.0f );
+				const int left = (int)PM_CheckEnemyPresence( DIR_LEFT, 100.0f );
+				const int numEnemy = front + back + right + left;
+
+				if ( front && back )
+				{
+					kickMove = LS_KICK_BF;
+				}
+				else if ( right && left )
+				{
+					kickMove = LS_KICK_RL;
+				}
+				else if ( numEnemy > 2 || ((!right || !left) && numEnemy > 1) )
+				{
+					kickMove = LS_KICK_S;
+				}
+			}
+			pm->cmd.upmove = 0;
+		}
+		return kickMove;
+	}
+#endif
 
 	//FIXME: only if FP_SABER_OFFENSE >= 3
 	if ( pm->cmd.rightmove )
