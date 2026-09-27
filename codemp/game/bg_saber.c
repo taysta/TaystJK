@@ -2944,7 +2944,14 @@ int PM_KickMoveForConditions(void)
 #ifdef _CGAME
 	if ( cgs.serverMod == SVMOD_JAPLUS )
 	{//JA+ kicks
-		if ( pm->cmd.rightmove )
+		if ( pm->cmd.rightmove && pm->cmd.forwardmove > 0
+			&& JAPLUS_SERVER_HAS(JAPLUS_CINFO_NEWDFA) && JAPLUS_GLA_MOVES(0) )
+		{
+			kickMove = (pm->cmd.rightmove > 0) ? LS_MELEE_BACKKICK : LS_MELEE_SPINKICK;
+			pm->cmd.rightmove = 0;
+			pm->cmd.forwardmove = 0;
+		}
+		else if ( pm->cmd.rightmove )
 		{
 			kickMove = (pm->cmd.rightmove > 0) ? LS_KICK_R : LS_KICK_L;
 			pm->cmd.rightmove = 0;
