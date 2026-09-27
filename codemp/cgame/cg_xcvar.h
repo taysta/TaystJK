@@ -193,6 +193,7 @@ XCVAR_DEF( cg_drawHud,							"1",	NULL,					CVAR_ARCHIVE )
 XCVAR_DEF( cg_predictKnockback,					"0",	NULL,					0 )
 
 XCVAR_DEF( cp_pluginDisable,					"1536",	NULL,					CVAR_ARCHIVE|CVAR_USERINFO ) //'enable' holstered saber (512) and ledge grab (1536) by default, to avoid missing JA+ animations
+XCVAR_DEF( cp_altDimAlpha,						"40",	NULL,					CVAR_ARCHIVE ) //opacity (0-255) of JA+ players in the other alternate dimension
 XCVAR_DEF( com_maxFPS,							"125",	NULL,					CVAR_ARCHIVE )
 XCVAR_DEF( cg_displayCameraPosition,		"1 80 16",	NULL,					CVAR_ROM|CVAR_USERINFO )
 XCVAR_DEF( cg_displayNetSettings,			"125 0 125",NULL,					CVAR_ROM|CVAR_USERINFO )

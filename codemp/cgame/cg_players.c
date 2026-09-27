@@ -10048,6 +10048,14 @@ float CG_RadiusForCent( centity_t *cent )
 	return 64.0f;
 }
 
+static qboolean CG_JAPlusInOtherDimension( const centity_t *cent )
+{
+	return (qboolean)(JAPLUS_SERVER_HAS(JAPLUS_CINFO_ALTDIM)
+		&& cent->currentState.number < MAX_CLIENTS
+		&& cent->currentState.number != cg.predictedPlayerState.clientNum
+		&& ((cent->currentState.eFlags ^ cg.predictedPlayerState.eFlags) & EF_ALT_DIM));
+}
+
 //JA+ with jp_allowModelScale scales players' sabers to their model, which also changes their speed with jp_allowDmgSpeedScale
 static void CG_JAPlusUpdateSaberScale( const centity_t *cent, clientInfo_t *ci )
 {
@@ -13210,6 +13218,12 @@ stillDoSaber:
 
 			if (drawPlayer)
 				CG_CheckThirdPersonAlpha( cent, &legs );
+
+			if (drawPlayer && CG_JAPlusInOtherDimension( cent ))
+			{//JA+'s show players in the other alternate dimension as ghosts
+				legs.renderfx |= RF_FORCE_ENT_ALPHA;
+				legs.shaderRGBA[3] = Com_Clampi( 1, 255, cp_altDimAlpha.integer );
+			}
 
 			trap->R_AddRefEntityToScene(&legs);
 		}
