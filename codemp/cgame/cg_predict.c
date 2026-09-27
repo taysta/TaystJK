@@ -264,7 +264,18 @@ static void CG_ClipMoveToEntities ( const vec3_t start, const vec3_t mins, const
 			continue;
 
 		//JAPRO - Clientside - Duel Passthru Prediction - Start
-		if (cgs.serverMod >= SVMOD_JAPLUS)
+		if (cgs.serverMod == SVMOD_JAPLUS)
+		{//JA+ only unlinks duelers, and only while jp_DuelAlpha isn't negative
+			if (ent->number < MAX_CLIENTS && ent->eType == ET_PLAYER)
+			{
+				if (cgs.jpDuelAlpha >= 0)
+				{
+					if (cg.predictedPlayerState.duelInProgress ? ent->number != cg.predictedPlayerState.duelIndex : (!crosshairTrace && ent->bolt1))
+						continue;
+				}
+			}
+		}
+		else if (cgs.serverMod >= SVMOD_JAPLUS)
 		{
 			if (cg.predictedPlayerState.duelInProgress)
 			{ // we are in a private duel 

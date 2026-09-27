@@ -2268,6 +2268,7 @@ typedef struct cgs_s {
 	qboolean	pluginSet;
 	qboolean	legacyProtocol; //for compatibility with 1.00 servers
 	qboolean	baseGame; //runs Raven's SDK game code (retail or an SDK-built mod), not OpenJK's
+	int			jpDuelAlpha; //JA+ jp_DuelAlpha
 	int			restricts;//make this a short?
 	int			svfps;
 	qboolean	takenscreenshot;
