@@ -12332,6 +12332,20 @@ qboolean BG_InRollAnim( entityState_t *cent )
 
 qboolean BG_InKnockDown( int anim )
 {
+#ifdef _CGAME
+	if ( cgs.serverMod == SVMOD_JAPLUS )
+	{
+		switch ( anim )
+		{
+		case BOTH_BACK_FALLING:
+		case BOTH_BACK_FALLING_GETUP:
+		case BOTH_BACK_FALLING_GETUP_SLOW:
+		case BOTH_JUMP_BACKFLIP_ATCKEE_FALL:
+			return qtrue;
+		}
+	}
+#endif
+
 	switch ( (anim) )
 	{
 	case BOTH_KNOCKDOWN1:
@@ -14143,6 +14157,12 @@ void PmoveSingle (pmove_t *pmove) {
 		if (!(g_tweakForce.integer & FT_BUFFMELEE) || (BG_InGrappleMove(pm->ps->torsoAnim) == 3))
 #endif
 			PM_SetPMViewAngle(pm->ps, pm->ps->viewangles, &pm->cmd);
+#ifdef _CGAME
+		if (cgs.serverMod == SVMOD_JAPLUS)
+		{//JA+ takes away attacks and force powers while grabbing or grabbed
+			pm->cmd.buttons &= ~(BUTTON_ATTACK|BUTTON_ALT_ATTACK|BUTTON_FORCEGRIP|BUTTON_FORCEPOWER|BUTTON_FORCE_LIGHTNING|BUTTON_GRAPPLE);
+		}
+#endif
 	}
 	else if ( pm->ps->saberMove == LS_STABDOWN_DUAL ||
 			pm->ps->saberMove == LS_STABDOWN_STAFF ||
@@ -14291,17 +14311,17 @@ void PmoveSingle (pmove_t *pmove) {
 	}
 
 #ifdef _CGAME
-	if (cgs.serverMod == SVMOD_JAPLUS) { //some JA+ animation support...
-		if (pm->ps->legsAnim == BOTH_JUMP_BACKFLIP_ATCKEE || pm->ps->torsoAnim == BOTH_JUMP_BACKFLIP_ATCKEE
-			|| pm->ps->torsoAnim == BOTH_GETUP1 || pm->ps->torsoAnim == BOTH_NEW_STABEE
-			|| (pm->ps->legsAnim >= BOTH_KISSEE && pm->ps->legsAnim <= BOTH_LEDGE_MERCPULL))
+	if (cgs.serverMod == SVMOD_JAPLUS) { //some JA+ animation support, grabs and new kicks are handled above
+		if (pm->ps->torsoAnim == BOTH_GETUP1 || (pm->ps->legsAnim >= BOTH_LEDGE_GRAB && pm->ps->legsAnim <= BOTH_LEDGE_MERCPULL))
 		{
 			PM_SetPMViewAngle(pm->ps, pm->ps->viewangles, &pm->cmd);
 			stiffenedUp = qtrue;
 		}
-		else if ((pm->ps->legsAnim >= BOTH_MELEE_BACKKICK && pm->ps->legsAnim <= BOTH_MELEE_SPINKICK)
-			|| pm->ps->legsAnim == BOTH_JUMP_BACKFLIP_ATCK || pm->ps->torsoAnim == BOTH_JUMP_BACKFLIP_ATCK)
-			stiffenedUp = qtrue;
+		if ((pm->ps->legsAnim == BOTH_JUMP_BACKFLIP_ATCKEE_FALL || pm->ps->torsoAnim == BOTH_JUMP_BACKFLIP_ATCKEE_FALL)
+			&& pm->cmd.serverTime < pm->ps->forceHandExtendTime)
+		{//just kicked out of a grab
+			PM_SetPMViewAngle(pm->ps, pm->ps->viewangles, &pm->cmd);
+		}
 	}
 #endif
 
