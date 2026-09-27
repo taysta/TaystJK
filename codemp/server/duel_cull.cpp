@@ -97,6 +97,7 @@ static qboolean isDuelOpponent(sharedEntity_t *A, sharedEntity_t *B) { //wtf voi
 	return qfalse;
 }
 
+//JA+ servers running jp_DuelAlpha -1 (duelers stay solid and see everyone) should set sv_snapShotDuelCull 0
 int DuelCull(sharedEntity_t *ent, sharedEntity_t *touch) { //figure something out for smooth collision?
 
 	if (!sv_snapShotDuelCull->integer)
