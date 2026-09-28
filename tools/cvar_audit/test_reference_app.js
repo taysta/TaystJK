@@ -125,6 +125,11 @@ const vulkanCvars = generatedEntries.filter((entry) => catalog.entryMatches(entr
 assert.ok(vulkanCvars.length > 0 && vulkanCvars.every((entry) => entry.kind === "cvar" && entry.renderer.includes("rd-vulkan")));
 const cameraSearch = state({ query: "cg_camerafps", tokens: ["cg_camerafps"], sort: "relevance" });
 assert.equal(catalog.sortEntries(generatedEntries.filter((entry) => catalog.entryMatches(entry, cameraSearch)), cameraSearch)[0].name, "cg_cameraFPS");
+// Engine code built into both executables is not client-only: a host sets these too.
+const clientOrServer = generatedEntries.filter((entry) => catalog.entryMatches(entry, state({ network: "client-or-server" })));
+assert.ok(clientOrServer.some((entry) => entry.name === "com_unpackLibraries"));
+assert.ok(clientOrServer.some((entry) => entry.name === "net_port"));
+assert.ok(!clientOrServer.some((entry) => entry.name === "in_mouse"));
 const killfeedEntries = generatedEntries.filter((entry) => catalog.entryMatches(entry, state({ feature: "Killfeed" })));
 assert.equal(killfeedEntries.length, 9);
 assert.ok(killfeedEntries.every((entry) => entry.category === "HUD & interface"));

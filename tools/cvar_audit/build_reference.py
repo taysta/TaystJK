@@ -603,6 +603,27 @@ def registration_baselines(name: str, inventories: dict[str, set[str]]) -> list[
     return [baseline for baseline, names in inventories.items() if name.casefold() not in names]
 
 
+def in_dedicated_build(record: dict[str, Any]) -> bool:
+    """Whether an engine-shared registration is also compiled into the dedicated server.
+
+    Both executables build the qcommon and sys code; only the SDL input, window and
+    sound layer and branches that exclude DEDICATED are client-only.
+    """
+    if record["path"].startswith("shared/sdl/"):
+        return False
+    clauses = (record.get("condition") or "").split(" && ")
+    return not {"!defined(DEDICATED)", "else(defined(DEDICATED))"} & set(clauses)
+
+
+def shared_network_scope(primary: str, records: list[dict[str, Any]]) -> str:
+    """Default scope before flags and server modules refine it."""
+    if primary == "engine-shared" and any(
+        record["module"] == "engine-shared" and in_dedicated_build(record) for record in records
+    ):
+        return "client-or-server"
+    return "client-only"
+
+
 # Flags the engine itself uses to keep a cvar out of the player's hands, plus
 # the shape of a cvar the code only ever writes: declared nowhere, so nothing
 # the player types survives the next write.  Each basis names its own evidence.
@@ -1049,7 +1070,7 @@ def main() -> None:
                 "kind": "upstream-documentation", "path": item["path"], "line": item["line"],
                 "url": item["url"],
             })
-        network = "client-only"
+        network = shared_network_scope(choose_module(name, modules), records)
         if "CVAR_USERINFO" in flags:
             network = "needs-server-support"
         if {"CVAR_SERVERINFO", "CVAR_SYSTEMINFO"} & set(flags) or choose_module(name, modules) in {"game", "engine-server", "game-console"}:
@@ -1160,7 +1181,7 @@ def main() -> None:
             evidence.append({"kind": "documentation", "path": item["path"], "line": item["line"],
                              "url": source_url(item["path"], item["line"], current_sha)})
         primary = choose_module(name, modules)
-        network = "client-only"
+        network = shared_network_scope(primary, records)
         if any(record["kind"] == "forwarded client command table" for record in records) or "game" in modules:
             network = "needs-server-support"
         if primary in {"engine-server", "game-console"} and "cgame" not in modules:

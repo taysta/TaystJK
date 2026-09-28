@@ -21,7 +21,7 @@ Controls `cm_extraVerbose` in the engine-shared module. Consult the cited behavi
 | Category | Engine & diagnostics |
 | Module | `engine-shared` |
 | Renderer | All / not renderer-specific |
-| Network scope | `client-only`: Local to the client/UI/renderer. |
+| Network scope | `client-or-server`: Engine code in both the client and the dedicated server; each uses its own value. |
 | Derivation | `code-trace` |
 | Confidence | `medium` |
 | Added | 2014-02-05 in [`cd9bd8d9c`](https://github.com/taysta/TaystJK/commit/cd9bd8d9c8746b0043d9a561eeea03f83107d705) <span class="status-chip">needs review</span> ([how to compare this against your build](/TaystJK/features/whats-new/#how-to-tell-what-your-build-has)) |

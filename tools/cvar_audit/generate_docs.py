@@ -85,6 +85,7 @@ ENGINE_MANAGED_HELP = {
 }
 NETWORK_HELP = {
     "client-only": "Local to the client/UI/renderer.",
+    "client-or-server": "Engine code in both the client and the dedicated server; each uses its own value.",
     "needs-server-support": "Sent to, or only useful with, a supporting game server.",
     "server-authoritative": "Owned or enforced by the server.",
     "feature-flagged": "Client behavior is negotiated through a server feature flag.",

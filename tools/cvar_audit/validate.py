@@ -14,7 +14,7 @@ from generate_docs import load_whats_new_overrides, validate_whats_new_overrides
 ORIGINS = {"basejka", "openjk", "eternaljk", "japro", "jk2mv", "newjk", "rend2", "vulkan", "taystjk", "quake3", "unknown"}
 CONFIDENCE = {"high", "medium", "low"}
 STATUS = {"documented", "needs-review", "unknown", "removed"}
-NETWORK = {"client-only", "needs-server-support", "server-authoritative", "feature-flagged"}
+NETWORK = {"client-only", "client-or-server", "needs-server-support", "server-authoritative", "feature-flagged"}
 DERIVATION = {"documented", "code-trace", "mixed"}
 RENDERERS = {"rd-vanilla", "rd-rend2", "rd-vulkan", "rd-dedicated"}
 CHANGE_CATEGORIES = {"registration", "behavior-reference", "handler"}

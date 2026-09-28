@@ -41393,7 +41393,7 @@
       "engine-shared"
     ],
     "name": "changeVectors",
-    "network": "client-only",
+    "network": "client-or-server",
     "origin": {
       "confidence": "high",
       "downstream_introductions": [],
@@ -47632,7 +47632,7 @@
       "engine-shared"
     ],
     "name": "cmdlist",
-    "network": "client-only",
+    "network": "client-or-server",
     "origin": {
       "confidence": "high",
       "downstream_introductions": [],
@@ -49997,7 +49997,7 @@
       "engine-shared"
     ],
     "name": "crash",
-    "network": "client-only",
+    "network": "client-or-server",
     "origin": {
       "confidence": "high",
       "downstream_introductions": [],
@@ -50386,7 +50386,7 @@
       "engine-shared"
     ],
     "name": "cvar_modified",
-    "network": "client-only",
+    "network": "client-or-server",
     "origin": {
       "confidence": "medium",
       "downstream_introductions": [
@@ -50861,7 +50861,7 @@
       "engine-shared"
     ],
     "name": "cvar_restart",
-    "network": "client-only",
+    "network": "client-or-server",
     "origin": {
       "confidence": "high",
       "downstream_introductions": [],
@@ -50950,7 +50950,7 @@
       "engine-shared"
     ],
     "name": "cvar_usercreated",
-    "network": "client-only",
+    "network": "client-or-server",
     "origin": {
       "confidence": "medium",
       "downstream_introductions": [
@@ -51277,7 +51277,7 @@
       "engine-shared"
     ],
     "name": "cvarAdd",
-    "network": "client-only",
+    "network": "client-or-server",
     "origin": {
       "confidence": "high",
       "downstream_introductions": [
@@ -51645,7 +51645,7 @@
       "engine-shared"
     ],
     "name": "cvarDiv",
-    "network": "client-only",
+    "network": "client-or-server",
     "origin": {
       "confidence": "high",
       "downstream_introductions": [
@@ -52230,7 +52230,7 @@
       "engine-shared"
     ],
     "name": "cvarlist",
-    "network": "client-only",
+    "network": "client-or-server",
     "origin": {
       "confidence": "high",
       "downstream_introductions": [],
@@ -52319,7 +52319,7 @@
       "engine-shared"
     ],
     "name": "cvarMod",
-    "network": "client-only",
+    "network": "client-or-server",
     "origin": {
       "confidence": "high",
       "downstream_introductions": [
@@ -52687,7 +52687,7 @@
       "engine-shared"
     ],
     "name": "cvarMult",
-    "network": "client-only",
+    "network": "client-or-server",
     "origin": {
       "confidence": "high",
       "downstream_introductions": [
@@ -53055,7 +53055,7 @@
       "engine-shared"
     ],
     "name": "cvarSub",
-    "network": "client-only",
+    "network": "client-or-server",
     "origin": {
       "confidence": "high",
       "downstream_introductions": [
@@ -55788,7 +55788,7 @@
       "engine-shared"
     ],
     "name": "delay",
-    "network": "client-only",
+    "network": "client-or-server",
     "origin": {
       "confidence": "high",
       "downstream_introductions": [
@@ -55996,7 +55996,7 @@
       "engine-shared"
     ],
     "name": "delaycancel",
-    "network": "client-only",
+    "network": "client-or-server",
     "origin": {
       "confidence": "high",
       "downstream_introductions": [
@@ -58603,7 +58603,7 @@
       "engine-shared"
     ],
     "name": "dir",
-    "network": "client-only",
+    "network": "client-or-server",
     "origin": {
       "confidence": "high",
       "downstream_introductions": [],
@@ -60059,7 +60059,7 @@
       "engine-shared"
     ],
     "name": "echo",
-    "network": "client-only",
+    "network": "client-or-server",
     "origin": {
       "confidence": "high",
       "downstream_introductions": [],
@@ -61669,7 +61669,7 @@
       "engine-shared"
     ],
     "name": "error",
-    "network": "client-only",
+    "network": "client-or-server",
     "origin": {
       "confidence": "high",
       "downstream_introductions": [],
@@ -61855,7 +61855,7 @@
       "engine-shared"
     ],
     "name": "exec",
-    "network": "client-only",
+    "network": "client-or-server",
     "origin": {
       "confidence": "high",
       "downstream_introductions": [],
@@ -62018,7 +62018,7 @@
       "engine-shared"
     ],
     "name": "execq",
-    "network": "client-only",
+    "network": "client-or-server",
     "origin": {
       "confidence": "medium",
       "downstream_introductions": [
@@ -62430,7 +62430,7 @@
       "engine-shared"
     ],
     "name": "exit",
-    "network": "client-only",
+    "network": "client-or-server",
     "origin": {
       "confidence": "medium",
       "downstream_introductions": [
@@ -62729,7 +62729,7 @@
       "engine-shared"
     ],
     "name": "fdir",
-    "network": "client-only",
+    "network": "client-or-server",
     "origin": {
       "confidence": "high",
       "downstream_introductions": [],
@@ -70056,7 +70056,7 @@
       "engine-shared"
     ],
     "name": "freeze",
-    "network": "client-only",
+    "network": "client-or-server",
     "origin": {
       "confidence": "high",
       "downstream_introductions": [],
@@ -70385,7 +70385,7 @@
       "engine-shared"
     ],
     "name": "fs_restart",
-    "network": "client-only",
+    "network": "client-or-server",
     "origin": {
       "confidence": "medium",
       "downstream_introductions": [
@@ -75397,7 +75397,7 @@
       "engine-shared"
     ],
     "name": "ifCvar",
-    "network": "client-only",
+    "network": "client-or-server",
     "origin": {
       "confidence": "high",
       "downstream_introductions": [],
@@ -77042,7 +77042,7 @@
       "engine-shared"
     ],
     "name": "in_restart",
-    "network": "client-only",
+    "network": "client-or-server",
     "origin": {
       "confidence": "high",
       "downstream_introductions": [],
@@ -88799,7 +88799,7 @@
       "engine-shared"
     ],
     "name": "mnext",
-    "network": "client-only",
+    "network": "client-or-server",
     "origin": {
       "confidence": "high",
       "downstream_introductions": [
@@ -91121,7 +91121,7 @@
       "engine-shared"
     ],
     "name": "mpause",
-    "network": "client-only",
+    "network": "client-or-server",
     "origin": {
       "confidence": "high",
       "downstream_introductions": [
@@ -91347,7 +91347,7 @@
       "engine-shared"
     ],
     "name": "mprev",
-    "network": "client-only",
+    "network": "client-or-server",
     "origin": {
       "confidence": "high",
       "downstream_introductions": [
@@ -91573,7 +91573,7 @@
       "engine-shared"
     ],
     "name": "mstop",
-    "network": "client-only",
+    "network": "client-or-server",
     "origin": {
       "confidence": "high",
       "downstream_introductions": [
@@ -92244,7 +92244,7 @@
       "engine-shared"
     ],
     "name": "net_restart",
-    "network": "client-only",
+    "network": "client-or-server",
     "origin": {
       "confidence": "high",
       "downstream_introductions": [],
@@ -95023,7 +95023,7 @@
       "engine-shared"
     ],
     "name": "path",
-    "network": "client-only",
+    "network": "client-or-server",
     "origin": {
       "confidence": "high",
       "downstream_introductions": [],
@@ -97945,7 +97945,7 @@
       "engine-shared"
     ],
     "name": "print",
-    "network": "client-only",
+    "network": "client-or-server",
     "origin": {
       "confidence": "medium",
       "downstream_introductions": [
@@ -99285,7 +99285,7 @@
       "engine-shared"
     ],
     "name": "quit",
-    "network": "client-only",
+    "network": "client-or-server",
     "origin": {
       "confidence": "high",
       "downstream_introductions": [],
@@ -104776,7 +104776,7 @@
       "engine-shared"
     ],
     "name": "reset",
-    "network": "client-only",
+    "network": "client-or-server",
     "origin": {
       "confidence": "high",
       "downstream_introductions": [],
@@ -114024,7 +114024,7 @@
       "engine-shared"
     ],
     "name": "set",
-    "network": "client-only",
+    "network": "client-or-server",
     "origin": {
       "confidence": "high",
       "downstream_introductions": [],
@@ -114241,7 +114241,7 @@
       "engine-shared"
     ],
     "name": "seta",
-    "network": "client-only",
+    "network": "client-or-server",
     "origin": {
       "confidence": "high",
       "downstream_introductions": [],
@@ -114458,7 +114458,7 @@
       "engine-shared"
     ],
     "name": "sets",
-    "network": "client-only",
+    "network": "client-or-server",
     "origin": {
       "confidence": "high",
       "downstream_introductions": [],
@@ -114675,7 +114675,7 @@
       "engine-shared"
     ],
     "name": "setu",
-    "network": "client-only",
+    "network": "client-or-server",
     "origin": {
       "confidence": "high",
       "downstream_introductions": [],
@@ -122694,7 +122694,7 @@
       "engine-shared"
     ],
     "name": "strSub",
-    "network": "client-only",
+    "network": "client-or-server",
     "origin": {
       "confidence": "high",
       "downstream_introductions": [],
@@ -132916,7 +132916,7 @@
       "engine-shared"
     ],
     "name": "toggle",
-    "network": "client-only",
+    "network": "client-or-server",
     "origin": {
       "confidence": "high",
       "downstream_introductions": [],
@@ -135821,7 +135821,7 @@
       "engine-shared"
     ],
     "name": "touchFile",
-    "network": "client-only",
+    "network": "client-or-server",
     "origin": {
       "confidence": "high",
       "downstream_introductions": [],
@@ -140098,7 +140098,7 @@
       "engine-shared"
     ],
     "name": "unset",
-    "network": "client-only",
+    "network": "client-or-server",
     "origin": {
       "confidence": "medium",
       "downstream_introductions": [
@@ -140466,7 +140466,7 @@
       "engine-shared"
     ],
     "name": "unset_usercreated",
-    "network": "client-only",
+    "network": "client-or-server",
     "origin": {
       "confidence": "medium",
       "downstream_introductions": [
@@ -145833,7 +145833,7 @@
       "engine-shared"
     ],
     "name": "vstr",
-    "network": "client-only",
+    "network": "client-or-server",
     "origin": {
       "confidence": "high",
       "downstream_introductions": [],
@@ -145993,7 +145993,7 @@
       "engine-shared"
     ],
     "name": "wait",
-    "network": "client-only",
+    "network": "client-or-server",
     "origin": {
       "confidence": "high",
       "downstream_introductions": [],
@@ -146087,7 +146087,7 @@
       "engine-shared"
     ],
     "name": "waitf",
-    "network": "client-only",
+    "network": "client-or-server",
     "origin": {
       "confidence": "high",
       "downstream_introductions": [
@@ -146295,7 +146295,7 @@
       "engine-shared"
     ],
     "name": "waitfcancel",
-    "network": "client-only",
+    "network": "client-or-server",
     "origin": {
       "confidence": "high",
       "downstream_introductions": [
@@ -149321,7 +149321,7 @@
       "engine-shared"
     ],
     "name": "which",
-    "network": "client-only",
+    "network": "client-or-server",
     "origin": {
       "confidence": "medium",
       "downstream_introductions": [
@@ -150610,7 +150610,7 @@
       "engine-shared"
     ],
     "name": "write",
-    "network": "client-only",
+    "network": "client-or-server",
     "origin": {
       "confidence": "medium",
       "downstream_introductions": [
@@ -150962,7 +150962,7 @@
       "engine-shared"
     ],
     "name": "writeconfig",
-    "network": "client-only",
+    "network": "client-or-server",
     "origin": {
       "confidence": "high",
       "downstream_introductions": [],
@@ -151481,7 +151481,7 @@
       "engine-shared"
     ],
     "name": "zone_details",
-    "network": "client-only",
+    "network": "client-or-server",
     "origin": {
       "confidence": "high",
       "downstream_introductions": [],
@@ -151605,7 +151605,7 @@
       "engine-shared"
     ],
     "name": "zone_memrecovertest",
-    "network": "client-only",
+    "network": "client-or-server",
     "origin": {
       "confidence": "high",
       "downstream_introductions": [],
@@ -151765,7 +151765,7 @@
       "engine-shared"
     ],
     "name": "zone_stats",
-    "network": "client-only",
+    "network": "client-or-server",
     "origin": {
       "confidence": "high",
       "downstream_introductions": [],

@@ -8,8 +8,8 @@ from pathlib import Path
 from unittest.mock import patch
 
 from build_reference import (
-    bit_option_index, calling_handler, engine_managed_basis, menu_mirror_index,
-    registration_baselines,
+    bit_option_index, calling_handler, engine_managed_basis, in_dedicated_build,
+    menu_mirror_index, registration_baselines, shared_network_scope,
 )
 from check_generated import fragment_errors, page_anchor_ids
 from generate_docs import (
@@ -112,6 +112,26 @@ r = ri.Cvar_Get("cl_renderer", DEFAULT_RENDER_LIBRARY, CVAR_ARCHIVE);
             "baseline total for openjk: expected 0, found 1",
             validate_baselines(entries, {**totals, "openjk": 0})[0],
         )
+
+    def test_shared_engine_code_is_scoped_to_client_and_server(self):
+        def record(path, condition=None, module="engine-shared"):
+            return {"path": path, "condition": condition, "module": module}
+
+        self.assertTrue(in_dedicated_build(record("shared/sys/sys_main.cpp")))
+        self.assertTrue(in_dedicated_build(record("codemp/qcommon/files.cpp", "defined(DEDICATED)")))
+        self.assertTrue(in_dedicated_build(record("codemp/qcommon/files.cpp", "else(!defined(DEDICATED))")))
+        self.assertFalse(in_dedicated_build(record("shared/sdl/sdl_input.cpp")))
+        self.assertFalse(in_dedicated_build(record("codemp/qcommon/common.cpp", "else(defined(DEDICATED))")))
+        self.assertFalse(in_dedicated_build(
+            record("codemp/qcommon/common.cpp", "!defined(DEDICATED) && defined(_WIN64)")))
+
+        self.assertEqual(shared_network_scope(
+            "engine-shared", [record("shared/sys/sys_main.cpp")]), "client-or-server")
+        self.assertEqual(shared_network_scope(
+            "engine-shared", [record("shared/sdl/sdl_window.cpp")]), "client-only")
+        self.assertEqual(shared_network_scope(
+            "engine-client", [record("codemp/client/cl_main.cpp", module="engine-client"),
+                              record("codemp/qcommon/common.cpp")]), "client-only")
 
     def test_engine_state_is_separated_from_a_settable_cvar(self):
         registered = [{"kind": "Cvar_Get"}]

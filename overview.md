@@ -91,7 +91,8 @@ documentation, or appears in a shipped `.menu` file. Each detail page links the 
 source line.
 
 **Network scope** distinguishes a purely local control from one the server owns or
-negotiates. **Renderer scope** says which of the three backends registers a cvar, which is
+negotiates. *Client or server* marks engine settings, such as `net_port`, that both the
+client and the dedicated server have, each keeping its own value. **Renderer scope** says which of the three backends registers a cvar, which is
 why some entries do nothing until you switch renderer.
 
 **Added** is a date, because there are no version numbers to quote. Compare it against the

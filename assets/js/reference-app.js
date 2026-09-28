@@ -32,6 +32,7 @@
   };
   var NETWORK_LABELS = {
     "client-only": "Client only",
+    "client-or-server": "Client or server",
     "needs-server-support": "Needs server support",
     "server-authoritative": "Server authoritative",
     "feature-flagged": "Negotiated feature"

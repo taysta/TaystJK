@@ -21,7 +21,7 @@ Show all modified cvars
 | Category | Graphics & rendering |
 | Module | `engine-shared` |
 | Renderer | All / not renderer-specific |
-| Network scope | `client-only`: Local to the client/UI/renderer. |
+| Network scope | `client-or-server`: Engine code in both the client and the dedicated server; each uses its own value. |
 | Derivation | `documented` |
 | Confidence | `medium` |
 | Added | 2013-08-15 in [`f7058dcb5`](https://github.com/taysta/TaystJK/commit/f7058dcb56443a3ddc7425eeb2d538a866a06a8c) <span class="status-chip">needs review</span> ([how to compare this against your build](/TaystJK/features/whats-new/#how-to-tell-what-your-build-has)) |

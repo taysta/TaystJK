@@ -434,7 +434,7 @@
       "engine-shared"
     ],
     "name": "_dedicated",
-    "network": "client-only",
+    "network": "client-or-server",
     "origin": {
       "confidence": "medium",
       "downstream_introductions": [
@@ -1003,7 +1003,7 @@
       "engine-shared"
     ],
     "name": "arch",
-    "network": "client-only",
+    "network": "client-or-server",
     "origin": {
       "confidence": "high",
       "downstream_introductions": [],
@@ -109925,7 +109925,7 @@
       "engine-shared"
     ],
     "name": "cl_exitCommand",
-    "network": "client-only",
+    "network": "client-or-server",
     "origin": {
       "confidence": "high",
       "downstream_introductions": [
@@ -118762,7 +118762,7 @@
       "engine-shared"
     ],
     "name": "cl_running",
-    "network": "client-only",
+    "network": "client-or-server",
     "origin": {
       "confidence": "high",
       "downstream_introductions": [],
@@ -120617,7 +120617,7 @@
       "engine-shared"
     ],
     "name": "cm_debugSize",
-    "network": "client-only",
+    "network": "client-or-server",
     "origin": {
       "confidence": "high",
       "downstream_introductions": [],
@@ -120726,7 +120726,7 @@
       "engine-shared"
     ],
     "name": "cm_extraVerbose",
-    "network": "client-only",
+    "network": "client-or-server",
     "origin": {
       "confidence": "medium",
       "downstream_introductions": [
@@ -121158,7 +121158,7 @@
       "engine-shared"
     ],
     "name": "cm_noAreas",
-    "network": "client-only",
+    "network": "client-or-server",
     "origin": {
       "confidence": "high",
       "downstream_introductions": [],
@@ -121307,7 +121307,7 @@
       "engine-shared"
     ],
     "name": "cm_noCurves",
-    "network": "client-only",
+    "network": "client-or-server",
     "origin": {
       "confidence": "high",
       "downstream_introductions": [],
@@ -121473,7 +121473,7 @@
       "engine-shared"
     ],
     "name": "cm_playerCurveClip",
-    "network": "client-only",
+    "network": "client-or-server",
     "origin": {
       "confidence": "high",
       "downstream_introductions": [],
@@ -122085,7 +122085,7 @@
       "engine-shared"
     ],
     "name": "com_affinity",
-    "network": "client-only",
+    "network": "client-or-server",
     "origin": {
       "confidence": "medium",
       "downstream_introductions": [
@@ -122510,7 +122510,7 @@
       "engine-shared"
     ],
     "name": "com_ansiColor",
-    "network": "client-only",
+    "network": "client-or-server",
     "origin": {
       "confidence": "medium",
       "downstream_introductions": [
@@ -123010,7 +123010,7 @@
       "engine-shared"
     ],
     "name": "com_bootlogo",
-    "network": "client-only",
+    "network": "client-or-server",
     "origin": {
       "confidence": "medium",
       "downstream_introductions": [
@@ -123817,7 +123817,7 @@
       "engine-shared"
     ],
     "name": "com_busyWait",
-    "network": "client-only",
+    "network": "client-or-server",
     "origin": {
       "confidence": "high",
       "downstream_introductions": [
@@ -124507,7 +124507,7 @@
       "engine-shared"
     ],
     "name": "com_errorMessage",
-    "network": "client-only",
+    "network": "client-or-server",
     "origin": {
       "confidence": "high",
       "downstream_introductions": [],
@@ -124629,7 +124629,7 @@
       "engine-shared"
     ],
     "name": "com_G2Report",
-    "network": "client-only",
+    "network": "client-or-server",
     "origin": {
       "confidence": "high",
       "downstream_introductions": [],
@@ -124838,7 +124838,7 @@
       "engine-shared"
     ],
     "name": "com_homepath",
-    "network": "client-only",
+    "network": "client-or-server",
     "origin": {
       "confidence": "medium",
       "downstream_introductions": [
@@ -125248,7 +125248,7 @@
       "engine-shared"
     ],
     "name": "com_journal",
-    "network": "client-only",
+    "network": "client-or-server",
     "origin": {
       "confidence": "high",
       "downstream_introductions": [],
@@ -126059,7 +126059,7 @@
       "engine-shared"
     ],
     "name": "com_maxfpsMinimized",
-    "network": "client-only",
+    "network": "client-or-server",
     "origin": {
       "confidence": "high",
       "downstream_introductions": [
@@ -126513,7 +126513,7 @@
       "engine-shared"
     ],
     "name": "com_maxfpsUnfocused",
-    "network": "client-only",
+    "network": "client-or-server",
     "origin": {
       "confidence": "high",
       "downstream_introductions": [
@@ -127171,7 +127171,7 @@
       "engine-shared"
     ],
     "name": "com_minimized",
-    "network": "client-only",
+    "network": "client-or-server",
     "origin": {
       "confidence": "medium",
       "downstream_introductions": [
@@ -127892,7 +127892,7 @@
       "engine-shared"
     ],
     "name": "com_priority",
-    "network": "client-only",
+    "network": "client-or-server",
     "origin": {
       "confidence": "medium",
       "downstream_introductions": [
@@ -128579,7 +128579,7 @@
       "engine-shared"
     ],
     "name": "com_renderfps",
-    "network": "client-only",
+    "network": "client-or-server",
     "origin": {
       "confidence": "medium",
       "downstream_introductions": [
@@ -128900,7 +128900,7 @@
       "engine-shared"
     ],
     "name": "com_showtrace",
-    "network": "client-only",
+    "network": "client-or-server",
     "origin": {
       "confidence": "high",
       "downstream_introductions": [],
@@ -129123,7 +129123,7 @@
       "engine-shared"
     ],
     "name": "com_speeds",
-    "network": "client-only",
+    "network": "client-or-server",
     "origin": {
       "confidence": "high",
       "downstream_introductions": [],
@@ -129575,7 +129575,7 @@
       "engine-shared"
     ],
     "name": "com_timestamps",
-    "network": "client-only",
+    "network": "client-or-server",
     "origin": {
       "confidence": "medium",
       "downstream_introductions": [
@@ -130085,7 +130085,7 @@
       "engine-shared"
     ],
     "name": "com_unfocused",
-    "network": "client-only",
+    "network": "client-or-server",
     "origin": {
       "confidence": "medium",
       "downstream_introductions": [
@@ -130543,7 +130543,7 @@
       "engine-shared"
     ],
     "name": "com_unpackLibraries",
-    "network": "client-only",
+    "network": "client-or-server",
     "origin": {
       "confidence": "high",
       "downstream_introductions": [
@@ -130862,7 +130862,7 @@
       "engine-shared"
     ],
     "name": "com_validateZone",
-    "network": "client-only",
+    "network": "client-or-server",
     "origin": {
       "confidence": "high",
       "downstream_introductions": [],
@@ -131036,7 +131036,7 @@
       "engine-shared"
     ],
     "name": "com_waitingForKey",
-    "network": "client-only",
+    "network": "client-or-server",
     "origin": {
       "confidence": "high",
       "downstream_introductions": [
@@ -145286,7 +145286,7 @@
       "engine-shared"
     ],
     "name": "fixedtime",
-    "network": "client-only",
+    "network": "client-or-server",
     "origin": {
       "confidence": "high",
       "downstream_introductions": [],
@@ -146321,7 +146321,7 @@
       "engine-shared"
     ],
     "name": "fs_apppath",
-    "network": "client-only",
+    "network": "client-or-server",
     "origin": {
       "confidence": "medium",
       "downstream_introductions": [
@@ -146987,7 +146987,7 @@
       "engine-shared"
     ],
     "name": "fs_basegame",
-    "network": "client-only",
+    "network": "client-or-server",
     "origin": {
       "confidence": "high",
       "downstream_introductions": [],
@@ -147525,7 +147525,7 @@
       "engine-shared"
     ],
     "name": "fs_basepath",
-    "network": "client-only",
+    "network": "client-or-server",
     "origin": {
       "confidence": "high",
       "downstream_introductions": [],
@@ -147931,7 +147931,7 @@
       "engine-shared"
     ],
     "name": "fs_cdpath",
-    "network": "client-only",
+    "network": "client-or-server",
     "origin": {
       "confidence": "high",
       "downstream_introductions": [],
@@ -148207,7 +148207,7 @@
       "engine-shared"
     ],
     "name": "fs_copyfiles",
-    "network": "client-only",
+    "network": "client-or-server",
     "origin": {
       "confidence": "high",
       "downstream_introductions": [],
@@ -148572,7 +148572,7 @@
       "engine-shared"
     ],
     "name": "fs_debug",
-    "network": "client-only",
+    "network": "client-or-server",
     "origin": {
       "confidence": "high",
       "downstream_introductions": [],
@@ -148800,7 +148800,7 @@
       "engine-shared"
     ],
     "name": "fs_dirbeforepak",
-    "network": "client-only",
+    "network": "client-or-server",
     "origin": {
       "confidence": "high",
       "downstream_introductions": [],
@@ -149050,7 +149050,7 @@
       "engine-shared"
     ],
     "name": "fs_forcegame",
-    "network": "client-only",
+    "network": "client-or-server",
     "origin": {
       "confidence": "high",
       "downstream_introductions": [
@@ -150177,7 +150177,7 @@
       "engine-shared"
     ],
     "name": "fs_homepath",
-    "network": "client-only",
+    "network": "client-or-server",
     "origin": {
       "confidence": "high",
       "downstream_introductions": [],
@@ -150306,7 +150306,7 @@
       "engine-shared"
     ],
     "name": "fs_portable",
-    "network": "client-only",
+    "network": "client-or-server",
     "origin": {
       "confidence": "high",
       "downstream_introductions": [
@@ -245372,7 +245372,7 @@
       "engine-shared"
     ],
     "name": "journal",
-    "network": "client-only",
+    "network": "client-or-server",
     "origin": {
       "confidence": "high",
       "downstream_introductions": [],
@@ -245812,7 +245812,7 @@
       "engine-shared"
     ],
     "name": "logfile",
-    "network": "client-only",
+    "network": "client-or-server",
     "origin": {
       "confidence": "high",
       "downstream_introductions": [],
@@ -248645,7 +248645,7 @@
       "engine-shared"
     ],
     "name": "net_dropsim",
-    "network": "client-only",
+    "network": "client-or-server",
     "origin": {
       "confidence": "high",
       "downstream_introductions": [
@@ -249118,7 +249118,7 @@
       "engine-shared"
     ],
     "name": "net_enabled",
-    "network": "client-only",
+    "network": "client-or-server",
     "origin": {
       "confidence": "medium",
       "downstream_introductions": [
@@ -249645,7 +249645,7 @@
       "engine-shared"
     ],
     "name": "net_forcenonlocal",
-    "network": "client-only",
+    "network": "client-or-server",
     "origin": {
       "confidence": "high",
       "downstream_introductions": [],
@@ -249901,7 +249901,7 @@
       "engine-shared"
     ],
     "name": "net_ip",
-    "network": "client-only",
+    "network": "client-or-server",
     "origin": {
       "confidence": "high",
       "downstream_introductions": [],
@@ -250660,7 +250660,7 @@
       "engine-shared"
     ],
     "name": "net_port",
-    "network": "client-only",
+    "network": "client-or-server",
     "origin": {
       "confidence": "high",
       "downstream_introductions": [],
@@ -250901,7 +250901,7 @@
       "engine-shared"
     ],
     "name": "net_qport",
-    "network": "client-only",
+    "network": "client-or-server",
     "origin": {
       "confidence": "high",
       "downstream_introductions": [],
@@ -251058,7 +251058,7 @@
       "engine-shared"
     ],
     "name": "net_socksEnabled",
-    "network": "client-only",
+    "network": "client-or-server",
     "origin": {
       "confidence": "high",
       "downstream_introductions": [],
@@ -251248,7 +251248,7 @@
       "engine-shared"
     ],
     "name": "net_socksPassword",
-    "network": "client-only",
+    "network": "client-or-server",
     "origin": {
       "confidence": "high",
       "downstream_introductions": [],
@@ -251423,7 +251423,7 @@
       "engine-shared"
     ],
     "name": "net_socksPort",
-    "network": "client-only",
+    "network": "client-or-server",
     "origin": {
       "confidence": "high",
       "downstream_introductions": [],
@@ -251580,7 +251580,7 @@
       "engine-shared"
     ],
     "name": "net_socksServer",
-    "network": "client-only",
+    "network": "client-or-server",
     "origin": {
       "confidence": "high",
       "downstream_introductions": [],
@@ -251749,7 +251749,7 @@
       "engine-shared"
     ],
     "name": "net_socksUsername",
-    "network": "client-only",
+    "network": "client-or-server",
     "origin": {
       "confidence": "high",
       "downstream_introductions": [],
@@ -269601,7 +269601,7 @@
       "engine-shared"
     ],
     "name": "r_debugSurfaceUpdate",
-    "network": "client-only",
+    "network": "client-or-server",
     "origin": {
       "confidence": "high",
       "downstream_introductions": [],
@@ -358143,7 +358143,7 @@
       "engine-shared"
     ],
     "name": "se_debug",
-    "network": "client-only",
+    "network": "client-or-server",
     "origin": {
       "confidence": "high",
       "downstream_introductions": [],
@@ -358742,7 +358742,7 @@
       "ui"
     ],
     "name": "se_language",
-    "network": "client-only",
+    "network": "client-or-server",
     "origin": {
       "confidence": "high",
       "downstream_introductions": [],
@@ -359383,7 +359383,7 @@
       "engine-shared"
     ],
     "name": "showdrop",
-    "network": "client-only",
+    "network": "client-or-server",
     "origin": {
       "confidence": "high",
       "downstream_introductions": [],
@@ -359716,7 +359716,7 @@
       "engine-shared"
     ],
     "name": "showpackets",
-    "network": "client-only",
+    "network": "client-or-server",
     "origin": {
       "confidence": "high",
       "downstream_introductions": [],
@@ -360643,7 +360643,7 @@
       "engine-shared"
     ],
     "name": "sp_leet",
-    "network": "client-only",
+    "network": "client-or-server",
     "origin": {
       "confidence": "high",
       "downstream_introductions": [],
@@ -374838,7 +374838,7 @@
       "engine-shared"
     ],
     "name": "sv_paused",
-    "network": "client-only",
+    "network": "client-or-server",
     "origin": {
       "confidence": "high",
       "downstream_introductions": [],
@@ -380640,7 +380640,7 @@
       "engine-shared"
     ],
     "name": "sys_lowmem",
-    "network": "client-only",
+    "network": "client-or-server",
     "origin": {
       "confidence": "high",
       "downstream_introductions": [],
@@ -431139,7 +431139,7 @@
       "engine-shared"
     ],
     "name": "username",
-    "network": "client-only",
+    "network": "client-or-server",
     "origin": {
       "confidence": "high",
       "downstream_introductions": [],
@@ -431968,7 +431968,7 @@
       "engine-shared"
     ],
     "name": "vm_legacy",
-    "network": "client-only",
+    "network": "client-or-server",
     "origin": {
       "confidence": "medium",
       "downstream_introductions": [
