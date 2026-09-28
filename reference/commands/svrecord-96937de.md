@@ -12,7 +12,7 @@ search_exclude: false
 
 <p class="ref-warning"><strong>Needs review.</strong> The inventory/provenance evidence is recorded, but some behavior, options, or attribution still lacks a direct user-facing source.</p>
 
-Record a server-side demo
+Starts a server-side demo of one active client. Without a client number it records the first active client that is not already being recorded, and a client number needs a demo name before it. Without a name it uses a timestamped one. The demo is written to demos/ in the server's game directory with a .dm_26 extension, replacing an existing demo of the same name.
 
 ## At a glance
 
@@ -22,17 +22,17 @@ Record a server-side demo
 | Module | `engine-server` |
 | Renderer | All / not renderer-specific |
 | Network scope | `server-authoritative`: Owned or enforced by the server. |
-| Derivation | `documented` |
+| Derivation | `code-trace` |
 | Confidence | `medium` |
 | Added | 2014-01-26 in [`44d566687`](https://github.com/taysta/TaystJK/commit/44d5666875f34d77c7f2451c6f7a493e60e6a348) <span class="status-chip">needs review</span> ([how to compare this against your build](/TaystJK/features/whats-new/#how-to-tell-what-your-build-has)) |
 | In-game xdocs | No |
 | In-game menu | No |
-| Syntax | `svrecord [arguments]` |
+| Syntax | `svrecord [<name> [<clientnum>]]` |
 | Cheat protected | No |
 
 ## Arguments and gating
 
-No verified argument schema is available beyond the syntax shown above.
+Arguments: `name`, `clientnum`.
 
 ## Provenance
 

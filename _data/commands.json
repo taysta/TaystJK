@@ -126710,7 +126710,10 @@
       "label": "2014-01-26 (44d566687)",
       "short": "44d566687"
     },
-    "arguments": [],
+    "arguments": [
+      "name",
+      "clientnum"
+    ],
     "baselines": [
       "basejka"
     ],
@@ -126718,8 +126721,8 @@
     "cheat_protected": false,
     "confidence": "medium",
     "configures": [],
-    "derivation": "documented",
-    "description": "Record a server-side demo",
+    "derivation": "code-trace",
+    "description": "Starts a server-side demo of one active client. Without a client number it records the first active client that is not already being recorded, and a client number needs a demo name before it. Without a name it uses a timestamped one. The demo is written to demos/ in the server's game directory with a .dm_26 extension, replacing an existing demo of the same name.",
     "evidence": [
       {
         "condition": "defined(DEDICATED)",
@@ -127254,7 +127257,7 @@
     "source_commit": "b35ed06fec41c53644352743c6b199a5d5d500f3",
     "status": "needs-review",
     "summary": "Record a server-side demo",
-    "syntax": "svrecord [arguments]",
+    "syntax": "svrecord [<name> [<clientnum>]]",
     "xdocs": null
   },
   {
@@ -127840,7 +127843,9 @@
       "label": "2014-01-26 (44d566687)",
       "short": "44d566687"
     },
-    "arguments": [],
+    "arguments": [
+      "clientnum"
+    ],
     "baselines": [
       "basejka"
     ],
@@ -127848,8 +127853,8 @@
     "cheat_protected": false,
     "confidence": "medium",
     "configures": [],
-    "derivation": "documented",
-    "description": "Stop recording a server-side demo",
+    "derivation": "code-trace",
+    "description": "Stops the server-side demo being recorded for a client. Without a client number it stops the first recording in client-number order.",
     "evidence": [
       {
         "condition": "defined(DEDICATED)",
@@ -128294,7 +128299,7 @@
     "source_commit": "b35ed06fec41c53644352743c6b199a5d5d500f3",
     "status": "needs-review",
     "summary": "Stop recording a server-side demo",
-    "syntax": "svstoprecord [arguments]",
+    "syntax": "svstoprecord [<clientnum>]",
     "xdocs": null
   },
   {
