@@ -305,6 +305,20 @@ def sections(statements: list[dict]) -> list[dict]:
     return [s for s in result if s["lines"]]
 
 
+# The generated server.cfg writes its own exec and map lines (writeServer in
+# assets/js/config-generator.js). Any other statement in the bundled file would be dropped.
+SERVER_WRITTEN_EXECS = {"bans", "votes", "default"}
+
+
+def unwritten_server_statements(statements: list[dict]) -> list[dict]:
+    """Statements in the bundled server.cfg that the generated server.cfg does not reproduce."""
+    return [
+        s for s in statements
+        if (s["t"] == "exec" and s["file"] not in SERVER_WRITTEN_EXECS)
+        or (s["t"] == "cmd" and s["text"].split()[0].lower() != "map")
+    ]
+
+
 # --- Build -------------------------------------------------------------------------------------
 
 
@@ -368,6 +382,9 @@ def build() -> dict:
     if unexpected:
         raise BuildError(f"default.cfg has statements the generator cannot place: {unexpected}")
 
+    unwritten = unwritten_server_statements(parsed["server"])
+    if unwritten:
+        raise BuildError(f"server.cfg has statements the generator does not write: {unwritten}")
     server_sections = []
     for section in sections(parsed["server"]):
         lines = [l for l in section["lines"] if l[0].lower() not in BASICS_CVARS | FLOW_CVARS]

@@ -38,6 +38,7 @@ run "on-this-page tests"     node    tools/cvar_audit/test_toc.js
 run "liquid templates"       python3 tools/cvar_audit/test_liquid.py
 run "config generator data"  python3 tools/config_generator/build.py --check
 run "config generator tests" node    tools/config_generator/test_config_generator.js
+run "config generator build tests" python3 tools/config_generator/test_build.py
 run "record validation"      python3 tools/cvar_audit/validate.py
 run "generated pages"        python3 tools/cvar_audit/check_generated.py
 run "source drift"           python3 tools/cvar_audit/check_drift.py --ref "$ref"
