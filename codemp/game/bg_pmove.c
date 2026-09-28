@@ -12378,6 +12378,15 @@ void BG_AdjustClientSpeed(playerState_t *ps, usercmd_t *cmd, int svTime)
 		case FORCE_LEVEL_3:
 			ps->speed *= 0.45f;
 			break;
+#ifdef _CGAME
+		case SS_DESANN:
+		case SS_TAVION:
+			if (cgs.serverMod == SVMOD_LMD)
+			{//Lugormod slows these like medium
+				ps->speed *= 0.60f;
+			}
+			break;
+#endif
 		default:
 			break;
 		}
