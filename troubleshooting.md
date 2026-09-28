@@ -87,9 +87,10 @@ once. If a current build still does it, report it.
 Three different things get reported this way, and only one of them is a crash. Work out
 which you have before changing anything:
 
-- **You stay connected, but the mod's HUD, menus or features are missing.** A mod module
-  did not load and the client used its own. See
-  [mod compatibility](/TaystJK/install/mod-compatibility/#first-check-whether-the-mods-modules-load).
+- **You stay connected, but the mod's HUD, menus or features are missing.** That is not a
+  crash, and it has more than one cause: the mod's own module may not have loaded, so the
+  client is using its own, or the feature may need the server to support it or a setting
+  to be on. [Mod compatibility](/TaystJK/install/mod-compatibility/) covers both.
 - **You are dropped back to the menu with an error.**
 - **The client closes**, with or without an error box.
 
@@ -100,8 +101,8 @@ asks only for the module name that matches its own architecture
 and looks for it in the server's mod directory, then `taystjk`, then `base`
 ([`sys_main.cpp`](https://github.com/taysta/TaystJK/blame/b35ed06fec41c53644352743c6b199a5d5d500f3/shared/sys/sys_main.cpp#L404)).
 A 64-bit Windows client asks for `cgamex86_64.dll` and never tries a `cgamex86.dll` sitting
-beside it; it loads TaystJK's own `cgame` instead, which is the first case above. To use a
-mod's own client libraries, they have to match your build; see
+beside it; it loads TaystJK's own `cgame` instead, so you stay connected without the mod's
+client-side features. To use a mod's own client libraries, they have to match your build; see
 [running another client-side mod](/TaystJK/install/#mods-that-package-native-libraries-inside-a-pk3).
 
 Reproduce it once and keep:
