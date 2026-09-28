@@ -104,6 +104,21 @@ If the retail `base` directory is elsewhere, append `+set fs_cdPath "C:/Games/Je
 
 After changing engine or module code, build **Debug** again and rerun **INSTALL** before launching. The install step refreshes the executable, renderers, game, cgame, UI modules, and bundled runtime DLLs as one matching set. Visual Studio can then debug every loaded project in the solution even though **Command** points to the installed executable.
 
+**Edit and Continue** needs the `/ZI` debug format, which the build does not use by
+default. Add `-DCMAKE_MSVC_DEBUG_INFORMATION_FORMAT=EditAndContinue` when generating the
+solution, which needs CMake 3.25 or later
+([`CMAKE_MSVC_DEBUG_INFORMATION_FORMAT`](https://cmake.org/cmake/help/latest/variable/CMAKE_MSVC_DEBUG_INFORMATION_FORMAT.html)),
+and debug the **Debug** configuration. It cannot be combined with `UseAddressSanitizer`,
+which turns incremental linking off
+([`CMakeLists.txt`](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/CMakeLists.txt#L258)).
+Edits to the engine last for the session, but edits to the game, cgame and UI modules last
+only until the next map load: the engine unloads those libraries and loads them again from
+the installed copy
+([client](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/codemp/client/cl_main.cpp#L1517),
+[server](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/codemp/server/sv_init.cpp#L469)),
+and a `vid_restart` does the same for cgame and UI. To keep a change, build and run
+**INSTALL** as above.
+
 If a breakpoint remains hollow, open **Debug → Windows → Modules** and confirm that the expected installed DLL and its matching PDB were loaded. The debugger properties are stored in Visual Studio's per-user project settings, so deleting and regenerating `build-vs` requires configuring them again.
   </section>
 
