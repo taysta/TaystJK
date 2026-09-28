@@ -3,7 +3,7 @@ title: "Tribes"
 layout: reference
 nav_order: 9
 parent: "Features"
-description: "The Tribes movement mode: skiing, jetpack, IFF markers, its own HUD and weapons. Experimental and lightly played."
+description: "The Tribes movement mode: skiing, jetpack, IFF markers, its own HUD and weapons. Experimental, and needs a server that supports it."
 toc: true
 origin: japro
 status: experimental
@@ -14,7 +14,7 @@ status: experimental
 
 # Tribes
 
-<p class="page-lede">A movement style that replaces running with skiing and adds a jetpack, its own HUD and its own weapons. It is experimental and few servers run it.</p>
+<p class="page-lede">A movement style that replaces running with skiing and adds a jetpack, its own HUD and its own weapons. It is experimental, and a server has to support it.</p>
 </div>
 
 Tribes is one of the nineteen [movement styles](/TaystJK/features/movement-styles/); the
@@ -153,7 +153,7 @@ shots, and give every player a jetpack.
 
 ## Expectations
 
-This mode is experimental and lightly played. It carries more bespoke code than any other
+This mode is experimental. It carries more bespoke code than any other
 movement style, some of it carrying the author's own notes about ground detection being
 unreliable while skiing
 ([`bg_pmove.c`](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/codemp/game/bg_pmove.c#L5439)).

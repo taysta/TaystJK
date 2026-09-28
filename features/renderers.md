@@ -64,8 +64,10 @@ Both are latched, so set both and then `vid_restart`.
 backends, so a shader override does not depend on your choice. See
 [client behaviour changes](/TaystJK/features/client-behaviour/).
 
-**Memory.** rend2 is the heaviest of the three. On a 32-bit build that can matter; the
-[install guide](/TaystJK/install/) covers the practical consequences.
+**Memory.** Switching renderer will not save much. Loading `mp/ffa3` on an Apple Silicon
+Mac, all three peaked within about 10% of each other, at 1.4 to 1.5 GB. If a 32-bit build
+runs out of memory, the fix is the 64-bit build rather than another renderer; see the
+[install guide](/TaystJK/install/).
 
 ## Where a renderer bug goes
 

@@ -28,15 +28,14 @@ enabled. The HUD settings are client-side and work anywhere.
 
 ## Where to play
 
-Kane's guide points new players to jaPRO's own site, [playja.pro](http://www.playja.pro/),
+Kane's guide points new players to jaPRO's own site, [playja.pro](https://playja.pro/),
 which hosts the maps and the online leaderboards.
 
 - **Server:** `connect s.playja.pro`
-- **Maps:** [playja.pro/?page=maps](http://www.playja.pro/?page=maps)
-- **More maps (optional):** [playja.pro/maps/base/](http://www.playja.pro/maps/base/),
-  including single-player JKA maps with timers added, for strafing offline.
-- **Record demos:** [playja.pro/?page=race](http://www.playja.pro/?page=race). Click the
-  date of a run to download its demo.
+- **Maps:** [playja.pro/#/download](https://playja.pro/#/download) lists the map PK3s.
+- **Records and their demos:** [playja.pro/#/races](https://playja.pro/#/races). Each run
+  has a link to download its demo.
+- **Match demos:** [playja.pro/#/demo-archive](https://playja.pro/#/demo-archive).
 
 These are community sites. Nothing on this page controls what they host.
 

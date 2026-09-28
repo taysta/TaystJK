@@ -102,7 +102,7 @@ sections:
             cta: Racing guide
           - title: Tribes
             url: /features/tribes/
-            description: Skiing, jetpacks, classes and packs. Experimental and lightly played.
+            description: Skiing, jetpacks, classes and packs. Experimental, and needs a server that supports it.
             cta: Tribes mode
       - title: Configuration and scripting
         description: Work with the files and scripting tools that configure the client.
