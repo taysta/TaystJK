@@ -247,7 +247,8 @@
       if (state.mod.toLowerCase() === "taystjk") state.mod = "japlus";
     }
     if (target !== "japro") state.arch32 = raw.arch32 === true;
-    if (typeof raw.hostname === "string") state.hostname = clean(raw.hostname).slice(0, 64);
+    // The server replaces \, ; and " in sv_hostname with dots; show the name it will list.
+    if (typeof raw.hostname === "string") state.hostname = clean(raw.hostname.replace(/[\\;"]/g, ".")).slice(0, 64);
     if (typeof raw.motd === "string") state.motd = clean(raw.motd).slice(0, 256);
     if (raw.maxclients != null) state.maxclients = toInt(raw.maxclients, 16, 1, MAX_CLIENTS);
     ["listed", "downloads", "http", "bans", "votes"].forEach(function (key) {
@@ -1196,7 +1197,7 @@
 
   function renderBasics(data, state, secrets) {
     var html = '<div class="cfg-grid">';
-    html += field("Server name", textInput("hostname", state.hostname, ' maxlength="64"'), "Colour codes such as <code>^1</code> work.");
+    html += field("Server name", textInput("hostname", state.hostname, ' maxlength="64"'), "Colour codes such as <code>^1</code> work. The server shows <code>\\</code>, <code>;</code> and <code>\"</code> as dots.");
     html += field("Players", numberInput("maxclients", state.maxclients, 1, MAX_CLIENTS));
     html += "</div>";
     html += field("Message of the day", textInput("motd", state.motd, ' maxlength="256"'), "Shown while players connect. Leave empty for none.");

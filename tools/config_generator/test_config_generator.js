@@ -332,9 +332,10 @@ assert.ok(generator.secretProblem("caf\u00e9"));
 
 // Values that would break out of their quotes are cleaned.
 {
-  const result = generator.generate(data, { target: "japro", hostname: "a\"b\nc" }, { rcon: "p\"w\nx" });
+  const result = generator.generate(data, { target: "japro", hostname: "a\"b\nc;d\\e" }, { rcon: "p\"w\nx" });
   const server = result.files[0].text;
-  assert.match(server, /^seta sv_hostname "a b c"$/m);
+  // The server turns \ ; and " in its name into dots, so the file already says what it will list.
+  assert.match(server, /^seta sv_hostname "a\.b c\.d\.e"$/m);
   assert.match(server, /^set rconpassword "p w x"$/m);
 }
 
