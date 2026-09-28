@@ -31,7 +31,7 @@ Controls `cg_animSpeed` in the cgame module. Consult the cited behavior reads be
 | Value type | `bool` |
 | Restart | No latch flag is registered. |
 | Cheat protected | Yes |
-| Player-settable | Yes |
+| Manually settable | Yes |
 
 ## Values
 

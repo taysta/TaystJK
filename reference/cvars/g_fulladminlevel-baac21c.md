@@ -33,7 +33,7 @@ Controls `g_fullAdminLevel` in the game module. Consult the cited behavior reads
 | Value type | `bitmask` |
 | Restart | No latch flag is registered. |
 | Cheat protected | No |
-| Player-settable | Yes |
+| Manually settable | Yes |
 | Configure with | [`toggleAdmin`](/TaystJK/reference/commands/toggleadmin-b7c3f7b/) |
 
 ## Bits

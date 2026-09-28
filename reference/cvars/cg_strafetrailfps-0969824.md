@@ -32,7 +32,7 @@ SV_FPS the strafetrail was recorded at.
 | Value type | `int` |
 | Restart | No latch flag is registered. |
 | Cheat protected | No |
-| Player-settable | Yes |
+| Manually settable | Yes |
 
 ## Values
 

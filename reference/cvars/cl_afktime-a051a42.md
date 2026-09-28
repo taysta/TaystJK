@@ -31,7 +31,7 @@ Minutes to autorename to afk, 0 to disable
 | Value type | `int` |
 | Restart | No latch flag is registered. |
 | Cheat protected | No |
-| Player-settable | Yes |
+| Manually settable | Yes |
 
 ## Values
 

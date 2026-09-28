@@ -31,7 +31,7 @@ Experimental anti wallhack code. Use the client plugin so it can tell the server
 | Value type | `bool` |
 | Restart | No latch flag is registered. |
 | Cheat protected | No |
-| Player-settable | Yes |
+| Manually settable | Yes |
 
 ## Values
 

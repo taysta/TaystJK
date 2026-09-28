@@ -32,7 +32,7 @@ Controls `cg_drawTimerCountdown` in the cgame module. Consult the cited behavior
 | Value type | `enum` |
 | Restart | No latch flag is registered. |
 | Cheat protected | No |
-| Player-settable | Yes |
+| Manually settable | Yes |
 
 ## Values
 

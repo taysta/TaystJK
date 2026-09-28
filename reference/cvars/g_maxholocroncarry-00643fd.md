@@ -32,7 +32,7 @@ Controls `g_maxHolocronCarry` in the game module. Consult the cited behavior rea
 | Value type | `float` |
 | Restart | Yes; the value is latched. |
 | Cheat protected | No |
-| Player-settable | Yes |
+| Manually settable | Yes |
 
 ## Values
 

@@ -32,7 +32,7 @@ Allow cheats on server if set to 1
 | Value type | `bool` |
 | Restart | No latch flag is registered. |
 | Cheat protected | No |
-| Player-settable | No; the game writes this value. |
+| Manually settable | No; the game writes this value. |
 
 ## Values
 

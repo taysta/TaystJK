@@ -33,7 +33,7 @@ Controls `ui_forcePowerDisable` in the ui module. Consult the cited behavior rea
 | Value type | `bool` |
 | Restart | No latch flag is registered. |
 | Cheat protected | No |
-| Player-settable | No; the game writes this value. |
+| Manually settable | No; the game writes this value. |
 
 ## Values
 

@@ -31,7 +31,7 @@ Controls `r_texturebitslm` in the renderer module. Consult the cited behavior re
 | Value type | `bitmask` |
 | Restart | Yes; the value is latched. |
 | Cheat protected | No |
-| Player-settable | Yes |
+| Manually settable | Yes |
 
 ## Values
 

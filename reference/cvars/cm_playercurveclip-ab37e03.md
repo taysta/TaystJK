@@ -31,7 +31,7 @@ Controls `cm_playerCurveClip` in the engine-shared module. Consult the cited beh
 | Value type | `bool` |
 | Restart | No latch flag is registered. |
 | Cheat protected | Yes |
-| Player-settable | Yes |
+| Manually settable | Yes |
 
 ## Values
 

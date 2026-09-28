@@ -32,7 +32,7 @@ Controls `r_ext_max_anisotropy` in the renderer module. Consult the cited behavi
 | Value type | `int` |
 | Restart | Yes; the value is latched. |
 | Cheat protected | No |
-| Player-settable | Yes |
+| Manually settable | Yes |
 
 ## Values
 

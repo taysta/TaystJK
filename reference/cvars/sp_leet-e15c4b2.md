@@ -31,7 +31,7 @@ Controls `sp_leet` in the engine-shared module. Consult the cited behavior reads
 | Value type | `enum` |
 | Restart | No latch flag is registered. |
 | Cheat protected | No |
-| Player-settable | Yes |
+| Manually settable | Yes |
 
 ## Values
 

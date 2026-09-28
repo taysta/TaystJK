@@ -33,7 +33,7 @@ Controls `cg_logChat` in the cgame module. Consult the cited behavior reads befo
 | Value type | `bitmask` |
 | Restart | No latch flag is registered. |
 | Cheat protected | No |
-| Player-settable | Yes |
+| Manually settable | Yes |
 | Configure with | [`chatlog`](/TaystJK/reference/commands/chatlog-84c4a99/) |
 
 ## Bits

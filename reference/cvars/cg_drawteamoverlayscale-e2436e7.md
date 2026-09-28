@@ -29,7 +29,7 @@ Size of the team overlay. Only applies to cg_drawTeamOverlay 5 and 6, clamped be
 | Value type | `float` |
 | Restart | No latch flag is registered. |
 | Cheat protected | No |
-| Player-settable | Yes |
+| Manually settable | Yes |
 
 ## Values
 

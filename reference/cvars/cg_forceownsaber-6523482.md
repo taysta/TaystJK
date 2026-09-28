@@ -31,7 +31,7 @@ Controls `cg_forceOwnSaber` in the cgame module. Consult the cited behavior read
 | Value type | `string` |
 | Restart | No latch flag is registered. |
 | Cheat protected | No |
-| Player-settable | Yes |
+| Manually settable | Yes |
 
 ## Values
 

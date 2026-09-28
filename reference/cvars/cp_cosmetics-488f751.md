@@ -33,7 +33,7 @@ Controls `cp_cosmetics` in the cgame module. Consult the cited behavior reads be
 | Value type | `bitmask` |
 | Restart | No latch flag is registered. |
 | Cheat protected | No |
-| Player-settable | Yes |
+| Manually settable | Yes |
 | Configure with | [`cosmetics`](/TaystJK/reference/commands/cosmetics-01c96cf/) |
 
 ## Bits

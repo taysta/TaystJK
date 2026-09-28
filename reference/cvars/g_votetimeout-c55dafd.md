@@ -31,7 +31,7 @@ Time in seconds to lockout callvote after a failed vote
 | Value type | `int` |
 | Restart | No latch flag is registered. |
 | Cheat protected | No |
-| Player-settable | Yes |
+| Manually settable | Yes |
 
 ## Values
 

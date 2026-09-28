@@ -34,7 +34,7 @@ Controls `cl_downloadName` in the engine-client module. Consult the cited behavi
 | Value type | `string` |
 | Restart | No latch flag is registered. |
 | Cheat protected | No |
-| Player-settable | No; the game writes this value. |
+| Manually settable | No; the game writes this value. |
 
 ## Values
 

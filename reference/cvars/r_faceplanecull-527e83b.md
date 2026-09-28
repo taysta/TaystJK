@@ -31,7 +31,7 @@ Controls `r_facePlaneCull` in the renderer module. Consult the cited behavior re
 | Value type | `bool` |
 | Restart | No latch flag is registered. |
 | Cheat protected | No |
-| Player-settable | Yes |
+| Manually settable | Yes |
 
 ## Values
 

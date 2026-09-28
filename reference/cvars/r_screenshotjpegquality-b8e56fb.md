@@ -31,7 +31,7 @@ Controls `r_screenshotJpegQuality` in the renderer module. Consult the cited beh
 | Value type | `int` |
 | Restart | No latch flag is registered. |
 | Cheat protected | No |
-| Player-settable | Yes |
+| Manually settable | Yes |
 
 ## Values
 

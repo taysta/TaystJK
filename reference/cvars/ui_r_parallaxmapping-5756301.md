@@ -33,7 +33,7 @@ Controls `ui_r_parallaxmapping` in the ui module. Consult the cited behavior rea
 | Value type | `int` |
 | Restart | No latch flag is registered. |
 | Cheat protected | No |
-| Player-settable | No; the game writes this value. |
+| Manually settable | No; the game writes this value. |
 | Staging copy of | [`r_parallaxMapping`](/TaystJK/reference/cvars/r_parallaxmapping-2354566/); [written through](https://github.com/taysta/TaystJK/blame/b35ed06fec41c53644352743c6b199a5d5d500f3/codemp/ui/ui_main.c#L6250), [read back](https://github.com/taysta/TaystJK/blame/b35ed06fec41c53644352743c6b199a5d5d500f3/codemp/ui/ui_main.c#L6421) |
 
 ## Values

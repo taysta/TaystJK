@@ -33,7 +33,7 @@ Controls `ui_about_duellimit` in the cgame module. Consult the cited behavior re
 | Value type | `int` |
 | Restart | No latch flag is registered. |
 | Cheat protected | No |
-| Player-settable | No; the game writes this value. |
+| Manually settable | No; the game writes this value. |
 
 ## Values
 

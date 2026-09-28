@@ -31,7 +31,7 @@ Controls `d_asynchronousGroupAI` in the game module. Consult the cited behavior 
 | Value type | `bool` |
 | Restart | No latch flag is registered. |
 | Cheat protected | Yes |
-| Player-settable | Yes |
+| Manually settable | Yes |
 
 ## Values
 

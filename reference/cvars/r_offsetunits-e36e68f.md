@@ -31,7 +31,7 @@ Controls `r_offsetUnits` in the renderer module. Consult the cited behavior read
 | Value type | `float` |
 | Restart | No latch flag is registered. |
 | Cheat protected | Yes |
-| Player-settable | Yes |
+| Manually settable | Yes |
 
 ## Values
 

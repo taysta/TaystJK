@@ -33,7 +33,7 @@ Controls `ui_Name` in the ui module. Consult the cited behavior reads before rel
 | Value type | `string` |
 | Restart | No latch flag is registered. |
 | Cheat protected | No |
-| Player-settable | No; the game writes this value. |
+| Manually settable | No; the game writes this value. |
 
 ## Values
 

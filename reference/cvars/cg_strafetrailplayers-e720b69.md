@@ -32,7 +32,7 @@ Controls `cg_strafeTrailPlayers` in the cgame module. Consult the cited behavior
 | Value type | `bitmask` |
 | Restart | No latch flag is registered. |
 | Cheat protected | No |
-| Player-settable | Yes |
+| Manually settable | Yes |
 
 ## Values
 

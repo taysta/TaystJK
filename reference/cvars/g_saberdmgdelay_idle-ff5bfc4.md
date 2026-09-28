@@ -31,7 +31,7 @@ Controls `g_saberDmgDelay_Idle` in the game module. Consult the cited behavior r
 | Value type | `enum` |
 | Restart | No latch flag is registered. |
 | Cheat protected | No |
-| Player-settable | Yes |
+| Manually settable | Yes |
 
 ## Values
 

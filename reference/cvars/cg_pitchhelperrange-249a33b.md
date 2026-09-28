@@ -32,7 +32,7 @@ The range of numbers to display as green (eg. range 30, offset 0 = +15 to -15)
 | Value type | `float` |
 | Restart | No latch flag is registered. |
 | Cheat protected | No |
-| Player-settable | Yes |
+| Manually settable | Yes |
 
 ## Values
 

@@ -31,7 +31,7 @@ Controls `g_KOTH` in the game module. Consult the cited behavior reads before re
 | Value type | `bool` |
 | Restart | No latch flag is registered. |
 | Cheat protected | No |
-| Player-settable | Yes |
+| Manually settable | Yes |
 
 ## Values
 

@@ -30,7 +30,7 @@ Scale console font relative to it's original size.
 | Value type | `float` |
 | Restart | No latch flag is registered. |
 | Cheat protected | No |
-| Player-settable | Yes |
+| Manually settable | Yes |
 
 ## Values
 

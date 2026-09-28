@@ -31,7 +31,7 @@ Bitmask of client-side restrictions a jaPRO server advertises in its server info
 | Value type | `bitmask` |
 | Restart | No latch flag is registered. |
 | Cheat protected | No |
-| Player-settable | Yes |
+| Manually settable | Yes |
 
 ## Values
 

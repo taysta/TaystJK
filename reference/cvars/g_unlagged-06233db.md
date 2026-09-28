@@ -31,7 +31,7 @@ Bitvalue. 1=Unlagged projectiles. 2=Unlagged hitscan. 4=Unlagged push/pull.
 | Value type | `bitmask` |
 | Restart | Yes; the value is latched. |
 | Cheat protected | No |
-| Player-settable | Yes |
+| Manually settable | Yes |
 
 ## Values
 

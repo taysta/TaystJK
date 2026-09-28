@@ -33,7 +33,7 @@ Controls `ui_r_inGameVideo` in the ui module. Consult the cited behavior reads b
 | Value type | `int` |
 | Restart | No latch flag is registered. |
 | Cheat protected | No |
-| Player-settable | No; the game writes this value. |
+| Manually settable | No; the game writes this value. |
 | Staging copy of | [`r_inGameVideo`](/TaystJK/reference/cvars/r_ingamevideo-af33e5e/); [written through](https://github.com/taysta/TaystJK/blame/b35ed06fec41c53644352743c6b199a5d5d500f3/codemp/ui/ui_main.c#L6237), [read back](https://github.com/taysta/TaystJK/blame/b35ed06fec41c53644352743c6b199a5d5d500f3/codemp/ui/ui_main.c#L6409) |
 
 ## Values

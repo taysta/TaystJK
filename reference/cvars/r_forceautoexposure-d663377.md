@@ -32,7 +32,7 @@ Controls `r_forceAutoExposure` in the renderer module. Consult the cited behavio
 | Value type | `bool` |
 | Restart | No latch flag is registered. |
 | Cheat protected | Yes |
-| Player-settable | Yes |
+| Manually settable | Yes |
 
 ## Values
 

@@ -29,7 +29,7 @@ A demo can only start with a gamestate and full non-delta snapshot. How often sh
 | Value type | `int` |
 | Restart | No latch flag is registered. |
 | Cheat protected | No |
-| Player-settable | Yes |
+| Manually settable | Yes |
 
 ## Values
 

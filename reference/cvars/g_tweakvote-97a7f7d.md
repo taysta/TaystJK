@@ -33,7 +33,7 @@ Latch cuz of calculateRanks? not sure man
 | Value type | `bitmask` |
 | Restart | Yes; the value is latched. |
 | Cheat protected | No |
-| Player-settable | Yes |
+| Manually settable | Yes |
 | Configure with | [`tweakVote`](/TaystJK/reference/commands/tweakvote-97236e2/) |
 
 ## Bits

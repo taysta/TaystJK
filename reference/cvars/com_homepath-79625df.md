@@ -31,7 +31,7 @@ Controls `com_homepath` in the engine-shared module. Consult the cited behavior 
 | Value type | `string` |
 | Restart | No latch flag is registered. |
 | Cheat protected | No |
-| Player-settable | Yes |
+| Manually settable | Yes |
 
 ## Values
 

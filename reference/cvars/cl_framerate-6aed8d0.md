@@ -31,7 +31,7 @@ Controls `cl_framerate` in the engine-client module. Consult the cited behavior 
 | Value type | `bool` |
 | Restart | No latch flag is registered. |
 | Cheat protected | No |
-| Player-settable | Yes |
+| Manually settable | Yes |
 
 ## Values
 

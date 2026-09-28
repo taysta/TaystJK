@@ -31,7 +31,7 @@ Controls `cl_graphheight` in the engine-client module. Consult the cited behavio
 | Value type | `int` |
 | Restart | No latch flag is registered. |
 | Cheat protected | Yes |
-| Player-settable | Yes |
+| Manually settable | Yes |
 
 ## Values
 

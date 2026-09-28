@@ -29,7 +29,7 @@ Activate server demo pre-recording so demos can be retroactively recorded for du
 | Value type | `bool` |
 | Restart | No latch flag is registered. |
 | Cheat protected | No |
-| Player-settable | Yes |
+| Manually settable | Yes |
 
 ## Values
 

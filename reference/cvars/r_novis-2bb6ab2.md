@@ -31,7 +31,7 @@ Controls `r_novis` in the renderer module. Consult the cited behavior reads befo
 | Value type | `enum` |
 | Restart | No latch flag is registered. |
 | Cheat protected | Yes |
-| Player-settable | Yes |
+| Manually settable | Yes |
 
 ## Values
 

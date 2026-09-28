@@ -31,7 +31,7 @@ Toggle JK2 1.02-style colored text shadows
 | Value type | `bool` |
 | Restart | No latch flag is registered. |
 | Cheat protected | No |
-| Player-settable | Yes |
+| Manually settable | Yes |
 
 ## Values
 

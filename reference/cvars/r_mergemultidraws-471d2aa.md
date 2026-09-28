@@ -31,7 +31,7 @@ Controls `r_mergeMultidraws` in the renderer module. Consult the cited behavior 
 | Value type | `bool` |
 | Restart | No latch flag is registered. |
 | Cheat protected | No |
-| Player-settable | Yes |
+| Manually settable | Yes |
 
 ## Values
 

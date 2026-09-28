@@ -33,7 +33,7 @@ Controls `g_allowVote` in the game module. Consult the cited behavior reads befo
 | Value type | `bitmask` |
 | Restart | No latch flag is registered. |
 | Cheat protected | No |
-| Player-settable | Yes |
+| Manually settable | Yes |
 | Configure with | [`toggleVote`](/TaystJK/reference/commands/togglevote-397b6ff/) |
 
 ## Bits

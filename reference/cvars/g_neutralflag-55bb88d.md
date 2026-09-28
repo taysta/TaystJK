@@ -29,7 +29,7 @@ Selects a neutral-flag game mode. Values 1 to 3 are rabbit variants for FFA and 
 | Value type | `enum` |
 | Restart | No latch flag is registered. |
 | Cheat protected | No |
-| Player-settable | Yes |
+| Manually settable | Yes |
 
 ## Values
 

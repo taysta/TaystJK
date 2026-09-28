@@ -31,7 +31,7 @@ Attempts to detect and kick players injecting or using DST
 | Value type | `bool` |
 | Restart | No latch flag is registered. |
 | Cheat protected | No |
-| Player-settable | Yes |
+| Manually settable | Yes |
 
 ## Values
 

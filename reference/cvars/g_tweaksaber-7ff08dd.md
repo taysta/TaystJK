@@ -33,7 +33,7 @@ Configured with /tweakSaber command.
 | Value type | `bitmask` |
 | Restart | No latch flag is registered. |
 | Cheat protected | No |
-| Player-settable | Yes |
+| Manually settable | Yes |
 | Configure with | [`tweakSaber`](/TaystJK/reference/commands/tweaksaber-e5f1b57/) |
 
 ## Bits

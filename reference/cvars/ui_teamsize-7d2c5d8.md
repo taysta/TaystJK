@@ -33,7 +33,7 @@ Controls `ui_teamSize` in the ui module. Consult the cited behavior reads before
 | Value type | `int` |
 | Restart | No latch flag is registered. |
 | Cheat protected | No |
-| Player-settable | No; the game writes this value. |
+| Manually settable | No; the game writes this value. |
 
 ## Values
 

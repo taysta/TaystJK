@@ -29,7 +29,7 @@ Bot character used for interbreeding
 | Value type | `string` |
 | Restart | No latch flag is registered. |
 | Cheat protected | Yes |
-| Player-settable | Yes |
+| Manually settable | Yes |
 
 ## Values
 

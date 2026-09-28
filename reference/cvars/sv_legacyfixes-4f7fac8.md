@@ -31,7 +31,7 @@ Controls `sv_legacyFixes` in the engine-server module. Consult the cited behavio
 | Value type | `bitmask` |
 | Restart | No latch flag is registered. |
 | Cheat protected | No |
-| Player-settable | Yes |
+| Manually settable | Yes |
 
 ## Values
 

@@ -31,7 +31,7 @@ Controls `cm_noAreas` in the engine-shared module. Consult the cited behavior re
 | Value type | `enum` |
 | Restart | No latch flag is registered. |
 | Cheat protected | Yes |
-| Player-settable | Yes |
+| Manually settable | Yes |
 
 ## Values
 

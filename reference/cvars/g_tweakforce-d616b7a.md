@@ -33,7 +33,7 @@ Configured with /tweakForce command.
 | Value type | `bitmask` |
 | Restart | No latch flag is registered. |
 | Cheat protected | No |
-| Player-settable | Yes |
+| Manually settable | Yes |
 | Configure with | [`tweakForce`](/TaystJK/reference/commands/tweakforce-05bb9d3/) |
 
 ## Bits

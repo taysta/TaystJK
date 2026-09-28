@@ -33,7 +33,7 @@ Controls `sv_paks` in the engine-server module. Consult the cited behavior reads
 | Value type | `string` |
 | Restart | No latch flag is registered. |
 | Cheat protected | No |
-| Player-settable | No; the game writes this value. |
+| Manually settable | No; the game writes this value. |
 
 ## Values
 

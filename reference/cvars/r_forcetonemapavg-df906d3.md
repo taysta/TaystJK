@@ -31,7 +31,7 @@ Controls `r_forceToneMapAvg` in the renderer module. Consult the cited behavior 
 | Value type | `float` |
 | Restart | No latch flag is registered. |
 | Cheat protected | Yes |
-| Player-settable | Yes |
+| Manually settable | Yes |
 
 ## Values
 

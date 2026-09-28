@@ -31,7 +31,7 @@ Controls `cg_saberDynamicMarkTime` in the cgame module. Consult the cited behavi
 | Value type | `int` |
 | Restart | No latch flag is registered. |
 | Cheat protected | No |
-| Player-settable | Yes |
+| Manually settable | Yes |
 
 ## Values
 

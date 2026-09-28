@@ -32,7 +32,7 @@ Controls `cg_strafeTrailLife` in the cgame module. Consult the cited behavior re
 | Value type | `float` |
 | Restart | No latch flag is registered. |
 | Cheat protected | No |
-| Player-settable | Yes |
+| Manually settable | Yes |
 
 ## Values
 

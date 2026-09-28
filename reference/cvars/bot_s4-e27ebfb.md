@@ -31,7 +31,7 @@ Registered by the current source, but no user-facing behavior description has be
 | Value type | `float` |
 | Restart | No latch flag is registered. |
 | Cheat protected | No |
-| Player-settable | Yes |
+| Manually settable | Yes |
 
 ## Values
 

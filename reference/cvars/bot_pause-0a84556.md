@@ -29,7 +29,7 @@ Pause the bots thinking
 | Value type | `int` |
 | Restart | No latch flag is registered. |
 | Cheat protected | Yes |
-| Player-settable | Yes |
+| Manually settable | Yes |
 
 ## Values
 

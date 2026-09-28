@@ -31,7 +31,7 @@ Controls `r_stereoSeparation` in the renderer module. Consult the cited behavior
 | Value type | `float` |
 | Restart | No latch flag is registered. |
 | Cheat protected | No |
-| Player-settable | Yes |
+| Manually settable | Yes |
 
 ## Values
 

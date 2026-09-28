@@ -796,7 +796,7 @@ def catalog_app(
         <button class="filter-toggle" type="button" data-filter-toggle="audience" aria-expanded="false"><span>Settable</span><strong data-filter-summary="audience">Any cvar</strong><span class="filter-chevron" aria-hidden="true"></span></button>
         <div class="filter-popover" data-filter-popover="audience" hidden>
           <div class="filter-options">
-            <label class="filter-checkbox"><input type="checkbox" name="audience" value="settable" data-filter="audience"><span>Player-settable</span></label>
+            <label class="filter-checkbox"><input type="checkbox" name="audience" value="settable" data-filter="audience"><span>Manually settable</span></label>
             <label class="filter-checkbox"><input type="checkbox" name="audience" value="engine-managed" data-filter="audience"><span>Engine-managed</span></label>
           </div>
           <button class="filter-clear" type="button" data-clear-filter="audience">Clear settable</button>
@@ -820,7 +820,7 @@ def catalog_app(
       <label><span>Documentation</span><select name="status" data-filter="status"><option value="">Any status</option><option value="documented">Documented</option><option value="needs-review">Needs review</option></select></label>
       <label><span>Network scope</span><select name="network" data-filter="network"><option value="">Any scope</option></select></label>
       <label><span>In game</span><select name="coverage" data-filter="coverage"><option value="">Any coverage</option><option value="xdocs">Has xdocs entry</option><option value="menu">Has menu entry</option><option value="no-xdocs">Missing from xdocs</option><option value="no-menu">Missing from menus</option></select></label>
-      <label data-cvar-filter><span>Settable</span><select name="audience" data-filter="audience"><option value="">Any cvar</option><option value="settable">Player-settable</option><option value="engine-managed">Engine-managed</option></select></label>
+      <label data-cvar-filter><span>Settable</span><select name="audience" data-filter="audience"><option value="">Any cvar</option><option value="settable">Manually settable</option><option value="engine-managed">Engine-managed</option></select></label>
       <label data-cvar-filter><span>Cvar flag</span><select name="flag" data-filter="flag"><option value="">Any flag</option></select></label>
     </div>"""
     return f"""
@@ -1070,7 +1070,7 @@ def detail_page(entry: dict[str, Any], refs: dict[str, str], cvar_names: dict[st
             f"| Value type | {code(entry['value_type'])} |",
             f"| Restart | {'Yes; the value is latched.' if entry['requires_restart'] else 'No latch flag is registered.'} |",
             f"| Cheat protected | {'Yes' if entry['cheat_protected'] else 'No'} |",
-            f"| Player-settable | {'No; the game writes this value.' if entry.get('engine_managed') else 'Yes'} |",
+            f"| Manually settable | {'No; the game writes this value.' if entry.get('engine_managed') else 'Yes'} |",
             *([f"| Staging copy of | {mirror_row(entry, cvar_names or {})} |"] if entry.get("menu_mirror") else []),
             *([f"| Configure with | {joined([command_link(name) for name in entry['bits']['commands']])} |"]
               if (entry.get("bits") or {}).get("commands") else []),

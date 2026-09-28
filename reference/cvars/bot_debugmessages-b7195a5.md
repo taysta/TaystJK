@@ -31,7 +31,7 @@ Controls `bot_debugmessages` in the game module. Consult the cited behavior read
 | Value type | `bool` |
 | Restart | No latch flag is registered. |
 | Cheat protected | Yes |
-| Player-settable | Yes |
+| Manually settable | Yes |
 
 ## Values
 

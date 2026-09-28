@@ -33,7 +33,7 @@ Configured with /tweakWeapons command
 | Value type | `bitmask` |
 | Restart | No latch flag is registered. |
 | Cheat protected | No |
-| Player-settable | Yes |
+| Manually settable | Yes |
 | Configure with | [`tweakWeapons`](/TaystJK/reference/commands/tweakweapons-fd5860d/) |
 
 ## Bits

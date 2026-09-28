@@ -29,7 +29,7 @@ Max out-of-bound requests handled per second. Increasing rate improves server re
 | Value type | `int` |
 | Restart | No latch flag is registered. |
 | Cheat protected | No |
-| Player-settable | Yes |
+| Manually settable | Yes |
 
 ## Values
 

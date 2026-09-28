@@ -32,7 +32,7 @@ Scales volumetric fog density unless scale has been explicitly defined
 | Value type | `float` |
 | Restart | Yes; the value is latched. |
 | Cheat protected | No |
-| Player-settable | Yes |
+| Manually settable | Yes |
 
 ## Values
 

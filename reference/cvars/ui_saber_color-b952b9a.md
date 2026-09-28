@@ -33,7 +33,7 @@ Controls `ui_saber_color` in the ui module. Consult the cited behavior reads bef
 | Value type | `string` |
 | Restart | No latch flag is registered. |
 | Cheat protected | No |
-| Player-settable | No; the game writes this value. |
+| Manually settable | No; the game writes this value. |
 | Staging copy of | [`g_saber_color`](/TaystJK/reference/cvars/g_saber_color-c921632/); [written through](https://github.com/taysta/TaystJK/blame/b35ed06fec41c53644352743c6b199a5d5d500f3/codemp/ui/ui_main.c#L6796), [read back](https://github.com/taysta/TaystJK/blame/b35ed06fec41c53644352743c6b199a5d5d500f3/codemp/ui/ui_main.c#L6994) |
 
 ## Values

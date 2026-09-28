@@ -31,7 +31,7 @@ Controls `cg_lagometerY` in the cgame module. Consult the cited behavior reads b
 | Value type | `int` |
 | Restart | No latch flag is registered. |
 | Cheat protected | No |
-| Player-settable | Yes |
+| Manually settable | Yes |
 
 ## Values
 

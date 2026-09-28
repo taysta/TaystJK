@@ -31,7 +31,7 @@ Controls `net_forcenonlocal` in the engine-shared module. Consult the cited beha
 | Value type | `bool` |
 | Restart | Yes; the value is latched. |
 | Cheat protected | No |
-| Player-settable | Yes |
+| Manually settable | Yes |
 
 ## Values
 

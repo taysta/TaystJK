@@ -31,7 +31,7 @@ Controls `net_socksPort` in the engine-shared module. Consult the cited behavior
 | Value type | `int` |
 | Restart | Yes; the value is latched. |
 | Cheat protected | No |
-| Player-settable | Yes |
+| Manually settable | Yes |
 
 ## Values
 

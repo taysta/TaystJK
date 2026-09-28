@@ -31,7 +31,7 @@ Rww - these used to all default to 0 (closed).. I changed them to 1 (human)
 | Value type | `int` |
 | Restart | No latch flag is registered. |
 | Cheat protected | No |
-| Player-settable | No; the game writes this value. |
+| Manually settable | No; the game writes this value. |
 
 ## Values
 

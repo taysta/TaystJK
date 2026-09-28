@@ -30,7 +30,7 @@ Offset the killfeed's horizontal position from its current position
 | Value type | `float` |
 | Restart | No latch flag is registered. |
 | Cheat protected | No |
-| Player-settable | Yes |
+| Manually settable | Yes |
 
 ## Values
 

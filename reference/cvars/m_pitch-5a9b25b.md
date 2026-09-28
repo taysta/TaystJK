@@ -31,7 +31,7 @@ Controls `m_pitch` in the engine-client module. Consult the cited behavior reads
 | Value type | `float` |
 | Restart | No latch flag is registered. |
 | Cheat protected | No |
-| Player-settable | Yes |
+| Manually settable | Yes |
 
 ## Values
 

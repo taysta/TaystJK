@@ -31,7 +31,7 @@ Wether to use simulated projectiles so bullets appear instantly. Values > 1 don'
 | Value type | `bool` |
 | Restart | No latch flag is registered. |
 | Cheat protected | No |
-| Player-settable | Yes |
+| Manually settable | Yes |
 
 ## Values
 

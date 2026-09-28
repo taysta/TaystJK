@@ -31,7 +31,7 @@ Network all entity data to spectators, useful if you have a recorder in spectate
 | Value type | `bool` |
 | Restart | No latch flag is registered. |
 | Cheat protected | No |
-| Player-settable | Yes |
+| Manually settable | Yes |
 
 ## Values
 

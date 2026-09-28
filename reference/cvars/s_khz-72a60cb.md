@@ -31,7 +31,7 @@ Controls `s_khz` in the engine-client module. Consult the cited behavior reads b
 | Value type | `float` |
 | Restart | Yes; the value is latched. |
 | Cheat protected | No |
-| Player-settable | Yes |
+| Manually settable | Yes |
 
 ## Values
 

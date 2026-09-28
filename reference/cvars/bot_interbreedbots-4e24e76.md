@@ -29,7 +29,7 @@ Number of bots used for interbreeding
 | Value type | `int` |
 | Restart | No latch flag is registered. |
 | Cheat protected | Yes |
-| Player-settable | Yes |
+| Manually settable | Yes |
 
 ## Values
 

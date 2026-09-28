@@ -31,7 +31,7 @@ Controls `fx_freeze` in the engine-client module. Consult the cited behavior rea
 | Value type | `bool` |
 | Restart | No latch flag is registered. |
 | Cheat protected | Yes |
-| Player-settable | Yes |
+| Manually settable | Yes |
 
 ## Values
 

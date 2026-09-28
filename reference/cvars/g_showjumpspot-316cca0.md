@@ -31,7 +31,7 @@ Marks where player touches ground as they land. Useful with the /nudge command o
 | Value type | `enum` |
 | Restart | No latch flag is registered. |
 | Cheat protected | No |
-| Player-settable | Yes |
+| Manually settable | Yes |
 
 ## Values
 

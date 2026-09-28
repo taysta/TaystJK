@@ -31,7 +31,7 @@ Minutes to autorename to afk while unfocused/minimized
 | Value type | `float` |
 | Restart | No latch flag is registered. |
 | Cheat protected | No |
-| Player-settable | Yes |
+| Manually settable | Yes |
 
 ## Values
 

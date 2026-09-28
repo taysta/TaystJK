@@ -33,7 +33,7 @@ Controls `ui_r_ssao` in the ui module. Consult the cited behavior reads before r
 | Value type | `int` |
 | Restart | No latch flag is registered. |
 | Cheat protected | No |
-| Player-settable | No; the game writes this value. |
+| Manually settable | No; the game writes this value. |
 | Staging copy of | [`r_ssao`](/TaystJK/reference/cvars/r_ssao-5b8c581/); [written through](https://github.com/taysta/TaystJK/blame/b35ed06fec41c53644352743c6b199a5d5d500f3/codemp/ui/ui_main.c#L6252), [read back](https://github.com/taysta/TaystJK/blame/b35ed06fec41c53644352743c6b199a5d5d500f3/codemp/ui/ui_main.c#L6423) |
 
 ## Values

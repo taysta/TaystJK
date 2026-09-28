@@ -29,7 +29,7 @@ Controls whether the main HUD status elements are drawn
 | Value type | `enum` |
 | Restart | No latch flag is registered. |
 | Cheat protected | No |
-| Player-settable | Yes |
+| Manually settable | Yes |
 
 ## Values
 

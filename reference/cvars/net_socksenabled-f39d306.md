@@ -31,7 +31,7 @@ Controls `net_socksEnabled` in the engine-shared module. Consult the cited behav
 | Value type | `bool` |
 | Restart | Yes; the value is latched. |
 | Cheat protected | No |
-| Player-settable | Yes |
+| Manually settable | Yes |
 
 ## Values
 

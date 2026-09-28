@@ -32,7 +32,7 @@ The amount of jumps to store in the jumps array, enable with the /speedometer co
 | Value type | `float` |
 | Restart | No latch flag is registered. |
 | Cheat protected | No |
-| Player-settable | Yes |
+| Manually settable | Yes |
 
 ## Values
 

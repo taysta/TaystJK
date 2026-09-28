@@ -31,7 +31,7 @@ Controls `in_mouserepeat` in the engine-shared module. Consult the cited behavio
 | Value type | `enum` |
 | Restart | No latch flag is registered. |
 | Cheat protected | No |
-| Player-settable | Yes |
+| Manually settable | Yes |
 
 ## Values
 

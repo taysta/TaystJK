@@ -31,7 +31,7 @@ Controls `s_debugdynamic` in the engine-client module. Consult the cited behavio
 | Value type | `enum` |
 | Restart | No latch flag is registered. |
 | Cheat protected | Yes |
-| Player-settable | Yes |
+| Manually settable | Yes |
 
 ## Values
 

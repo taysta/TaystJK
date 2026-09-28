@@ -32,7 +32,7 @@ Disable/enable lightgrid lighting on fog volumes
 | Value type | `bool` |
 | Restart | Yes; the value is latched. |
 | Cheat protected | No |
-| Player-settable | Yes |
+| Manually settable | Yes |
 
 ## Values
 

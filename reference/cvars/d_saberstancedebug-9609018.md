@@ -31,7 +31,7 @@ Controls `d_saberStanceDebug` in the game module. Consult the cited behavior rea
 | Value type | `bool` |
 | Restart | No latch flag is registered. |
 | Cheat protected | No |
-| Player-settable | Yes |
+| Manually settable | Yes |
 
 ## Values
 

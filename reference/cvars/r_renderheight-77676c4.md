@@ -31,7 +31,7 @@ Controls `r_renderHeight` in the renderer module. Consult the cited behavior rea
 | Value type | `int` |
 | Restart | Yes; the value is latched. |
 | Cheat protected | No |
-| Player-settable | Yes |
+| Manually settable | Yes |
 
 ## Values
 

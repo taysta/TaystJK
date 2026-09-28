@@ -33,7 +33,7 @@ Menu-only mirror of the connected server's `sv_pure` systeminfo value, refreshed
 | Value type | `bool` |
 | Restart | No latch flag is registered. |
 | Cheat protected | No |
-| Player-settable | No; the game writes this value. |
+| Manually settable | No; the game writes this value. |
 
 ## Values
 

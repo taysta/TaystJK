@@ -31,7 +31,7 @@ Controls `g_saberLockFactor` in the game module. Consult the cited behavior read
 | Value type | `int` |
 | Restart | No latch flag is registered. |
 | Cheat protected | No |
-| Player-settable | Yes |
+| Manually settable | Yes |
 
 ## Values
 

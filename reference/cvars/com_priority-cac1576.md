@@ -31,7 +31,7 @@ Duno, -1 = do nothing, 1 = low priority, 2 = normal priority, 3 = high priority?
 | Value type | `string` |
 | Restart | No latch flag is registered. |
 | Cheat protected | No |
-| Player-settable | Yes |
+| Manually settable | Yes |
 
 ## Values
 

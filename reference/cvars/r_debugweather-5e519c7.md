@@ -31,7 +31,7 @@ Controls `r_debugWeather` in the renderer module. Consult the cited behavior rea
 | Value type | `enum` |
 | Restart | No latch flag is registered. |
 | Cheat protected | No |
-| Player-settable | Yes |
+| Manually settable | Yes |
 
 ## Values
 

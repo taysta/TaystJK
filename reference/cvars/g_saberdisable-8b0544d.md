@@ -33,7 +33,7 @@ Configured with /saberDisable command.
 | Value type | `bitmask` |
 | Restart | No latch flag is registered. |
 | Cheat protected | No |
-| Player-settable | Yes |
+| Manually settable | Yes |
 | Configure with | [`saberDisable`](/TaystJK/reference/commands/saberdisable-cf2b094/) |
 
 ## Bits

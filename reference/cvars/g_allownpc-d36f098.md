@@ -31,7 +31,7 @@ Controls `g_allowNPC` in the game module. Consult the cited behavior reads befor
 | Value type | `bool` |
 | Restart | No latch flag is registered. |
 | Cheat protected | Yes |
-| Player-settable | Yes |
+| Manually settable | Yes |
 
 ## Values
 

@@ -31,7 +31,7 @@ Controls `net_socksServer` in the engine-shared module. Consult the cited behavi
 | Value type | `string` |
 | Restart | Yes; the value is latched. |
 | Cheat protected | No |
-| Player-settable | Yes |
+| Manually settable | Yes |
 
 ## Values
 

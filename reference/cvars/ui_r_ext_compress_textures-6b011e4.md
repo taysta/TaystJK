@@ -34,7 +34,7 @@ Controls `ui_r_ext_compress_textures` in the ui module. Consult the cited behavi
 | Value type | `int` |
 | Restart | No latch flag is registered. |
 | Cheat protected | No |
-| Player-settable | No; the game writes this value. |
+| Manually settable | No; the game writes this value. |
 | Staging copy of | [`r_ext_compress_textures`](/TaystJK/reference/cvars/r_ext_compress_textures-f9b3b78/); [written through](https://github.com/taysta/TaystJK/blame/b35ed06fec41c53644352743c6b199a5d5d500f3/codemp/ui/ui_main.c#L6229), [read back](https://github.com/taysta/TaystJK/blame/b35ed06fec41c53644352743c6b199a5d5d500f3/codemp/ui/ui_main.c#L6401) |
 
 ## Values

@@ -32,7 +32,7 @@ Controls `cg_crosshairColor` in the cgame module. Consult the cited behavior rea
 | Value type | `color` |
 | Restart | No latch flag is registered. |
 | Cheat protected | No |
-| Player-settable | Yes |
+| Manually settable | Yes |
 
 ## Values
 

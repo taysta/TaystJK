@@ -29,7 +29,7 @@ Disable/enable ARB_half_float GL extension
 | Value type | `int` |
 | Restart | Yes; the value is latched. |
 | Cheat protected | No |
-| Player-settable | Yes |
+| Manually settable | Yes |
 
 ## Values
 

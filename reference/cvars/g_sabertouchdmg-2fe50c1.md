@@ -31,7 +31,7 @@ Configure saber touch damage for MP dmgs. Can be >1 for more touch damage.
 | Value type | `float` |
 | Restart | No latch flag is registered. |
 | Cheat protected | No |
-| Player-settable | Yes |
+| Manually settable | Yes |
 
 ## Values
 

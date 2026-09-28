@@ -33,7 +33,7 @@ Controls `r_autolodscalevalue` in the renderer module. Consult the cited behavio
 | Value type | `float` |
 | Restart | No latch flag is registered. |
 | Cheat protected | No |
-| Player-settable | No; the game writes this value. |
+| Manually settable | No; the game writes this value. |
 
 ## Values
 

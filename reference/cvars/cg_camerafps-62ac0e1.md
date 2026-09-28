@@ -29,7 +29,7 @@ Sets the emulated frame rate used to make third-person camera damping frame-rate
 | Value type | `int` |
 | Restart | No latch flag is registered. |
 | Cheat protected | No |
-| Player-settable | Yes |
+| Manually settable | Yes |
 
 ## Values
 

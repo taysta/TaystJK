@@ -35,7 +35,7 @@ Configure with the /strafehelper command
 | Value type | `bitmask` |
 | Restart | No latch flag is registered. |
 | Cheat protected | No |
-| Player-settable | Yes |
+| Manually settable | Yes |
 | Configure with | [`strafeHelper`](/TaystJK/reference/commands/strafehelper-bdb34b4/) |
 
 ## Bits

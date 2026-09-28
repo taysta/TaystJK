@@ -298,7 +298,7 @@
     if (key === "network") return NETWORK_LABELS[value] || value;
     if (key === "status") return value === "documented" ? "Documented" : "Needs review";
     if (key === "coverage") return { xdocs: "Has xdocs entry", menu: "Has menu entry", "no-xdocs": "Missing from xdocs", "no-menu": "Missing from menus" }[value] || value;
-    if (key === "audience") return value === "engine-managed" ? "Engine-managed" : "Player-settable";
+    if (key === "audience") return value === "engine-managed" ? "Engine-managed" : "Manually settable";
     if (key === "renderer" && value === "renderer-specific") return "Renderer-specific only";
     if (key === "renderer" && value === "none") return "Not renderer-specific";
     return value;

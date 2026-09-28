@@ -31,7 +31,7 @@ Give com_errorMessage a default so it won't come back to life after a resetDefau
 | Value type | `string` |
 | Restart | No latch flag is registered. |
 | Cheat protected | No |
-| Player-settable | No; the game writes this value. |
+| Manually settable | No; the game writes this value. |
 
 ## Values
 

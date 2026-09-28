@@ -31,7 +31,7 @@ Controls `r_forceSunAmbientScale` in the renderer module. Consult the cited beha
 | Value type | `float` |
 | Restart | No latch flag is registered. |
 | Cheat protected | Yes |
-| Player-settable | Yes |
+| Manually settable | Yes |
 
 ## Values
 

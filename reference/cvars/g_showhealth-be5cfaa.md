@@ -31,7 +31,7 @@ Show healthbars above players heads when aimed at. Requires map restart.
 | Value type | `bool` |
 | Restart | No latch flag is registered. |
 | Cheat protected | No |
-| Player-settable | Yes |
+| Manually settable | Yes |
 
 ## Values
 

@@ -30,7 +30,7 @@ Color for single key press
 | Value type | `color` |
 | Restart | No latch flag is registered. |
 | Cheat protected | No |
-| Player-settable | Yes |
+| Manually settable | Yes |
 
 ## Values
 

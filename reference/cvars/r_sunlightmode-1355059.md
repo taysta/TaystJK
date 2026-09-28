@@ -31,7 +31,7 @@ Controls `r_sunlightMode` in the renderer module. Consult the cited behavior rea
 | Value type | `float` |
 | Restart | Yes; the value is latched. |
 | Cheat protected | No |
-| Player-settable | Yes |
+| Manually settable | Yes |
 
 ## Values
 

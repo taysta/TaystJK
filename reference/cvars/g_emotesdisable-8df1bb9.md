@@ -33,7 +33,7 @@ Configured with /toggleEmotes command
 | Value type | `bitmask` |
 | Restart | No latch flag is registered. |
 | Cheat protected | No |
-| Player-settable | Yes |
+| Manually settable | Yes |
 | Configure with | [`toggleEmotes`](/TaystJK/reference/commands/toggleemotes-c7d169a/) |
 
 ## Bits

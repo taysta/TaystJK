@@ -34,7 +34,7 @@ Controls `mapname` in the game module. Consult the cited behavior reads before r
 | Value type | `string` |
 | Restart | No latch flag is registered. |
 | Cheat protected | No |
-| Player-settable | No; the game writes this value. |
+| Manually settable | No; the game writes this value. |
 
 ## Values
 

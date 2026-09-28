@@ -343,5 +343,14 @@ void CG_Cosmetics_f( void ) {
         row = next(line for line in detail_page(shared, refs).splitlines() if line.startswith("| Also registered in"))
         self.assertNotIn(f"`{shared['module']}`", row)
 
+    def test_settable_row_does_not_claim_a_player_owns_server_cvars(self):
+        refs = json.loads(Path("_data/reference-meta.json").read_text())["upstream_commits"]
+        cvars = {e["name"]: e for e in json.loads(Path("_data/cvars.json").read_text())}
+        server_page = detail_page(cvars["sv_httpServerPort"], refs)
+        self.assertIn("| Manually settable | Yes |", server_page)
+        self.assertNotIn("Player-settable", server_page)
+        managed = next(e for e in cvars.values() if e.get("engine_managed"))
+        self.assertIn("| Manually settable | No;", detail_page(managed, refs))
+
 if __name__ == "__main__":
     unittest.main()

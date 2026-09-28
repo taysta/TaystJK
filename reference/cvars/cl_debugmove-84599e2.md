@@ -31,7 +31,7 @@ Controls `cl_debugMove` in the engine-client module. Consult the cited behavior 
 | Value type | `enum` |
 | Restart | No latch flag is registered. |
 | Cheat protected | No |
-| Player-settable | Yes |
+| Manually settable | Yes |
 
 ## Values
 

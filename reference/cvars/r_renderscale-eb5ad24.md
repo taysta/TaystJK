@@ -31,7 +31,7 @@ Scaling mode to be used with custom render resolution: 0 - disabled 1 - nearest 
 | Value type | `enum` |
 | Restart | Yes; the value is latched. |
 | Cheat protected | No |
-| Player-settable | Yes |
+| Manually settable | Yes |
 
 ## Values
 

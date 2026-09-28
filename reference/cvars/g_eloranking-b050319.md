@@ -32,7 +32,7 @@ Enables the built in elo ranking for duels.
 | Value type | `bool` |
 | Restart | Yes; the value is latched. |
 | Cheat protected | No |
-| Player-settable | Yes |
+| Manually settable | Yes |
 
 ## Values
 

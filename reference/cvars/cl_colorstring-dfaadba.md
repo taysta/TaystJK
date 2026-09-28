@@ -31,7 +31,7 @@ Bit value of selected colors in colorString, configure chat colors with /colorst
 | Value type | `bitmask` |
 | Restart | No latch flag is registered. |
 | Cheat protected | No |
-| Player-settable | Yes |
+| Manually settable | Yes |
 
 ## Values
 

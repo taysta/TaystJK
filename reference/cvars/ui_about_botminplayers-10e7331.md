@@ -33,7 +33,7 @@ Controls `ui_about_botminplayers` in the cgame module. Consult the cited behavio
 | Value type | `int` |
 | Restart | No latch flag is registered. |
 | Cheat protected | No |
-| Player-settable | No; the game writes this value. |
+| Manually settable | No; the game writes this value. |
 
 ## Values
 

@@ -31,7 +31,7 @@ Controls `r_simpleMipMaps` in the renderer module. Consult the cited behavior re
 | Value type | `bool` |
 | Restart | Yes; the value is latched. |
 | Cheat protected | No |
-| Player-settable | Yes |
+| Manually settable | Yes |
 
 ## Values
 

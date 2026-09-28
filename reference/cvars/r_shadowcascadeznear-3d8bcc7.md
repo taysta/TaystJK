@@ -32,7 +32,7 @@ Controls `r_shadowCascadeZNear` in the renderer module. Consult the cited behavi
 | Value type | `float` |
 | Restart | Yes; the value is latched. |
 | Cheat protected | No |
-| Player-settable | Yes |
+| Manually settable | Yes |
 
 ## Values
 

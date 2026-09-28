@@ -31,7 +31,7 @@ Controls `g_banIPs` in the game module. Consult the cited behavior reads before 
 | Value type | `string` |
 | Restart | No latch flag is registered. |
 | Cheat protected | No |
-| Player-settable | Yes |
+| Manually settable | Yes |
 
 ## Values
 

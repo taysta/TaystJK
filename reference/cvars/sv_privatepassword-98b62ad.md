@@ -31,7 +31,7 @@ Controls `sv_privatePassword` in the engine-server module. Consult the cited beh
 | Value type | `string` |
 | Restart | No latch flag is registered. |
 | Cheat protected | No |
-| Player-settable | Yes |
+| Manually settable | Yes |
 
 ## Values
 

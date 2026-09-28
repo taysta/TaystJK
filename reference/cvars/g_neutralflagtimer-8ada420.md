@@ -29,7 +29,7 @@ Milliseconds a capture takes in the one-flag CTF modes of `g_neutralFlag`. In mo
 | Value type | `int` |
 | Restart | No latch flag is registered. |
 | Cheat protected | No |
-| Player-settable | Yes |
+| Manually settable | Yes |
 
 ## Values
 

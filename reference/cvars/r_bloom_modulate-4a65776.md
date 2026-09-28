@@ -30,7 +30,7 @@ Modulate extracted color: 0: off (color = color, i.e. no changes) 1: by itself (
 | Value type | `enum` |
 | Restart | No latch flag is registered. |
 | Cheat protected | No |
-| Player-settable | Yes |
+| Manually settable | Yes |
 
 ## Values
 

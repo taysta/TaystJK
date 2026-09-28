@@ -31,7 +31,7 @@ Controls `r_modelpoolmegs` in the renderer module. Consult the cited behavior re
 | Value type | `int` |
 | Restart | No latch flag is registered. |
 | Cheat protected | No |
-| Player-settable | Yes |
+| Manually settable | Yes |
 
 ## Values
 

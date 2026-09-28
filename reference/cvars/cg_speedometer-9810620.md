@@ -33,7 +33,7 @@ Configure with the /speedometer command
 | Value type | `bitmask` |
 | Restart | No latch flag is registered. |
 | Cheat protected | No |
-| Player-settable | Yes |
+| Manually settable | Yes |
 | Configure with | [`speedometer`](/TaystJK/reference/commands/speedometer-b0e26e4/) |
 
 ## Bits

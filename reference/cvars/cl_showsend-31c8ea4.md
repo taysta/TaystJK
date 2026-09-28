@@ -31,7 +31,7 @@ Controls `cl_showSend` in the engine-client module. Consult the cited behavior r
 | Value type | `bool` |
 | Restart | No latch flag is registered. |
 | Cheat protected | No |
-| Player-settable | Yes |
+| Manually settable | Yes |
 
 ## Values
 

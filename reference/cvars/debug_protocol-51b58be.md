@@ -31,7 +31,7 @@ Controls `debug_protocol` in the ui module. Consult the cited behavior reads bef
 | Value type | `string` |
 | Restart | No latch flag is registered. |
 | Cheat protected | No |
-| Player-settable | Yes |
+| Manually settable | Yes |
 
 ## Values
 

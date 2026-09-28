@@ -34,7 +34,7 @@ Configure with the /stylePlayer command
 | Value type | `bitmask` |
 | Restart | No latch flag is registered. |
 | Cheat protected | No |
-| Player-settable | Yes |
+| Manually settable | Yes |
 | Configure with | [`stylePlayer`](/TaystJK/reference/commands/styleplayer-33ef966/) |
 
 ## Bits

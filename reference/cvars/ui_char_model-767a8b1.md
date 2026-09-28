@@ -33,7 +33,7 @@ Controls `ui_char_model` in the ui module. Consult the cited behavior reads befo
 | Value type | `string` |
 | Restart | No latch flag is registered. |
 | Cheat protected | No |
-| Player-settable | No; the game writes this value. |
+| Manually settable | No; the game writes this value. |
 | Staging copy of | [`model`](/TaystJK/reference/cvars/model-1d06a0d/); [read back](https://github.com/taysta/TaystJK/blame/b35ed06fec41c53644352743c6b199a5d5d500f3/codemp/ui/ui_main.c#L11807) |
 
 ## Values

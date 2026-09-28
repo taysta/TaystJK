@@ -31,7 +31,7 @@ Controls `sv_zombietime` in the engine-server module. Consult the cited behavior
 | Value type | `int` |
 | Restart | No latch flag is registered. |
 | Cheat protected | No |
-| Player-settable | Yes |
+| Manually settable | Yes |
 
 ## Values
 

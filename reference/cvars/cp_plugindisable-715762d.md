@@ -33,7 +33,7 @@ search_exclude: false
 | Value type | `bitmask` |
 | Restart | No latch flag is registered. |
 | Cheat protected | No |
-| Player-settable | Yes |
+| Manually settable | Yes |
 | Configure with | [`plugin`](/TaystJK/reference/commands/plugin-fd8c7c8/) or [`pluginDisable`](/TaystJK/reference/commands/plugindisable-98b2c24/) |
 
 ## Bits

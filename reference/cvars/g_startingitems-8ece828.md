@@ -33,7 +33,7 @@ Configured with /startingItems command.
 | Value type | `bitmask` |
 | Restart | No latch flag is registered. |
 | Cheat protected | No |
-| Player-settable | Yes |
+| Manually settable | Yes |
 | Configure with | [`startingItems`](/TaystJK/reference/commands/startingitems-2ed82fa/) |
 
 ## Bits

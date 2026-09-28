@@ -29,7 +29,7 @@ Relative font sharpness (doesn't affect console font).
 | Value type | `float` |
 | Restart | No latch flag is registered. |
 | Cheat protected | No |
-| Player-settable | Yes |
+| Manually settable | Yes |
 
 ## Values
 

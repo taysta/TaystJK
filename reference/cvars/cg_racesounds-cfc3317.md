@@ -31,7 +31,7 @@ Bitvalue, but so far we just have RS_TIMER_START set up
 | Value type | `bitmask` |
 | Restart | No latch flag is registered. |
 | Cheat protected | No |
-| Player-settable | Yes |
+| Manually settable | Yes |
 
 ## Values
 

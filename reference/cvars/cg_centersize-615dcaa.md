@@ -31,7 +31,7 @@ Controls `cg_centerSize` in the cgame module. Consult the cited behavior reads b
 | Value type | `float` |
 | Restart | No latch flag is registered. |
 | Cheat protected | No |
-| Player-settable | Yes |
+| Manually settable | Yes |
 
 ## Values
 

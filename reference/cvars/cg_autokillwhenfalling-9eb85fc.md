@@ -31,7 +31,7 @@ Controls `cg_autoKillWhenFalling` in the cgame module. Consult the cited behavio
 | Value type | `bool` |
 | Restart | No latch flag is registered. |
 | Cheat protected | No |
-| Player-settable | Yes |
+| Manually settable | Yes |
 
 ## Values
 

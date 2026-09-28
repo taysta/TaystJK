@@ -32,7 +32,7 @@ Start speed goal, if your start speed is above your goal speed, the text will be
 | Value type | `float` |
 | Restart | No latch flag is registered. |
 | Cheat protected | No |
-| Player-settable | Yes |
+| Manually settable | Yes |
 
 ## Values
 

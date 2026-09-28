@@ -32,7 +32,7 @@ Controls `r_autoMapX` in the cgame module. Consult the cited behavior reads befo
 | Value type | `float` |
 | Restart | No latch flag is registered. |
 | Cheat protected | No |
-| Player-settable | Yes |
+| Manually settable | Yes |
 
 ## Values
 

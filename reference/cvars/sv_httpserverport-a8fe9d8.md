@@ -29,7 +29,7 @@ Configures the HTTP auto-download endpoint. A numeric value selects the built-in
 | Value type | `string` |
 | Restart | Yes; the value is latched. |
 | Cheat protected | No |
-| Player-settable | Yes |
+| Manually settable | Yes |
 
 ## Values
 

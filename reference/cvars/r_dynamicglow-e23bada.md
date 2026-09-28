@@ -29,7 +29,7 @@ Enable dynamic glow effect Requires \\r_fbo 1
 | Value type | `enum` |
 | Restart | Yes; the value is latched. |
 | Cheat protected | No |
-| Player-settable | Yes |
+| Manually settable | Yes |
 
 ## Values
 

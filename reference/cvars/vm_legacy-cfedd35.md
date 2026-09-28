@@ -31,7 +31,7 @@ Controls `vm_legacy` in the engine-shared module. Consult the cited behavior rea
 | Value type | `bitmask` |
 | Restart | No latch flag is registered. |
 | Cheat protected | No |
-| Player-settable | Yes |
+| Manually settable | Yes |
 
 ## Values
 

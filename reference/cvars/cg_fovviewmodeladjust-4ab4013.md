@@ -31,7 +31,7 @@ Shifts viewmodels down above cg_fov 90
 | Value type | `bool` |
 | Restart | No latch flag is registered. |
 | Cheat protected | No |
-| Player-settable | Yes |
+| Manually settable | Yes |
 
 ## Values
 

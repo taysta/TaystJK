@@ -32,7 +32,7 @@ How many ray samples to take
 | Value type | `int` |
 | Restart | Yes; the value is latched. |
 | Cheat protected | No |
-| Player-settable | Yes |
+| Manually settable | Yes |
 
 ## Values
 

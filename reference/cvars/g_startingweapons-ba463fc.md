@@ -33,7 +33,7 @@ Start with saber only default, fall back to melee if no saberattack
 | Value type | `bitmask` |
 | Restart | No latch flag is registered. |
 | Cheat protected | No |
-| Player-settable | Yes |
+| Manually settable | Yes |
 | Configure with | [`startingWeapons`](/TaystJK/reference/commands/startingweapons-7252a71/) |
 
 ## Bits

@@ -32,7 +32,7 @@ Selects the movement-input overlay style, including classic, attack-aware, and m
 | Value type | `enum` |
 | Restart | No latch flag is registered. |
 | Cheat protected | No |
-| Player-settable | Yes |
+| Manually settable | Yes |
 
 ## Values
 

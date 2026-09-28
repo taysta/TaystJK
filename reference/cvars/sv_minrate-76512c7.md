@@ -31,7 +31,7 @@ Min bandwidth rate allowed on server. Use 0 for unlimited.
 | Value type | `bool` |
 | Restart | No latch flag is registered. |
 | Cheat protected | No |
-| Player-settable | Yes |
+| Manually settable | Yes |
 
 ## Values
 
