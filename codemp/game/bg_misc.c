@@ -2314,6 +2314,21 @@ qboolean BG_CanItemBeGrabbed( int gametype, const entityState_t *ent, const play
 	{
 		if ( ps->trueJedi )
 		{//force powers and saber only
+#ifdef _CGAME
+			if ( cgs.serverMod == SVMOD_LMD )
+			{//Lugormod also lets them take medpacks and any holdable but the jetpack
+				if ( item->giType != IT_TEAM
+					&& item->giType != IT_HEALTH
+					&& item->giType != IT_ARMOR
+					&& (item->giType != IT_WEAPON || item->giTag != WP_SABER)
+					&& (item->giType != IT_HOLDABLE || item->giTag == HI_JETPACK)
+					&& (item->giType != IT_POWERUP || item->giTag == PW_YSALAMIRI) )
+				{
+					return qfalse;
+				}
+			}
+			else
+#endif
 			if ( item->giType != IT_TEAM //not a flag
 				&& item->giType != IT_ARMOR//not shields
 				&& (item->giType != IT_WEAPON || item->giTag != WP_SABER)//not a saber
@@ -2332,7 +2347,11 @@ qboolean BG_CanItemBeGrabbed( int gametype, const entityState_t *ent, const play
 				return qfalse;
 			}
 		}
-		if ( ps->isJediMaster && item && (item->giType == IT_WEAPON || item->giType == IT_AMMO))
+		if ( ps->isJediMaster && item && (item->giType == IT_WEAPON || item->giType == IT_AMMO
+#ifdef _CGAME
+			|| (cgs.serverMod == SVMOD_LMD && (item->giType == IT_HEALTH || item->giType == IT_ARMOR)) //nor heal up on Lugormod
+#endif
+			))
 		{//jedi master cannot pick up weapons
 			return qfalse;
 		}
