@@ -287,7 +287,7 @@ void CG_ParseServerinfo( void ) {
 			{//rescale sabers in case the modelscale settings changed
 				int client;
 				for (client = 0; client < MAX_CLIENTS; client++)
-					cgs.clientinfo[client].jpSaberScale = -1;
+					cgs.clientinfo[client].saberModelScale = -1;
 			}
 		}
 		else if (!Q_stricmpn(gamename, "japro", 5)) {
