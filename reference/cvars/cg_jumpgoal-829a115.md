@@ -4,6 +4,7 @@ layout: reference
 generated: true
 nav_exclude: true
 search_exclude: false
+description: "Set a first jump speed goal speed, if first jump speed is above your goal speed, the pre-speed text will be green. Requires /speedometer 1 enabled"
 ---
 
 # `cg_jumpGoal`

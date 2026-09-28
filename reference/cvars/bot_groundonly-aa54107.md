@@ -4,6 +4,7 @@ layout: reference
 generated: true
 nav_exclude: true
 search_exclude: false
+description: "Only show ground faces of areas"
 ---
 
 # `bot_groundonly`

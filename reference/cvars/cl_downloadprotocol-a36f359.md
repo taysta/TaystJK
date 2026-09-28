@@ -4,6 +4,7 @@ layout: reference
 generated: true
 nav_exclude: true
 search_exclude: false
+description: "Report whether the active download uses HTTP or UDP."
 ---
 
 # `cl_downloadProtocol`

@@ -4,6 +4,7 @@ layout: reference
 generated: true
 nav_exclude: true
 search_exclude: false
+description: "1=Grip does not turn off lightsaber. 2=Same as 1 and also target can toggle lightsaber in grip. 3=Same as 2 and also target can switch saberstyle in grip."
 ---
 
 # `g_fixSaberInGrip`

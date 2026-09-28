@@ -4,6 +4,7 @@ layout: reference
 generated: true
 nav_exclude: true
 search_exclude: false
+description: "1=Nonrandom knockdowns based on forcepoints. 2=Pseudorandom with less variance. 3=Nonrandom based on viewangle of target. 4=Random based on viewangle of target."
 ---
 
 # `g_nonRandomKnockdown`

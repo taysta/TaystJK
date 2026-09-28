@@ -4,6 +4,7 @@ layout: reference
 generated: true
 nav_exclude: true
 search_exclude: false
+description: "Start with saber only default, fall back to melee if no saberattack"
 ---
 
 # `g_startingWeapons`

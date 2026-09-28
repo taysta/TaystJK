@@ -4,6 +4,7 @@ layout: reference
 generated: true
 nav_exclude: true
 search_exclude: false
+description: "Requires custom server executable with \"svrecord\" command."
 ---
 
 # `sv_autoRaceDemo`

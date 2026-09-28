@@ -4,6 +4,7 @@ layout: reference
 generated: true
 nav_exclude: true
 search_exclude: false
+description: "Don't show duelers health to people in spectate."
 ---
 
 # `g_blockDuelHealthSpec`

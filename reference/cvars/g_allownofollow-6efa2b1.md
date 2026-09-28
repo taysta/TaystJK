@@ -4,6 +4,7 @@ layout: reference
 generated: true
 nav_exclude: true
 search_exclude: false
+description: "Allow players to hide themselves and not be spectated/seen in racemode."
 ---
 
 # `g_allowNoFollow`

@@ -4,6 +4,7 @@ layout: reference
 generated: true
 nav_exclude: true
 search_exclude: false
+description: "Prioritize directories before paks if not pure"
 ---
 
 # `fs_dirbeforepak`

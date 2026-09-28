@@ -4,6 +4,7 @@ layout: reference
 generated: true
 nav_exclude: true
 search_exclude: false
+description: "Max bandwidth rate allowed on server. Use 0 for unlimited."
 ---
 
 # `sv_maxRate`

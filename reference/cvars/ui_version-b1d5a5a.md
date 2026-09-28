@@ -4,6 +4,7 @@ layout: reference
 generated: true
 nav_exclude: true
 search_exclude: false
+description: "Used by UI in the in-game \"about\" menu"
 ---
 
 # `ui_version`

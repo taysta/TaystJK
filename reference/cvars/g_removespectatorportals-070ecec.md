@@ -4,6 +4,7 @@ layout: reference
 generated: true
 nav_exclude: true
 search_exclude: false
+description: "Network all entity data to spectators, useful if you have a recorder in spectate so you can record all POV's."
 ---
 
 # `g_removeSpectatorPortals`

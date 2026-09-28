@@ -4,6 +4,7 @@ layout: reference
 generated: true
 nav_exclude: true
 search_exclude: false
+description: "Password to use."
 ---
 
 # `cg_autoLoginPass1`

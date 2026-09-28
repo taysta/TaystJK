@@ -4,6 +4,7 @@ layout: reference
 generated: true
 nav_exclude: true
 search_exclude: false
+description: "Execute commands remotely to a server"
 ---
 
 # `rcon`

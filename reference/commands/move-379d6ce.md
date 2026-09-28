@@ -4,6 +4,7 @@ layout: reference
 generated: true
 nav_exclude: true
 search_exclude: false
+description: "Switch your movement style while racing on a jaPRO server."
 ---
 
 # `move`

@@ -4,6 +4,7 @@ layout: reference
 generated: true
 nav_exclude: true
 search_exclude: false
+description: "Send the stop-media key on Windows."
 ---
 
 # `mstop`

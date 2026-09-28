@@ -4,6 +4,7 @@ layout: reference
 generated: true
 nav_exclude: true
 search_exclude: false
+description: "Preferred texture compression method"
 ---
 
 # `r_ext_preferred_tc_method`

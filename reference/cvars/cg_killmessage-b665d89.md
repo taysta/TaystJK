@@ -4,6 +4,7 @@ layout: reference
 generated: true
 nav_exclude: true
 search_exclude: false
+description: "Print a kill message on the screen when you kill someone"
 ---
 
 # `cg_killMessage`

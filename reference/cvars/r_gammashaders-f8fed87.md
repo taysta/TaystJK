@@ -4,6 +4,7 @@ layout: reference
 generated: true
 nav_exclude: true
 search_exclude: false
+description: "Set gamma using pixel shaders inside the game window only."
 ---
 
 # `r_gammaShaders`

@@ -4,6 +4,7 @@ layout: reference
 generated: true
 nav_exclude: true
 search_exclude: false
+description: "If set, sends password to Discord friends who request to join your game"
 ---
 
 # `cl_discordRichPresenceSharePassword`

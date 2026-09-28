@@ -4,6 +4,7 @@ layout: reference
 generated: true
 nav_exclude: true
 search_exclude: false
+description: "1=Force players to login in order to be ingame. 2=also block them from chatting until logging in. 3=also block them from renaming until logging in."
 ---
 
 # `g_forceLogin`

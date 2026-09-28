@@ -4,6 +4,7 @@ layout: reference
 generated: true
 nav_exclude: true
 search_exclude: false
+description: "Configure saber touch damage for MP dmgs. Can be >1 for more touch damage."
 ---
 
 # `g_saberTouchDmg`

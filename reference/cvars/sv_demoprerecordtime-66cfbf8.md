@@ -4,6 +4,7 @@ layout: reference
 generated: true
 nav_exclude: true
 search_exclude: false
+description: "How many seconds of past packets should be stored for server demo pre-recording?"
 ---
 
 # `sv_demoPreRecordTime`

@@ -4,6 +4,7 @@ layout: reference
 generated: true
 nav_exclude: true
 search_exclude: false
+description: "Set the reference frame rate for third-person camera damping."
 ---
 
 # `cg_cameraFPS`

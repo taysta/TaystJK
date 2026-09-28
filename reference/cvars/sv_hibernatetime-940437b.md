@@ -4,6 +4,7 @@ layout: reference
 generated: true
 nav_exclude: true
 search_exclude: false
+description: "Time after which server will enter hibernation mode"
 ---
 
 # `sv_hibernateTime`

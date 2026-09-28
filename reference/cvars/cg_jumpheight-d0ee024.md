@@ -4,6 +4,7 @@ layout: reference
 generated: true
 nav_exclude: true
 search_exclude: false
+description: "Specify jumpheight before jump is automaticaly canceled."
 ---
 
 # `cg_jumpHeight`

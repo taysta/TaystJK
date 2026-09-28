@@ -4,6 +4,7 @@ layout: reference
 generated: true
 nav_exclude: true
 search_exclude: false
+description: "Notifies you when someone connects to the server"
 ---
 
 # `con_notifyconnect`

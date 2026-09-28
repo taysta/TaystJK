@@ -4,6 +4,7 @@ layout: reference
 generated: true
 nav_exclude: true
 search_exclude: false
+description: "Choose a rabbit or one-flag CTF mode built around a neutral flag."
 ---
 
 # `g_neutralFlag`

@@ -4,6 +4,7 @@ layout: reference
 generated: true
 nav_exclude: true
 search_exclude: false
+description: "Disables the teleportation effect"
 ---
 
 # `cg_noTeleFX`

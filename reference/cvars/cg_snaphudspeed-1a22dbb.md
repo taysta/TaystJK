@@ -4,6 +4,7 @@ layout: reference
 generated: true
 nav_exclude: true
 search_exclude: false
+description: "Basespeed for calculations (Leave default for auto)"
 ---
 
 # `cg_snapHudSpeed`

@@ -4,6 +4,7 @@ layout: reference
 generated: true
 nav_exclude: true
 search_exclude: false
+description: "Minutes to autorename to afk, 0 to disable"
 ---
 
 # `cl_afkTime`

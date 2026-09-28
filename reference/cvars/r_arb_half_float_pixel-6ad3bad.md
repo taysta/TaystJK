@@ -4,6 +4,7 @@ layout: reference
 generated: true
 nav_exclude: true
 search_exclude: false
+description: "Disable/enable ARB_half_float GL extension"
 ---
 
 # `r_arb_half_float_pixel`

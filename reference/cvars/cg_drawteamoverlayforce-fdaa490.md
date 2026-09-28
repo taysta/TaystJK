@@ -4,6 +4,7 @@ layout: reference
 generated: true
 nav_exclude: true
 search_exclude: false
+description: "Draw force points on the team overlay. Only has an effect on jaPRO servers, where force points is networked"
 ---
 
 # `cg_drawTeamOverlayForce`

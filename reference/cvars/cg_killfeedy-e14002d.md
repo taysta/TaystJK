@@ -4,6 +4,7 @@ layout: reference
 generated: true
 nav_exclude: true
 search_exclude: false
+description: "Offset the killfeed's vertical position from its current position"
 ---
 
 # `cg_killfeedY`

@@ -4,6 +4,7 @@ layout: reference
 generated: true
 nav_exclude: true
 search_exclude: false
+description: "Make players who have more than 250fps behave at 250fps physics."
 ---
 
 # `g_fixHighFPSAbuse`

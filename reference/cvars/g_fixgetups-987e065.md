@@ -4,6 +4,7 @@ layout: reference
 generated: true
 nav_exclude: true
 search_exclude: false
+description: "1=Allow grip during knockdown recovery. 2=Allow grip/push/pull during knockdown recovery."
 ---
 
 # `g_fixGetups`

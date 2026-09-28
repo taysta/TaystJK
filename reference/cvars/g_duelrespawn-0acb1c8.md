@@ -4,6 +4,7 @@ layout: reference
 generated: true
 nav_exclude: true
 search_exclude: false
+description: "Automatically respawn players to where they died after losing a duel."
 ---
 
 # `g_duelRespawn`

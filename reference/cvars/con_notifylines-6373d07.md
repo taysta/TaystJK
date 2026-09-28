@@ -4,6 +4,7 @@ layout: reference
 generated: true
 nav_exclude: true
 search_exclude: false
+description: "Max number of console lines to print in top left"
 ---
 
 # `con_notifylines`

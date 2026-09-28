@@ -4,6 +4,7 @@ layout: reference
 generated: true
 nav_exclude: true
 search_exclude: false
+description: "Applies r_picmip setting to map textures only."
 ---
 
 # `r_smartpicmip`

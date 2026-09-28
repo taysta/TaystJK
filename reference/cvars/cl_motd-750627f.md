@@ -4,6 +4,7 @@ layout: reference
 generated: true
 nav_exclude: true
 search_exclude: false
+description: "Display welcome message from master server on the bottom of connection screen"
 ---
 
 # `cl_motd`

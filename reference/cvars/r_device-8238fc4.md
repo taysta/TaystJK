@@ -4,6 +4,7 @@ layout: reference
 generated: true
 nav_exclude: true
 search_exclude: false
+description: "Select physical device to render: 0+ - use explicit device index. -1 - first discrete GPU. -2 - first integrated GPU"
 ---
 
 # `r_device`

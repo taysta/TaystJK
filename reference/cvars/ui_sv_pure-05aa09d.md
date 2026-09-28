@@ -4,6 +4,7 @@ layout: reference
 generated: true
 nav_exclude: true
 search_exclude: false
+description: "Mirror the connected server's pure-server setting for the menus."
 ---
 
 # `ui_sv_pure`

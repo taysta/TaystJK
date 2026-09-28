@@ -4,6 +4,7 @@ layout: reference
 generated: true
 nav_exclude: true
 search_exclude: false
+description: "Shifts viewmodels down above cg_fov 90"
 ---
 
 # `cg_fovViewmodelAdjust`

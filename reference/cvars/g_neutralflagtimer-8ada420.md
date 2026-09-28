@@ -4,6 +4,7 @@ layout: reference
 generated: true
 nav_exclude: true
 search_exclude: false
+description: "Set how long a one-flag CTF capture takes, in milliseconds."
 ---
 
 # `g_neutralFlagTimer`

@@ -4,6 +4,7 @@ layout: reference
 generated: true
 nav_exclude: true
 search_exclude: false
+description: "Bitvalue, but so far we just have RS_TIMER_START set up"
 ---
 
 # `cg_raceSounds`

@@ -4,6 +4,7 @@ layout: reference
 generated: true
 nav_exclude: true
 search_exclude: false
+description: "Scaling mode to be used with custom render resolution: 0 - disabled. 1 - nearest filtering, stretch to full size. 2 - nearest filtering, preserve aspect ratio (black bars on sides). 3 - linear filtering, stretch to full size. 4 - linear filtering, preserve aspect ratio (black bars on sides)"
 ---
 
 # `r_renderScale`

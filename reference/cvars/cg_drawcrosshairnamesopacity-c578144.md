@@ -4,6 +4,7 @@ layout: reference
 generated: true
 nav_exclude: true
 search_exclude: false
+description: "Set crosshair target-name opacity from 0 to 1."
 ---
 
 # `cg_drawCrosshairNamesOpacity`

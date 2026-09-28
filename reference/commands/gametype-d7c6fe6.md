@@ -4,6 +4,7 @@ layout: reference
 generated: true
 nav_exclude: true
 search_exclude: false
+description: "Instantly changethe gametype of the server without having to reload the map"
 ---
 
 # `gametype`

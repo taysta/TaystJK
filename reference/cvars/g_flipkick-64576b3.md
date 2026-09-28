@@ -4,6 +4,7 @@ layout: reference
 generated: true
 nav_exclude: true
 search_exclude: false
+description: "1=JA+ style. 2=Floodprotected to one kick every 50ms. 3=JK2 style."
 ---
 
 # `g_flipKick`

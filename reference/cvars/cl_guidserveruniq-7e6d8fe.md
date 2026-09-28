@@ -4,6 +4,7 @@ layout: reference
 generated: true
 nav_exclude: true
 search_exclude: false
+description: "Use a unique guid value per server"
 ---
 
 # `cl_guidServerUniq`

@@ -4,6 +4,7 @@ layout: reference
 generated: true
 nav_exclude: true
 search_exclude: false
+description: "Set dithering mode: 0 - disabled. 1 - ordered. Requires r_fbo 1"
 ---
 
 # `r_dither`

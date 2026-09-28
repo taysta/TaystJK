@@ -4,6 +4,7 @@ layout: reference
 generated: true
 nav_exclude: true
 search_exclude: false
+description: "Alternate server address to remotely access via rcon protocol"
 ---
 
 # `rconAddress`

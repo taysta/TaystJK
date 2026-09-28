@@ -4,6 +4,7 @@ layout: reference
 generated: true
 nav_exclude: true
 search_exclude: false
+description: "Draw each player's current weapon on the team overlay"
 ---
 
 # `cg_drawTeamOverlayWeapons`

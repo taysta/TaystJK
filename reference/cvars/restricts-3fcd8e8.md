@@ -4,6 +4,7 @@ layout: reference
 generated: true
 nav_exclude: true
 search_exclude: false
+description: "Advertise client-side restrictions that TaystJK and jaPRO clients enforce."
 ---
 
 # `restricts`

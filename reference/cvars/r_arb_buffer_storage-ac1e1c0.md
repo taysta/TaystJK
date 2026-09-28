@@ -4,6 +4,7 @@ layout: reference
 generated: true
 nav_exclude: true
 search_exclude: false
+description: "Disable/enable buffer storage GL extension"
 ---
 
 # `r_arb_buffer_storage`

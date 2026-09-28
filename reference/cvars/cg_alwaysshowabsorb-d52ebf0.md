@@ -4,6 +4,7 @@ layout: reference
 generated: true
 nav_exclude: true
 search_exclude: false
+description: "Show absorb when it's in use"
 ---
 
 # `cg_alwaysShowAbsorb`

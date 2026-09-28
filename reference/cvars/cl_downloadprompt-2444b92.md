@@ -4,6 +4,7 @@ layout: reference
 generated: true
 nav_exclude: true
 search_exclude: false
+description: "Confirm pk3 downloads from the server"
 ---
 
 # `cl_downloadPrompt`

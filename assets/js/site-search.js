@@ -259,7 +259,7 @@
     var underscore = title.indexOf("_");
     if (underscore !== -1 && title.slice(underscore + 1).indexOf(query) === 0) return 1;
     if (title.indexOf(query) !== -1) return 2;
-    if (item.k === "page" && normalize(item.d).indexOf(query) !== -1) return 3;
+    if (item.k !== "section" && normalize(item.d).indexOf(query) !== -1) return 3;
     if (item.k === "page" && normalize(item.b).indexOf(query) !== -1) return 4;
     return -1;
   }
@@ -271,7 +271,6 @@
       var s = score(items[i], query);
       if (s === -1) continue;
       scored.push({ item: items[i], score: s * 10 + (kindWeight[items[i].k] || 0) });
-      if (scored.length > 600) break;
     }
     scored.sort(function (a, b) {
       if (a.score !== b.score) return a.score - b.score;
@@ -287,7 +286,7 @@
   }
 
   function contextFor(item) {
-    if (item.k === "entry") return "Console reference";
+    if (item.k === "entry") return item.d ? "Console reference: " + item.d : "Console reference";
     if (item.k === "section") return item.p;
     return item.d || "";
   }

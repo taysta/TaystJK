@@ -4,6 +4,7 @@ layout: reference
 generated: true
 nav_exclude: true
 search_exclude: false
+description: "Disable/enable rendering in HDR"
 ---
 
 # `r_hdr`

@@ -4,6 +4,7 @@ layout: reference
 generated: true
 nav_exclude: true
 search_exclude: false
+description: "Scales volumetric fog density unless scale has been explicitly defined"
 ---
 
 # `r_volumetricFogDefaultScale`

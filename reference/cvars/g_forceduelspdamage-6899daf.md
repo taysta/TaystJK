@@ -4,6 +4,7 @@ layout: reference
 generated: true
 nav_exclude: true
 search_exclude: false
+description: "Toggle use of SP style damage in force duels."
 ---
 
 # `g_forceDuelSPDamage`

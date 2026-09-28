@@ -4,6 +4,7 @@ layout: reference
 generated: true
 nav_exclude: true
 search_exclude: false
+description: "1=Award kill credit after target suicides/spectates. 2=Also for disconnects/reconnects."
 ---
 
 # `g_fixKillCredit`

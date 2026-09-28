@@ -4,6 +4,7 @@ layout: reference
 generated: true
 nav_exclude: true
 search_exclude: false
+description: "Wether to use simulated projectiles so bullets appear instantly. Values > 1 don't draw the projectile right away."
 ---
 
 # `cg_simulatedProjectiles`

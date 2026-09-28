@@ -4,6 +4,7 @@ layout: reference
 generated: true
 nav_exclude: true
 search_exclude: false
+description: "Display human readable date/time in console"
 ---
 
 # `con_datetime`

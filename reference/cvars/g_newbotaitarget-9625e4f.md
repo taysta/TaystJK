@@ -4,6 +4,7 @@ layout: reference
 generated: true
 nav_exclude: true
 search_exclude: false
+description: "-2=Target closest excluding otherbots. -1=target closest. 0-31=target clientnum."
 ---
 
 # `g_newBotAITarget`

@@ -4,6 +4,7 @@ layout: reference
 generated: true
 nav_exclude: true
 search_exclude: false
+description: "Show your chat bubble to other players while the console, chat or a menu is open."
 ---
 
 # `cl_chatBubbleSelf`

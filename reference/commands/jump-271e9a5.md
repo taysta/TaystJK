@@ -4,6 +4,7 @@ layout: reference
 generated: true
 nav_exclude: true
 search_exclude: false
+description: "Cmd_alive not needed but i think it resets on joingame cuz forcepoints?"
 ---
 
 # `jump`

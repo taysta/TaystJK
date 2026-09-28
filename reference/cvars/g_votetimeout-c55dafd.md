@@ -4,6 +4,7 @@ layout: reference
 generated: true
 nav_exclude: true
 search_exclude: false
+description: "Time in seconds to lockout callvote after a failed vote"
 ---
 
 # `g_voteTimeout`

@@ -4,6 +4,7 @@ layout: reference
 generated: true
 nav_exclude: true
 search_exclude: false
+description: "Modulate extracted color: 0: off (color = color, i.e. no changes). 1: by itself (color = color * color). 2: by intensity (color = color * luma(color))"
 ---
 
 # `r_bloom_modulate`

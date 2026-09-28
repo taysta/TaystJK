@@ -4,6 +4,7 @@ layout: reference
 generated: true
 nav_exclude: true
 search_exclude: false
+description: "1 is old third person static crosshair behavior"
 ---
 
 # `cg_thirdPersonCrosshairCenter`

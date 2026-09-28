@@ -4,6 +4,7 @@ layout: reference
 generated: true
 nav_exclude: true
 search_exclude: false
+description: "Require shift key to be pressed for native console key detection"
 ---
 
 # `cl_consoleShiftRequirement`

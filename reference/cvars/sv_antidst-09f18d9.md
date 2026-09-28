@@ -4,6 +4,7 @@ layout: reference
 generated: true
 nav_exclude: true
 search_exclude: false
+description: "Attempts to detect and kick players injecting or using DST"
 ---
 
 # `sv_antiDST`

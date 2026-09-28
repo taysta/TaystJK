@@ -4,6 +4,7 @@ layout: reference
 generated: true
 nav_exclude: true
 search_exclude: false
+description: "Arguments provided when last connecting to a server"
 ---
 
 # `cl_reconnectArgs`

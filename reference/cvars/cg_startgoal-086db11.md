@@ -4,6 +4,7 @@ layout: reference
 generated: true
 nav_exclude: true
 search_exclude: false
+description: "Start speed goal, if your start speed is above your goal speed, the text will be green, requires /cg_raceStart 1"
 ---
 
 # `cg_startGoal`

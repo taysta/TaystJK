@@ -4,6 +4,7 @@ layout: reference
 generated: true
 nav_exclude: true
 search_exclude: false
+description: "Choose team-aware or player-name crosshair colors."
 ---
 
 # `cg_drawCrosshairNamesColours`

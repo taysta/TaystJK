@@ -4,6 +4,7 @@ layout: reference
 generated: true
 nav_exclude: true
 search_exclude: false
+description: "Activate protect force power"
 ---
 
 # `force_protect`

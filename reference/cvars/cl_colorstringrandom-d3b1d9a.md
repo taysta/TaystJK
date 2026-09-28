@@ -4,6 +4,7 @@ layout: reference
 generated: true
 nav_exclude: true
 search_exclude: false
+description: "Randomness of the colors changing, higher numbers are less random"
 ---
 
 # `cl_colorStringRandom`

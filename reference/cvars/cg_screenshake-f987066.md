@@ -4,6 +4,7 @@ layout: reference
 generated: true
 nav_exclude: true
 search_exclude: false
+description: "Shake screen when hit or while charging weapons"
 ---
 
 # `cg_screenShake`

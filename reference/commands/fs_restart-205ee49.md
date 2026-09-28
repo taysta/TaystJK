@@ -4,6 +4,7 @@ layout: reference
 generated: true
 nav_exclude: true
 search_exclude: false
+description: "Restarts the filesystem if no module is currently using files from a pk3"
 ---
 
 # `fs_restart`

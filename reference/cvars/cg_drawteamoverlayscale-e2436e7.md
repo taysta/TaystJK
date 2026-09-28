@@ -4,6 +4,7 @@ layout: reference
 generated: true
 nav_exclude: true
 search_exclude: false
+description: "Size of the team overlay. Only applies to cg_drawTeamOverlay 5 and 6, clamped between 0.5 and 2.5"
 ---
 
 # `cg_drawTeamOverlayScale`

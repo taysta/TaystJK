@@ -4,6 +4,7 @@ layout: reference
 generated: true
 nav_exclude: true
 search_exclude: false
+description: "Bitvalue. 1=Unlagged projectiles. 2=Unlagged hitscan. 4=Unlagged push/pull."
 ---
 
 # `g_unlagged`

@@ -4,6 +4,7 @@ layout: reference
 generated: true
 nav_exclude: true
 search_exclude: false
+description: "Offset vehicle camera ranges (useful for ultrawide monitors)"
 ---
 
 # `cg_vehicleRange`

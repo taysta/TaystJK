@@ -4,6 +4,7 @@ layout: reference
 generated: true
 nav_exclude: true
 search_exclude: false
+description: "Combined health and shields that fills the bar on the team overlay. Only applies to cg_drawTeamOverlay 5 and 6. Base team FFA usually spawns 125 health and 25 shields with no shield pickups, servers running shield pickups want 225"
 ---
 
 # `cg_drawTeamOverlayMaxHP`

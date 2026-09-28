@@ -4,6 +4,7 @@ layout: reference
 generated: true
 nav_exclude: true
 search_exclude: false
+description: "'enable' holstered saber (512) and ledge grab (1536) by default, to avoid missing JA+ animations"
 ---
 
 # `cp_pluginDisable`

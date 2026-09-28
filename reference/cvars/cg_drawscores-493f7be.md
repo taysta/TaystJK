@@ -4,6 +4,7 @@ layout: reference
 generated: true
 nav_exclude: true
 search_exclude: false
+description: "Team score counter in top right"
 ---
 
 # `cg_drawScores`

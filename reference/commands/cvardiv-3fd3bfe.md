@@ -4,6 +4,7 @@ layout: reference
 generated: true
 nav_exclude: true
 search_exclude: false
+description: "Divide a value from a cvar"
 ---
 
 # `cvarDiv`

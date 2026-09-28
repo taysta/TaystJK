@@ -4,6 +4,7 @@ layout: reference
 generated: true
 nav_exclude: true
 search_exclude: false
+description: "Automatically clear console input on close"
 ---
 
 # `con_autoclear`

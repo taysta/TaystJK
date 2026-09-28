@@ -4,6 +4,7 @@ layout: reference
 generated: true
 nav_exclude: true
 search_exclude: false
+description: "Disable/enable seamless cube map filtering GL extension"
 ---
 
 # `r_arb_seamless_cube_map`

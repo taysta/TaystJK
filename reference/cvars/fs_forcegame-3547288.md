@@ -4,6 +4,7 @@ layout: reference
 generated: true
 nav_exclude: true
 search_exclude: false
+description: "Folder to use for overriding of fs_game (can not be set by the server)."
 ---
 
 # `fs_forcegame`

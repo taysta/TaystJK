@@ -4,6 +4,7 @@ layout: reference
 generated: true
 nav_exclude: true
 search_exclude: false
+description: "Predict self-inflicted rocket-jump knockback clientside (racemode only). Use with cg_simulatedProjectiles 1."
 ---
 
 # `cg_predictKnockback`

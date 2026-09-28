@@ -4,6 +4,7 @@ layout: reference
 generated: true
 nav_exclude: true
 search_exclude: false
+description: "Cache ghoul2 and md3 model surfaces"
 ---
 
 # `r_vbo_models`

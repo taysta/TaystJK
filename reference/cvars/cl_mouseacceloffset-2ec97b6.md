@@ -4,6 +4,7 @@ layout: reference
 generated: true
 nav_exclude: true
 search_exclude: false
+description: "Mouse acceleration offset for style 1"
 ---
 
 # `cl_mouseAccelOffset`

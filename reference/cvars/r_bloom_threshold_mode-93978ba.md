@@ -4,6 +4,7 @@ layout: reference
 generated: true
 nav_exclude: true
 search_exclude: false
+description: "Color extraction mode: 0: (r|g|b) >= threshold. 1: (r + g + b ) / 3 >= threshold. 2: luma(r, g, b) >= threshold"
 ---
 
 # `r_bloom_threshold_mode`

@@ -4,6 +4,7 @@ layout: reference
 generated: true
 nav_exclude: true
 search_exclude: false
+description: "Display score AND deaths on the scoreboard"
 ---
 
 # `cg_scoreDeaths`

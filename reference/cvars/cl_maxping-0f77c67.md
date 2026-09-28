@@ -4,6 +4,7 @@ layout: reference
 generated: true
 nav_exclude: true
 search_exclude: false
+description: "Max. ping for servers when searching the serverlist"
 ---
 
 # `cl_maxPing`

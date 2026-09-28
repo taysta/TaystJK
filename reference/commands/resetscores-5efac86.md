@@ -4,6 +4,7 @@ layout: reference
 generated: true
 nav_exclude: true
 search_exclude: false
+description: "Reset all player/team scores without having to reload the map."
 ---
 
 # `resetScores`

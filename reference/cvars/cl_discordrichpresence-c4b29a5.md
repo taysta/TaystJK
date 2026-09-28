@@ -4,6 +4,7 @@ layout: reference
 generated: true
 nav_exclude: true
 search_exclude: false
+description: "Allow/disallow sharing current game information on Discord profile status"
 ---
 
 # `cl_discordRichPresence`

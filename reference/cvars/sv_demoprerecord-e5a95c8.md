@@ -4,6 +4,7 @@ layout: reference
 generated: true
 nav_exclude: true
 search_exclude: false
+description: "Activate server demo pre-recording so demos can be retroactively recorded for duration sv_demoPreRecordTime (seconds)"
 ---
 
 # `sv_demoPreRecord`

@@ -4,6 +4,7 @@ layout: reference
 generated: true
 nav_exclude: true
 search_exclude: false
+description: "Mouse accelration style (0:legacy, 1:QuakeLive)"
 ---
 
 # `cl_mouseAccelStyle`

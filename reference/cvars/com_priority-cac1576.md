@@ -4,6 +4,7 @@ layout: reference
 generated: true
 nav_exclude: true
 search_exclude: false
+description: "Duno, -1 = do nothing, 1 = low priority, 2 = normal priority, 3 = high priority? i guess??"
 ---
 
 # `com_priority`

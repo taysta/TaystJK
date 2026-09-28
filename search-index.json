@@ -9,8 +9,8 @@ Build-time search index for the whole site.
 Prose pages contribute a page entry plus one entry per h2/h3, so a result can deep-link
 to a section. A hand-written page keeps enough body to cover the longest guide, so a term
 buried deep in one is still found. Generated pages keep only an opening excerpt: they are
-mostly lists of entries, and every entry is indexed on its own anyway. The generated cvar/command detail pages contribute title and url only --
-there are ~2,000 of them and their searchable detail already lives in the reference app.
+mostly lists of entries, and every entry is indexed on its own anyway. The generated cvar/command detail pages contribute title, url and
+their one-line summary -- there are ~2,000 of them, so the rest of their detail stays in the reference app.
 {%- endcomment -%}
 {%- assign first = true -%}
 {%- assign indexed = site.pages | concat: site.devlog -%}
@@ -28,7 +28,7 @@ there are ~2,000 of them and their searchable detail already lives in the refere
 
   {%- if first == false -%},{%- endif -%}{%- assign first = false -%}
   {%- if is_entry -%}
-    {"t":{{ p.title | jsonify }},"u":{{ p.url | jsonify }},"k":"entry"}
+    {"t":{{ p.title | jsonify }},"u":{{ p.url | jsonify }},"k":"entry"{% if p.description %},"d":{{ p.description | jsonify }}{% endif %}}
   {%- else -%}
     {%- assign html = p.content | markdownify -%}
     {%- assign body_limit = 40000 -%}

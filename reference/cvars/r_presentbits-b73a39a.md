@@ -4,6 +4,7 @@ layout: reference
 generated: true
 nav_exclude: true
 search_exclude: false
+description: "Select color bits used for presentation surfaces. Requires r_fbo 1"
 ---
 
 # `r_presentBits`

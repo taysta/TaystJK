@@ -4,6 +4,7 @@ layout: reference
 generated: true
 nav_exclude: true
 search_exclude: false
+description: "Restart the networking sub-system"
 ---
 
 # `net_restart`

@@ -4,6 +4,7 @@ layout: reference
 generated: true
 nav_exclude: true
 search_exclude: false
+description: "Send the previous-track media key on Windows."
 ---
 
 # `mprev`

@@ -4,6 +4,7 @@ layout: reference
 generated: true
 nav_exclude: true
 search_exclude: false
+description: "Disable/enable reading deluxemaps when compiled with q3map2"
 ---
 
 # `r_deluxeMapping`

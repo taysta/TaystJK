@@ -4,6 +4,7 @@ layout: reference
 generated: true
 nav_exclude: true
 search_exclude: false
+description: "Save player IPs to allow them using server during DOS attack"
 ---
 
 # `sv_autoWhitelist`

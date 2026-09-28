@@ -4,6 +4,7 @@ layout: reference
 generated: true
 nav_exclude: true
 search_exclude: false
+description: "Enables automatic Steam API integration (requires a steam_api64.dll to be in GameData)"
 ---
 
 # `com_steamIntegration`

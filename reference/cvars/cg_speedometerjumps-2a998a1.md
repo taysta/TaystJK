@@ -4,6 +4,7 @@ layout: reference
 generated: true
 nav_exclude: true
 search_exclude: false
+description: "The amount of jumps to store in the jumps array, enable with the /speedometer command"
 ---
 
 # `cg_speedometerJumps`

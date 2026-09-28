@@ -4,6 +4,7 @@ layout: reference
 generated: true
 nav_exclude: true
 search_exclude: false
+description: "Uses a different font for the chat"
 ---
 
 # `cg_newFont`

@@ -4,6 +4,7 @@ layout: reference
 generated: true
 nav_exclude: true
 search_exclude: false
+description: "How many seconds notify messages should be shown before they fade away"
 ---
 
 # `con_notifytime`

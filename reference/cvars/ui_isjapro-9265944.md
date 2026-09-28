@@ -4,6 +4,7 @@ layout: reference
 generated: true
 nav_exclude: true
 search_exclude: false
+description: "Report whether the connected server identifies as jaPRO."
 ---
 
 # `ui_isJAPro`

@@ -4,6 +4,7 @@ layout: reference
 generated: true
 nav_exclude: true
 search_exclude: false
+description: "Play sound when chat messages are received"
 ---
 
 # `cg_chatSounds`

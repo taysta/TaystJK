@@ -4,6 +4,7 @@ layout: reference
 generated: true
 nav_exclude: true
 search_exclude: false
+description: "1=Fixed slide physics for NPCS. 2=Fixed slide physics for NPCs and players."
 ---
 
 # `g_fixSlidePhysics`

@@ -4,6 +4,7 @@ layout: reference
 generated: true
 nav_exclude: true
 search_exclude: false
+description: "2=No tinted overlay during rage/ysal use."
 ---
 
 # `cg_draw2D`

@@ -4,6 +4,7 @@ layout: reference
 generated: true
 nav_exclude: true
 search_exclude: false
+description: "Set crosshair target-name display and fade duration."
 ---
 
 # `cg_drawCrosshairNames`

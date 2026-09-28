@@ -4,6 +4,7 @@ layout: reference
 generated: true
 nav_exclude: true
 search_exclude: false
+description: "Changes disruptor spiral color (accepts hexcode eg. xffffff)"
 ---
 
 # `cg_disruptorSpiralColor`

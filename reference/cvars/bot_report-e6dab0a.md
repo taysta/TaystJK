@@ -4,6 +4,7 @@ layout: reference
 generated: true
 nav_exclude: true
 search_exclude: false
+description: "Get a full report in ctf"
 ---
 
 # `bot_report`

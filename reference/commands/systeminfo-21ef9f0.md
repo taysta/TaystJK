@@ -4,6 +4,7 @@ layout: reference
 generated: true
 nav_exclude: true
 search_exclude: false
+description: "Prints the systeminfo variables that are replicated to clients"
 ---
 
 # `systeminfo`

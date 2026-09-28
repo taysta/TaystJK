@@ -4,6 +4,7 @@ layout: reference
 generated: true
 nav_exclude: true
 search_exclude: false
+description: "Use new method of delaying commands with flood protection"
 ---
 
 # `sv_newfloodProtect`

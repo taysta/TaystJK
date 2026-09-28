@@ -4,6 +4,7 @@ layout: reference
 generated: true
 nav_exclude: true
 search_exclude: false
+description: "Use team energize force power"
 ---
 
 # `force_forcepowerother`

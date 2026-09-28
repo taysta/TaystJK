@@ -4,6 +4,7 @@ layout: reference
 generated: true
 nav_exclude: true
 search_exclude: false
+description: "Report whether the connected server offers the saber-switch command."
 ---
 
 # `ui_allowSaberSwitch`

@@ -4,6 +4,7 @@ layout: reference
 generated: true
 nav_exclude: true
 search_exclude: false
+description: "1=Remove all colors from chat msgs, 2=Only remove color at begining of message"
 ---
 
 # `cg_cleanChatbox`

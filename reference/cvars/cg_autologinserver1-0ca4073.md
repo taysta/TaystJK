@@ -4,6 +4,7 @@ layout: reference
 generated: true
 nav_exclude: true
 search_exclude: false
+description: "IP of server to try to autologin on, used with /autologin command. If you are not on the right server, the password will not be sent to the server."
 ---
 
 # `cg_autoLoginServer1`

@@ -4,6 +4,7 @@ layout: reference
 generated: true
 nav_exclude: true
 search_exclude: false
+description: "Give com_errorMessage a default so it won't come back to life after a resetDefaults"
 ---
 
 # `com_errorMessage`

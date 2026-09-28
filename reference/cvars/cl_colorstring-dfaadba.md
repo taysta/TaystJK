@@ -4,6 +4,7 @@ layout: reference
 generated: true
 nav_exclude: true
 search_exclude: false
+description: "Bit value of selected colors in colorString, configure chat colors with /colorstring"
 ---
 
 # `cl_colorString`

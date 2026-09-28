@@ -4,6 +4,7 @@ layout: reference
 generated: true
 nav_exclude: true
 search_exclude: false
+description: "Determines which policy of enforcement is used for client's \"snaps\" cvar"
 ---
 
 # `sv_snapsPolicy`

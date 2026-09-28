@@ -4,6 +4,7 @@ layout: reference
 generated: true
 nav_exclude: true
 search_exclude: false
+description: "Draw the team overlay for team-based gametypes"
 ---
 
 # `cg_drawTeamOverlay`

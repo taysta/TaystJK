@@ -4,6 +4,7 @@ layout: reference
 generated: true
 nav_exclude: true
 search_exclude: false
+description: "1=Disable forcejumps for all players. 2=Let players choose if they want to disable forcejumps."
 ---
 
 # `g_onlyBhop`

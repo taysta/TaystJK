@@ -1031,7 +1031,11 @@ def engine_managed_notice(entry: dict[str, Any], cvar_names: dict[str, str] | No
 
 def detail_page(entry: dict[str, Any], refs: dict[str, str], cvar_names: dict[str, str] | None = None) -> str:
     origin = entry["origin"]
-    lines = [frontmatter(entry["name"], nav_exclude=True), f"# {code(entry['name'])}", "", badge(origin["source"]), ""]
+    # The summary doubles as the page's meta and header-search description, unless it is
+    # only the fallback that restates the name.
+    summary = None if PLACEHOLDER_SUMMARY.fullmatch(entry["summary"]) else entry["summary"].replace("`", "")
+    lines = [frontmatter(entry["name"], nav_exclude=True, description=summary),
+             f"# {code(entry['name'])}", "", badge(origin["source"]), ""]
     if entry["status"] != "documented":
         lines.extend([
             '<p class="ref-warning"><strong>Needs review.</strong> The inventory/provenance evidence is recorded, but some behavior, options, or attribution still lacks a direct user-facing source.</p>', "",

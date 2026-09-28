@@ -4,6 +4,7 @@ layout: reference
 generated: true
 nav_exclude: true
 search_exclude: false
+description: "Maximum rate of handling incoming server commands per IP address"
 ---
 
 # `sv_maxOOBRateIP`

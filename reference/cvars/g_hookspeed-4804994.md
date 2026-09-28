@@ -4,6 +4,7 @@ layout: reference
 generated: true
 nav_exclude: true
 search_exclude: false
+description: "Speed that grapple hook travels at"
 ---
 
 # `g_hookSpeed`

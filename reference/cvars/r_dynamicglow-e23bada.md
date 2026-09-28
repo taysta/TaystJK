@@ -4,6 +4,7 @@ layout: reference
 generated: true
 nav_exclude: true
 search_exclude: false
+description: "Enable dynamic glow effect. Requires r_fbo 1"
 ---
 
 # `r_DynamicGlow`

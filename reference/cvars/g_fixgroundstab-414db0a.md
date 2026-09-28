@@ -4,6 +4,7 @@ layout: reference
 generated: true
 nav_exclude: true
 search_exclude: false
+description: "1=Groundstabs damage players on ground. 2=Groundstabs damage players on ground but with reduced damage."
 ---
 
 # `g_fixGroundStab`

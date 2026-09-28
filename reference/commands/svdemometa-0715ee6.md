@@ -4,6 +4,7 @@ layout: reference
 generated: true
 nav_exclude: true
 search_exclude: false
+description: "Sets a new metadata entry for server-side demos for one player. Call with clientnum, metakey, [data]"
 ---
 
 # `svdemometa`

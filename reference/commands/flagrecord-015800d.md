@@ -4,6 +4,7 @@ layout: reference
 generated: true
 nav_exclude: true
 search_exclude: false
+description: "Flag, unflag or mark for deletion a player's race record."
 ---
 
 # `flagRecord`

@@ -4,6 +4,7 @@ layout: reference
 generated: true
 nav_exclude: true
 search_exclude: false
+description: "Enables the built in elo ranking for duels."
 ---
 
 # `g_eloRanking`

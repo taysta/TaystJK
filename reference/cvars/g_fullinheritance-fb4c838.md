@@ -4,6 +4,7 @@ layout: reference
 generated: true
 nav_exclude: true
 search_exclude: false
+description: "Scale of all player momentum gained by projectiles."
 ---
 
 # `g_fullInheritance`

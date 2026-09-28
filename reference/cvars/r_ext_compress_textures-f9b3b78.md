@@ -4,6 +4,7 @@ layout: reference
 generated: true
 nav_exclude: true
 search_exclude: false
+description: "Disable/enable texture compression"
 ---
 
 # `r_ext_compress_textures`

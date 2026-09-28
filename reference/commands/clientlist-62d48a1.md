@@ -4,6 +4,7 @@ layout: reference
 generated: true
 nav_exclude: true
 search_exclude: false
+description: "Displays a list of all connected clients and their real client numbers"
 ---
 
 # `clientlist`

@@ -4,6 +4,7 @@ layout: reference
 generated: true
 nav_exclude: true
 search_exclude: false
+description: "Mute sound when game window is unfocused/minimized"
 ---
 
 # `snd_mute_losefocus`

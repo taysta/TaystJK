@@ -4,6 +4,7 @@ layout: reference
 generated: true
 nav_exclude: true
 search_exclude: false
+description: "Relative font sharpness (doesn't affect console font)."
 ---
 
 # `r_fontSharpness`

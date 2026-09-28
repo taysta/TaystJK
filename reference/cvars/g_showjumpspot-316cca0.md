@@ -4,6 +4,7 @@ layout: reference
 generated: true
 nav_exclude: true
 search_exclude: false
+description: "Marks where player touches ground as they land. Useful with the /nudge command on entities."
 ---
 
 # `g_showJumpSpot`

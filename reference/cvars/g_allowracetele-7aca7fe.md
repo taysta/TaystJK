@@ -4,6 +4,7 @@ layout: reference
 generated: true
 nav_exclude: true
 search_exclude: false
+description: "1=Allow amtele in racemode. 2=Also allow noclip."
 ---
 
 # `g_allowRaceTele`

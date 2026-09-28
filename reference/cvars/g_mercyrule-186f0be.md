@@ -4,6 +4,7 @@ layout: reference
 generated: true
 nav_exclude: true
 search_exclude: false
+description: "If the difference is greater than X percent of the frag limit... then end match."
 ---
 
 # `g_mercyRule`

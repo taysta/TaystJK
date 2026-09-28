@@ -4,6 +4,7 @@ layout: reference
 generated: true
 nav_exclude: true
 search_exclude: false
+description: "Toggle the leg dangle animation which is not predicted and results in jerkyness on ledges with high ping."
 ---
 
 # `g_LegDangle`

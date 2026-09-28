@@ -4,6 +4,7 @@ layout: reference
 generated: true
 nav_exclude: true
 search_exclude: false
+description: "Which keys are used to toggle the console"
 ---
 
 # `cl_consoleKeys`

@@ -4,6 +4,7 @@ layout: reference
 generated: true
 nav_exclude: true
 search_exclude: false
+description: "How the server sends players who are moving"
 ---
 
 # `g_smoothClients`

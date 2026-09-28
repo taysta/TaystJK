@@ -4,6 +4,7 @@ layout: reference
 generated: true
 nav_exclude: true
 search_exclude: false
+description: "Allow cheats on server if set to 1"
 ---
 
 # `sv_cheats`

@@ -4,6 +4,7 @@ layout: reference
 generated: true
 nav_exclude: true
 search_exclude: false
+description: "-1 disables, 0/1/2/3 enables and clamps level"
 ---
 
 # `g_maxSaberDefense`

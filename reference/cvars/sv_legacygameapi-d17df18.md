@@ -4,6 +4,7 @@ layout: reference
 generated: true
 nav_exclude: true
 search_exclude: false
+description: "1 when the game module loaded through Raven's dllEntry/vmMain API, 0 through OpenJK's GetModuleAPI"
 ---
 
 # `sv_legacyGameAPI`

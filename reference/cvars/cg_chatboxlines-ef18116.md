@@ -4,6 +4,7 @@ layout: reference
 generated: true
 nav_exclude: true
 search_exclude: false
+description: "This would be called chatBoxHeight if baseJKA didn't use that"
 ---
 
 # `cg_chatBoxLines`

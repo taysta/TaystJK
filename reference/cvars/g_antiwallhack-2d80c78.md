@@ -4,6 +4,7 @@ layout: reference
 generated: true
 nav_exclude: true
 search_exclude: false
+description: "Experimental anti wallhack code. Use the client plugin so it can tell the server where your camera position is, and if you use 3rd person."
 ---
 
 # `g_antiWallhack`

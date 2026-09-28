@@ -4,6 +4,7 @@ layout: reference
 generated: true
 nav_exclude: true
 search_exclude: false
+description: "Set rend2 dynamic-glow bloom strength from 0 through 2."
 ---
 
 # `r_dynamicGlowBloom`

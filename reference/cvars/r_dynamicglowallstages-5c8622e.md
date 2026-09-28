@@ -4,6 +4,7 @@ layout: reference
 generated: true
 nav_exclude: true
 search_exclude: false
+description: "In Vanilla certain glow stages are skipped, render those anyway"
 ---
 
 # `r_DynamicGlowAllStages`

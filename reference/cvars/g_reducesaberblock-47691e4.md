@@ -4,6 +4,7 @@ layout: reference
 generated: true
 nav_exclude: true
 search_exclude: false
+description: "Percent chance to deny a valid MP saber block/clash. 0=off, 100=always."
 ---
 
 # `g_reducesaberblock`

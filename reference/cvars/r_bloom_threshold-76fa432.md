@@ -4,6 +4,7 @@ layout: reference
 generated: true
 nav_exclude: true
 search_exclude: false
+description: "Color level to extract to bloom texture, default is 0.05"
 ---
 
 # `r_bloom_threshold`

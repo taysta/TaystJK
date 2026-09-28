@@ -4,6 +4,7 @@ layout: reference
 generated: true
 nav_exclude: true
 search_exclude: false
+description: "Enable the server's JK2MV-derived HTTP auto-download path."
 ---
 
 # `sv_httpDownloads`

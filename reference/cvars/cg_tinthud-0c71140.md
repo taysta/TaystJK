@@ -4,6 +4,7 @@ layout: reference
 generated: true
 nav_exclude: true
 search_exclude: false
+description: "Changes the color of the HUD based on team color"
 ---
 
 # `cg_tintHud`

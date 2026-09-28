@@ -4,6 +4,7 @@ layout: reference
 generated: true
 nav_exclude: true
 search_exclude: false
+description: "Disable/enable 1010102 UI data type"
 ---
 
 # `r_arb_vertex_type_2_10_10_10_rev`

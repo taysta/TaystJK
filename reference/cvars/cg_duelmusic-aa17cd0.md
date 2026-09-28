@@ -4,6 +4,7 @@ layout: reference
 generated: true
 nav_exclude: true
 search_exclude: false
+description: "Enables special in-game music for private duels"
 ---
 
 # `cg_duelMusic`

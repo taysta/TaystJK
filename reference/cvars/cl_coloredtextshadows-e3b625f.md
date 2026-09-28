@@ -4,6 +4,7 @@ layout: reference
 generated: true
 nav_exclude: true
 search_exclude: false
+description: "Toggle JK2 1.02-style colored text shadows"
 ---
 
 # `cl_coloredTextShadows`

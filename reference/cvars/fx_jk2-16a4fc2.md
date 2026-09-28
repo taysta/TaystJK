@@ -4,6 +4,7 @@ layout: reference
 generated: true
 nav_exclude: true
 search_exclude: false
+description: "Displays jk2 style projectile fx - 0: Disabled - 1: Enabled"
 ---
 
 # `fx_jk2`

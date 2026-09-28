@@ -4,6 +4,7 @@ layout: reference
 generated: true
 nav_exclude: true
 search_exclude: false
+description: "The name of the server that is displayed in the serverlist"
 ---
 
 # `sv_hostname`

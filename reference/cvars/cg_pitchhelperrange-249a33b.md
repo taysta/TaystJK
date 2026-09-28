@@ -4,6 +4,7 @@ layout: reference
 generated: true
 nav_exclude: true
 search_exclude: false
+description: "The range of numbers to display as green (eg. range 30, offset 0 = +15 to -15)"
 ---
 
 # `cg_pitchHelperRange`

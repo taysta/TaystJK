@@ -4,6 +4,7 @@ layout: reference
 generated: true
 nav_exclude: true
 search_exclude: false
+description: "Rww - these used to all default to 0 (closed).. I changed them to 1 (human)"
 ---
 
 # `ui_redteam1`

@@ -4,6 +4,7 @@ layout: reference
 generated: true
 nav_exclude: true
 search_exclude: false
+description: "Shows past messages when console is open"
 ---
 
 # `cg_chatBoxShowHistory`

@@ -4,6 +4,7 @@ layout: reference
 generated: true
 nav_exclude: true
 search_exclude: false
+description: "List of fs_game to filter (space separated)"
 ---
 
 # `cl_filterGames`

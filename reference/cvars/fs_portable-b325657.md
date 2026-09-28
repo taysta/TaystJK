@@ -4,6 +4,7 @@ layout: reference
 generated: true
 nav_exclude: true
 search_exclude: false
+description: "Disable fs_homepath and use only one folder for all game files"
 ---
 
 # `fs_portable`

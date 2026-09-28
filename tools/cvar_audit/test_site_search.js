@@ -42,6 +42,7 @@ const index = [
   { t: "Tribes", u: "/features/tribes/", k: "page", d: "The Tribes movement mode", b: "skiing and jetpacks" },
   { t: "Classes", u: "/features/tribes/#classes", k: "section", p: "Tribes" },
   { t: "cg_killfeed", u: "/reference/cvars/cg_killfeed-abc/", k: "entry" },
+  { t: "r_DynamicGlow", u: "/reference/cvars/r_dynamicglow-abc/", k: "entry", d: "Enable dynamic glow effect. Requires r_fbo 1" },
   { t: "Killfeed styling and placement", u: "/features/hud-and-movement/#the-killfeed", k: "section", p: "HUD and movement tools" },
   { t: "Renderers", u: "/features/renderers/", k: "page", d: "Three backends", b: "vulkan rend2 vanilla" }
 ];
@@ -61,6 +62,15 @@ assert.strictEqual(results[0].t, "Tribes", "body text is searchable");
 // Description matches beat body matches.
 results = helpers.rank(index, "backends");
 assert.strictEqual(results[0].t, "Renderers", "description is searchable");
+
+// A console entry is found by what its summary says it does, not only by its name.
+results = helpers.rank(index, "dynamic glow");
+assert.strictEqual(results[0].t, "r_DynamicGlow", "entry summaries are searchable");
+// Many summary matches must not crowd out an exact name that comes later in the index.
+const crowded = [];
+for (let i = 0; i < 700; i++) crowded.push({ t: "g_entry" + i, u: "/e/" + i, k: "entry", d: "Saber damage tuning" });
+crowded.push({ t: "saber", u: "/reference/commands/saber-abc/", k: "entry" });
+assert.strictEqual(helpers.rank(crowded, "saber")[0].t, "saber", "an exact name beats every summary match");
 
 // Sections carry their page so a result can be attributed.
 results = helpers.rank(index, "classes");
