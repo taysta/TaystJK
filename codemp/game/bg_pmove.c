@@ -14318,6 +14318,147 @@ static void PM_JAPlusNewMoveControl( qboolean *stiffenedUp )
 #undef PM_ANY_MOVE_INPUT
 #endif
 
+#ifdef _CGAME
+//Lugormod's emotes hold you still while they play, and attack, force or jump plays their end anim
+typedef struct lmdEmote_s {
+	int		startAnim;
+	int		endAnim; //-1 if it just plays out
+	int		parts;
+} lmdEmote_t;
+
+static const lmdEmote_t lmdEmotes[] = {
+	{ BOTH_FORCEHEAL_START,		BOTH_FORCEHEAL_STOP,	SETANIM_BOTH },		//think
+	{ BOTH_CROUCH3,				BOTH_UNCROUCH3,			SETANIM_BOTH },		//kneel
+	{ BOTH_STAND4,				BOTH_STAND4TO2,			SETANIM_BOTH },		//standatease
+	{ TORSO_SURRENDER_START,	TORSO_SURRENDER_STOP,	SETANIM_TORSO },	//surrender
+	{ BOTH_SIT6,				BOTH_SIT2,				SETANIM_BOTH },		//layback
+	{ BOTH_ROSH_PAIN,			BOTH_ROSH_HEAL,			SETANIM_BOTH },		//hurt
+	{ TORSO_HANDSIGNAL1,		-1,						SETANIM_BOTH },
+	{ TORSO_HANDSIGNAL2,		-1,						SETANIM_BOTH },
+	{ TORSO_HANDSIGNAL3,		-1,						SETANIM_BOTH },
+	{ TORSO_HANDSIGNAL4,		-1,						SETANIM_BOTH },
+	{ BOTH_TOSS1,				-1,						SETANIM_BOTH },		//tossleft
+	{ BOTH_TOSS2,				-1,						SETANIM_BOTH },		//tossright
+	{ BOTH_STAND1_TALK1,		-1,						SETANIM_BOTH },
+	{ BOTH_STAND1_TALK2,		-1,						SETANIM_BOTH },
+	{ BOTH_STAND1_TALK3,		-1,						SETANIM_BOTH },
+	{ BOTH_HEADNOD,				-1,						SETANIM_BOTH },		//yes
+	{ BOTH_HEADSHAKE,			-1,						SETANIM_BOTH },		//no
+	{ BOTH_FORCE_ABSORB,		-1,						SETANIM_BOTH },		//levitate
+	{ BOTH_FORCE_PROTECT_FAST,	-1,						SETANIM_BOTH },		//receive
+	{ BOTH_COME_ON1,			-1,						SETANIM_BOTH },		//comeon
+	{ BOTH_ALORA_TAUNT,			-1,						SETANIM_BOTH },		//alorataunt
+	{ BOTH_COWER1,				-1,						SETANIM_BOTH },		//cower
+	{ BOTH_SONICPAIN_HOLD,		-1,						SETANIM_BOTH },		//nolisten
+};
+
+static const lmdEmote_t *PM_LugormodEmote( int anim )
+{
+	size_t i;
+
+	for ( i = 0; i < ARRAY_LEN( lmdEmotes ); i++ )
+	{
+		if ( lmdEmotes[i].startAnim == anim )
+		{
+			return &lmdEmotes[i];
+		}
+	}
+	return NULL;
+}
+
+static qboolean PM_LugormodEmoteEnding( int anim )
+{
+	size_t i;
+
+	for ( i = 0; i < ARRAY_LEN( lmdEmotes ); i++ )
+	{
+		if ( lmdEmotes[i].endAnim == anim )
+		{
+			return qtrue;
+		}
+	}
+	return qfalse;
+}
+
+static void PM_LugormodHoldStill( qboolean *stiffenedUp )
+{
+	*stiffenedUp = qtrue;
+	pm->cmd.rightmove = 0;
+	pm->cmd.upmove = 0;
+	pm->cmd.forwardmove = 0;
+	pm->cmd.buttons = 0;
+}
+
+//Lugormod's emotes, hugs and the Force Rage wind up
+static void PM_LugormodEmoteMove( qboolean *stiffenedUp )
+{
+	const lmdEmote_t *emote;
+
+	if ( PM_LugormodEmoteEnding( pm->ps->torsoAnim ) || PM_LugormodEmoteEnding( pm->ps->legsAnim ) )
+	{
+		PM_LugormodHoldStill( stiffenedUp );
+	}
+	else if ( (emote = PM_LugormodEmote( pm->ps->torsoAnim )) != NULL || (emote = PM_LugormodEmote( pm->ps->legsAnim )) != NULL )
+	{
+		if ( emote->endAnim != -1
+			&& ((pm->cmd.buttons & (BUTTON_ATTACK|BUTTON_ALT_ATTACK|BUTTON_FORCEPOWER|BUTTON_FORCEGRIP|BUTTON_FORCE_LIGHTNING|BUTTON_FORCE_DRAIN)) || pm->cmd.upmove) )
+		{
+			PM_SetAnim( emote->parts, emote->endAnim, SETANIM_FLAG_OVERRIDE|SETANIM_FLAG_HOLD );
+		}
+		else
+		{
+			if ( emote->endAnim != -1 )
+			{//hold it until it's ended
+				if ( (emote->parts & SETANIM_LEGS) && pm->ps->legsTimer < 200 )
+				{
+					pm->ps->legsTimer = 200;
+				}
+				if ( (emote->parts & SETANIM_TORSO) && pm->ps->torsoTimer < 200 )
+				{
+					pm->ps->torsoTimer = 200;
+				}
+			}
+			if ( (emote->parts & SETANIM_LEGS) && pm->ps->legsTimer > 0 )
+			{
+				PM_LugormodHoldStill( stiffenedUp );
+			}
+		}
+	}
+
+	if ( pm->ps->legsAnim == BOTH_FORCE_RAGE && pm->ps->legsTimer > 0 )
+	{
+		PM_SetPMViewAngle( pm->ps, pm->ps->viewangles, &pm->cmd );
+		PM_LugormodHoldStill( stiffenedUp );
+	}
+
+	if ( pm->ps->legsAnim == BOTH_HUGGER1 || pm->ps->legsAnim == BOTH_HUGGEE1 )
+	{
+		if ( pm->ps->legsTimer < 100 )
+		{//let go
+			PM_SetAnim( SETANIM_BOTH, (pm->ps->legsAnim == BOTH_HUGGER1) ? BOTH_HUGGERSTOP1 : BOTH_HUGGEESTOP1, SETANIM_FLAG_OVERRIDE|SETANIM_FLAG_HOLD );
+			pm->ps->legsTimer += 200;
+		}
+		else
+		{
+			PM_ContinueLegsAnim( pm->ps->legsAnim );
+			PM_SetPMViewAngle( pm->ps, pm->ps->viewangles, &pm->cmd );
+			PM_LugormodHoldStill( stiffenedUp );
+		}
+	}
+	else if ( (pm->ps->legsAnim == BOTH_HUGGERSTOP1 || pm->ps->legsAnim == BOTH_HUGGEESTOP1) && pm->ps->legsTimer < 200 )
+	{//step back out of the hug
+		vec3_t dir;
+
+		AngleVectors( pm->ps->viewangles, dir, NULL, NULL );
+		dir[2] = 0;
+		VectorNormalize( dir );
+		pm->ps->origin[0] -= dir[0] * 15;
+		pm->ps->origin[1] -= dir[1] * 15;
+		pm->ps->legsTimer = 0;
+	}
+}
+#endif
+
 void PmoveSingle (pmove_t *pmove) {
 	qboolean stiffenedUp = qfalse;
 	float gDist = 0;
@@ -14530,6 +14671,12 @@ void PmoveSingle (pmove_t *pmove) {
 				&& pm->ps->torsoAnim == BOTH_MEDITATE )
 			{
 				PM_SetAnim( SETANIM_BOTH, BOTH_MEDITATE_END, SETANIM_FLAG_OVERRIDE|SETANIM_FLAG_HOLD );
+#ifdef _CGAME
+				if (cgs.serverMod == SVMOD_LMD)
+				{//Lugormod gets up from meditating ducked
+					pm->ps->pm_flags |= PMF_DUCKED;
+				}
+#endif
 			}
 			else
 			{
@@ -14563,6 +14710,10 @@ void PmoveSingle (pmove_t *pmove) {
 				if (cgs.serverMod >= SVMOD_JAPLUS)
 				{
 				}
+				else if (cgs.serverMod == SVMOD_LMD)
+				{//Lugormod lets you turn, but takes the buttons
+					pm->cmd.buttons = 0;
+				}
 				else
 				{
 					PM_SetPMViewAngle(pm->ps, pm->ps->viewangles, &pm->cmd);
@@ -14583,7 +14734,8 @@ void PmoveSingle (pmove_t *pmove) {
 				else
 				{
 					stiffenedUp = qtrue;
-					PM_SetPMViewAngle(pm->ps, pm->ps->viewangles, &pm->cmd);
+					if (cgs.serverMod != SVMOD_LMD) //Lugormod lets you turn during taunts
+						PM_SetPMViewAngle(pm->ps, pm->ps->viewangles, &pm->cmd);
 					pm->cmd.rightmove = 0;
 					pm->cmd.upmove = 0;
 					pm->cmd.forwardmove = 0;
@@ -14598,6 +14750,13 @@ void PmoveSingle (pmove_t *pmove) {
 		&& pm->ps->legsTimer > 0 )
 	{
 		stiffenedUp = qtrue;
+#ifdef _CGAME
+		if (cgs.serverMod == SVMOD_LMD)
+		{//Lugormod lets you turn, but takes the buttons
+			pm->cmd.buttons = 0;
+		}
+		else
+#endif
 		PM_SetPMViewAngle(pm->ps, pm->ps->viewangles, &pm->cmd);
         pm->cmd.rightmove = 0;
 		pm->cmd.upmove = 0;
@@ -14646,6 +14805,13 @@ void PmoveSingle (pmove_t *pmove) {
 		{//just kicked out of a grab
 			PM_SetPMViewAngle(pm->ps, pm->ps->viewangles, &pm->cmd);
 		}
+	}
+#endif
+
+#ifdef _CGAME
+	if (cgs.serverMod == SVMOD_LMD)
+	{
+		PM_LugormodEmoteMove(&stiffenedUp);
 	}
 #endif
 
@@ -14886,6 +15052,14 @@ void PmoveSingle (pmove_t *pmove) {
 	if ((pm->ps->legsAnim) == BOTH_KISSER1LOOP ||
 		(pm->ps->legsAnim) == BOTH_KISSEE1LOOP)
 	{
+		pm->ps->viewangles[PITCH] = 0;
+		PM_SetPMViewAngle(pm->ps, pm->ps->viewangles, &pm->cmd);
+	}
+#endif
+
+#ifdef _CGAME
+	if (cgs.serverMod == SVMOD_LMD && (pm->ps->legsAnim == BOTH_HUGGER1 || pm->ps->legsAnim == BOTH_HUGGEE1))
+	{//Lugormod levels your view while hugging
 		pm->ps->viewangles[PITCH] = 0;
 		PM_SetPMViewAngle(pm->ps, pm->ps->viewangles, &pm->cmd);
 	}
