@@ -1461,6 +1461,13 @@ Ghoul2 Insert End
 	} log;
 	qboolean 			singlefireAlt;
 	qboolean 			tribesHUD;
+
+	//Lugormod keeps our grapple hook point to itself, so we trace our own shots for it
+	qboolean			lmdHookSet;
+	vec3_t				lmdHookPoint;
+	qboolean			lmdHookShot;		//our last valid hook shot, taken up if the server hooks us without us expecting it
+	vec3_t				lmdHookShotPoint;
+	int					lmdHookShotTime;	//commandTime of that shot
 } cg_t;
 
 #define CAMERA_MIN_FPS 15
@@ -2586,6 +2593,7 @@ void CG_RegisterWeapon( int weaponNum);
 void CG_RegisterItemVisuals( int itemNum );
 
 void CG_FireWeapon( centity_t *cent, qboolean alt_fire );
+void CG_LugormodUpdateHook( void );
 void CG_MissileHitWall(int weapon, int clientNum, vec3_t origin, vec3_t dir, impactSound_t soundType, qboolean alt_fire, int charge);
 void CG_MissileHitPlayer( int weapon, vec3_t origin, vec3_t dir, int entityNum, qboolean alt_fire);
 

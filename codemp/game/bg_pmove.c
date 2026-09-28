@@ -2263,6 +2263,11 @@ static qboolean PM_CheckJumpLugormod( void )
 		return qfalse;
 	}
 
+	if (pm->ps->pm_type == PM_GRAPPLING)
+	{ //there's no actual jumping while we grapple
+		return qfalse;
+	}
+
 	if (pm->ps->pm_type == PM_JETPACK)
 	{ //there's no actual jumping while we jetpack
 		return qfalse;
@@ -5100,6 +5105,17 @@ static void PM_AirMove( void ) {
 	{//no air-control
 		VectorClear( wishvel );
 	}
+#ifdef _CGAME
+	else if (cgs.serverMod == SVMOD_LMD && pm->ps->pm_type == PM_GRAPPLING)
+	{ //Lugormod gives half air control on the rope
+		for ( i = 0 ; i < 2 ; i++ )
+		{
+			wishvel[i] = pml.forward[i]*fmove + pml.right[i]*smove;
+		}
+		wishvel[2] = 0;
+		VectorScale(wishvel, 0.5f, wishvel);
+	}
+#endif
 	else if (pm->ps->pm_type == PM_JETPACK)
 	{ //reduced air control while not jetting
 		for ( i = 0 ; i < 2 ; i++ )
@@ -14457,6 +14473,36 @@ static void PM_LugormodEmoteMove( qboolean *stiffenedUp )
 		pm->ps->legsTimer = 0;
 	}
 }
+
+//Lugormod pulls you back toward the hook as you swing away from it, and you climb the rope with jump and
+//let it out with crouch. The server keeps the hook point to itself, so cgame traces our own shot for it.
+static void PM_LugormodGrappleMove( void )
+{
+	if ( pm->ps == &cg.predictedPlayerState && cg.lmdHookSet )
+	{
+		vec3_t dir;
+		float vel;
+
+		VectorSubtract( cg.lmdHookPoint, pm->ps->origin, dir );
+		VectorNormalize( dir );
+		vel = DotProduct( dir, pm->ps->velocity );
+		if ( vel <= 0 )
+		{
+			float offset = 5.0f;
+
+			if ( pm->cmd.upmove < 0 && Distance( pm->ps->origin, cg.lmdHookPoint ) < 2048 )
+			{
+				offset = -450.0f;
+			}
+			VectorMA( pm->ps->velocity, offset - vel, dir, pm->ps->velocity );
+		}
+		if ( pm->cmd.upmove > 0 && VectorLength( pm->ps->velocity ) < 175 )
+		{//no faster than walking, so it can't help bunnyhops
+			VectorMA( pm->ps->velocity, (pm->ps->gravity + 500) * pml.frametime, dir, pm->ps->velocity );
+		}
+	}
+	pm->cmd.upmove = 0;
+}
 #endif
 
 void PmoveSingle (pmove_t *pmove) {
@@ -15084,7 +15130,11 @@ void PmoveSingle (pmove_t *pmove) {
 		pm->ps->pm_flags &= ~PMF_BACKWARDS_RUN;
 	}
 
-	if ( pm->ps->pm_type >= PM_DEAD ) {
+	if ( pm->ps->pm_type >= PM_DEAD
+#ifdef _CGAME
+		&& (cgs.serverMod != SVMOD_LMD || pm->ps->pm_type != PM_GRAPPLING) //Lugormod still steers on the rope
+#endif
+		) {
 		pm->cmd.forwardmove = 0;
 		pm->cmd.rightmove = 0;
 		pm->cmd.upmove = 0;
@@ -15151,7 +15201,7 @@ void PmoveSingle (pmove_t *pmove) {
 	// set mins, maxs, and viewheight
 #ifdef _CGAME
 	if (cgs.serverMod == SVMOD_LMD)
-	{//Lugormod finds the ground before ducking
+	{//Lugormod finds the ground before ducking, then pulls on the grapple rope
 		PM_LugormodSetBounds();
 		PM_GroundTrace();
 		if ( pm_flying == FLY_HOVER )
@@ -15161,6 +15211,10 @@ void PmoveSingle (pmove_t *pmove) {
 		if ( PM_LugormodCheckDuck() )
 		{
 			PM_LugormodSetBounds();
+		}
+		if ( pm->ps->pm_type == PM_GRAPPLING )
+		{
+			PM_LugormodGrappleMove();
 		}
 	}
 	else
