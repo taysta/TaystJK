@@ -45,6 +45,43 @@ default and loads that instead rather than failing outright
 If you switch and end up back on the default, that is what happened. Usually the build
 does not include that renderer.
 
+## Vulkan on macOS
+
+macOS has no Vulkan driver of its own. `rd-vulkant` runs there through MoltenVK, which
+translates Vulkan to Metal. TaystJK does not include it, so install it yourself with
+[Homebrew](https://brew.sh):
+
+```sh
+brew install molten-vk
+```
+
+The renderer gets Vulkan through SDL
+([`sdl_window.cpp`](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/shared/sdl/sdl_window.cpp#L995)),
+and on Apple silicon SDL does not find Homebrew's copy unless `SDL_VULKAN_LIBRARY` names
+it. Opening the app from Finder or the Dock cannot set that, so start it from Terminal,
+replacing the path with wherever your `taystjk.app` is:
+
+```sh
+open --env SDL_VULKAN_LIBRARY="$(brew --prefix)/lib/libMoltenVK.dylib" /path/to/taystjk.app --args +set cl_renderer rd-vulkant
+```
+
+To start it this way with a double-click, save that line in a text file whose name ends in
+`.command`, with `$(brew --prefix)` replaced by the path `brew --prefix` prints
+(`/opt/homebrew` on Apple silicon). Run `chmod +x` on the file once, then open the file
+instead of the app.
+
+**Switch back before you open TaystJK any other way.** `cl_renderer` is saved in your
+config, and this is not the missing-library case above: the renderer loads but cannot get
+Vulkan, so the client stops with "GLimp_Init() - could not load OpenGL subsystem" instead
+of falling back to the default
+([`sdl_window.cpp`](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/shared/sdl/sdl_window.cpp#L831)).
+Set `cl_renderer rd-taystjk` before you quit, or, if you already see that error, start it
+once with:
+
+```sh
+open /path/to/taystjk.app --args +set cl_renderer rd-taystjk
+```
+
 ## What differs in practice
 
 **Settings are not shared.** Many `r_` cvars are registered by one backend only, so a
