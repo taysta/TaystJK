@@ -31,7 +31,7 @@ Disable/enable anisotropic texture filtering
 | Confidence | `high` |
 | Added | 2013-04-08 in [`14cea1563`](https://github.com/taysta/TaystJK/commit/14cea1563762076974bee277afadbd5bf234c494) ([how to compare this against your build](/TaystJK/features/whats-new/#how-to-tell-what-your-build-has)) |
 | In-game xdocs | No |
-| In-game menu | Yes: [ingame_setup.menu:1448](https://github.com/taysta/TaystJK/blame/b35ed06fec41c53644352743c6b199a5d5d500f3/assets/japro/ui/jamp/ingame_setup.menu#L1448), [setup.menu:2343](https://github.com/taysta/TaystJK/blame/b35ed06fec41c53644352743c6b199a5d5d500f3/assets/japro/ui/jamp/setup.menu#L2343) |
+| In-game menu | Yes: [ingame_setup.menu:1448](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/assets/japro/ui/jamp/ingame_setup.menu#L1448), [setup.menu:2343](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/assets/japro/ui/jamp/setup.menu#L2343) |
 
 ## Values
 
@@ -89,14 +89,14 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 ## Evidence
 
-- registration: [codemp/rd-dedicated/tr_init.cpp:325](https://github.com/taysta/TaystJK/blame/b35ed06fec41c53644352743c6b199a5d5d500f3/codemp/rd-dedicated/tr_init.cpp#L325) (Cvar_Get)
-- registration: [codemp/rd-rend2/tr_init.cpp:1502](https://github.com/taysta/TaystJK/blame/b35ed06fec41c53644352743c6b199a5d5d500f3/codemp/rd-rend2/tr_init.cpp#L1502) (Cvar_Get)
-- registration: [codemp/rd-vanilla/tr_init.cpp:1638](https://github.com/taysta/TaystJK/blame/b35ed06fec41c53644352743c6b199a5d5d500f3/codemp/rd-vanilla/tr_init.cpp#L1638) (Cvar_Get)
-- registration: [codemp/rd-vulkan/tr_init.cpp:791](https://github.com/taysta/TaystJK/blame/b35ed06fec41c53644352743c6b199a5d5d500f3/codemp/rd-vulkan/tr_init.cpp#L791) (Cvar_Get)
-- behavior: [codemp/rd-vanilla/tr_image.cpp:94](https://github.com/taysta/TaystJK/blame/b35ed06fec41c53644352743c6b199a5d5d500f3/codemp/rd-vanilla/tr_image.cpp#L94)
-- behavior: [codemp/rd-vanilla/tr_image.cpp:107](https://github.com/taysta/TaystJK/blame/b35ed06fec41c53644352743c6b199a5d5d500f3/codemp/rd-vanilla/tr_image.cpp#L107)
-- behavior: [codemp/rd-vanilla/tr_image.cpp:760](https://github.com/taysta/TaystJK/blame/b35ed06fec41c53644352743c6b199a5d5d500f3/codemp/rd-vanilla/tr_image.cpp#L760)
-- behavior: [codemp/rd-vanilla/tr_init.cpp:493](https://github.com/taysta/TaystJK/blame/b35ed06fec41c53644352743c6b199a5d5d500f3/codemp/rd-vanilla/tr_init.cpp#L493)
-- behavior: [codemp/rd-vanilla/tr_init.cpp:502](https://github.com/taysta/TaystJK/blame/b35ed06fec41c53644352743c6b199a5d5d500f3/codemp/rd-vanilla/tr_init.cpp#L502)
+- registration: [codemp/rd-dedicated/tr_init.cpp:325](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/codemp/rd-dedicated/tr_init.cpp#L325) (Cvar_Get)
+- registration: [codemp/rd-rend2/tr_init.cpp:1502](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/codemp/rd-rend2/tr_init.cpp#L1502) (Cvar_Get)
+- registration: [codemp/rd-vanilla/tr_init.cpp:1638](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/codemp/rd-vanilla/tr_init.cpp#L1638) (Cvar_Get)
+- registration: [codemp/rd-vulkan/tr_init.cpp:791](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/codemp/rd-vulkan/tr_init.cpp#L791) (Cvar_Get)
+- behavior: [codemp/rd-vanilla/tr_image.cpp:94](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/codemp/rd-vanilla/tr_image.cpp#L94)
+- behavior: [codemp/rd-vanilla/tr_image.cpp:107](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/codemp/rd-vanilla/tr_image.cpp#L107)
+- behavior: [codemp/rd-vanilla/tr_image.cpp:760](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/codemp/rd-vanilla/tr_image.cpp#L760)
+- behavior: [codemp/rd-vanilla/tr_init.cpp:493](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/codemp/rd-vanilla/tr_init.cpp#L493)
+- behavior: [codemp/rd-vanilla/tr_init.cpp:502](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/codemp/rd-vanilla/tr_init.cpp#L502)
 
-<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/b35ed06fec41c53644352743c6b199a5d5d500f3"><code>b35ed06fec41</code></a> on 2026-09-27. Anything merged after that is not reflected here.</p>
+<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a"><code>c722804317d7</code></a> on 2026-09-28. Anything merged after that is not reflected here.</p>

@@ -31,18 +31,18 @@ Play a sound when you hit someone
 | Derivation | `documented` |
 | Confidence | `medium` |
 | Added | 2018-09-03 in [`bdcd618c6`](https://github.com/taysta/TaystJK/commit/bdcd618c67713b86946b720d791c382d3908d97c) <span class="status-chip">needs review</span> ([how to compare this against your build](/TaystJK/features/whats-new/#how-to-tell-what-your-build-has)) |
-| In-game xdocs | Yes: [codemp/ui/ui_xdocs.h:394](https://github.com/taysta/TaystJK/blame/b35ed06fec41c53644352743c6b199a5d5d500f3/codemp/ui/ui_xdocs.h#L394) |
-| In-game menu | Yes: [ingame_setup.menu:4534](https://github.com/taysta/TaystJK/blame/b35ed06fec41c53644352743c6b199a5d5d500f3/assets/japro/ui/jamp/ingame_setup.menu#L4534) |
+| In-game xdocs | Yes: [codemp/ui/ui_xdocs.h:394](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/codemp/ui/ui_xdocs.h#L394) |
+| In-game menu | Yes: [ingame_setup.menu:4534](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/assets/japro/ui/jamp/ingame_setup.menu#L4534) |
 
 ## Values
 
 | Value | Meaning | Evidence |
 |:--|:--|:--|
-| `0` | Don't play the hit sound (Base behavior) | [codemp/ui/ui_xdocs.h:394](https://github.com/taysta/TaystJK/blame/b35ed06fec41c53644352743c6b199a5d5d500f3/codemp/ui/ui_xdocs.h#L394) |
-| `1` | Play the hit sound from Quake 3: Arena | [codemp/ui/ui_xdocs.h:395](https://github.com/taysta/TaystJK/blame/b35ed06fec41c53644352743c6b199a5d5d500f3/codemp/ui/ui_xdocs.h#L395) |
-| `2` | Play the hit sound from Legions: Overdrive | [codemp/ui/ui_xdocs.h:396](https://github.com/taysta/TaystJK/blame/b35ed06fec41c53644352743c6b199a5d5d500f3/codemp/ui/ui_xdocs.h#L396) |
-| `3` | Play the hit sound from Warsow | [codemp/ui/ui_xdocs.h:397](https://github.com/taysta/TaystJK/blame/b35ed06fec41c53644352743c6b199a5d5d500f3/codemp/ui/ui_xdocs.h#L397) |
-| `4` | Play the hit sound from Tribes: Ascend | [codemp/ui/ui_xdocs.h:397](https://github.com/taysta/TaystJK/blame/b35ed06fec41c53644352743c6b199a5d5d500f3/codemp/ui/ui_xdocs.h#L397) |
+| `0` | Don't play the hit sound (Base behavior) | [codemp/ui/ui_xdocs.h:394](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/codemp/ui/ui_xdocs.h#L394) |
+| `1` | Play the hit sound from Quake 3: Arena | [codemp/ui/ui_xdocs.h:395](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/codemp/ui/ui_xdocs.h#L395) |
+| `2` | Play the hit sound from Legions: Overdrive | [codemp/ui/ui_xdocs.h:396](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/codemp/ui/ui_xdocs.h#L396) |
+| `3` | Play the hit sound from Warsow | [codemp/ui/ui_xdocs.h:397](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/codemp/ui/ui_xdocs.h#L397) |
+| `4` | Play the hit sound from Tribes: Ascend | [codemp/ui/ui_xdocs.h:397](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/codemp/ui/ui_xdocs.h#L397) |
 
 ## Flags
 
@@ -80,12 +80,12 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 ## Evidence
 
-- registration: [codemp/cgame/cg_xcvar.h:122](https://github.com/taysta/TaystJK/blame/b35ed06fec41c53644352743c6b199a5d5d500f3/codemp/cgame/cg_xcvar.h#L122) (XCVAR_DEF)
-- behavior: [codemp/cgame/cg_event.c:2511](https://github.com/taysta/TaystJK/blame/b35ed06fec41c53644352743c6b199a5d5d500f3/codemp/cgame/cg_event.c#L2511)
-- behavior: [codemp/cgame/cg_playerstate.c:346](https://github.com/taysta/TaystJK/blame/b35ed06fec41c53644352743c6b199a5d5d500f3/codemp/cgame/cg_playerstate.c#L346)
-- behavior: [codemp/cgame/cg_playerstate.c:333](https://github.com/taysta/TaystJK/blame/b35ed06fec41c53644352743c6b199a5d5d500f3/codemp/cgame/cg_playerstate.c#L333)
-- behavior: [codemp/cgame/cg_event.c:2509](https://github.com/taysta/TaystJK/blame/b35ed06fec41c53644352743c6b199a5d5d500f3/codemp/cgame/cg_event.c#L2509)
-- behavior: [codemp/ui/ui_xdocs.h:394](https://github.com/taysta/TaystJK/blame/b35ed06fec41c53644352743c6b199a5d5d500f3/codemp/ui/ui_xdocs.h#L394)
-- documentation: [codemp/ui/ui_xdocs.h:394](https://github.com/taysta/TaystJK/blame/b35ed06fec41c53644352743c6b199a5d5d500f3/codemp/ui/ui_xdocs.h#L394)
+- registration: [codemp/cgame/cg_xcvar.h:122](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/codemp/cgame/cg_xcvar.h#L122) (XCVAR_DEF)
+- behavior: [codemp/cgame/cg_event.c:2511](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/codemp/cgame/cg_event.c#L2511)
+- behavior: [codemp/cgame/cg_playerstate.c:346](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/codemp/cgame/cg_playerstate.c#L346)
+- behavior: [codemp/cgame/cg_playerstate.c:333](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/codemp/cgame/cg_playerstate.c#L333)
+- behavior: [codemp/cgame/cg_event.c:2509](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/codemp/cgame/cg_event.c#L2509)
+- behavior: [codemp/ui/ui_xdocs.h:394](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/codemp/ui/ui_xdocs.h#L394)
+- documentation: [codemp/ui/ui_xdocs.h:394](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/codemp/ui/ui_xdocs.h#L394)
 
-<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/b35ed06fec41c53644352743c6b199a5d5d500f3"><code>b35ed06fec41</code></a> on 2026-09-27. Anything merged after that is not reflected here.</p>
+<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a"><code>c722804317d7</code></a> on 2026-09-28. Anything merged after that is not reflected here.</p>

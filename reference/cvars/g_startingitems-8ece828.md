@@ -39,7 +39,7 @@ Configured with /startingItems command.
 
 ## Bits
 
-Use [`startingItems`](/TaystJK/reference/commands/startingitems-2ed82fa/) to toggle one option at a time; see the command page for syntax. The value column is that bit on its own. [The labels come from the source table](https://github.com/taysta/TaystJK/blame/b35ed06fec41c53644352743c6b199a5d5d500f3/codemp/game/g_svcmds.c#L1192).
+Use [`startingItems`](/TaystJK/reference/commands/startingitems-2ed82fa/) to toggle one option at a time; see the command page for syntax. The value column is that bit on its own. [The labels come from the source table](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/codemp/game/g_svcmds.c#L1192).
 
 | Bit | Value | Meaning | Read by |
 |:--|:--|:--|:--|
@@ -95,12 +95,12 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 ## Evidence
 
-- registration: [codemp/game/g_xcvar.h:274](https://github.com/taysta/TaystJK/blame/b35ed06fec41c53644352743c6b199a5d5d500f3/codemp/game/g_xcvar.h#L274) (XCVAR_DEF)
-- behavior: [codemp/game/ai_main.c:9017](https://github.com/taysta/TaystJK/blame/b35ed06fec41c53644352743c6b199a5d5d500f3/codemp/game/ai_main.c#L9017)
-- behavior: [codemp/game/g_client.c:3608](https://github.com/taysta/TaystJK/blame/b35ed06fec41c53644352743c6b199a5d5d500f3/codemp/game/g_client.c#L3608)
-- behavior: [codemp/game/g_client.c:3610](https://github.com/taysta/TaystJK/blame/b35ed06fec41c53644352743c6b199a5d5d500f3/codemp/game/g_client.c#L3610)
-- behavior: [codemp/game/g_client.c:3612](https://github.com/taysta/TaystJK/blame/b35ed06fec41c53644352743c6b199a5d5d500f3/codemp/game/g_client.c#L3612)
-- behavior: [codemp/game/g_client.c:3614](https://github.com/taysta/TaystJK/blame/b35ed06fec41c53644352743c6b199a5d5d500f3/codemp/game/g_client.c#L3614)
-- documentation: [docs/japro_docs.md:85](https://github.com/taysta/TaystJK/blame/b35ed06fec41c53644352743c6b199a5d5d500f3/docs/japro_docs.md#L85)
+- registration: [codemp/game/g_xcvar.h:274](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/codemp/game/g_xcvar.h#L274) (XCVAR_DEF)
+- behavior: [codemp/game/ai_main.c:9017](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/codemp/game/ai_main.c#L9017)
+- behavior: [codemp/game/g_client.c:3608](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/codemp/game/g_client.c#L3608)
+- behavior: [codemp/game/g_client.c:3610](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/codemp/game/g_client.c#L3610)
+- behavior: [codemp/game/g_client.c:3612](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/codemp/game/g_client.c#L3612)
+- behavior: [codemp/game/g_client.c:3614](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/codemp/game/g_client.c#L3614)
+- documentation: [docs/japro_docs.md:85](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/docs/japro_docs.md#L85)
 
-<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/b35ed06fec41c53644352743c6b199a5d5d500f3"><code>b35ed06fec41</code></a> on 2026-09-27. Anything merged after that is not reflected here.</p>
+<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a"><code>c722804317d7</code></a> on 2026-09-28. Anything merged after that is not reflected here.</p>

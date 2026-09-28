@@ -28,7 +28,7 @@ Print command help
 | Confidence | `high` |
 | Added | 2016-03-24 in [`c9c6ab99f`](https://github.com/taysta/TaystJK/commit/c9c6ab99fdd24759cc32d45f642d63ebd3361b62) ([how to compare this against your build](/TaystJK/features/whats-new/#how-to-tell-what-your-build-has)) |
 | In-game xdocs | No |
-| In-game menu | Yes: [ingame_vgs.menu:5141](https://github.com/taysta/TaystJK/blame/b35ed06fec41c53644352743c6b199a5d5d500f3/assets/japro/ui/jamp/ingame_vgs.menu#L5141) |
+| In-game menu | Yes: [ingame_vgs.menu:5141](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/assets/japro/ui/jamp/ingame_vgs.menu#L5141) |
 
 ## Arguments and gating
 
@@ -69,9 +69,9 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 ## Evidence
 
-- registration: [codemp/cgame/cg_consolecmds.c:2506](https://github.com/taysta/TaystJK/blame/b35ed06fec41c53644352743c6b199a5d5d500f3/codemp/cgame/cg_consolecmds.c#L2506) (cgame command table)
-- registration: [codemp/qcommon/cmd.cpp:1208](https://github.com/taysta/TaystJK/blame/b35ed06fec41c53644352743c6b199a5d5d500f3/codemp/qcommon/cmd.cpp#L1208) (Cmd_AddCommand)
-- handler: [codemp/cgame/cg_consolecmds.c:537](https://github.com/taysta/TaystJK/blame/b35ed06fec41c53644352743c6b199a5d5d500f3/codemp/cgame/cg_consolecmds.c#L537)
-- handler: [codemp/qcommon/cmd.cpp:1151](https://github.com/taysta/TaystJK/blame/b35ed06fec41c53644352743c6b199a5d5d500f3/codemp/qcommon/cmd.cpp#L1151)
+- registration: [codemp/cgame/cg_consolecmds.c:2506](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/codemp/cgame/cg_consolecmds.c#L2506) (cgame command table)
+- registration: [codemp/qcommon/cmd.cpp:1208](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/codemp/qcommon/cmd.cpp#L1208) (Cmd_AddCommand)
+- handler: [codemp/cgame/cg_consolecmds.c:537](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/codemp/cgame/cg_consolecmds.c#L537)
+- handler: [codemp/qcommon/cmd.cpp:1151](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/codemp/qcommon/cmd.cpp#L1151)
 
-<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/b35ed06fec41c53644352743c6b199a5d5d500f3"><code>b35ed06fec41</code></a> on 2026-09-27. Anything merged after that is not reflected here.</p>
+<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a"><code>c722804317d7</code></a> on 2026-09-28. Anything merged after that is not reflected here.</p>

@@ -38,8 +38,8 @@ description: "1=Disable forcejumps for all players. 2=Let players choose if they
 
 | Value | Meaning | Evidence |
 |:--|:--|:--|
-| `1` | Disable forcejumps for all players. | [docs/japro_docs.md:51](https://github.com/taysta/TaystJK/blame/b35ed06fec41c53644352743c6b199a5d5d500f3/docs/japro_docs.md#L51) |
-| `2` | Let players choose if they want to disable forcejumps. | [docs/japro_docs.md:51](https://github.com/taysta/TaystJK/blame/b35ed06fec41c53644352743c6b199a5d5d500f3/docs/japro_docs.md#L51) |
+| `1` | Disable forcejumps for all players. | [docs/japro_docs.md:51](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/docs/japro_docs.md#L51) |
+| `2` | Let players choose if they want to disable forcejumps. | [docs/japro_docs.md:51](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/docs/japro_docs.md#L51) |
 
 ## Flags
 
@@ -78,12 +78,12 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 ## Evidence
 
-- registration: [codemp/game/g_xcvar.h:232](https://github.com/taysta/TaystJK/blame/b35ed06fec41c53644352743c6b199a5d5d500f3/codemp/game/g_xcvar.h#L232) (XCVAR_DEF)
-- behavior: [codemp/game/bg_pmove.c:3544](https://github.com/taysta/TaystJK/blame/b35ed06fec41c53644352743c6b199a5d5d500f3/codemp/game/bg_pmove.c#L3544)
-- behavior: [codemp/game/g_cmds.c:8468](https://github.com/taysta/TaystJK/blame/b35ed06fec41c53644352743c6b199a5d5d500f3/codemp/game/g_cmds.c#L8468)
-- behavior: [codemp/game/g_cmds.c:8470](https://github.com/taysta/TaystJK/blame/b35ed06fec41c53644352743c6b199a5d5d500f3/codemp/game/g_cmds.c#L8470)
-- behavior: [codemp/game/g_cvar.c:113](https://github.com/taysta/TaystJK/blame/b35ed06fec41c53644352743c6b199a5d5d500f3/codemp/game/g_cvar.c#L113)
-- behavior: [codemp/game/g_cvar.c:117](https://github.com/taysta/TaystJK/blame/b35ed06fec41c53644352743c6b199a5d5d500f3/codemp/game/g_cvar.c#L117)
-- documentation: [docs/japro_docs.md:51](https://github.com/taysta/TaystJK/blame/b35ed06fec41c53644352743c6b199a5d5d500f3/docs/japro_docs.md#L51)
+- registration: [codemp/game/g_xcvar.h:232](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/codemp/game/g_xcvar.h#L232) (XCVAR_DEF)
+- behavior: [codemp/game/bg_pmove.c:3544](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/codemp/game/bg_pmove.c#L3544)
+- behavior: [codemp/game/g_cmds.c:8468](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/codemp/game/g_cmds.c#L8468)
+- behavior: [codemp/game/g_cmds.c:8470](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/codemp/game/g_cmds.c#L8470)
+- behavior: [codemp/game/g_cvar.c:113](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/codemp/game/g_cvar.c#L113)
+- behavior: [codemp/game/g_cvar.c:117](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/codemp/game/g_cvar.c#L117)
+- documentation: [docs/japro_docs.md:51](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/docs/japro_docs.md#L51)
 
-<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/b35ed06fec41c53644352743c6b199a5d5d500f3"><code>b35ed06fec41</code></a> on 2026-09-27. Anything merged after that is not reflected here.</p>
+<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a"><code>c722804317d7</code></a> on 2026-09-28. Anything merged after that is not reflected here.</p>

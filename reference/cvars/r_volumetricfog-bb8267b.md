@@ -39,8 +39,8 @@ Disable/enable lightgrid lighting on fog volumes
 
 | Value | Meaning | Evidence |
 |:--|:--|:--|
-| `0` | Disabled. | [shared/rd-rend2/tr_backend.cpp:1504](https://github.com/taysta/TaystJK/blame/b35ed06fec41c53644352743c6b199a5d5d500f3/shared/rd-rend2/tr_backend.cpp#L1504) |
-| `1` | Enabled. | [shared/rd-rend2/tr_backend.cpp:1504](https://github.com/taysta/TaystJK/blame/b35ed06fec41c53644352743c6b199a5d5d500f3/shared/rd-rend2/tr_backend.cpp#L1504) |
+| `0` | Disabled. | [shared/rd-rend2/tr_backend.cpp:1504](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/shared/rd-rend2/tr_backend.cpp#L1504) |
+| `1` | Enabled. | [shared/rd-rend2/tr_backend.cpp:1504](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/shared/rd-rend2/tr_backend.cpp#L1504) |
 
 ## Flags
 
@@ -72,11 +72,11 @@ Authored dates come from the exact registration's first content commit, PR dates
 
 ## Evidence
 
-- registration: [codemp/rd-rend2/tr_init.cpp:1583](https://github.com/taysta/TaystJK/blame/b35ed06fec41c53644352743c6b199a5d5d500f3/codemp/rd-rend2/tr_init.cpp#L1583) (Cvar_Get)
-- behavior: [shared/rd-rend2/tr_backend.cpp:1504](https://github.com/taysta/TaystJK/blame/b35ed06fec41c53644352743c6b199a5d5d500f3/shared/rd-rend2/tr_backend.cpp#L1504)
-- behavior: [shared/rd-rend2/tr_backend.cpp:2443](https://github.com/taysta/TaystJK/blame/b35ed06fec41c53644352743c6b199a5d5d500f3/shared/rd-rend2/tr_backend.cpp#L2443)
-- behavior: [shared/rd-rend2/tr_bsp.cpp:4199](https://github.com/taysta/TaystJK/blame/b35ed06fec41c53644352743c6b199a5d5d500f3/shared/rd-rend2/tr_bsp.cpp#L4199)
-- behavior: [shared/rd-rend2/tr_bsp.cpp:4390](https://github.com/taysta/TaystJK/blame/b35ed06fec41c53644352743c6b199a5d5d500f3/shared/rd-rend2/tr_bsp.cpp#L4390)
-- behavior: [shared/rd-rend2/tr_glsl.cpp:382](https://github.com/taysta/TaystJK/blame/b35ed06fec41c53644352743c6b199a5d5d500f3/shared/rd-rend2/tr_glsl.cpp#L382)
+- registration: [codemp/rd-rend2/tr_init.cpp:1583](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/codemp/rd-rend2/tr_init.cpp#L1583) (Cvar_Get)
+- behavior: [shared/rd-rend2/tr_backend.cpp:1504](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/shared/rd-rend2/tr_backend.cpp#L1504)
+- behavior: [shared/rd-rend2/tr_backend.cpp:2443](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/shared/rd-rend2/tr_backend.cpp#L2443)
+- behavior: [shared/rd-rend2/tr_bsp.cpp:4199](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/shared/rd-rend2/tr_bsp.cpp#L4199)
+- behavior: [shared/rd-rend2/tr_bsp.cpp:4390](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/shared/rd-rend2/tr_bsp.cpp#L4390)
+- behavior: [shared/rd-rend2/tr_glsl.cpp:382](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/shared/rd-rend2/tr_glsl.cpp#L382)
 
-<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/b35ed06fec41c53644352743c6b199a5d5d500f3"><code>b35ed06fec41</code></a> on 2026-09-27. Anything merged after that is not reflected here.</p>
+<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a"><code>c722804317d7</code></a> on 2026-09-28. Anything merged after that is not reflected here.</p>

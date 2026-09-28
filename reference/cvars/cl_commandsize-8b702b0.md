@@ -84,12 +84,12 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 ## Evidence
 
-- registration: [codemp/cgame/cg_xcvar.h:219](https://github.com/taysta/TaystJK/blame/b35ed06fec41c53644352743c6b199a5d5d500f3/codemp/cgame/cg_xcvar.h#L219) (XCVAR_DEF)
-- registration: [codemp/qcommon/common.cpp:1485](https://github.com/taysta/TaystJK/blame/b35ed06fec41c53644352743c6b199a5d5d500f3/codemp/qcommon/common.cpp#L1485) (Cvar_Get)
-- behavior: [codemp/cgame/cg_draw.c:7109](https://github.com/taysta/TaystJK/blame/b35ed06fec41c53644352743c6b199a5d5d500f3/codemp/cgame/cg_draw.c#L7109)
-- behavior: [codemp/cgame/cg_predict.c:999](https://github.com/taysta/TaystJK/blame/b35ed06fec41c53644352743c6b199a5d5d500f3/codemp/cgame/cg_predict.c#L999)
-- behavior: [codemp/client/cl_cgame.cpp:56](https://github.com/taysta/TaystJK/blame/b35ed06fec41c53644352743c6b199a5d5d500f3/codemp/client/cl_cgame.cpp#L56)
-- behavior: [codemp/client/cl_input.cpp:1448](https://github.com/taysta/TaystJK/blame/b35ed06fec41c53644352743c6b199a5d5d500f3/codemp/client/cl_input.cpp#L1448)
-- behavior: [codemp/client/cl_input.cpp:1612](https://github.com/taysta/TaystJK/blame/b35ed06fec41c53644352743c6b199a5d5d500f3/codemp/client/cl_input.cpp#L1612)
+- registration: [codemp/cgame/cg_xcvar.h:220](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/codemp/cgame/cg_xcvar.h#L220) (XCVAR_DEF)
+- registration: [codemp/qcommon/common.cpp:1485](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/codemp/qcommon/common.cpp#L1485) (Cvar_Get)
+- behavior: [codemp/cgame/cg_draw.c:7109](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/codemp/cgame/cg_draw.c#L7109)
+- behavior: [codemp/cgame/cg_predict.c:1041](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/codemp/cgame/cg_predict.c#L1041)
+- behavior: [codemp/client/cl_cgame.cpp:56](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/codemp/client/cl_cgame.cpp#L56)
+- behavior: [codemp/client/cl_input.cpp:1448](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/codemp/client/cl_input.cpp#L1448)
+- behavior: [codemp/client/cl_input.cpp:1612](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/codemp/client/cl_input.cpp#L1612)
 
-<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/b35ed06fec41c53644352743c6b199a5d5d500f3"><code>b35ed06fec41</code></a> on 2026-09-27. Anything merged after that is not reflected here.</p>
+<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a"><code>c722804317d7</code></a> on 2026-09-28. Anything merged after that is not reflected here.</p>

@@ -1,5 +1,5 @@
 {
-"meta":{"docker_commit":"60fcb9cf68d38c3fede638fac4a8e42eb1123eaf","source_commit":"b35ed06fec41c53644352743c6b199a5d5d500f3","docker_url":"https://github.com/taysta/TaystJK/tree/60fcb9cf68d38c3fede638fac4a8e42eb1123eaf/scripts/docker","settable":{"g_npcspskill":"The reference counts it as engine-managed because it has CVAR_INTERNAL, but that flag only hides a cvar from listings and completion (cvar.cpp); configs can set it, and the bundled default.cfg and tribesbase.cfg do."}},
+"meta":{"docker_commit":"60fcb9cf68d38c3fede638fac4a8e42eb1123eaf","source_commit":"c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a","docker_url":"https://github.com/taysta/TaystJK/tree/60fcb9cf68d38c3fede638fac4a8e42eb1123eaf/scripts/docker","settable":{"g_npcspskill":"The reference counts it as engine-managed because it has CVAR_INTERNAL, but that flag only hides a cvar from listings and completion (cvar.cpp); configs can set it, and the bundled default.cfg and tribesbase.cfg do."}},
 "cvars":{
   "_dedicated":{"n":"_dedicated","u":"/TaystJK/reference/cvars/entry-_dedicated-f30b22a/","e":1,"b":0,"d":"0","s":"","f":"server","em":1},
   "arch":{"n":"arch","u":"/TaystJK/reference/cvars/arch-5a36f11/","e":1,"b":1,"d":"OS_STRING \" \" ARCH_STRING","s":"","f":"server","em":1},

@@ -37,8 +37,8 @@ Disable/enable auto exposure
 
 | Value | Meaning | Evidence |
 |:--|:--|:--|
-| `0` | Disabled. | [shared/rd-rend2/tr_backend.cpp:3220](https://github.com/taysta/TaystJK/blame/b35ed06fec41c53644352743c6b199a5d5d500f3/shared/rd-rend2/tr_backend.cpp#L3220) |
-| `1` | Enabled. | [shared/rd-rend2/tr_backend.cpp:3220](https://github.com/taysta/TaystJK/blame/b35ed06fec41c53644352743c6b199a5d5d500f3/shared/rd-rend2/tr_backend.cpp#L3220) |
+| `0` | Disabled. | [shared/rd-rend2/tr_backend.cpp:3220](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/shared/rd-rend2/tr_backend.cpp#L3220) |
+| `1` | Enabled. | [shared/rd-rend2/tr_backend.cpp:3220](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/shared/rd-rend2/tr_backend.cpp#L3220) |
 
 ## Flags
 
@@ -77,10 +77,10 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 ## Evidence
 
-- registration: [codemp/rd-rend2/tr_init.cpp:1548](https://github.com/taysta/TaystJK/blame/b35ed06fec41c53644352743c6b199a5d5d500f3/codemp/rd-rend2/tr_init.cpp#L1548) (Cvar_Get)
-- behavior: [shared/rd-rend2/tr_backend.cpp:3220](https://github.com/taysta/TaystJK/blame/b35ed06fec41c53644352743c6b199a5d5d500f3/shared/rd-rend2/tr_backend.cpp#L3220)
-- behavior: [shared/rd-rend2/tr_shade.cpp:1854](https://github.com/taysta/TaystJK/blame/b35ed06fec41c53644352743c6b199a5d5d500f3/shared/rd-rend2/tr_shade.cpp#L1854)
-- behavior: [codemp/ui/ui_main.c:6245](https://github.com/taysta/TaystJK/blame/b35ed06fec41c53644352743c6b199a5d5d500f3/codemp/ui/ui_main.c#L6245)
-- behavior: [codemp/ui/ui_main.c:6416](https://github.com/taysta/TaystJK/blame/b35ed06fec41c53644352743c6b199a5d5d500f3/codemp/ui/ui_main.c#L6416)
+- registration: [codemp/rd-rend2/tr_init.cpp:1548](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/codemp/rd-rend2/tr_init.cpp#L1548) (Cvar_Get)
+- behavior: [shared/rd-rend2/tr_backend.cpp:3220](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/shared/rd-rend2/tr_backend.cpp#L3220)
+- behavior: [shared/rd-rend2/tr_shade.cpp:1854](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/shared/rd-rend2/tr_shade.cpp#L1854)
+- behavior: [codemp/ui/ui_main.c:6245](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/codemp/ui/ui_main.c#L6245)
+- behavior: [codemp/ui/ui_main.c:6416](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/codemp/ui/ui_main.c#L6416)
 
-<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/b35ed06fec41c53644352743c6b199a5d5d500f3"><code>b35ed06fec41</code></a> on 2026-09-27. Anything merged after that is not reflected here.</p>
+<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a"><code>c722804317d7</code></a> on 2026-09-28. Anything merged after that is not reflected here.</p>

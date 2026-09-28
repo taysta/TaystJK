@@ -84,13 +84,13 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 ## Evidence
 
-- registration: [codemp/rd-rend2/tr_init.cpp:1655](https://github.com/taysta/TaystJK/blame/b35ed06fec41c53644352743c6b199a5d5d500f3/codemp/rd-rend2/tr_init.cpp#L1655) (Cvar_Get)
-- registration: [codemp/rd-vanilla/tr_init.cpp:1715](https://github.com/taysta/TaystJK/blame/b35ed06fec41c53644352743c6b199a5d5d500f3/codemp/rd-vanilla/tr_init.cpp#L1715) (Cvar_Get)
-- registration: [codemp/rd-vulkan/tr_init.cpp:877](https://github.com/taysta/TaystJK/blame/b35ed06fec41c53644352743c6b199a5d5d500f3/codemp/rd-vulkan/tr_init.cpp#L877) (Cvar_Get)
-- behavior: [codemp/rd-vanilla/tr_bsp.cpp:1958](https://github.com/taysta/TaystJK/blame/b35ed06fec41c53644352743c6b199a5d5d500f3/codemp/rd-vanilla/tr_bsp.cpp#L1958)
-- behavior: [codemp/rd-vulkan/tr_bsp.cpp:2261](https://github.com/taysta/TaystJK/blame/b35ed06fec41c53644352743c6b199a5d5d500f3/codemp/rd-vulkan/tr_bsp.cpp#L2261)
-- behavior: [shared/rd-rend2/tr_bsp.cpp:2996](https://github.com/taysta/TaystJK/blame/b35ed06fec41c53644352743c6b199a5d5d500f3/shared/rd-rend2/tr_bsp.cpp#L2996)
-- behavior: [codemp/rd-vanilla/tr_bsp.cpp:1959](https://github.com/taysta/TaystJK/blame/b35ed06fec41c53644352743c6b199a5d5d500f3/codemp/rd-vanilla/tr_bsp.cpp#L1959)
-- behavior: [codemp/rd-vulkan/tr_bsp.cpp:2262](https://github.com/taysta/TaystJK/blame/b35ed06fec41c53644352743c6b199a5d5d500f3/codemp/rd-vulkan/tr_bsp.cpp#L2262)
+- registration: [codemp/rd-rend2/tr_init.cpp:1655](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/codemp/rd-rend2/tr_init.cpp#L1655) (Cvar_Get)
+- registration: [codemp/rd-vanilla/tr_init.cpp:1715](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/codemp/rd-vanilla/tr_init.cpp#L1715) (Cvar_Get)
+- registration: [codemp/rd-vulkan/tr_init.cpp:877](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/codemp/rd-vulkan/tr_init.cpp#L877) (Cvar_Get)
+- behavior: [codemp/rd-vanilla/tr_bsp.cpp:1958](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/codemp/rd-vanilla/tr_bsp.cpp#L1958)
+- behavior: [codemp/rd-vulkan/tr_bsp.cpp:2261](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/codemp/rd-vulkan/tr_bsp.cpp#L2261)
+- behavior: [shared/rd-rend2/tr_bsp.cpp:2996](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/shared/rd-rend2/tr_bsp.cpp#L2996)
+- behavior: [codemp/rd-vanilla/tr_bsp.cpp:1959](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/codemp/rd-vanilla/tr_bsp.cpp#L1959)
+- behavior: [codemp/rd-vulkan/tr_bsp.cpp:2262](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/codemp/rd-vulkan/tr_bsp.cpp#L2262)
 
-<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/b35ed06fec41c53644352743c6b199a5d5d500f3"><code>b35ed06fec41</code></a> on 2026-09-27. Anything merged after that is not reflected here.</p>
+<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a"><code>c722804317d7</code></a> on 2026-09-28. Anything merged after that is not reflected here.</p>
