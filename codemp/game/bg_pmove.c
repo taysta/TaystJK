@@ -1468,7 +1468,16 @@ Handles user intended acceleration
 */
 static void PM_Accelerate( vec3_t wishdir, float wishspeed, float accel )
 {
-	if ((PM_GetMovePhysics() != MV_SIEGE) || pm->ps->m_iVehicleNum || pm->ps->clientNum >= MAX_CLIENTS || pm->ps->pm_type != PM_NORMAL)
+	qboolean bunnyhop = (qboolean)(PM_GetMovePhysics() != MV_SIEGE);
+
+#ifdef _CGAME
+	if (cgs.serverMod == SVMOD_LMD && (pm->ps->fd.forcePowersActive & (1 << FP_GRIP)))
+	{//Lugormod stops you bunnyhopping away while you grip
+		bunnyhop = qfalse;
+	}
+#endif
+
+	if (bunnyhop || pm->ps->m_iVehicleNum || pm->ps->clientNum >= MAX_CLIENTS || pm->ps->pm_type != PM_NORMAL)
 	{ //standard method, allows "bunnyhopping" and whatnot
 		int			i;
 		float		addspeed, accelspeed, currentspeed;
@@ -5206,6 +5215,15 @@ static void PM_AirMove( void ) {
 			accelerate *= 0.5f;
 		}
 	}
+#ifdef _CGAME
+	if (cgs.serverMod == SVMOD_LMD && (pm->ps->fd.forcePowersActive & (1 << FP_GRIP)))
+	{//Lugormod slows you down in the air while you grip
+		pm->ps->velocity[0] *= 0.99f;
+		pm->ps->velocity[1] *= 0.99f;
+		wishspeed = pm->ps->speed;
+	}
+#endif
+
 	// not on ground, so little effect on velocity
 	if (moveStyle == MV_QW) {
 		PM_AirAccelerate(wishdir, wishspeed, pm_qw_airaccelerate);//pm_qw_airaccel
