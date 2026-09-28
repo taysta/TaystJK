@@ -1393,14 +1393,14 @@ def home_page(cvars: list[dict[str, Any]], commands: list[dict[str, Any]]) -> st
         toc=True,
         description=(
             "TaystJK is a cross-platform Jedi Academy multiplayer client built for Base JKA, "
-            "JA+/JA++, jaPRO, and Lugormod servers, with modern performance and quality-of-life improvements."
+            "JA+/JA++, jaPRO, and Lugormod servers, on Windows, Linux, and macOS."
         ),
     ) + f"""
 <div class="docs-overview">
   <section class="docs-intro" aria-labelledby="page-title">
     <p class="eyebrow">TaystJK documentation</p>
     <h1 id="page-title">One client for Jedi Academy multiplayer</h1>
-    <p class="page-lede">Move between the game's major server communities without giving up a modern, responsive client. TaystJK combines mod-aware compatibility with cross-platform performance and practical quality-of-life improvements.</p>
+    <p class="page-lede">One client for Base JKA, JA+ and JA++, jaPRO, and Lugormod servers on Windows, Linux, and macOS. Install it beside your Jedi Academy game files, then use <a href="{{{{ '/features/' | relative_url }}}}">Features</a> for client controls, <a href="{{{{ '/server-hosting/' | relative_url }}}}">Host</a> for a dedicated server, and <a href="{{{{ '/reference/' | relative_url }}}}">Reference</a> for exact cvars and commands.</p>
     <nav class="docs-intro-links" aria-label="Project links">
       <a href="{{{{ '/install/' | relative_url }}}}">Installation</a>
       <a href="{{{{ '/overview/' | relative_url }}}}">Documentation overview</a>
@@ -1443,17 +1443,17 @@ def home_page(cvars: list[dict[str, Any]], commands: list[dict[str, Any]]) -> st
     </article>
     <article>
       <span>02</span>
-      <h3>Modern where it matters</h3>
-      <p>Maintain fast, stable builds for Windows, Linux, and macOS, including current 64-bit and Apple Silicon systems.</p>
+      <h3>Current platforms</h3>
+      <p>Maintain builds for Windows, Linux, and macOS, including 64-bit and Apple Silicon systems.</p>
     </article>
     <article>
       <span>03</span>
-      <h3>Better to live with</h3>
+      <h3>HUD, controls, and rendering</h3>
       <p>Refine the HUD, controls, console, demos, downloads, rendering, and other everyday details without losing the feel of JKA.</p>
     </article>
   </div>
 
-  <p class="project-lineage">TaystJK is a considered assembly of proven work from OpenJK, EternalJK, jaPRO, JK2MV, NewJK, rend2, the community's Vulkan renderer work, and TaystJK's own contributors. Code brought across project boundaries is ported with permission, credited to its source, and maintained as part of a coherent client rather than a loose collection of patches. <a href="{{{{ '/reference/sources/' | relative_url }}}}">See the source lineage.</a></p>
+  <p class="project-lineage">TaystJK includes code from OpenJK, EternalJK, jaPRO, JK2MV, NewJK, rend2, the community's Vulkan renderer work, and TaystJK's own contributors. Code brought across project boundaries is ported with permission and credited to its source. <a href="{{{{ '/reference/sources/' | relative_url }}}}">See the source lineage.</a></p>
 
   <p class="project-lineage"><strong>jaPRO</strong> is the largest single source of what this client can do: {japro_count} of the {total_count:,} entries in the console reference originate there. TaystJK bundles jaPRO's gamecode on both sides: the client-side <code>cgame</code>, so its HUD and movement tools work on any server, and the server-side <code>jampgame</code>, so a TaystJK server hosts race, Tribes and the admin system with nothing else installed. The code is maintained upstream, so bugs in the rules belong to <a href="https://github.com/videoP/jaPRO">videoP/jaPRO</a> once you have checked they also happen without TaystJK. <a href="{{{{ '/overview/' | relative_url }}}}">What the split means.</a></p>
 </section>

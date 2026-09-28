@@ -22,7 +22,8 @@ This disclosure applies to the wiki content. It does not mean that the TaystJK s
 
 ## How claims are grounded
 
-The aim is that you never have to take a page's word for anything.
+Claims backed by code link to pinned source, so you can check them. Claims that source
+cannot prove, such as how an external service behaves, are called out where possible.
 
 **The [console reference](/TaystJK/reference/) is not written, it is extracted.** All {{ site.data.reference_stats.entries }}
 cvars and commands are parsed out of the engine source, and each entry links to the exact

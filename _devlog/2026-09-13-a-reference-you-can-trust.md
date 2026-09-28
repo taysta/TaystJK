@@ -11,7 +11,7 @@ pinned commit whenever the source moves.
 
 ## Why generate it
 
-A hand-maintained list of console variables is wrong the day after it is written. Somebody
+A hand-maintained list of console variables can miss new or renamed cvars. Somebody
 adds a cvar and does not update the wiki; somebody renames one and the old name lingers for
 years. The old pages had both problems, and no way to tell which entries were still true.
 
