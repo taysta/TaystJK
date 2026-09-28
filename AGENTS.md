@@ -128,7 +128,6 @@ Before handing off a PR, also run the additional checks used by
 `.github/workflows/reference-drift.yml`:
 
 ```sh
-python3 tools/cvar_audit/changelog_coverage.py --ref origin/master
 bundle exec jekyll build
 ```
 

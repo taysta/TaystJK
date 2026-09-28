@@ -91,8 +91,8 @@ The marker is how the change gets classified, and there are three:
 | `[-]` | Removed |
 
 Bug fixes take `[*]`, alongside improvements; the fork's changelog does not separate them.
-Name the cvar or command in the line, in backticks. That is how coverage is measured:
-`changelog_coverage.py` matches entry names as whole words against this file.
+Name the cvar or command in the line, in backticks, so readers can find its setting or
+console command.
 
 ### xdocs
 

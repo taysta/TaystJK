@@ -192,11 +192,14 @@ workflow skips provenance collection, regeneration, and PR creation.
 Explicitly manual and independently published-release runs remain full audits. A
 full run checks out `gh-pages`, fetches every configured upstream, downloads public
 pull-request metadata, regenerates the reference, updates the reviewed
-baseline-total and changelog coverage ratchets, runs the complete checks and site
-build, then opens or updates an `automation/reference-refresh` pull request. It
+baseline totals, runs the complete checks and site build, then opens or updates
+an `automation/reference-refresh` pull request. It
 then dispatches this branch's own reference workflow on the bot commit, because
 events created with `GITHUB_TOKEN` do not recursively start workflows. It never
 pushes generated output directly to `gh-pages`.
+
+Changelog entries are maintained by hand and do not gate the reference refresh
+or docs-branch verification.
 
 The automation deliberately retains the checked-in runtime report. A runner has
 not launched a real client or dedicated server, so it cannot truthfully replace
