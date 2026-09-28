@@ -168,6 +168,32 @@ This is called explicitly when the gamestate is first received,
 and whenever the server updates any serverinfo flagged cvars
 ================
 */
+//Lugormod's shared weapon table gives the old Bryar (its teleporter and grapple gun) an 800ms shot with no ammo or charge
+static void CG_SetLugormodWeaponData( void )
+{
+	static weaponData_t baseBryarOld;
+	static qboolean saved = qfalse;
+
+	if ( !saved )
+	{
+		baseBryarOld = weaponData[WP_BRYAR_OLD];
+		saved = qtrue;
+	}
+
+	weaponData[WP_BRYAR_OLD] = baseBryarOld;
+	if ( cgs.serverMod == SVMOD_LMD )
+	{
+		weaponData[WP_BRYAR_OLD].ammoLow = 0;
+		weaponData[WP_BRYAR_OLD].energyPerShot = 0;
+		weaponData[WP_BRYAR_OLD].fireTime = 800;
+		weaponData[WP_BRYAR_OLD].altEnergyPerShot = 0;
+		weaponData[WP_BRYAR_OLD].altFireTime = 800;
+		weaponData[WP_BRYAR_OLD].altChargeSubTime = 0;
+		weaponData[WP_BRYAR_OLD].altChargeSub = 0;
+		weaponData[WP_BRYAR_OLD].altMaxCharge = 0;
+	}
+}
+
 void CG_ParseServerinfo( void ) {
 	const char *info = NULL;
 	const char *gamename = NULL;
@@ -310,6 +336,8 @@ void CG_ParseServerinfo( void ) {
 		if (legacyAPI[0])
 			cgs.baseGame = (qboolean)(atoi(legacyAPI) != 0);
 	}
+
+	CG_SetLugormodWeaponData();
 
 	restrictString[0] = 'r';
 	restrictString[1] = 'e';

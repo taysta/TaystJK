@@ -11282,6 +11282,12 @@ if (pm->ps->duelInProgress)
 	if (pm->cmd.buttons & BUTTON_ALT_ATTACK)
 	{
 		amount = weaponData[pm->ps->weapon].altEnergyPerShot;
+#ifdef _CGAME
+		if (cgs.serverMod == SVMOD_LMD && pm->ps->weapon == WP_DEMP2)
+		{//Lugormod's alt DEMP2 costs more
+			amount = 25;
+		}
+#endif
 #ifdef _GAME
 		if (pm->ps->stats[STAT_RACEMODE]) {
 			if (pm->ps->stats[STAT_MOVEMENTSTYLE] == MV_COOP_JKA)
