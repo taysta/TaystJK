@@ -82,35 +82,65 @@ If the client instead fails naming a library it could not load, that is not quar
 Take a current build first. That class of fault has been a packaging problem more than
 once. If a current build still does it, report it.
 
-## The client crashes when joining a modded server
+## The client disconnects or crashes when joining a modded server
 
-Usually an architecture mismatch rather than a crash in the client.
+Three different things get reported this way, and only one of them is a crash. Work out
+which you have before changing anything:
 
-Game modules are loaded by a filename that includes the architecture
-([`sv_gameapi.cpp`](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/codemp/server/sv_gameapi.cpp#L2849)),
-so a mod directory holding 32-bit `cgame` and `ui` libraries cannot be loaded by a 64-bit
-client. If a mod was installed years ago alongside a 32-bit build, it will still be sitting
-in `GameData` and the client will try to use it.
+- **You stay connected, but the mod's HUD, menus or features are missing.** A mod module
+  did not load and the client used its own. See
+  [mod compatibility](/TaystJK/install/mod-compatibility/#first-check-whether-the-mods-modules-load).
+- **You are dropped back to the menu with an error.**
+- **The client closes**, with or without an error box.
 
-What you see is a crash or an immediate disconnect on joining a server that sets `fs_game`
-to that directory, while everything else works. Either install the matching build of the
-mod, or remove the stale mod directory. The [install guide](/TaystJK/install/) covers
-keeping TaystJK separate from an older installation. The common case is a 32-bit JA+ `ui`
-library against a 64-bit client: run the 32-bit build if you want that mod's client-side
-pieces.
+An old mod's 32-bit libraries do not cause either of the last two by themselves. The client
+asks only for the module name that matches its own architecture
+([`cgame`](https://github.com/taysta/TaystJK/blame/b35ed06fec41c53644352743c6b199a5d5d500f3/codemp/client/cl_cgameapi.cpp#L1703),
+[`ui`](https://github.com/taysta/TaystJK/blame/b35ed06fec41c53644352743c6b199a5d5d500f3/codemp/client/cl_uiapi.cpp#L1316))
+and looks for it in the server's mod directory, then `taystjk`, then `base`
+([`sys_main.cpp`](https://github.com/taysta/TaystJK/blame/b35ed06fec41c53644352743c6b199a5d5d500f3/shared/sys/sys_main.cpp#L404)).
+A 64-bit Windows client asks for `cgamex86_64.dll` and never tries a `cgamex86.dll` sitting
+beside it; it loads TaystJK's own `cgame` instead, which is the first case above. To use a
+mod's own client libraries, they have to match your build; see
+[running another client-side mod](/TaystJK/install/#mods-that-package-native-libraries-inside-a-pk3).
 
-**If the architecture already matches and it still crashes**, take a current build first.
-The engine picks between a mod's older and newer module interfaces by itself, so
-`vm_legacy` is not the fix for a crash
-([when to use `vm_legacy`](/TaystJK/install/#when-to-use-vm_legacy)).
+Reproduce it once and keep:
 
-The other common cause is the mod's own assets rather than its code. An oversized texture can
-exhaust a 32-bit client's memory while loading. If a single mod fails everywhere and others
-are fine, check it fails on another client too. If it does, it belongs with the mod's
-author; if only TaystJK fails, it is ours. See [where to report](/TaystJK/where-to-report/#before-you-send-it-elsewhere).
+- The console output from joining. If the client closes before you can read it, launch
+  with `+set logfile 2`, which writes `qconsole.log` unbuffered so it survives the exit
+  ([`common.cpp`](https://github.com/taysta/TaystJK/blame/b35ed06fec41c53644352743c6b199a5d5d500f3/codemp/qcommon/common.cpp#L216)).
+- The output of `arch`, which names your build's platform and architecture
+  ([`sys_main.cpp`](https://github.com/taysta/TaystJK/blame/b35ed06fec41c53644352743c6b199a5d5d500f3/shared/sys/sys_main.cpp#L166)),
+  and `version`.
+- Which `cgame` and `ui` files the mod directory holds, loose or inside a PK3.
+- For a client that closed, any crash report or stack trace your system produced.
 
-If the client connects but a *feature* is missing rather than crashing, that is a different
-question. See [mod compatibility](/TaystJK/install/mod-compatibility/).
+Then read the console:
+
+- **`Sys_LoadGameDll(<path>) failed: "<reason>"`** and the same from
+  `Sys_LoadLegacyGameDll` are not errors on their own. The client prints one for every
+  place it tried and could not load
+  ([`sys_main.cpp`](https://github.com/taysta/TaystJK/blame/b35ed06fec41c53644352743c6b199a5d5d500f3/shared/sys/sys_main.cpp#L417)),
+  then moves on to the next. The reason is the operating system's, so a line naming the mod
+  directory with something other than a missing file means the mod has a library of that
+  name that does not load on your system.
+- **`VM_CreateLegacy on cgame failed`**, or `on ui`, drops you to the menu
+  ([`cgame`](https://github.com/taysta/TaystJK/blame/b35ed06fec41c53644352743c6b199a5d5d500f3/codemp/client/cl_cgameapi.cpp#L1932),
+  [`ui`](https://github.com/taysta/TaystJK/blame/b35ed06fec41c53644352743c6b199a5d5d500f3/codemp/client/cl_uiapi.cpp#L1490)).
+  The first library the client could load has neither module interface, or none loaded at
+  all. The `failed` lines above it show which paths were tried: either the mod directory
+  holds a file of that name that is not a usable module, or TaystJK's own copy is
+  missing and the install needs repairing.
+- **`GetGameAPI failed on`** followed by a library name closes the client
+  ([`cgame`](https://github.com/taysta/TaystJK/blame/b35ed06fec41c53644352743c6b199a5d5d500f3/codemp/client/cl_cgameapi.cpp#L1921),
+  [`ui`](https://github.com/taysta/TaystJK/blame/b35ed06fec41c53644352743c6b199a5d5d500f3/codemp/client/cl_uiapi.cpp#L1475)).
+  The library loaded but refused the engine's module API version. See
+  [when to use `vm_legacy`](/TaystJK/install/#when-to-use-vm_legacy).
+- **Anything else, or a crash with no error**, is not explained by the module search.
+  Take a current build first, then check whether the same server and mod fail in another
+  client. Report it with what you collected;
+  [where to report](/TaystJK/where-to-report/#before-you-send-it-elsewhere) covers whether
+  it belongs with the mod's author or here.
 
 ## A server's files will not download
 
