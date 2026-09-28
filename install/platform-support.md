@@ -20,7 +20,7 @@ Each of these is decided when the client is built, so no cvar will turn it on.
 | Feature | Available on | Absent on |
 |:--|:--|:--|
 | EAX environmental audio | 32-bit Windows | 64-bit Windows, Linux, macOS |
-| Discord Rich Presence | x86-64 Windows, Linux and macOS | Apple Silicon macOS, ARM Linux |
+| Discord Rich Presence | Windows (32- and 64-bit), x86-64 Linux and macOS | Apple Silicon macOS, ARM Linux |
 | Steam playtime and overlay | Windows | Linux, macOS |
 
 ## EAX is 32-bit Windows only
@@ -41,7 +41,7 @@ off.
 If you want EAX, you need a 32-bit Windows build. There is no configuration that changes
 this.
 
-## Discord Rich Presence needs x86-64
+## Discord Rich Presence needs x86-64 on Linux and macOS
 
 Rich Presence is compiled in only where a prebuilt `discord-rpc` library exists for the
 target
