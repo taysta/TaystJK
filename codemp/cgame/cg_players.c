@@ -12918,9 +12918,18 @@ stillDoSaber:
 
 	if ((cg.snap->ps.fd.forcePowersActive & (1 << FP_SEE)) && cg.snap->ps.clientNum != cent->currentState.number)
 	{
-		legs.shaderRGBA[0] = 255;
-		legs.shaderRGBA[1] = 255;
-		legs.shaderRGBA[2] = 0;
+		if (cgs.serverMod == SVMOD_LMD && (cent->currentState.eFlags2 & EF2_LMD_CANSEE))
+		{//Lugormod shows who's carrying a money stash in green
+			legs.shaderRGBA[0] = 100;
+			legs.shaderRGBA[1] = 255;
+			legs.shaderRGBA[2] = 100;
+		}
+		else
+		{
+			legs.shaderRGBA[0] = 255;
+			legs.shaderRGBA[1] = 255;
+			legs.shaderRGBA[2] = 0;
+		}
 		legs.renderfx |= RF_MINLIGHT;
 	}
 	
@@ -13630,6 +13639,13 @@ stillDoSaber:
 			legs.shaderRGBA[0] = 255;
 			legs.shaderRGBA[1] = 255;
 			legs.shaderRGBA[2] = 0;
+		}
+
+		if (cgs.serverMod == SVMOD_LMD && (cent->currentState.eFlags2 & EF2_LMD_CANSEE))
+		{//stash carrier
+			legs.shaderRGBA[0] = 100;
+			legs.shaderRGBA[1] = 255;
+			legs.shaderRGBA[2] = 100;
 		}
 
 /*		if (cg.snap->ps.fd.forcePowerLevel[FP_SEE] <= FORCE_LEVEL_1)
