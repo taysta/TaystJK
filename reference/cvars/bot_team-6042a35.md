@@ -4,14 +4,14 @@ layout: reference
 generated: true
 nav_exclude: true
 search_exclude: false
-description: "Put every added bot on one team in team game types."
+description: "Force bots onto one team in team game types."
 ---
 
 # `bot_team`
 
 <span class="label ref-origin ref-origin-japro">jaPRO</span>
 
-In team game types, 1 puts every bot added to the server on the blue team and 2 or higher puts them on red. 0 leaves bots to the normal team balancing.
+In team game types, 1 puts bots on the blue team and 2 or higher puts them on red, overriding any team given to addbot. 0 keeps the team given to addbot and balances a bot added without one. Bots are placed again at every map change or restart: on the chosen team, or rebalanced across the teams when this is 0.
 
 ## At a glance
 
@@ -36,9 +36,9 @@ In team game types, 1 puts every bot added to the server on the blue team and 2 
 
 | Value | Meaning | Evidence |
 |:--|:--|:--|
-| `0` | Balance bots across the teams like players. | [codemp/game/g_bot.c:987](https://github.com/taysta/TaystJK/blame/b35ed06fec41c53644352743c6b199a5d5d500f3/codemp/game/g_bot.c#L987) |
-| `1` | Put bots on the blue team. | [codemp/game/g_bot.c:980](https://github.com/taysta/TaystJK/blame/b35ed06fec41c53644352743c6b199a5d5d500f3/codemp/game/g_bot.c#L980) |
-| `>=2` | Put bots on the red team. | [codemp/game/g_bot.c:982](https://github.com/taysta/TaystJK/blame/b35ed06fec41c53644352743c6b199a5d5d500f3/codemp/game/g_bot.c#L982) |
+| `0` | Keep the team given to addbot, or balance a bot added without one. Bots are rebalanced at each map change or restart. | [codemp/game/g_bot.c:986](https://github.com/taysta/TaystJK/blame/b35ed06fec41c53644352743c6b199a5d5d500f3/codemp/game/g_bot.c#L986) |
+| `1` | Put bots on the blue team, overriding the team given to addbot. | [codemp/game/g_bot.c:980](https://github.com/taysta/TaystJK/blame/b35ed06fec41c53644352743c6b199a5d5d500f3/codemp/game/g_bot.c#L980) |
+| `>=2` | Put bots on the red team, overriding the team given to addbot. | [codemp/game/g_bot.c:982](https://github.com/taysta/TaystJK/blame/b35ed06fec41c53644352743c6b199a5d5d500f3/codemp/game/g_bot.c#L982) |
 
 ## Flags
 

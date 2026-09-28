@@ -289,14 +289,14 @@
       ]
     },
     "bot_team": {
-      "description": "In team game types, 1 puts every bot added to the server on the blue team and 2 or higher puts them on red. 0 leaves bots to the normal team balancing.",
+      "description": "In team game types, 1 puts bots on the blue team and 2 or higher puts them on red, overriding any team given to addbot. 0 keeps the team given to addbot and balances a bot added without one. Bots are placed again at every map change or restart: on the chosen team, or rebalanced across the teams when this is 0.",
       "derivation": "code-trace",
-      "summary": "Put every added bot on one team in team game types.",
+      "summary": "Force bots onto one team in team game types.",
       "value_type": "int",
       "values": [
-        {"evidence": {"line": 987, "path": "codemp/game/g_bot.c"}, "meaning": "Balance bots across the teams like players.", "value": "0"},
-        {"evidence": {"line": 980, "path": "codemp/game/g_bot.c"}, "meaning": "Put bots on the blue team.", "value": "1"},
-        {"evidence": {"line": 982, "path": "codemp/game/g_bot.c"}, "meaning": "Put bots on the red team.", "value": ">=2"}
+        {"evidence": {"line": 986, "path": "codemp/game/g_bot.c"}, "meaning": "Keep the team given to addbot, or balance a bot added without one. Bots are rebalanced at each map change or restart.", "value": "0"},
+        {"evidence": {"line": 980, "path": "codemp/game/g_bot.c"}, "meaning": "Put bots on the blue team, overriding the team given to addbot.", "value": "1"},
+        {"evidence": {"line": 982, "path": "codemp/game/g_bot.c"}, "meaning": "Put bots on the red team, overriding the team given to addbot.", "value": ">=2"}
       ]
     },
     "cl_chatbubbleself": {

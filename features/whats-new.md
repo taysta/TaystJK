@@ -62,7 +62,7 @@ entry is real; treat the date as approximate.
 
 ### Bots & AI (1)
 
-- [`bot_team`](/TaystJK/reference/cvars/bot_team-6042a35/) <span class="label ref-origin ref-origin-japro">jaPRO</span> <span class="meta-chip">2023-12-11</span>: Put every added bot on one team in team game types.
+- [`bot_team`](/TaystJK/reference/cvars/bot_team-6042a35/) <span class="label ref-origin ref-origin-japro">jaPRO</span> <span class="meta-chip">2023-12-11</span>: Force bots onto one team in team game types.
 
 ### Chat & social (3)
 
@@ -429,7 +429,7 @@ entry is real; treat the date as approximate.
 - [`bot_s4`](/TaystJK/reference/cvars/bot_s4-e27ebfb/) <span class="label ref-origin ref-origin-japro">jaPRO</span> <span class="status-chip">2018-01-01 · needs review</span>
 - [`bot_s5`](/TaystJK/reference/cvars/bot_s5-cc1e024/) <span class="label ref-origin ref-origin-japro">jaPRO</span> <span class="status-chip">2018-01-01 · needs review</span>
 - [`bot_s6`](/TaystJK/reference/cvars/bot_s6-67ce6b4/) <span class="label ref-origin ref-origin-japro">jaPRO</span> <span class="status-chip">2018-01-01 · needs review</span>
-- [`bot_team`](/TaystJK/reference/cvars/bot_team-6042a35/) <span class="label ref-origin ref-origin-japro">jaPRO</span> <span class="meta-chip">2023-12-11</span>: Put every added bot on one team in team game types.
+- [`bot_team`](/TaystJK/reference/cvars/bot_team-6042a35/) <span class="label ref-origin ref-origin-japro">jaPRO</span> <span class="meta-chip">2023-12-11</span>: Force bots onto one team in team game types.
 - [`g_newBotAI`](/TaystJK/reference/cvars/g_newbotai-156e15f/) <span class="label ref-origin ref-origin-japro">jaPRO</span> <span class="status-chip">2018-01-01 · needs review</span>
 - [`g_newBotAITarget`](/TaystJK/reference/cvars/g_newbotaitarget-9625e4f/) <span class="label ref-origin ref-origin-japro">jaPRO</span> <span class="status-chip">2018-01-01 · needs review</span>: -2=Target closest excluding otherbots. -1=target closest. 0-31=target clientnum.
 - [`g_scoreNPCs`](/TaystJK/reference/cvars/g_scorenpcs-6ccb95d/) <span class="label ref-origin ref-origin-japro">jaPRO</span> <span class="status-chip">2018-10-02 · needs review</span>
@@ -1237,7 +1237,7 @@ entry is real; treat the date as approximate.
 - [`bot_s4`](/TaystJK/reference/cvars/bot_s4-e27ebfb/) <span class="label ref-origin ref-origin-japro">jaPRO</span> <span class="status-chip">2018-01-01 · needs review</span>
 - [`bot_s5`](/TaystJK/reference/cvars/bot_s5-cc1e024/) <span class="label ref-origin ref-origin-japro">jaPRO</span> <span class="status-chip">2018-01-01 · needs review</span>
 - [`bot_s6`](/TaystJK/reference/cvars/bot_s6-67ce6b4/) <span class="label ref-origin ref-origin-japro">jaPRO</span> <span class="status-chip">2018-01-01 · needs review</span>
-- [`bot_team`](/TaystJK/reference/cvars/bot_team-6042a35/) <span class="label ref-origin ref-origin-japro">jaPRO</span> <span class="meta-chip">2023-12-11</span>: Put every added bot on one team in team game types.
+- [`bot_team`](/TaystJK/reference/cvars/bot_team-6042a35/) <span class="label ref-origin ref-origin-japro">jaPRO</span> <span class="meta-chip">2023-12-11</span>: Force bots onto one team in team game types.
 - [`botlist`](/TaystJK/reference/commands/botlist-5978b77/) <span class="label ref-origin ref-origin-openjk">OpenJK</span> <span class="status-chip">2013-04-08 · needs review</span>
 - [`g_newBotAI`](/TaystJK/reference/cvars/g_newbotai-156e15f/) <span class="label ref-origin ref-origin-japro">jaPRO</span> <span class="status-chip">2018-01-01 · needs review</span>
 - [`g_newBotAITarget`](/TaystJK/reference/cvars/g_newbotaitarget-9625e4f/) <span class="label ref-origin ref-origin-japro">jaPRO</span> <span class="status-chip">2018-01-01 · needs review</span>: -2=Target closest excluding otherbots. -1=target closest. 0-31=target clientnum.

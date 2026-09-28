@@ -47,7 +47,7 @@
   "bot_s6":{"n":"bot_s6","u":"/TaystJK/reference/cvars/bot_s6-67ce6b4/","e":0,"b":0,"d":"64","s":"","f":"default"},
   "bot_saveroutingcache":{"n":"bot_saveroutingcache","u":"/TaystJK/reference/cvars/bot_saveroutingcache-051c35c/","e":1,"b":1,"d":"0","s":"Save routing cache","f":"server"},
   "bot_strafeoffset":{"n":"bot_strafeOffset","u":"/TaystJK/reference/cvars/bot_strafeoffset-0fc4233/","e":0,"b":0,"d":"0","s":"","f":"default"},
-  "bot_team":{"n":"bot_team","u":"/TaystJK/reference/cvars/bot_team-6042a35/","e":0,"b":0,"d":"0","s":"Put every added bot on one team in team game types.","f":"server","v":[["0","Balance bots across the teams like players."],["1","Put bots on the blue team."],[">=2","Put bots on the red team."]]},
+  "bot_team":{"n":"bot_team","u":"/TaystJK/reference/cvars/bot_team-6042a35/","e":0,"b":0,"d":"0","s":"Force bots onto one team in team game types.","f":"server","v":[["0","Keep the team given to addbot, or balance a bot added without one. Bots are rebalanced at each map change or restart."],["1","Put bots on the blue team, overriding the team given to addbot."],[">=2","Put bots on the red team, overriding the team given to addbot."]]},
   "bot_testclusters":{"n":"bot_testclusters","u":"/TaystJK/reference/cvars/bot_testclusters-d475267/","e":1,"b":1,"d":"0","s":"Test the AAS clusters","f":"server"},
   "bot_testichat":{"n":"bot_testichat","u":"/TaystJK/reference/cvars/bot_testichat-76c5c10/","e":1,"b":1,"d":"0","s":"Test ichats","f":"server"},
   "bot_testrchat":{"n":"bot_testrchat","u":"/TaystJK/reference/cvars/bot_testrchat-aac39af/","e":1,"b":1,"d":"0","s":"Test rchats","f":"server"},
