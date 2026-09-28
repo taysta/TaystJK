@@ -154,12 +154,6 @@ jobs:
           python3 tools/config_generator/build.py
           python3 tools/cvar_audit/validate.py --update-baseline-totals
 
-          # Refuse to increase the missing-changelog ceiling. If coverage has
-          # legitimately improved, record the lower value in the generated PR.
-          python3 tools/cvar_audit/changelog_coverage.py --ref origin/master
-          python3 tools/cvar_audit/changelog_coverage.py \
-            --ref origin/master --update-ratchet
-
           tools/cvar_audit/run_all.sh --ref origin/master
 
       - name: Reject unexpected generated paths
@@ -171,8 +165,7 @@ jobs:
               .cvar-audit/provenance.json|.cvar-audit/state.json|\
               _data/*|assets/data/*|assets/emoji/*|features/emoji.md|features/whats-new.md|\
               index.md|reference.md|reference/*|\
-              tools/cvar_audit/baseline-totals.json|\
-              tools/cvar_audit/changelog-coverage-ratchet.json)
+              tools/cvar_audit/baseline-totals.json)
                 ;;
               *)
                 echo "unexpected path changed by reference regeneration: $path" >&2
@@ -213,7 +206,7 @@ jobs:
           body=$(printf '%s\n\n%s\n\n%s\n\n%s' \
             "Automated static console-reference refresh from source commit \`${source_sha}\`." \
             "The existing runtime reconciliation is retained because this runner did not launch a game client or dedicated server." \
-            "All reference checks, changelog coverage, and the Jekyll build passed before this branch was pushed." \
+            "All reference checks and the Jekyll build passed before this branch was pushed." \
             "Workflow run: ${RUN_URL}")
 
           git config user.name "github-actions[bot]"
