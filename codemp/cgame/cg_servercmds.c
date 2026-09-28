@@ -288,7 +288,7 @@ void CG_ParseServerinfo( void ) {
 			cgs.serverMod = SVMOD_BASEJKA;
 			cgs.baseGame = qtrue;
 		}
-		else if (!Q_stricmp(gamename, "^5L^7ugormod ^5v3") || !Q_stricmp(gamename, "Lugormod"))
+		else if (!Q_stricmp(gamename, "^5L^7ugormod ^5v3") || !Q_stricmp(gamename, "Lugormod") || !Q_stricmp(gamename, "Lugormod X"))
 		{
 			cgs.serverMod = SVMOD_LMD;
 		}
