@@ -135,6 +135,16 @@ static QINLINE float PM_LugormodScale( void )
 	return 1.0f;
 }
 
+//Lugormod admins get a stronger jetpack in FFA
+static QINLINE qboolean PM_LugormodAdminJetpack( void )
+{
+#ifdef _CGAME
+	return (qboolean)(cgs.serverMod == SVMOD_LMD && pm->ps->userInt1 && pm->gametype == GT_FFA);
+#else
+	return qfalse;
+#endif
+}
+
 //japro/dfmania movement parameters
 
 int		c_pmove = 0;
@@ -5133,7 +5143,11 @@ static void PM_AirMove( void ) {
 		}
 		wishvel[2] = 0;
 
-		if (pm->cmd.upmove <= 0)
+		if (PM_LugormodAdminJetpack())
+		{
+			VectorScale(wishvel, 5.0f, wishvel);
+		}
+		else if (pm->cmd.upmove <= 0)
 		{
             VectorScale(wishvel, 0.8f, wishvel);
 		}
@@ -15363,7 +15377,7 @@ void PmoveSingle (pmove_t *pmove) {
 			pm->ps->velocity[1] += Q_irand(-100, 100);
 		}
 
-		if (pm->cmd.upmove > 0 && pm->ps->velocity[2] < 256)
+		if (pm->cmd.upmove > 0 && (pm->ps->velocity[2] < 256 || PM_LugormodAdminJetpack()))
 		{ //cap upward velocity off at 256. Seems reasonable.
 			float addIn = 12.0f;
 
@@ -15386,7 +15400,7 @@ void PmoveSingle (pmove_t *pmove) {
 */
 			if (pm->ps->velocity[2] > 0)
 			{
-				addIn = 12.0f - (gDist / 64.0f);
+				addIn = PM_LugormodAdminJetpack() ? 18.0f - (gDist / 256.0f) : 12.0f - (gDist / 64.0f);
 			}
 
 			if (addIn > 0.0f)
