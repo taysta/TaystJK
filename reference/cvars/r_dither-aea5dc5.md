@@ -12,7 +12,7 @@ search_exclude: false
 
 <p class="ref-warning"><strong>Needs review.</strong> The inventory/provenance evidence is recorded, but some behavior, options, or attribution still lacks a direct user-facing source.</p>
 
-Set dithering mode: 0 - disabled 1 - ordered Requires \\r_fbo 1
+Set dithering mode: 0 - disabled. 1 - ordered. Requires r_fbo 1
 
 ## At a glance
 
@@ -38,7 +38,7 @@ Set dithering mode: 0 - disabled 1 - ordered Requires \\r_fbo 1
 | Value | Meaning | Evidence |
 |:--|:--|:--|
 | `0` | Disabled. | [codemp/rd-vulkan/tr_init.cpp:934](https://github.com/taysta/TaystJK/blame/b35ed06fec41c53644352743c6b199a5d5d500f3/codemp/rd-vulkan/tr_init.cpp#L934) |
-| `1` | Ordered Requires \\r_fbo 1. | [codemp/rd-vulkan/tr_init.cpp:934](https://github.com/taysta/TaystJK/blame/b35ed06fec41c53644352743c6b199a5d5d500f3/codemp/rd-vulkan/tr_init.cpp#L934) |
+| `1` | Ordered. Requires r_fbo 1. | [codemp/rd-vulkan/tr_init.cpp:934](https://github.com/taysta/TaystJK/blame/b35ed06fec41c53644352743c6b199a5d5d500f3/codemp/rd-vulkan/tr_init.cpp#L934) |
 
 ## Enforced ranges
 

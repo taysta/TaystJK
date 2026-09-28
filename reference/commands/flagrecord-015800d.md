@@ -10,9 +10,7 @@ search_exclude: false
 
 <span class="label ref-origin ref-origin-japro">jaPRO</span>
 
-<p class="ref-warning"><strong>Needs review.</strong> The inventory/provenance evidence is recorded, but some behavior, options, or attribution still lacks a direct user-facing source.</p>
-
-Runs `Cmd_InvalidateRace_f` in the game module.
+Marks a player's race record on this server's local database. Mode f flags it invalid, u clears that flag and d flags it for deletion. Write spaces in the course name as *, and use season -1 for every season before 5. Needs the database admin permission.
 
 ## At a glance
 
@@ -22,17 +20,17 @@ Runs `Cmd_InvalidateRace_f` in the game module.
 | Module | `game` |
 | Renderer | All / not renderer-specific |
 | Network scope | `needs-server-support`: Sent to, or only useful with, a supporting game server. |
-| Derivation | `documented` |
+| Derivation | `code-trace` |
 | Confidence | `high` |
 | Added | 2023-12-11 in [`9b57ee1b8`](https://github.com/taysta/TaystJK/commit/9b57ee1b856693898de14daff824dcf111f94b57) ([how to compare this against your build](/TaystJK/features/whats-new/#how-to-tell-what-your-build-has)) |
 | In-game xdocs | No |
 | In-game menu | No |
-| Syntax | `flagRecord <username> <coursename> <style> <season> <mode: f, u, d>. Use * in place of space in the coursename` |
+| Syntax | `flagRecord <username> <coursename> <style> <season> <f|u|d>` |
 | Cheat protected | No |
 
 ## Arguments and gating
 
-No verified argument schema is available beyond the syntax shown above.
+Arguments: `username`, `coursename`, `style`, `season`, `mode`.
 Gating: `CMD_NOINTERMISSION`.
 
 ## Provenance

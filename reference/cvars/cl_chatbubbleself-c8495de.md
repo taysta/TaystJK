@@ -10,9 +10,7 @@ search_exclude: false
 
 <span class="label ref-origin ref-origin-taystjk">TaystJK</span>
 
-<p class="ref-warning"><strong>Needs review.</strong> The inventory/provenance evidence is recorded, but some behavior, options, or attribution still lacks a direct user-facing source.</p>
-
-Controls `cl_chatBubbleSelf` in the engine-client module. Consult the cited behavior reads before relying on values not listed here.
+While on, the client sends the talk button whenever the console, chat field or a menu has focus, and while the game is unfocused or minimized if cl_chatBubbleUnfocused is on. The game turns the talk button into the chat bubble other players see over you. 0 never sends it.
 
 ## At a glance
 
@@ -37,8 +35,8 @@ Controls `cl_chatBubbleSelf` in the engine-client module. Consult the cited beha
 
 | Value | Meaning | Evidence |
 |:--|:--|:--|
-| `0` | Disabled. | [codemp/client/cl_input.cpp:1265](https://github.com/taysta/TaystJK/blame/b35ed06fec41c53644352743c6b199a5d5d500f3/codemp/client/cl_input.cpp#L1265) |
-| `1` | Enabled. | [codemp/client/cl_input.cpp:1265](https://github.com/taysta/TaystJK/blame/b35ed06fec41c53644352743c6b199a5d5d500f3/codemp/client/cl_input.cpp#L1265) |
+| `0` | Never show your chat bubble. | [codemp/client/cl_input.cpp:1265](https://github.com/taysta/TaystJK/blame/b35ed06fec41c53644352743c6b199a5d5d500f3/codemp/client/cl_input.cpp#L1265) |
+| `1` | Show your chat bubble while typing or in a menu. | [codemp/client/cl_input.cpp:1266](https://github.com/taysta/TaystJK/blame/b35ed06fec41c53644352743c6b199a5d5d500f3/codemp/client/cl_input.cpp#L1266) |
 
 ## Flags
 

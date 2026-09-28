@@ -12,7 +12,7 @@ search_exclude: false
 
 <p class="ref-warning"><strong>Needs review.</strong> The inventory/provenance evidence is recorded, but some behavior, options, or attribution still lacks a direct user-facing source.</p>
 
-Determines which policy of enforcement is used for client's \"rate\" cvar
+Determines which policy of enforcement is used for client's "rate" cvar
 
 ## At a glance
 

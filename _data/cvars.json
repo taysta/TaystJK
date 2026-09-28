@@ -7971,7 +7971,7 @@
       }
     ],
     "derivation": "code-trace",
-    "description": "Controls `bot_team` in the game module. Consult the cited behavior reads before relying on values not listed here.",
+    "description": "In team game types, 1 puts every bot added to the server on the blue team and 2 or higher puts them on red. 0 leaves bots to the normal team balancing.",
     "engine_managed": false,
     "engine_managed_basis": [],
     "evidence": [
@@ -8140,29 +8140,33 @@
     "renderer": [],
     "requires_restart": false,
     "source_commit": "b35ed06fec41c53644352743c6b199a5d5d500f3",
-    "status": "needs-review",
-    "summary": "Controls `bot_team` in the game module.",
-    "value_type": "bool",
+    "status": "documented",
+    "summary": "Put every added bot on one team in team game types.",
+    "value_type": "int",
     "values": [
       {
         "evidence": {
-          "line": 980,
-          "path": "codemp/game/g_bot.c",
-          "score": 7,
-          "text": "if (bot_team.integer == 1)"
+          "line": 987,
+          "path": "codemp/game/g_bot.c"
         },
-        "meaning": "Disabled.",
+        "meaning": "Balance bots across the teams like players.",
         "value": "0"
       },
       {
         "evidence": {
           "line": 980,
-          "path": "codemp/game/g_bot.c",
-          "score": 7,
-          "text": "if (bot_team.integer == 1)"
+          "path": "codemp/game/g_bot.c"
         },
-        "meaning": "Enabled.",
+        "meaning": "Put bots on the blue team.",
         "value": "1"
+      },
+      {
+        "evidence": {
+          "line": 982,
+          "path": "codemp/game/g_bot.c"
+        },
+        "meaning": "Put bots on the red team.",
+        "value": ">=2"
       }
     ],
     "variables": [
@@ -101526,7 +101530,7 @@
       }
     ],
     "derivation": "code-trace",
-    "description": "Controls `cl_chatBubbleSelf` in the engine-client module. Consult the cited behavior reads before relying on values not listed here.",
+    "description": "While on, the client sends the talk button whenever the console, chat field or a menu has focus, and while the game is unfocused or minimized if cl_chatBubbleUnfocused is on. The game turns the talk button into the chat bubble other players see over you. 0 never sends it.",
     "engine_managed": false,
     "engine_managed_basis": [],
     "evidence": [
@@ -101677,28 +101681,24 @@
     "renderer": [],
     "requires_restart": false,
     "source_commit": "b35ed06fec41c53644352743c6b199a5d5d500f3",
-    "status": "needs-review",
-    "summary": "Controls `cl_chatBubbleSelf` in the engine-client module.",
+    "status": "documented",
+    "summary": "Show your chat bubble to other players while the console, chat or a menu is open.",
     "value_type": "bool",
     "values": [
       {
         "evidence": {
           "line": 1265,
-          "path": "codemp/client/cl_input.cpp",
-          "score": 7,
-          "text": "if ( cl_chatBubbleSelf->integer ) {"
+          "path": "codemp/client/cl_input.cpp"
         },
-        "meaning": "Disabled.",
+        "meaning": "Never show your chat bubble.",
         "value": "0"
       },
       {
         "evidence": {
-          "line": 1265,
-          "path": "codemp/client/cl_input.cpp",
-          "score": 7,
-          "text": "if ( cl_chatBubbleSelf->integer ) {"
+          "line": 1266,
+          "path": "codemp/client/cl_input.cpp"
         },
-        "meaning": "Enabled.",
+        "meaning": "Show your chat bubble while typing or in a menu.",
         "value": "1"
       }
     ],
@@ -262472,7 +262472,7 @@
       }
     ],
     "derivation": "documented",
-    "description": "Enable bloom effect Requires \\\\r_fbo 1",
+    "description": "Enable bloom effect. Requires r_fbo 1",
     "engine_managed": false,
     "engine_managed_basis": [],
     "evidence": [
@@ -262742,7 +262742,7 @@
     "requires_restart": true,
     "source_commit": "b35ed06fec41c53644352743c6b199a5d5d500f3",
     "status": "needs-review",
-    "summary": "Enable bloom effect Requires \\\\r_fbo 1",
+    "summary": "Enable bloom effect. Requires r_fbo 1",
     "value_type": "bool",
     "values": [
       {
@@ -263109,7 +263109,7 @@
       }
     ],
     "derivation": "documented",
-    "description": "Modulate extracted color: 0: off (color = color, i.e. no changes) 1: by itself (color = color * color) 2: by intensity (color = color * luma(color))",
+    "description": "Modulate extracted color: 0: off (color = color, i.e. no changes). 1: by itself (color = color * color). 2: by intensity (color = color * luma(color))",
     "engine_managed": false,
     "engine_managed_basis": [],
     "evidence": [
@@ -263339,7 +263339,7 @@
     "requires_restart": false,
     "source_commit": "b35ed06fec41c53644352743c6b199a5d5d500f3",
     "status": "documented",
-    "summary": "Modulate extracted color: 0: off (color = color, i.e. no changes) 1: by itself (color = color * color) 2: by intensity (color = color * luma(color))",
+    "summary": "Modulate extracted color: 0: off (color = color, i.e. no changes). 1: by itself (color = color * color). 2: by intensity (color = color * luma(color))",
     "value_type": "enum",
     "values": [
       {
@@ -263710,7 +263710,7 @@
       }
     ],
     "derivation": "documented",
-    "description": "Color extraction mode: 0: (r|g|b) >= threshold 1: (r + g + b ) / 3 >= threshold 2: luma(r, g, b) >= threshold",
+    "description": "Color extraction mode: 0: (r|g|b) >= threshold. 1: (r + g + b ) / 3 >= threshold. 2: luma(r, g, b) >= threshold",
     "engine_managed": false,
     "engine_managed_basis": [],
     "evidence": [
@@ -263940,7 +263940,7 @@
     "requires_restart": false,
     "source_commit": "b35ed06fec41c53644352743c6b199a5d5d500f3",
     "status": "documented",
-    "summary": "Color extraction mode: 0: (r|g|b) >= threshold 1: (r + g + b ) / 3 >= threshold 2: luma(r, g, b) >= threshold",
+    "summary": "Color extraction mode: 0: (r|g|b) >= threshold. 1: (r + g + b ) / 3 >= threshold. 2: luma(r, g, b) >= threshold",
     "value_type": "enum",
     "values": [
       {
@@ -272204,7 +272204,7 @@
       }
     ],
     "derivation": "documented",
-    "description": "Select physical device to render: 0+ - use explicit device index -1 - first discrete GPU -2 - first integrated GPU",
+    "description": "Select physical device to render: 0+ - use explicit device index. -1 - first discrete GPU. -2 - first integrated GPU",
     "engine_managed": false,
     "engine_managed_basis": [],
     "evidence": [
@@ -272357,7 +272357,7 @@
     "requires_restart": true,
     "source_commit": "b35ed06fec41c53644352743c6b199a5d5d500f3",
     "status": "documented",
-    "summary": "Select physical device to render: 0+ - use explicit device index -1 - first discrete GPU -2 - first integrated GPU",
+    "summary": "Select physical device to render: 0+ - use explicit device index. -1 - first discrete GPU. -2 - first integrated GPU",
     "value_type": "enum",
     "values": [
       {
@@ -273709,7 +273709,7 @@
       }
     ],
     "derivation": "documented",
-    "description": "Set dithering mode: 0 - disabled 1 - ordered Requires \\\\r_fbo 1",
+    "description": "Set dithering mode: 0 - disabled. 1 - ordered. Requires r_fbo 1",
     "engine_managed": false,
     "engine_managed_basis": [],
     "evidence": [
@@ -273988,7 +273988,7 @@
     "requires_restart": false,
     "source_commit": "b35ed06fec41c53644352743c6b199a5d5d500f3",
     "status": "needs-review",
-    "summary": "Set dithering mode: 0 - disabled 1 - ordered Requires \\\\r_fbo 1",
+    "summary": "Set dithering mode: 0 - disabled. 1 - ordered. Requires r_fbo 1",
     "value_type": "bool",
     "values": [
       {
@@ -274004,7 +274004,7 @@
           "line": 934,
           "path": "codemp/rd-vulkan/tr_init.cpp"
         },
-        "meaning": "Ordered Requires \\\\r_fbo 1.",
+        "meaning": "Ordered. Requires r_fbo 1.",
         "value": "1"
       }
     ],
@@ -279040,7 +279040,7 @@
       }
     ],
     "derivation": "documented",
-    "description": "Enable dynamic glow effect Requires \\\\r_fbo 1",
+    "description": "Enable dynamic glow effect. Requires r_fbo 1",
     "engine_managed": false,
     "engine_managed_basis": [],
     "evidence": [
@@ -279501,7 +279501,7 @@
     "requires_restart": true,
     "source_commit": "b35ed06fec41c53644352743c6b199a5d5d500f3",
     "status": "documented",
-    "summary": "Enable dynamic glow effect Requires \\\\r_fbo 1",
+    "summary": "Enable dynamic glow effect. Requires r_fbo 1",
     "value_type": "enum",
     "values": [
       {
@@ -322601,7 +322601,7 @@
       }
     ],
     "derivation": "documented",
-    "description": "Select color bits used for presentation surfaces Requires \\\\r_fbo 1",
+    "description": "Select color bits used for presentation surfaces. Requires r_fbo 1",
     "engine_managed": false,
     "engine_managed_basis": [],
     "evidence": [
@@ -322850,7 +322850,7 @@
     "requires_restart": true,
     "source_commit": "b35ed06fec41c53644352743c6b199a5d5d500f3",
     "status": "needs-review",
-    "summary": "Select color bits used for presentation surfaces Requires \\\\r_fbo 1",
+    "summary": "Select color bits used for presentation surfaces. Requires r_fbo 1",
     "value_type": "int",
     "values": [],
     "variables": [
@@ -325009,7 +325009,7 @@
       }
     ],
     "derivation": "documented",
-    "description": "Scaling mode to be used with custom render resolution: 0 - disabled 1 - nearest filtering, stretch to full size 2 - nearest filtering, preserve aspect ratio (black bars on sides) 3 - linear filtering, stretch to full size 4 - linear filtering, preserve aspect ratio (black bars on sides)",
+    "description": "Scaling mode to be used with custom render resolution: 0 - disabled. 1 - nearest filtering, stretch to full size. 2 - nearest filtering, preserve aspect ratio (black bars on sides). 3 - linear filtering, stretch to full size. 4 - linear filtering, preserve aspect ratio (black bars on sides)",
     "engine_managed": false,
     "engine_managed_basis": [],
     "evidence": [
@@ -325276,7 +325276,7 @@
     "requires_restart": true,
     "source_commit": "b35ed06fec41c53644352743c6b199a5d5d500f3",
     "status": "needs-review",
-    "summary": "Scaling mode to be used with custom render resolution: 0 - disabled 1 - nearest filtering, stretch to full size 2 - nearest filtering, preserve aspect ratio (black bars on sides) 3 - linear filtering, stretch to full size 4 - linear filtering, preserve aspect ratio (black bars on sides)",
+    "summary": "Scaling mode to be used with custom render resolution: 0 - disabled. 1 - nearest filtering, stretch to full size. 2 - nearest filtering, preserve aspect ratio (black bars on sides). 3 - linear filtering, stretch to full size. 4 - linear filtering, preserve aspect ratio (black bars on sides)",
     "value_type": "enum",
     "values": [
       {
@@ -376507,7 +376507,7 @@
       }
     ],
     "derivation": "documented",
-    "description": "Determines which policy of enforcement is used for client's \\\"rate\\\" cvar",
+    "description": "Determines which policy of enforcement is used for client's \"rate\" cvar",
     "engine_managed": false,
     "engine_managed_basis": [],
     "evidence": [
@@ -376853,7 +376853,7 @@
     "requires_restart": false,
     "source_commit": "b35ed06fec41c53644352743c6b199a5d5d500f3",
     "status": "needs-review",
-    "summary": "Determines which policy of enforcement is used for client's \\\"rate\\\" cvar",
+    "summary": "Determines which policy of enforcement is used for client's \"rate\" cvar",
     "value_type": "enum",
     "values": [
       {
@@ -379859,7 +379859,7 @@
       }
     ],
     "derivation": "documented",
-    "description": "Determines which policy of enforcement is used for client's \\\"snaps\\\" cvar",
+    "description": "Determines which policy of enforcement is used for client's \"snaps\" cvar",
     "engine_managed": false,
     "engine_managed_basis": [],
     "evidence": [
@@ -380263,7 +380263,7 @@
     "requires_restart": false,
     "source_commit": "b35ed06fec41c53644352743c6b199a5d5d500f3",
     "status": "needs-review",
-    "summary": "Determines which policy of enforcement is used for client's \\\"snaps\\\" cvar",
+    "summary": "Determines which policy of enforcement is used for client's \"snaps\" cvar",
     "value_type": "enum",
     "values": [
       {

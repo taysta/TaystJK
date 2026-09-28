@@ -12,7 +12,7 @@ search_exclude: false
 
 <p class="ref-warning"><strong>Needs review.</strong> The inventory/provenance evidence is recorded, but some behavior, options, or attribution still lacks a direct user-facing source.</p>
 
-Scaling mode to be used with custom render resolution: 0 - disabled 1 - nearest filtering, stretch to full size 2 - nearest filtering, preserve aspect ratio (black bars on sides) 3 - linear filtering, stretch to full size 4 - linear filtering, preserve aspect ratio (black bars on sides)
+Scaling mode to be used with custom render resolution: 0 - disabled. 1 - nearest filtering, stretch to full size. 2 - nearest filtering, preserve aspect ratio (black bars on sides). 3 - linear filtering, stretch to full size. 4 - linear filtering, preserve aspect ratio (black bars on sides)
 
 ## At a glance
 

@@ -10,7 +10,7 @@ search_exclude: false
 
 <span class="label ref-origin ref-origin-vulkan">Vulkan</span>
 
-Color extraction mode: 0: (r|g|b) >= threshold 1: (r + g + b ) / 3 >= threshold 2: luma(r, g, b) >= threshold
+Color extraction mode: 0: (r|g|b) >= threshold. 1: (r + g + b ) / 3 >= threshold. 2: luma(r, g, b) >= threshold
 
 ## At a glance
 

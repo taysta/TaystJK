@@ -12,7 +12,7 @@ search_exclude: false
 
 <p class="ref-warning"><strong>Needs review.</strong> The inventory/provenance evidence is recorded, but some behavior, options, or attribution still lacks a direct user-facing source.</p>
 
-Enable bloom effect Requires \\r_fbo 1
+Enable bloom effect. Requires r_fbo 1
 
 ## At a glance
 

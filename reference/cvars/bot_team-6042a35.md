@@ -10,9 +10,7 @@ search_exclude: false
 
 <span class="label ref-origin ref-origin-japro">jaPRO</span>
 
-<p class="ref-warning"><strong>Needs review.</strong> The inventory/provenance evidence is recorded, but some behavior, options, or attribution still lacks a direct user-facing source.</p>
-
-Controls `bot_team` in the game module. Consult the cited behavior reads before relying on values not listed here.
+In team game types, 1 puts every bot added to the server on the blue team and 2 or higher puts them on red. 0 leaves bots to the normal team balancing.
 
 ## At a glance
 
@@ -28,7 +26,7 @@ Controls `bot_team` in the game module. Consult the cited behavior reads before 
 | In-game xdocs | No |
 | In-game menu | No |
 | Default | `0` |
-| Value type | `bool` |
+| Value type | `int` |
 | Restart | No latch flag is registered. |
 | Cheat protected | No |
 | Manually settable | Yes |
@@ -37,8 +35,9 @@ Controls `bot_team` in the game module. Consult the cited behavior reads before 
 
 | Value | Meaning | Evidence |
 |:--|:--|:--|
-| `0` | Disabled. | [codemp/game/g_bot.c:980](https://github.com/taysta/TaystJK/blame/b35ed06fec41c53644352743c6b199a5d5d500f3/codemp/game/g_bot.c#L980) |
-| `1` | Enabled. | [codemp/game/g_bot.c:980](https://github.com/taysta/TaystJK/blame/b35ed06fec41c53644352743c6b199a5d5d500f3/codemp/game/g_bot.c#L980) |
+| `0` | Balance bots across the teams like players. | [codemp/game/g_bot.c:987](https://github.com/taysta/TaystJK/blame/b35ed06fec41c53644352743c6b199a5d5d500f3/codemp/game/g_bot.c#L987) |
+| `1` | Put bots on the blue team. | [codemp/game/g_bot.c:980](https://github.com/taysta/TaystJK/blame/b35ed06fec41c53644352743c6b199a5d5d500f3/codemp/game/g_bot.c#L980) |
+| `>=2` | Put bots on the red team. | [codemp/game/g_bot.c:982](https://github.com/taysta/TaystJK/blame/b35ed06fec41c53644352743c6b199a5d5d500f3/codemp/game/g_bot.c#L982) |
 
 ## Flags
 

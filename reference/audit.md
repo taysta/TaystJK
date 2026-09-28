@@ -428,13 +428,13 @@ The dump was captured from stdout after loading `mp/ffa3`; stdout does not use t
 | [`r_aspectCorrectFonts`](/TaystJK/reference/cvars/r_aspectcorrectfonts-be7251d/) | cvar | renderer | Controls `r_aspectCorrectFonts` in the renderer module. |
 | [`r_availableModes`](/TaystJK/reference/cvars/r_availablemodes-bd904ae/) | cvar | engine-shared | Controls `r_availableModes` in the engine-shared module. |
 | [`r_aviMotionJpegQuality`](/TaystJK/reference/cvars/r_avimotionjpegquality-108e51f/) | cvar | renderer | Controls `r_aviMotionJpegQuality` in the renderer module. |
-| [`r_bloom`](/TaystJK/reference/cvars/r_bloom-656b99d/) | cvar | renderer | Enable bloom effect Requires \\r_fbo 1 |
+| [`r_bloom`](/TaystJK/reference/cvars/r_bloom-656b99d/) | cvar | renderer | Enable bloom effect. Requires r_fbo 1 |
 | [`r_bloom_intensity`](/TaystJK/reference/cvars/r_bloom_intensity-78b7afa/) | cvar | renderer | Final bloom blend factor, default is 0.15 |
 | [`r_bloom_threshold`](/TaystJK/reference/cvars/r_bloom_threshold-76fa432/) | cvar | renderer | Color level to extract to bloom texture, default is 0.05 |
 | [`r_centerWindow`](/TaystJK/reference/cvars/r_centerwindow-5f0b845/) | cvar | renderer | Controls `r_centerWindow` in the renderer module. |
 | [`r_defaultImage`](/TaystJK/reference/cvars/r_defaultimage-48ebde4/) | cvar | renderer | Controls `r_defaultImage` in the renderer module. |
 | [`r_distanceCull`](/TaystJK/reference/cvars/r_distancecull-9ac0a11/) | cvar | renderer | Controls `r_distanceCull` in the renderer module. |
-| [`r_dither`](/TaystJK/reference/cvars/r_dither-aea5dc5/) | cvar | renderer | Set dithering mode: 0 - disabled 1 - ordered Requires \\r_fbo 1 |
+| [`r_dither`](/TaystJK/reference/cvars/r_dither-aea5dc5/) | cvar | renderer | Set dithering mode: 0 - disabled. 1 - ordered. Requires r_fbo 1 |
 | [`r_dlightIntensity`](/TaystJK/reference/cvars/r_dlightintensity-d6b49d6/) | cvar | renderer | Controls `r_dlightIntensity` in the renderer module. |
 | [`r_dlightSaturation`](/TaystJK/reference/cvars/r_dlightsaturation-5f6800c/) | cvar | renderer | Controls `r_dlightSaturation` in the renderer module. |
 | [`r_dlightScale`](/TaystJK/reference/cvars/r_dlightscale-cc85dd5/) | cvar | renderer | Controls `r_dlightScale` in the renderer module. |
@@ -454,12 +454,12 @@ The dump was captured from stdout after loading `mp/ffa3`; stdout does not use t
 | [`r_marksOnTriangleMeshes`](/TaystJK/reference/cvars/r_marksontrianglemeshes-3c9d053/) | cvar | renderer | Controls `r_marksOnTriangleMeshes` in the renderer module. |
 | [`r_noborder`](/TaystJK/reference/cvars/r_noborder-09eac22/) | cvar | renderer | Controls `r_noborder` in the renderer module. |
 | [`r_nomip`](/TaystJK/reference/cvars/r_nomip-784a698/) | cvar | renderer | Apply picmip only on worldspawn textures |
-| [`r_presentBits`](/TaystJK/reference/cvars/r_presentbits-b73a39a/) | cvar | renderer | Select color bits used for presentation surfaces Requires \\r_fbo 1 |
+| [`r_presentBits`](/TaystJK/reference/cvars/r_presentbits-b73a39a/) | cvar | renderer | Select color bits used for presentation surfaces. Requires r_fbo 1 |
 | [`r_refractionChromaticAberration`](/TaystJK/reference/cvars/r_refractionchromaticaberration-ef62fde/) | cvar | renderer | Controls `r_refractionChromaticAberration` in the renderer module. |
 | [`r_renderClipBrushes`](/TaystJK/reference/cvars/r_renderclipbrushes-2dbcbc3/) | cvar | engine-client | Render clip brushes |
 | [`r_renderClipBrushesShader`](/TaystJK/reference/cvars/r_renderclipbrushesshader-28b5110/) | cvar | engine-client | Shader for clip brush rendering |
 | [`r_renderHeight`](/TaystJK/reference/cvars/r_renderheight-77676c4/) | cvar | renderer | Controls `r_renderHeight` in the renderer module. |
-| [`r_renderScale`](/TaystJK/reference/cvars/r_renderscale-eb5ad24/) | cvar | renderer | Scaling mode to be used with custom render resolution: 0 - disabled 1 - nearest filtering, stretch to full size 2 - nearest filtering, preserve aspect ratio (black bars on sides) 3 - linear filtering, stretch to full size 4 - linear filtering, preserve aspect ratio (black bars on sides) |
+| [`r_renderScale`](/TaystJK/reference/cvars/r_renderscale-eb5ad24/) | cvar | renderer | Scaling mode to be used with custom render resolution: 0 - disabled. 1 - nearest filtering, stretch to full size. 2 - nearest filtering, preserve aspect ratio (black bars on sides). 3 - linear filtering, stretch to full size. 4 - linear filtering, preserve aspect ratio (black bars on sides) |
 | [`r_renderSlickSurfaces`](/TaystJK/reference/cvars/r_renderslicksurfaces-8f52d68/) | cvar | engine-client | Render slick surfaces |
 | [`r_renderSlickSurfacesShader`](/TaystJK/reference/cvars/r_renderslicksurfacesshader-f30c0b0/) | cvar | engine-client | Shader for slick surface rendering |
 | [`r_renderTriggerBrushes`](/TaystJK/reference/cvars/r_rendertriggerbrushes-127cbfb/) | cvar | engine-client | Render trigger brushes |
@@ -501,12 +501,12 @@ The dump was captured from stdout after loading `mp/ffa3`; stdout does not use t
 | [`sv_newfloodProtect`](/TaystJK/reference/cvars/sv_newfloodprotect-e4e33fe/) | cvar | engine-server | Use new method of delaying commands with flood protection |
 | [`sv_pingFix`](/TaystJK/reference/cvars/sv_pingfix-3f9f4cd/) | cvar | engine-server | Improved scoreboard client ping calculation |
 | [`sv_pluginKey`](/TaystJK/reference/cvars/sv_pluginkey-9d80ed4/) | cvar | game | Controls `sv_pluginKey` in the game module. |
-| [`sv_ratePolicy`](/TaystJK/reference/cvars/sv_ratepolicy-8e864f3/) | cvar | engine-server | Determines which policy of enforcement is used for client's \"rate\" cvar |
+| [`sv_ratePolicy`](/TaystJK/reference/cvars/sv_ratepolicy-8e864f3/) | cvar | engine-server | Determines which policy of enforcement is used for client's "rate" cvar |
 | [`sv_saberFPS`](/TaystJK/reference/cvars/sv_saberfps-7d809f3/) | cvar | game | Controls `sv_saberFPS` in the game module. |
 | [`sv_snapShotDuelCull`](/TaystJK/reference/cvars/sv_snapshotduelcull-160745a/) | cvar | engine-server | Snapshot-based duel isolation |
 | [`sv_snapsMax`](/TaystJK/reference/cvars/sv_snapsmax-b20336c/) | cvar | engine-server | Sv_snapsMin <=> sv_fps |
 | [`sv_snapsMin`](/TaystJK/reference/cvars/sv_snapsmin-7fe81b5/) | cvar | engine-server | 1 <=> sv_snapsMax |
-| [`sv_snapsPolicy`](/TaystJK/reference/cvars/sv_snapspolicy-385ae5d/) | cvar | engine-server | Determines which policy of enforcement is used for client's \"snaps\" cvar |
+| [`sv_snapsPolicy`](/TaystJK/reference/cvars/sv_snapspolicy-385ae5d/) | cvar | engine-server | Determines which policy of enforcement is used for client's "snaps" cvar |
 | [`ui_allowRegistration`](/TaystJK/reference/cvars/ui_allowregistration-713df1d/) | cvar | ui | Report whether the connected jaPRO server accepts account registration. |
 | [`ui_allowSaberSwitch`](/TaystJK/reference/cvars/ui_allowsaberswitch-6b40886/) | cvar | ui | Report whether the connected server offers the saber-switch command. |
 | [`ui_aspectratio`](/TaystJK/reference/cvars/ui_aspectratio-1403db8/) | cvar | ui | Controls `ui_aspectratio` in the ui module. |
@@ -725,7 +725,7 @@ The dump was captured from stdout after loading `mp/ffa3`; stdout does not use t
 | [`masterlist`](/TaystJK/reference/commands/masterlist-96e0292/) | command | cgame | Forwards this command to the connected game server. |
 | [`minimize`](/TaystJK/reference/commands/minimize-0c3639c/) | command | engine-shared | Runs `GLimp_Minimize` in the engine-shared module. |
 | [`modversion`](/TaystJK/reference/commands/modversion-73dac73/) | command | cgame | Runs `CG_ModVersion_f` in the cgame module. |
-| [`move`](/TaystJK/reference/commands/move-379d6ce/) | command | cgame | Forwards this command to the connected game server. |
+| [`move`](/TaystJK/reference/commands/move-379d6ce/) | command | cgame | Switch your movement style while racing on a jaPRO server. |
 | [`notCompleted`](/TaystJK/reference/commands/notcompleted-ce96ded/) | command | cgame | Forwards this command to the connected game server. |
 | [`NPC`](/TaystJK/reference/commands/npc-3b86d7d/) | command | cgame | Removed cheat for admin //meh let us npc kill all from spec |
 | [`nudge`](/TaystJK/reference/commands/nudge-37e4ac9/) | command | game | Runs `Cmd_Nudge_f` in the game module. |
@@ -829,7 +829,7 @@ The dump was captured from stdout after loading `mp/ffa3`; stdout does not use t
 | [`write`](/TaystJK/reference/commands/write-e1d0c6c/) | command | engine-shared | Write the configuration to file |
 | [`ysal`](/TaystJK/reference/commands/ysal-49fb494/) | command | cgame | Forwards this command to the connected game server. |
 
-## Semantics or options needing review (1647)
+## Semantics or options needing review (1644)
 
 | Name | Kind | Module | Summary |
 |:--|:--|:--|:--|
@@ -856,7 +856,6 @@ The dump was captured from stdout after loading `mp/ffa3`; stdout does not use t
 | [`bot_s5`](/TaystJK/reference/cvars/bot_s5-cc1e024/) | cvar | game | Registered by the current source, but no user-facing behavior description has been verified. |
 | [`bot_s6`](/TaystJK/reference/cvars/bot_s6-67ce6b4/) | cvar | game | Registered by the current source, but no user-facing behavior description has been verified. |
 | [`bot_strafeOffset`](/TaystJK/reference/cvars/bot_strafeoffset-0fc4233/) | cvar | game | Controls `bot_strafeOffset` in the game module. |
-| [`bot_team`](/TaystJK/reference/cvars/bot_team-6042a35/) | cvar | game | Controls `bot_team` in the game module. |
 | [`bot_wp_clearweight`](/TaystJK/reference/cvars/bot_wp_clearweight-8adccfd/) | cvar | game | Controls `bot_wp_clearweight` in the game module. |
 | [`bot_wp_distconnect`](/TaystJK/reference/cvars/bot_wp_distconnect-6c3d5f5/) | cvar | game | Controls `bot_wp_distconnect` in the game module. |
 | [`bot_wp_edit`](/TaystJK/reference/cvars/bot_wp_edit-3e7e69b/) | cvar | game | Controls `bot_wp_edit` in the game module. |
@@ -1140,7 +1139,6 @@ The dump was captured from stdout after loading `mp/ffa3`; stdout does not use t
 | [`cl_avi2GBLimit`](/TaystJK/reference/cvars/cl_avi2gblimit-4a65d18/) | cvar | engine-client | Controls `cl_avi2GBLimit` in the engine-client module. |
 | [`cl_aviFrameRate`](/TaystJK/reference/cvars/cl_aviframerate-a13588d/) | cvar | engine-client | Controls `cl_aviFrameRate` in the engine-client module. |
 | [`cl_aviMotionJpeg`](/TaystJK/reference/cvars/cl_avimotionjpeg-91b798a/) | cvar | engine-client | Controls `cl_aviMotionJpeg` in the engine-client module. |
-| [`cl_chatBubbleSelf`](/TaystJK/reference/cvars/cl_chatbubbleself-c8495de/) | cvar | engine-client | Controls `cl_chatBubbleSelf` in the engine-client module. |
 | [`cl_chatBubbleUnfocused`](/TaystJK/reference/cvars/cl_chatbubbleunfocused-45667c5/) | cvar | engine-client | Controls `cl_chatBubbleUnfocused` in the engine-client module. |
 | [`cl_chatStylePrefix`](/TaystJK/reference/cvars/cl_chatstyleprefix-1875f3b/) | cvar | engine-client | String inserted before sent chat messages |
 | [`cl_chatStyleSuffix`](/TaystJK/reference/cvars/cl_chatstylesuffix-25c90ab/) | cvar | engine-client | String appended to send chat messages |
@@ -1571,7 +1569,7 @@ The dump was captured from stdout after loading `mp/ffa3`; stdout does not use t
 | [`r_baseNormalY`](/TaystJK/reference/cvars/r_basenormaly-f7f7006/) | cvar | renderer | Controls `r_baseNormalY` in the renderer module. |
 | [`r_baseParallax`](/TaystJK/reference/cvars/r_baseparallax-6459a61/) | cvar | renderer | Controls `r_baseParallax` in the renderer module. |
 | [`r_baseSpecular`](/TaystJK/reference/cvars/r_basespecular-24a3c96/) | cvar | renderer | Controls `r_baseSpecular` in the renderer module. |
-| [`r_bloom`](/TaystJK/reference/cvars/r_bloom-656b99d/) | cvar | renderer | Enable bloom effect Requires \\r_fbo 1 |
+| [`r_bloom`](/TaystJK/reference/cvars/r_bloom-656b99d/) | cvar | renderer | Enable bloom effect. Requires r_fbo 1 |
 | [`r_bloom_intensity`](/TaystJK/reference/cvars/r_bloom_intensity-78b7afa/) | cvar | renderer | Final bloom blend factor, default is 0.15 |
 | [`r_bloom_threshold`](/TaystJK/reference/cvars/r_bloom_threshold-76fa432/) | cvar | renderer | Color level to extract to bloom texture, default is 0.05 |
 | [`r_cameraExposure`](/TaystJK/reference/cvars/r_cameraexposure-7f22094/) | cvar | renderer | Controls `r_cameraExposure` in the renderer module. |
@@ -1595,7 +1593,7 @@ The dump was captured from stdout after loading `mp/ffa3`; stdout does not use t
 | [`r_directedScale`](/TaystJK/reference/cvars/r_directedscale-6aee8ad/) | cvar | renderer | Controls `r_directedScale` in the renderer module. |
 | [`r_displayRefresh`](/TaystJK/reference/cvars/r_displayrefresh-59d8e1d/) | cvar | renderer | Controls `r_displayRefresh` in the renderer module. |
 | [`r_distanceCull`](/TaystJK/reference/cvars/r_distancecull-9ac0a11/) | cvar | renderer | Controls `r_distanceCull` in the renderer module. |
-| [`r_dither`](/TaystJK/reference/cvars/r_dither-aea5dc5/) | cvar | renderer | Set dithering mode: 0 - disabled 1 - ordered Requires \\r_fbo 1 |
+| [`r_dither`](/TaystJK/reference/cvars/r_dither-aea5dc5/) | cvar | renderer | Set dithering mode: 0 - disabled. 1 - ordered. Requires r_fbo 1 |
 | [`r_dlightIntensity`](/TaystJK/reference/cvars/r_dlightintensity-d6b49d6/) | cvar | renderer | Controls `r_dlightIntensity` in the renderer module. |
 | [`r_dlightMode`](/TaystJK/reference/cvars/r_dlightmode-f87fa68/) | cvar | renderer | Controls `r_dlightMode` in the renderer module. |
 | [`r_dlightSaturation`](/TaystJK/reference/cvars/r_dlightsaturation-5f6800c/) | cvar | renderer | Controls `r_dlightSaturation` in the renderer module. |
@@ -1692,7 +1690,7 @@ The dump was captured from stdout after loading `mp/ffa3`; stdout does not use t
 | [`r_overBrightBits`](/TaystJK/reference/cvars/r_overbrightbits-acf2388/) | cvar | renderer | Controls `r_overBrightBits` in the renderer module. |
 | [`r_picmip`](/TaystJK/reference/cvars/r_picmip-94fef1f/) | cvar | renderer | Controls `r_picmip` in the renderer module. |
 | [`r_portalOnly`](/TaystJK/reference/cvars/r_portalonly-119fda0/) | cvar | renderer | Controls `r_portalOnly` in the renderer module. |
-| [`r_presentBits`](/TaystJK/reference/cvars/r_presentbits-b73a39a/) | cvar | renderer | Select color bits used for presentation surfaces Requires \\r_fbo 1 |
+| [`r_presentBits`](/TaystJK/reference/cvars/r_presentbits-b73a39a/) | cvar | renderer | Select color bits used for presentation surfaces. Requires r_fbo 1 |
 | [`r_primitives`](/TaystJK/reference/cvars/r_primitives-ee344cc/) | cvar | renderer | Controls `r_primitives` in the renderer module. |
 | [`r_printShaders`](/TaystJK/reference/cvars/r_printshaders-de38905/) | cvar | renderer | Controls `r_printShaders` in the renderer module. |
 | [`r_pshadowDist`](/TaystJK/reference/cvars/r_pshadowdist-c0c9961/) | cvar | renderer | Controls `r_pshadowDist` in the renderer module. |
@@ -1700,7 +1698,7 @@ The dump was captured from stdout after loading `mp/ffa3`; stdout does not use t
 | [`r_renderClipBrushes`](/TaystJK/reference/cvars/r_renderclipbrushes-2dbcbc3/) | cvar | engine-client | Render clip brushes |
 | [`r_renderClipBrushesShader`](/TaystJK/reference/cvars/r_renderclipbrushesshader-28b5110/) | cvar | engine-client | Shader for clip brush rendering |
 | [`r_renderHeight`](/TaystJK/reference/cvars/r_renderheight-77676c4/) | cvar | renderer | Controls `r_renderHeight` in the renderer module. |
-| [`r_renderScale`](/TaystJK/reference/cvars/r_renderscale-eb5ad24/) | cvar | renderer | Scaling mode to be used with custom render resolution: 0 - disabled 1 - nearest filtering, stretch to full size 2 - nearest filtering, preserve aspect ratio (black bars on sides) 3 - linear filtering, stretch to full size 4 - linear filtering, preserve aspect ratio (black bars on sides) |
+| [`r_renderScale`](/TaystJK/reference/cvars/r_renderscale-eb5ad24/) | cvar | renderer | Scaling mode to be used with custom render resolution: 0 - disabled. 1 - nearest filtering, stretch to full size. 2 - nearest filtering, preserve aspect ratio (black bars on sides). 3 - linear filtering, stretch to full size. 4 - linear filtering, preserve aspect ratio (black bars on sides) |
 | [`r_renderSlickSurfaces`](/TaystJK/reference/cvars/r_renderslicksurfaces-8f52d68/) | cvar | engine-client | Render slick surfaces |
 | [`r_renderSlickSurfacesShader`](/TaystJK/reference/cvars/r_renderslicksurfacesshader-f30c0b0/) | cvar | engine-client | Shader for slick surface rendering |
 | [`r_renderTriggerBrushes`](/TaystJK/reference/cvars/r_rendertriggerbrushes-127cbfb/) | cvar | engine-client | Render trigger brushes |
@@ -1833,7 +1831,7 @@ The dump was captured from stdout after loading `mp/ffa3`; stdout does not use t
 | [`sv_pingFix`](/TaystJK/reference/cvars/sv_pingfix-3f9f4cd/) | cvar | engine-server | Improved scoreboard client ping calculation |
 | [`sv_pluginKey`](/TaystJK/reference/cvars/sv_pluginkey-9d80ed4/) | cvar | game | Controls `sv_pluginKey` in the game module. |
 | [`sv_privatePassword`](/TaystJK/reference/cvars/sv_privatepassword-98b62ad/) | cvar | engine-server | Controls `sv_privatePassword` in the engine-server module. |
-| [`sv_ratePolicy`](/TaystJK/reference/cvars/sv_ratepolicy-8e864f3/) | cvar | engine-server | Determines which policy of enforcement is used for client's \"rate\" cvar |
+| [`sv_ratePolicy`](/TaystJK/reference/cvars/sv_ratepolicy-8e864f3/) | cvar | engine-server | Determines which policy of enforcement is used for client's "rate" cvar |
 | [`sv_reconnectlimit`](/TaystJK/reference/cvars/sv_reconnectlimit-aaba884/) | cvar | engine-server | Controls `sv_reconnectlimit` in the engine-server module. |
 | [`sv_referencedPakNames`](/TaystJK/reference/cvars/sv_referencedpaknames-7bbf18d/) | cvar | engine-server | Controls `sv_referencedPakNames` in the engine-server module. |
 | [`sv_referencedPaks`](/TaystJK/reference/cvars/sv_referencedpaks-3456d25/) | cvar | engine-server | Controls `sv_referencedPaks` in the engine-server module. |
@@ -1844,7 +1842,7 @@ The dump was captured from stdout after loading `mp/ffa3`; stdout does not use t
 | [`sv_snapShotDuelCull`](/TaystJK/reference/cvars/sv_snapshotduelcull-160745a/) | cvar | engine-server | Snapshot-based duel isolation |
 | [`sv_snapsMax`](/TaystJK/reference/cvars/sv_snapsmax-b20336c/) | cvar | engine-server | Sv_snapsMin <=> sv_fps |
 | [`sv_snapsMin`](/TaystJK/reference/cvars/sv_snapsmin-7fe81b5/) | cvar | engine-server | 1 <=> sv_snapsMax |
-| [`sv_snapsPolicy`](/TaystJK/reference/cvars/sv_snapspolicy-385ae5d/) | cvar | engine-server | Determines which policy of enforcement is used for client's \"snaps\" cvar |
+| [`sv_snapsPolicy`](/TaystJK/reference/cvars/sv_snapspolicy-385ae5d/) | cvar | engine-server | Determines which policy of enforcement is used for client's "snaps" cvar |
 | [`sv_timeout`](/TaystJK/reference/cvars/sv_timeout-2e15cf0/) | cvar | engine-server | Controls `sv_timeout` in the engine-server module. |
 | [`sv_zombietime`](/TaystJK/reference/cvars/sv_zombietime-c069b6b/) | cvar | engine-server | Controls `sv_zombietime` in the engine-server module. |
 | [`sys_lowmem`](/TaystJK/reference/cvars/sys_lowmem-8037c1f/) | cvar | engine-shared | Controls `sys_lowmem` in the engine-shared module. |
@@ -2265,7 +2263,6 @@ The dump was captured from stdout after loading `mp/ffa3`; stdout does not use t
 | [`execq`](/TaystJK/reference/commands/execq-48c51d3/) | command | engine-shared | Execute a script file without displaying a message |
 | [`exit`](/TaystJK/reference/commands/exit-de3ac21/) | command | engine-shared | Exits the game |
 | [`flagAccount`](/TaystJK/reference/commands/flagaccount-eeeecbc/) | command | game | Runs `Svcmd_FlagAccount_f` in the game module. |
-| [`flagRecord`](/TaystJK/reference/commands/flagrecord-015800d/) | command | game | Runs `Cmd_InvalidateRace_f` in the game module. |
 | [`flipkick`](/TaystJK/reference/commands/flipkick-844ca0a/) | command | cgame | Runs `CG_Flipkick_f` in the cgame module. |
 | [`follow`](/TaystJK/reference/commands/follow-f7ac253/) | command | cgame | Forwards this command to the connected game server. |
 | [`followBlueFlag`](/TaystJK/reference/commands/followblueflag-a574443/) | command | cgame | Runs `CG_FollowBlueFlag_f` in the cgame module. |
@@ -2330,7 +2327,7 @@ The dump was captured from stdout after loading `mp/ffa3`; stdout does not use t
 | [`modelist`](/TaystJK/reference/commands/modelist-5c7e939/) | command | engine-shared | Runs `R_ModeList_f` in the engine-shared module. |
 | [`modellist`](/TaystJK/reference/commands/modellist-858000a/) | command | renderer | Runs `R_Modellist_f` in the renderer module. |
 | [`modversion`](/TaystJK/reference/commands/modversion-73dac73/) | command | cgame | Runs `CG_ModVersion_f` in the cgame module. |
-| [`move`](/TaystJK/reference/commands/move-379d6ce/) | command | cgame | Forwards this command to the connected game server. |
+| [`move`](/TaystJK/reference/commands/move-379d6ce/) | command | cgame | Switch your movement style while racing on a jaPRO server. |
 | [`mp3_calcvols`](/TaystJK/reference/commands/mp3_calcvols-80b9f54/) | command | engine-client | Runs `S_MP3_CalcVols_f` in the engine-client module. |
 | [`nearby`](/TaystJK/reference/commands/nearby-8809020/) | command | game | Runs `Cmd_Nearby_f` in the game module. |
 | [`nextframe`](/TaystJK/reference/commands/nextframe-23b6320/) | command | cgame | Runs `CG_TestModelNextFrame_f` in the cgame module. |
@@ -3150,7 +3147,7 @@ These entries have dated post-origin registration or behavior evidence on TaystJ
 | [`r_baseNormalY`](/TaystJK/reference/cvars/r_basenormaly-f7f7006/) | cvar | renderer | Controls `r_baseNormalY` in the renderer module. |
 | [`r_baseParallax`](/TaystJK/reference/cvars/r_baseparallax-6459a61/) | cvar | renderer | Controls `r_baseParallax` in the renderer module. |
 | [`r_baseSpecular`](/TaystJK/reference/cvars/r_basespecular-24a3c96/) | cvar | renderer | Controls `r_baseSpecular` in the renderer module. |
-| [`r_bloom`](/TaystJK/reference/cvars/r_bloom-656b99d/) | cvar | renderer | Enable bloom effect Requires \\r_fbo 1 |
+| [`r_bloom`](/TaystJK/reference/cvars/r_bloom-656b99d/) | cvar | renderer | Enable bloom effect. Requires r_fbo 1 |
 | [`r_bloom_intensity`](/TaystJK/reference/cvars/r_bloom_intensity-78b7afa/) | cvar | renderer | Final bloom blend factor, default is 0.15 |
 | [`r_bloom_threshold`](/TaystJK/reference/cvars/r_bloom_threshold-76fa432/) | cvar | renderer | Color level to extract to bloom texture, default is 0.05 |
 | [`r_cameraExposure`](/TaystJK/reference/cvars/r_cameraexposure-7f22094/) | cvar | renderer | Controls `r_cameraExposure` in the renderer module. |
@@ -3174,11 +3171,11 @@ These entries have dated post-origin registration or behavior evidence on TaystJ
 | [`r_depthbits`](/TaystJK/reference/cvars/r_depthbits-16d7986/) | cvar | renderer | Controls `r_depthbits` in the renderer module. |
 | [`r_depthPrepass`](/TaystJK/reference/cvars/r_depthprepass-3fbd4eb/) | cvar | renderer | Controls `r_depthPrepass` in the renderer module. |
 | [`r_detailtextures`](/TaystJK/reference/cvars/r_detailtextures-a15c8ff/) | cvar | renderer | Controls `r_detailTextures` in the renderer module. |
-| [`r_device`](/TaystJK/reference/cvars/r_device-8238fc4/) | cvar | renderer | Select physical device to render: 0+ - use explicit device index -1 - first discrete GPU -2 - first integrated GPU |
+| [`r_device`](/TaystJK/reference/cvars/r_device-8238fc4/) | cvar | renderer | Select physical device to render: 0+ - use explicit device index. -1 - first discrete GPU. -2 - first integrated GPU |
 | [`r_directedScale`](/TaystJK/reference/cvars/r_directedscale-6aee8ad/) | cvar | renderer | Controls `r_directedScale` in the renderer module. |
 | [`r_displayRefresh`](/TaystJK/reference/cvars/r_displayrefresh-59d8e1d/) | cvar | renderer | Controls `r_displayRefresh` in the renderer module. |
 | [`r_distanceCull`](/TaystJK/reference/cvars/r_distancecull-9ac0a11/) | cvar | renderer | Controls `r_distanceCull` in the renderer module. |
-| [`r_dither`](/TaystJK/reference/cvars/r_dither-aea5dc5/) | cvar | renderer | Set dithering mode: 0 - disabled 1 - ordered Requires \\r_fbo 1 |
+| [`r_dither`](/TaystJK/reference/cvars/r_dither-aea5dc5/) | cvar | renderer | Set dithering mode: 0 - disabled. 1 - ordered. Requires r_fbo 1 |
 | [`r_dlightBacks`](/TaystJK/reference/cvars/r_dlightbacks-6e40190/) | cvar | renderer | Dlight non-facing surfaces for continuity |
 | [`r_dlightMode`](/TaystJK/reference/cvars/r_dlightmode-f87fa68/) | cvar | renderer | Controls `r_dlightMode` in the renderer module. |
 | [`r_dlightStyle`](/TaystJK/reference/cvars/r_dlightstyle-fcbcb83/) | cvar | renderer | Controls `r_dlightStyle` in the renderer module. |
@@ -3189,7 +3186,7 @@ These entries have dated post-origin registration or behavior evidence on TaystJ
 | [`r_drawSunRays`](/TaystJK/reference/cvars/r_drawsunrays-f84fc82/) | cvar | renderer | Controls `r_drawSunRays` in the renderer module. |
 | [`r_drawTerrain`](/TaystJK/reference/cvars/r_drawterrain-7e74ebd/) | cvar | renderer | Controls `r_drawTerrain` in the renderer module. |
 | [`r_drawworld`](/TaystJK/reference/cvars/r_drawworld-f118f2d/) | cvar | renderer | Controls `r_drawworld` in the renderer module. |
-| [`r_DynamicGlow`](/TaystJK/reference/cvars/r_dynamicglow-e23bada/) | cvar | renderer | Enable dynamic glow effect Requires \\r_fbo 1 |
+| [`r_DynamicGlow`](/TaystJK/reference/cvars/r_dynamicglow-e23bada/) | cvar | renderer | Enable dynamic glow effect. Requires r_fbo 1 |
 | [`r_DynamicGlowDelta`](/TaystJK/reference/cvars/r_dynamicglowdelta-0aacfd7/) | cvar | renderer | Controls `r_DynamicGlowDelta` in the renderer module. |
 | [`r_DynamicGlowHeight`](/TaystJK/reference/cvars/r_dynamicglowheight-ff563ef/) | cvar | renderer | Controls `r_DynamicGlowHeight` in the renderer module. |
 | [`r_DynamicGlowIntensity`](/TaystJK/reference/cvars/r_dynamicglowintensity-aa3cade/) | cvar | renderer | Controls `r_DynamicGlowIntensity` in the renderer module. |
@@ -3440,7 +3437,7 @@ These entries have dated post-origin registration or behavior evidence on TaystJ
 | [`sv_showloss`](/TaystJK/reference/cvars/sv_showloss-545b07f/) | cvar | engine-server | Registered by the current source, but no user-facing behavior description has been verified. |
 | [`sv_snapsMax`](/TaystJK/reference/cvars/sv_snapsmax-b20336c/) | cvar | engine-server | Sv_snapsMin <=> sv_fps |
 | [`sv_snapsMin`](/TaystJK/reference/cvars/sv_snapsmin-7fe81b5/) | cvar | engine-server | 1 <=> sv_snapsMax |
-| [`sv_snapsPolicy`](/TaystJK/reference/cvars/sv_snapspolicy-385ae5d/) | cvar | engine-server | Determines which policy of enforcement is used for client's \"snaps\" cvar |
+| [`sv_snapsPolicy`](/TaystJK/reference/cvars/sv_snapspolicy-385ae5d/) | cvar | engine-server | Determines which policy of enforcement is used for client's "snaps" cvar |
 | [`sv_timeout`](/TaystJK/reference/cvars/sv_timeout-2e15cf0/) | cvar | engine-server | Controls `sv_timeout` in the engine-server module. |
 | [`sv_zombietime`](/TaystJK/reference/cvars/sv_zombietime-c069b6b/) | cvar | engine-server | Controls `sv_zombietime` in the engine-server module. |
 | [`sys_lowmem`](/TaystJK/reference/cvars/sys_lowmem-8037c1f/) | cvar | engine-shared | Controls `sys_lowmem` in the engine-shared module. |
@@ -3895,7 +3892,7 @@ These entries have dated post-origin registration or behavior evidence on TaystJ
 | [`modelist`](/TaystJK/reference/commands/modelist-5c7e939/) | command | engine-shared | Runs `R_ModeList_f` in the engine-shared module. |
 | [`modellist`](/TaystJK/reference/commands/modellist-858000a/) | command | renderer | Runs `R_Modellist_f` in the renderer module. |
 | [`modversion`](/TaystJK/reference/commands/modversion-73dac73/) | command | cgame | Runs `CG_ModVersion_f` in the cgame module. |
-| [`move`](/TaystJK/reference/commands/move-379d6ce/) | command | cgame | Forwards this command to the connected game server. |
+| [`move`](/TaystJK/reference/commands/move-379d6ce/) | command | cgame | Switch your movement style while racing on a jaPRO server. |
 | [`mp3_calcvols`](/TaystJK/reference/commands/mp3_calcvols-80b9f54/) | command | engine-client | Runs `S_MP3_CalcVols_f` in the engine-client module. |
 | [`mpause`](/TaystJK/reference/commands/mpause-640e429/) | command | engine-shared | Send the play/pause media key on Windows. |
 | [`mprev`](/TaystJK/reference/commands/mprev-28fb883/) | command | engine-shared | Send the previous-track media key on Windows. |

@@ -14,6 +14,13 @@
       "summary": "Cancel matching pending delay entries.",
       "syntax": "delaycancel <text>"
     },
+    "flagrecord": {
+      "arguments": ["username", "coursename", "style", "season", "mode"],
+      "description": "Marks a player's race record on this server's local database. Mode f flags it invalid, u clears that flag and d flags it for deletion. Write spaces in the course name as *, and use season -1 for every season before 5. Needs the database admin permission.",
+      "derivation": "code-trace",
+      "summary": "Flag, unflag or mark for deletion a player's race record.",
+      "syntax": "flagRecord <username> <coursename> <style> <season> <f|u|d>"
+    },
     "ifcvar": {
       "arguments": ["cvar", "setting", "argument-count", "command", "..."],
       "description": "Tests a cvar against conditions in order and executes the command belonging to the first match. Conditions support literal string equality; numeric $=, $!=, $>, $<, $>= and $<= comparisons; $contains; $beginswith/$startswith; $endswith; $else; and values read from another cvar with a leading $. The argument count includes the command itself.",
@@ -26,6 +33,13 @@
       "derivation": "documented",
       "summary": "Send the next-track media key on Windows.",
       "syntax": "mnext"
+    },
+    "move": {
+      "arguments": ["style"],
+      "description": "Switches your movement style on a jaPRO server running race mode. You must be alive, in race mode and standing still; switching during a run resets your timer. Styles: siege, jka, qw, cpm, q3, pjk, wsw, rjq3, rjcpm, swoop, jetpack, speed, sp, slick, botcpm, coop, ocpm, tribes and surf.",
+      "derivation": "code-trace",
+      "summary": "Switch your movement style while racing on a jaPRO server.",
+      "syntax": "move <style>"
     },
     "mpause": {
       "description": "Simulates the operating system play/pause media key. Registered only in Windows builds.",
@@ -272,6 +286,27 @@
         {"evidence": {"line": 741, "path": "codemp/cgame/cg_snapshot.c"}, "meaning": "Hide other players' strafe trails.", "value": "256"},
         {"evidence": {"line": 786, "path": "codemp/cgame/cg_consolecmds.c"}, "meaning": "Disable `/do`, and make `lowjump` and the `+duck` no-roll bind fall back to `wait`-based sequences instead of the client's timed follow-up.", "value": "512"},
         {"evidence": {"line": 2868, "path": "codemp/cgame/cg_view.c"}, "meaning": "Reset `cg_thirdPersonAngle` to 0 while moving in a race on a jaPRO server.", "value": "1024"}
+      ]
+    },
+    "bot_team": {
+      "description": "In team game types, 1 puts every bot added to the server on the blue team and 2 or higher puts them on red. 0 leaves bots to the normal team balancing.",
+      "derivation": "code-trace",
+      "summary": "Put every added bot on one team in team game types.",
+      "value_type": "int",
+      "values": [
+        {"evidence": {"line": 987, "path": "codemp/game/g_bot.c"}, "meaning": "Balance bots across the teams like players.", "value": "0"},
+        {"evidence": {"line": 980, "path": "codemp/game/g_bot.c"}, "meaning": "Put bots on the blue team.", "value": "1"},
+        {"evidence": {"line": 982, "path": "codemp/game/g_bot.c"}, "meaning": "Put bots on the red team.", "value": ">=2"}
+      ]
+    },
+    "cl_chatbubbleself": {
+      "description": "While on, the client sends the talk button whenever the console, chat field or a menu has focus, and while the game is unfocused or minimized if cl_chatBubbleUnfocused is on. The game turns the talk button into the chat bubble other players see over you. 0 never sends it.",
+      "derivation": "code-trace",
+      "summary": "Show your chat bubble to other players while the console, chat or a menu is open.",
+      "value_type": "bool",
+      "values": [
+        {"evidence": {"line": 1265, "path": "codemp/client/cl_input.cpp"}, "meaning": "Never show your chat bubble.", "value": "0"},
+        {"evidence": {"line": 1266, "path": "codemp/client/cl_input.cpp"}, "meaning": "Show your chat bubble while typing or in a menu.", "value": "1"}
       ]
     }
   }

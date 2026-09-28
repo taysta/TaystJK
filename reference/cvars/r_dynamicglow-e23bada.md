@@ -10,7 +10,7 @@ search_exclude: false
 
 <span class="label ref-origin ref-origin-basejka">Base Jedi Academy</span>
 
-Enable dynamic glow effect Requires \\r_fbo 1
+Enable dynamic glow effect. Requires r_fbo 1
 
 ## At a glance
 

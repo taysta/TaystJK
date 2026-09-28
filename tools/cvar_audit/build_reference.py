@@ -179,10 +179,19 @@ def source_url(path: str, line: int, sha: str) -> str:
     return f"https://github.com/taysta/TaystJK/blame/{sha}/{path}#L{line}"
 
 
+C_ESCAPES = {"n": "\n", "t": " ", '"': '"', "\\": "\\"}
+
+
 def clean_description(value: str | None) -> str | None:
     if not value:
         return None
-    value = value.replace("\\n", " ").replace("\\t", " ").strip().strip("/ ")
+    # The extractor keeps the C spelling of a registration string: undo its escapes,
+    # and drop the backslash the console writes in front of a cvar name.
+    value = re.sub(r"\\(.)", lambda m: C_ESCAPES.get(m.group(1), "\\" + m.group(1)), value)
+    value = re.sub(r"\\(?=[A-Za-z_])", "", value)
+    # A line break in console help reads as the end of a sentence.
+    value = re.sub(r"(?<=[A-Za-z0-9)])[ \t]*\n\s*", ". ", value.strip())
+    value = re.sub(r"\s*\n\s*", " ", value).strip().strip("/ ")
     folded = value.casefold()
     if (
         not value

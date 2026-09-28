@@ -63116,7 +63116,13 @@
       "label": "2023-12-11 (9b57ee1b8)",
       "short": "9b57ee1b8"
     },
-    "arguments": [],
+    "arguments": [
+      "username",
+      "coursename",
+      "style",
+      "season",
+      "mode"
+    ],
     "baselines": [
       "eternaljk",
       "openjk",
@@ -63126,8 +63132,8 @@
     "cheat_protected": false,
     "confidence": "high",
     "configures": [],
-    "derivation": "documented",
-    "description": "Runs `Cmd_InvalidateRace_f` in the game module.",
+    "derivation": "code-trace",
+    "description": "Marks a player's race record on this server's local database. Mode f flags it invalid, u clears that flag and d flags it for deletion. Write spaces in the course name as *, and use season -1 for every season before 5. Needs the database admin permission.",
     "evidence": [
       {
         "condition": null,
@@ -63276,9 +63282,9 @@
     },
     "renderer": [],
     "source_commit": "b35ed06fec41c53644352743c6b199a5d5d500f3",
-    "status": "needs-review",
-    "summary": "Runs `Cmd_InvalidateRace_f` in the game module.",
-    "syntax": "flagRecord <username> <coursename> <style> <season> <mode: f, u, d>. Use * in place of space in the coursename",
+    "status": "documented",
+    "summary": "Flag, unflag or mark for deletion a player's race record.",
+    "syntax": "flagRecord <username> <coursename> <style> <season> <f|u|d>",
     "xdocs": null
   },
   {
@@ -90418,7 +90424,9 @@
       "label": "2018-01-01 (d9d510063)",
       "short": "d9d510063"
     },
-    "arguments": [],
+    "arguments": [
+      "style"
+    ],
     "baselines": [
       "openjk",
       "basejka"
@@ -90427,8 +90435,8 @@
     "cheat_protected": false,
     "confidence": "medium",
     "configures": [],
-    "derivation": "documented",
-    "description": "Forwards this command to the connected game server.",
+    "derivation": "code-trace",
+    "description": "Switches your movement style on a jaPRO server running race mode. You must be alive, in race mode and standing still; switching during a run resets your timer. Styles: siege, jka, qw, cpm, q3, pjk, wsw, rjq3, rjcpm, swoop, jetpack, speed, sp, slick, botcpm, coop, ocpm, tribes and surf.",
     "evidence": [
       {
         "condition": null,
@@ -90925,8 +90933,8 @@
     "renderer": [],
     "source_commit": "b35ed06fec41c53644352743c6b199a5d5d500f3",
     "status": "needs-review",
-    "summary": "Forwards this command to the connected game server.",
-    "syntax": "move <siege, jka, qw, cpm, q3, pjk, wsw, rjq3, rjcpm, swoop, jetpack, speed, sp, slick, botcpm, coop, ocpm, tribes, or surf>",
+    "summary": "Switch your movement style while racing on a jaPRO server.",
+    "syntax": "move <style>",
     "xdocs": null
   },
   {

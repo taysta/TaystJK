@@ -10,7 +10,7 @@ search_exclude: false
 
 <span class="label ref-origin ref-origin-basejka">Base Jedi Academy</span>
 
-Select physical device to render: 0+ - use explicit device index -1 - first discrete GPU -2 - first integrated GPU
+Select physical device to render: 0+ - use explicit device index. -1 - first discrete GPU. -2 - first integrated GPU
 
 ## At a glance
 

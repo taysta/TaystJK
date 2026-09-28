@@ -10,7 +10,7 @@ search_exclude: false
 
 <span class="label ref-origin ref-origin-vulkan">Vulkan</span>
 
-Modulate extracted color: 0: off (color = color, i.e. no changes) 1: by itself (color = color * color) 2: by intensity (color = color * luma(color))
+Modulate extracted color: 0: off (color = color, i.e. no changes). 1: by itself (color = color * color). 2: by intensity (color = color * luma(color))
 
 ## At a glance
 

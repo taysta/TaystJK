@@ -540,6 +540,15 @@ def feature_row(feature: dict[str, Any]) -> str:
     )
 
 
+# The summaries build_reference.py falls back to when nothing describes an entry. They
+# only restate the name and module, so a what's-new row is clearer without them.
+PLACEHOLDER_SUMMARY = re.compile(
+    r"(?:Controls|Runs) `[^`]+` in the [\w-]+ module\."
+    r"|Forwards this command to the connected game server\."
+    r"|Registered by the current source, but no user-facing behavior description has been verified\."
+)
+
+
 def whats_new_rows(
     entries: list[dict[str, Any]], features: list[dict[str, Any]],
     tuning: dict[str, Any],
@@ -550,12 +559,13 @@ def whats_new_rows(
         override = tuning.get(entry["name"], {})
         category = override.get("group") or entry["category"]
         summary = override.get("summary") or entry["summary"]
+        blurb = "" if PLACEHOLDER_SUMMARY.fullmatch(summary) else f": {esc(summary)}"
         rank = override.get("promote")
         grouped.setdefault(category, []).append((
             rank if isinstance(rank, int) else float("inf"),
             entry["name"].casefold(),
             f"- [{code(entry['name'])}]({detail_url(entry)}) "
-            f"{badge(entry['origin']['source'])}{added_on_cell(entry)}: {esc(summary)}",
+            f"{badge(entry['origin']['source'])}{added_on_cell(entry)}{blurb}",
         ))
     for feature in features:
         grouped.setdefault(feature.get("group") or "Other", []).append(
@@ -634,6 +644,9 @@ def whats_new_page(entries: list[dict[str, Any]]) -> tuple[str, list[str], list[
 
 {generated_from(entries[0]["source_commit"])}
 </div>
+
+Entries are grouped by topic. One listed by name alone has no verified description yet; its
+page links the source that reads it.
 
 {ADDED_ON_NOTE}
 

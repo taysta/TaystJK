@@ -8,7 +8,7 @@ from pathlib import Path
 from unittest.mock import patch
 
 from build_reference import (
-    bit_option_index, calling_handler, engine_managed_basis, in_dedicated_build,
+    bit_option_index, calling_handler, clean_description, engine_managed_basis, in_dedicated_build,
     menu_mirror_index, registration_baselines, shared_network_scope,
 )
 from check_generated import fragment_errors, page_anchor_ids
@@ -299,6 +299,26 @@ void CG_Cosmetics_f( void ) {
         text = "\n".join(rows)
         self.assertLess(text.index("gamma"), text.index("beta"))
         self.assertLess(text.index("beta"), text.index("alpha"))
+
+    def test_placeholder_summaries_are_left_off_whats_new_rows(self):
+        def entry(name, summary):
+            return {"name": name, "kind": "cvar", "category": "HUD", "summary": summary,
+                    "origin": {"source": "taystjk"}}
+        rows = whats_new_rows([
+            entry("cl_placeholder", "Controls `cl_placeholder` in the engine-client module."),
+            entry("cl_described", "Show the thing."),
+        ], [], {})
+        placeholder = next(row for row in rows if "cl_placeholder" in row)
+        self.assertNotIn("Controls", placeholder)
+        self.assertTrue(placeholder.rstrip().endswith("</span>"))
+        self.assertTrue(next(row for row in rows if "cl_described" in row).endswith(": Show the thing."))
+
+    def test_registration_text_loses_its_c_escapes(self):
+        # rd-vulkan's r_bloom: a colour macro splits the literal before \\r_fbo.
+        self.assertEqual(clean_description("Enable bloom effect\\nRequires \\\\r_fbo 1"),
+                         "Enable bloom effect. Requires r_fbo 1")
+        self.assertEqual(clean_description('client\'s \\"rate\\" cvar'), "Client's \"rate\" cvar")
+        self.assertEqual(clean_description("See \\\\net_port"), "See net_port")
 
     @patch("generate_docs.declared_features", return_value=[])
     @patch("generate_docs.load_whats_new_overrides", return_value={"entries": {}, "features": []})
