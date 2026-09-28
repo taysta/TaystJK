@@ -300,7 +300,8 @@ static void CG_CalcIdealThirdPersonViewTarget(void)
 
 	{
 		float vertOffset = cg_thirdPersonVertOffset.value;
-		vertOffset += cg.predictedPlayerState.standheight - 40; //Auto up vert offset if model is bigger
+		if (cgs.serverMod != SVMOD_LMD) //Lugormod's scale is handled below
+			vertOffset += cg.predictedPlayerState.standheight - 40; //Auto up vert offset if model is bigger
 
 		if (cgs.serverMod == SVMOD_JAPRO && cg.predictedPlayerState.pm_flags & PMF_FOLLOW && cg_specCameraMode.integer) {
 			vertOffset = cg.predictedPlayerState.persistant[PERS_CAMERA_SETTINGS];
@@ -352,6 +353,13 @@ static void CG_CalcIdealThirdPersonViewTarget(void)
 			{
 				vertOffset = 0;
 			}
+		}
+		if (cgs.serverMod == SVMOD_LMD && cg.predictedPlayerState.iModelScale)
+		{//like the Lugormod client, scale the offset with the player, measured from their feet
+			const float scale = cg.predictedPlayerState.iModelScale / 100.0f;
+
+			vertOffset *= scale;
+			cam.target.ideal[2] += DEFAULT_MINS_2 - DEFAULT_MINS_2 * scale;
 		}
 		cam.target.ideal[2] += vertOffset;
 	}
@@ -428,6 +436,11 @@ static void CG_CalcIdealThirdPersonViewLocation(void)
 				newThirdPersonRange += fabs(((float)veh->playerState->hackingTime)/MAX_STRAFE_TIME) * 100.0f;
 			}
 		}
+	}
+
+	if (cgs.serverMod == SVMOD_LMD && cg.predictedPlayerState.iModelScale)
+	{//and pull the camera back for bigger players
+		newThirdPersonRange *= cg.predictedPlayerState.iModelScale / 100.0f;
 	}
 
 	if ( cg.snap
