@@ -2821,6 +2821,24 @@ void BG_TouchJumpPad( playerState_t *ps, entityState_t *jumppad ) {
 	ps->jumppad_ent = jumppad->number;
 	ps->jumppad_frame = ps->pmove_framecount;
 	// give the player the velocity from the jumppad
+#ifdef _CGAME
+	if ( cgs.serverMod == SVMOD_LMD && jumppad->bolt1 )
+	{//Lugormod RELATIVE pushes send the target point, and throw you in an arc that peaks on it
+		const float height = jumppad->origin2[2] - ps->origin[2];
+
+		if ( height > 0 && ps->gravity > 0 )
+		{//Lugormod's sqrt goes bad otherwise, so leave that to the server
+			const float time = sqrtf( height / (0.5f * ps->gravity) );
+			vec3_t dir;
+
+			VectorSubtract( jumppad->origin2, ps->origin, dir );
+			dir[2] = 0;
+			VectorScale( dir, 1.0f / time, ps->velocity );
+			ps->velocity[2] = time * ps->gravity;
+		}
+	}
+	else
+#endif
 	VectorCopy( jumppad->origin2, ps->velocity );
 	// fix: no more force draining after bouncing the jumppad
 	ps->fd.forcePowersActive &= ~(1<<FP_LEVITATION);
