@@ -38,12 +38,12 @@ description: "1-7. Controls different types of damagenumber printouts."
 
 | Value | Meaning | Evidence |
 |:--|:--|:--|
-| `1` | Selects the code path tested for value 1. | [codemp/game/g_combat.c:5825](https://github.com/taysta/TaystJK/blame/b35ed06fec41c53644352743c6b199a5d5d500f3/codemp/game/g_combat.c#L5825) |
-| `2` | Selects the code path tested for value 2. | [codemp/game/g_combat.c:5816](https://github.com/taysta/TaystJK/blame/b35ed06fec41c53644352743c6b199a5d5d500f3/codemp/game/g_combat.c#L5816) |
-| `5` | Selects the code path tested for value 5. | [codemp/game/g_combat.c:5816](https://github.com/taysta/TaystJK/blame/b35ed06fec41c53644352743c6b199a5d5d500f3/codemp/game/g_combat.c#L5816) |
-| `6` | Selects the code path tested for value 6. | [codemp/game/g_combat.c:5825](https://github.com/taysta/TaystJK/blame/b35ed06fec41c53644352743c6b199a5d5d500f3/codemp/game/g_combat.c#L5825) |
-| `7` | Selects the code path tested for value 7. | [codemp/game/g_combat.c:5816](https://github.com/taysta/TaystJK/blame/b35ed06fec41c53644352743c6b199a5d5d500f3/codemp/game/g_combat.c#L5816) |
-| `8` | Selects the code path tested for value 8. | [codemp/game/g_combat.c:5831](https://github.com/taysta/TaystJK/blame/b35ed06fec41c53644352743c6b199a5d5d500f3/codemp/game/g_combat.c#L5831) |
+| `1` | Selects the code path tested for value 1. | [codemp/game/g_combat.c:5825](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/codemp/game/g_combat.c#L5825) |
+| `2` | Selects the code path tested for value 2. | [codemp/game/g_combat.c:5816](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/codemp/game/g_combat.c#L5816) |
+| `5` | Selects the code path tested for value 5. | [codemp/game/g_combat.c:5816](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/codemp/game/g_combat.c#L5816) |
+| `6` | Selects the code path tested for value 6. | [codemp/game/g_combat.c:5825](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/codemp/game/g_combat.c#L5825) |
+| `7` | Selects the code path tested for value 7. | [codemp/game/g_combat.c:5816](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/codemp/game/g_combat.c#L5816) |
+| `8` | Selects the code path tested for value 8. | [codemp/game/g_combat.c:5831](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/codemp/game/g_combat.c#L5831) |
 
 ## Flags
 
@@ -80,12 +80,12 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 ## Evidence
 
-- registration: [codemp/game/g_xcvar.h:282](https://github.com/taysta/TaystJK/blame/b35ed06fec41c53644352743c6b199a5d5d500f3/codemp/game/g_xcvar.h#L282) (XCVAR_DEF)
-- behavior: [codemp/game/g_combat.c:5813](https://github.com/taysta/TaystJK/blame/b35ed06fec41c53644352743c6b199a5d5d500f3/codemp/game/g_combat.c#L5813)
-- behavior: [codemp/game/g_combat.c:5816](https://github.com/taysta/TaystJK/blame/b35ed06fec41c53644352743c6b199a5d5d500f3/codemp/game/g_combat.c#L5816)
-- behavior: [codemp/game/g_combat.c:5825](https://github.com/taysta/TaystJK/blame/b35ed06fec41c53644352743c6b199a5d5d500f3/codemp/game/g_combat.c#L5825)
-- behavior: [codemp/game/g_combat.c:5831](https://github.com/taysta/TaystJK/blame/b35ed06fec41c53644352743c6b199a5d5d500f3/codemp/game/g_combat.c#L5831)
-- behavior: [codemp/game/g_combat.c:5837](https://github.com/taysta/TaystJK/blame/b35ed06fec41c53644352743c6b199a5d5d500f3/codemp/game/g_combat.c#L5837)
-- documentation: [docs/japro_docs.md:95](https://github.com/taysta/TaystJK/blame/b35ed06fec41c53644352743c6b199a5d5d500f3/docs/japro_docs.md#L95)
+- registration: [codemp/game/g_xcvar.h:282](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/codemp/game/g_xcvar.h#L282) (XCVAR_DEF)
+- behavior: [codemp/game/g_combat.c:5813](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/codemp/game/g_combat.c#L5813)
+- behavior: [codemp/game/g_combat.c:5816](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/codemp/game/g_combat.c#L5816)
+- behavior: [codemp/game/g_combat.c:5825](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/codemp/game/g_combat.c#L5825)
+- behavior: [codemp/game/g_combat.c:5831](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/codemp/game/g_combat.c#L5831)
+- behavior: [codemp/game/g_combat.c:5837](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/codemp/game/g_combat.c#L5837)
+- documentation: [docs/japro_docs.md:95](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/docs/japro_docs.md#L95)
 
-<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/b35ed06fec41c53644352743c6b199a5d5d500f3"><code>b35ed06fec41</code></a> on 2026-09-27. Anything merged after that is not reflected here.</p>
+<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a"><code>c722804317d7</code></a> on 2026-09-28. Anything merged after that is not reflected here.</p>

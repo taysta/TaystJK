@@ -39,7 +39,7 @@ No discrete value list is enforced or documented in the inspected source.
 
 ## Enforced ranges
 
-- `0.2` through `10.0f` (numeric; Cvar_CheckRange). Evidence: [codemp/client/cl_console.cpp:656](https://github.com/taysta/TaystJK/blame/b35ed06fec41c53644352743c6b199a5d5d500f3/codemp/client/cl_console.cpp#L656)
+- `0.2` through `10.0f` (numeric; Cvar_CheckRange). Evidence: [codemp/client/cl_console.cpp:656](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/codemp/client/cl_console.cpp#L656)
 
 ## Flags
 
@@ -92,10 +92,10 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 ## Evidence
 
-- registration: [codemp/client/cl_console.cpp:655](https://github.com/taysta/TaystJK/blame/b35ed06fec41c53644352743c6b199a5d5d500f3/codemp/client/cl_console.cpp#L655) (Cvar_Get)
-- registration: [codemp/client/cl_console.cpp:666](https://github.com/taysta/TaystJK/blame/b35ed06fec41c53644352743c6b199a5d5d500f3/codemp/client/cl_console.cpp#L666) (Cvar_Get)
-- behavior: [codemp/client/cl_console.cpp:595](https://github.com/taysta/TaystJK/blame/b35ed06fec41c53644352743c6b199a5d5d500f3/codemp/client/cl_console.cpp#L595)
-- behavior: [codemp/client/cl_console.cpp:656](https://github.com/taysta/TaystJK/blame/b35ed06fec41c53644352743c6b199a5d5d500f3/codemp/client/cl_console.cpp#L656)
+- registration: [codemp/client/cl_console.cpp:655](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/codemp/client/cl_console.cpp#L655) (Cvar_Get)
+- registration: [codemp/client/cl_console.cpp:666](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/codemp/client/cl_console.cpp#L666) (Cvar_Get)
+- behavior: [codemp/client/cl_console.cpp:595](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/codemp/client/cl_console.cpp#L595)
+- behavior: [codemp/client/cl_console.cpp:656](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/codemp/client/cl_console.cpp#L656)
 - upstream-documentation: [CVARS.rst:153](https://github.com/mvdevs/jk2mv/blame/7d601454c3db68492289d4d4e3dc30bff39e4246/CVARS.rst#L153)
 
-<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/b35ed06fec41c53644352743c6b199a5d5d500f3"><code>b35ed06fec41</code></a> on 2026-09-27. Anything merged after that is not reflected here.</p>
+<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a"><code>c722804317d7</code></a> on 2026-09-28. Anything merged after that is not reflected here.</p>

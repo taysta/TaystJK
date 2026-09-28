@@ -37,8 +37,8 @@ Controls `cl_conXOffset` in the engine-client module. Consult the cited behavior
 
 | Value | Meaning | Evidence |
 |:--|:--|:--|
-| `0` | Disabled. | [codemp/client/cl_console.cpp:972](https://github.com/taysta/TaystJK/blame/b35ed06fec41c53644352743c6b199a5d5d500f3/codemp/client/cl_console.cpp#L972) |
-| `1` | Enabled. | [codemp/client/cl_console.cpp:972](https://github.com/taysta/TaystJK/blame/b35ed06fec41c53644352743c6b199a5d5d500f3/codemp/client/cl_console.cpp#L972) |
+| `0` | Disabled. | [codemp/client/cl_console.cpp:972](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/codemp/client/cl_console.cpp#L972) |
+| `1` | Enabled. | [codemp/client/cl_console.cpp:972](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/codemp/client/cl_console.cpp#L972) |
 
 ## Flags
 
@@ -70,13 +70,13 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 ## Evidence
 
-- registration: [codemp/client/cl_console.cpp:948](https://github.com/taysta/TaystJK/blame/b35ed06fec41c53644352743c6b199a5d5d500f3/codemp/client/cl_console.cpp#L948) (Cvar_Get)
-- registration: [codemp/client/cl_console.cpp:989](https://github.com/taysta/TaystJK/blame/b35ed06fec41c53644352743c6b199a5d5d500f3/codemp/client/cl_console.cpp#L989) (Cvar_Get)
-- registration: [codemp/client/cl_main.cpp:3370](https://github.com/taysta/TaystJK/blame/b35ed06fec41c53644352743c6b199a5d5d500f3/codemp/client/cl_main.cpp#L3370) (Cvar_Get)
-- behavior: [codemp/client/cl_console.cpp:972](https://github.com/taysta/TaystJK/blame/b35ed06fec41c53644352743c6b199a5d5d500f3/codemp/client/cl_console.cpp#L972)
-- behavior: [codemp/client/cl_console.cpp:991](https://github.com/taysta/TaystJK/blame/b35ed06fec41c53644352743c6b199a5d5d500f3/codemp/client/cl_console.cpp#L991)
-- behavior: [codemp/client/cl_console.cpp:946](https://github.com/taysta/TaystJK/blame/b35ed06fec41c53644352743c6b199a5d5d500f3/codemp/client/cl_console.cpp#L946)
-- behavior: [codemp/client/cl_console.cpp:987](https://github.com/taysta/TaystJK/blame/b35ed06fec41c53644352743c6b199a5d5d500f3/codemp/client/cl_console.cpp#L987)
-- behavior: [codemp/cgame/cg_draw.c:10157](https://github.com/taysta/TaystJK/blame/b35ed06fec41c53644352743c6b199a5d5d500f3/codemp/cgame/cg_draw.c#L10157)
+- registration: [codemp/client/cl_console.cpp:948](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/codemp/client/cl_console.cpp#L948) (Cvar_Get)
+- registration: [codemp/client/cl_console.cpp:989](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/codemp/client/cl_console.cpp#L989) (Cvar_Get)
+- registration: [codemp/client/cl_main.cpp:3370](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/codemp/client/cl_main.cpp#L3370) (Cvar_Get)
+- behavior: [codemp/client/cl_console.cpp:972](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/codemp/client/cl_console.cpp#L972)
+- behavior: [codemp/client/cl_console.cpp:991](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/codemp/client/cl_console.cpp#L991)
+- behavior: [codemp/client/cl_console.cpp:946](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/codemp/client/cl_console.cpp#L946)
+- behavior: [codemp/client/cl_console.cpp:987](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/codemp/client/cl_console.cpp#L987)
+- behavior: [codemp/cgame/cg_draw.c:10157](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/codemp/cgame/cg_draw.c#L10157)
 
-<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/b35ed06fec41c53644352743c6b199a5d5d500f3"><code>b35ed06fec41</code></a> on 2026-09-27. Anything merged after that is not reflected here.</p>
+<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a"><code>c722804317d7</code></a> on 2026-09-28. Anything merged after that is not reflected here.</p>

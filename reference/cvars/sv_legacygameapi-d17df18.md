@@ -49,7 +49,7 @@ Origin: <span class="label ref-origin ref-origin-taystjk">TaystJK</span>
 
 - Ultimate-origin introduction: [`6d85dffacc76`](https://github.com/taysta/TaystJK/commit/6d85dffacc76b77ea398e89e3cddbf4c2c38be7c) in <span class="label ref-origin ref-origin-taystjk">TaystJK</span> (content authored `2026-09-26`, PR opened `2026-09-25`, integrated `2026-09-26`)
 - Origin pull request: [#389](https://github.com/taysta/TaystJK/pull/389)
-- Upstream registration evidence: [codemp/server/sv_gameapi.cpp:2845](https://github.com/taysta/TaystJK/blame/b35ed06fec41c53644352743c6b199a5d5d500f3/codemp/server/sv_gameapi.cpp#L2845)
+- Upstream registration evidence: [codemp/server/sv_gameapi.cpp:2845](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/codemp/server/sv_gameapi.cpp#L2845)
 - Attribution method: `earliest-authored-project-introduction`
 - Attribution confidence: `high`
 
@@ -63,8 +63,8 @@ Authored dates come from the exact registration's first content commit, PR dates
 
 ## Evidence
 
-- registration: [codemp/server/sv_gameapi.cpp:2845](https://github.com/taysta/TaystJK/blame/b35ed06fec41c53644352743c6b199a5d5d500f3/codemp/server/sv_gameapi.cpp#L2845) (Cvar_Get)
-- behavior: [codemp/server/sv_gameapi.cpp:2846](https://github.com/taysta/TaystJK/blame/b35ed06fec41c53644352743c6b199a5d5d500f3/codemp/server/sv_gameapi.cpp#L2846)
-- behavior: [codemp/cgame/cg_servercmds.c:302](https://github.com/taysta/TaystJK/blame/b35ed06fec41c53644352743c6b199a5d5d500f3/codemp/cgame/cg_servercmds.c#L302)
+- registration: [codemp/server/sv_gameapi.cpp:2845](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/codemp/server/sv_gameapi.cpp#L2845) (Cvar_Get)
+- behavior: [codemp/server/sv_gameapi.cpp:2846](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/codemp/server/sv_gameapi.cpp#L2846)
+- behavior: [codemp/cgame/cg_servercmds.c:309](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/codemp/cgame/cg_servercmds.c#L309)
 
-<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/b35ed06fec41c53644352743c6b199a5d5d500f3"><code>b35ed06fec41</code></a> on 2026-09-27. Anything merged after that is not reflected here.</p>
+<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a"><code>c722804317d7</code></a> on 2026-09-28. Anything merged after that is not reflected here.</p>

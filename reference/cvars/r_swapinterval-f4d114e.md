@@ -27,7 +27,7 @@ Controls `r_swapInterval` in the renderer module. Consult the cited behavior rea
 | Confidence | `high` |
 | Added | 2013-04-08 in [`14cea1563`](https://github.com/taysta/TaystJK/commit/14cea1563762076974bee277afadbd5bf234c494) ([how to compare this against your build](/TaystJK/features/whats-new/#how-to-tell-what-your-build-has)) |
 | In-game xdocs | No |
-| In-game menu | Yes: [ingame_setup.menu:1506](https://github.com/taysta/TaystJK/blame/b35ed06fec41c53644352743c6b199a5d5d500f3/assets/japro/ui/jamp/ingame_setup.menu#L1506), [ingame_setup.menu:1570](https://github.com/taysta/TaystJK/blame/b35ed06fec41c53644352743c6b199a5d5d500f3/assets/japro/ui/jamp/ingame_setup.menu#L1570), [setup.menu:1347](https://github.com/taysta/TaystJK/blame/b35ed06fec41c53644352743c6b199a5d5d500f3/assets/japro/ui/jamp/setup.menu#L1347) |
+| In-game menu | Yes: [ingame_setup.menu:1506](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/assets/japro/ui/jamp/ingame_setup.menu#L1506), [ingame_setup.menu:1570](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/assets/japro/ui/jamp/ingame_setup.menu#L1570), [setup.menu:1347](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/assets/japro/ui/jamp/setup.menu#L1347) |
 | Default | `0` |
 | Value type | `enum` |
 | Restart | Yes; the value is latched. |
@@ -38,8 +38,8 @@ Controls `r_swapInterval` in the renderer module. Consult the cited behavior rea
 
 | Value | Meaning | Evidence |
 |:--|:--|:--|
-| `-1` | Selects the code path tested for value -1. | [shared/sdl/sdl_window.cpp:169](https://github.com/taysta/TaystJK/blame/b35ed06fec41c53644352743c6b199a5d5d500f3/shared/sdl/sdl_window.cpp#L169) |
-| `0` | Selects the code path tested for value 0. | [codemp/rd-vulkan/vk_swapchain.cpp:144](https://github.com/taysta/TaystJK/blame/b35ed06fec41c53644352743c6b199a5d5d500f3/codemp/rd-vulkan/vk_swapchain.cpp#L144) |
+| `-1` | Selects the code path tested for value -1. | [shared/sdl/sdl_window.cpp:169](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/shared/sdl/sdl_window.cpp#L169) |
+| `0` | Selects the code path tested for value 0. | [codemp/rd-vulkan/vk_swapchain.cpp:144](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/codemp/rd-vulkan/vk_swapchain.cpp#L144) |
 
 ## Flags
 
@@ -85,12 +85,12 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 ## Evidence
 
-- registration: [codemp/rd-dedicated/tr_init.cpp:375](https://github.com/taysta/TaystJK/blame/b35ed06fec41c53644352743c6b199a5d5d500f3/codemp/rd-dedicated/tr_init.cpp#L375) (Cvar_Get)
-- registration: [shared/sdl/sdl_window.cpp:805](https://github.com/taysta/TaystJK/blame/b35ed06fec41c53644352743c6b199a5d5d500f3/shared/sdl/sdl_window.cpp#L805) (Cvar_Get)
-- behavior: [shared/sdl/sdl_window.cpp:169](https://github.com/taysta/TaystJK/blame/b35ed06fec41c53644352743c6b199a5d5d500f3/shared/sdl/sdl_window.cpp#L169)
-- behavior: [shared/sdl/sdl_window.cpp:646](https://github.com/taysta/TaystJK/blame/b35ed06fec41c53644352743c6b199a5d5d500f3/shared/sdl/sdl_window.cpp#L646)
-- behavior: [codemp/rd-vulkan/vk_swapchain.cpp:144](https://github.com/taysta/TaystJK/blame/b35ed06fec41c53644352743c6b199a5d5d500f3/codemp/rd-vulkan/vk_swapchain.cpp#L144)
-- behavior: [shared/sdl/sdl_window.cpp:166](https://github.com/taysta/TaystJK/blame/b35ed06fec41c53644352743c6b199a5d5d500f3/shared/sdl/sdl_window.cpp#L166)
-- behavior: [shared/sdl/sdl_window.cpp:168](https://github.com/taysta/TaystJK/blame/b35ed06fec41c53644352743c6b199a5d5d500f3/shared/sdl/sdl_window.cpp#L168)
+- registration: [codemp/rd-dedicated/tr_init.cpp:375](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/codemp/rd-dedicated/tr_init.cpp#L375) (Cvar_Get)
+- registration: [shared/sdl/sdl_window.cpp:805](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/shared/sdl/sdl_window.cpp#L805) (Cvar_Get)
+- behavior: [shared/sdl/sdl_window.cpp:169](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/shared/sdl/sdl_window.cpp#L169)
+- behavior: [shared/sdl/sdl_window.cpp:646](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/shared/sdl/sdl_window.cpp#L646)
+- behavior: [codemp/rd-vulkan/vk_swapchain.cpp:144](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/codemp/rd-vulkan/vk_swapchain.cpp#L144)
+- behavior: [shared/sdl/sdl_window.cpp:166](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/shared/sdl/sdl_window.cpp#L166)
+- behavior: [shared/sdl/sdl_window.cpp:168](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/shared/sdl/sdl_window.cpp#L168)
 
-<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/b35ed06fec41c53644352743c6b199a5d5d500f3"><code>b35ed06fec41</code></a> on 2026-09-27. Anything merged after that is not reflected here.</p>
+<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a"><code>c722804317d7</code></a> on 2026-09-28. Anything merged after that is not reflected here.</p>

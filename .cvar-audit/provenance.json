@@ -201738,6 +201738,78 @@
         "rend2"
       ]
     },
+    "cp_altdimalpha": {
+      "confidence": "high",
+      "downstream_introductions": [],
+      "first_commit": "1158d82810c44a055f16d59d89240469b0cfeb66",
+      "first_ref": "origin/master",
+      "integration_pr": 396,
+      "integration_pr_url": "https://github.com/taysta/TaystJK/pull/396",
+      "introduction_evidence": [
+        {
+          "author": "tayst",
+          "author_timestamp": 1790560383,
+          "content_author": "tayst",
+          "content_author_timestamp": 1790507862,
+          "content_email": "taylor.brough13@gmail.com",
+          "content_sha": "bbce334175bf3f44e582ff45ecffd871e3d3b222",
+          "content_subject": "[cgame] predict and ghost JA+ alternate dimension players",
+          "content_timestamp": 1790509669,
+          "email": "taylor.brough13@gmail.com",
+          "history_search": "cp_altDimAlpha",
+          "line": 196,
+          "line_commit_sha": "bbce334175bf3f44e582ff45ecffd871e3d3b222",
+          "path": "codemp/cgame/cg_xcvar.h",
+          "pr": 396,
+          "pr_created_timestamp": 1790510712,
+          "pr_url": "https://github.com/taysta/TaystJK/pull/396",
+          "ref": "origin/master",
+          "sha": "1158d82810c44a055f16d59d89240469b0cfeb66",
+          "source": "taystjk",
+          "subject": "Merge pull request #396 from taysta/japlus-prediction",
+          "timestamp": 1790560383
+        }
+      ],
+      "method": "earliest-authored-project-introduction",
+      "modified_by": [],
+      "notes": "",
+      "origin_evidence": {
+        "kind": "XCVAR_DEF",
+        "line": 196,
+        "path": "codemp/cgame/cg_xcvar.h",
+        "ref": "origin/master"
+      },
+      "origin_introduction": {
+        "author": "tayst",
+        "author_timestamp": 1790560383,
+        "content_author": "tayst",
+        "content_author_timestamp": 1790507862,
+        "content_email": "taylor.brough13@gmail.com",
+        "content_sha": "bbce334175bf3f44e582ff45ecffd871e3d3b222",
+        "content_subject": "[cgame] predict and ghost JA+ alternate dimension players",
+        "content_timestamp": 1790509669,
+        "email": "taylor.brough13@gmail.com",
+        "history_search": "cp_altDimAlpha",
+        "line": 196,
+        "line_commit_sha": "bbce334175bf3f44e582ff45ecffd871e3d3b222",
+        "path": "codemp/cgame/cg_xcvar.h",
+        "pr": 396,
+        "pr_created_timestamp": 1790510712,
+        "pr_url": "https://github.com/taysta/TaystJK/pull/396",
+        "ref": "origin/master",
+        "sha": "1158d82810c44a055f16d59d89240469b0cfeb66",
+        "source": "taystjk",
+        "subject": "Merge pull request #396 from taysta/japlus-prediction",
+        "timestamp": 1790560383
+      },
+      "ported_via": [],
+      "pr": 396,
+      "pr_url": "https://github.com/taysta/TaystJK/pull/396",
+      "source": "taystjk",
+      "squash_bullet": null,
+      "status": "documented",
+      "upstream_presence": []
+    },
     "cp_clanpwd": {
       "confidence": "medium",
       "downstream_introductions": [

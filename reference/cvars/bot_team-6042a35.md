@@ -36,9 +36,9 @@ In team game types, 1 puts every bot added to the server on the blue team and 2 
 
 | Value | Meaning | Evidence |
 |:--|:--|:--|
-| `0` | Balance bots across the teams like players. | [codemp/game/g_bot.c:987](https://github.com/taysta/TaystJK/blame/b35ed06fec41c53644352743c6b199a5d5d500f3/codemp/game/g_bot.c#L987) |
-| `1` | Put bots on the blue team. | [codemp/game/g_bot.c:980](https://github.com/taysta/TaystJK/blame/b35ed06fec41c53644352743c6b199a5d5d500f3/codemp/game/g_bot.c#L980) |
-| `>=2` | Put bots on the red team. | [codemp/game/g_bot.c:982](https://github.com/taysta/TaystJK/blame/b35ed06fec41c53644352743c6b199a5d5d500f3/codemp/game/g_bot.c#L982) |
+| `0` | Balance bots across the teams like players. | [codemp/game/g_bot.c:987](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/codemp/game/g_bot.c#L987) |
+| `1` | Put bots on the blue team. | [codemp/game/g_bot.c:980](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/codemp/game/g_bot.c#L980) |
+| `>=2` | Put bots on the red team. | [codemp/game/g_bot.c:982](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/codemp/game/g_bot.c#L982) |
 
 ## Flags
 
@@ -66,10 +66,10 @@ Authored dates come from the exact registration's first content commit, PR dates
 
 ## Evidence
 
-- registration: [codemp/game/g_xcvar.h:343](https://github.com/taysta/TaystJK/blame/b35ed06fec41c53644352743c6b199a5d5d500f3/codemp/game/g_xcvar.h#L343) (XCVAR_DEF)
-- behavior: [codemp/game/g_bot.c:980](https://github.com/taysta/TaystJK/blame/b35ed06fec41c53644352743c6b199a5d5d500f3/codemp/game/g_bot.c#L980)
-- behavior: [codemp/game/g_bot.c:982](https://github.com/taysta/TaystJK/blame/b35ed06fec41c53644352743c6b199a5d5d500f3/codemp/game/g_bot.c#L982)
-- behavior: [codemp/game/g_client.c:3055](https://github.com/taysta/TaystJK/blame/b35ed06fec41c53644352743c6b199a5d5d500f3/codemp/game/g_client.c#L3055)
-- behavior: [codemp/game/g_client.c:3059](https://github.com/taysta/TaystJK/blame/b35ed06fec41c53644352743c6b199a5d5d500f3/codemp/game/g_client.c#L3059)
+- registration: [codemp/game/g_xcvar.h:343](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/codemp/game/g_xcvar.h#L343) (XCVAR_DEF)
+- behavior: [codemp/game/g_bot.c:980](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/codemp/game/g_bot.c#L980)
+- behavior: [codemp/game/g_bot.c:982](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/codemp/game/g_bot.c#L982)
+- behavior: [codemp/game/g_client.c:3055](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/codemp/game/g_client.c#L3055)
+- behavior: [codemp/game/g_client.c:3059](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/codemp/game/g_client.c#L3059)
 
-<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/b35ed06fec41c53644352743c6b199a5d5d500f3"><code>b35ed06fec41</code></a> on 2026-09-27. Anything merged after that is not reflected here.</p>
+<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a"><code>c722804317d7</code></a> on 2026-09-28. Anything merged after that is not reflected here.</p>

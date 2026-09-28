@@ -83,11 +83,11 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 ## Evidence
 
-- registration: [codemp/qcommon/files.cpp:3942](https://github.com/taysta/TaystJK/blame/b35ed06fec41c53644352743c6b199a5d5d500f3/codemp/qcommon/files.cpp#L3942) (Cvar_Get); condition `defined(MACOS_X)`
-- behavior: [codemp/qcommon/files.cpp:3944](https://github.com/taysta/TaystJK/blame/b35ed06fec41c53644352743c6b199a5d5d500f3/codemp/qcommon/files.cpp#L3944)
-- behavior: [codemp/qcommon/files.cpp:3965](https://github.com/taysta/TaystJK/blame/b35ed06fec41c53644352743c6b199a5d5d500f3/codemp/qcommon/files.cpp#L3965)
-- behavior: [codemp/qcommon/files.cpp:3945](https://github.com/taysta/TaystJK/blame/b35ed06fec41c53644352743c6b199a5d5d500f3/codemp/qcommon/files.cpp#L3945)
-- behavior: [codemp/qcommon/files.cpp:3966](https://github.com/taysta/TaystJK/blame/b35ed06fec41c53644352743c6b199a5d5d500f3/codemp/qcommon/files.cpp#L3966)
-- behavior: [codemp/qcommon/files.cpp:3816](https://github.com/taysta/TaystJK/blame/b35ed06fec41c53644352743c6b199a5d5d500f3/codemp/qcommon/files.cpp#L3816)
+- registration: [codemp/qcommon/files.cpp:3942](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/codemp/qcommon/files.cpp#L3942) (Cvar_Get); condition `defined(MACOS_X)`
+- behavior: [codemp/qcommon/files.cpp:3944](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/codemp/qcommon/files.cpp#L3944)
+- behavior: [codemp/qcommon/files.cpp:3965](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/codemp/qcommon/files.cpp#L3965)
+- behavior: [codemp/qcommon/files.cpp:3945](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/codemp/qcommon/files.cpp#L3945)
+- behavior: [codemp/qcommon/files.cpp:3966](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/codemp/qcommon/files.cpp#L3966)
+- behavior: [codemp/qcommon/files.cpp:3816](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/codemp/qcommon/files.cpp#L3816)
 
-<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/b35ed06fec41c53644352743c6b199a5d5d500f3"><code>b35ed06fec41</code></a> on 2026-09-27. Anything merged after that is not reflected here.</p>
+<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a"><code>c722804317d7</code></a> on 2026-09-28. Anything merged after that is not reflected here.</p>

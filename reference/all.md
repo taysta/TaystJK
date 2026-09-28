@@ -514,6 +514,7 @@ description: "A no-JavaScript index of every TaystJK cvar and console command."
 <a href="/TaystJK/reference/cvars/con_ratiofix-64c8547/"><code>con_ratioFix</code></a>
 <a href="/TaystJK/reference/cvars/con_scale-d334b5a/"><code>con_scale</code></a>
 <a href="/TaystJK/reference/cvars/con_timestamps-2b4f0eb/"><code>con_timestamps</code></a>
+<a href="/TaystJK/reference/cvars/cp_altdimalpha-f8f0fdd/"><code>cp_altDimAlpha</code></a>
 <a href="/TaystJK/reference/cvars/cp_clanpwd-ca86ca9/"><code>cp_clanPwd</code></a>
 <a href="/TaystJK/reference/cvars/cp_cosmetics-488f751/"><code>cp_cosmetics</code></a>
 <a href="/TaystJK/reference/cvars/cp_plugindisable-715762d/"><code>cp_pluginDisable</code></a>

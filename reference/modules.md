@@ -17,7 +17,7 @@ description: "Every cvar and command grouped by the module that registers it: en
 </div>
 
 <div class="directory-grid">
-<a class="directory-card" href="/TaystJK/reference/modules/cgame/"><span class="directory-code">cgame</span><strong>592</strong><span>entries</span></a>
+<a class="directory-card" href="/TaystJK/reference/modules/cgame/"><span class="directory-code">cgame</span><strong>593</strong><span>entries</span></a>
 <a class="directory-card" href="/TaystJK/reference/modules/engine-client/"><span class="directory-code">engine-client</span><strong>311</strong><span>entries</span></a>
 <a class="directory-card" href="/TaystJK/reference/modules/engine-server/"><span class="directory-code">engine-server</span><strong>128</strong><span>entries</span></a>
 <a class="directory-card" href="/TaystJK/reference/modules/engine-shared/"><span class="directory-code">engine-shared</span><strong>142</strong><span>entries</span></a>

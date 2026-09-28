@@ -37,14 +37,14 @@ Server frames per second
 
 | Value | Meaning | Evidence |
 |:--|:--|:--|
-| `0` | Selects the code path tested for value 0. | [codemp/cgame/cg_snapshot.c:647](https://github.com/taysta/TaystJK/blame/b35ed06fec41c53644352743c6b199a5d5d500f3/codemp/cgame/cg_snapshot.c#L647) |
-| `20` | Selects the code path tested for value 20. | [codemp/game/g_trigger.c:1351](https://github.com/taysta/TaystJK/blame/b35ed06fec41c53644352743c6b199a5d5d500f3/codemp/game/g_trigger.c#L1351) |
-| `30` | Selects the code path tested for value 30. | [codemp/game/g_trigger.c:1351](https://github.com/taysta/TaystJK/blame/b35ed06fec41c53644352743c6b199a5d5d500f3/codemp/game/g_trigger.c#L1351) |
-| `40` | Selects the code path tested for value 40. | [codemp/game/g_trigger.c:1351](https://github.com/taysta/TaystJK/blame/b35ed06fec41c53644352743c6b199a5d5d500f3/codemp/game/g_trigger.c#L1351) |
+| `0` | Selects the code path tested for value 0. | [codemp/cgame/cg_snapshot.c:647](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/codemp/cgame/cg_snapshot.c#L647) |
+| `20` | Selects the code path tested for value 20. | [codemp/game/g_trigger.c:1351](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/codemp/game/g_trigger.c#L1351) |
+| `30` | Selects the code path tested for value 30. | [codemp/game/g_trigger.c:1351](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/codemp/game/g_trigger.c#L1351) |
+| `40` | Selects the code path tested for value 40. | [codemp/game/g_trigger.c:1351](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/codemp/game/g_trigger.c#L1351) |
 
 ## Enforced ranges
 
-- `0` through `1000` (integer; Cvar_CheckRange). Evidence: [codemp/server/sv_init.cpp:1015](https://github.com/taysta/TaystJK/blame/b35ed06fec41c53644352743c6b199a5d5d500f3/codemp/server/sv_init.cpp#L1015)
+- `0` through `1000` (integer; Cvar_CheckRange). Evidence: [codemp/server/sv_init.cpp:1015](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/codemp/server/sv_init.cpp#L1015)
 
 ## Flags
 
@@ -111,12 +111,12 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 ## Evidence
 
-- registration: [codemp/game/g_xcvar.h:177](https://github.com/taysta/TaystJK/blame/b35ed06fec41c53644352743c6b199a5d5d500f3/codemp/game/g_xcvar.h#L177) (XCVAR_DEF)
-- registration: [codemp/server/sv_init.cpp:1014](https://github.com/taysta/TaystJK/blame/b35ed06fec41c53644352743c6b199a5d5d500f3/codemp/server/sv_init.cpp#L1014) (Cvar_Get)
-- behavior: [codemp/cgame/cg_snapshot.c:647](https://github.com/taysta/TaystJK/blame/b35ed06fec41c53644352743c6b199a5d5d500f3/codemp/cgame/cg_snapshot.c#L647)
-- behavior: [codemp/game/g_active.c:6075](https://github.com/taysta/TaystJK/blame/b35ed06fec41c53644352743c6b199a5d5d500f3/codemp/game/g_active.c#L6075)
-- behavior: [codemp/game/g_client.c:2703](https://github.com/taysta/TaystJK/blame/b35ed06fec41c53644352743c6b199a5d5d500f3/codemp/game/g_client.c#L2703)
-- behavior: [codemp/game/g_cmds.c:8764](https://github.com/taysta/TaystJK/blame/b35ed06fec41c53644352743c6b199a5d5d500f3/codemp/game/g_cmds.c#L8764)
-- behavior: [codemp/game/g_trigger.c:1351](https://github.com/taysta/TaystJK/blame/b35ed06fec41c53644352743c6b199a5d5d500f3/codemp/game/g_trigger.c#L1351)
+- registration: [codemp/game/g_xcvar.h:177](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/codemp/game/g_xcvar.h#L177) (XCVAR_DEF)
+- registration: [codemp/server/sv_init.cpp:1014](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/codemp/server/sv_init.cpp#L1014) (Cvar_Get)
+- behavior: [codemp/cgame/cg_snapshot.c:647](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/codemp/cgame/cg_snapshot.c#L647)
+- behavior: [codemp/game/g_active.c:6075](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/codemp/game/g_active.c#L6075)
+- behavior: [codemp/game/g_client.c:2703](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/codemp/game/g_client.c#L2703)
+- behavior: [codemp/game/g_cmds.c:8764](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/codemp/game/g_cmds.c#L8764)
+- behavior: [codemp/game/g_trigger.c:1351](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/codemp/game/g_trigger.c#L1351)
 
-<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/b35ed06fec41c53644352743c6b199a5d5d500f3"><code>b35ed06fec41</code></a> on 2026-09-27. Anything merged after that is not reflected here.</p>
+<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a"><code>c722804317d7</code></a> on 2026-09-28. Anything merged after that is not reflected here.</p>

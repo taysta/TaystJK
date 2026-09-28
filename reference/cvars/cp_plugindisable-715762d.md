@@ -4,7 +4,7 @@ layout: reference
 generated: true
 nav_exclude: true
 search_exclude: false
-description: "'enable' holstered saber (512) and ledge grab (1536) by default, to avoid missing JA+ animations"
+description: "Opt out of JA+'s holstered saber (512), ledge grab (1024) and new primary (2048) and alt (4096) DFAs by default, to avoid missing JA+ animations"
 ---
 
 # `cp_pluginDisable`
@@ -15,7 +15,7 @@ description: "'enable' holstered saber (512) and ledge grab (1536) by default, t
 
 <p class="ref-notice"><strong>Set with <code>plugin</code> or <code>pluginDisable</code>.</strong> Each bit is a separate option, so the command toggles one of them per use and leaves the rest alone. Setting a raw value by hand replaces every option at once.</p>
 
-'enable' holstered saber (512) and ledge grab (1536) by default, to avoid missing JA+ animations
+Opt out of JA+'s holstered saber (512), ledge grab (1024) and new primary (2048) and alt (4096) DFAs by default, to avoid missing JA+ animations
 
 ## At a glance
 
@@ -30,7 +30,7 @@ description: "'enable' holstered saber (512) and ledge grab (1536) by default, t
 | Added | 2018-01-01 in [`d9d510063`](https://github.com/taysta/TaystJK/commit/d9d510063ce680639e6ba060021b6d40ee0c1419) <span class="status-chip">needs review</span> ([how to compare this against your build](/TaystJK/features/whats-new/#how-to-tell-what-your-build-has)) |
 | In-game xdocs | No |
 | In-game menu | No |
-| Default | `1536` |
+| Default | `7680` |
 | Value type | `bitmask` |
 | Restart | No latch flag is registered. |
 | Cheat protected | No |
@@ -39,12 +39,12 @@ description: "'enable' holstered saber (512) and ledge grab (1536) by default, t
 
 ## Bits
 
-Use [`plugin`](/TaystJK/reference/commands/plugin-fd8c7c8/) or [`pluginDisable`](/TaystJK/reference/commands/plugindisable-98b2c24/) to toggle one option at a time; see the command pages for syntax. The value column is that bit on its own. [The labels come from the source table](https://github.com/taysta/TaystJK/blame/b35ed06fec41c53644352743c6b199a5d5d500f3/codemp/cgame/cg_consolecmds.c#L1257).
+Use [`plugin`](/TaystJK/reference/commands/plugin-fd8c7c8/) or [`pluginDisable`](/TaystJK/reference/commands/plugindisable-98b2c24/) to toggle one option at a time; see the command pages for syntax. The value column is that bit on its own. [The labels come from the source table](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/codemp/cgame/cg_consolecmds.c#L1257).
 
 | Bit | Value | Meaning | Read by |
 |:--|:--|:--|:--|
 | 0 | `1` | New drain FX | — |
-| 1 | `2` | Duel see others | [codemp/game/bg_public.h:516](https://github.com/taysta/TaystJK/blame/b35ed06fec41c53644352743c6b199a5d5d500f3/codemp/game/bg_public.h#L516) |
+| 1 | `2` | Duel see others | [codemp/game/bg_public.h:516](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/codemp/game/bg_public.h#L516) |
 | 2 | `4` | End duel rotation | — |
 | 3 | `8` | No black sabers | — |
 | 4 | `16` | No auto replier | — |
@@ -62,15 +62,15 @@ Use [`plugin`](/TaystJK/reference/commands/plugin-fd8c7c8/) or [`pluginDisable`]
 | 16 | `65536` | No Butterfly | — |
 | 17 | `131072` | No Stab | — |
 | 18 | `262144` | No DFA | — |
-| 19 | `524288` | Disable forcejumps | [codemp/game/bg_public.h:538](https://github.com/taysta/TaystJK/blame/b35ed06fec41c53644352743c6b199a5d5d500f3/codemp/game/bg_public.h#L538) |
-| 20 | `1048576` | Disable rolls | [codemp/game/bg_public.h:539](https://github.com/taysta/TaystJK/blame/b35ed06fec41c53644352743c6b199a5d5d500f3/codemp/game/bg_public.h#L539) |
+| 19 | `524288` | Disable forcejumps | [codemp/game/bg_public.h:538](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/codemp/game/bg_public.h#L538) |
+| 20 | `1048576` | Disable rolls | [codemp/game/bg_public.h:539](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/codemp/game/bg_public.h#L539) |
 | 21 | `2097152` | Disable cartwheels | — |
 | 22 | `4194304` | New run animation | — |
 | 23 | `8388608` | Disable duel tele | — |
 | 24 | `16777216` | Disable centerprint checkpoints | — |
 | 25 | `33554432` | Show chatbox checkpoints | — |
 | 26 | `67108864` | Disable damage numbers | — |
-| 27 | `134217728` | Centermuzzle | [codemp/game/bg_public.h:546](https://github.com/taysta/TaystJK/blame/b35ed06fec41c53644352743c6b199a5d5d500f3/codemp/game/bg_public.h#L546) |
+| 27 | `134217728` | Centermuzzle | [codemp/game/bg_public.h:546](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/codemp/game/bg_public.h#L546) |
 | 28 | `268435456` | Show checkpoints in console only | — |
 ## Flags
 
@@ -126,11 +126,11 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 ## Evidence
 
-- registration: [codemp/cgame/cg_xcvar.h:195](https://github.com/taysta/TaystJK/blame/b35ed06fec41c53644352743c6b199a5d5d500f3/codemp/cgame/cg_xcvar.h#L195) (XCVAR_DEF)
-- behavior: [codemp/cgame/cg_ents.c:933](https://github.com/taysta/TaystJK/blame/b35ed06fec41c53644352743c6b199a5d5d500f3/codemp/cgame/cg_ents.c#L933)
-- behavior: [codemp/cgame/cg_players.c:10783](https://github.com/taysta/TaystJK/blame/b35ed06fec41c53644352743c6b199a5d5d500f3/codemp/cgame/cg_players.c#L10783)
-- behavior: [codemp/cgame/cg_weapons.c:2390](https://github.com/taysta/TaystJK/blame/b35ed06fec41c53644352743c6b199a5d5d500f3/codemp/cgame/cg_weapons.c#L2390)
-- behavior: [codemp/game/bg_pmove.c:3546](https://github.com/taysta/TaystJK/blame/b35ed06fec41c53644352743c6b199a5d5d500f3/codemp/game/bg_pmove.c#L3546)
-- behavior: [codemp/game/bg_pmove.c:6220](https://github.com/taysta/TaystJK/blame/b35ed06fec41c53644352743c6b199a5d5d500f3/codemp/game/bg_pmove.c#L6220)
+- registration: [codemp/cgame/cg_xcvar.h:195](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/codemp/cgame/cg_xcvar.h#L195) (XCVAR_DEF)
+- behavior: [codemp/cgame/cg_ents.c:933](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/codemp/cgame/cg_ents.c#L933)
+- behavior: [codemp/cgame/cg_players.c:10817](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/codemp/cgame/cg_players.c#L10817)
+- behavior: [codemp/cgame/cg_weapons.c:2390](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/codemp/cgame/cg_weapons.c#L2390)
+- behavior: [codemp/game/bg_pmove.c:3546](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/codemp/game/bg_pmove.c#L3546)
+- behavior: [codemp/game/bg_pmove.c:6263](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/codemp/game/bg_pmove.c#L6263)
 
-<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/b35ed06fec41c53644352743c6b199a5d5d500f3"><code>b35ed06fec41</code></a> on 2026-09-27. Anything merged after that is not reflected here.</p>
+<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a"><code>c722804317d7</code></a> on 2026-09-28. Anything merged after that is not reflected here.</p>

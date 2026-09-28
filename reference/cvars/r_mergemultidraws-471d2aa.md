@@ -37,8 +37,8 @@ Controls `r_mergeMultidraws` in the renderer module. Consult the cited behavior 
 
 | Value | Meaning | Evidence |
 |:--|:--|:--|
-| `0` | Disabled. | [codemp/rd-vulkan/tr_ghoul2.cpp:3703](https://github.com/taysta/TaystJK/blame/b35ed06fec41c53644352743c6b199a5d5d500f3/codemp/rd-vulkan/tr_ghoul2.cpp#L3703) |
-| `1` | Enabled. | [codemp/rd-vulkan/tr_ghoul2.cpp:3703](https://github.com/taysta/TaystJK/blame/b35ed06fec41c53644352743c6b199a5d5d500f3/codemp/rd-vulkan/tr_ghoul2.cpp#L3703) |
+| `0` | Disabled. | [codemp/rd-vulkan/tr_ghoul2.cpp:3703](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/codemp/rd-vulkan/tr_ghoul2.cpp#L3703) |
+| `1` | Enabled. | [codemp/rd-vulkan/tr_ghoul2.cpp:3703](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/codemp/rd-vulkan/tr_ghoul2.cpp#L3703) |
 
 ## Flags
 
@@ -78,11 +78,11 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 ## Evidence
 
-- registration: [codemp/rd-rend2/tr_init.cpp:1635](https://github.com/taysta/TaystJK/blame/b35ed06fec41c53644352743c6b199a5d5d500f3/codemp/rd-rend2/tr_init.cpp#L1635) (Cvar_Get)
-- behavior: [codemp/rd-vulkan/tr_ghoul2.cpp:3703](https://github.com/taysta/TaystJK/blame/b35ed06fec41c53644352743c6b199a5d5d500f3/codemp/rd-vulkan/tr_ghoul2.cpp#L3703)
-- behavior: [codemp/rd-vulkan/tr_ghoul2.cpp:3707](https://github.com/taysta/TaystJK/blame/b35ed06fec41c53644352743c6b199a5d5d500f3/codemp/rd-vulkan/tr_ghoul2.cpp#L3707)
-- behavior: [codemp/rd-vulkan/tr_surface.cpp:2276](https://github.com/taysta/TaystJK/blame/b35ed06fec41c53644352743c6b199a5d5d500f3/codemp/rd-vulkan/tr_surface.cpp#L2276)
-- behavior: [codemp/rd-vulkan/tr_surface.cpp:2280](https://github.com/taysta/TaystJK/blame/b35ed06fec41c53644352743c6b199a5d5d500f3/codemp/rd-vulkan/tr_surface.cpp#L2280)
-- behavior: [shared/rd-rend2/tr_ghoul2.cpp:3743](https://github.com/taysta/TaystJK/blame/b35ed06fec41c53644352743c6b199a5d5d500f3/shared/rd-rend2/tr_ghoul2.cpp#L3743)
+- registration: [codemp/rd-rend2/tr_init.cpp:1635](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/codemp/rd-rend2/tr_init.cpp#L1635) (Cvar_Get)
+- behavior: [codemp/rd-vulkan/tr_ghoul2.cpp:3703](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/codemp/rd-vulkan/tr_ghoul2.cpp#L3703)
+- behavior: [codemp/rd-vulkan/tr_ghoul2.cpp:3707](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/codemp/rd-vulkan/tr_ghoul2.cpp#L3707)
+- behavior: [codemp/rd-vulkan/tr_surface.cpp:2276](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/codemp/rd-vulkan/tr_surface.cpp#L2276)
+- behavior: [codemp/rd-vulkan/tr_surface.cpp:2280](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/codemp/rd-vulkan/tr_surface.cpp#L2280)
+- behavior: [shared/rd-rend2/tr_ghoul2.cpp:3743](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/shared/rd-rend2/tr_ghoul2.cpp#L3743)
 
-<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/b35ed06fec41c53644352743c6b199a5d5d500f3"><code>b35ed06fec41</code></a> on 2026-09-27. Anything merged after that is not reflected here.</p>
+<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a"><code>c722804317d7</code></a> on 2026-09-28. Anything merged after that is not reflected here.</p>

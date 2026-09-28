@@ -38,8 +38,8 @@ Controls `cv2` in the renderer module. Consult the cited behavior reads before r
 
 | Value | Meaning | Evidence |
 |:--|:--|:--|
-| `0` | Disabled. | [codemp/qcommon/cm_patch.cpp:1671](https://github.com/taysta/TaystJK/blame/b35ed06fec41c53644352743c6b199a5d5d500f3/codemp/qcommon/cm_patch.cpp#L1671) |
-| `1` | Enabled. | [codemp/qcommon/cm_patch.cpp:1671](https://github.com/taysta/TaystJK/blame/b35ed06fec41c53644352743c6b199a5d5d500f3/codemp/qcommon/cm_patch.cpp#L1671) |
+| `0` | Disabled. | [codemp/qcommon/cm_patch.cpp:1671](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/codemp/qcommon/cm_patch.cpp#L1671) |
+| `1` | Enabled. | [codemp/qcommon/cm_patch.cpp:1671](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/codemp/qcommon/cm_patch.cpp#L1671) |
 
 ## Flags
 
@@ -86,15 +86,15 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 ## Evidence
 
-- registration: [codemp/qcommon/cm_patch.cpp:1668](https://github.com/taysta/TaystJK/blame/b35ed06fec41c53644352743c6b199a5d5d500f3/codemp/qcommon/cm_patch.cpp#L1668) (Cvar_Get); condition `!defined(BSPC)`
-- registration: [codemp/rd-dedicated/tr_init.cpp:419](https://github.com/taysta/TaystJK/blame/b35ed06fec41c53644352743c6b199a5d5d500f3/codemp/rd-dedicated/tr_init.cpp#L419) (Cvar_Get)
-- registration: [codemp/rd-rend2/tr_init.cpp:1672](https://github.com/taysta/TaystJK/blame/b35ed06fec41c53644352743c6b199a5d5d500f3/codemp/rd-rend2/tr_init.cpp#L1672) (Cvar_Get)
-- registration: [codemp/rd-vanilla/tr_init.cpp:1729](https://github.com/taysta/TaystJK/blame/b35ed06fec41c53644352743c6b199a5d5d500f3/codemp/rd-vanilla/tr_init.cpp#L1729) (Cvar_Get)
-- registration: [codemp/rd-vulkan/tr_init.cpp:891](https://github.com/taysta/TaystJK/blame/b35ed06fec41c53644352743c6b199a5d5d500f3/codemp/rd-vulkan/tr_init.cpp#L891) (Cvar_Get)
-- behavior: [codemp/qcommon/cm_patch.cpp:1671](https://github.com/taysta/TaystJK/blame/b35ed06fec41c53644352743c6b199a5d5d500f3/codemp/qcommon/cm_patch.cpp#L1671)
-- behavior: [codemp/rd-vanilla/tr_main.cpp:1368](https://github.com/taysta/TaystJK/blame/b35ed06fec41c53644352743c6b199a5d5d500f3/codemp/rd-vanilla/tr_main.cpp#L1368)
-- behavior: [codemp/rd-vulkan/vk_debug.cpp:462](https://github.com/taysta/TaystJK/blame/b35ed06fec41c53644352743c6b199a5d5d500f3/codemp/rd-vulkan/vk_debug.cpp#L462)
-- behavior: [shared/rd-rend2/tr_main.cpp:2127](https://github.com/taysta/TaystJK/blame/b35ed06fec41c53644352743c6b199a5d5d500f3/shared/rd-rend2/tr_main.cpp#L2127)
-- behavior: [codemp/qcommon/cm_patch.cpp:1673](https://github.com/taysta/TaystJK/blame/b35ed06fec41c53644352743c6b199a5d5d500f3/codemp/qcommon/cm_patch.cpp#L1673)
+- registration: [codemp/qcommon/cm_patch.cpp:1668](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/codemp/qcommon/cm_patch.cpp#L1668) (Cvar_Get); condition `!defined(BSPC)`
+- registration: [codemp/rd-dedicated/tr_init.cpp:419](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/codemp/rd-dedicated/tr_init.cpp#L419) (Cvar_Get)
+- registration: [codemp/rd-rend2/tr_init.cpp:1672](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/codemp/rd-rend2/tr_init.cpp#L1672) (Cvar_Get)
+- registration: [codemp/rd-vanilla/tr_init.cpp:1729](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/codemp/rd-vanilla/tr_init.cpp#L1729) (Cvar_Get)
+- registration: [codemp/rd-vulkan/tr_init.cpp:891](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/codemp/rd-vulkan/tr_init.cpp#L891) (Cvar_Get)
+- behavior: [codemp/qcommon/cm_patch.cpp:1671](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/codemp/qcommon/cm_patch.cpp#L1671)
+- behavior: [codemp/rd-vanilla/tr_main.cpp:1368](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/codemp/rd-vanilla/tr_main.cpp#L1368)
+- behavior: [codemp/rd-vulkan/vk_debug.cpp:462](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/codemp/rd-vulkan/vk_debug.cpp#L462)
+- behavior: [shared/rd-rend2/tr_main.cpp:2127](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/shared/rd-rend2/tr_main.cpp#L2127)
+- behavior: [codemp/qcommon/cm_patch.cpp:1673](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/codemp/qcommon/cm_patch.cpp#L1673)
 
-<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/b35ed06fec41c53644352743c6b199a5d5d500f3"><code>b35ed06fec41</code></a> on 2026-09-27. Anything merged after that is not reflected here.</p>
+<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a"><code>c722804317d7</code></a> on 2026-09-28. Anything merged after that is not reflected here.</p>

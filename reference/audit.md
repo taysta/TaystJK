@@ -21,7 +21,7 @@ This is the deliberately untidy review queue behind the published reference. `un
 | JK2MV | 16 |
 | NewJK / NewMod | 12 |
 | OpenJK | 172 |
-| TaystJK | 75 |
+| TaystJK | 76 |
 | Vulkan | 24 |
 | jaPRO | 481 |
 | rend2 | 90 |
@@ -272,7 +272,7 @@ The dump was captured from stdout after loading `mp/ffa3`; stdout does not use t
 | [`con_timestamps`](/TaystJK/reference/cvars/con_timestamps-2b4f0eb/) | cvar | engine-client | Display timestamps infront of console lines |
 | [`cp_clanPwd`](/TaystJK/reference/cvars/cp_clanpwd-ca86ca9/) | cvar | cgame | Registered by the current source, but no user-facing behavior description has been verified. |
 | [`cp_cosmetics`](/TaystJK/reference/cvars/cp_cosmetics-488f751/) | cvar | cgame | Controls `cp_cosmetics` in the cgame module. |
-| [`cp_pluginDisable`](/TaystJK/reference/cvars/cp_plugindisable-715762d/) | cvar | cgame | 'enable' holstered saber (512) and ledge grab (1536) by default, to avoid missing JA+ animations |
+| [`cp_pluginDisable`](/TaystJK/reference/cvars/cp_plugindisable-715762d/) | cvar | cgame | Opt out of JA+'s holstered saber (512), ledge grab (1024) and new primary (2048) and alt (4096) DFAs by default, to avoid missing JA+ animations |
 | [`cp_sbRGB1`](/TaystJK/reference/cvars/cp_sbrgb1-0369930/) | cvar | cgame | Controls `cp_sbRGB1` in the cgame module. |
 | [`cp_sbRGB2`](/TaystJK/reference/cvars/cp_sbrgb2-81b016f/) | cvar | cgame | Controls `cp_sbRGB2` in the cgame module. |
 | [`disco`](/TaystJK/reference/cvars/disco-9a1c2a6/) | cvar | cgame | Controls `disco` in the cgame module. |
@@ -1231,7 +1231,7 @@ The dump was captured from stdout after loading `mp/ffa3`; stdout does not use t
 | [`con_timestamps`](/TaystJK/reference/cvars/con_timestamps-2b4f0eb/) | cvar | engine-client | Display timestamps infront of console lines |
 | [`cp_clanPwd`](/TaystJK/reference/cvars/cp_clanpwd-ca86ca9/) | cvar | cgame | Registered by the current source, but no user-facing behavior description has been verified. |
 | [`cp_cosmetics`](/TaystJK/reference/cvars/cp_cosmetics-488f751/) | cvar | cgame | Controls `cp_cosmetics` in the cgame module. |
-| [`cp_pluginDisable`](/TaystJK/reference/cvars/cp_plugindisable-715762d/) | cvar | cgame | 'enable' holstered saber (512) and ledge grab (1536) by default, to avoid missing JA+ animations |
+| [`cp_pluginDisable`](/TaystJK/reference/cvars/cp_plugindisable-715762d/) | cvar | cgame | Opt out of JA+'s holstered saber (512), ledge grab (1024) and new primary (2048) and alt (4096) DFAs by default, to avoid missing JA+ animations |
 | [`cp_sbRGB1`](/TaystJK/reference/cvars/cp_sbrgb1-0369930/) | cvar | cgame | Controls `cp_sbRGB1` in the cgame module. |
 | [`cp_sbRGB2`](/TaystJK/reference/cvars/cp_sbrgb2-81b016f/) | cvar | cgame | Controls `cp_sbRGB2` in the cgame module. |
 | [`currentObjMapIconBackground`](/TaystJK/reference/cvars/currentobjmapiconbackground-748291d/) | cvar | ui | Controls `currentObjMapIconBackground` in the ui module. |
@@ -2846,7 +2846,7 @@ These entries have dated post-origin registration or behavior evidence on TaystJ
 | [`con_scale`](/TaystJK/reference/cvars/con_scale-d334b5a/) | cvar | engine-client | Console character scale |
 | [`con_timestamps`](/TaystJK/reference/cvars/con_timestamps-2b4f0eb/) | cvar | engine-client | Display timestamps infront of console lines |
 | [`cp_cosmetics`](/TaystJK/reference/cvars/cp_cosmetics-488f751/) | cvar | cgame | Controls `cp_cosmetics` in the cgame module. |
-| [`cp_pluginDisable`](/TaystJK/reference/cvars/cp_plugindisable-715762d/) | cvar | cgame | 'enable' holstered saber (512) and ledge grab (1536) by default, to avoid missing JA+ animations |
+| [`cp_pluginDisable`](/TaystJK/reference/cvars/cp_plugindisable-715762d/) | cvar | cgame | Opt out of JA+'s holstered saber (512), ledge grab (1024) and new primary (2048) and alt (4096) DFAs by default, to avoid missing JA+ animations |
 | [`cp_sbRGB1`](/TaystJK/reference/cvars/cp_sbrgb1-0369930/) | cvar | cgame | Controls `cp_sbRGB1` in the cgame module. |
 | [`cp_sbRGB2`](/TaystJK/reference/cvars/cp_sbrgb2-81b016f/) | cvar | cgame | Controls `cp_sbRGB2` in the cgame module. |
 | [`d_altRoutes`](/TaystJK/reference/cvars/d_altroutes-c57e072/) | cvar | game | Controls `d_altRoutes` in the game module. |
