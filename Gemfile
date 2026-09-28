@@ -1,5 +1,5 @@
-# Local build only. GitHub Pages builds this site itself and ignores this file;
-# _config.yml already excludes Gemfile and Gemfile.lock from the output.
+# Used by local builds and by the deploy workflow (.github/workflows/pages.yml), so the two
+# match. _config.yml excludes Gemfile and Gemfile.lock from the output.
 source "https://rubygems.org"
 
 gem "jekyll", "~> 4.3"

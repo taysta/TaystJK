@@ -1,13 +1,10 @@
 #!/usr/bin/env python3
 """Record when each page was last changed, from git.
 
-GitHub Pages cannot run a plugin, so the date has to be worked out here and committed.
-It is the author date of the most recent commit touching the file.
-
-The limitation worth knowing: a page edited after this last ran shows the previous date
-until it is run again. That is a lag of one commit, which does not change whether a reader
-can trust the page's age. The "History" link beside the date is always exact, so precision
-is available where it matters.
+The date is the author date of the most recent commit touching the file. The deploy
+workflow (.github/workflows/pages.yml) runs this before every build, so the published
+dates are always current and the output is never committed. A local preview shows no
+dates until you run it yourself:
 
     python3 tools/cvar_audit/page_dates.py
 """
@@ -21,7 +18,7 @@ from pathlib import Path
 
 OUTPUT = Path("_data/page_updated.json")
 SKIP_DIRS = {"tools"}
-SKIP_NAMES = {"AGENTS.md", "CLAUDE.md", "CONVENTIONS.md", "README.md"}
+SKIP_NAMES = {"AGENTS.md", "CLAUDE.md", "CONVENTIONS.md", "EDITING.md", "README.md"}
 
 
 def git(*args: str) -> str:

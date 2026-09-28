@@ -8,6 +8,9 @@ lib/
 compile_commands.json
 .idea/
 
+# Written by page_dates.py during the deploy build; run it yourself to preview dates
+_data/page_updated.json
+
 # Local Jekyll build
 _site/
 vendor/

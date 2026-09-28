@@ -147,9 +147,9 @@ Written once, so pages do not reimplement them:
 - **Previous/next links** across a section, ordered by `parent` + `nav_order`. Those two
   fields were inert after the theme was removed; this gives them a job again, so a new
   child page needs both or it drops out of the sequence.
-- **A "Last changed" date and a History link**, from `_data/page_updated.json`. Refresh it
-  with `python3 tools/cvar_audit/page_dates.py`; it lags by one commit, which is fine for
-  judging a page's age, and the History link is exact when precision matters.
+- **A "Last changed" date and a History link**, from `_data/page_updated.json`. The deploy
+  workflow writes it with `page_dates.py` before every build, so it needs no upkeep; run
+  `python3 tools/cvar_audit/page_dates.py` to see the dates in a local preview.
 - **Light and dark themes.** Every colour resolves from a token in `:root`, and tints are
   `color-mix()` on those tokens, so a theme is a second set of values rather than a second
   stylesheet. Do not add a raw colour to a rule; add a token. Both themes are checked to
@@ -439,6 +439,6 @@ python3 tools/cvar_audit/check_generated.py
 ```
 
 The `Gemfile` provides a local Jekyll build: run `bundle install` if dependencies are
-missing, then `bundle exec jekyll build`. GitHub Pages builds the published site
-separately. `check_generated.py` validates generated pages and internal `/TaystJK/`
+missing, then `bundle exec jekyll build`. The deploy workflow builds the published site the
+same way. `check_generated.py` validates generated pages and internal `/TaystJK/`
 links. See [AGENTS.md](AGENTS.md#verification) for the complete suite and PR checks.

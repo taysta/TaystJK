@@ -58,9 +58,9 @@ rerun it.
 
 `_data/cvars.json`, `_data/commands.json`, and `_data/reference-meta.json` come from the
 reference pipeline. `_data/reference_stats.json` comes from `generate_docs.py`; hand-written
-pages quote reference counts from it instead of typing them. `_data/page_updated.json`
-comes from `page_dates.py`. Update their source or generator rather than editing those
-files directly.
+pages quote reference counts from it instead of typing them. Update their source or
+generator rather than editing those files directly. `_data/page_updated.json` is not
+committed: the deploy workflow writes it with `page_dates.py` before each build.
 
 For editorial changes to what's-new rows, use `tools/cvar_audit/whats-new-overrides.json`
 as described in CONVENTIONS.md. For rendering or editorial-input changes that do not
@@ -132,8 +132,8 @@ bundle exec jekyll build
 ```
 
 The Gemfile provides local Jekyll tooling; run `bundle install` if dependencies are
-missing. GitHub Pages builds separately, so local output does not prove production
-rendering is identical. Preview visible changes with `bundle exec jekyll serve` and
+missing. The deploy workflow (`.github/workflows/pages.yml`) builds the published site
+with the same Gemfile, so a local build matches production. Preview visible changes with `bundle exec jekyll serve` and
 check the affected pages, navigation, and search. For exclusion changes,
 inspect `_site` and its search index to ensure internal files are absent.
 

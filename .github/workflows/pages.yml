@@ -1,0 +1,47 @@
+name: Deploy site
+
+# Builds and publishes the site on every push to gh-pages. Pages' own branch build cannot
+# run scripts, so it could not record when each page last changed; this build runs
+# page_dates.py first, then builds with the same Gemfile as a local build.
+# Requires Settings > Pages > Build and deployment > Source to be "GitHub Actions".
+on:
+  push:
+    branches: [gh-pages]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# One deployment at a time. A newer push waits instead of cancelling one in flight.
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0  # page_dates.py reads each page's most recent commit
+      - uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: "3.4"
+          bundler-cache: true
+      - name: Record last-changed dates
+        run: python3 tools/cvar_audit/page_dates.py
+      - name: Build the site
+        run: bundle exec jekyll build
+      - uses: actions/upload-pages-artifact@v3
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4

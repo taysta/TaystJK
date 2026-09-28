@@ -23,7 +23,7 @@ The site lives on the `gh-pages` branch; the engine lives on `master`. The pipel
 **Never edit these by hand.** They are rewritten wholesale:
 
 - `_data/cvars.json`, `_data/commands.json`, `_data/reference-meta.json`,
-  `_data/reference_stats.json`, and `_data/page_updated.json` (from `page_dates.py`)
+  and `_data/reference_stats.json`
 - `reference.md`, `reference/cvars/*.md`, `reference/commands/*.md`
 - `reference/{all,audit,sources,removed}.md` and the `reference/categories/`,
   `reference/features/`, `reference/modules/` and `reference/origins/` collections
@@ -107,8 +107,11 @@ bundle install
 bundle exec jekyll build
 ```
 
-Local Jekyll is 4.x while GitHub Pages runs 3.x, so a local build proves the templates
-render rather than being byte-identical to production.
+Pushing to `gh-pages` runs the deploy workflow, `.github/workflows/pages.yml`, which builds
+with the same Gemfile, so a local build matches production. Before building, it runs
+`page_dates.py` to record each page's last-changed date from git, which is why that date
+needs no upkeep. A local preview shows no dates unless you run
+`python3 tools/cvar_audit/page_dates.py` first.
 
 ## Adding a page
 
