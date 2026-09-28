@@ -323,6 +323,18 @@ assert.equal(generator.secretProblem("Correct-Horse_42!"), "");
 assert.ok(generator.secretProblem('ab"cd'));
 assert.ok(generator.secretProblem(" padded "));
 assert.ok(generator.secretProblem("caf\u00e9"));
+// Over-long passwords are flagged instead of truncated, and each field refuses what its login
+// cannot carry: a client cannot send \ or ; in its join password, and rcon reads one word.
+assert.equal(generator.secretProblem("x".repeat(128)), "");
+assert.ok(generator.secretProblem("x".repeat(129)));
+assert.ok(generator.secretProblem("a;b", "password"));
+assert.ok(generator.secretProblem("a\\b", "password"));
+assert.equal(generator.secretProblem("a;b", "rcon"), "");
+assert.ok(generator.secretProblem("two words", "rcon"));
+assert.equal(generator.secretProblem("two words", "fullAdmin"), "");
+// Any of these blocks the download and the shell command.
+assert.deepEqual(generator.secretProblems({ rcon: "fine", password: 'bad"password' }), ["password"]);
+assert.deepEqual(generator.secretProblems({ rcon: "fine" }), []);
 
 // Reserved, engine-managed and unknown settings never reach the files through fine-tuning.
 {

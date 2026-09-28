@@ -14,6 +14,7 @@
   var VSTR_VOTE_BIT = 12;
   var DEFAULT_ALLOW_VOTE = 12416; // map, vstr and poll, as the bundled default.cfg allows
   var MAX_CLIENTS = 32;
+  var SECRET_MAX = 128;
 
   var TARGETS = {
     japro: { label: "TaystJK's jaPRO module", mod: "taystjk", baseOnly: false, defaultCfg: true },
@@ -340,14 +341,23 @@
   }
 
   // What a config cannot hold: a double quote ends the quoted value, and the engine reads bytes,
-  // so anything outside printable ASCII or surrounding spaces would change the password.
-  function secretProblem(value) {
+  // so anything outside printable ASCII or surrounding spaces would change the password. A join
+  // password travels in the client's userinfo, which refuses \ and ; (Info_SetValueForKey), and
+  // rcon compares only the first word the client sends (SVC_RemoteCommand), so a space breaks it.
+  function secretProblem(value, key) {
     var text = String(value == null ? "" : value);
     if (!text) return "";
     if (/"/.test(text)) return "Double quotes cannot be used: they would end the value early.";
     if (/[^\x20-\x7e]/.test(text)) return "Use printable ASCII only: letters, digits, spaces and punctuation.";
     if (text !== text.trim()) return "Leading or trailing spaces would be dropped.";
+    if (text.length > SECRET_MAX) return "Use " + SECRET_MAX + " characters or fewer.";
+    if (key === "password" && /[\\;]/.test(text)) return "Players cannot send \\ or ; in a join password, so nobody could join.";
+    if (key === "rcon" && / /.test(text)) return "Spaces break rcon: the server reads only the first word as the password.";
     return "";
+  }
+
+  function secretProblems(secrets) {
+    return SECRET_FIELDS.filter(function (key) { return secretProblem((secrets || {})[key], key); });
   }
 
   // --- Config text -------------------------------------------------------------------------------
@@ -866,7 +876,9 @@
     var state = normalizeState(data, rawState);
     secrets = secrets || {};
     var cleanSecrets = {};
-    SECRET_FIELDS.forEach(function (key) { cleanSecrets[key] = clean(secrets[key] || "").slice(0, 128); });
+    // Never write a quote into a config. The page refuses to export while secretProblems() is
+    // non-empty, so this cleaning only shapes the hidden preview, not a file anyone receives.
+    SECRET_FIELDS.forEach(function (key) { cleanSecrets[key] = clean(secrets[key] || "").slice(0, SECRET_MAX); });
 
     var files = [];
     var baseline = TARGETS[state.target].defaultCfg ? buildDefault(data, state) : null;
@@ -1189,7 +1201,7 @@
   }
 
   function secretInput(secrets, key) {
-    var problem = secretProblem(secrets[key]);
+    var problem = secretProblem(secrets[key], key);
     return '<input type="password" autocomplete="new-password" data-secret="' + key + '" value="' + escapeHtml(secrets[key] || "") + '"' +
       (problem ? ' aria-invalid="true"' : "") + ' aria-describedby="cfg-secret-' + key + '">' +
       '<span class="cfg-error" id="cfg-secret-' + key + '" data-secret-error="' + key + '">' + escapeHtml(problem) + "</span>";
@@ -1467,13 +1479,14 @@
 
   function renderOutput(data, state, secrets, result, ui) {
     var html = '<p class="cfg-note">Everything is generated in this page; nothing is uploaded.</p>';
-    var problems = SECRET_FIELDS.filter(function (key) { return secretProblem(secrets[key]); });
-    if (problems.length) {
-      html += '<p class="cfg-banner cfg-banner-warning">A password in Server basics has a character a config cannot hold, so the files would set a different password. Change it there first.</p>';
+    var blocked = secretProblems(secrets).length > 0;
+    var blockedAttrs = blocked ? ' disabled aria-describedby="cfg-secret-banner"' : "";
+    if (blocked) {
+      html += '<p class="cfg-banner cfg-banner-warning" id="cfg-secret-banner">A password in Server basics cannot be written as entered. Fix it there to download the files or copy the shell command.</p>';
     }
     html += '<div class="cfg-actions">';
-    html += '<button type="button" class="button button-primary" data-action="download">Download the ' + result.files.length + " files (.zip)</button>";
-    html += '<button type="button" class="button button-secondary" data-action="copy-shell">Copy a paste-in shell command</button>';
+    html += '<button type="button" class="button button-primary" data-action="download"' + blockedAttrs + '>Download the ' + result.files.length + " files (.zip)</button>";
+    html += '<button type="button" class="button button-secondary" data-action="copy-shell"' + blockedAttrs + '>Copy a paste-in shell command</button>';
     html += '<button type="button" class="button button-quiet" data-action="copy-link">Copy a link to these choices</button>';
     html += "</div>";
     html += '<p class="cfg-status" data-status role="status" aria-live="polite"></p>';
@@ -1603,7 +1616,9 @@
       var current = items.filter(function (item) { return item.id === ui.preview; })[0];
       var selectedIndex = items.indexOf(current);
       panelEl.setAttribute("aria-labelledby", "cfg-tab-" + selectedIndex);
-      previewEl.textContent = current.text;
+      previewEl.textContent = secretProblems(secrets).length
+        ? "A password in Server basics cannot be written as entered. Fix it there to see the files."
+        : current.text;
       if (focused) {
         var again = tabsEl.querySelector('[data-tab="' + focused.replace(/"/g, "") + '"]');
         if (again) again.focus();
@@ -1694,6 +1709,10 @@
       var action = event.target.closest("[data-action]");
       if (!action) return;
       var kind = action.getAttribute("data-action");
+      if ((kind === "download" || kind === "copy-shell") && secretProblems(secrets).length) {
+        setStatus("Fix the password marked in Server basics first.");
+        return;
+      }
       if (kind === "download") {
         var blob = new Blob([zip(result.files)], { type: "application/zip" });
         var url = URL.createObjectURL(blob);
@@ -1748,7 +1767,7 @@
       if (el.hasAttribute("data-secret")) {
         var secretKey = el.getAttribute("data-secret");
         secrets[secretKey] = el.value;
-        var problem = secretProblem(el.value);
+        var problem = secretProblem(el.value, secretKey);
         var errorEl = stepsEl.querySelector('[data-secret-error="' + secretKey + '"]');
         if (errorEl) errorEl.textContent = problem;
         if (problem) el.setAttribute("aria-invalid", "true");
@@ -1904,6 +1923,7 @@
     switchPreset: switchPreset,
     persistable: persistable,
     secretProblem: secretProblem,
+    secretProblems: secretProblems,
     shellScript: shellScript,
     zip: zip,
     crc32: crc32,
