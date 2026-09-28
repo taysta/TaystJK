@@ -1345,10 +1345,20 @@ def static_index_page(cvars: list[dict[str, Any]], commands: list[dict[str, Any]
         '</div>',
     ]
     for title, selected in (("Cvars", cvars), ("Commands", commands)):
-        lines.extend(["", f"## {title}", '<div class="static-index-list">'])
-        for entry in selected:
-            lines.append(f'<a href="{detail_url(entry)}"><code>{esc(entry["name"])}</code></a>')
-        lines.append("</div>")
+        # Group by first letter, ignoring the _, + and - that prefix some names, and give
+        # each group its own jump target: without JavaScript there is no filter to narrow
+        # two thousand links.
+        groups: dict[str, list[dict[str, Any]]] = {}
+        for entry in sorted(selected, key=lambda item: item["name"].lstrip("+-_").casefold()):
+            groups.setdefault(entry["name"].lstrip("+-_")[:1].upper(), []).append(entry)
+        prefix = title.lower()
+        jumps = " ".join(f'<a href="#{prefix}-{letter.lower()}">{letter}</a>' for letter in sorted(groups))
+        lines.extend(["", f"## {title}", f'<nav class="letter-jumps" aria-label="{title} by first letter">{jumps}</nav>'])
+        for letter in sorted(groups):
+            lines.extend([f'<h3 id="{prefix}-{letter.lower()}">{letter}</h3>', '<div class="static-index-list">'])
+            for entry in groups[letter]:
+                lines.append(f'<a href="{detail_url(entry)}"><code>{esc(entry["name"])}</code></a>')
+            lines.append("</div>")
     return "\n".join(lines)
 
 

@@ -13,10 +13,14 @@ description: "A no-JavaScript index of every TaystJK cvar and console command."
 </div>
 
 ## Cvars
+<nav class="letter-jumps" aria-label="Cvars by first letter"><a href="#cvars-a">A</a> <a href="#cvars-b">B</a> <a href="#cvars-c">C</a> <a href="#cvars-d">D</a> <a href="#cvars-f">F</a> <a href="#cvars-g">G</a> <a href="#cvars-h">H</a> <a href="#cvars-i">I</a> <a href="#cvars-j">J</a> <a href="#cvars-l">L</a> <a href="#cvars-m">M</a> <a href="#cvars-n">N</a> <a href="#cvars-p">P</a> <a href="#cvars-r">R</a> <a href="#cvars-s">S</a> <a href="#cvars-t">T</a> <a href="#cvars-u">U</a> <a href="#cvars-v">V</a></nav>
+<h3 id="cvars-a">A</h3>
 <div class="static-index-list">
-<a href="/TaystJK/reference/cvars/entry-_dedicated-f30b22a/"><code>_dedicated</code></a>
 <a href="/TaystJK/reference/cvars/activeaction-b789056/"><code>activeAction</code></a>
 <a href="/TaystJK/reference/cvars/arch-5a36f11/"><code>arch</code></a>
+</div>
+<h3 id="cvars-b">B</h3>
+<div class="static-index-list">
 <a href="/TaystJK/reference/cvars/bg_fighteraltcontrol-74138a2/"><code>bg_fighterAltControl</code></a>
 <a href="/TaystJK/reference/cvars/bot_aasoptimize-21570ee/"><code>bot_aasoptimize</code></a>
 <a href="/TaystJK/reference/cvars/bot_attachments-21e20aa/"><code>bot_attachments</code></a>
@@ -85,6 +89,9 @@ description: "A no-JavaScript index of every TaystJK cvar and console command."
 <a href="/TaystJK/reference/cvars/broadsword_ragtobase-5874a91/"><code>broadsword_ragtobase</code></a>
 <a href="/TaystJK/reference/cvars/broadsword_smallbbox-3c99ac6/"><code>broadsword_smallbbox</code></a>
 <a href="/TaystJK/reference/cvars/broadsword_waitforshot-e2d3bca/"><code>broadsword_waitforshot</code></a>
+</div>
+<h3 id="cvars-c">C</h3>
+<div class="static-index-list">
 <a href="/TaystJK/reference/cvars/capturelimit-15744ea/"><code>capturelimit</code></a>
 <a href="/TaystJK/reference/cvars/cg_alwaysshowabsorb-d52ebf0/"><code>cg_alwaysShowAbsorb</code></a>
 <a href="/TaystJK/reference/cvars/cg_ambientsounds-00fb29b/"><code>cg_ambientSounds</code></a>
@@ -521,6 +528,9 @@ description: "A no-JavaScript index of every TaystJK cvar and console command."
 <a href="/TaystJK/reference/cvars/cp_sbrgb2-81b016f/"><code>cp_sbRGB2</code></a>
 <a href="/TaystJK/reference/cvars/currentobjmapiconbackground-748291d/"><code>currentObjMapIconBackground</code></a>
 <a href="/TaystJK/reference/cvars/currentobjmapiconitem-c57cd4a/"><code>currentObjMapIconItem</code></a>
+</div>
+<h3 id="cvars-d">D</h3>
+<div class="static-index-list">
 <a href="/TaystJK/reference/cvars/d_altroutes-c57e072/"><code>d_altRoutes</code></a>
 <a href="/TaystJK/reference/cvars/d_asynchronousgroupai-fccc4e1/"><code>d_asynchronousGroupAI</code></a>
 <a href="/TaystJK/reference/cvars/d_break-eaf2fa0/"><code>d_break</code></a>
@@ -547,11 +557,15 @@ description: "A no-JavaScript index of every TaystJK cvar and console command."
 <a href="/TaystJK/reference/cvars/debug_protocol-51b58be/"><code>debug_protocol</code></a>
 <a href="/TaystJK/reference/cvars/debugbb-1d5d0a8/"><code>debugBB</code></a>
 <a href="/TaystJK/reference/cvars/debuggraph-8bd94d1/"><code>debuggraph</code></a>
+<a href="/TaystJK/reference/cvars/entry-_dedicated-f30b22a/"><code>_dedicated</code></a>
 <a href="/TaystJK/reference/cvars/dedicated-0d30712/"><code>dedicated</code></a>
 <a href="/TaystJK/reference/cvars/developer-3dacbce/"><code>developer</code></a>
 <a href="/TaystJK/reference/cvars/disco-9a1c2a6/"><code>disco</code></a>
 <a href="/TaystJK/reference/cvars/dmflags-9484c55/"><code>dmflags</code></a>
 <a href="/TaystJK/reference/cvars/duel_fraglimit-5cd7d2a/"><code>duel_fraglimit</code></a>
+</div>
+<h3 id="cvars-f">F</h3>
+<div class="static-index-list">
 <a href="/TaystJK/reference/cvars/fixedtime-30e21eb/"><code>fixedtime</code></a>
 <a href="/TaystJK/reference/cvars/forcepowers-5f9594f/"><code>forcepowers</code></a>
 <a href="/TaystJK/reference/cvars/fraglimit-0b2d675/"><code>fraglimit</code></a>
@@ -572,6 +586,9 @@ description: "A no-JavaScript index of every TaystJK cvar and console command."
 <a href="/TaystJK/reference/cvars/fx_jk2-16a4fc2/"><code>fx_jk2</code></a>
 <a href="/TaystJK/reference/cvars/fx_nearcull-19f1396/"><code>fx_nearCull</code></a>
 <a href="/TaystJK/reference/cvars/fx_physics-6ce403e/"><code>fx_physics</code></a>
+</div>
+<h3 id="cvars-g">G</h3>
+<div class="static-index-list">
 <a href="/TaystJK/reference/cvars/g_adaptrespawn-48b0aed/"><code>g_adaptRespawn</code></a>
 <a href="/TaystJK/reference/cvars/g_allowduelsuicide-4945a44/"><code>g_allowDuelSuicide</code></a>
 <a href="/TaystJK/reference/cvars/g_allowflagthrow-a034db8/"><code>g_allowFlagThrow</code></a>
@@ -813,7 +830,13 @@ description: "A no-JavaScript index of every TaystJK cvar and console command."
 <a href="/TaystJK/reference/cvars/graphheight-4f6183b/"><code>graphheight</code></a>
 <a href="/TaystJK/reference/cvars/graphscale-bad841c/"><code>graphscale</code></a>
 <a href="/TaystJK/reference/cvars/graphshift-5b8cd72/"><code>graphshift</code></a>
+</div>
+<h3 id="cvars-h">H</h3>
+<div class="static-index-list">
 <a href="/TaystJK/reference/cvars/handicap-541968c/"><code>handicap</code></a>
+</div>
+<h3 id="cvars-i">I</h3>
+<div class="static-index-list">
 <a href="/TaystJK/reference/cvars/in_availablejoysticks-225bc96/"><code>in_availableJoysticks</code></a>
 <a href="/TaystJK/reference/cvars/in_joystick-922c9b6/"><code>in_joystick</code></a>
 <a href="/TaystJK/reference/cvars/in_joystickno-d0cc911/"><code>in_joystickNo</code></a>
@@ -822,12 +845,21 @@ description: "A no-JavaScript index of every TaystJK cvar and console command."
 <a href="/TaystJK/reference/cvars/in_mouse-8c4b2e5/"><code>in_mouse</code></a>
 <a href="/TaystJK/reference/cvars/in_mouserepeat-b6e4e4a/"><code>in_mouserepeat</code></a>
 <a href="/TaystJK/reference/cvars/in_nograb-35cb150/"><code>in_nograb</code></a>
+</div>
+<h3 id="cvars-j">J</h3>
+<div class="static-index-list">
 <a href="/TaystJK/reference/cvars/ja_guid-ea397d3/"><code>ja_guid</code></a>
 <a href="/TaystJK/reference/cvars/jcinfo-d257d4c/"><code>jcinfo</code></a>
 <a href="/TaystJK/reference/cvars/jcinfo2-4d14263/"><code>jcinfo2</code></a>
 <a href="/TaystJK/reference/cvars/journal-4954ccf/"><code>journal</code></a>
 <a href="/TaystJK/reference/cvars/joy_threshold-6a68c9b/"><code>joy_threshold</code></a>
+</div>
+<h3 id="cvars-l">L</h3>
+<div class="static-index-list">
 <a href="/TaystJK/reference/cvars/logfile-1a0ef65/"><code>logfile</code></a>
+</div>
+<h3 id="cvars-m">M</h3>
+<div class="static-index-list">
 <a href="/TaystJK/reference/cvars/m_filter-378f864/"><code>m_filter</code></a>
 <a href="/TaystJK/reference/cvars/m_forward-dde14cf/"><code>m_forward</code></a>
 <a href="/TaystJK/reference/cvars/m_pitch-5a9b25b/"><code>m_pitch</code></a>
@@ -836,6 +868,9 @@ description: "A no-JavaScript index of every TaystJK cvar and console command."
 <a href="/TaystJK/reference/cvars/m_yaw-6897351/"><code>m_yaw</code></a>
 <a href="/TaystJK/reference/cvars/mapname-78d7d3e/"><code>mapname</code></a>
 <a href="/TaystJK/reference/cvars/model-1d06a0d/"><code>model</code></a>
+</div>
+<h3 id="cvars-n">N</h3>
+<div class="static-index-list">
 <a href="/TaystJK/reference/cvars/name-6ae9995/"><code>name</code></a>
 <a href="/TaystJK/reference/cvars/net_dropsim-45c82c0/"><code>net_dropsim</code></a>
 <a href="/TaystJK/reference/cvars/net_enabled-800ae62/"><code>net_enabled</code></a>
@@ -850,12 +885,18 @@ description: "A no-JavaScript index of every TaystJK cvar and console command."
 <a href="/TaystJK/reference/cvars/net_socksusername-e7b675d/"><code>net_socksUsername</code></a>
 <a href="/TaystJK/reference/cvars/nextdemo-699667e/"><code>nextdemo</code></a>
 <a href="/TaystJK/reference/cvars/nextmap-fc2a1f6/"><code>nextmap</code></a>
+</div>
+<h3 id="cvars-p">P</h3>
+<div class="static-index-list">
 <a href="/TaystJK/reference/cvars/password-5baa61e/"><code>password</code></a>
 <a href="/TaystJK/reference/cvars/pmove_fixed-614b895/"><code>pmove_fixed</code></a>
 <a href="/TaystJK/reference/cvars/pmove_float-d352a0d/"><code>pmove_float</code></a>
 <a href="/TaystJK/reference/cvars/pmove_msec-2b6eec8/"><code>pmove_msec</code></a>
 <a href="/TaystJK/reference/cvars/protocol-6e9b4af/"><code>protocol</code></a>
 <a href="/TaystJK/reference/cvars/protocolswitch-9a313ea/"><code>protocolswitch</code></a>
+</div>
+<h3 id="cvars-r">R</h3>
+<div class="static-index-list">
 <a href="/TaystJK/reference/cvars/r_allowextensions-57dba23/"><code>r_allowExtensions</code></a>
 <a href="/TaystJK/reference/cvars/r_allowscreensaver-9058284/"><code>r_allowScreenSaver</code></a>
 <a href="/TaystJK/reference/cvars/r_allowsoftwaregl-fab7aac/"><code>r_allowSoftwareGL</code></a>
@@ -1111,6 +1152,9 @@ description: "A no-JavaScript index of every TaystJK cvar and console command."
 <a href="/TaystJK/reference/cvars/rconpassword-39e4dc3/"><code>rconPassword</code></a>
 <a href="/TaystJK/reference/cvars/restricts-3fcd8e8/"><code>restricts</code></a>
 <a href="/TaystJK/reference/cvars/rmg-7504210/"><code>RMG</code></a>
+</div>
+<h3 id="cvars-s">S</h3>
+<div class="static-index-list">
 <a href="/TaystJK/reference/cvars/s_allowdynamicmusic-a2b0b0a/"><code>s_allowDynamicMusic</code></a>
 <a href="/TaystJK/reference/cvars/s_debugdynamic-6580034/"><code>s_debugdynamic</code></a>
 <a href="/TaystJK/reference/cvars/s_doppler-affddec/"><code>s_doppler</code></a>
@@ -1222,6 +1266,9 @@ description: "A no-JavaScript index of every TaystJK cvar and console command."
 <a href="/TaystJK/reference/cvars/sv_timeout-2e15cf0/"><code>sv_timeout</code></a>
 <a href="/TaystJK/reference/cvars/sv_zombietime-c069b6b/"><code>sv_zombietime</code></a>
 <a href="/TaystJK/reference/cvars/sys_lowmem-8037c1f/"><code>sys_lowmem</code></a>
+</div>
+<h3 id="cvars-t">T</h3>
+<div class="static-index-list">
 <a href="/TaystJK/reference/cvars/team1_icon-d94de55/"><code>team1_icon</code></a>
 <a href="/TaystJK/reference/cvars/team2_icon-a8c547c/"><code>team2_icon</code></a>
 <a href="/TaystJK/reference/cvars/teamoverlay-f842919/"><code>teamoverlay</code></a>
@@ -1229,6 +1276,9 @@ description: "A no-JavaScript index of every TaystJK cvar and console command."
 <a href="/TaystJK/reference/cvars/timegraph-db7f449/"><code>timegraph</code></a>
 <a href="/TaystJK/reference/cvars/timelimit-050b6ba/"><code>timelimit</code></a>
 <a href="/TaystJK/reference/cvars/timescale-97bdf9f/"><code>timescale</code></a>
+</div>
+<h3 id="cvars-u">U</h3>
+<div class="static-index-list">
 <a href="/TaystJK/reference/cvars/ui_about_botminplayers-10e7331/"><code>ui_about_botminplayers</code></a>
 <a href="/TaystJK/reference/cvars/ui_about_capturelimit-98d5070/"><code>ui_about_capturelimit</code></a>
 <a href="/TaystJK/reference/cvars/ui_about_dmflags-59c5610/"><code>ui_about_dmflags</code></a>
@@ -1452,6 +1502,9 @@ description: "A no-JavaScript index of every TaystJK cvar and console command."
 <a href="/TaystJK/reference/cvars/ui_vidrestart-724a091/"><code>ui_vidrestart</code></a>
 <a href="/TaystJK/reference/cvars/ui_warmup-90318b8/"><code>ui_Warmup</code></a>
 <a href="/TaystJK/reference/cvars/username-249ba36/"><code>username</code></a>
+</div>
+<h3 id="cvars-v">V</h3>
+<div class="static-index-list">
 <a href="/TaystJK/reference/cvars/version-c692273/"><code>version</code></a>
 <a href="/TaystJK/reference/cvars/vid_xpos-617b8c0/"><code>vid_xpos</code></a>
 <a href="/TaystJK/reference/cvars/vid_ypos-a66867d/"><code>vid_ypos</code></a>
@@ -1460,89 +1513,9 @@ description: "A no-JavaScript index of every TaystJK cvar and console command."
 </div>
 
 ## Commands
+<nav class="letter-jumps" aria-label="Commands by first letter"><a href="#commands-a">A</a> <a href="#commands-b">B</a> <a href="#commands-c">C</a> <a href="#commands-d">D</a> <a href="#commands-e">E</a> <a href="#commands-f">F</a> <a href="#commands-g">G</a> <a href="#commands-h">H</a> <a href="#commands-i">I</a> <a href="#commands-j">J</a> <a href="#commands-k">K</a> <a href="#commands-l">L</a> <a href="#commands-m">M</a> <a href="#commands-n">N</a> <a href="#commands-o">O</a> <a href="#commands-p">P</a> <a href="#commands-q">Q</a> <a href="#commands-r">R</a> <a href="#commands-s">S</a> <a href="#commands-t">T</a> <a href="#commands-u">U</a> <a href="#commands-v">V</a> <a href="#commands-w">W</a> <a href="#commands-y">Y</a> <a href="#commands-z">Z</a></nav>
+<h3 id="commands-a">A</h3>
 <div class="static-index-list">
-<a href="/TaystJK/reference/commands/plusminus-altattack-60556a0/"><code>+altattack</code></a>
-<a href="/TaystJK/reference/commands/plusminus-attack-4391cc3/"><code>+attack</code></a>
-<a href="/TaystJK/reference/commands/plusminus-back-e379d81/"><code>+back</code></a>
-<a href="/TaystJK/reference/commands/plusminus-button0-be7f4bb/"><code>+button0</code></a>
-<a href="/TaystJK/reference/commands/plusminus-button1-4df0ef3/"><code>+button1</code></a>
-<a href="/TaystJK/reference/commands/plusminus-button10-ff5ecaf/"><code>+button10</code></a>
-<a href="/TaystJK/reference/commands/plusminus-button11-2e62bb9/"><code>+button11</code></a>
-<a href="/TaystJK/reference/commands/plusminus-button12-c5794a4/"><code>+button12</code></a>
-<a href="/TaystJK/reference/commands/plusminus-button13-611ede2/"><code>+button13</code></a>
-<a href="/TaystJK/reference/commands/plusminus-button14-6bf4b10/"><code>+button14</code></a>
-<a href="/TaystJK/reference/commands/plusminus-button15-6428f06/"><code>+button15</code></a>
-<a href="/TaystJK/reference/commands/plusminus-button2-57692ae/"><code>+button2</code></a>
-<a href="/TaystJK/reference/commands/plusminus-button3-546d711/"><code>+button3</code></a>
-<a href="/TaystJK/reference/commands/plusminus-button4-30fce65/"><code>+button4</code></a>
-<a href="/TaystJK/reference/commands/plusminus-button5-1c34bdb/"><code>+button5</code></a>
-<a href="/TaystJK/reference/commands/plusminus-button6-6b3a068/"><code>+button6</code></a>
-<a href="/TaystJK/reference/commands/plusminus-button7-b0bdd34/"><code>+button7</code></a>
-<a href="/TaystJK/reference/commands/plusminus-button8-49c3c24/"><code>+button8</code></a>
-<a href="/TaystJK/reference/commands/plusminus-button9-2f04f45/"><code>+button9</code></a>
-<a href="/TaystJK/reference/commands/plusminus-duck-1aea248/"><code>+duck</code></a>
-<a href="/TaystJK/reference/commands/plusminus-force_drain-bdcd1dc/"><code>+force_drain</code></a>
-<a href="/TaystJK/reference/commands/plusminus-force_grip-93d6432/"><code>+force_grip</code></a>
-<a href="/TaystJK/reference/commands/plusminus-force_lightning-f55d150/"><code>+force_lightning</code></a>
-<a href="/TaystJK/reference/commands/plusminus-forward-7866d6a/"><code>+forward</code></a>
-<a href="/TaystJK/reference/commands/plusminus-grapple-74f23a8/"><code>+grapple</code></a>
-<a href="/TaystJK/reference/commands/plusminus-left-8bdd742/"><code>+left</code></a>
-<a href="/TaystJK/reference/commands/plusminus-lookdown-5e25b23/"><code>+lookdown</code></a>
-<a href="/TaystJK/reference/commands/plusminus-lookup-9bcaaf1/"><code>+lookup</code></a>
-<a href="/TaystJK/reference/commands/plusminus-mlook-03e60ef/"><code>+mlook</code></a>
-<a href="/TaystJK/reference/commands/plusminus-movedown-0be8661/"><code>+movedown</code></a>
-<a href="/TaystJK/reference/commands/plusminus-moveleft-f14058f/"><code>+moveleft</code></a>
-<a href="/TaystJK/reference/commands/plusminus-moveright-511a14c/"><code>+moveright</code></a>
-<a href="/TaystJK/reference/commands/plusminus-moveup-b1f0103/"><code>+moveup</code></a>
-<a href="/TaystJK/reference/commands/plusminus-right-5e3b5dc/"><code>+right</code></a>
-<a href="/TaystJK/reference/commands/plusminus-scores-d436431/"><code>+scores</code></a>
-<a href="/TaystJK/reference/commands/plusminus-singlefire-e166917/"><code>+singlefire</code></a>
-<a href="/TaystJK/reference/commands/plusminus-speed-d1ef0fc/"><code>+speed</code></a>
-<a href="/TaystJK/reference/commands/plusminus-strafe-1e9bba6/"><code>+strafe</code></a>
-<a href="/TaystJK/reference/commands/plusminus-use-5cd9e39/"><code>+use</code></a>
-<a href="/TaystJK/reference/commands/plusminus-useforce-a05b10e/"><code>+useforce</code></a>
-<a href="/TaystJK/reference/commands/plusminus-zoom-0eb4e7d/"><code>+zoom</code></a>
-<a href="/TaystJK/reference/commands/minus-altattack-0273d3a/"><code>-altattack</code></a>
-<a href="/TaystJK/reference/commands/minus-attack-e43abab/"><code>-attack</code></a>
-<a href="/TaystJK/reference/commands/minus-back-9d738c1/"><code>-back</code></a>
-<a href="/TaystJK/reference/commands/minus-button0-0c59ac3/"><code>-button0</code></a>
-<a href="/TaystJK/reference/commands/minus-button1-1f0afc2/"><code>-button1</code></a>
-<a href="/TaystJK/reference/commands/minus-button10-ecaa3f2/"><code>-button10</code></a>
-<a href="/TaystJK/reference/commands/minus-button11-72100b7/"><code>-button11</code></a>
-<a href="/TaystJK/reference/commands/minus-button12-34f0dd4/"><code>-button12</code></a>
-<a href="/TaystJK/reference/commands/minus-button13-29fece4/"><code>-button13</code></a>
-<a href="/TaystJK/reference/commands/minus-button14-cc48ee5/"><code>-button14</code></a>
-<a href="/TaystJK/reference/commands/minus-button15-95d61e3/"><code>-button15</code></a>
-<a href="/TaystJK/reference/commands/minus-button2-09a0451/"><code>-button2</code></a>
-<a href="/TaystJK/reference/commands/minus-button3-d59f20f/"><code>-button3</code></a>
-<a href="/TaystJK/reference/commands/minus-button4-e553417/"><code>-button4</code></a>
-<a href="/TaystJK/reference/commands/minus-button5-ccc9730/"><code>-button5</code></a>
-<a href="/TaystJK/reference/commands/minus-button6-073c01d/"><code>-button6</code></a>
-<a href="/TaystJK/reference/commands/minus-button7-1028e4d/"><code>-button7</code></a>
-<a href="/TaystJK/reference/commands/minus-button8-44eb725/"><code>-button8</code></a>
-<a href="/TaystJK/reference/commands/minus-button9-70255ea/"><code>-button9</code></a>
-<a href="/TaystJK/reference/commands/minus-duck-e229dd0/"><code>-duck</code></a>
-<a href="/TaystJK/reference/commands/minus-force_drain-8150067/"><code>-force_drain</code></a>
-<a href="/TaystJK/reference/commands/minus-force_grip-e61faf8/"><code>-force_grip</code></a>
-<a href="/TaystJK/reference/commands/minus-force_lightning-58e7bf3/"><code>-force_lightning</code></a>
-<a href="/TaystJK/reference/commands/minus-forward-780292f/"><code>-forward</code></a>
-<a href="/TaystJK/reference/commands/minus-grapple-b7c9090/"><code>-grapple</code></a>
-<a href="/TaystJK/reference/commands/minus-left-adf5fbd/"><code>-left</code></a>
-<a href="/TaystJK/reference/commands/minus-lookdown-93d6cd0/"><code>-lookdown</code></a>
-<a href="/TaystJK/reference/commands/minus-lookup-8aa409f/"><code>-lookup</code></a>
-<a href="/TaystJK/reference/commands/minus-mlook-94b9765/"><code>-mlook</code></a>
-<a href="/TaystJK/reference/commands/minus-movedown-4fdaa04/"><code>-movedown</code></a>
-<a href="/TaystJK/reference/commands/minus-moveleft-b288f12/"><code>-moveleft</code></a>
-<a href="/TaystJK/reference/commands/minus-moveright-7382f10/"><code>-moveright</code></a>
-<a href="/TaystJK/reference/commands/minus-moveup-356a171/"><code>-moveup</code></a>
-<a href="/TaystJK/reference/commands/minus-right-a838480/"><code>-right</code></a>
-<a href="/TaystJK/reference/commands/minus-scores-a8f4d4c/"><code>-scores</code></a>
-<a href="/TaystJK/reference/commands/minus-singlefire-9763ac0/"><code>-singlefire</code></a>
-<a href="/TaystJK/reference/commands/minus-speed-abca6cc/"><code>-speed</code></a>
-<a href="/TaystJK/reference/commands/minus-strafe-fd501b2/"><code>-strafe</code></a>
-<a href="/TaystJK/reference/commands/minus-use-4c6096b/"><code>-use</code></a>
-<a href="/TaystJK/reference/commands/minus-useforce-92d91ec/"><code>-useforce</code></a>
-<a href="/TaystJK/reference/commands/minus-zoom-972df81/"><code>-zoom</code></a>
 <a href="/TaystJK/reference/commands/accountinfo-e041bfd/"><code>accountInfo</code></a>
 <a href="/TaystJK/reference/commands/addbot-fec764b/"><code>addbot</code></a>
 <a href="/TaystJK/reference/commands/addcheckpoint-7c51bf3/"><code>addCheckpoint</code></a>
@@ -1553,6 +1526,8 @@ description: "A no-JavaScript index of every TaystJK cvar and console command."
 <a href="/TaystJK/reference/commands/admcmdnext-f31dbec/"><code>admCmdNext</code></a>
 <a href="/TaystJK/reference/commands/admcmdprev-a0e8fff/"><code>admCmdPrev</code></a>
 <a href="/TaystJK/reference/commands/afk-aec4e2a/"><code>afk</code></a>
+<a href="/TaystJK/reference/commands/plusminus-altattack-60556a0/"><code>+altattack</code></a>
+<a href="/TaystJK/reference/commands/minus-altattack-0273d3a/"><code>-altattack</code></a>
 <a href="/TaystJK/reference/commands/amaltdim-6000039/"><code>amAltDim</code></a>
 <a href="/TaystJK/reference/commands/amban-ac16303/"><code>amBan</code></a>
 <a href="/TaystJK/reference/commands/ambeg-ab94735/"><code>amBeg</code></a>
@@ -1626,9 +1601,16 @@ description: "A no-JavaScript index of every TaystJK cvar and console command."
 <a href="/TaystJK/reference/commands/amwake-799cb8f/"><code>amWake</code></a>
 <a href="/TaystJK/reference/commands/amweather-d7318f4/"><code>amWeather</code></a>
 <a href="/TaystJK/reference/commands/amwhois-c3a6580/"><code>amWhois</code></a>
+<a href="/TaystJK/reference/commands/plusminus-attack-4391cc3/"><code>+attack</code></a>
+<a href="/TaystJK/reference/commands/minus-attack-e43abab/"><code>-attack</code></a>
 <a href="/TaystJK/reference/commands/autologin-4739ac0/"><code>autoLogin</code></a>
 <a href="/TaystJK/reference/commands/automap_button-769f34b/"><code>automap_button</code></a>
 <a href="/TaystJK/reference/commands/automap_toggle-31a463a/"><code>automap_toggle</code></a>
+</div>
+<h3 id="commands-b">B</h3>
+<div class="static-index-list">
+<a href="/TaystJK/reference/commands/plusminus-back-e379d81/"><code>+back</code></a>
+<a href="/TaystJK/reference/commands/minus-back-9d738c1/"><code>-back</code></a>
 <a href="/TaystJK/reference/commands/best-c5f5e4d/"><code>best</code></a>
 <a href="/TaystJK/reference/commands/bind-6bdd4db/"><code>bind</code></a>
 <a href="/TaystJK/reference/commands/bindlist-532bd8c/"><code>bindlist</code></a>
@@ -1636,6 +1618,41 @@ description: "A no-JavaScript index of every TaystJK cvar and console command."
 <a href="/TaystJK/reference/commands/botlist-5978b77/"><code>botlist</code></a>
 <a href="/TaystJK/reference/commands/bow-fa5bd38/"><code>bow</code></a>
 <a href="/TaystJK/reference/commands/briefing-c8e5d02/"><code>briefing</code></a>
+<a href="/TaystJK/reference/commands/plusminus-button0-be7f4bb/"><code>+button0</code></a>
+<a href="/TaystJK/reference/commands/minus-button0-0c59ac3/"><code>-button0</code></a>
+<a href="/TaystJK/reference/commands/plusminus-button1-4df0ef3/"><code>+button1</code></a>
+<a href="/TaystJK/reference/commands/minus-button1-1f0afc2/"><code>-button1</code></a>
+<a href="/TaystJK/reference/commands/plusminus-button10-ff5ecaf/"><code>+button10</code></a>
+<a href="/TaystJK/reference/commands/minus-button10-ecaa3f2/"><code>-button10</code></a>
+<a href="/TaystJK/reference/commands/plusminus-button11-2e62bb9/"><code>+button11</code></a>
+<a href="/TaystJK/reference/commands/minus-button11-72100b7/"><code>-button11</code></a>
+<a href="/TaystJK/reference/commands/plusminus-button12-c5794a4/"><code>+button12</code></a>
+<a href="/TaystJK/reference/commands/minus-button12-34f0dd4/"><code>-button12</code></a>
+<a href="/TaystJK/reference/commands/plusminus-button13-611ede2/"><code>+button13</code></a>
+<a href="/TaystJK/reference/commands/minus-button13-29fece4/"><code>-button13</code></a>
+<a href="/TaystJK/reference/commands/plusminus-button14-6bf4b10/"><code>+button14</code></a>
+<a href="/TaystJK/reference/commands/minus-button14-cc48ee5/"><code>-button14</code></a>
+<a href="/TaystJK/reference/commands/plusminus-button15-6428f06/"><code>+button15</code></a>
+<a href="/TaystJK/reference/commands/minus-button15-95d61e3/"><code>-button15</code></a>
+<a href="/TaystJK/reference/commands/plusminus-button2-57692ae/"><code>+button2</code></a>
+<a href="/TaystJK/reference/commands/minus-button2-09a0451/"><code>-button2</code></a>
+<a href="/TaystJK/reference/commands/plusminus-button3-546d711/"><code>+button3</code></a>
+<a href="/TaystJK/reference/commands/minus-button3-d59f20f/"><code>-button3</code></a>
+<a href="/TaystJK/reference/commands/plusminus-button4-30fce65/"><code>+button4</code></a>
+<a href="/TaystJK/reference/commands/minus-button4-e553417/"><code>-button4</code></a>
+<a href="/TaystJK/reference/commands/plusminus-button5-1c34bdb/"><code>+button5</code></a>
+<a href="/TaystJK/reference/commands/minus-button5-ccc9730/"><code>-button5</code></a>
+<a href="/TaystJK/reference/commands/plusminus-button6-6b3a068/"><code>+button6</code></a>
+<a href="/TaystJK/reference/commands/minus-button6-073c01d/"><code>-button6</code></a>
+<a href="/TaystJK/reference/commands/plusminus-button7-b0bdd34/"><code>+button7</code></a>
+<a href="/TaystJK/reference/commands/minus-button7-1028e4d/"><code>-button7</code></a>
+<a href="/TaystJK/reference/commands/plusminus-button8-49c3c24/"><code>+button8</code></a>
+<a href="/TaystJK/reference/commands/minus-button8-44eb725/"><code>-button8</code></a>
+<a href="/TaystJK/reference/commands/plusminus-button9-2f04f45/"><code>+button9</code></a>
+<a href="/TaystJK/reference/commands/minus-button9-70255ea/"><code>-button9</code></a>
+</div>
+<h3 id="commands-c">C</h3>
+<div class="static-index-list">
 <a href="/TaystJK/reference/commands/callteamvote-308e1e5/"><code>callteamvote</code></a>
 <a href="/TaystJK/reference/commands/callvote-1457e21/"><code>callvote</code></a>
 <a href="/TaystJK/reference/commands/camerasettings-1e702fc/"><code>cameraSettings</code></a>
@@ -1684,6 +1701,9 @@ description: "A no-JavaScript index of every TaystJK cvar and console command."
 <a href="/TaystJK/reference/commands/cvarmod-47b87cc/"><code>cvarMod</code></a>
 <a href="/TaystJK/reference/commands/cvarmult-0b82792/"><code>cvarMult</code></a>
 <a href="/TaystJK/reference/commands/cvarsub-4aed04d/"><code>cvarSub</code></a>
+</div>
+<h3 id="commands-d">D</h3>
+<div class="static-index-list">
 <a href="/TaystJK/reference/commands/dbinfo-c214d31/"><code>DBInfo</code></a>
 <a href="/TaystJK/reference/commands/debugbmove_back-8f2da3b/"><code>debugBMove_Back</code></a>
 <a href="/TaystJK/reference/commands/debugbmove_forward-250e663/"><code>debugBMove_Forward</code></a>
@@ -1704,9 +1724,14 @@ description: "A no-JavaScript index of every TaystJK cvar and console command."
 <a href="/TaystJK/reference/commands/dir-7ee737c/"><code>dir</code></a>
 <a href="/TaystJK/reference/commands/disconnect-573bb1c/"><code>disconnect</code></a>
 <a href="/TaystJK/reference/commands/do-eadcd9b/"><code>do</code></a>
+<a href="/TaystJK/reference/commands/plusminus-duck-1aea248/"><code>+duck</code></a>
+<a href="/TaystJK/reference/commands/minus-duck-e229dd0/"><code>-duck</code></a>
 <a href="/TaystJK/reference/commands/duelteam-50e5f76/"><code>duelteam</code></a>
 <a href="/TaystJK/reference/commands/duelwhois-6600b90/"><code>duelWhois</code></a>
 <a href="/TaystJK/reference/commands/dumpuser-c611573/"><code>dumpuser</code></a>
+</div>
+<h3 id="commands-e">E</h3>
+<div class="static-index-list">
 <a href="/TaystJK/reference/commands/echo-b2d21e7/"><code>echo</code></a>
 <a href="/TaystJK/reference/commands/engage_duel-7d6992a/"><code>engage_duel</code></a>
 <a href="/TaystJK/reference/commands/engage_fullforceduel-d16ab76/"><code>engage_fullforceduel</code></a>
@@ -1717,6 +1742,9 @@ description: "A no-JavaScript index of every TaystJK cvar and console command."
 <a href="/TaystJK/reference/commands/exec-be62562/"><code>exec</code></a>
 <a href="/TaystJK/reference/commands/execq-48c51d3/"><code>execq</code></a>
 <a href="/TaystJK/reference/commands/exit-de3ac21/"><code>exit</code></a>
+</div>
+<h3 id="commands-f">F</h3>
+<div class="static-index-list">
 <a href="/TaystJK/reference/commands/fdir-92fe679/"><code>fdir</code></a>
 <a href="/TaystJK/reference/commands/flagaccount-eeeecbc/"><code>flagAccount</code></a>
 <a href="/TaystJK/reference/commands/flagrecord-015800d/"><code>flagRecord</code></a>
@@ -1731,9 +1759,15 @@ description: "A no-JavaScript index of every TaystJK cvar and console command."
 <a href="/TaystJK/reference/commands/fontlist-83422e5/"><code>fontlist</code></a>
 <a href="/TaystJK/reference/commands/force_absorb-0b8047d/"><code>force_absorb</code></a>
 <a href="/TaystJK/reference/commands/force_distract-32b60fc/"><code>force_distract</code></a>
+<a href="/TaystJK/reference/commands/plusminus-force_drain-bdcd1dc/"><code>+force_drain</code></a>
+<a href="/TaystJK/reference/commands/minus-force_drain-8150067/"><code>-force_drain</code></a>
 <a href="/TaystJK/reference/commands/force_forcepowerother-7b26c1e/"><code>force_forcepowerother</code></a>
+<a href="/TaystJK/reference/commands/plusminus-force_grip-93d6432/"><code>+force_grip</code></a>
+<a href="/TaystJK/reference/commands/minus-force_grip-e61faf8/"><code>-force_grip</code></a>
 <a href="/TaystJK/reference/commands/force_heal-cff3f13/"><code>force_heal</code></a>
 <a href="/TaystJK/reference/commands/force_healother-9a5aae1/"><code>force_healother</code></a>
+<a href="/TaystJK/reference/commands/plusminus-force_lightning-f55d150/"><code>+force_lightning</code></a>
+<a href="/TaystJK/reference/commands/minus-force_lightning-58e7bf3/"><code>-force_lightning</code></a>
 <a href="/TaystJK/reference/commands/force_protect-f7b9159/"><code>force_protect</code></a>
 <a href="/TaystJK/reference/commands/force_pull-093ee7c/"><code>force_pull</code></a>
 <a href="/TaystJK/reference/commands/force_rage-195552c/"><code>force_rage</code></a>
@@ -1746,10 +1780,15 @@ description: "A no-JavaScript index of every TaystJK cvar and console command."
 <a href="/TaystJK/reference/commands/forceprev-2ea0d1f/"><code>forceprev</code></a>
 <a href="/TaystJK/reference/commands/forceteam-72a2634/"><code>forceteam</code></a>
 <a href="/TaystJK/reference/commands/forcetoggle-374647c/"><code>forcetoggle</code></a>
+<a href="/TaystJK/reference/commands/plusminus-forward-7866d6a/"><code>+forward</code></a>
+<a href="/TaystJK/reference/commands/minus-forward-780292f/"><code>-forward</code></a>
 <a href="/TaystJK/reference/commands/freeze-adcdee7/"><code>freeze</code></a>
 <a href="/TaystJK/reference/commands/fs_openedlist-9ff8bba/"><code>fs_openedList</code></a>
 <a href="/TaystJK/reference/commands/fs_referencedlist-593622e/"><code>fs_referencedList</code></a>
 <a href="/TaystJK/reference/commands/fs_restart-205ee49/"><code>fs_restart</code></a>
+</div>
+<h3 id="commands-g">G</h3>
+<div class="static-index-list">
 <a href="/TaystJK/reference/commands/game_memory-84c83cc/"><code>game_memory</code></a>
 <a href="/TaystJK/reference/commands/gametype-d7c6fe6/"><code>gametype</code></a>
 <a href="/TaystJK/reference/commands/gc-ec6d908/"><code>gc</code></a>
@@ -1760,10 +1799,18 @@ description: "A no-JavaScript index of every TaystJK cvar and console command."
 <a href="/TaystJK/reference/commands/gloat-45e2110/"><code>gloat</code></a>
 <a href="/TaystJK/reference/commands/globalservers-ed6c115/"><code>globalservers</code></a>
 <a href="/TaystJK/reference/commands/god-21298df/"><code>god</code></a>
+<a href="/TaystJK/reference/commands/plusminus-grapple-74f23a8/"><code>+grapple</code></a>
+<a href="/TaystJK/reference/commands/minus-grapple-b7c9090/"><code>-grapple</code></a>
+</div>
+<h3 id="commands-h">H</h3>
+<div class="static-index-list">
 <a href="/TaystJK/reference/commands/haste-08a06a9/"><code>haste</code></a>
 <a href="/TaystJK/reference/commands/heartbeat-a7a5b07/"><code>heartbeat</code></a>
 <a href="/TaystJK/reference/commands/help-92005ec/"><code>help</code></a>
 <a href="/TaystJK/reference/commands/hide-93c8c96/"><code>hide</code></a>
+</div>
+<h3 id="commands-i">I</h3>
+<div class="static-index-list">
 <a href="/TaystJK/reference/commands/ifcvar-a68f57c/"><code>ifCvar</code></a>
 <a href="/TaystJK/reference/commands/ignore-8ccbde8/"><code>ignore</code></a>
 <a href="/TaystJK/reference/commands/ignorevgs-46dc77b/"><code>ignoreVGS</code></a>
@@ -1773,8 +1820,14 @@ description: "A no-JavaScript index of every TaystJK cvar and console command."
 <a href="/TaystJK/reference/commands/invfree-4c191c5/"><code>invfree</code></a>
 <a href="/TaystJK/reference/commands/invnext-3271b96/"><code>invnext</code></a>
 <a href="/TaystJK/reference/commands/invprev-e6081df/"><code>invprev</code></a>
+</div>
+<h3 id="commands-j">J</h3>
+<div class="static-index-list">
 <a href="/TaystJK/reference/commands/jetpack-806aec3/"><code>jetpack</code></a>
 <a href="/TaystJK/reference/commands/jump-271e9a5/"><code>jump</code></a>
+</div>
+<h3 id="commands-k">K</h3>
+<div class="static-index-list">
 <a href="/TaystJK/reference/commands/kick-eac6136/"><code>kick</code></a>
 <a href="/TaystJK/reference/commands/kickall-7a42f1a/"><code>kickall</code></a>
 <a href="/TaystJK/reference/commands/kickbots-9695bdf/"><code>kickbots</code></a>
@@ -1782,7 +1835,12 @@ description: "A no-JavaScript index of every TaystJK cvar and console command."
 <a href="/TaystJK/reference/commands/kill-c80f5bc/"><code>kill</code></a>
 <a href="/TaystJK/reference/commands/killother-c24ec29/"><code>killother</code></a>
 <a href="/TaystJK/reference/commands/killserver-41205ad/"><code>killserver</code></a>
+</div>
+<h3 id="commands-l">L</h3>
+<div class="static-index-list">
 <a href="/TaystJK/reference/commands/launch-f7c91fe/"><code>launch</code></a>
+<a href="/TaystJK/reference/commands/plusminus-left-8bdd742/"><code>+left</code></a>
+<a href="/TaystJK/reference/commands/minus-left-adf5fbd/"><code>-left</code></a>
 <a href="/TaystJK/reference/commands/levelshot-eb585e1/"><code>levelshot</code></a>
 <a href="/TaystJK/reference/commands/listadmins-135e048/"><code>listAdmins</code></a>
 <a href="/TaystJK/reference/commands/listcheckpoints-86cf253/"><code>listCheckpoints</code></a>
@@ -1798,7 +1856,14 @@ description: "A no-JavaScript index of every TaystJK cvar and console command."
 <a href="/TaystJK/reference/commands/localservers-05d352f/"><code>localservers</code></a>
 <a href="/TaystJK/reference/commands/login-2736fab/"><code>login</code></a>
 <a href="/TaystJK/reference/commands/logout-55525e1/"><code>logout</code></a>
+<a href="/TaystJK/reference/commands/plusminus-lookdown-5e25b23/"><code>+lookdown</code></a>
+<a href="/TaystJK/reference/commands/minus-lookdown-93d6cd0/"><code>-lookdown</code></a>
+<a href="/TaystJK/reference/commands/plusminus-lookup-9bcaaf1/"><code>+lookup</code></a>
+<a href="/TaystJK/reference/commands/minus-lookup-8aa409f/"><code>-lookup</code></a>
 <a href="/TaystJK/reference/commands/lowjump-5afc6c0/"><code>lowjump</code></a>
+</div>
+<h3 id="commands-m">M</h3>
+<div class="static-index-list">
 <a href="/TaystJK/reference/commands/map-37745ed/"><code>map</code></a>
 <a href="/TaystJK/reference/commands/map_restart-459d49e/"><code>map_restart</code></a>
 <a href="/TaystJK/reference/commands/mapents-8844ab0/"><code>mapents</code></a>
@@ -1811,6 +1876,8 @@ description: "A no-JavaScript index of every TaystJK cvar and console command."
 <a href="/TaystJK/reference/commands/messagemode4-e7ebdc0/"><code>messagemode4</code></a>
 <a href="/TaystJK/reference/commands/migratecheckpoints-2796a98/"><code>migrateCheckpoints</code></a>
 <a href="/TaystJK/reference/commands/minimize-0c3639c/"><code>minimize</code></a>
+<a href="/TaystJK/reference/commands/plusminus-mlook-03e60ef/"><code>+mlook</code></a>
+<a href="/TaystJK/reference/commands/minus-mlook-94b9765/"><code>-mlook</code></a>
 <a href="/TaystJK/reference/commands/mnext-858b638/"><code>mnext</code></a>
 <a href="/TaystJK/reference/commands/model-1d06a0d/"><code>model</code></a>
 <a href="/TaystJK/reference/commands/modelcacheinfo-86baf55/"><code>modelcacheinfo</code></a>
@@ -1818,11 +1885,22 @@ description: "A no-JavaScript index of every TaystJK cvar and console command."
 <a href="/TaystJK/reference/commands/modellist-858000a/"><code>modellist</code></a>
 <a href="/TaystJK/reference/commands/modversion-73dac73/"><code>modversion</code></a>
 <a href="/TaystJK/reference/commands/move-379d6ce/"><code>move</code></a>
+<a href="/TaystJK/reference/commands/plusminus-movedown-0be8661/"><code>+movedown</code></a>
+<a href="/TaystJK/reference/commands/minus-movedown-4fdaa04/"><code>-movedown</code></a>
+<a href="/TaystJK/reference/commands/plusminus-moveleft-f14058f/"><code>+moveleft</code></a>
+<a href="/TaystJK/reference/commands/minus-moveleft-b288f12/"><code>-moveleft</code></a>
+<a href="/TaystJK/reference/commands/plusminus-moveright-511a14c/"><code>+moveright</code></a>
+<a href="/TaystJK/reference/commands/minus-moveright-7382f10/"><code>-moveright</code></a>
+<a href="/TaystJK/reference/commands/plusminus-moveup-b1f0103/"><code>+moveup</code></a>
+<a href="/TaystJK/reference/commands/minus-moveup-356a171/"><code>-moveup</code></a>
 <a href="/TaystJK/reference/commands/mp3_calcvols-80b9f54/"><code>mp3_calcvols</code></a>
 <a href="/TaystJK/reference/commands/mpause-640e429/"><code>mpause</code></a>
 <a href="/TaystJK/reference/commands/mprev-28fb883/"><code>mprev</code></a>
 <a href="/TaystJK/reference/commands/mstop-67745cd/"><code>mstop</code></a>
 <a href="/TaystJK/reference/commands/music-3a01be1/"><code>music</code></a>
+</div>
+<h3 id="commands-n">N</h3>
+<div class="static-index-list">
 <a href="/TaystJK/reference/commands/nearby-8809020/"><code>nearby</code></a>
 <a href="/TaystJK/reference/commands/net_restart-defef06/"><code>net_restart</code></a>
 <a href="/TaystJK/reference/commands/nextframe-23b6320/"><code>nextframe</code></a>
@@ -1832,7 +1910,13 @@ description: "A no-JavaScript index of every TaystJK cvar and console command."
 <a href="/TaystJK/reference/commands/notcompleted-ce96ded/"><code>notCompleted</code></a>
 <a href="/TaystJK/reference/commands/npc-3b86d7d/"><code>NPC</code></a>
 <a href="/TaystJK/reference/commands/nudge-37e4ac9/"><code>nudge</code></a>
+</div>
+<h3 id="commands-o">O</h3>
+<div class="static-index-list">
 <a href="/TaystJK/reference/commands/origin-b284f94/"><code>origin</code></a>
+</div>
+<h3 id="commands-p">P</h3>
+<div class="static-index-list">
 <a href="/TaystJK/reference/commands/pack-6acd621/"><code>pack</code></a>
 <a href="/TaystJK/reference/commands/path-3150ecd/"><code>path</code></a>
 <a href="/TaystJK/reference/commands/pause-ef8d299/"><code>pause</code></a>
@@ -1850,7 +1934,13 @@ description: "A no-JavaScript index of every TaystJK cvar and console command."
 <a href="/TaystJK/reference/commands/printstats-482f44d/"><code>printStats</code></a>
 <a href="/TaystJK/reference/commands/ptele-fb0f4da/"><code>PTele</code></a>
 <a href="/TaystJK/reference/commands/ptelemark-8fcd18e/"><code>PTelemark</code></a>
+</div>
+<h3 id="commands-q">Q</h3>
+<div class="static-index-list">
 <a href="/TaystJK/reference/commands/quit-f591187/"><code>quit</code></a>
+</div>
+<h3 id="commands-r">R</h3>
+<div class="static-index-list">
 <a href="/TaystJK/reference/commands/r_atihack-d43dcf7/"><code>r_atihack</code></a>
 <a href="/TaystJK/reference/commands/r_cleardecals-243dbd7/"><code>r_cleardecals</code></a>
 <a href="/TaystJK/reference/commands/r_we-8921bfa/"><code>r_we</code></a>
@@ -1871,12 +1961,17 @@ description: "A no-JavaScript index of every TaystJK cvar and console command."
 <a href="/TaystJK/reference/commands/resetscores-5efac86/"><code>resetScores</code></a>
 <a href="/TaystJK/reference/commands/rfind-f2fd376/"><code>rFind</code></a>
 <a href="/TaystJK/reference/commands/rhardest-4250c13/"><code>rHardest</code></a>
+<a href="/TaystJK/reference/commands/plusminus-right-5e3b5dc/"><code>+right</code></a>
+<a href="/TaystJK/reference/commands/minus-right-a838480/"><code>-right</code></a>
 <a href="/TaystJK/reference/commands/rlatest-fa0c7ce/"><code>rLatest</code></a>
 <a href="/TaystJK/reference/commands/rocketchange-f69e6d8/"><code>rocketChange</code></a>
 <a href="/TaystJK/reference/commands/rpopular-a69422f/"><code>rPopular</code></a>
 <a href="/TaystJK/reference/commands/rrank-4a8ddea/"><code>rRank</code></a>
 <a href="/TaystJK/reference/commands/rtop-56f7fba/"><code>rTop</code></a>
 <a href="/TaystJK/reference/commands/rworst-00fab73/"><code>rWorst</code></a>
+</div>
+<h3 id="commands-s">S</h3>
+<div class="static-index-list">
 <a href="/TaystJK/reference/commands/s_dynamic-2255330/"><code>s_dynamic</code></a>
 <a href="/TaystJK/reference/commands/saber-1b60697/"><code>saber</code></a>
 <a href="/TaystJK/reference/commands/saberattackcycle-697e64e/"><code>saberAttackCycle</code></a>
@@ -1886,6 +1981,8 @@ description: "A no-JavaScript index of every TaystJK cvar and console command."
 <a href="/TaystJK/reference/commands/say_team-bae6793/"><code>say_team</code></a>
 <a href="/TaystJK/reference/commands/say_team_mod-1d67bc8/"><code>say_team_mod</code></a>
 <a href="/TaystJK/reference/commands/score-75ebcb3/"><code>score</code></a>
+<a href="/TaystJK/reference/commands/plusminus-scores-d436431/"><code>+scores</code></a>
+<a href="/TaystJK/reference/commands/minus-scores-a8f4d4c/"><code>-scores</code></a>
 <a href="/TaystJK/reference/commands/screenshot-754d2e9/"><code>screenshot</code></a>
 <a href="/TaystJK/reference/commands/screenshot_png-78032a6/"><code>screenshot_png</code></a>
 <a href="/TaystJK/reference/commands/screenshot_tga-0b6a900/"><code>screenshot_tga</code></a>
@@ -1906,6 +2003,8 @@ description: "A no-JavaScript index of every TaystJK cvar and console command."
 <a href="/TaystJK/reference/commands/siegeclass-3ba0852/"><code>siegeclass</code></a>
 <a href="/TaystJK/reference/commands/siegecompletecvarupdate-73dd2e9/"><code>siegeCompleteCvarUpdate</code></a>
 <a href="/TaystJK/reference/commands/siegecvarupdate-85c4442/"><code>siegeCvarUpdate</code></a>
+<a href="/TaystJK/reference/commands/plusminus-singlefire-e166917/"><code>+singlefire</code></a>
+<a href="/TaystJK/reference/commands/minus-singlefire-9763ac0/"><code>-singlefire</code></a>
 <a href="/TaystJK/reference/commands/sizedown-b787541/"><code>sizedown</code></a>
 <a href="/TaystJK/reference/commands/sizeup-fb872d7/"><code>sizeup</code></a>
 <a href="/TaystJK/reference/commands/skinlist-f37b889/"><code>skinlist</code></a>
@@ -1916,6 +2015,8 @@ description: "A no-JavaScript index of every TaystJK cvar and console command."
 <a href="/TaystJK/reference/commands/soundinfo-489bbde/"><code>soundinfo</code></a>
 <a href="/TaystJK/reference/commands/soundlist-c42d7c8/"><code>soundlist</code></a>
 <a href="/TaystJK/reference/commands/soundstop-6d48fc3/"><code>soundstop</code></a>
+<a href="/TaystJK/reference/commands/plusminus-speed-d1ef0fc/"><code>+speed</code></a>
+<a href="/TaystJK/reference/commands/minus-speed-abca6cc/"><code>-speed</code></a>
 <a href="/TaystJK/reference/commands/speedometer-b0e26e4/"><code>speedometer</code></a>
 <a href="/TaystJK/reference/commands/spot-9f4b527/"><code>spot</code></a>
 <a href="/TaystJK/reference/commands/startingitems-2ed82fa/"><code>startingItems</code></a>
@@ -1926,6 +2027,8 @@ description: "A no-JavaScript index of every TaystJK cvar and console command."
 <a href="/TaystJK/reference/commands/stopmusic-38c05b1/"><code>stopmusic</code></a>
 <a href="/TaystJK/reference/commands/stoprecord-c5a4a3b/"><code>stoprecord</code></a>
 <a href="/TaystJK/reference/commands/stopvideo-db7ecec/"><code>stopvideo</code></a>
+<a href="/TaystJK/reference/commands/plusminus-strafe-1e9bba6/"><code>+strafe</code></a>
+<a href="/TaystJK/reference/commands/minus-strafe-fd501b2/"><code>-strafe</code></a>
 <a href="/TaystJK/reference/commands/strafehelper-bdb34b4/"><code>strafeHelper</code></a>
 <a href="/TaystJK/reference/commands/strafetrail-dddd025/"><code>strafeTrail</code></a>
 <a href="/TaystJK/reference/commands/strsub-25a3e39/"><code>strSub</code></a>
@@ -1948,6 +2051,9 @@ description: "A no-JavaScript index of every TaystJK cvar and console command."
 <a href="/TaystJK/reference/commands/svstoprecord-b9ffafa/"><code>svstoprecord</code></a>
 <a href="/TaystJK/reference/commands/svtell-f8cd34e/"><code>svtell</code></a>
 <a href="/TaystJK/reference/commands/systeminfo-21ef9f0/"><code>systeminfo</code></a>
+</div>
+<h3 id="commands-t">T</h3>
+<div class="static-index-list">
 <a href="/TaystJK/reference/commands/t_use-2d01a2e/"><code>t_use</code></a>
 <a href="/TaystJK/reference/commands/taunt-ad6071a/"><code>taunt</code></a>
 <a href="/TaystJK/reference/commands/tcmd-f9ee575/"><code>tcmd</code></a>
@@ -1979,6 +2085,9 @@ description: "A no-JavaScript index of every TaystJK cvar and console command."
 <a href="/TaystJK/reference/commands/tweaksaber-e5f1b57/"><code>tweakSaber</code></a>
 <a href="/TaystJK/reference/commands/tweakvote-97236e2/"><code>tweakVote</code></a>
 <a href="/TaystJK/reference/commands/tweakweapons-fd5860d/"><code>tweakWeapons</code></a>
+</div>
+<h3 id="commands-u">U</h3>
+<div class="static-index-list">
 <a href="/TaystJK/reference/commands/ui_cache-3e1b71d/"><code>ui_cache</code></a>
 <a href="/TaystJK/reference/commands/ui_load-b884bdc/"><code>ui_load</code></a>
 <a href="/TaystJK/reference/commands/ui_modversion-a282cdc/"><code>ui_modversion</code></a>
@@ -1989,6 +2098,8 @@ description: "A no-JavaScript index of every TaystJK cvar and console command."
 <a href="/TaystJK/reference/commands/unbindall-b3cc407/"><code>unbindall</code></a>
 <a href="/TaystJK/reference/commands/unset-fff210f/"><code>unset</code></a>
 <a href="/TaystJK/reference/commands/unset_usercreated-9632483/"><code>unset_usercreated</code></a>
+<a href="/TaystJK/reference/commands/plusminus-use-5cd9e39/"><code>+use</code></a>
+<a href="/TaystJK/reference/commands/minus-use-4c6096b/"><code>-use</code></a>
 <a href="/TaystJK/reference/commands/use_ammodisp-810eb71/"><code>use_ammodisp</code></a>
 <a href="/TaystJK/reference/commands/use_bacta-7089dec/"><code>use_bacta</code></a>
 <a href="/TaystJK/reference/commands/use_bactabig-8fd2bb4/"><code>use_bactabig</code></a>
@@ -2000,8 +2111,13 @@ description: "A no-JavaScript index of every TaystJK cvar and console command."
 <a href="/TaystJK/reference/commands/use_jetpack-c2c0671/"><code>use_jetpack</code></a>
 <a href="/TaystJK/reference/commands/use_seeker-703d2b8/"><code>use_seeker</code></a>
 <a href="/TaystJK/reference/commands/use_sentry-d6cc429/"><code>use_sentry</code></a>
+<a href="/TaystJK/reference/commands/plusminus-useforce-a05b10e/"><code>+useforce</code></a>
+<a href="/TaystJK/reference/commands/minus-useforce-92d91ec/"><code>-useforce</code></a>
 <a href="/TaystJK/reference/commands/usegivenforce-9c1fc93/"><code>useGivenForce</code></a>
 <a href="/TaystJK/reference/commands/userinfo-c0214b8/"><code>userinfo</code></a>
+</div>
+<h3 id="commands-v">V</h3>
+<div class="static-index-list">
 <a href="/TaystJK/reference/commands/vbolist-fe10c4e/"><code>vbolist</code></a>
 <a href="/TaystJK/reference/commands/vgs_cmd-98de8a4/"><code>vgs_cmd</code></a>
 <a href="/TaystJK/reference/commands/vid_restart-46d32d0/"><code>vid_restart</code></a>
@@ -2012,6 +2128,9 @@ description: "A no-JavaScript index of every TaystJK cvar and console command."
 <a href="/TaystJK/reference/commands/voicechat-a1c96f1/"><code>voicechat</code></a>
 <a href="/TaystJK/reference/commands/vote-fd63f1e/"><code>vote</code></a>
 <a href="/TaystJK/reference/commands/vstr-aad114e/"><code>vstr</code></a>
+</div>
+<h3 id="commands-w">W</h3>
+<div class="static-index-list">
 <a href="/TaystJK/reference/commands/wait-daaad33/"><code>wait</code></a>
 <a href="/TaystJK/reference/commands/waitf-1b1b6e3/"><code>waitf</code></a>
 <a href="/TaystJK/reference/commands/waitfcancel-4f1a371/"><code>waitfcancel</code></a>
@@ -2029,9 +2148,17 @@ description: "A no-JavaScript index of every TaystJK cvar and console command."
 <a href="/TaystJK/reference/commands/whois-a93a167/"><code>whois</code></a>
 <a href="/TaystJK/reference/commands/write-e1d0c6c/"><code>write</code></a>
 <a href="/TaystJK/reference/commands/writeconfig-fd281f7/"><code>writeconfig</code></a>
+</div>
+<h3 id="commands-y">Y</h3>
+<div class="static-index-list">
 <a href="/TaystJK/reference/commands/ysal-49fb494/"><code>ysal</code></a>
+</div>
+<h3 id="commands-z">Z</h3>
+<div class="static-index-list">
 <a href="/TaystJK/reference/commands/zone_details-1f55083/"><code>zone_details</code></a>
 <a href="/TaystJK/reference/commands/zone_memrecovertest-0999822/"><code>zone_memrecovertest</code></a>
 <a href="/TaystJK/reference/commands/zone_stats-890b1e1/"><code>zone_stats</code></a>
+<a href="/TaystJK/reference/commands/plusminus-zoom-0eb4e7d/"><code>+zoom</code></a>
+<a href="/TaystJK/reference/commands/minus-zoom-972df81/"><code>-zoom</code></a>
 <a href="/TaystJK/reference/commands/zoom-9229881/"><code>zoom</code></a>
 </div>

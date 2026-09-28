@@ -1171,6 +1171,29 @@ kbd { padding: .15rem .42rem; color: var(--text-soft); background: var(--surface
 }
 
 .static-index-list a:hover { color: var(--accent); border-color: var(--line-bright); }
+
+.letter-jumps {
+  display: flex;
+  flex-wrap: wrap;
+  gap: .3rem;
+  margin: .6rem 0 1.2rem;
+}
+
+.letter-jumps a {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 2.2rem;
+  min-height: 2.2rem;
+  color: var(--text-soft);
+  font-weight: 600;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  text-decoration: none;
+}
+
+.letter-jumps a:hover { color: var(--accent); border-color: var(--line-bright); }
 .static-index-list code { padding: 0; color: inherit; background: none; border: 0; white-space: nowrap; }
 
 .reference-note,
