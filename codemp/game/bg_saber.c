@@ -78,6 +78,13 @@ void BG_ForcePowerDrain( playerState_t *ps, forcePowers_t forcePower, int overri
 	{ //special case
 		int jumpDrain = 0;
 
+#ifdef _CGAME
+		if (cgs.serverMod == SVMOD_LMD)
+		{//Lugormod still drains the asked amount when you aren't going up
+			jumpDrain = overrideAmt;
+		}
+#endif
+
 		if (ps->velocity[2] > 250)
 		{
 			jumpDrain = 20;
@@ -102,6 +109,12 @@ void BG_ForcePowerDrain( playerState_t *ps, forcePowers_t forcePower, int overri
 		{
 			jumpDrain = 4;
 		}
+#ifdef _CGAME
+		else if (cgs.serverMod == SVMOD_LMD && ps->velocity[2] > -0.5f && ps->fd.forcePowerLevel[FP_LEVITATION] == FORCE_LEVEL_5)
+		{//and hovering at level 5
+			jumpDrain = 5;
+		}
+#endif
 
 		if (jumpDrain)
 		{

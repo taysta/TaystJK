@@ -241,8 +241,8 @@ float forceJumpHeight[NUM_FORCE_POWER_LEVELS + 2] =
 	96,//(+stepheight+crouchdiff = 130)
 	192,//(+stepheight+crouchdiff = 226)
 	384,//(+stepheight+crouchdiff = 418)
-	1570,
-	1570
+	1536,//Lugormod levels 4 and 5
+	1536
 };
 
 float forceJumpStrength[NUM_FORCE_POWER_LEVELS + 2] =
