@@ -6901,6 +6901,25 @@ CG_DrawUpperRight
 
 =====================
 */
+//Lugormod sends your profession and level in the stats jaPRO uses for dashing and jump speed
+static float CG_DrawLugormodProfession( float y ) {
+	static const char *professions[] = { NULL, "Admin", "Bot", "Jedi", "Mercenary" };
+	const int prof = cg.predictedPlayerState.stats[STAT_LMD_PROFESSION];
+	const int level = cg.predictedPlayerState.stats[STAT_LMD_LEVEL];
+	const char *s;
+	int w;
+
+	if ( prof <= 0 || prof >= (int)ARRAY_LEN( professions ) ) {
+		return y;
+	}
+
+	s = (level > 0) ? va( "%s  Level %i", professions[prof], level ) : professions[prof];
+	w = CG_DrawStrlen( s ) * SMALLCHAR_WIDTH;
+	CG_DrawSmallString( SCREEN_WIDTH - 5 - w * cgs.widthRatioCoef, y + 2, s, 1.0f );
+
+	return y + SMALLCHAR_HEIGHT + 4;
+}
+
 static void CG_DrawUpperRight( void ) {
 	float	y = 0;
 
@@ -6930,6 +6949,10 @@ static void CG_DrawUpperRight( void ) {
 
 		if ( cg_drawTimer.integer) {
 			y = CG_DrawTimer( y );
+		}
+
+		if ( cgs.serverMod == SVMOD_LMD && cg_drawProfession.integer ) {
+			y = CG_DrawLugormodProfession( y );
 		}
 
         if((cg_drawScores.integer == 3 || ((cg_drawStatus.integer == 2 || cg_drawStatus.integer == 3) && (cgs.gametype == GT_CTF || cgs.gametype == GT_CTY))) && cg_drawTimer.integer != 7){

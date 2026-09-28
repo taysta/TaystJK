@@ -907,6 +907,64 @@ void CG_G2ServerBoneAngles(centity_t *cent);
 
 extern qboolean BG_GetRootSurfNameWithVariant( void *ghoul2, const char *rootSurfName, char *returnSurfName, int returnSize );
 
+//Lugormod's money stashes and crafting holocrons glow through walls for players with a profession
+//who have Force Sight 2 or up running, or are zoomed with binoculars
+static qboolean CG_LugormodCanSeeStash( const centity_t *cent )
+{
+	const playerState_t *ps = &cg.snap->ps;
+	int seeLevel = ps->fd.forcePowerLevel[FP_SEE];
+
+	if ( cgs.serverMod != SVMOD_LMD || !(cent->currentState.eFlags2 & EF2_LMD_CANSEE) || (cent->currentState.eFlags & EF_NODRAW)
+		|| !ps->stats[STAT_LMD_PROFESSION] )
+	{
+		return qfalse;
+	}
+	if ( ps->stats[STAT_LMD_EXTRA_FORCE_BITS2] & (1 << (FP_SEE - 8)) )
+	{//levels past 3 come in an extra bit
+		seeLevel |= 4;
+	}
+	return (qboolean)(((ps->fd.forcePowersActive & (1 << FP_SEE)) && seeLevel >= FORCE_LEVEL_2) || ps->zoomMode == 2);
+}
+
+static void CG_LugormodStashGlow( const refEntity_t *ent )
+{
+	refEntity_t glow = *ent;
+	const float wv = sin( cg.time * 0.003f ) * 0.08f + 0.1f;
+	addspriteArgStruct_t fxSArgs;
+	int i;
+
+	glow.customShader = cgs.media.solidWhite;
+	glow.renderfx = RF_RGB_TINT;
+	glow.shaderRGBA[0] = wv * 100;
+	glow.shaderRGBA[1] = wv * 255;
+	glow.shaderRGBA[2] = wv * 100;
+	trap->R_AddRefEntityToScene( &glow );
+
+	for ( i = -4; i < 10; i++ )
+	{
+		VectorMA( glow.origin, -i, glow.axis[2], fxSArgs.origin );
+		VectorClear( fxSArgs.vel );
+		VectorClear( fxSArgs.accel );
+		fxSArgs.scale = 5.5f;
+		fxSArgs.dscale = 5.5f;
+		fxSArgs.sAlpha = wv;
+		fxSArgs.eAlpha = wv;
+		fxSArgs.rotation = 0.0f;
+		fxSArgs.bounce = 0.0f;
+		fxSArgs.life = 1.0f;
+		fxSArgs.shader = cgs.media.yellowDroppedSaberShader;
+		fxSArgs.flags = 0x08000000;
+		trap->FX_AddSprite( &fxSArgs );
+	}
+
+	glow.shaderRGBA[0] = 100;
+	glow.shaderRGBA[1] = 255;
+	glow.shaderRGBA[2] = 100;
+	glow.renderfx |= RF_MINLIGHT | RF_NODEPTH;
+	glow.customShader = cgs.media.forceSightBubble;
+	trap->R_AddRefEntityToScene( &glow );
+}
+
 static void CG_General( centity_t *cent ) {
 	refEntity_t			ent;
 	entityState_t		*s1;
@@ -1539,6 +1597,11 @@ Ghoul2 Insert End
 	else
 	{
 		VectorClear(cent->modelScale);
+	}
+
+	if ( CG_LugormodCanSeeStash( cent ) )
+	{
+		CG_LugormodStashGlow( &ent );
 	}
 
 	if ( cent->currentState.time > cg.time && cent->currentState.weapon == WP_EMPLACED_GUN )

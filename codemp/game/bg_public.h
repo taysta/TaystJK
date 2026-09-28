@@ -432,7 +432,8 @@ typedef enum {
 	PM_DEAD,		// no acceleration or turning, but free falling
 	PM_FREEZE,		// stuck in place with no control
 	PM_INTERMISSION,	// no movement or status bar
-	PM_SPINTERMISSION	// no movement or status bar
+	PM_SPINTERMISSION,	// no movement or status bar
+	PM_GRAPPLING		// Lugormod: hanging off the grappling hook, never set by our game
 } pmtype_t;
 
 typedef enum {
@@ -740,6 +741,13 @@ typedef enum {
 #define IsJaPRO() (qtrue)
 #endif
 
+#ifdef _CGAME //Lugormod reuses jaPRO's stat slots
+#define STAT_LMD_PROFESSION			STAT_DASHTIME
+#define STAT_LMD_LEVEL				STAT_LASTJUMPSPEED
+#define STAT_LMD_EXTRA_FORCE_BITS	STAT_RACEMODE		// force powers 0-7 above level 3
+#define STAT_LMD_EXTRA_FORCE_BITS2	STAT_RESTRICTIONS	// force powers 8-15 above level 3
+#endif
+
 // qboolean IsRacemode(playerState_t* ps); // Macro
 #define IsRacemode(ps) (IsJaPRO() && (ps)->stats[STAT_RACEMODE])
 
@@ -842,6 +850,9 @@ typedef enum {
 #define	EF2_BRACKET_ENTITY		(1<<6)		// Draw as bracketed
 #define	EF2_SHIP_DEATH			(1<<7)		// "died in ship" mode
 #define	EF2_NOT_USED_1			(1<<8)		// not used
+#ifdef _CGAME
+#define EF2_LMD_CANSEE			(1<<8) // Lugormod: money stashes, crafting holocrons and stash carriers glow in Force Sight
+#endif
 
 
 typedef enum {
@@ -1981,7 +1992,7 @@ extern int forcePowerDarkLight[NUM_FORCE_POWERS];
 #define	HYPERSPACE_SPEED			10000.0f//was 30000
 #define	HYPERSPACE_TURN_RATE		45.0f
 
-extern const char *gametypeStringShort[GT_MAX_GAME_TYPE];
+const char *BG_GetGametypeStringShort( int gametype );
 const char *BG_GetGametypeString( int gametype );
 int BG_GetGametypeForString( const char *gametype );
 

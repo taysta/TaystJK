@@ -168,6 +168,32 @@ This is called explicitly when the gamestate is first received,
 and whenever the server updates any serverinfo flagged cvars
 ================
 */
+//Lugormod's shared weapon table gives the old Bryar (its teleporter and grapple gun) an 800ms shot with no ammo or charge
+static void CG_SetLugormodWeaponData( void )
+{
+	static weaponData_t baseBryarOld;
+	static qboolean saved = qfalse;
+
+	if ( !saved )
+	{
+		baseBryarOld = weaponData[WP_BRYAR_OLD];
+		saved = qtrue;
+	}
+
+	weaponData[WP_BRYAR_OLD] = baseBryarOld;
+	if ( cgs.serverMod == SVMOD_LMD )
+	{
+		weaponData[WP_BRYAR_OLD].ammoLow = 0;
+		weaponData[WP_BRYAR_OLD].energyPerShot = 0;
+		weaponData[WP_BRYAR_OLD].fireTime = 800;
+		weaponData[WP_BRYAR_OLD].altEnergyPerShot = 0;
+		weaponData[WP_BRYAR_OLD].altFireTime = 800;
+		weaponData[WP_BRYAR_OLD].altChargeSubTime = 0;
+		weaponData[WP_BRYAR_OLD].altChargeSub = 0;
+		weaponData[WP_BRYAR_OLD].altMaxCharge = 0;
+	}
+}
+
 void CG_ParseServerinfo( void ) {
 	const char *info = NULL;
 	const char *gamename = NULL;
@@ -262,7 +288,7 @@ void CG_ParseServerinfo( void ) {
 			{//rescale sabers in case the modelscale settings changed
 				int client;
 				for (client = 0; client < MAX_CLIENTS; client++)
-					cgs.clientinfo[client].jpSaberScale = -1;
+					cgs.clientinfo[client].saberModelScale = -1;
 			}
 		}
 		else if (!Q_stricmpn(gamename, "japro", 5)) {
@@ -289,7 +315,7 @@ void CG_ParseServerinfo( void ) {
 			cgs.serverMod = SVMOD_BASEJKA;
 			cgs.baseGame = qtrue;
 		}
-		else if (!Q_stricmp(gamename, "^5L^7ugormod ^5v3") || !Q_stricmp(gamename, "Lugormod"))
+		else if (!Q_stricmp(gamename, "^5L^7ugormod ^5v3") || !Q_stricmp(gamename, "Lugormod") || !Q_stricmp(gamename, "Lugormod X"))
 		{
 			cgs.serverMod = SVMOD_LMD;
 		}
@@ -311,6 +337,8 @@ void CG_ParseServerinfo( void ) {
 		if (legacyAPI[0])
 			cgs.baseGame = (qboolean)(atoi(legacyAPI) != 0);
 	}
+
+	CG_SetLugormodWeaponData();
 
 	restrictString[0] = 'r';
 	restrictString[1] = 'e';
@@ -1258,7 +1286,7 @@ static void CG_MapRestart( void ) {
 		strftime(timeBuf, sizeof(timeBuf), "%Y-%m-%d_%H-%M-%S", gmtime(&rawtime));
 		Q_strncpyz(mapname, cgs.mapname + 5, sizeof(mapname));
 		COM_StripExtension(mapname, mapname, sizeof(mapname));
-		Com_sprintf(buf, sizeof(buf), "%s_%s_%s_%s", timeBuf, gametypeStringShort[cgs.gametype], mapname, cgs.clientinfo[cg.clientNum].name);
+		Com_sprintf(buf, sizeof(buf), "%s_%s_%s_%s", timeBuf, BG_GetGametypeStringShort(cgs.gametype), mapname, cgs.clientinfo[cg.clientNum].name);
 		Q_strstrip(buf, "\n\r;:?*<>|\"\\/ ", NULL);
 		Q_CleanStr(buf);
 		cg.recording = qtrue;

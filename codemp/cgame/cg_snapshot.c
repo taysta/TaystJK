@@ -157,7 +157,7 @@ void CG_SetInitialSnapshot( snapshot_t *snap ) {
 		strftime( timeBuf, sizeof( timeBuf ), "%Y-%m-%d_%H-%M-%S", gmtime( &rawtime ) );
 		Q_strncpyz( mapname, cgs.mapname + 5, sizeof( mapname ) );
 		COM_StripExtension( mapname, mapname, sizeof( mapname ) );
-		Com_sprintf( buf, sizeof( buf ), "%s_%s_%s_%s", timeBuf, gametypeStringShort[cgs.gametype], mapname, cgs.clientinfo[cg.clientNum].name );
+		Com_sprintf( buf, sizeof( buf ), "%s_%s_%s_%s", timeBuf, BG_GetGametypeStringShort(cgs.gametype), mapname, cgs.clientinfo[cg.clientNum].name );
 		Q_strstrip( buf, "\n\r;:?*<>|\"\\/ ", NULL );
 		Q_CleanStr( buf );
 		cg.recording = qtrue;
@@ -358,6 +358,22 @@ static snapshot_t *CG_ReadNextSnapshot( void ) {
 
 		// if it succeeded, return
 		if ( r ) {
+			if ( cgs.serverMod == SVMOD_LMD )
+			{//Lugormod scales players' heights, which the snapshot doesn't have the bits for
+				if ( dest->ps.pm_type != PM_DEAD )
+				{//it sends the view height's ninth bit in userInt2
+					dest->ps.viewheight = (unsigned char)dest->ps.viewheight + (dest->ps.userInt2 << 8);
+				}
+				//small players stand and crouch below zero, which arrives as a 10 bit unsigned value
+				if ( dest->ps.standheight >= 1000 )
+				{
+					dest->ps.standheight -= 1024;
+				}
+				if ( dest->ps.crouchheight >= 1000 )
+				{
+					dest->ps.crouchheight -= 1024;
+				}
+			}
 			CG_AddLagometerSnapshotInfo( dest );
 			return dest;
 		}
