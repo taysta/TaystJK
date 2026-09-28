@@ -358,6 +358,22 @@ static snapshot_t *CG_ReadNextSnapshot( void ) {
 
 		// if it succeeded, return
 		if ( r ) {
+			if ( cgs.serverMod == SVMOD_LMD )
+			{//Lugormod scales players' heights, which the snapshot doesn't have the bits for
+				if ( dest->ps.pm_type != PM_DEAD )
+				{//it sends the view height's ninth bit in userInt2
+					dest->ps.viewheight = (unsigned char)dest->ps.viewheight + (dest->ps.userInt2 << 8);
+				}
+				//small players stand and crouch below zero, which arrives as a 10 bit unsigned value
+				if ( dest->ps.standheight >= 1000 )
+				{
+					dest->ps.standheight -= 1024;
+				}
+				if ( dest->ps.crouchheight >= 1000 )
+				{
+					dest->ps.crouchheight -= 1024;
+				}
+			}
 			CG_AddLagometerSnapshotInfo( dest );
 			return dest;
 		}

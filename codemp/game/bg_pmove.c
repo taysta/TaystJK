@@ -125,6 +125,16 @@ const float pm_surf_wishspeed = 250.0f;
 // lumaya: Lugormod
 float scaleh;
 
+//Lugormod sizes some movement by the model scale, other mods don't
+static QINLINE float PM_LugormodScale( void )
+{
+#ifdef _CGAME
+	if ( cgs.serverMod == SVMOD_LMD )
+		return scaleh;
+#endif
+	return 1.0f;
+}
+
 //japro/dfmania movement parameters
 
 int		c_pmove = 0;
@@ -6452,6 +6462,12 @@ static void PM_CrashLand(void) {
 
 	delta = vel + t * acc;
 	delta = delta*delta * 0.0001;
+#ifdef _CGAME
+	if (cgs.serverMod == SVMOD_LMD)
+	{//Lugormod lands big players softer
+		delta /= sqrt(scaleh);
+	}
+#endif
 
 #if _SPPHYSICS
 	if (pm->ps->fd.forceJumpZStart && ((int)pm->ps->origin[2] >= (int)pm->ps->fd.forceJumpZStart) && moveStyle == MV_SP) {
@@ -6465,7 +6481,11 @@ static void PM_CrashLand(void) {
 	PM_CrashLandEffect();
 #endif
 	// ducking while falling doubles damage
-	if (pm->ps->pm_flags & PMF_DUCKED) {
+	if ((pm->ps->pm_flags & PMF_DUCKED)
+#ifdef _CGAME
+		&& cgs.serverMod != SVMOD_LMD //Lugormod dropped this
+#endif
+		) {
 		delta *= 2;
 	}
 
@@ -7515,6 +7535,140 @@ static void PM_CheckDuck (void)
 	}
 }
 
+#ifdef _CGAME
+//Lugormod sets the bounds from last frame's duck state before it finds the ground and ducks,
+//widens them with the model scale and crouches you while you meditate, kneel or lay back
+static void PM_LugormodSetBounds( void )
+{
+	if ( pm->ps->m_iVehicleNum > 0 && pm->ps->m_iVehicleNum < ENTITYNUM_NONE )
+	{//riding a vehicle or are a vehicle
+		if ( pm->ps->clientNum < MAX_CLIENTS && pm_entVeh && pm_entVeh->m_pVehicle &&
+			(pm_entVeh->m_pVehicle->m_pVehicleInfo->type == VH_SPEEDER ||
+			 pm_entVeh->m_pVehicle->m_pVehicleInfo->type == VH_ANIMAL) )
+		{
+			trace_t solidTr;
+
+			VectorSet( pm->mins, -16 * scaleh, -16 * scaleh, MINS_Z );
+			VectorSet( pm->maxs, 16 * scaleh, 16 * scaleh, pm->ps->standheight );
+			pm->ps->viewheight = DEFAULT_VIEWHEIGHT;
+
+			pm->trace( &solidTr, pm->ps->origin, pm->mins, pm->maxs, pm->ps->origin, pm->ps->m_iVehicleNum, pm->tracemask );
+			if ( solidTr.startsolid || solidTr.allsolid || solidTr.fraction != 1.0f )
+			{ //whoops, can't fit here. Down to 0!
+				VectorClear( pm->mins );
+				VectorClear( pm->maxs );
+			}
+		}
+		return;
+	}
+
+	if ( pm->ps->clientNum < MAX_CLIENTS )
+	{
+		pm->mins[0] = pm->mins[1] = -15 * scaleh;
+		pm->maxs[0] = pm->maxs[1] = 15 * scaleh;
+	}
+
+	if ( !PM_CheckDualForwardJumpDuck() )
+	{
+		PM_CheckFixMins();
+
+		if ( !pm->mins[2] )
+		{
+			pm->mins[2] = MINS_Z;
+		}
+	}
+
+	if ( pm->ps->pm_type == PM_DEAD && pm->ps->clientNum < MAX_CLIENTS )
+	{
+		pm->maxs[2] = -8 * scaleh;
+		pm->ps->viewheight = DEAD_VIEWHEIGHT;
+	}
+	else if ( pm->ps->pm_flags & PMF_DUCKED )
+	{
+		pm->maxs[2] = pm->ps->crouchheight;
+		pm->ps->viewheight = CROUCH_VIEWHEIGHT;
+	}
+	else if ( (pm->ps->pm_flags & PMF_ROLLING)
+		|| (pm->ps->legsTimer && (pm->ps->legsAnim == BOTH_MEDITATE || pm->ps->legsAnim == BOTH_CROUCH3 || pm->ps->legsAnim == BOTH_SIT6)) )
+	{
+		pm->maxs[2] = pm->ps->crouchheight;
+		pm->ps->viewheight = DEFAULT_VIEWHEIGHT;
+	}
+	else
+	{
+		pm->maxs[2] = pm->ps->standheight;
+		pm->ps->viewheight = DEFAULT_VIEWHEIGHT;
+	}
+}
+
+//Lugormod stands up only if a linear trace of the lower half of the box reaches stand height, which catches bevels
+static qboolean PM_LugormodCanStand( void )
+{
+	trace_t trace;
+	vec3_t maxs, end;
+
+	VectorCopy( pm->ps->origin, end );
+	end[2] += pm->ps->standheight;
+	VectorCopy( pm->maxs, maxs );
+	maxs[2] = 0;
+	pm->trace( &trace, pm->ps->origin, pm->mins, maxs, end, pm->ps->clientNum, pm->tracemask );
+
+	return (qboolean)(!trace.allsolid && trace.fraction >= 1.0f);
+}
+
+//returns qtrue when the bounds need setting again
+static qboolean PM_LugormodCheckDuck( void )
+{
+	if ( pm->ps->m_iVehicleNum > 0 && pm->ps->m_iVehicleNum < ENTITYNUM_NONE )
+	{//no ducking or rolling when on a vehicle
+		pm->ps->pm_flags &= ~(PMF_DUCKED|PMF_ROLLING);
+		return qtrue;
+	}
+
+	if ( pm->ps->pm_type == PM_DEAD && pm->ps->clientNum < MAX_CLIENTS )
+	{
+		return qfalse;
+	}
+
+	if ( BG_InRoll( pm->ps, pm->ps->legsAnim ) && !BG_KickingAnim( pm->ps->legsAnim ) )
+	{
+		pm->ps->pm_flags &= ~PMF_DUCKED;
+		pm->ps->pm_flags |= PMF_ROLLING;
+		return qtrue;
+	}
+
+	if ( pm->ps->pm_flags & PMF_ROLLING )
+	{//done rolling, ducking if there's no room to stand
+		if ( PM_LugormodCanStand() )
+		{
+			pm->ps->pm_flags &= ~PMF_ROLLING;
+		}
+		else
+		{
+			pm->ps->pm_flags |= PMF_DUCKED;
+		}
+		return qtrue;
+	}
+
+	if ( pm->cmd.upmove < 0 ||
+		pm->ps->forceHandExtend == HANDEXTEND_KNOCKDOWN ||
+		pm->ps->forceHandExtend == HANDEXTEND_PRETHROWN ||
+		pm->ps->forceHandExtend == HANDEXTEND_POSTTHROWN )
+	{
+		pm->ps->pm_flags |= PMF_DUCKED;
+		return qtrue;
+	}
+
+	if ( (pm->ps->pm_flags & PMF_DUCKED) && PM_LugormodCanStand() )
+	{
+		pm->ps->pm_flags &= ~PMF_DUCKED;
+		return qtrue;
+	}
+
+	return qfalse;
+}
+#endif
+
 
 
 //===================================================================
@@ -8337,6 +8491,15 @@ static void PM_Footsteps( void ) {
 
 		{
 			int fixRoll = GetFixRoll(pm->ps);
+#ifdef _CGAME
+			if (cgs.serverMod == SVMOD_LMD)
+			{//Lugormod keeps base's roll out of the soulcal attack, and needs more speed to roll the bigger you are
+				if (((PM_RunningAnim(pm->ps->legsAnim) && VectorLengthSquared(pm->ps->velocity) >= 40000 * scaleh) || PM_CanRollFromSoulCal(pm->ps))
+					&& !BG_InRoll(pm->ps, pm->ps->legsAnim))
+					rolled = PM_TryRoll();
+			}
+			else
+#endif
 			if (((fixRoll > 1 && (PM_RunningAnim(pm->ps->legsAnim) || PM_CanRollFromSoulCal(pm->ps))) ||
 				((fixRoll == 1) && (PM_RunningAnim(pm->ps->legsAnim) && VectorLengthSquared(pm->ps->velocity)>=30000)) ||
 				(PM_RunningAnim(pm->ps->legsAnim) && VectorLengthSquared(pm->ps->velocity)>=40000)))
@@ -9187,7 +9350,7 @@ void PM_RocketLock( float lockDist, qboolean vehicleLock )
 		AngleVectors(pm->ps->viewangles, ang, NULL, NULL);
 
 		VectorCopy( pm->ps->origin, muzzlePoint );
-		VectorCopy(WP_MuzzlePoint[WP_ROCKET_LAUNCHER], muzzleOffPoint);
+		VectorScale(WP_MuzzlePoint[WP_ROCKET_LAUNCHER], PM_LugormodScale(), muzzleOffPoint);
 
 		VectorMA(muzzlePoint, muzzleOffPoint[0], forward, muzzlePoint);
 		VectorMA(muzzlePoint, muzzleOffPoint[1], right, muzzlePoint);
@@ -13391,7 +13554,7 @@ static QINLINE void PM_CmdForSaberMoves(usercmd_t *ucmd)
 					if ( pm->ps->groundEntityNum >= MAX_CLIENTS )
 					{
 						//jump!
-						pm->ps->velocity[2] = 250;//400;
+						pm->ps->velocity[2] = 250 * PM_LugormodScale();//400;
 						pm->ps->fd.forceJumpZStart = pm->ps->origin[2];//so we don't take damage if we land at same height
 						//pm->ps->pm_flags |= PMF_JUMPING;
 						//FIXME: NPCs yell?
@@ -13453,11 +13616,11 @@ static QINLINE void PM_CmdForSaberMoves(usercmd_t *ucmd)
 					//jump!
 					if (pm->ps->legsAnim == BOTH_BUTTERFLY_LEFT)
 					{
-						pm->ps->velocity[2] = 350;
+						pm->ps->velocity[2] = 350 * PM_LugormodScale();
 					}
 					else
 					{
-						pm->ps->velocity[2] = 250;
+						pm->ps->velocity[2] = 250 * PM_LugormodScale();
 					}
 					pm->ps->fd.forceJumpZStart = pm->ps->origin[2];//so we don't take damage if we land at same height
 					//pm->ps->pm_flags |= PMF_JUMPING;//|PMF_SLOW_MO_FALL;
@@ -13513,7 +13676,7 @@ static QINLINE void PM_CmdForSaberMoves(usercmd_t *ucmd)
 					VectorScale( backDir, 100, pm->ps->velocity );
 
 					//jump!
-					pm->ps->velocity[2] = 300;
+					pm->ps->velocity[2] = 300 * PM_LugormodScale();
 					pm->ps->fd.forceJumpZStart = pm->ps->origin[2]; //so we don't take damage if we land at same height
 					//pm->ps->pm_flags |= PMF_JUMPING;//|PMF_SLOW_MO_FALL;
 
@@ -13893,6 +14056,18 @@ void PM_VehFaceHyperspacePoint(bgEntity_t *veh)
 
 #endif //VEH_CONTROL_SCHEME_4
 
+//Lugormod sizes vehicles by their model scale
+static float BG_LugormodVehicleScale( const Vehicle_t *veh )
+{
+#ifdef _CGAME
+	if ( cgs.serverMod == SVMOD_LMD && veh->m_pParentEntity && veh->m_pParentEntity->s.iModelScale )
+	{
+		return veh->m_pParentEntity->s.iModelScale / 100.0f;
+	}
+#endif
+	return 1.0f;
+}
+
 void BG_VehicleAdjustBBoxForOrientation( Vehicle_t *veh, vec3_t origin, vec3_t mins, vec3_t maxs,
 										int clientNum, int tracemask,
 										void (*localTrace)(trace_t *results, const vec3_t start, const vec3_t mins, const vec3_t maxs, const vec3_t end, int passEntityNum, int contentMask))
@@ -13911,31 +14086,34 @@ void BG_VehicleAdjustBBoxForOrientation( Vehicle_t *veh, vec3_t origin, vec3_t m
 	{//only those types of vehicles have dynamic bboxes, the rest just use a static bbox
 		VectorSet( maxs, veh->m_pVehicleInfo->width/2.0f, veh->m_pVehicleInfo->width/2.0f, veh->m_pVehicleInfo->height+DEFAULT_MINS_2 );
 		VectorSet( mins, veh->m_pVehicleInfo->width/-2.0f, veh->m_pVehicleInfo->width/-2.0f, DEFAULT_MINS_2 );
+		VectorScale( maxs, BG_LugormodVehicleScale( veh ), maxs );
+		VectorScale( mins, BG_LugormodVehicleScale( veh ), mins );
 		return;
 	}
 	else
 	{
+		const float	scale = BG_LugormodVehicleScale( veh );
 		matrix3_t	axis;
 		vec3_t		point[8], newMins, newMaxs;
 		int			curAxis = 0, i;
 		trace_t		trace;
 
 		AnglesToAxis( veh->m_vOrientation, axis );
-		VectorMA( origin, veh->m_pVehicleInfo->length/2.0f, axis[0], point[0] );
-		VectorMA( origin, -veh->m_pVehicleInfo->length/2.0f, axis[0], point[1] );
+		VectorMA( origin, scale*veh->m_pVehicleInfo->length/2.0f, axis[0], point[0] );
+		VectorMA( origin, -scale*veh->m_pVehicleInfo->length/2.0f, axis[0], point[1] );
 		//extrapolate each side up and down
-		VectorMA( point[0], veh->m_pVehicleInfo->height/2.0f, axis[2], point[0] );
-		VectorMA( point[0], -veh->m_pVehicleInfo->height, axis[2], point[2] );
-		VectorMA( point[1], veh->m_pVehicleInfo->height/2.0f, axis[2], point[1] );
-		VectorMA( point[1], -veh->m_pVehicleInfo->height, axis[2], point[3] );
+		VectorMA( point[0], scale*veh->m_pVehicleInfo->height/2.0f, axis[2], point[0] );
+		VectorMA( point[0], -scale*veh->m_pVehicleInfo->height, axis[2], point[2] );
+		VectorMA( point[1], scale*veh->m_pVehicleInfo->height/2.0f, axis[2], point[1] );
+		VectorMA( point[1], -scale*veh->m_pVehicleInfo->height, axis[2], point[3] );
 
-		VectorMA( origin, veh->m_pVehicleInfo->width/2.0f, axis[1], point[4] );
-		VectorMA( origin, -veh->m_pVehicleInfo->width/2.0f, axis[1], point[5] );
+		VectorMA( origin, scale*veh->m_pVehicleInfo->width/2.0f, axis[1], point[4] );
+		VectorMA( origin, -scale*veh->m_pVehicleInfo->width/2.0f, axis[1], point[5] );
 		//extrapolate each side up and down
-		VectorMA( point[4], veh->m_pVehicleInfo->height/2.0f, axis[2], point[4] );
-		VectorMA( point[4], -veh->m_pVehicleInfo->height, axis[2], point[6] );
-		VectorMA( point[5], veh->m_pVehicleInfo->height/2.0f, axis[2], point[5] );
-		VectorMA( point[5], -veh->m_pVehicleInfo->height, axis[2], point[7] );
+		VectorMA( point[4], scale*veh->m_pVehicleInfo->height/2.0f, axis[2], point[4] );
+		VectorMA( point[4], -scale*veh->m_pVehicleInfo->height, axis[2], point[6] );
+		VectorMA( point[5], scale*veh->m_pVehicleInfo->height/2.0f, axis[2], point[5] );
+		VectorMA( point[5], -scale*veh->m_pVehicleInfo->height, axis[2], point[7] );
 		/*
 		VectorMA( origin, veh->m_pVehicleInfo->height/2.0f, axis[2], point[4] );
 		VectorMA( origin, -veh->m_pVehicleInfo->height/2.0f, axis[2], point[5] );
@@ -14027,7 +14205,7 @@ void PM_MoveForKata(usercmd_t *ucmd)
 			if ( pm->ps->groundEntityNum != ENTITYNUM_NONE )
 			{//still on ground?
 				//jump!
-				pm->ps->velocity[2] = 250;
+				pm->ps->velocity[2] = 250 * PM_LugormodScale();
 				pm->ps->fd.forceJumpZStart = pm->ps->origin[2];//so we don't take damage if we land at same height
 			//	pm->ps->pm_flags |= PMF_JUMPING;//|PMF_SLOW_MO_FALL;
 				//FIXME: NPCs yell?
@@ -14756,6 +14934,11 @@ void PmoveSingle (pmove_t *pmove) {
 	}
 
 	if ( pm->ps->pm_type == PM_SPECTATOR ) {
+#ifdef _CGAME
+		if (cgs.serverMod == SVMOD_LMD)
+			PM_LugormodSetBounds();
+		else
+#endif
 		PM_CheckDuck ();
 		if (!pm->noSpecMove)
 		{
@@ -14792,6 +14975,22 @@ void PmoveSingle (pmove_t *pmove) {
 	pml.previous_waterlevel = pmove->waterlevel;
 
 	// set mins, maxs, and viewheight
+#ifdef _CGAME
+	if (cgs.serverMod == SVMOD_LMD)
+	{//Lugormod finds the ground before ducking
+		PM_LugormodSetBounds();
+		PM_GroundTrace();
+		if ( pm_flying == FLY_HOVER )
+		{//never stick to the ground
+			PM_HoverTrace();
+		}
+		if ( PM_LugormodCheckDuck() )
+		{
+			PM_LugormodSetBounds();
+		}
+	}
+	else
+#endif
 	PM_CheckDuck ();
 
 #ifdef _GAME
@@ -15252,10 +15451,15 @@ void PmoveSingle (pmove_t *pmove) {
 	}
 
 	// set groundentity
-	PM_GroundTrace();
-	if ( pm_flying == FLY_HOVER )
-	{//never stick to the ground
-		PM_HoverTrace();
+#ifdef _CGAME
+	if (cgs.serverMod != SVMOD_LMD) //Lugormod did this before ducking
+#endif
+	{
+		PM_GroundTrace();
+		if ( pm_flying == FLY_HOVER )
+		{//never stick to the ground
+			PM_HoverTrace();
+		}
 	}
 
 	if ( pm->ps->groundEntityNum != ENTITYNUM_NONE )
@@ -15871,6 +16075,12 @@ void Pmove (pmove_t *pmove) {
 		pmove->cmd.serverTime = pmove->ps->commandTime + msec;
 
 		PmoveSingle( pmove );
+#ifdef _CGAME
+		if (cgs.serverMod == SVMOD_LMD && pmove->ps->pm_type != PM_DEAD)
+		{//Lugormod scales the view height too
+			pmove->ps->viewheight = (int)(pmove->ps->viewheight * scaleh);
+		}
+#endif
 
 		if ( pmove->ps->pm_flags & PMF_JUMP_HELD ) {
 			pmove->cmd.upmove = 20;
