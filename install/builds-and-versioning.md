@@ -35,7 +35,7 @@ found and `GIT_HASH` is `git rev-parse --short HEAD`
 ([`CMakeLists.txt`](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/CMakeLists.txt#L411)).
 Built outside a Git checkout, both read `vUNKNOWN`.
 
-## Why the date is the only useful part
+## Compare the date, not the tag
 
 Releases are rolling: the `latest` tag is moved onto each release commit, so `git describe`
 finds it every time and the tag reads `latest` on every build. It does not distinguish one
@@ -48,6 +48,20 @@ So when you want to know whether your build has something, **compare the date**.
 reference gives each entry an *Added* date for exactly this purpose; if your build's compile
 date is earlier, your build does not have that entry. See
 [how to tell what your build has](/TaystJK/features/whats-new/#how-to-tell-what-your-build-has).
+
+The date is strong evidence, not proof. It is the day the build was compiled, not the day
+its source was committed
+([`CMakeLists.txt`](https://github.com/taysta/TaystJK/blame/b35ed06fec41c53644352743c6b199a5d5d500f3/CMakeLists.txt#L391)).
+The `latest` release is compiled on each push to `master`
+([`build.yml`](https://github.com/taysta/TaystJK/blame/b35ed06fec41c53644352743c6b199a5d5d500f3/.github/workflows/build.yml#L501)),
+so for it the two match. A build compiled later from an older commit, whether the workflow
+reran or you built an old checkout yourself, carries the later date. An earlier date still
+proves the entry is missing; a later one only suggests it is there. When that matters, the
+hash settles it. Each entry's *Added* field links the commit that added it, and in a checkout:
+
+```sh
+git merge-base --is-ancestor <added-commit> <your-build-hash> && echo "your build has it"
+```
 
 The semver-looking tags in the repository (`1.0` through `1.5.5` and similar) are
 inherited from the projects TaystJK descends from. They are not TaystJK releases and no
