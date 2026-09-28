@@ -34,7 +34,7 @@ Registered by the current source, but no user-facing behavior description has be
 | Confidence | `high` |
 | Added | 2013-04-08 in [`14cea1563`](https://github.com/taysta/TaystJK/commit/14cea1563762076974bee277afadbd5bf234c494) ([how to compare this against your build](/TaystJK/features/whats-new/#how-to-tell-what-your-build-has)) |
 | In-game xdocs | No |
-| In-game menu | Yes: [ingame_setup.menu:1438](https://github.com/taysta/TaystJK/blame/b35ed06fec41c53644352743c6b199a5d5d500f3/assets/japro/ui/jamp/ingame_setup.menu#L1438), [setup.menu:2341](https://github.com/taysta/TaystJK/blame/b35ed06fec41c53644352743c6b199a5d5d500f3/assets/japro/ui/jamp/setup.menu#L2341) |
+| In-game menu | Yes: [ingame_setup.menu:1438](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/assets/japro/ui/jamp/ingame_setup.menu#L1438), [setup.menu:2341](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/assets/japro/ui/jamp/setup.menu#L2341) |
 
 ## Values
 
@@ -65,11 +65,11 @@ Origin: <span class="label ref-origin ref-origin-basejka">Base Jedi Academy</spa
 
 ## Evidence
 
-- registration: [codemp/rd-vanilla/tr_init.cpp:501](https://github.com/taysta/TaystJK/blame/b35ed06fec41c53644352743c6b199a5d5d500f3/codemp/rd-vanilla/tr_init.cpp#L501) (implicit Cvar_SetValue)
-- registration: [codemp/rd-vanilla/tr_init.cpp:504](https://github.com/taysta/TaystJK/blame/b35ed06fec41c53644352743c6b199a5d5d500f3/codemp/rd-vanilla/tr_init.cpp#L504) (implicit Cvar_SetValue)
-- registration: [codemp/rd-vanilla/tr_init.cpp:510](https://github.com/taysta/TaystJK/blame/b35ed06fec41c53644352743c6b199a5d5d500f3/codemp/rd-vanilla/tr_init.cpp#L510) (implicit Cvar_Set)
-- registration: [shared/rd-rend2/tr_extensions.cpp:560](https://github.com/taysta/TaystJK/blame/b35ed06fec41c53644352743c6b199a5d5d500f3/shared/rd-rend2/tr_extensions.cpp#L560) (implicit Cvar_SetValue)
-- registration: [shared/rd-rend2/tr_extensions.cpp:563](https://github.com/taysta/TaystJK/blame/b35ed06fec41c53644352743c6b199a5d5d500f3/shared/rd-rend2/tr_extensions.cpp#L563) (implicit Cvar_SetValue)
-- registration: [shared/rd-rend2/tr_extensions.cpp:569](https://github.com/taysta/TaystJK/blame/b35ed06fec41c53644352743c6b199a5d5d500f3/shared/rd-rend2/tr_extensions.cpp#L569) (implicit Cvar_Set)
+- registration: [codemp/rd-vanilla/tr_init.cpp:501](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/codemp/rd-vanilla/tr_init.cpp#L501) (implicit Cvar_SetValue)
+- registration: [codemp/rd-vanilla/tr_init.cpp:504](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/codemp/rd-vanilla/tr_init.cpp#L504) (implicit Cvar_SetValue)
+- registration: [codemp/rd-vanilla/tr_init.cpp:510](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/codemp/rd-vanilla/tr_init.cpp#L510) (implicit Cvar_Set)
+- registration: [shared/rd-rend2/tr_extensions.cpp:560](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/shared/rd-rend2/tr_extensions.cpp#L560) (implicit Cvar_SetValue)
+- registration: [shared/rd-rend2/tr_extensions.cpp:563](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/shared/rd-rend2/tr_extensions.cpp#L563) (implicit Cvar_SetValue)
+- registration: [shared/rd-rend2/tr_extensions.cpp:569](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/shared/rd-rend2/tr_extensions.cpp#L569) (implicit Cvar_Set)
 
-<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/b35ed06fec41c53644352743c6b199a5d5d500f3"><code>b35ed06fec41</code></a> on 2026-09-27. Anything merged after that is not reflected here.</p>
+<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a"><code>c722804317d7</code></a> on 2026-09-28. Anything merged after that is not reflected here.</p>

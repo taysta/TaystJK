@@ -25,7 +25,7 @@ The reference separates origin from current availability. An entry inherited fro
 | <span class="label ref-origin ref-origin-newjk">NewJK / NewMod</span> | [`jkanewmod/NewJK@ad8d071f714a`](https://github.com/jkanewmod/NewJK/tree/ad8d071f714ab1bbcd7b6bb4bb8ceaeee6e57541) | NewJK and explicitly credited NewMod ports |
 | <span class="label ref-origin ref-origin-rend2">rend2</span> | [`SomaZ/OpenJK@788c19e97f02`](https://github.com/SomaZ/OpenJK/tree/788c19e97f02c0b68db29d63060305b6ad1580e5) | SomaZ rend2-unified renderer lineage |
 | <span class="label ref-origin ref-origin-vulkan">Vulkan</span> | [`JKSunny/EternalJK@a4ab639bdfb9`](https://github.com/JKSunny/EternalJK/tree/a4ab639bdfb9da2a3d63e9748eb57a72fb988552) | JKSunny Vulkan renderer lineage |
-| <span class="label ref-origin ref-origin-taystjk">TaystJK</span> | [`taysta/TaystJK@b35ed06fec41`](https://github.com/taysta/TaystJK/tree/b35ed06fec41c53644352743c6b199a5d5d500f3) | entries first evidenced in TaystJK after upstream checks |
+| <span class="label ref-origin ref-origin-taystjk">TaystJK</span> | [`taysta/TaystJK@c722804317d7`](https://github.com/taysta/TaystJK/tree/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a) | entries first evidenced in TaystJK after upstream checks |
 
 ## Evidence process
 

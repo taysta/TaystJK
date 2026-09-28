@@ -25,7 +25,7 @@ description: "Every cvar and command grouped by subject, from audio and HUD thro
 <a class="directory-card" href="/TaystJK/reference/categories/demos-media/"><span class="directory-code">Demos &amp; media</span><strong>48</strong><span>28 cvars · 20 commands</span></a>
 <a class="directory-card" href="/TaystJK/reference/categories/engine-diagnostics/"><span class="directory-code">Engine &amp; diagnostics</span><strong>253</strong><span>138 cvars · 115 commands</span></a>
 <a class="directory-card" href="/TaystJK/reference/categories/files-downloads/"><span class="directory-code">Files &amp; downloads</span><strong>35</strong><span>29 cvars · 6 commands</span></a>
-<a class="directory-card" href="/TaystJK/reference/categories/gameplay-combat/"><span class="directory-code">Gameplay &amp; combat</span><strong>712</strong><span>466 cvars · 246 commands</span></a>
+<a class="directory-card" href="/TaystJK/reference/categories/gameplay-combat/"><span class="directory-code">Gameplay &amp; combat</span><strong>713</strong><span>467 cvars · 246 commands</span></a>
 <a class="directory-card" href="/TaystJK/reference/categories/graphics-rendering/"><span class="directory-code">Graphics &amp; rendering</span><strong>296</strong><span>274 cvars · 22 commands</span></a>
 <a class="directory-card" href="/TaystJK/reference/categories/hud-interface/"><span class="directory-code">HUD &amp; interface</span><strong>166</strong><span>155 cvars · 11 commands</span></a>
 <a class="directory-card" href="/TaystJK/reference/categories/input-controls/"><span class="directory-code">Input &amp; controls</span><strong>64</strong><span>27 cvars · 37 commands</span></a>

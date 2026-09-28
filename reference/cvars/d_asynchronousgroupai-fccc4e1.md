@@ -37,8 +37,8 @@ Controls `d_asynchronousGroupAI` in the game module. Consult the cited behavior 
 
 | Value | Meaning | Evidence |
 |:--|:--|:--|
-| `0` | Disabled. | [codemp/game/NPC_AI_Stormtrooper.c:1889](https://github.com/taysta/TaystJK/blame/b35ed06fec41c53644352743c6b199a5d5d500f3/codemp/game/NPC_AI_Stormtrooper.c#L1889) |
-| `1` | Enabled. | [codemp/game/NPC_AI_Stormtrooper.c:1889](https://github.com/taysta/TaystJK/blame/b35ed06fec41c53644352743c6b199a5d5d500f3/codemp/game/NPC_AI_Stormtrooper.c#L1889) |
+| `0` | Disabled. | [codemp/game/NPC_AI_Stormtrooper.c:1889](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/codemp/game/NPC_AI_Stormtrooper.c#L1889) |
+| `1` | Enabled. | [codemp/game/NPC_AI_Stormtrooper.c:1889](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/codemp/game/NPC_AI_Stormtrooper.c#L1889) |
 
 ## Flags
 
@@ -65,7 +65,7 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 ## Evidence
 
-- registration: [codemp/game/g_xcvar.h:39](https://github.com/taysta/TaystJK/blame/b35ed06fec41c53644352743c6b199a5d5d500f3/codemp/game/g_xcvar.h#L39) (XCVAR_DEF)
-- behavior: [codemp/game/NPC_AI_Stormtrooper.c:1889](https://github.com/taysta/TaystJK/blame/b35ed06fec41c53644352743c6b199a5d5d500f3/codemp/game/NPC_AI_Stormtrooper.c#L1889)
+- registration: [codemp/game/g_xcvar.h:39](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/codemp/game/g_xcvar.h#L39) (XCVAR_DEF)
+- behavior: [codemp/game/NPC_AI_Stormtrooper.c:1889](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/codemp/game/NPC_AI_Stormtrooper.c#L1889)
 
-<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/b35ed06fec41c53644352743c6b199a5d5d500f3"><code>b35ed06fec41</code></a> on 2026-09-27. Anything merged after that is not reflected here.</p>
+<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a"><code>c722804317d7</code></a> on 2026-09-28. Anything merged after that is not reflected here.</p>

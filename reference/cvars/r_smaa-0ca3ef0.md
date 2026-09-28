@@ -38,9 +38,9 @@ Disable/enable SMAA
 
 | Value | Meaning | Evidence |
 |:--|:--|:--|
-| `1` | Selects the code path tested for value 1. | [shared/rd-rend2/tr_backend.cpp:3175](https://github.com/taysta/TaystJK/blame/b35ed06fec41c53644352743c6b199a5d5d500f3/shared/rd-rend2/tr_backend.cpp#L3175) |
-| `2` | Selects the code path tested for value 2. | [shared/rd-rend2/tr_backend.cpp:2357](https://github.com/taysta/TaystJK/blame/b35ed06fec41c53644352743c6b199a5d5d500f3/shared/rd-rend2/tr_backend.cpp#L2357) |
-| `3` | Selects the code path tested for value 3. | [shared/rd-rend2/tr_backend.cpp:3175](https://github.com/taysta/TaystJK/blame/b35ed06fec41c53644352743c6b199a5d5d500f3/shared/rd-rend2/tr_backend.cpp#L3175) |
+| `1` | Selects the code path tested for value 1. | [shared/rd-rend2/tr_backend.cpp:3175](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/shared/rd-rend2/tr_backend.cpp#L3175) |
+| `2` | Selects the code path tested for value 2. | [shared/rd-rend2/tr_backend.cpp:2357](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/shared/rd-rend2/tr_backend.cpp#L2357) |
+| `3` | Selects the code path tested for value 3. | [shared/rd-rend2/tr_backend.cpp:3175](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/shared/rd-rend2/tr_backend.cpp#L3175) |
 
 ## Flags
 
@@ -72,11 +72,11 @@ Authored dates come from the exact registration's first content commit, PR dates
 
 ## Evidence
 
-- registration: [codemp/rd-rend2/tr_init.cpp:1504](https://github.com/taysta/TaystJK/blame/b35ed06fec41c53644352743c6b199a5d5d500f3/codemp/rd-rend2/tr_init.cpp#L1504) (Cvar_Get)
-- behavior: [shared/rd-rend2/tr_backend.cpp:2357](https://github.com/taysta/TaystJK/blame/b35ed06fec41c53644352743c6b199a5d5d500f3/shared/rd-rend2/tr_backend.cpp#L2357)
-- behavior: [shared/rd-rend2/tr_backend.cpp:3158](https://github.com/taysta/TaystJK/blame/b35ed06fec41c53644352743c6b199a5d5d500f3/shared/rd-rend2/tr_backend.cpp#L3158)
-- behavior: [shared/rd-rend2/tr_backend.cpp:3175](https://github.com/taysta/TaystJK/blame/b35ed06fec41c53644352743c6b199a5d5d500f3/shared/rd-rend2/tr_backend.cpp#L3175)
-- behavior: [shared/rd-rend2/tr_backend.cpp:3177](https://github.com/taysta/TaystJK/blame/b35ed06fec41c53644352743c6b199a5d5d500f3/shared/rd-rend2/tr_backend.cpp#L3177)
-- behavior: [shared/rd-rend2/tr_backend.cpp:3190](https://github.com/taysta/TaystJK/blame/b35ed06fec41c53644352743c6b199a5d5d500f3/shared/rd-rend2/tr_backend.cpp#L3190)
+- registration: [codemp/rd-rend2/tr_init.cpp:1504](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/codemp/rd-rend2/tr_init.cpp#L1504) (Cvar_Get)
+- behavior: [shared/rd-rend2/tr_backend.cpp:2357](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/shared/rd-rend2/tr_backend.cpp#L2357)
+- behavior: [shared/rd-rend2/tr_backend.cpp:3158](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/shared/rd-rend2/tr_backend.cpp#L3158)
+- behavior: [shared/rd-rend2/tr_backend.cpp:3175](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/shared/rd-rend2/tr_backend.cpp#L3175)
+- behavior: [shared/rd-rend2/tr_backend.cpp:3177](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/shared/rd-rend2/tr_backend.cpp#L3177)
+- behavior: [shared/rd-rend2/tr_backend.cpp:3190](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/shared/rd-rend2/tr_backend.cpp#L3190)
 
-<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/b35ed06fec41c53644352743c6b199a5d5d500f3"><code>b35ed06fec41</code></a> on 2026-09-27. Anything merged after that is not reflected here.</p>
+<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a"><code>c722804317d7</code></a> on 2026-09-28. Anything merged after that is not reflected here.</p>

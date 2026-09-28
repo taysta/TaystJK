@@ -15,7 +15,7 @@ description: "Every cvar and console command TaystJK adds, grouped by topic and 
 
 <p class="page-lede">What TaystJK adds over the client you already know. Pick that client below to compare console entries against its recorded source snapshot, alongside the documented feature additions.</p>
 
-<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/b35ed06fec41c53644352743c6b199a5d5d500f3"><code>b35ed06fec41</code></a> on 2026-09-27. Anything merged after that is not reflected here.</p>
+<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a"><code>c722804317d7</code></a> on 2026-09-28. Anything merged after that is not reflected here.</p>
 </div>
 
 Entries are grouped by topic. One listed by name alone has no verified description yet; its
@@ -45,15 +45,15 @@ entry is real; treat the date as approximate.
   <div class="baseline-selector-shell platform-selector-shell">
     <p class="platform-selector-label">Coming from</p>
     <div class="baseline-selector platform-selector" role="tablist" aria-label="Baseline client">
-      <button type="button" id="baseline-tab-eternaljk" role="tab" aria-controls="baseline-panel-eternaljk" aria-selected="false" tabindex="-1" data-baseline-choice="eternaljk">EternalJK (268)</button>
-      <button type="button" id="baseline-tab-openjk" role="tab" aria-controls="baseline-panel-openjk" aria-selected="false" tabindex="-1" data-baseline-choice="openjk">OpenJK (755)</button>
-      <button type="button" id="baseline-tab-basejka" role="tab" aria-controls="baseline-panel-basejka" aria-selected="false" tabindex="-1" data-baseline-choice="basejka">base Jedi Academy (999)</button>
+      <button type="button" id="baseline-tab-eternaljk" role="tab" aria-controls="baseline-panel-eternaljk" aria-selected="false" tabindex="-1" data-baseline-choice="eternaljk">EternalJK (269)</button>
+      <button type="button" id="baseline-tab-openjk" role="tab" aria-controls="baseline-panel-openjk" aria-selected="false" tabindex="-1" data-baseline-choice="openjk">OpenJK (756)</button>
+      <button type="button" id="baseline-tab-basejka" role="tab" aria-controls="baseline-panel-basejka" aria-selected="false" tabindex="-1" data-baseline-choice="basejka">base Jedi Academy (1,000)</button>
     </div>
   </div>
 
   <section class="baseline-panel platform-panel" id="baseline-panel-eternaljk" role="tabpanel" aria-labelledby="baseline-tab-eternaljk" tabindex="0" data-baseline-panel="eternaljk" markdown="1">
 
-## New since EternalJK (268)
+## New since EternalJK (269)
 
 ### Audio & music (2)
 
@@ -121,7 +121,7 @@ entry is real; treat the date as approximate.
 - [`fs_forcegame`](/TaystJK/reference/cvars/fs_forcegame-3547288/) <span class="label ref-origin ref-origin-jk2mv">JK2MV</span> <span class="meta-chip">2023-11-29</span>: Folder to use for overriding of fs_game (can not be set by the server).
 - [`sv_httpDownloads`](/TaystJK/reference/cvars/sv_httpdownloads-f79d64e/) <span class="label ref-origin ref-origin-jk2mv">JK2MV</span> <span class="meta-chip">2024-03-21</span>: Enable the server&#x27;s JK2MV-derived HTTP auto-download path.
 
-### Gameplay & combat (58)
+### Gameplay & combat (59)
 
 - [Cosmetics custom offsets](/TaystJK/features/cosmetics/) <span class="label ref-origin ref-origin-taystjk">TaystJK</span> <span class="meta-chip">feature</span>: Per-model and per-skin position offsets for hats and capes, described by a JSON file shipped alongside the cosmetic.
 - [`+singlefire`](/TaystJK/reference/commands/plusminus-singlefire-e166917/) <span class="label ref-origin ref-origin-japro">jaPRO</span> <span class="meta-chip">2024-02-28</span>
@@ -147,6 +147,7 @@ entry is real; treat the date as approximate.
 - [`cg_spotIconPlums`](/TaystJK/reference/cvars/cg_spoticonplums-79f0979/) <span class="label ref-origin ref-origin-japro">jaPRO</span> <span class="meta-chip">2024-04-15</span>
 - [`cg_vehicleRange`](/TaystJK/reference/cvars/cg_vehiclerange-987b56f/) <span class="label ref-origin ref-origin-taystjk">TaystJK</span> <span class="meta-chip">2025-11-28</span>: Offset vehicle camera ranges (useful for ultrawide monitors)
 - [`cg_weaponCycleAmmo`](/TaystJK/reference/cvars/cg_weaponcycleammo-3286c8e/) <span class="label ref-origin ref-origin-taystjk">TaystJK</span> <span class="status-chip">2022-04-21 · needs review</span>
+- [`cp_altDimAlpha`](/TaystJK/reference/cvars/cp_altdimalpha-f8f0fdd/) <span class="label ref-origin ref-origin-taystjk">TaystJK</span> <span class="meta-chip">2026-09-28</span>: Opacity (0-255) of JA+ players in the other alternate dimension
 - [`crouchjump`](/TaystJK/reference/commands/crouchjump-c7353d9/) <span class="label ref-origin ref-origin-japro">jaPRO</span> <span class="meta-chip">2023-12-11</span>
 - [`g_fixRunWalkAnims`](/TaystJK/reference/cvars/g_fixrunwalkanims-47abdcb/) <span class="label ref-origin ref-origin-openjk">OpenJK</span> <span class="meta-chip">2024-02-26</span>
 - [`g_fixSaberDisarmBonus`](/TaystJK/reference/cvars/g_fixsaberdisarmbonus-d84721a/) <span class="label ref-origin ref-origin-openjk">OpenJK</span> <span class="meta-chip">2023-10-29</span>
@@ -366,7 +367,7 @@ entry is real; treat the date as approximate.
 
   <section class="baseline-panel platform-panel" id="baseline-panel-openjk" role="tabpanel" aria-labelledby="baseline-tab-openjk" tabindex="0" data-baseline-panel="openjk" markdown="1">
 
-## New since OpenJK (755)
+## New since OpenJK (756)
 
 ### Administration (34)
 
@@ -563,7 +564,7 @@ entry is real; treat the date as approximate.
 - [`fs_portable`](/TaystJK/reference/cvars/fs_portable-b325657/) <span class="label ref-origin ref-origin-newjk">NewJK / NewMod</span> <span class="meta-chip">2018-07-22</span>: Disable fs_homepath and use only one folder for all game files
 - [`sv_httpDownloads`](/TaystJK/reference/cvars/sv_httpdownloads-f79d64e/) <span class="label ref-origin ref-origin-jk2mv">JK2MV</span> <span class="meta-chip">2024-03-21</span>: Enable the server&#x27;s JK2MV-derived HTTP auto-download path.
 
-### Gameplay & combat (359)
+### Gameplay & combat (360)
 
 - [Cosmetics custom offsets](/TaystJK/features/cosmetics/) <span class="label ref-origin ref-origin-taystjk">TaystJK</span> <span class="meta-chip">feature</span>: Per-model and per-skin position offsets for hats and capes, described by a JSON file shipped alongside the cosmetic.
 - [`+duck`](/TaystJK/reference/commands/plusminus-duck-1aea248/) <span class="label ref-origin ref-origin-japro">jaPRO</span> <span class="status-chip">2018-09-03 · needs review</span>
@@ -712,8 +713,9 @@ entry is real; treat the date as approximate.
 - [`com_steamIntegration`](/TaystJK/reference/cvars/com_steamintegration-01ca9bb/) <span class="label ref-origin ref-origin-eternaljk">EternalJK</span> <span class="status-chip">2019-03-21 · needs review</span>: Enables automatic Steam API integration (requires a steam_api64.dll to be in GameData)
 - [`coop`](/TaystJK/reference/commands/coop-786e986/) <span class="label ref-origin ref-origin-japro">jaPRO</span> <span class="status-chip">2020-06-14 · needs review</span>
 - [`cosmetics`](/TaystJK/reference/commands/cosmetics-01c96cf/) <span class="label ref-origin ref-origin-eternaljk">EternalJK</span> <span class="status-chip">2018-10-15 · needs review</span>
+- [`cp_altDimAlpha`](/TaystJK/reference/cvars/cp_altdimalpha-f8f0fdd/) <span class="label ref-origin ref-origin-taystjk">TaystJK</span> <span class="meta-chip">2026-09-28</span>: Opacity (0-255) of JA+ players in the other alternate dimension
 - [`cp_cosmetics`](/TaystJK/reference/cvars/cp_cosmetics-488f751/) <span class="label ref-origin ref-origin-eternaljk">EternalJK</span> <span class="status-chip">2018-09-08 · needs review</span>
-- [`cp_pluginDisable`](/TaystJK/reference/cvars/cp_plugindisable-715762d/) <span class="label ref-origin ref-origin-japro">jaPRO</span> <span class="status-chip">2018-01-01 · needs review</span>: &#x27;enable&#x27; holstered saber (512) and ledge grab (1536) by default, to avoid missing JA+ animations
+- [`cp_pluginDisable`](/TaystJK/reference/cvars/cp_plugindisable-715762d/) <span class="label ref-origin ref-origin-japro">jaPRO</span> <span class="status-chip">2018-01-01 · needs review</span>: Opt out of JA+&#x27;s holstered saber (512), ledge grab (1024) and new primary (2048) and alt (4096) DFAs by default, to avoid missing JA+ animations
 - [`cp_sbRGB1`](/TaystJK/reference/cvars/cp_sbrgb1-0369930/) <span class="label ref-origin ref-origin-eternaljk">EternalJK</span> <span class="status-chip">2015-11-11 · needs review</span>
 - [`cp_sbRGB2`](/TaystJK/reference/cvars/cp_sbrgb2-81b016f/) <span class="label ref-origin ref-origin-eternaljk">EternalJK</span> <span class="status-chip">2015-11-11 · needs review</span>
 - [`crouchjump`](/TaystJK/reference/commands/crouchjump-c7353d9/) <span class="label ref-origin ref-origin-japro">jaPRO</span> <span class="meta-chip">2023-12-11</span>
@@ -1169,7 +1171,7 @@ entry is real; treat the date as approximate.
 
   <section class="baseline-panel platform-panel" id="baseline-panel-basejka" role="tabpanel" aria-labelledby="baseline-tab-basejka" tabindex="0" data-baseline-panel="basejka" markdown="1">
 
-## New since base Jedi Academy (999)
+## New since base Jedi Academy (1,000)
 
 ### Administration (37)
 
@@ -1443,7 +1445,7 @@ entry is real; treat the date as approximate.
 - [`fs_restart`](/TaystJK/reference/commands/fs_restart-205ee49/) <span class="label ref-origin ref-origin-eternaljk">EternalJK</span> <span class="status-chip">2019-05-06 · needs review</span>: Restarts the filesystem if no module is currently using files from a pk3
 - [`sv_httpDownloads`](/TaystJK/reference/cvars/sv_httpdownloads-f79d64e/) <span class="label ref-origin ref-origin-jk2mv">JK2MV</span> <span class="meta-chip">2024-03-21</span>: Enable the server&#x27;s JK2MV-derived HTTP auto-download path.
 
-### Gameplay & combat (405)
+### Gameplay & combat (406)
 
 - [Cosmetics custom offsets](/TaystJK/features/cosmetics/) <span class="label ref-origin ref-origin-taystjk">TaystJK</span> <span class="meta-chip">feature</span>: Per-model and per-skin position offsets for hats and capes, described by a JSON file shipped alongside the cosmetic.
 - [`+duck`](/TaystJK/reference/commands/plusminus-duck-1aea248/) <span class="label ref-origin ref-origin-japro">jaPRO</span> <span class="status-chip">2018-09-03 · needs review</span>
@@ -1594,8 +1596,9 @@ entry is real; treat the date as approximate.
 - [`com_steamIntegration`](/TaystJK/reference/cvars/com_steamintegration-01ca9bb/) <span class="label ref-origin ref-origin-eternaljk">EternalJK</span> <span class="status-chip">2019-03-21 · needs review</span>: Enables automatic Steam API integration (requires a steam_api64.dll to be in GameData)
 - [`coop`](/TaystJK/reference/commands/coop-786e986/) <span class="label ref-origin ref-origin-japro">jaPRO</span> <span class="status-chip">2020-06-14 · needs review</span>
 - [`cosmetics`](/TaystJK/reference/commands/cosmetics-01c96cf/) <span class="label ref-origin ref-origin-eternaljk">EternalJK</span> <span class="status-chip">2018-10-15 · needs review</span>
+- [`cp_altDimAlpha`](/TaystJK/reference/cvars/cp_altdimalpha-f8f0fdd/) <span class="label ref-origin ref-origin-taystjk">TaystJK</span> <span class="meta-chip">2026-09-28</span>: Opacity (0-255) of JA+ players in the other alternate dimension
 - [`cp_cosmetics`](/TaystJK/reference/cvars/cp_cosmetics-488f751/) <span class="label ref-origin ref-origin-eternaljk">EternalJK</span> <span class="status-chip">2018-09-08 · needs review</span>
-- [`cp_pluginDisable`](/TaystJK/reference/cvars/cp_plugindisable-715762d/) <span class="label ref-origin ref-origin-japro">jaPRO</span> <span class="status-chip">2018-01-01 · needs review</span>: &#x27;enable&#x27; holstered saber (512) and ledge grab (1536) by default, to avoid missing JA+ animations
+- [`cp_pluginDisable`](/TaystJK/reference/cvars/cp_plugindisable-715762d/) <span class="label ref-origin ref-origin-japro">jaPRO</span> <span class="status-chip">2018-01-01 · needs review</span>: Opt out of JA+&#x27;s holstered saber (512), ledge grab (1024) and new primary (2048) and alt (4096) DFAs by default, to avoid missing JA+ animations
 - [`cp_sbRGB1`](/TaystJK/reference/cvars/cp_sbrgb1-0369930/) <span class="label ref-origin ref-origin-eternaljk">EternalJK</span> <span class="status-chip">2015-11-11 · needs review</span>
 - [`cp_sbRGB2`](/TaystJK/reference/cvars/cp_sbrgb2-81b016f/) <span class="label ref-origin ref-origin-eternaljk">EternalJK</span> <span class="status-chip">2015-11-11 · needs review</span>
 - [`crouchjump`](/TaystJK/reference/commands/crouchjump-c7353d9/) <span class="label ref-origin ref-origin-japro">jaPRO</span> <span class="meta-chip">2023-12-11</span>
