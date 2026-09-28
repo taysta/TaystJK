@@ -3015,6 +3015,38 @@ int PM_KickMoveForConditions(void)
 		}
 		return kickMove;
 	}
+	if ( cgs.serverMod == SVMOD_LMD )
+	{//Lugormod picks a spin, split or front and back kick from who's close outside duels, otherwise kicks the way you're moving
+		const int front = (int)PM_CheckEnemyPresence( DIR_FRONT, 60.0f );
+		const int back = (int)PM_CheckEnemyPresence( DIR_BACK, 60.0f );
+		const int right = (int)PM_CheckEnemyPresence( DIR_RIGHT, 60.0f );
+		const int left = (int)PM_CheckEnemyPresence( DIR_LEFT, 60.0f );
+
+		if ( !pm->ps->duelInProgress && front + back + right + left >= 3 )
+		{
+			kickMove = LS_KICK_S;
+		}
+		else if ( !pm->ps->duelInProgress && right && left )
+		{
+			kickMove = LS_KICK_RL;
+		}
+		else if ( !pm->ps->duelInProgress && front && back )
+		{
+			kickMove = LS_KICK_BF;
+		}
+		else if ( pm->cmd.rightmove )
+		{
+			kickMove = (pm->cmd.rightmove > 0) ? LS_KICK_R : LS_KICK_L;
+			pm->cmd.rightmove = 0;
+		}
+		else if ( pm->cmd.forwardmove )
+		{
+			kickMove = (pm->cmd.forwardmove > 0) ? LS_KICK_F : LS_KICK_B;
+			pm->cmd.forwardmove = 0;
+		}
+		pm->cmd.upmove = 0;
+		return kickMove;
+	}
 #endif
 
 	//FIXME: only if FP_SABER_OFFENSE >= 3
