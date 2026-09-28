@@ -117,7 +117,8 @@ Create a Markdown file, give it front matter per `CONVENTIONS.md`, and place it 
 The header tabs are **hardcoded** in `_layouts/reference.html`; there is no theme. A page joins
 a section through its `parent` (the section page's title) and `nav_order`, which give it a
 breadcrumb, previous/next links, and the section's highlighted header tab. Also add a card for
-it to `_data/navigation.yml`, which draws the Install, Features, Development and Help hubs.
+it to `_data/navigation.yml`, which draws the Install, Server hosting, Features, Development and
+Help hubs.
 Only a new top-level section means editing the layout. Add hand-written pages to the list in
 `check_generated.py` too, or their internal links are never validated.
 
