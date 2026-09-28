@@ -1643,6 +1643,9 @@ def sources_page(refs: dict[str, str]) -> str:
         description="Which upstream project each entry is attributed to, and the rules the resolver follows to decide.") + """
 # Sources and methodology
 
+Part of the console reference. It is also the code lineage for the developer guides; to
+carry on with those, go [back to Development](/TaystJK/development/).
+
 The reference separates origin from current availability. An entry inherited from Raven remains **Base Jedi Academy** even though OpenJK and every fork ship it. A cvar registered only by `rd-vulkan` is not automatically Vulkan-originated: the resolver checks rend2 and other upstream snapshots first.
 
 """ + "\n".join(rows) + """
