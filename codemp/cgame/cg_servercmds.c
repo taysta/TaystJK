@@ -240,6 +240,7 @@ void CG_ParseServerinfo( void ) {
 	cgs.serverMod = SVMOD_BASEJKA;
 	cgs.cinfo = 0;
 	cgs.jcinfo = 0;
+	cgs.jcinfo2 = 0;
 	cgs.pluginSet = qfalse;
 	cgs.legacyProtocol = qfalse;
 	cgs.baseGame = qfalse;
