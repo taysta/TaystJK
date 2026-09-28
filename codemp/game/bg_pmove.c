@@ -3617,6 +3617,12 @@ static qboolean PM_CheckJump( void )
 									if ( dotF > 150 )
 									{
 										anim = BOTH_FORCEJUMP1;
+#ifdef _CGAME
+										if ( JAPLUS_SERVER_HAS(JAPLUS_CINFO_SPATTACKS) && (pm->ps->fd.forcePowersActive & (1 << FP_SPEED)) )
+										{//JA+ does SP's long leap with jp_allowSPattacks while speeding (its PW_SPEED is only 100ms ahead, too short to predict with)
+											anim = (pm->cmd.buttons & BUTTON_ATTACK) ? BOTH_FORCELONGLEAP_ATTACK : BOTH_FORCELONGLEAP_START;
+										}
+#endif
 									}
 									else if ( dotF < -150 )
 									{
@@ -3647,6 +3653,15 @@ static qboolean PM_CheckJump( void )
 								case BOTH_FORCEJUMP1:
 									newAnim = BOTH_FORCELAND1;//BOTH_FORCEINAIR1;
 									break;
+#ifdef _CGAME
+								case BOTH_FORCELONGLEAP_START:
+								case BOTH_FORCELONGLEAP_ATTACK:
+									if ( cgs.serverMod == SVMOD_JAPLUS )
+									{
+										newAnim = BOTH_FORCELONGLEAP_LAND;
+									}
+									break;
+#endif
 								case BOTH_FORCEJUMPBACK1:
 									newAnim = BOTH_FORCELANDBACK1;//BOTH_FORCEINAIRBACK1;
 									break;
@@ -5662,10 +5677,38 @@ static void PM_GetGrappleAnim( void ) {
 		if (pm->ps->weaponTime) {//FIXME: really only care if we're in a saber attack anim...
 			parts = SETANIM_LEGS;
 		}
+#ifdef _CGAME
+		if (cgs.serverMod == SVMOD_JAPLUS) {//JA+ only moves the legs
+			parts = SETANIM_LEGS;
+		}
+#endif
 
 		PM_SetAnim(parts, anim, SETANIM_FLAG_OVERRIDE | SETANIM_FLAG_HOLD);
 	}
 }
+
+#ifdef _CGAME
+//JA+ hangs off an attached hook once the hook button is let go: the rope pulls back
+//toward the hook and cancels any velocity along it
+static void PM_JAPlusGrappleSwingMove( void ) {
+	vec3_t toHook, dir, vel;
+	float dist;
+
+	VectorSubtract(pm->ps->lastHitLoc, pml.previous_origin, toHook);
+	dist = VectorLength(toHook);
+	if (dist > 0) {
+		const float height = fabsf(pm->ps->lastHitLoc[2] - pm->ps->origin[2]);
+
+		VectorSubtract(pm->ps->lastHitLoc, pm->ps->origin, dir);
+		VectorNormalize(dir);
+		VectorMA(pm->ps->velocity, pm->ps->gravity * height / dist * pml.frametime, dir, vel);
+		VectorMA(vel, -DotProduct(dir, vel), dir, pm->ps->velocity);
+	}
+
+	pml.groundPlane = qfalse;
+	PM_GetGrappleAnim();
+}
+#endif
 
 static void PM_GrappleMove( void ) {
 	vec3_t vel, v;
@@ -9899,6 +9942,39 @@ Generates weapon events and modifes the weapon counter
 ==============
 */
 extern int PM_KickMoveForConditions(void);
+
+#ifdef _CGAME
+extern qboolean PM_InCartwheel( int anim );
+extern qboolean BG_SaberInTransitionAny( int move );
+
+//JA+ doesn't make these special jumps wait for the legs anim before attacking
+static qboolean PM_JAPlusSpecialJumpCanAttack( void )
+{
+	const int legsAnim = pm->ps->legsAnim;
+	const qboolean saberFree = (qboolean)(!BG_SaberInAttack( pm->ps->saberMove ) && !BG_SaberInTransitionAny( pm->ps->saberMove ));
+
+	if ( cgs.serverMod != SVMOD_JAPLUS )
+	{
+		return qfalse;
+	}
+	if ( (cgs.cinfo & JAPLUS_CINFO_JK2DFA) && saberFree
+		&& (BG_InBackFlip( legsAnim ) || legsAnim == BOTH_WALL_FLIP_BACK1 || legsAnim == BOTH_WALL_FLIP_LEFT || legsAnim == BOTH_WALL_FLIP_RIGHT) )
+	{
+		return qtrue;
+	}
+	if ( legsAnim == BOTH_FORCELONGLEAP_START )
+	{
+		return qtrue;
+	}
+	if ( (cgs.cinfo & JAPLUS_CINFO_YELLOWDFA) && saberFree && BG_InBackFlip( legsAnim )
+		&& pm->ps->fd.saberAnimLevelBase == SS_STAFF && pm->ps->fd.saberAnimLevel == SS_STAFF )
+	{
+		return qtrue;
+	}
+	return (qboolean)(PM_InCartwheel( legsAnim ) && cgs.pluginSet && (cp_pluginDisable.integer & JAPRO_PLUGIN_NOSPCARTWHEEL));
+}
+#endif
+
 static void PM_Weapon( void )
 {
 	int		addTime;
@@ -10081,6 +10157,12 @@ static void PM_Weapon( void )
 				else
 				{
 					desiredAnim = BOTH_FORCELIGHTNING_HOLD;
+#ifdef _CGAME
+					if ( (pm->ps->eFlags & EF_JAPLUS_FLAMETHROWER) && JAPLUS_GLA_MOVES(0) )
+					{//JA+'s flamethrower
+						desiredAnim = TORSO_MAND_FLAME;
+					}
+#endif
 				}
 			}
 			else if ( (pm->ps->fd.forcePowersActive&(1<<FP_DRAIN)) )
@@ -10232,7 +10314,11 @@ static void PM_Weapon( void )
 		return;
 	}
 
-	if (BG_InSpecialJump(pm->ps->legsAnim) ||
+	if ((BG_InSpecialJump(pm->ps->legsAnim)
+#ifdef _CGAME
+		&& !PM_JAPlusSpecialJumpCanAttack()
+#endif
+		) ||
 		BG_InRoll(pm->ps, pm->ps->legsAnim) ||
 		PM_InRollComplete(pm->ps, pm->ps->legsAnim))
 	{
@@ -12317,6 +12403,20 @@ qboolean BG_InRollAnim( entityState_t *cent )
 
 qboolean BG_InKnockDown( int anim )
 {
+#ifdef _CGAME
+	if ( cgs.serverMod == SVMOD_JAPLUS )
+	{
+		switch ( anim )
+		{
+		case BOTH_BACK_FALLING:
+		case BOTH_BACK_FALLING_GETUP:
+		case BOTH_BACK_FALLING_GETUP_SLOW:
+		case BOTH_JUMP_BACKFLIP_ATCKEE_FALL:
+			return qtrue;
+		}
+	}
+#endif
+
 	switch ( (anim) )
 	{
 	case BOTH_KNOCKDOWN1:
@@ -13979,6 +14079,67 @@ static QINLINE float bg_roundfloat(float n)
 	return (n < 0.0f) ? ceilf(n - 0.5f) : floorf(n + 0.5f);
 }*/
 
+#ifdef _CGAME
+#define PM_ANY_MOVE_INPUT() (pm->cmd.forwardmove || pm->cmd.rightmove || pm->cmd.upmove)
+
+//JA+ scripts movement through its jumping kicks and flip stab by how far into the anim you are
+static void PM_JAPlusNewMoveControl( qboolean *stiffenedUp )
+{
+	if ( pm->ps->legsAnim == BOTH_JUMP_BACKFLIP_ATCK || pm->ps->torsoAnim == BOTH_JUMP_BACKFLIP_ATCK )
+	{
+		const int elapsed = 3125 - pm->ps->legsTimer;
+
+		if ( elapsed >= 551 && elapsed <= 1074 )
+		{
+			pm->cmd.forwardmove = 127;
+			pm->cmd.rightmove = pm->cmd.upmove = 0;
+			*stiffenedUp = qfalse;
+		}
+		else if ( elapsed >= 1075 && elapsed <= 2099 )
+		{
+			pm->cmd.rightmove = pm->cmd.upmove = 0;
+			*stiffenedUp = qfalse;
+		}
+		else if ( elapsed > 2374 && PM_ANY_MOVE_INPUT() )
+		{//moving cuts the landing short
+			pm->ps->legsTimer = pm->ps->torsoTimer = 0;
+			*stiffenedUp = qfalse;
+		}
+		if ( 3125 - pm->ps->legsTimer > 1957 )
+		{
+			PM_SetPMViewAngle( pm->ps, pm->ps->viewangles, &pm->cmd );
+		}
+		//the server also switches to BOTH_JUMP_BACKFLIP_ATCK_MISSED when the grab caught no one, which only it knows
+	}
+
+	if ( (pm->ps->legsAnim == BOTH_JUMP_BACKKICK_SPIN || pm->ps->torsoAnim == BOTH_JUMP_BACKKICK_SPIN)
+		&& 3370 - pm->ps->legsTimer > 2185 && PM_ANY_MOVE_INPUT() )
+	{
+		pm->ps->legsTimer = pm->ps->torsoTimer = 0;
+		*stiffenedUp = qfalse;
+	}
+
+	if ( pm->ps->legsAnim == BOTH_FLIP_STAB || pm->ps->torsoAnim == BOTH_FLIP_STAB )
+	{
+		const int elapsed = 2000 - pm->ps->legsTimer;
+
+		if ( elapsed < 661 || elapsed >= 1410 )
+		{
+			pm->cmd.forwardmove = 127;
+			pm->cmd.rightmove = pm->cmd.upmove = 0;
+			*stiffenedUp = qfalse;
+		}
+		else if ( elapsed >= 1322 )
+		{
+			pm->cmd.forwardmove = pm->cmd.upmove = 127;
+			pm->cmd.rightmove = 0;
+			*stiffenedUp = qfalse;
+		}
+	}
+}
+#undef PM_ANY_MOVE_INPUT
+#endif
+
 void PmoveSingle (pmove_t *pmove) {
 	qboolean stiffenedUp = qfalse;
 	float gDist = 0;
@@ -14068,7 +14229,11 @@ void PmoveSingle (pmove_t *pmove) {
 	else if ( pm->ps->saberMove == LS_A_BACK || pm->ps->saberMove == LS_A_BACK_CR ||
 		pm->ps->saberMove == LS_A_BACKSTAB || pm->ps->saberMove == LS_A_FLIP_STAB ||
 		pm->ps->saberMove == LS_A_FLIP_SLASH || pm->ps->saberMove == LS_A_JUMP_T__B_ ||
-		pm->ps->saberMove == LS_DUAL_LR || pm->ps->saberMove == LS_DUAL_FB)
+		pm->ps->saberMove == LS_DUAL_LR || pm->ps->saberMove == LS_DUAL_FB
+#ifdef _CGAME
+		|| (cgs.serverMod == SVMOD_JAPLUS && (pm->ps->saberMove == LS_SPINATTACK_ALORA || pm->ps->saberMove == LS_SPINATTACK_JAPLUS))
+#endif
+		)
 	{
 		if (pm->ps->legsAnim == BOTH_JUMPFLIPSTABDOWN ||
 			pm->ps->legsAnim == BOTH_JUMPFLIPSLASHDOWN1)
@@ -14096,7 +14261,11 @@ void PmoveSingle (pmove_t *pmove) {
 		(pm->ps->legsAnim) == (BOTH_CROUCHATTACKBACK1) ||
 		(pm->ps->legsAnim) == (BOTH_FORCELEAP2_T__B_) ||
 		(pm->ps->legsAnim) == (BOTH_JUMPFLIPSTABDOWN) ||
-		(pm->ps->legsAnim) == (BOTH_JUMPFLIPSLASHDOWN1))
+		(pm->ps->legsAnim) == (BOTH_JUMPFLIPSLASHDOWN1)
+#ifdef _CGAME
+		|| (cgs.serverMod == SVMOD_JAPLUS && (pm->ps->legsAnim == BOTH_ALORA_SPIN_SLASH || pm->ps->legsAnim == BOTH_FJSS_TR_BL))
+#endif
+		)
 	{
 		stiffenedUp = qtrue;
 	}
@@ -14109,9 +14278,23 @@ void PmoveSingle (pmove_t *pmove) {
 	{
 		stiffenedUp = qtrue;
 	}
+#ifdef _CGAME
+	else if (cgs.serverMod == SVMOD_JAPLUS
+		&& (pm->ps->legsAnim == BOTH_JUMP_BACKFLIP_ATCK_MISSED || pm->ps->torsoAnim == BOTH_JUMP_BACKFLIP_ATCK_MISSED))
+	{//missed the grab, carry on forward
+		pm->cmd.forwardmove = 127;
+		pm->cmd.rightmove = pm->cmd.upmove = 0;
+	}
+#endif
 	else if (BG_KickMove(pm->ps->saberMove) || BG_KickingAnim(pm->ps->legsAnim))
 	{
 		stiffenedUp = qtrue;
+#ifdef _CGAME
+		if (cgs.serverMod == SVMOD_JAPLUS)
+		{
+			PM_JAPlusNewMoveControl(&stiffenedUp);
+		}
+#endif
 	}
 	else if (BG_InGrappleMove(pm->ps->torsoAnim))
 	{
@@ -14120,6 +14303,12 @@ void PmoveSingle (pmove_t *pmove) {
 		if (!(g_tweakForce.integer & FT_BUFFMELEE) || (BG_InGrappleMove(pm->ps->torsoAnim) == 3))
 #endif
 			PM_SetPMViewAngle(pm->ps, pm->ps->viewangles, &pm->cmd);
+#ifdef _CGAME
+		if (cgs.serverMod == SVMOD_JAPLUS)
+		{//JA+ takes away attacks and force powers while grabbing or grabbed
+			pm->cmd.buttons &= ~(BUTTON_ATTACK|BUTTON_ALT_ATTACK|BUTTON_FORCEGRIP|BUTTON_FORCEPOWER|BUTTON_FORCE_LIGHTNING|BUTTON_GRAPPLE);
+		}
+#endif
 	}
 	else if ( pm->ps->saberMove == LS_STABDOWN_DUAL ||
 			pm->ps->saberMove == LS_STABDOWN_STAFF ||
@@ -14268,17 +14457,17 @@ void PmoveSingle (pmove_t *pmove) {
 	}
 
 #ifdef _CGAME
-	if (cgs.serverMod == SVMOD_JAPLUS) { //some JA+ animation support...
-		if (pm->ps->legsAnim == BOTH_JUMP_BACKFLIP_ATCKEE || pm->ps->torsoAnim == BOTH_JUMP_BACKFLIP_ATCKEE
-			|| pm->ps->torsoAnim == BOTH_GETUP1 || pm->ps->torsoAnim == BOTH_NEW_STABEE
-			|| (pm->ps->legsAnim >= BOTH_KISSEE && pm->ps->legsAnim <= BOTH_LEDGE_MERCPULL))
+	if (cgs.serverMod == SVMOD_JAPLUS) { //some JA+ animation support, grabs and new kicks are handled above
+		if (pm->ps->torsoAnim == BOTH_GETUP1 || (pm->ps->legsAnim >= BOTH_LEDGE_GRAB && pm->ps->legsAnim <= BOTH_LEDGE_MERCPULL))
 		{
 			PM_SetPMViewAngle(pm->ps, pm->ps->viewangles, &pm->cmd);
 			stiffenedUp = qtrue;
 		}
-		else if ((pm->ps->legsAnim >= BOTH_MELEE_BACKKICK && pm->ps->legsAnim <= BOTH_MELEE_SPINKICK)
-			|| pm->ps->legsAnim == BOTH_JUMP_BACKFLIP_ATCK || pm->ps->torsoAnim == BOTH_JUMP_BACKFLIP_ATCK)
-			stiffenedUp = qtrue;
+		if ((pm->ps->legsAnim == BOTH_JUMP_BACKFLIP_ATCKEE_FALL || pm->ps->torsoAnim == BOTH_JUMP_BACKFLIP_ATCKEE_FALL)
+			&& pm->cmd.serverTime < pm->ps->forceHandExtendTime)
+		{//just kicked out of a grab
+			PM_SetPMViewAngle(pm->ps, pm->ps->viewangles, &pm->cmd);
+		}
 	}
 #endif
 
@@ -15385,6 +15574,22 @@ void PmoveSingle (pmove_t *pmove) {
 		{
 			PM_FlyVehicleMove();
 		}
+#ifdef _CGAME
+		else if (cgs.serverMod == SVMOD_JAPLUS && !(pm->ps->pm_flags & PMF_TIME_WATERJUMP)
+			&& ((pm->ps->pm_flags & PMF_GRAPPLE) || (pm->ps->eFlags & EF_GRAPPLE_SWING)))
+		{//JA+ always air moves while pulled in or hanging off the hook
+			if (pm->ps->pm_flags & PMF_GRAPPLE)
+			{
+				PM_GrappleMove();
+				PM_AirMove();
+			}
+			else
+			{
+				PM_AirMove();
+				PM_JAPlusGrappleSwingMove();
+			}
+		}
+#endif
 		else
 		{
 
@@ -15402,7 +15607,7 @@ void PmoveSingle (pmove_t *pmove) {
 #else
 			else if ((pm->ps->pm_flags & PMF_GRAPPLE) && !(pm->ps->pm_flags & PMF_DUCKED) && cgs.serverMod != SVMOD_JAPLUS && (!(cgs.jcinfo & JAPRO_CINFO_JAPLUSGRAPPLE) || IsRacemode(pm->ps)))
 				PM_GrappleMoveTarzan();
-			else if ((pm->ps->pm_flags & PMF_GRAPPLE) && !(pm->ps->pm_flags & PMF_DUCKED) && (cgs.serverMod == SVMOD_JAPLUS || (cgs.jcinfo & JAPRO_CINFO_JAPLUSGRAPPLE) || cgs.taystJKinfo & TAYSTJK_INFO_GRAPPLE))
+			else if ((pm->ps->pm_flags & PMF_GRAPPLE) && !(pm->ps->pm_flags & PMF_DUCKED) && cgs.serverMod != SVMOD_JAPLUS && ((cgs.jcinfo & JAPRO_CINFO_JAPLUSGRAPPLE) || cgs.taystJKinfo & TAYSTJK_INFO_GRAPPLE))
 				PM_GrappleMove();
 #endif
 

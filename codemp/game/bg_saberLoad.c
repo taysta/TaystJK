@@ -2346,6 +2346,56 @@ void WP_SetSaber( int entNum, saberInfo_t *sabers, int saberNum, const char *sab
 	}
 }
 
+#ifdef _CGAME
+//JA+ modelscale: blades follow the player's scale, and with speedScale (jp_allowDmgSpeedScale) so do the saber's damage, move and anim speed
+void WP_ScaleSaber( int entNum, saberInfo_t *sabers, int saberNum, const char *saberName, float scale, qboolean speedScale )
+{
+	saberInfo_t *saber = &sabers[saberNum];
+	char value[MAX_TOKEN_CHARS] = {0};
+	float saberLength = 32.0f, damageScale = 1.0f, damageScale2 = 1.0f, moveSpeedScale = 1.0f, animSpeedScale = 1.0f;
+	int i;
+
+	if ( !saberName || !saberName[0] || !Q_stricmp( saberName, "none" ) || !Q_stricmp( saberName, "remove" ) )
+	{
+		return;
+	}
+	if ( entNum < MAX_CLIENTS && !WP_SaberValidForPlayerInMP( saberName ) )
+	{
+		saberName = DEFAULT_SABER;
+	}
+
+	//always rescale from the saber file's values
+	if ( WP_SaberParseParm( saberName, "saberLength", value ) )
+		saberLength = atof( value );
+	if ( WP_SaberParseParm( saberName, "damageScale", value ) )
+		damageScale = atof( value );
+	if ( WP_SaberParseParm( saberName, "damageScale2", value ) )
+		damageScale2 = atof( value );
+	if ( WP_SaberParseParm( saberName, "moveSpeedScale", value ) )
+		moveSpeedScale = atof( value );
+	if ( WP_SaberParseParm( saberName, "animSpeedScale", value ) )
+		animSpeedScale = atof( value );
+
+	for ( i = 0; i < saber->numBlades; i++ )
+	{
+		int length = (int)saberLength;
+
+		if ( WP_SaberParseParm( saberName, va( "saberLength%i", i + 1 ), value ) )
+			length = (int)atof( value );
+		saber->blade[i].lengthMax = length * scale;
+	}
+
+	{
+		const float speed = speedScale ? (scale - 1.0f) / 1.7f + 1.0f : 1.0f;
+
+		saber->damageScale = damageScale * speed;
+		saber->damageScale2 = damageScale2 * speed;
+		saber->moveSpeedScale = moveSpeedScale * speed;
+		saber->animSpeedScale = animSpeedScale / speed;
+	}
+}
+#endif
+
 void WP_SaberSetColor( saberInfo_t *sabers, int saberNum, int bladeNum, char *colorName )
 {
 	if ( !sabers )

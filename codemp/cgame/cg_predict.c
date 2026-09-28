@@ -264,7 +264,20 @@ static void CG_ClipMoveToEntities ( const vec3_t start, const vec3_t mins, const
 			continue;
 
 		//JAPRO - Clientside - Duel Passthru Prediction - Start
-		if (cgs.serverMod >= SVMOD_JAPLUS)
+		if (cgs.serverMod == SVMOD_JAPLUS)
+		{//JA+ only unlinks players: duelers while jp_DuelAlpha isn't negative, and players in the other alternate dimension
+			if (ent->number < MAX_CLIENTS && ent->eType == ET_PLAYER)
+			{
+				if (cgs.jpDuelAlpha >= 0)
+				{
+					if (cg.predictedPlayerState.duelInProgress ? ent->number != cg.predictedPlayerState.duelIndex : (!crosshairTrace && ent->bolt1))
+						continue;
+				}
+				if ((cgs.cinfo & JAPLUS_CINFO_ALTDIM) && !crosshairTrace && ((ent->eFlags ^ cg.predictedPlayerState.eFlags) & EF_ALT_DIM))
+					continue;
+			}
+		}
+		else if (cgs.serverMod >= SVMOD_JAPLUS)
 		{
 			if (cg.predictedPlayerState.duelInProgress)
 			{ // we are in a private duel 
@@ -986,6 +999,35 @@ extern	vmCvar_t		cg_showVehBounds;
 pmove_t cg_vehPmove;
 qboolean cg_vehPmoveSet = qfalse;
 
+//JA+ switches the grapple between pulling and hanging from the hook buttons before each pmove
+static void CG_JAPlusPredictHookButtons( playerState_t *ps, const usercmd_t *cmd ) {
+	if ( !(ps->eFlags2 & EF2_JAPLUS_HOOK_OUT) )
+		return;
+
+	if ( cmd->buttons & BUTTON_USE )
+	{//let go of the hook
+		ps->pm_flags &= ~PMF_GRAPPLE;
+		ps->eFlags &= ~EF_GRAPPLE_SWING;
+		ps->eFlags2 &= ~EF2_JAPLUS_HOOK_OUT;
+	}
+	else if ( !(cmd->buttons & BUTTON_GRAPPLE) )
+	{//an attached hook hangs on when the hook button is let go, or slides down while walking
+		if ( (ps->pm_flags & PMF_GRAPPLE) || (ps->eFlags & EF_GRAPPLE_SWING) )
+		{
+			ps->pm_flags &= ~PMF_GRAPPLE;
+			if ( cmd->buttons & BUTTON_WALKING )
+				ps->eFlags &= ~EF_GRAPPLE_SWING;
+			else
+				ps->eFlags |= EF_GRAPPLE_SWING;
+		}
+	}
+	else if ( ps->eFlags & EF_GRAPPLE_SWING )
+	{//pressing it again pulls back in
+		ps->eFlags &= ~EF_GRAPPLE_SWING;
+		ps->pm_flags |= PMF_GRAPPLE;
+	}
+}
+
 void CG_PredictPlayerState( void ) {
 	int			cmdNum, current, i;
 	playerState_t	oldPlayerState;
@@ -1475,6 +1517,9 @@ void CG_PredictPlayerState( void ) {
 					cg.predictedPlayerState.velocity[0], cg.predictedPlayerState.velocity[1], cg.predictedPlayerState.velocity[2],
 					current - REAL_CMD_BACKUP + 1, current);
 		}
+
+		if (cgs.serverMod == SVMOD_JAPLUS)
+			CG_JAPlusPredictHookButtons(cg_pmove.ps, &cg_pmove.cmd);
 
 		Pmove (&cg_pmove);
 

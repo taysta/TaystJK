@@ -243,6 +243,7 @@ void CG_ParseServerinfo( void ) {
 	cgs.pluginSet = qfalse;
 	cgs.legacyProtocol = qfalse;
 	cgs.baseGame = qfalse;
+	cgs.jpDuelAlpha = 0;
 	cgs.restricts = 0;
 	cgs.taystJKinfo =  atoi(Info_ValueForKey(info, "taystJKinfo")); // taystjk feature flags
 
@@ -256,6 +257,12 @@ void CG_ParseServerinfo( void ) {
 			cgs.hookpull = 800;
 			if (!Q_stricmpn(cjp_client.string, "1.4", 3))
 				cgs.pluginSet = qtrue;
+			cgs.jpDuelAlpha = atoi(Info_ValueForKey(info, "jp_DuelAlpha"));
+			{//rescale sabers in case the modelscale settings changed
+				int client;
+				for (client = 0; client < MAX_CLIENTS; client++)
+					cgs.clientinfo[client].jpSaberScale = -1;
+			}
 		}
 		else if (!Q_stricmpn(gamename, "japro", 5)) {
 			cgs.serverMod = SVMOD_JAPRO;

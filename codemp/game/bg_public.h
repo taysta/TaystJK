@@ -803,6 +803,8 @@ typedef enum {
 #ifdef _CGAME //a few JA+ eFlags needed for client prediction
 #define EF_ALT_DIM				(1<<15) // Player is in the alternate dimension
 #define EF_GRAPPLE_SWING		(1<<16) // swinging on grapple hook
+#define EF_JAPLUS_FLAMETHROWER	(1<<17) // flamethrower replaces force lightning
+#define EF2_JAPLUS_HOOK_OUT		(1<<9) // grapple hook fired and not yet freed
 #endif
 
 #define	EF_NOT_USED_6			(1<<15)		// not used
@@ -1619,6 +1621,16 @@ typedef enum {
 	LS_REFLECT_UL,
 	LS_REFLECT_LR,
 	LS_REFLECT_LL,
+
+#ifdef _CGAME
+	// JA+ moves
+	LS_SPINATTACK_JAPLUS,
+	LS_MELEE_BACKKICK,
+	LS_MELEE_SPINKICK,
+	LS_JUMP_BACKKICK_SPIN,
+	LS_JUMP_BACKFLIP_ATCK,
+	LS_FLIP_STAB,
+#endif
 
 	LS_MOVE_MAX//
 } saberMoveName_t;

@@ -89,6 +89,20 @@ qboolean BG_CrouchAnim( int anim )
 
 qboolean BG_InSpecialJump( int anim )
 {
+#ifdef _CGAME
+	if ( cgs.serverMod == SVMOD_JAPLUS )
+	{
+		switch ( anim )
+		{
+		case BOTH_ALORA_SPIN_SLASH:
+		case BOTH_JUMP_BACKKICK_SPIN:
+		case BOTH_JUMP_BACKFLIP_ATCK:
+		case BOTH_FLIP_STAB:
+			return qtrue;
+		}
+	}
+#endif
+
 	switch ( (anim) )
 	{
 	case BOTH_WALL_RUN_RIGHT:
@@ -302,6 +316,14 @@ qboolean BG_SaberInAttack( int move )
 	case LS_DUAL_FB:
 	case LS_DUAL_LR:
 	case LS_HILT_BASH:
+#ifdef _CGAME
+	case LS_SPINATTACK_JAPLUS:
+	case LS_MELEE_BACKKICK:
+	case LS_MELEE_SPINKICK:
+	case LS_JUMP_BACKKICK_SPIN:
+	case LS_JUMP_BACKFLIP_ATCK:
+	case LS_FLIP_STAB:
+#endif
 		return qtrue;
 		break;
 	}
@@ -391,6 +413,14 @@ qboolean BG_SaberInSpecial( int move )
 	case LS_DUAL_FB:
 	case LS_DUAL_LR:
 	case LS_HILT_BASH:
+#ifdef _CGAME
+	case LS_SPINATTACK_JAPLUS:
+	case LS_MELEE_BACKKICK:
+	case LS_MELEE_SPINKICK:
+	case LS_JUMP_BACKKICK_SPIN:
+	case LS_JUMP_BACKFLIP_ATCK:
+	case LS_FLIP_STAB:
+#endif
 		return qtrue;
 	}
 	return qfalse;
@@ -412,7 +442,18 @@ qboolean BG_KickMove( int move )
 	case LS_KICK_R_AIR:
 	case LS_KICK_L_AIR:
 	case LS_HILT_BASH:
+#ifdef _CGAME
+	case LS_MELEE_BACKKICK:
+	case LS_MELEE_SPINKICK:
+	case LS_JUMP_BACKKICK_SPIN:
+	case LS_JUMP_BACKFLIP_ATCK:
+	case LS_FLIP_STAB:
+#endif
 		return qtrue;
+#ifdef _CGAME
+	case LS_A_BACKFLIP_ATK: //JA+ kicks with it when new DFAs are on
+		return (qboolean)JAPLUS_SERVER_HAS(JAPLUS_CINFO_NEWDFA);
+#endif
 	}
 	return qfalse;
 }
@@ -605,6 +646,22 @@ qboolean BG_SpinningSaberAnim( int anim )
 
 qboolean BG_SaberInSpecialAttack( int anim )
 {
+#ifdef _CGAME
+	if ( cgs.serverMod == SVMOD_JAPLUS )
+	{
+		switch ( anim )
+		{
+		case BOTH_MELEE_BACKKICK:
+		case BOTH_MELEE_SPINKICK:
+		case BOTH_BACK_FALLING_GETUP:
+		case BOTH_JUMP_BACKKICK_SPIN:
+		case BOTH_JUMP_BACKFLIP_ATCK:
+		case BOTH_FLIP_STAB:
+			return qtrue;
+		}
+	}
+#endif
+
 	switch ( anim )
 	{
 	case BOTH_A2_STABBACK1:
@@ -663,6 +720,28 @@ qboolean BG_SaberInSpecialAttack( int anim )
 
 qboolean BG_KickingAnim( int anim )
 {
+#ifdef _CGAME
+	if ( cgs.serverMod == SVMOD_JAPLUS )
+	{
+		switch ( anim )
+		{
+		case BOTH_MELEE_BACKKICK:
+		case BOTH_MELEE_SPINKICK:
+		case BOTH_BACK_FALLING_GETUP:
+		case BOTH_JUMP_BACKKICK_SPIN:
+		case BOTH_JUMP_BACKFLIP_ATCK:
+		case BOTH_FLIP_STAB:
+			return qtrue;
+		case BOTH_JUMPATTACK7:
+			if ( cgs.cinfo & JAPLUS_CINFO_NEWDFA )
+			{
+				return qtrue;
+			}
+			break;
+		}
+	}
+#endif
+
 	switch ( anim )
 	{
 	case BOTH_A7_KICK_F:
@@ -690,6 +769,33 @@ qboolean BG_KickingAnim( int anim )
 
 int BG_InGrappleMove(int anim)
 {
+#ifdef _CGAME
+	if ( cgs.serverMod == SVMOD_JAPLUS )
+	{//JA+'s melee grabs, force drain grab and new moves
+		switch ( anim )
+		{
+		case BOTH_SABERKILLER1:
+		case BOTH_ALORA_SPIN_THROW:
+		case BOTH_FORCE_DRAIN_GRAB_START:
+		case BOTH_FORCE_DRAIN_GRAB_HOLD:
+		case BOTH_KISSER:
+		case BOTH_NEW_STABER:
+			return 2;
+		case BOTH_PULLED_INAIR_B:
+		case BOTH_PULLED_INAIR_F:
+		case BOTH_SABERKILLEE1:
+		case BOTH_PLAYER_PA_3_FLY:
+		case BOTH_FORCE_DRAIN_GRABBED:
+		case BOTH_COWER1_START:
+		case BOTH_SONICPAIN_START:
+		case BOTH_KISSEE:
+		case BOTH_JUMP_BACKFLIP_ATCKEE:
+		case BOTH_NEW_STABEE:
+			return 3;
+		}
+	}
+#endif
+
 	switch (anim)
 	{
 	case BOTH_KYLE_GRAB:
@@ -950,6 +1056,13 @@ qboolean BG_InDeathAnim ( int anim )
 
 qboolean BG_InKnockDownOnly( int anim )
 {
+#ifdef _CGAME
+	if ( cgs.serverMod == SVMOD_JAPLUS && (anim == BOTH_BACK_FALLING || anim == BOTH_JUMP_BACKFLIP_ATCKEE_FALL) )
+	{
+		return qtrue;
+	}
+#endif
+
 	switch ( anim )
 	{
 	case BOTH_KNOCKDOWN1:
@@ -1030,6 +1143,21 @@ qboolean PM_InCartwheel( int anim )
 
 qboolean BG_InKnockDownOnGround( playerState_t *ps )
 {
+#ifdef _CGAME
+	if ( cgs.serverMod == SVMOD_JAPLUS )
+	{
+		switch ( ps->legsAnim )
+		{
+		case BOTH_BACK_FALLING:
+		case BOTH_JUMP_BACKFLIP_ATCKEE_FALL:
+			return qtrue;
+		case BOTH_BACK_FALLING_GETUP:
+			//at beginning of getup anim
+			return (qboolean)( BG_AnimLength( 0, (animNumber_t)ps->legsAnim ) - ps->legsTimer < 500 );
+		}
+	}
+#endif
+
 	switch ( ps->legsAnim )
 	{
 	case BOTH_KNOCKDOWN1:
@@ -1236,6 +1364,20 @@ qboolean PM_InSaberAnim( int anim )
 
 qboolean PM_InKnockDown( playerState_t *ps )
 {
+#ifdef _CGAME
+	if ( cgs.serverMod == SVMOD_JAPLUS )
+	{
+		switch ( ps->legsAnim )
+		{
+		case BOTH_BACK_FALLING:
+		case BOTH_JUMP_BACKFLIP_ATCKEE_FALL:
+			return qtrue;
+		case BOTH_BACK_FALLING_GETUP:
+			return (qboolean)(ps->legsTimer != 0);
+		}
+	}
+#endif
+
 	switch ( (ps->legsAnim) )
 	{
 	case BOTH_KNOCKDOWN1:
@@ -1371,6 +1513,14 @@ qboolean PM_SpinningAnim( int anim )
 
 qboolean PM_InOnGroundAnim ( int anim )
 {
+#ifdef _CGAME
+	if ( cgs.serverMod == SVMOD_JAPLUS
+		&& (anim == BOTH_BACK_FALLING || anim == BOTH_BACK_FALLING_GETUP || anim == BOTH_JUMP_BACKFLIP_ATCKEE_FALL) )
+	{
+		return qtrue;
+	}
+#endif
+
 	switch( anim )
 	{
 	case BOTH_DEAD1:

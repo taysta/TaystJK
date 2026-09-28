@@ -115,6 +115,10 @@ along with this program; if not, see <http://www.gnu.org/licenses/>.
 #define JAPLUS_CINFO_LEDGEGRAB			(1<<16)	//Ledgegrab allowed
 #define JAPLUS_CINFO_ALTDIM				(1<<17)	//Any jp_altdim is set
 
+#define JAPLUS_SERVER_HAS(bit)			(cgs.serverMod == SVMOD_JAPLUS && (cgs.cinfo & (bit)))
+//JA+ gives its GLA-animation moves only to clients that haven't opted out through cp_pluginDisable
+#define JAPLUS_GLA_MOVES(optOut)		(JAPLUS_SERVER_HAS(JAPLUS_CINFO_GLA_ANIMS) && cgs.pluginSet && !(cp_pluginDisable.integer & (optOut)))
+
 #define RESTRICT_SB					(1<<0)	//remove hackbots
 #define RESTRICT_COSBY				(1<<1)	//remove hackbots
 #define RESTRICT_LEAD				(1<<2)	//remove lead indicator
@@ -342,6 +346,7 @@ typedef struct clientInfo_s {
 
 	char			saberName[64];
 	char			saber2Name[64];
+	int				jpSaberScale; //iModelScale the sabers were last scaled for on a JA+ modelscale server, -1 to rescale
 
 	char			name[MAX_QPATH];
 	char			cleanname[MAX_QPATH];
@@ -2102,6 +2107,7 @@ typedef struct cgEffects_s {
 	//FORCE
 	fxHandle_t forceLightning;
 	fxHandle_t forceLightningWide;
+	fxHandle_t japlusFlameJet;
 
 	fxHandle_t forceDrain;
 	fxHandle_t forceDrainJaPRO;
@@ -2266,6 +2272,7 @@ typedef struct cgs_s {
 	qboolean	pluginSet;
 	qboolean	legacyProtocol; //for compatibility with 1.00 servers
 	qboolean	baseGame; //runs Raven's SDK game code (retail or an SDK-built mod), not OpenJK's
+	int			jpDuelAlpha; //JA+ jp_DuelAlpha
 	int			restricts;//make this a short?
 	int			svfps;
 	qboolean	takenscreenshot;

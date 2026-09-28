@@ -2023,6 +2023,7 @@ CG_NewClientInfo
 ======================
 */
 void WP_SetSaber( int entNum, saberInfo_t *sabers, int saberNum, const char *saberName );
+void WP_ScaleSaber( int entNum, saberInfo_t *sabers, int saberNum, const char *saberName, float scale, qboolean speedScale );
 static QINLINE void ParseRGBSaber(char *str, vec3_t c);//rgb
 
 void CG_NewClientInfo( int clientNum, qboolean entitiesInitialized ) {
@@ -2075,6 +2076,7 @@ void CG_NewClientInfo( int clientNum, qboolean entitiesInitialized ) {
 	// build into a temp buffer so the defer checks can use
 	// the old value
 	memset( &newInfo, 0, sizeof( newInfo ) );
+	newInfo.jpSaberScale = -1; //rescale for a JA+ modelscale once we see the entity
 
 	// isolate the player's name
 	v = Info_ValueForKey(configstring, "n");
@@ -7717,7 +7719,10 @@ CheckTrail:
 	//FIXME: if trailStyle is 1, use the motion blur instead
 
 	saberTrail = &client->saber[saberNum].blade[bladeNum].trail;
-	saberTrail->duration = saberMoveData[cent->currentState.saberMove].trailLength;
+	if (cent->currentState.saberMove >= 0 && cent->currentState.saberMove < LS_MOVE_MAX)
+		saberTrail->duration = saberMoveData[cent->currentState.saberMove].trailLength;
+	else
+		saberTrail->duration = 0;
 
 	if (!sfxSabers) {
 		if (cent->currentState.saberMove < 0 || cent->currentState.saberMove >= LS_MOVE_MAX) {
@@ -10043,6 +10048,30 @@ float CG_RadiusForCent( centity_t *cent )
 	return 64.0f;
 }
 
+static qboolean CG_JAPlusInOtherDimension( const centity_t *cent )
+{
+	return (qboolean)(JAPLUS_SERVER_HAS(JAPLUS_CINFO_ALTDIM)
+		&& cent->currentState.number < MAX_CLIENTS
+		&& cent->currentState.number != cg.predictedPlayerState.clientNum
+		&& ((cent->currentState.eFlags ^ cg.predictedPlayerState.eFlags) & EF_ALT_DIM));
+}
+
+//JA+ with jp_allowModelScale scales players' sabers to their model, which also changes their speed with jp_allowDmgSpeedScale
+static void CG_JAPlusUpdateSaberScale( const centity_t *cent, clientInfo_t *ci )
+{
+	const int iModelScale = JAPLUS_SERVER_HAS(JAPLUS_CINFO_MODELSCALE) ? cent->currentState.iModelScale : 0;
+	const float scale = (iModelScale > 0) ? iModelScale / 100.0f : 1.0f;
+	const qboolean speedScale = (qboolean)!!(cgs.cinfo & JAPLUS_CINFO_DMGSPEEDSCALE);
+
+	if ( cgs.serverMod != SVMOD_JAPLUS || cent->currentState.number >= MAX_CLIENTS || ci->jpSaberScale == iModelScale )
+	{
+		return;
+	}
+	ci->jpSaberScale = iModelScale;
+	WP_ScaleSaber( cent->currentState.number, ci->saber, 0, ci->saberName, scale, speedScale );
+	WP_ScaleSaber( cent->currentState.number, ci->saber, 1, ci->saber2Name, scale, speedScale );
+}
+
 static float cg_vehThirdPersonAlpha = 1.0f;
 extern vec3_t	cg_crosshairPos;
 void CG_CheckThirdPersonAlpha( centity_t *cent, refEntity_t *legs )
@@ -10546,6 +10575,11 @@ void CG_Player( centity_t *cent ) {
 		return;
 	}
 
+	if ( cent->currentState.eType != ET_NPC )
+	{
+		CG_JAPlusUpdateSaberScale( cent, ci );
+	}
+
 	// Add the player to the radar if on the same team and its a team game
 	if (cgs.gametype >= GT_TEAM)
 	{
@@ -10780,7 +10814,7 @@ void CG_Player( centity_t *cent ) {
 		if (cg.snap->ps.duelInProgress) { // we are dueling
 			if (cent->currentState.number != cg.snap->ps.duelIndex) { // don't draw this entity because we aren't dueling them
 				if ((cg.predictedPlayerState.persistant[PERS_TEAM] != TEAM_SPECTATOR) || cg.predictedPlayerState.pm_flags & PMF_FOLLOW)
-					if ((cgs.serverMod == SVMOD_JAPLUS && !(cp_pluginDisable.integer & JAPRO_PLUGIN_DUELSEEOTHERS)) || cgs.serverMod == SVMOD_JAPRO || (cgs.serverMod != SVMOD_JAPLUS && cg_stylePlayer.integer & JAPRO_STYLE_HIDENONDUELERS))
+					if ((cgs.serverMod == SVMOD_JAPLUS && cgs.jpDuelAlpha >= 0 && !(cp_pluginDisable.integer & JAPRO_PLUGIN_DUELSEEOTHERS)) || cgs.serverMod == SVMOD_JAPRO || (cgs.serverMod != SVMOD_JAPLUS && cg_stylePlayer.integer & JAPRO_STYLE_HIDENONDUELERS))
 						return;
 			}
 		}
@@ -11798,7 +11832,11 @@ skipTrail:
 
 		AnglesToAxis( fAng, axis );
 
-		if ( cent->currentState.activeForcePass > FORCE_LEVEL_2 )
+		if ( cgs.serverMod == SVMOD_JAPLUS && (cent->currentState.eFlags & EF_JAPLUS_FLAMETHROWER) )
+		{//JA+'s flamethrower replaces the lightning
+			trap->FX_PlayEntityEffectID(cgs.effects.japlusFlameJet, efOrg, axis, -1, -1, -1, -1);
+		}
+		else if ( cent->currentState.activeForcePass > FORCE_LEVEL_2 )
 		{//arc
 			//trap->FX_PlayEffectID( cgs.effects.forceLightningWide, efOrg, fxDir );
 			//trap->FX_PlayEntityEffectID(cgs.effects.forceLightningWide, efOrg, axis, cent->boltInfo, cent->currentState.number, -1, -1);
@@ -13184,6 +13222,12 @@ stillDoSaber:
 
 			if (drawPlayer)
 				CG_CheckThirdPersonAlpha( cent, &legs );
+
+			if (drawPlayer && CG_JAPlusInOtherDimension( cent ))
+			{//JA+'s show players in the other alternate dimension as ghosts
+				legs.renderfx |= RF_FORCE_ENT_ALPHA;
+				legs.shaderRGBA[3] = Com_Clampi( 1, 255, cp_altDimAlpha.integer );
+			}
 
 			trap->R_AddRefEntityToScene(&legs);
 		}

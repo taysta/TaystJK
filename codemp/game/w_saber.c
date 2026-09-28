@@ -3883,7 +3883,7 @@ static int JP_JAPlusThrownSaberDamage(gentity_t *self, vec3_t saberStart, vec3_t
 	return (int)ceil(fDmg*traceLength*(1.0f-fraction)*0.1f*0.33f);
 }
 
-//JA+ 2.4's MP saber damage (g_tweakSaber ST_JAPLUS_DMG), as JA+ servers run it: jp_alterDMG 1 at its shipped values,
+//JA+ MP saber damage (g_tweakSaber ST_JAPLUS_DMG)
 //which also peaks the lunge and red DFA mid-swing
 static int JP_JAPlusSaberDamage(gentity_t *self)
 {
