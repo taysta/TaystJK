@@ -18,20 +18,20 @@ Controls `g_tribesMode` in the game module. Consult the cited behavior reads bef
 
 | Field | Value |
 |:--|:--|
+| Default | `0` |
+| Value type | `enum` |
+| Restart | No latch flag is registered. |
+| Manually settable | Yes |
+| Cheat protected | No |
+| Network scope | `server-authoritative`: Owned or enforced by the server. |
 | Category | Gameplay & combat |
 | Module | `game` |
 | Renderer | All / not renderer-specific |
-| Network scope | `server-authoritative`: Owned or enforced by the server. |
 | Derivation | `code-trace` |
 | Confidence | `high` |
 | Added | 2024-01-15 in [`7629ca862`](https://github.com/taysta/TaystJK/commit/7629ca86250aaeb5d50e6b2cd1c0bd47791a5e1b) ([how to compare this against your build](/TaystJK/features/whats-new/#how-to-tell-what-your-build-has)) |
 | In-game xdocs | No |
 | In-game menu | No |
-| Default | `0` |
-| Value type | `enum` |
-| Restart | No latch flag is registered. |
-| Cheat protected | No |
-| Manually settable | Yes |
 
 ## Values
 

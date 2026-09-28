@@ -19,17 +19,17 @@ Color name
 
 | Field | Value |
 |:--|:--|
+| Syntax | `colorname` |
+| Cheat protected | No |
+| Network scope | `client-only`: Local to the client/UI/renderer. |
 | Category | Engine & diagnostics |
 | Module | `engine-client` |
 | Renderer | All / not renderer-specific |
-| Network scope | `client-only`: Local to the client/UI/renderer. |
 | Derivation | `documented` |
 | Confidence | `medium` |
 | Added | 2016-03-11 in [`f1977d50a`](https://github.com/taysta/TaystJK/commit/f1977d50a205135abc2d0dbcb63cd176d080a624) <span class="status-chip">needs review</span> ([how to compare this against your build](/TaystJK/features/whats-new/#how-to-tell-what-your-build-has)) |
 | In-game xdocs | No |
 | In-game menu | No |
-| Syntax | `colorname` |
-| Cheat protected | No |
 
 ## Arguments and gating
 

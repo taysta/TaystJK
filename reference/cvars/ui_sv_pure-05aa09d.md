@@ -21,20 +21,20 @@ Menu-only mirror of the connected server's `sv_pure` systeminfo value, refreshed
 
 | Field | Value |
 |:--|:--|
+| Default | `0` |
+| Value type | `bool` |
+| Restart | No latch flag is registered. |
+| Manually settable | No; the game writes this value. |
+| Cheat protected | No |
+| Network scope | `client-only`: Local to the client/UI/renderer. |
 | Category | Server & networking |
 | Module | `ui` |
 | Renderer | All / not renderer-specific |
-| Network scope | `client-only`: Local to the client/UI/renderer. |
 | Derivation | `code-trace` |
 | Confidence | `medium` |
 | Added | 2019-06-12 in [`49e91d910`](https://github.com/taysta/TaystJK/commit/49e91d910266ea4df300720e1b1cd24473de1e01) <span class="status-chip">needs review</span> ([how to compare this against your build](/TaystJK/features/whats-new/#how-to-tell-what-your-build-has)) |
 | In-game xdocs | No |
 | In-game menu | No |
-| Default | `0` |
-| Value type | `bool` |
-| Restart | No latch flag is registered. |
-| Cheat protected | No |
-| Manually settable | No; the game writes this value. |
 
 ## Values
 

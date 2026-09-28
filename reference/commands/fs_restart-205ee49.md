@@ -19,17 +19,17 @@ Restarts the filesystem if no module is currently using files from a pk3
 
 | Field | Value |
 |:--|:--|
+| Syntax | `fs_restart` |
+| Cheat protected | No |
+| Network scope | `client-or-server`: Engine code in both the client and the dedicated server; each uses its own value. |
 | Category | Files & downloads |
 | Module | `engine-shared` |
 | Renderer | All / not renderer-specific |
-| Network scope | `client-or-server`: Engine code in both the client and the dedicated server; each uses its own value. |
 | Derivation | `documented` |
 | Confidence | `medium` |
 | Added | 2019-05-06 in [`97745ce28`](https://github.com/taysta/TaystJK/commit/97745ce2823e9cb6f7ab683fcfe765cea40540ca) <span class="status-chip">needs review</span> ([how to compare this against your build](/TaystJK/features/whats-new/#how-to-tell-what-your-build-has)) |
 | In-game xdocs | No |
 | In-game menu | No |
-| Syntax | `fs_restart` |
-| Cheat protected | No |
 
 ## Arguments and gating
 

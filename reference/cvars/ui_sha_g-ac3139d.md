@@ -20,20 +20,20 @@ Controls `ui_sha_g` in the ui module. Consult the cited behavior reads before re
 
 | Field | Value |
 |:--|:--|
+| Default | `255` |
+| Value type | `int` |
+| Restart | No latch flag is registered. |
+| Manually settable | No; the game writes this value. |
+| Cheat protected | No |
+| Network scope | `client-only`: Local to the client/UI/renderer. |
 | Category | HUD & interface |
 | Module | `ui` |
 | Renderer | All / not renderer-specific |
-| Network scope | `client-only`: Local to the client/UI/renderer. |
 | Derivation | `code-trace` |
 | Confidence | `medium` |
 | Added | 2015-04-10 in [`6d7bc5b9e`](https://github.com/taysta/TaystJK/commit/6d7bc5b9ec6885510f41f500aa62bb0da1a0e770) <span class="status-chip">needs review</span> ([how to compare this against your build](/TaystJK/features/whats-new/#how-to-tell-what-your-build-has)) |
 | In-game xdocs | No |
 | In-game menu | Yes: [ingame_strafehelper.menu:141](https://github.com/taysta/TaystJK/blame/b35ed06fec41c53644352743c6b199a5d5d500f3/assets/japro/ui/jamp/ingame_strafehelper.menu#L141), [ingame_strafehelper.menu:161](https://github.com/taysta/TaystJK/blame/b35ed06fec41c53644352743c6b199a5d5d500f3/assets/japro/ui/jamp/ingame_strafehelper.menu#L161), [ingame_strafehelper.menu:184](https://github.com/taysta/TaystJK/blame/b35ed06fec41c53644352743c6b199a5d5d500f3/assets/japro/ui/jamp/ingame_strafehelper.menu#L184) |
-| Default | `255` |
-| Value type | `int` |
-| Restart | No latch flag is registered. |
-| Cheat protected | No |
-| Manually settable | No; the game writes this value. |
 
 ## Values
 

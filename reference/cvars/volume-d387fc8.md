@@ -19,20 +19,20 @@ Volume
 
 | Field | Value |
 |:--|:--|
+| Default | `1.0` |
+| Value type | `float` |
+| Restart | No latch flag is registered. |
+| Manually settable | Yes |
+| Cheat protected | No |
+| Network scope | `client-only`: Local to the client/UI/renderer. |
 | Category | Audio & music |
 | Module | `engine-client` |
 | Renderer | All / not renderer-specific |
-| Network scope | `client-only`: Local to the client/UI/renderer. |
 | Derivation | `documented` |
 | Confidence | `medium` |
 | Added | 2016-03-24 in [`c9c6ab99f`](https://github.com/taysta/TaystJK/commit/c9c6ab99fdd24759cc32d45f642d63ebd3361b62) <span class="status-chip">needs review</span> ([how to compare this against your build](/TaystJK/features/whats-new/#how-to-tell-what-your-build-has)) |
 | In-game xdocs | No |
 | In-game menu | No |
-| Default | `1.0` |
-| Value type | `float` |
-| Restart | No latch flag is registered. |
-| Cheat protected | No |
-| Manually settable | Yes |
 
 ## Values
 

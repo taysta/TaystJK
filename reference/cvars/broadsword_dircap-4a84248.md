@@ -18,20 +18,20 @@ Controls `broadsword_dircap` in the renderer module. Consult the cited behavior 
 
 | Field | Value |
 |:--|:--|
+| Default | `64` |
+| Value type | `float` |
+| Restart | No latch flag is registered. |
+| Manually settable | Yes |
+| Cheat protected | No |
+| Network scope | `client-only`: Local to the client/UI/renderer. |
 | Category | Files & downloads |
 | Module | `renderer` |
 | Renderer | `rd-dedicated`, `rd-rend2`, `rd-vanilla`, `rd-vulkan` |
-| Network scope | `client-only`: Local to the client/UI/renderer. |
 | Derivation | `code-trace` |
 | Confidence | `high` |
 | Added | 2013-04-08 in [`14cea1563`](https://github.com/taysta/TaystJK/commit/14cea1563762076974bee277afadbd5bf234c494) ([how to compare this against your build](/TaystJK/features/whats-new/#how-to-tell-what-your-build-has)) |
 | In-game xdocs | No |
 | In-game menu | No |
-| Default | `64` |
-| Value type | `float` |
-| Restart | No latch flag is registered. |
-| Cheat protected | No |
-| Manually settable | Yes |
 
 ## Values
 

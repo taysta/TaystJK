@@ -18,18 +18,18 @@ Forwards this command to the connected game server.
 
 | Field | Value |
 |:--|:--|
+| Syntax | `kill` |
+| Cheat protected | No |
+| Network scope | `needs-server-support`: Sent to, or only useful with, a supporting game server. |
 | Category | Gameplay & combat |
 | Module | `cgame` |
 | Also registered in | `game` |
 | Renderer | All / not renderer-specific |
-| Network scope | `needs-server-support`: Sent to, or only useful with, a supporting game server. |
 | Derivation | `code-trace` |
 | Confidence | `high` |
 | Added | 2013-04-08 in [`14cea1563`](https://github.com/taysta/TaystJK/commit/14cea1563762076974bee277afadbd5bf234c494) ([how to compare this against your build](/TaystJK/features/whats-new/#how-to-tell-what-your-build-has)) |
 | In-game xdocs | No |
 | In-game menu | Yes: [ingame_controls.menu:3704](https://github.com/taysta/TaystJK/blame/b35ed06fec41c53644352743c6b199a5d5d500f3/assets/japro/ui/jamp/ingame_controls.menu#L3704), [ingame_controls.menu:3713](https://github.com/taysta/TaystJK/blame/b35ed06fec41c53644352743c6b199a5d5d500f3/assets/japro/ui/jamp/ingame_controls.menu#L3713), [ingame_setup.menu:4047](https://github.com/taysta/TaystJK/blame/b35ed06fec41c53644352743c6b199a5d5d500f3/assets/japro/ui/jamp/ingame_setup.menu#L4047) |
-| Syntax | `kill` |
-| Cheat protected | No |
 
 ## Arguments and gating
 

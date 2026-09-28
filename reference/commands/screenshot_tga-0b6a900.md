@@ -18,17 +18,17 @@ Runs `R_ScreenShotTGA_f` in the renderer module.
 
 | Field | Value |
 |:--|:--|
+| Syntax | `screenshot_tga [arguments]` |
+| Cheat protected | No |
+| Network scope | `client-only`: Local to the client/UI/renderer. |
 | Category | Demos & media |
 | Module | `renderer` |
 | Renderer | `rd-rend2`, `rd-vanilla`, `rd-vulkan` |
-| Network scope | `client-only`: Local to the client/UI/renderer. |
 | Derivation | `code-trace` |
 | Confidence | `high` |
 | Added | 2013-04-08 in [`14cea1563`](https://github.com/taysta/TaystJK/commit/14cea1563762076974bee277afadbd5bf234c494) ([how to compare this against your build](/TaystJK/features/whats-new/#how-to-tell-what-your-build-has)) |
 | In-game xdocs | No |
 | In-game menu | No |
-| Syntax | `screenshot_tga [arguments]` |
-| Cheat protected | No |
 
 ## Arguments and gating
 

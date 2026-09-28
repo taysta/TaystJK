@@ -17,20 +17,20 @@ Player left hand saber
 
 | Field | Value |
 |:--|:--|
+| Default | `none` |
+| Value type | `string` |
+| Restart | No latch flag is registered. |
+| Manually settable | Yes |
+| Cheat protected | No |
+| Network scope | `needs-server-support`: Sent to, or only useful with, a supporting game server. |
 | Category | Gameplay & combat |
 | Module | `engine-client` |
 | Renderer | All / not renderer-specific |
-| Network scope | `needs-server-support`: Sent to, or only useful with, a supporting game server. |
 | Derivation | `documented` |
 | Confidence | `high` |
 | Added | 2013-04-08 in [`14cea1563`](https://github.com/taysta/TaystJK/commit/14cea1563762076974bee277afadbd5bf234c494) ([how to compare this against your build](/TaystJK/features/whats-new/#how-to-tell-what-your-build-has)) |
 | In-game xdocs | No |
 | In-game menu | Yes: [ingame_saber.menu:1651](https://github.com/taysta/TaystJK/blame/b35ed06fec41c53644352743c6b199a5d5d500f3/assets/japro/ui/jamp/ingame_saber.menu#L1651) |
-| Default | `none` |
-| Value type | `string` |
-| Restart | No latch flag is registered. |
-| Cheat protected | No |
-| Manually settable | Yes |
 
 ## Values
 

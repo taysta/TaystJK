@@ -20,20 +20,20 @@ Controls `com_waitingForKey` in the engine-shared module. Consult the cited beha
 
 | Field | Value |
 |:--|:--|
+| Default | `0` |
+| Value type | `bool` |
+| Restart | No latch flag is registered. |
+| Manually settable | No; the game writes this value. |
+| Cheat protected | No |
+| Network scope | `client-or-server`: Engine code in both the client and the dedicated server; each uses its own value. |
 | Category | Input & controls |
 | Module | `engine-shared` |
 | Renderer | All / not renderer-specific |
-| Network scope | `client-or-server`: Engine code in both the client and the dedicated server; each uses its own value. |
 | Derivation | `code-trace` |
 | Confidence | `high` |
 | Added | 2025-04-26 in [`a1ee9793b`](https://github.com/taysta/TaystJK/commit/a1ee9793b45d409840c6b75b3da75fdebca685a2) ([how to compare this against your build](/TaystJK/features/whats-new/#how-to-tell-what-your-build-has)) |
 | In-game xdocs | No |
 | In-game menu | No |
-| Default | `0` |
-| Value type | `bool` |
-| Restart | No latch flag is registered. |
-| Cheat protected | No |
-| Manually settable | No; the game writes this value. |
 
 ## Values
 

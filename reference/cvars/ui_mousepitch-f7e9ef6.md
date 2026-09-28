@@ -20,20 +20,20 @@ Controls `ui_mousePitch` in the ui module. Consult the cited behavior reads befo
 
 | Field | Value |
 |:--|:--|
+| Default | `(trap->Cvar_VariableValue("m_pitch"` |
+| Value type | `string` |
+| Restart | No latch flag is registered. |
+| Manually settable | No; the game writes this value. |
+| Cheat protected | No |
+| Network scope | `client-only`: Local to the client/UI/renderer. |
 | Category | Input & controls |
 | Module | `ui` |
 | Renderer | All / not renderer-specific |
-| Network scope | `client-only`: Local to the client/UI/renderer. |
 | Derivation | `code-trace` |
 | Confidence | `high` |
 | Added | 2013-04-08 in [`14cea1563`](https://github.com/taysta/TaystJK/commit/14cea1563762076974bee277afadbd5bf234c494) ([how to compare this against your build](/TaystJK/features/whats-new/#how-to-tell-what-your-build-has)) |
 | In-game xdocs | No |
 | In-game menu | Yes: [controls.menu:2947](https://github.com/taysta/TaystJK/blame/b35ed06fec41c53644352743c6b199a5d5d500f3/assets/japro/ui/jamp/controls.menu#L2947), [controls.menu:2962](https://github.com/taysta/TaystJK/blame/b35ed06fec41c53644352743c6b199a5d5d500f3/assets/japro/ui/jamp/controls.menu#L2962), [ingame_controls.menu:2644](https://github.com/taysta/TaystJK/blame/b35ed06fec41c53644352743c6b199a5d5d500f3/assets/japro/ui/jamp/ingame_controls.menu#L2644) |
-| Default | `(trap->Cvar_VariableValue("m_pitch"` |
-| Value type | `string` |
-| Restart | No latch flag is registered. |
-| Cheat protected | No |
-| Manually settable | No; the game writes this value. |
 
 ## Values
 

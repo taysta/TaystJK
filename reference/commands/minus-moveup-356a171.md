@@ -18,17 +18,17 @@ Runs `IN_UpUp` in the engine-client module.
 
 | Field | Value |
 |:--|:--|
+| Syntax | `-moveup` |
+| Cheat protected | No |
+| Network scope | `client-only`: Local to the client/UI/renderer. |
 | Category | Engine & diagnostics |
 | Module | `engine-client` |
 | Renderer | All / not renderer-specific |
-| Network scope | `client-only`: Local to the client/UI/renderer. |
 | Derivation | `code-trace` |
 | Confidence | `high` |
 | Added | 2013-04-08 in [`14cea1563`](https://github.com/taysta/TaystJK/commit/14cea1563762076974bee277afadbd5bf234c494) ([how to compare this against your build](/TaystJK/features/whats-new/#how-to-tell-what-your-build-has)) |
 | In-game xdocs | No |
 | In-game menu | No |
-| Syntax | `-moveup` |
-| Cheat protected | No |
 
 ## Arguments and gating
 

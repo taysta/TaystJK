@@ -17,20 +17,20 @@ Relative font sharpness (doesn't affect console font).
 
 | Field | Value |
 |:--|:--|
+| Default | `1` |
+| Value type | `float` |
+| Restart | No latch flag is registered. |
+| Manually settable | Yes |
+| Cheat protected | No |
+| Network scope | `client-only`: Local to the client/UI/renderer. |
 | Category | Graphics & rendering |
 | Module | `renderer` |
 | Renderer | All / not renderer-specific |
-| Network scope | `client-only`: Local to the client/UI/renderer. |
 | Derivation | `documented` |
 | Confidence | `high` |
 | Added | 2023-11-29 in [`e8e1da168`](https://github.com/taysta/TaystJK/commit/e8e1da168ed586bb1f7c64ec1f9d2baf764bba63) ([how to compare this against your build](/TaystJK/features/whats-new/#how-to-tell-what-your-build-has)) |
 | In-game xdocs | No |
 | In-game menu | No |
-| Default | `1` |
-| Value type | `float` |
-| Restart | No latch flag is registered. |
-| Cheat protected | No |
-| Manually settable | Yes |
 
 ## Values
 

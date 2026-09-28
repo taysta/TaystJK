@@ -17,22 +17,22 @@ Selects crosshair-name coloring. Zero strips player color codes and uses green f
 
 | Field | Value |
 |:--|:--|
+| Default | `1` |
+| Value type | `enum` |
+| Restart | No latch flag is registered. |
+| Manually settable | Yes |
+| Cheat protected | No |
+| Network scope | `client-only`: Local to the client/UI/renderer. |
 | Category | Crosshair & aiming |
 | Feature family | Crosshair |
 | Module | `cgame` |
 | Also registered in | `ui` |
 | Renderer | All / not renderer-specific |
-| Network scope | `client-only`: Local to the client/UI/renderer. |
 | Derivation | `mixed` |
 | Confidence | `high` |
 | Added | 2025-12-11 in [`24fb55d23`](https://github.com/taysta/TaystJK/commit/24fb55d23bfe18d3bcc3315232b310469cd23705) ([how to compare this against your build](/TaystJK/features/whats-new/#how-to-tell-what-your-build-has)) |
 | In-game xdocs | Yes: [codemp/ui/ui_xdocs.h:608](https://github.com/taysta/TaystJK/blame/b35ed06fec41c53644352743c6b199a5d5d500f3/codemp/ui/ui_xdocs.h#L608) |
 | In-game menu | No |
-| Default | `1` |
-| Value type | `enum` |
-| Restart | No latch flag is registered. |
-| Cheat protected | No |
-| Manually settable | Yes |
 
 ## Values
 

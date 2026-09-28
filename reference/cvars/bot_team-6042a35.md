@@ -17,20 +17,20 @@ In team game types, 1 puts every bot added to the server on the blue team and 2 
 
 | Field | Value |
 |:--|:--|
+| Default | `0` |
+| Value type | `int` |
+| Restart | No latch flag is registered. |
+| Manually settable | Yes |
+| Cheat protected | No |
+| Network scope | `server-authoritative`: Owned or enforced by the server. |
 | Category | Bots & AI |
 | Module | `game` |
 | Renderer | All / not renderer-specific |
-| Network scope | `server-authoritative`: Owned or enforced by the server. |
 | Derivation | `code-trace` |
 | Confidence | `high` |
 | Added | 2023-12-11 in [`9b57ee1b8`](https://github.com/taysta/TaystJK/commit/9b57ee1b856693898de14daff824dcf111f94b57) ([how to compare this against your build](/TaystJK/features/whats-new/#how-to-tell-what-your-build-has)) |
 | In-game xdocs | No |
 | In-game menu | No |
-| Default | `0` |
-| Value type | `int` |
-| Restart | No latch flag is registered. |
-| Cheat protected | No |
-| Manually settable | Yes |
 
 ## Values
 

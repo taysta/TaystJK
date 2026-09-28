@@ -17,20 +17,20 @@ Sets the emulated frame rate used to make third-person camera damping frame-rate
 
 | Field | Value |
 |:--|:--|
+| Default | `125` |
+| Value type | `int` |
+| Restart | No latch flag is registered. |
+| Manually settable | Yes |
+| Cheat protected | No |
+| Network scope | `client-only`: Local to the client/UI/renderer. |
 | Category | HUD & interface |
 | Module | `cgame` |
 | Renderer | All / not renderer-specific |
-| Network scope | `client-only`: Local to the client/UI/renderer. |
 | Derivation | `code-trace` |
 | Confidence | `high` |
 | Added | 2019-01-14 in [`18a8e8c9a`](https://github.com/taysta/TaystJK/commit/18a8e8c9a528dd540dddee52ae2376a7c05a5e47) ([how to compare this against your build](/TaystJK/features/whats-new/#how-to-tell-what-your-build-has)) |
 | In-game xdocs | No |
 | In-game menu | Yes: [ingame_camera.menu:111](https://github.com/taysta/TaystJK/blame/b35ed06fec41c53644352743c6b199a5d5d500f3/assets/japro/ui/jamp/ingame_camera.menu#L111) |
-| Default | `125` |
-| Value type | `int` |
-| Restart | No latch flag is registered. |
-| Cheat protected | No |
-| Manually settable | Yes |
 
 ## Values
 

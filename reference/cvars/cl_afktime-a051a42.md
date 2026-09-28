@@ -19,20 +19,20 @@ Minutes to autorename to afk, 0 to disable
 
 | Field | Value |
 |:--|:--|
+| Default | `10` |
+| Value type | `int` |
+| Restart | No latch flag is registered. |
+| Manually settable | Yes |
+| Cheat protected | No |
+| Network scope | `client-only`: Local to the client/UI/renderer. |
 | Category | Engine & diagnostics |
 | Module | `engine-client` |
 | Renderer | All / not renderer-specific |
-| Network scope | `client-only`: Local to the client/UI/renderer. |
 | Derivation | `documented` |
 | Confidence | `medium` |
 | Added | 2016-03-14 in [`09b3f68fc`](https://github.com/taysta/TaystJK/commit/09b3f68fcc6f09e1eceaf03dd9881005a74c2a53) <span class="status-chip">needs review</span> ([how to compare this against your build](/TaystJK/features/whats-new/#how-to-tell-what-your-build-has)) |
 | In-game xdocs | No |
 | In-game menu | No |
-| Default | `10` |
-| Value type | `int` |
-| Restart | No latch flag is registered. |
-| Cheat protected | No |
-| Manually settable | Yes |
 
 ## Values
 

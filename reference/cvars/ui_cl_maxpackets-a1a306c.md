@@ -20,21 +20,21 @@ Controls `ui_cl_maxpackets` in the ui module. Consult the cited behavior reads b
 
 | Field | Value |
 |:--|:--|
+| Default | `0` |
+| Value type | `int` |
+| Restart | No latch flag is registered. |
+| Manually settable | No; the game writes this value. |
+| Cheat protected | No |
+| Staging copy of | [`cl_maxPackets`](/TaystJK/reference/cvars/cl_maxpackets-7b738c4/); [written through](https://github.com/taysta/TaystJK/blame/b35ed06fec41c53644352743c6b199a5d5d500f3/codemp/ui/ui_main.c#L6430), [read back](https://github.com/taysta/TaystJK/blame/b35ed06fec41c53644352743c6b199a5d5d500f3/codemp/ui/ui_main.c#L6436) |
+| Network scope | `client-only`: Local to the client/UI/renderer. |
 | Category | Server & networking |
 | Module | `ui` |
 | Renderer | All / not renderer-specific |
-| Network scope | `client-only`: Local to the client/UI/renderer. |
 | Derivation | `code-trace` |
 | Confidence | `medium` |
 | Added | 2015-06-17 in [`d93386f34`](https://github.com/taysta/TaystJK/commit/d93386f34b71fbf1eff27f198956e519918f45a0) <span class="status-chip">needs review</span> ([how to compare this against your build](/TaystJK/features/whats-new/#how-to-tell-what-your-build-has)) |
 | In-game xdocs | No |
 | In-game menu | Yes: [ingame_setup.menu:5230](https://github.com/taysta/TaystJK/blame/b35ed06fec41c53644352743c6b199a5d5d500f3/assets/japro/ui/jamp/ingame_setup.menu#L5230) |
-| Default | `0` |
-| Value type | `int` |
-| Restart | No latch flag is registered. |
-| Cheat protected | No |
-| Manually settable | No; the game writes this value. |
-| Staging copy of | [`cl_maxPackets`](/TaystJK/reference/cvars/cl_maxpackets-7b738c4/); [written through](https://github.com/taysta/TaystJK/blame/b35ed06fec41c53644352743c6b199a5d5d500f3/codemp/ui/ui_main.c#L6430), [read back](https://github.com/taysta/TaystJK/blame/b35ed06fec41c53644352743c6b199a5d5d500f3/codemp/ui/ui_main.c#L6436) |
 
 ## Values
 

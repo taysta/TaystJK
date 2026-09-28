@@ -18,21 +18,21 @@ Controls `r_noborder` in the renderer module. Consult the cited behavior reads b
 
 | Field | Value |
 |:--|:--|
+| Default | `0` |
+| Value type | `bool` |
+| Restart | Yes; the value is latched. |
+| Manually settable | Yes |
+| Cheat protected | No |
+| Network scope | `client-only`: Local to the client/UI/renderer. |
 | Category | Graphics & rendering |
 | Module | `renderer` |
 | Also registered in | `engine-shared` |
 | Renderer | `rd-dedicated` |
-| Network scope | `client-only`: Local to the client/UI/renderer. |
 | Derivation | `code-trace` |
 | Confidence | `medium` |
 | Added | 2013-05-11 in [`f203e799b`](https://github.com/taysta/TaystJK/commit/f203e799b14c0716833793eed611c272111c3cb6) <span class="status-chip">needs review</span> ([how to compare this against your build](/TaystJK/features/whats-new/#how-to-tell-what-your-build-has)) |
 | In-game xdocs | No |
 | In-game menu | Yes: [ingame_setup.menu:1261](https://github.com/taysta/TaystJK/blame/b35ed06fec41c53644352743c6b199a5d5d500f3/assets/japro/ui/jamp/ingame_setup.menu#L1261) |
-| Default | `0` |
-| Value type | `bool` |
-| Restart | Yes; the value is latched. |
-| Cheat protected | No |
-| Manually settable | Yes |
 
 ## Values
 

@@ -20,21 +20,21 @@ Controls `ui_saber_color` in the ui module. Consult the cited behavior reads bef
 
 | Field | Value |
 |:--|:--|
+| Default | `yellow` |
+| Value type | `string` |
+| Restart | No latch flag is registered. |
+| Manually settable | No; the game writes this value. |
+| Cheat protected | No |
+| Staging copy of | [`g_saber_color`](/TaystJK/reference/cvars/g_saber_color-c921632/); [written through](https://github.com/taysta/TaystJK/blame/b35ed06fec41c53644352743c6b199a5d5d500f3/codemp/ui/ui_main.c#L6796), [read back](https://github.com/taysta/TaystJK/blame/b35ed06fec41c53644352743c6b199a5d5d500f3/codemp/ui/ui_main.c#L6994) |
+| Network scope | `client-only`: Local to the client/UI/renderer. |
 | Category | Gameplay & combat |
 | Module | `ui` |
 | Renderer | All / not renderer-specific |
-| Network scope | `client-only`: Local to the client/UI/renderer. |
 | Derivation | `code-trace` |
 | Confidence | `high` |
 | Added | 2013-04-08 in [`14cea1563`](https://github.com/taysta/TaystJK/commit/14cea1563762076974bee277afadbd5bf234c494) ([how to compare this against your build](/TaystJK/features/whats-new/#how-to-tell-what-your-build-has)) |
 | In-game xdocs | No |
 | In-game menu | Yes: [ingame_saber.menu:624](https://github.com/taysta/TaystJK/blame/b35ed06fec41c53644352743c6b199a5d5d500f3/assets/japro/ui/jamp/ingame_saber.menu#L624), [ingame_saber.menu:731](https://github.com/taysta/TaystJK/blame/b35ed06fec41c53644352743c6b199a5d5d500f3/assets/japro/ui/jamp/ingame_saber.menu#L731), [ingame_saber.menu:1168](https://github.com/taysta/TaystJK/blame/b35ed06fec41c53644352743c6b199a5d5d500f3/assets/japro/ui/jamp/ingame_saber.menu#L1168) |
-| Default | `yellow` |
-| Value type | `string` |
-| Restart | No latch flag is registered. |
-| Cheat protected | No |
-| Manually settable | No; the game writes this value. |
-| Staging copy of | [`g_saber_color`](/TaystJK/reference/cvars/g_saber_color-c921632/); [written through](https://github.com/taysta/TaystJK/blame/b35ed06fec41c53644352743c6b199a5d5d500f3/codemp/ui/ui_main.c#L6796), [read back](https://github.com/taysta/TaystJK/blame/b35ed06fec41c53644352743c6b199a5d5d500f3/codemp/ui/ui_main.c#L6994) |
 
 ## Values
 

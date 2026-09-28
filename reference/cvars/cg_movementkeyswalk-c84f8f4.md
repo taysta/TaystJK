@@ -17,21 +17,21 @@ Display walk movement key input
 
 | Field | Value |
 |:--|:--|
+| Default | `0` |
+| Value type | `float` |
+| Restart | No latch flag is registered. |
+| Manually settable | Yes |
+| Cheat protected | No |
+| Network scope | `client-only`: Local to the client/UI/renderer. |
 | Category | Movement & race |
 | Feature family | Movement keys |
 | Module | `cgame` |
 | Renderer | All / not renderer-specific |
-| Network scope | `client-only`: Local to the client/UI/renderer. |
 | Derivation | `documented` |
 | Confidence | `high` |
 | Added | 2026-06-07 in [`77a255000`](https://github.com/taysta/TaystJK/commit/77a255000dd43e3884ccd2651364f23284fc0161) ([how to compare this against your build](/TaystJK/features/whats-new/#how-to-tell-what-your-build-has)) |
 | In-game xdocs | Yes: [codemp/ui/ui_xdocs.h:104](https://github.com/taysta/TaystJK/blame/b35ed06fec41c53644352743c6b199a5d5d500f3/codemp/ui/ui_xdocs.h#L104) |
 | In-game menu | No |
-| Default | `0` |
-| Value type | `float` |
-| Restart | No latch flag is registered. |
-| Cheat protected | No |
-| Manually settable | Yes |
 
 ## Values
 

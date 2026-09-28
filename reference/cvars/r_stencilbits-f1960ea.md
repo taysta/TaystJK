@@ -18,21 +18,21 @@ Controls `r_stencilbits` in the renderer module. Consult the cited behavior read
 
 | Field | Value |
 |:--|:--|
+| Default | `8` |
+| Value type | `int` |
+| Restart | Yes; the value is latched. |
+| Manually settable | Yes |
+| Cheat protected | No |
+| Network scope | `client-only`: Local to the client/UI/renderer. |
 | Category | Graphics & rendering |
 | Module | `renderer` |
 | Also registered in | `engine-shared` |
 | Renderer | `rd-dedicated` |
-| Network scope | `client-only`: Local to the client/UI/renderer. |
 | Derivation | `code-trace` |
 | Confidence | `high` |
 | Added | 2013-04-08 in [`14cea1563`](https://github.com/taysta/TaystJK/commit/14cea1563762076974bee277afadbd5bf234c494) ([how to compare this against your build](/TaystJK/features/whats-new/#how-to-tell-what-your-build-has)) |
 | In-game xdocs | No |
 | In-game menu | No |
-| Default | `8` |
-| Value type | `int` |
-| Restart | Yes; the value is latched. |
-| Cheat protected | No |
-| Manually settable | Yes |
 
 ## Values
 

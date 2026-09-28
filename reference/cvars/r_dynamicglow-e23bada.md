@@ -17,20 +17,20 @@ Enable dynamic glow effect. Requires r_fbo 1
 
 | Field | Value |
 |:--|:--|
+| Default | `0` |
+| Value type | `enum` |
+| Restart | Yes; the value is latched. |
+| Manually settable | Yes |
+| Cheat protected | No |
+| Network scope | `client-only`: Local to the client/UI/renderer. |
 | Category | Graphics & rendering |
 | Module | `renderer` |
 | Renderer | `rd-dedicated`, `rd-rend2`, `rd-vanilla`, `rd-vulkan` |
-| Network scope | `client-only`: Local to the client/UI/renderer. |
 | Derivation | `documented` |
 | Confidence | `high` |
 | Added | 2013-04-08 in [`14cea1563`](https://github.com/taysta/TaystJK/commit/14cea1563762076974bee277afadbd5bf234c494) ([how to compare this against your build](/TaystJK/features/whats-new/#how-to-tell-what-your-build-has)) |
 | In-game xdocs | No |
 | In-game menu | Yes: [ingame_setup.menu:2674](https://github.com/taysta/TaystJK/blame/b35ed06fec41c53644352743c6b199a5d5d500f3/assets/japro/ui/jamp/ingame_setup.menu#L2674), [setup.menu:2236](https://github.com/taysta/TaystJK/blame/b35ed06fec41c53644352743c6b199a5d5d500f3/assets/japro/ui/jamp/setup.menu#L2236) |
-| Default | `0` |
-| Value type | `enum` |
-| Restart | Yes; the value is latched. |
-| Cheat protected | No |
-| Manually settable | Yes |
 
 ## Values
 

@@ -19,20 +19,20 @@ Enable GUID userinfo identifier
 
 | Field | Value |
 |:--|:--|
+| Default | `1` |
+| Value type | `bool` |
+| Restart | No latch flag is registered. |
+| Manually settable | Yes |
+| Cheat protected | No |
+| Network scope | `client-only`: Local to the client/UI/renderer. |
 | Category | Engine & diagnostics |
 | Module | `engine-client` |
 | Renderer | All / not renderer-specific |
-| Network scope | `client-only`: Local to the client/UI/renderer. |
 | Derivation | `documented` |
 | Confidence | `medium` |
 | Added | 2015-11-24 in [`d5970a980`](https://github.com/taysta/TaystJK/commit/d5970a9804aad8ebe9bd8989c4e9e2354b627667) <span class="status-chip">needs review</span> ([how to compare this against your build](/TaystJK/features/whats-new/#how-to-tell-what-your-build-has)) |
 | In-game xdocs | No |
 | In-game menu | No |
-| Default | `1` |
-| Value type | `bool` |
-| Restart | No latch flag is registered. |
-| Cheat protected | No |
-| Manually settable | Yes |
 
 ## Values
 

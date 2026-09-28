@@ -19,22 +19,22 @@ Disable/enable framebuffer MSAA
 
 | Field | Value |
 |:--|:--|
+| Default | `0` |
+| Value type | `int` |
+| Restart | Yes; the value is latched. |
+| Manually settable | Yes |
+| Cheat protected | No |
+| Network scope | `client-only`: Local to the client/UI/renderer. |
 | Category | Graphics & rendering |
 | Feature family | Renderer extensions |
 | Module | `renderer` |
 | Also registered in | `engine-shared` |
 | Renderer | `rd-rend2`, `rd-vulkan` |
-| Network scope | `client-only`: Local to the client/UI/renderer. |
 | Derivation | `documented` |
 | Confidence | `medium` |
 | Added | 2015-02-07 in [`a7c43677a`](https://github.com/taysta/TaystJK/commit/a7c43677a2bbba956ac3c5f14f2bf869ea660230) <span class="status-chip">needs review</span> ([how to compare this against your build](/TaystJK/features/whats-new/#how-to-tell-what-your-build-has)) |
 | In-game xdocs | No |
 | In-game menu | Yes: [ingame_setup.menu:1480](https://github.com/taysta/TaystJK/blame/b35ed06fec41c53644352743c6b199a5d5d500f3/assets/japro/ui/jamp/ingame_setup.menu#L1480), [setup.menu:1383](https://github.com/taysta/TaystJK/blame/b35ed06fec41c53644352743c6b199a5d5d500f3/assets/japro/ui/jamp/setup.menu#L1383) |
-| Default | `0` |
-| Value type | `int` |
-| Restart | Yes; the value is latched. |
-| Cheat protected | No |
-| Manually settable | Yes |
 
 ## Values
 

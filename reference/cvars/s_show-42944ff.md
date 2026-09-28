@@ -18,20 +18,20 @@ Controls `s_show` in the engine-client module. Consult the cited behavior reads 
 
 | Field | Value |
 |:--|:--|
+| Default | `0` |
+| Value type | `enum` |
+| Restart | No latch flag is registered. |
+| Manually settable | Yes |
+| Cheat protected | Yes |
+| Network scope | `client-only`: Local to the client/UI/renderer. |
 | Category | Engine & diagnostics |
 | Module | `engine-client` |
 | Renderer | All / not renderer-specific |
-| Network scope | `client-only`: Local to the client/UI/renderer. |
 | Derivation | `code-trace` |
 | Confidence | `high` |
 | Added | 2013-04-08 in [`14cea1563`](https://github.com/taysta/TaystJK/commit/14cea1563762076974bee277afadbd5bf234c494) ([how to compare this against your build](/TaystJK/features/whats-new/#how-to-tell-what-your-build-has)) |
 | In-game xdocs | No |
 | In-game menu | No |
-| Default | `0` |
-| Value type | `enum` |
-| Restart | No latch flag is registered. |
-| Cheat protected | Yes |
-| Manually settable | Yes |
 
 ## Values
 

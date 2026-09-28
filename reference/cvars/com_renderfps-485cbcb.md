@@ -18,20 +18,20 @@ Controls `com_renderfps` in the engine-shared module. Consult the cited behavior
 
 | Field | Value |
 |:--|:--|
+| Default | `0` |
+| Value type | `bool` |
+| Restart | No latch flag is registered. |
+| Manually settable | Yes |
+| Cheat protected | No |
+| Network scope | `client-or-server`: Engine code in both the client and the dedicated server; each uses its own value. |
 | Category | Graphics & rendering |
 | Module | `engine-shared` |
 | Renderer | All / not renderer-specific |
-| Network scope | `client-or-server`: Engine code in both the client and the dedicated server; each uses its own value. |
 | Derivation | `code-trace` |
 | Confidence | `medium` |
 | Added | 2017-12-05 in [`9207f1148`](https://github.com/taysta/TaystJK/commit/9207f1148bdde81d25b6c0f97139bb2ce0fbc6a3) <span class="status-chip">needs review</span> ([how to compare this against your build](/TaystJK/features/whats-new/#how-to-tell-what-your-build-has)) |
 | In-game xdocs | No |
 | In-game menu | No |
-| Default | `0` |
-| Value type | `bool` |
-| Restart | No latch flag is registered. |
-| Cheat protected | No |
-| Manually settable | Yes |
 
 ## Values
 

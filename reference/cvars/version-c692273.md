@@ -20,20 +20,20 @@ Registered by the current source, but no user-facing behavior description has be
 
 | Field | Value |
 |:--|:--|
+| Default | `JK_VERSION " " PLATFORM_STRING " " SOURCE_DATE` |
+| Value type | `string` |
+| Restart | No latch flag is registered. |
+| Manually settable | No; the game writes this value. |
+| Cheat protected | No |
+| Network scope | `server-authoritative`: Owned or enforced by the server. |
 | Category | Engine & diagnostics |
 | Module | `engine-shared` |
 | Renderer | All / not renderer-specific |
-| Network scope | `server-authoritative`: Owned or enforced by the server. |
 | Derivation | `code-trace` |
 | Confidence | `high` |
 | Added | 2013-04-08 in [`14cea1563`](https://github.com/taysta/TaystJK/commit/14cea1563762076974bee277afadbd5bf234c494) ([how to compare this against your build](/TaystJK/features/whats-new/#how-to-tell-what-your-build-has)) |
 | In-game xdocs | No |
 | In-game menu | No |
-| Default | `JK_VERSION " " PLATFORM_STRING " " SOURCE_DATE` |
-| Value type | `string` |
-| Restart | No latch flag is registered. |
-| Cheat protected | No |
-| Manually settable | No; the game writes this value. |
 
 ## Values
 

@@ -17,20 +17,20 @@ Controls fog rendering. The Vulkan registration documents 0 as disabled, 1 as so
 
 | Field | Value |
 |:--|:--|
+| Default | `2` |
+| Value type | `enum` |
+| Restart | Yes; the value is latched. |
+| Manually settable | Yes |
+| Cheat protected | No |
+| Network scope | `client-only`: Local to the client/UI/renderer. |
 | Category | Graphics & rendering |
 | Module | `renderer` |
 | Renderer | `rd-dedicated`, `rd-rend2`, `rd-vanilla`, `rd-vulkan` |
-| Network scope | `client-only`: Local to the client/UI/renderer. |
 | Derivation | `mixed` |
 | Confidence | `high` |
 | Added | 2013-04-08 in [`14cea1563`](https://github.com/taysta/TaystJK/commit/14cea1563762076974bee277afadbd5bf234c494) ([how to compare this against your build](/TaystJK/features/whats-new/#how-to-tell-what-your-build-has)) |
 | In-game xdocs | No |
 | In-game menu | No |
-| Default | `2` |
-| Value type | `enum` |
-| Restart | Yes; the value is latched. |
-| Cheat protected | No |
-| Manually settable | Yes |
 
 ## Values
 

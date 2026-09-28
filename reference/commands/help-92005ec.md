@@ -17,18 +17,18 @@ Print command help
 
 | Field | Value |
 |:--|:--|
+| Syntax | `help [arguments]` |
+| Cheat protected | No |
+| Network scope | `client-only`: Local to the client/UI/renderer. |
 | Category | Gameplay & combat |
 | Module | `cgame` |
 | Also registered in | `engine-shared` |
 | Renderer | All / not renderer-specific |
-| Network scope | `client-only`: Local to the client/UI/renderer. |
 | Derivation | `documented` |
 | Confidence | `high` |
 | Added | 2016-03-24 in [`c9c6ab99f`](https://github.com/taysta/TaystJK/commit/c9c6ab99fdd24759cc32d45f642d63ebd3361b62) ([how to compare this against your build](/TaystJK/features/whats-new/#how-to-tell-what-your-build-has)) |
 | In-game xdocs | No |
 | In-game menu | Yes: [ingame_vgs.menu:5141](https://github.com/taysta/TaystJK/blame/b35ed06fec41c53644352743c6b199a5d5d500f3/assets/japro/ui/jamp/ingame_vgs.menu#L5141) |
-| Syntax | `help [arguments]` |
-| Cheat protected | No |
 
 ## Arguments and gating
 

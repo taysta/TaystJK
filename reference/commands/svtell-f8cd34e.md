@@ -19,17 +19,17 @@ Private message from the server to a user
 
 | Field | Value |
 |:--|:--|
+| Syntax | `svtell <client number> <text>` |
+| Cheat protected | No |
+| Network scope | `server-authoritative`: Owned or enforced by the server. |
 | Category | Chat & social |
 | Module | `engine-server` |
 | Renderer | All / not renderer-specific |
-| Network scope | `server-authoritative`: Owned or enforced by the server. |
 | Derivation | `documented` |
 | Confidence | `medium` |
 | Added | 2014-08-19 in [`03bba2122`](https://github.com/taysta/TaystJK/commit/03bba21225bbdfe484236d00966b6783bd2077a7) <span class="status-chip">needs review</span> ([how to compare this against your build](/TaystJK/features/whats-new/#how-to-tell-what-your-build-has)) |
 | In-game xdocs | No |
 | In-game menu | No |
-| Syntax | `svtell <client number> <text>` |
-| Cheat protected | No |
 
 ## Arguments and gating
 

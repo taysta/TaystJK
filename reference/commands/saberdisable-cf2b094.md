@@ -18,18 +18,18 @@ Runs `Svcmd_ToggleSaberDisable_f` in the game module.
 
 | Field | Value |
 |:--|:--|
+| Syntax | `saberDisable [arguments]` |
+| Cheat protected | No |
+| Configures | [`g_saberDisable`](/TaystJK/reference/cvars/g_saberdisable-8b0544d/) |
+| Network scope | `needs-server-support`: Sent to, or only useful with, a supporting game server. |
 | Category | Gameplay & combat |
 | Module | `game` |
 | Renderer | All / not renderer-specific |
-| Network scope | `needs-server-support`: Sent to, or only useful with, a supporting game server. |
 | Derivation | `code-trace` |
 | Confidence | `medium` |
 | Added | 2018-01-01 in [`d9d510063`](https://github.com/taysta/TaystJK/commit/d9d510063ce680639e6ba060021b6d40ee0c1419) <span class="status-chip">needs review</span> ([how to compare this against your build](/TaystJK/features/whats-new/#how-to-tell-what-your-build-has)) |
 | In-game xdocs | No |
 | In-game menu | No |
-| Syntax | `saberDisable [arguments]` |
-| Cheat protected | No |
-| Configures | [`g_saberDisable`](/TaystJK/reference/cvars/g_saberdisable-8b0544d/) |
 
 ## Arguments and gating
 

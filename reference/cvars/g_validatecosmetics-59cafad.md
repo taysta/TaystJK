@@ -18,20 +18,20 @@ Controls `g_validateCosmetics` in the game module. Consult the cited behavior re
 
 | Field | Value |
 |:--|:--|
+| Default | `1` |
+| Value type | `bool` |
+| Restart | No latch flag is registered. |
+| Manually settable | Yes |
+| Cheat protected | No |
+| Network scope | `server-authoritative`: Owned or enforced by the server. |
 | Category | Gameplay & combat |
 | Module | `game` |
 | Renderer | All / not renderer-specific |
-| Network scope | `server-authoritative`: Owned or enforced by the server. |
 | Derivation | `code-trace` |
 | Confidence | `medium` |
 | Added | 2018-09-10 in [`239adf14f`](https://github.com/taysta/TaystJK/commit/239adf14f0b06a96f929e6f5a56ce4cb8ef9fd16) <span class="status-chip">needs review</span> ([how to compare this against your build](/TaystJK/features/whats-new/#how-to-tell-what-your-build-has)) |
 | In-game xdocs | No |
 | In-game menu | No |
-| Default | `1` |
-| Value type | `bool` |
-| Restart | No latch flag is registered. |
-| Cheat protected | No |
-| Manually settable | Yes |
 
 ## Values
 

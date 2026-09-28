@@ -21,21 +21,21 @@ Start with saber only default, fall back to melee if no saberattack
 
 | Field | Value |
 |:--|:--|
+| Default | `8` |
+| Value type | `bitmask` |
+| Restart | No latch flag is registered. |
+| Manually settable | Yes |
+| Cheat protected | No |
+| Configure with | [`startingWeapons`](/TaystJK/reference/commands/startingweapons-7252a71/) |
+| Network scope | `server-authoritative`: Owned or enforced by the server. |
 | Category | Gameplay & combat |
 | Module | `game` |
 | Renderer | All / not renderer-specific |
-| Network scope | `server-authoritative`: Owned or enforced by the server. |
 | Derivation | `documented` |
 | Confidence | `medium` |
 | Added | 2018-01-01 in [`d9d510063`](https://github.com/taysta/TaystJK/commit/d9d510063ce680639e6ba060021b6d40ee0c1419) <span class="status-chip">needs review</span> ([how to compare this against your build](/TaystJK/features/whats-new/#how-to-tell-what-your-build-has)) |
 | In-game xdocs | No |
 | In-game menu | No |
-| Default | `8` |
-| Value type | `bitmask` |
-| Restart | No latch flag is registered. |
-| Cheat protected | No |
-| Manually settable | Yes |
-| Configure with | [`startingWeapons`](/TaystJK/reference/commands/startingweapons-7252a71/) |
 
 ## Bits
 

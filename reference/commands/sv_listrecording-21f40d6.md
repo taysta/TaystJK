@@ -19,17 +19,17 @@ Lists demos being recorded
 
 | Field | Value |
 |:--|:--|
+| Syntax | `sv_listrecording` |
+| Cheat protected | No |
+| Network scope | `server-authoritative`: Owned or enforced by the server. |
 | Category | Demos & media |
 | Module | `engine-server` |
 | Renderer | All / not renderer-specific |
-| Network scope | `server-authoritative`: Owned or enforced by the server. |
 | Derivation | `documented` |
 | Confidence | `medium` |
 | Added | 2018-10-17 in [`724b58ba6`](https://github.com/taysta/TaystJK/commit/724b58ba6bf535c832bbcfdb7a092ed3581fdcdc) <span class="status-chip">needs review</span> ([how to compare this against your build](/TaystJK/features/whats-new/#how-to-tell-what-your-build-has)) |
 | In-game xdocs | No |
 | In-game menu | No |
-| Syntax | `sv_listrecording` |
-| Cheat protected | No |
 
 ## Arguments and gating
 

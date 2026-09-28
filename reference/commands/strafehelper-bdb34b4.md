@@ -18,19 +18,19 @@ Runs `CG_StrafeHelper_f` in the cgame module.
 
 | Field | Value |
 |:--|:--|
+| Syntax | `strafeHelper [arguments]` |
+| Cheat protected | No |
+| Configures | [`cg_strafeHelper`](/TaystJK/reference/cvars/cg_strafehelper-4850985/) |
+| Network scope | `client-only`: Local to the client/UI/renderer. |
 | Category | Movement & race |
 | Feature family | Strafe helper |
 | Module | `cgame` |
 | Renderer | All / not renderer-specific |
-| Network scope | `client-only`: Local to the client/UI/renderer. |
 | Derivation | `code-trace` |
 | Confidence | `medium` |
 | Added | 2018-09-03 in [`bdcd618c6`](https://github.com/taysta/TaystJK/commit/bdcd618c67713b86946b720d791c382d3908d97c) <span class="status-chip">needs review</span> ([how to compare this against your build](/TaystJK/features/whats-new/#how-to-tell-what-your-build-has)) |
 | In-game xdocs | No |
 | In-game menu | Yes: [ingame.menu:972](https://github.com/taysta/TaystJK/blame/b35ed06fec41c53644352743c6b199a5d5d500f3/assets/japro/ui/jamp/ingame.menu#L972), [ingame_strafehelper.menu:32](https://github.com/taysta/TaystJK/blame/b35ed06fec41c53644352743c6b199a5d5d500f3/assets/japro/ui/jamp/ingame_strafehelper.menu#L32), [ingame_strafehelper.menu:52](https://github.com/taysta/TaystJK/blame/b35ed06fec41c53644352743c6b199a5d5d500f3/assets/japro/ui/jamp/ingame_strafehelper.menu#L52) |
-| Syntax | `strafeHelper [arguments]` |
-| Cheat protected | No |
-| Configures | [`cg_strafeHelper`](/TaystJK/reference/cvars/cg_strafehelper-4850985/) |
 
 ## Arguments and gating
 

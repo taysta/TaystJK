@@ -19,17 +19,17 @@ Exits the game
 
 | Field | Value |
 |:--|:--|
+| Syntax | `exit` |
+| Cheat protected | No |
+| Network scope | `client-or-server`: Engine code in both the client and the dedicated server; each uses its own value. |
 | Category | Engine & diagnostics |
 | Module | `engine-shared` |
 | Renderer | All / not renderer-specific |
-| Network scope | `client-or-server`: Engine code in both the client and the dedicated server; each uses its own value. |
 | Derivation | `documented` |
 | Confidence | `medium` |
 | Added | 2018-11-27 in [`20755a5d4`](https://github.com/taysta/TaystJK/commit/20755a5d4be00432747aa8b7c1b6cc746296995b) <span class="status-chip">needs review</span> ([how to compare this against your build](/TaystJK/features/whats-new/#how-to-tell-what-your-build-has)) |
 | In-game xdocs | No |
 | In-game menu | Yes: [player.menu:363](https://github.com/taysta/TaystJK/blame/b35ed06fec41c53644352743c6b199a5d5d500f3/assets/japro/ui/jamp/player.menu#L363) |
-| Syntax | `exit` |
-| Cheat protected | No |
 
 ## Arguments and gating
 

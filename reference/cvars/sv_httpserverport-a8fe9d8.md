@@ -17,20 +17,20 @@ Configures the HTTP auto-download endpoint. A numeric value selects the built-in
 
 | Field | Value |
 |:--|:--|
+| Default | `0` |
+| Value type | `string` |
+| Restart | Yes; the value is latched. |
+| Manually settable | Yes |
+| Cheat protected | No |
+| Network scope | `server-authoritative`: Owned or enforced by the server. |
 | Category | Server & networking |
 | Module | `engine-server` |
 | Renderer | All / not renderer-specific |
-| Network scope | `server-authoritative`: Owned or enforced by the server. |
 | Derivation | `mixed` |
 | Confidence | `high` |
 | Added | 2024-03-21 in [`2a5ea5d88`](https://github.com/taysta/TaystJK/commit/2a5ea5d885dc6c081b75631334aac405da3fa36d) ([how to compare this against your build](/TaystJK/features/whats-new/#how-to-tell-what-your-build-has)) |
 | In-game xdocs | No |
 | In-game menu | No |
-| Default | `0` |
-| Value type | `string` |
-| Restart | Yes; the value is latched. |
-| Cheat protected | No |
-| Manually settable | Yes |
 
 ## Values
 

@@ -17,18 +17,18 @@ description: "[JAPRO - Serverside - All - Ignore]"
 
 | Field | Value |
 |:--|:--|
+| Syntax | `ignore [arguments]` |
+| Cheat protected | No |
+| Network scope | `needs-server-support`: Sent to, or only useful with, a supporting game server. |
 | Category | Chat & social |
 | Module | `cgame` |
 | Also registered in | `game` |
 | Renderer | All / not renderer-specific |
-| Network scope | `needs-server-support`: Sent to, or only useful with, a supporting game server. |
 | Derivation | `documented` |
 | Confidence | `high` |
 | Added | 2018-01-01 in [`d9d510063`](https://github.com/taysta/TaystJK/commit/d9d510063ce680639e6ba060021b6d40ee0c1419) ([how to compare this against your build](/TaystJK/features/whats-new/#how-to-tell-what-your-build-has)) |
 | In-game xdocs | No |
 | In-game menu | No |
-| Syntax | `ignore [arguments]` |
-| Cheat protected | No |
 
 ## Arguments and gating
 

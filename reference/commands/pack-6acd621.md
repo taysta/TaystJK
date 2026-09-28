@@ -18,17 +18,17 @@ Runs `Cmd_TribesPack_f` in the game module.
 
 | Field | Value |
 |:--|:--|
+| Syntax | `pack <shield, thrust, blink, or overdrive. Bind +force_lightning to activate.>` |
+| Cheat protected | No |
+| Network scope | `needs-server-support`: Sent to, or only useful with, a supporting game server. |
 | Category | Gameplay & combat |
 | Module | `game` |
 | Renderer | All / not renderer-specific |
-| Network scope | `needs-server-support`: Sent to, or only useful with, a supporting game server. |
 | Derivation | `documented` |
 | Confidence | `high` |
 | Added | 2024-01-26 in [`cd07288a3`](https://github.com/taysta/TaystJK/commit/cd07288a30a6aa276afdb11f1ae81e5e338134c3) ([how to compare this against your build](/TaystJK/features/whats-new/#how-to-tell-what-your-build-has)) |
 | In-game xdocs | No |
 | In-game menu | Yes: [ingame_tribes.menu:109](https://github.com/taysta/TaystJK/blame/b35ed06fec41c53644352743c6b199a5d5d500f3/assets/japro/ui/jamp/ingame_tribes.menu#L109), [ingame_tribes.menu:136](https://github.com/taysta/TaystJK/blame/b35ed06fec41c53644352743c6b199a5d5d500f3/assets/japro/ui/jamp/ingame_tribes.menu#L136), [ingame_tribes.menu:157](https://github.com/taysta/TaystJK/blame/b35ed06fec41c53644352743c6b199a5d5d500f3/assets/japro/ui/jamp/ingame_tribes.menu#L157) |
-| Syntax | `pack <shield, thrust, blink, or overdrive. Bind +force_lightning to activate.>` |
-| Cheat protected | No |
 
 ## Arguments and gating
 

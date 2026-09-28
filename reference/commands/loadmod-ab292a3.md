@@ -19,17 +19,17 @@ Restart the renderer (with specified mod folder) - or change the resolution
 
 | Field | Value |
 |:--|:--|
+| Syntax | `loadmod <folder name>` |
+| Cheat protected | No |
+| Network scope | `client-only`: Local to the client/UI/renderer. |
 | Category | Engine & diagnostics |
 | Module | `engine-client` |
 | Renderer | All / not renderer-specific |
-| Network scope | `client-only`: Local to the client/UI/renderer. |
 | Derivation | `documented` |
 | Confidence | `medium` |
 | Added | 2018-02-24 in [`04db4f373`](https://github.com/taysta/TaystJK/commit/04db4f3730791a1497dc2c2df47a2a3d7b1ec704) <span class="status-chip">needs review</span> ([how to compare this against your build](/TaystJK/features/whats-new/#how-to-tell-what-your-build-has)) |
 | In-game xdocs | No |
 | In-game menu | Yes: [setup.menu:3136](https://github.com/taysta/TaystJK/blame/b35ed06fec41c53644352743c6b199a5d5d500f3/assets/japro/ui/jamp/setup.menu#L3136) |
-| Syntax | `loadmod <folder name>` |
-| Cheat protected | No |
 
 ## Arguments and gating
 

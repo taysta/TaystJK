@@ -17,17 +17,17 @@ Cancels pending frame-based waitf entries whose command text contains the suppli
 
 | Field | Value |
 |:--|:--|
+| Syntax | `waitfcancel <text>` |
+| Cheat protected | No |
+| Network scope | `client-or-server`: Engine code in both the client and the dedicated server; each uses its own value. |
 | Category | Engine & diagnostics |
 | Module | `engine-shared` |
 | Renderer | All / not renderer-specific |
-| Network scope | `client-or-server`: Engine code in both the client and the dedicated server; each uses its own value. |
 | Derivation | `documented` |
 | Confidence | `high` |
 | Added | 2022-04-20 in [`1dd571383`](https://github.com/taysta/TaystJK/commit/1dd571383a0d16520e69ce209f8a2d21b2943a62) ([how to compare this against your build](/TaystJK/features/whats-new/#how-to-tell-what-your-build-has)) |
 | In-game xdocs | No |
 | In-game menu | No |
-| Syntax | `waitfcancel <text>` |
-| Cheat protected | No |
 
 ## Arguments and gating
 

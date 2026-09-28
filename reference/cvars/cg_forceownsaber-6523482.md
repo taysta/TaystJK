@@ -18,20 +18,20 @@ Controls `cg_forceOwnSaber` in the cgame module. Consult the cited behavior read
 
 | Field | Value |
 |:--|:--|
+| Default | `none` |
+| Value type | `string` |
+| Restart | No latch flag is registered. |
+| Manually settable | Yes |
+| Cheat protected | No |
+| Network scope | `client-only`: Local to the client/UI/renderer. |
 | Category | Gameplay & combat |
 | Module | `cgame` |
 | Renderer | All / not renderer-specific |
-| Network scope | `client-only`: Local to the client/UI/renderer. |
 | Derivation | `code-trace` |
 | Confidence | `medium` |
 | Added | 2019-06-12 in [`72143799d`](https://github.com/taysta/TaystJK/commit/72143799d75befe6f03d9d834333378a5d1f8168) <span class="status-chip">needs review</span> ([how to compare this against your build](/TaystJK/features/whats-new/#how-to-tell-what-your-build-has)) |
 | In-game xdocs | No |
 | In-game menu | No |
-| Default | `none` |
-| Value type | `string` |
-| Restart | No latch flag is registered. |
-| Cheat protected | No |
-| Manually settable | Yes |
 
 ## Values
 

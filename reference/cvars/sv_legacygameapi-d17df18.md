@@ -19,20 +19,20 @@ description: "1 when the game module loaded through Raven's dllEntry/vmMain API,
 
 | Field | Value |
 |:--|:--|
+| Default | `` |
+| Value type | `string` |
+| Restart | No latch flag is registered. |
+| Manually settable | No; the game writes this value. |
+| Cheat protected | No |
+| Network scope | `server-authoritative`: Owned or enforced by the server. |
 | Category | Server & networking |
 | Module | `engine-server` |
 | Renderer | All / not renderer-specific |
-| Network scope | `server-authoritative`: Owned or enforced by the server. |
 | Derivation | `documented` |
 | Confidence | `high` |
 | Added | 2026-09-27 in [`6d85dffac`](https://github.com/taysta/TaystJK/commit/6d85dffacc76b77ea398e89e3cddbf4c2c38be7c) ([how to compare this against your build](/TaystJK/features/whats-new/#how-to-tell-what-your-build-has)) |
 | In-game xdocs | No |
 | In-game menu | No |
-| Default | `` |
-| Value type | `string` |
-| Restart | No latch flag is registered. |
-| Cheat protected | No |
-| Manually settable | No; the game writes this value. |
 
 ## Values
 

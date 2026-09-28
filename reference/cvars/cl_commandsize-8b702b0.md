@@ -18,21 +18,21 @@ Controls `cl_commandsize` in the cgame module. Consult the cited behavior reads 
 
 | Field | Value |
 |:--|:--|
+| Default | `64` |
+| Value type | `int` |
+| Restart | No latch flag is registered. |
+| Manually settable | Yes |
+| Cheat protected | No |
+| Network scope | `client-only`: Local to the client/UI/renderer. |
 | Category | Gameplay & combat |
 | Module | `cgame` |
 | Also registered in | `engine-shared` |
 | Renderer | All / not renderer-specific |
-| Network scope | `client-only`: Local to the client/UI/renderer. |
 | Derivation | `code-trace` |
 | Confidence | `medium` |
 | Added | 2017-12-04 in [`748dc11de`](https://github.com/taysta/TaystJK/commit/748dc11dea5adc3a3f02fe88f7dc00197e482abe) <span class="status-chip">needs review</span> ([how to compare this against your build](/TaystJK/features/whats-new/#how-to-tell-what-your-build-has)) |
 | In-game xdocs | No |
 | In-game menu | No |
-| Default | `64` |
-| Value type | `int` |
-| Restart | No latch flag is registered. |
-| Cheat protected | No |
-| Manually settable | Yes |
 
 ## Values
 

@@ -18,18 +18,18 @@ Runs `CG_Cosmetics_f` in the cgame module.
 
 | Field | Value |
 |:--|:--|
+| Syntax | `cosmetics` |
+| Cheat protected | No |
+| Configures | [`cp_cosmetics`](/TaystJK/reference/cvars/cp_cosmetics-488f751/) |
+| Network scope | `client-only`: Local to the client/UI/renderer. |
 | Category | Gameplay & combat |
 | Module | `cgame` |
 | Renderer | All / not renderer-specific |
-| Network scope | `client-only`: Local to the client/UI/renderer. |
 | Derivation | `code-trace` |
 | Confidence | `medium` |
 | Added | 2018-10-15 in [`1e4377ef4`](https://github.com/taysta/TaystJK/commit/1e4377ef412feb0bdce70884035cb5b62f640293) <span class="status-chip">needs review</span> ([how to compare this against your build](/TaystJK/features/whats-new/#how-to-tell-what-your-build-has)) |
 | In-game xdocs | No |
 | In-game menu | No |
-| Syntax | `cosmetics` |
-| Cheat protected | No |
-| Configures | [`cp_cosmetics`](/TaystJK/reference/cvars/cp_cosmetics-488f751/) |
 
 ## Arguments and gating
 

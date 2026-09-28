@@ -18,20 +18,20 @@ Controls `g_newVehicleDamageScale` in the game module. Consult the cited behavio
 
 | Field | Value |
 |:--|:--|
+| Default | `0` |
+| Value type | `float` |
+| Restart | No latch flag is registered. |
+| Manually settable | Yes |
+| Cheat protected | No |
+| Network scope | `server-authoritative`: Owned or enforced by the server. |
 | Category | Gameplay & combat |
 | Module | `game` |
 | Renderer | All / not renderer-specific |
-| Network scope | `server-authoritative`: Owned or enforced by the server. |
 | Derivation | `code-trace` |
 | Confidence | `high` |
 | Added | 2023-12-28 in [`3567d72d9`](https://github.com/taysta/TaystJK/commit/3567d72d98c5b41549e76ef6e4841bb14c318fba) ([how to compare this against your build](/TaystJK/features/whats-new/#how-to-tell-what-your-build-has)) |
 | In-game xdocs | No |
 | In-game menu | No |
-| Default | `0` |
-| Value type | `float` |
-| Restart | No latch flag is registered. |
-| Cheat protected | No |
-| Manually settable | Yes |
 
 ## Values
 

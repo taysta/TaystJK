@@ -21,23 +21,23 @@ Configure with the /strafehelper command
 
 | Field | Value |
 |:--|:--|
+| Default | `3008` |
+| Value type | `bitmask` |
+| Restart | No latch flag is registered. |
+| Manually settable | Yes |
+| Cheat protected | No |
+| Configure with | [`strafeHelper`](/TaystJK/reference/commands/strafehelper-bdb34b4/) |
+| Network scope | `client-only`: Local to the client/UI/renderer. |
 | Category | Movement & race |
 | Feature family | Strafe helper |
 | Module | `cgame` |
 | Also registered in | `ui` |
 | Renderer | All / not renderer-specific |
-| Network scope | `client-only`: Local to the client/UI/renderer. |
 | Derivation | `documented` |
 | Confidence | `medium` |
 | Added | 2018-04-19 in [`1d5acfc05`](https://github.com/taysta/TaystJK/commit/1d5acfc05276cbb6032b5fd9ccd01a8d41233763) <span class="status-chip">needs review</span> ([how to compare this against your build](/TaystJK/features/whats-new/#how-to-tell-what-your-build-has)) |
 | In-game xdocs | Yes: [codemp/ui/ui_xdocs.h:323](https://github.com/taysta/TaystJK/blame/b35ed06fec41c53644352743c6b199a5d5d500f3/codemp/ui/ui_xdocs.h#L323) |
 | In-game menu | No |
-| Default | `3008` |
-| Value type | `bitmask` |
-| Restart | No latch flag is registered. |
-| Cheat protected | No |
-| Manually settable | Yes |
-| Configure with | [`strafeHelper`](/TaystJK/reference/commands/strafehelper-bdb34b4/) |
 
 ## Bits
 

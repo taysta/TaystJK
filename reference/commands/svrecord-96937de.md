@@ -19,17 +19,17 @@ Starts a server-side demo of one active client. Without a client number it recor
 
 | Field | Value |
 |:--|:--|
+| Syntax | `svrecord [<name> [<clientnum>]]` |
+| Cheat protected | No |
+| Network scope | `server-authoritative`: Owned or enforced by the server. |
 | Category | Demos & media |
 | Module | `engine-server` |
 | Renderer | All / not renderer-specific |
-| Network scope | `server-authoritative`: Owned or enforced by the server. |
 | Derivation | `code-trace` |
 | Confidence | `medium` |
 | Added | 2014-01-26 in [`44d566687`](https://github.com/taysta/TaystJK/commit/44d5666875f34d77c7f2451c6f7a493e60e6a348) <span class="status-chip">needs review</span> ([how to compare this against your build](/TaystJK/features/whats-new/#how-to-tell-what-your-build-has)) |
 | In-game xdocs | No |
 | In-game menu | No |
-| Syntax | `svrecord [<name> [<clientnum>]]` |
-| Cheat protected | No |
 
 ## Arguments and gating
 

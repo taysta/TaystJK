@@ -18,17 +18,17 @@ Runs `CG_ToggleSingleFire_f` in the cgame module.
 
 | Field | Value |
 |:--|:--|
+| Syntax | `selectfiremode` |
+| Cheat protected | No |
+| Network scope | `client-only`: Local to the client/UI/renderer. |
 | Category | Gameplay & combat |
 | Module | `cgame` |
 | Renderer | All / not renderer-specific |
-| Network scope | `client-only`: Local to the client/UI/renderer. |
 | Derivation | `code-trace` |
 | Confidence | `high` |
 | Added | 2024-02-28 in [`baa02905f`](https://github.com/taysta/TaystJK/commit/baa02905f40f33652a2ae326fe55ece2642169c1) ([how to compare this against your build](/TaystJK/features/whats-new/#how-to-tell-what-your-build-has)) |
 | In-game xdocs | No |
 | In-game menu | No |
-| Syntax | `selectfiremode` |
-| Cheat protected | No |
 
 ## Arguments and gating
 

@@ -18,20 +18,20 @@ Controls `com_affinity` in the engine-shared module. Consult the cited behavior 
 
 | Field | Value |
 |:--|:--|
+| Default | `0` |
+| Value type | `string` |
+| Restart | No latch flag is registered. |
+| Manually settable | Yes |
+| Cheat protected | No |
+| Network scope | `client-or-server`: Engine code in both the client and the dedicated server; each uses its own value. |
 | Category | Engine & diagnostics |
 | Module | `engine-shared` |
 | Renderer | All / not renderer-specific |
-| Network scope | `client-or-server`: Engine code in both the client and the dedicated server; each uses its own value. |
 | Derivation | `code-trace` |
 | Confidence | `medium` |
 | Added | 2014-04-04 in [`d3ecd6191`](https://github.com/taysta/TaystJK/commit/d3ecd6191c5b92509a6491f10eac74cabf8a8daa) <span class="status-chip">needs review</span> ([how to compare this against your build](/TaystJK/features/whats-new/#how-to-tell-what-your-build-has)) |
 | In-game xdocs | No |
 | In-game menu | No |
-| Default | `0` |
-| Value type | `string` |
-| Restart | No latch flag is registered. |
-| Cheat protected | No |
-| Manually settable | Yes |
 
 ## Values
 

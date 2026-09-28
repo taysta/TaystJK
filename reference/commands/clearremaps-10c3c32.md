@@ -18,17 +18,17 @@ Runs `R_ClearRemaps_f` in the renderer module.
 
 | Field | Value |
 |:--|:--|
+| Syntax | `clearRemaps` |
+| Cheat protected | No |
+| Network scope | `client-only`: Local to the client/UI/renderer. |
 | Category | Graphics & rendering |
 | Module | `renderer` |
 | Renderer | `rd-rend2`, `rd-vanilla`, `rd-vulkan` |
-| Network scope | `client-only`: Local to the client/UI/renderer. |
 | Derivation | `code-trace` |
 | Confidence | `medium` |
 | Added | 2019-03-21 in [`be875666a`](https://github.com/taysta/TaystJK/commit/be875666ac5d4aa150d79ca1d7e0b060609fdc28) <span class="status-chip">needs review</span> ([how to compare this against your build](/TaystJK/features/whats-new/#how-to-tell-what-your-build-has)) |
 | In-game xdocs | No |
 | In-game menu | No |
-| Syntax | `clearRemaps` |
-| Cheat protected | No |
 
 ## Arguments and gating
 

@@ -18,18 +18,18 @@ Runs `CG_PluginDisable_f` in the cgame module.
 
 | Field | Value |
 |:--|:--|
+| Syntax | `pluginDisable [arguments]` |
+| Cheat protected | No |
+| Configures | [`cp_pluginDisable`](/TaystJK/reference/cvars/cp_plugindisable-715762d/) |
+| Network scope | `client-only`: Local to the client/UI/renderer. |
 | Category | Gameplay & combat |
 | Module | `cgame` |
 | Renderer | All / not renderer-specific |
-| Network scope | `client-only`: Local to the client/UI/renderer. |
 | Derivation | `code-trace` |
 | Confidence | `medium` |
 | Added | 2018-09-03 in [`bdcd618c6`](https://github.com/taysta/TaystJK/commit/bdcd618c67713b86946b720d791c382d3908d97c) <span class="status-chip">needs review</span> ([how to compare this against your build](/TaystJK/features/whats-new/#how-to-tell-what-your-build-has)) |
 | In-game xdocs | No |
 | In-game menu | No |
-| Syntax | `pluginDisable [arguments]` |
-| Cheat protected | No |
-| Configures | [`cp_pluginDisable`](/TaystJK/reference/cvars/cp_plugindisable-715762d/) |
 
 ## Arguments and gating
 

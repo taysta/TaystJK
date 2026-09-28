@@ -19,17 +19,17 @@ Determines which search path a file was loaded from
 
 | Field | Value |
 |:--|:--|
+| Syntax | `which <file>` |
+| Cheat protected | No |
+| Network scope | `client-or-server`: Engine code in both the client and the dedicated server; each uses its own value. |
 | Category | Engine & diagnostics |
 | Module | `engine-shared` |
 | Renderer | All / not renderer-specific |
-| Network scope | `client-or-server`: Engine code in both the client and the dedicated server; each uses its own value. |
 | Derivation | `documented` |
 | Confidence | `medium` |
 | Added | 2013-12-23 in [`924f4bc4f`](https://github.com/taysta/TaystJK/commit/924f4bc4fbf3bbb84b6347d594d3f5daf475accb) <span class="status-chip">needs review</span> ([how to compare this against your build](/TaystJK/features/whats-new/#how-to-tell-what-your-build-has)) |
 | In-game xdocs | No |
 | In-game menu | Yes: [ingame_setup.menu:4192](https://github.com/taysta/TaystJK/blame/b35ed06fec41c53644352743c6b199a5d5d500f3/assets/japro/ui/jamp/ingame_setup.menu#L4192) |
-| Syntax | `which <file>` |
-| Cheat protected | No |
 
 ## Arguments and gating
 

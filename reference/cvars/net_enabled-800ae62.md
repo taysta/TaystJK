@@ -18,20 +18,20 @@ Controls `net_enabled` in the engine-shared module. Consult the cited behavior r
 
 | Field | Value |
 |:--|:--|
+| Default | `1` |
+| Value type | `bitmask` |
+| Restart | Yes; the value is latched. |
+| Manually settable | Yes |
+| Cheat protected | No |
+| Network scope | `client-or-server`: Engine code in both the client and the dedicated server; each uses its own value. |
 | Category | Server & networking |
 | Module | `engine-shared` |
 | Renderer | All / not renderer-specific |
-| Network scope | `client-or-server`: Engine code in both the client and the dedicated server; each uses its own value. |
 | Derivation | `code-trace` |
 | Confidence | `medium` |
 | Added | 2014-01-31 in [`cd5d3753f`](https://github.com/taysta/TaystJK/commit/cd5d3753f0a75b3cde603080fb770a600540e13c) <span class="status-chip">needs review</span> ([how to compare this against your build](/TaystJK/features/whats-new/#how-to-tell-what-your-build-has)) |
 | In-game xdocs | No |
 | In-game menu | No |
-| Default | `1` |
-| Value type | `bitmask` |
-| Restart | Yes; the value is latched. |
-| Cheat protected | No |
-| Manually settable | Yes |
 
 ## Values
 

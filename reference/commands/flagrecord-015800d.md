@@ -17,17 +17,17 @@ Marks a player's race record on this server's local database. Mode f flags it in
 
 | Field | Value |
 |:--|:--|
+| Syntax | `flagRecord <username> <coursename> <style> <season> <f|u|d>` |
+| Cheat protected | No |
+| Network scope | `needs-server-support`: Sent to, or only useful with, a supporting game server. |
 | Category | Demos & media |
 | Module | `game` |
 | Renderer | All / not renderer-specific |
-| Network scope | `needs-server-support`: Sent to, or only useful with, a supporting game server. |
 | Derivation | `code-trace` |
 | Confidence | `high` |
 | Added | 2023-12-11 in [`9b57ee1b8`](https://github.com/taysta/TaystJK/commit/9b57ee1b856693898de14daff824dcf111f94b57) ([how to compare this against your build](/TaystJK/features/whats-new/#how-to-tell-what-your-build-has)) |
 | In-game xdocs | No |
 | In-game menu | No |
-| Syntax | `flagRecord <username> <coursename> <style> <season> <f|u|d>` |
-| Cheat protected | No |
 
 ## Arguments and gating
 

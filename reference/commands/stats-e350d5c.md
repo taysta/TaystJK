@@ -17,18 +17,18 @@ Rename to info?
 
 | Field | Value |
 |:--|:--|
+| Syntax | `stats <username> <type (optional - example: race/combat)> <page (optional)>` |
+| Cheat protected | No |
+| Network scope | `needs-server-support`: Sent to, or only useful with, a supporting game server. |
 | Category | Gameplay & combat |
 | Module | `cgame` |
 | Also registered in | `game` |
 | Renderer | All / not renderer-specific |
-| Network scope | `needs-server-support`: Sent to, or only useful with, a supporting game server. |
 | Derivation | `documented` |
 | Confidence | `high` |
 | Added | 2013-04-08 in [`14cea1563`](https://github.com/taysta/TaystJK/commit/14cea1563762076974bee277afadbd5bf234c494) ([how to compare this against your build](/TaystJK/features/whats-new/#how-to-tell-what-your-build-has)) |
 | In-game xdocs | No |
 | In-game menu | No |
-| Syntax | `stats <username> <type (optional - example: race/combat)> <page (optional)>` |
-| Cheat protected | No |
 
 ## Arguments and gating
 

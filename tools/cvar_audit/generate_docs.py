@@ -1044,6 +1044,26 @@ def detail_page(entry: dict[str, Any], refs: dict[str, str], cvar_names: dict[st
         if notice:
             lines.extend([notice, ""])
     lines.extend([entry["description"], "", "## At a glance", "", "| Field | Value |", "|:--|:--|"])
+    # What a player or host acts on leads the table; where the entry comes from follows.
+    if entry["kind"] == "cvar":
+        lines.extend([
+            f"| Default | {default_cell(entry)} |",
+            f"| Value type | {code(entry['value_type'])} |",
+            f"| Restart | {'Yes; the value is latched.' if entry['requires_restart'] else 'No latch flag is registered.'} |",
+            f"| Manually settable | {'No; the game writes this value.' if entry.get('engine_managed') else 'Yes'} |",
+            f"| Cheat protected | {'Yes' if entry['cheat_protected'] else 'No'} |",
+            *([f"| Staging copy of | {mirror_row(entry, cvar_names or {})} |"] if entry.get("menu_mirror") else []),
+            *([f"| Configure with | {joined([command_link(name) for name in entry['bits']['commands']])} |"]
+              if (entry.get("bits") or {}).get("commands") else []),
+        ])
+    else:
+        lines.extend([
+            f"| Syntax | {code(entry['syntax'])} |",
+            f"| Cheat protected | {'Yes' if entry['cheat_protected'] else 'No'} |",
+            *([f"| Configures | {', '.join(command_link(name, 'cvar') for name in entry['configures'])} |"]
+              if entry.get("configures") else []),
+        ])
+    lines.append(f"| Network scope | {code(entry['network'])}: {NETWORK_HELP.get(entry['network'], '')} |")
     lines.append(f"| Category | {entry['category']} |")
     if entry.get("feature"):
         lines.append(f"| Feature family | {entry['feature']} |")
@@ -1054,7 +1074,6 @@ def detail_page(entry: dict[str, Any], refs: dict[str, str], cvar_names: dict[st
         f"| Module | {code(entry['module'])} |",
         *([f"| Also registered in | {', '.join(code(value) for value in other_modules)} |"] if other_modules else []),
         f"| Renderer | {', '.join(code(value) for value in entry.get('renderer', [])) or 'All / not renderer-specific'} |",
-        f"| Network scope | {code(entry['network'])}: {NETWORK_HELP.get(entry['network'], '')} |",
         f"| Derivation | {code(entry['derivation'])} |",
         f"| Confidence | {code(entry['confidence'])} |",
         *( [added_on_row(entry)] if added_on_row(entry) else [] ),
@@ -1082,18 +1101,7 @@ def detail_page(entry: dict[str, Any], refs: dict[str, str], cvar_names: dict[st
         f"| In-game menu | {menu_value} |",
     ])
     if entry["kind"] == "cvar":
-        lines.extend([
-            f"| Default | {default_cell(entry)} |",
-            f"| Value type | {code(entry['value_type'])} |",
-            f"| Restart | {'Yes; the value is latched.' if entry['requires_restart'] else 'No latch flag is registered.'} |",
-            f"| Cheat protected | {'Yes' if entry['cheat_protected'] else 'No'} |",
-            f"| Manually settable | {'No; the game writes this value.' if entry.get('engine_managed') else 'Yes'} |",
-            *([f"| Staging copy of | {mirror_row(entry, cvar_names or {})} |"] if entry.get("menu_mirror") else []),
-            *([f"| Configure with | {joined([command_link(name) for name in entry['bits']['commands']])} |"]
-              if (entry.get("bits") or {}).get("commands") else []),
-            "",
-            *(bit_table(entry) or ["## Values", "", value_table(entry), ""]),
-        ])
+        lines.extend(["", *(bit_table(entry) or ["## Values", "", value_table(entry), ""])])
         if entry.get("range"):
             lines.extend(["## Enforced ranges", ""])
             for item in entry["range"]:
@@ -1115,13 +1123,7 @@ def detail_page(entry: dict[str, Any], refs: dict[str, str], cvar_names: dict[st
             for value, module, renderer, condition in sorted(defaults, key=lambda item: tuple(str(x) for x in item)):
                 lines.append(f"| {code(value)} | {code(module)} | {code(renderer or '—')} | {code(condition or 'always')} |")
     else:
-        lines.extend([
-            f"| Syntax | {code(entry['syntax'])} |",
-            f"| Cheat protected | {'Yes' if entry['cheat_protected'] else 'No'} |",
-            *([f"| Configures | {', '.join(command_link(name, 'cvar') for name in entry['configures'])} |"]
-              if entry.get("configures") else []),
-            "", "## Arguments and gating", "",
-        ])
+        lines.extend(["", "## Arguments and gating", ""])
         if entry.get("arguments"):
             lines.append("Arguments: " + ", ".join(code(value) for value in entry["arguments"]) + ".")
         else:

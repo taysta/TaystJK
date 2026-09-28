@@ -19,17 +19,17 @@ Delete a demo
 
 | Field | Value |
 |:--|:--|
+| Syntax | `deletedemo` |
+| Cheat protected | No |
+| Network scope | `client-only`: Local to the client/UI/renderer. |
 | Category | Demos & media |
 | Module | `engine-client` |
 | Renderer | All / not renderer-specific |
-| Network scope | `client-only`: Local to the client/UI/renderer. |
 | Derivation | `documented` |
 | Confidence | `medium` |
 | Added | 2018-04-26 in [`98e5c2a48`](https://github.com/taysta/TaystJK/commit/98e5c2a48010c576340c61f85b857123fbd74b4c) <span class="status-chip">needs review</span> ([how to compare this against your build](/TaystJK/features/whats-new/#how-to-tell-what-your-build-has)) |
 | In-game xdocs | No |
 | In-game menu | Yes: [demo_delete.menu:177](https://github.com/taysta/TaystJK/blame/b35ed06fec41c53644352743c6b199a5d5d500f3/assets/japro/ui/jamp/demo_delete.menu#L177) |
-| Syntax | `deletedemo` |
-| Cheat protected | No |
 
 ## Arguments and gating
 

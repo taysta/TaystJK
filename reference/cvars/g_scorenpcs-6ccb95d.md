@@ -18,20 +18,20 @@ Controls `g_scoreNPCs` in the game module. Consult the cited behavior reads befo
 
 | Field | Value |
 |:--|:--|
+| Default | `2` |
+| Value type | `int` |
+| Restart | No latch flag is registered. |
+| Manually settable | Yes |
+| Cheat protected | No |
+| Network scope | `server-authoritative`: Owned or enforced by the server. |
 | Category | Bots & AI |
 | Module | `game` |
 | Renderer | All / not renderer-specific |
-| Network scope | `server-authoritative`: Owned or enforced by the server. |
 | Derivation | `code-trace` |
 | Confidence | `medium` |
 | Added | 2018-10-02 in [`3340e21e2`](https://github.com/taysta/TaystJK/commit/3340e21e273b5f68f4e617ac35b38bedc5d34d81) <span class="status-chip">needs review</span> ([how to compare this against your build](/TaystJK/features/whats-new/#how-to-tell-what-your-build-has)) |
 | In-game xdocs | No |
 | In-game menu | No |
-| Default | `2` |
-| Value type | `int` |
-| Restart | No latch flag is registered. |
-| Cheat protected | No |
-| Manually settable | Yes |
 
 ## Values
 
