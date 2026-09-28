@@ -1263,13 +1263,14 @@ kbd { padding: .15rem .42rem; color: var(--text-soft); background: var(--surface
   .header-github { display: none; }
   .brand-mark { width: 34px; height: 34px; }
   /* The header is flex here, so the grid-column rule the search box gets at 900px does
-     nothing. The tabs take a full-width second row, where all seven fit from 360px, and
-     the search box shares the first row with the brand and the theme toggle. */
+     nothing. The search box shares the first row with the brand and the theme toggle.
+     The seven tabs take a full-width grid below it, four to a row, so each keeps
+     readable text and a tap target about 40px tall down to 360px. */
   .header-inner { flex-wrap: wrap; row-gap: .5rem; padding-bottom: .5rem; }
   .site-search { flex: 1; order: 1; }
   .theme-toggle { order: 2; }
-  .site-nav { flex: 1 0 100%; order: 3; justify-content: space-between; gap: 0; }
-  .site-nav a { padding: .45rem .28rem; font-size: .7rem; }
+  .site-nav { display: grid; flex: 1 0 100%; order: 3; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: .15rem; overflow: visible; }
+  .site-nav a { display: flex; align-items: center; justify-content: center; min-height: 40px; padding: .35rem .25rem; font-size: .82rem; text-align: center; }
   .wip-banner-inner { flex-wrap: wrap; gap: .1rem .45rem; width: min(calc(100% - 1.25rem), var(--wide)); padding: .5rem 0; line-height: 1.4; }
   .site-main,
   .site-main-wide,
@@ -1454,7 +1455,9 @@ kbd { padding: .15rem .42rem; color: var(--text-soft); background: var(--surface
 
 @media (max-width: 900px) {
   .header-inner { grid-template-columns: auto 1fr auto auto; gap: .8rem; }
-  .site-search { grid-column: 1 / -1; justify-self: stretch; }
+  /* A definite row keeps the theme toggle and GitHub link on the first row; placed
+     automatically, they follow the search box onto a third. */
+  .site-search { grid-column: 1 / -1; grid-row: 2; justify-self: stretch; }
   .site-search input,
   .site-search input:focus { width: 100%; }
   .search-results { width: 100%; }
