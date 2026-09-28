@@ -1981,7 +1981,7 @@ extern int forcePowerDarkLight[NUM_FORCE_POWERS];
 #define	HYPERSPACE_SPEED			10000.0f//was 30000
 #define	HYPERSPACE_TURN_RATE		45.0f
 
-extern const char *gametypeStringShort[GT_MAX_GAME_TYPE];
+const char *BG_GetGametypeStringShort( int gametype );
 const char *BG_GetGametypeString( int gametype );
 int BG_GetGametypeForString( const char *gametype );
 

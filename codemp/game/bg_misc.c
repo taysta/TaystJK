@@ -3306,7 +3306,7 @@ qboolean BG_OutOfMemory ( void )
 	return bg_poolSize >= MAX_POOL_SIZE;
 }
 
-const char *gametypeStringShort[GT_MAX_GAME_TYPE] = {
+static const char *gametypeStringShort[GT_MAX_GAME_TYPE] = {
 	"FFA",
 	"HOLO",
 	"JM",
@@ -3318,6 +3318,14 @@ const char *gametypeStringShort[GT_MAX_GAME_TYPE] = {
 	"CTF",
 	"CTY"
 };
+
+//Lugormod sends gametypes past GT_MAX_GAME_TYPE
+const char *BG_GetGametypeStringShort( int gametype )
+{
+	if ( gametype < 0 || gametype >= GT_MAX_GAME_TYPE )
+		return "UNK";
+	return gametypeStringShort[gametype];
+}
 
 const char *BG_GetGametypeString( int gametype )
 {

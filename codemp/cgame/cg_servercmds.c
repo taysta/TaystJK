@@ -1257,7 +1257,7 @@ static void CG_MapRestart( void ) {
 		strftime(timeBuf, sizeof(timeBuf), "%Y-%m-%d_%H-%M-%S", gmtime(&rawtime));
 		Q_strncpyz(mapname, cgs.mapname + 5, sizeof(mapname));
 		COM_StripExtension(mapname, mapname, sizeof(mapname));
-		Com_sprintf(buf, sizeof(buf), "%s_%s_%s_%s", timeBuf, gametypeStringShort[cgs.gametype], mapname, cgs.clientinfo[cg.clientNum].name);
+		Com_sprintf(buf, sizeof(buf), "%s_%s_%s_%s", timeBuf, BG_GetGametypeStringShort(cgs.gametype), mapname, cgs.clientinfo[cg.clientNum].name);
 		Q_strstrip(buf, "\n\r;:?*<>|\"\\/ ", NULL);
 		Q_CleanStr(buf);
 		cg.recording = qtrue;
