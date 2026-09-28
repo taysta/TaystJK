@@ -6354,6 +6354,7 @@ static int PM_TryRoll( void )
 	if ((pm->ps->weapon != WP_SABER && pm->ps->weapon != WP_MELEE && (!(g_tweakWeapons.integer & WT_ALLOW_GUNROLL) || pm->ps->stats[STAT_RACEMODE]) && (pm->ps->weapon != WP_STUN_BATON || !pm->ps->stats[STAT_RACEMODE])) ||
 #else
 	if ((pm->ps->weapon != WP_SABER && pm->ps->weapon != WP_MELEE &&
+		(cgs.serverMod != SVMOD_LMD || pm->ps->weapon != WP_STUN_BATON) && //Lugormod rolls with the stun baton too
 		(!(cgs.jcinfo & JAPRO_CINFO_GUNROLL) || IsRacemode(pm->ps)) &&
 		(pm->ps->weapon != WP_STUN_BATON || !IsRacemode(pm->ps))) ||
 #endif
