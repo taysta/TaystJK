@@ -3,7 +3,8 @@
 This is the shared project guide for coding agents working on the GitHub Pages wiki.
 Read [CONVENTIONS.md](CONVENTIONS.md) for page structure, prose, source links, and
 editorial overrides. Read [the audit guide](tools/cvar_audit/README.md) when changing
-reference data or the generation pipeline.
+reference data or the generation pipeline. [EDITING.md](EDITING.md) is the maintainer's
+checklist for editing hand-written pages; keep it accurate when a step it describes changes.
 
 ## Working agreements
 
