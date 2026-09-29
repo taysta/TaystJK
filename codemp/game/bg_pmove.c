@@ -4279,9 +4279,11 @@ static qboolean PM_CheckJump( void )
 
 #ifdef _GAME
 						if (g_flipKick.integer > 2)
+#else
+						if (cgs.serverMod == SVMOD_JAPRO && (cgs.jcinfo & JAPRO_CINFO_FIXSIDEKICK))
+#endif
 							pm->ps->legsTimer = 0;
 						else
-#endif
 							pm->ps->legsTimer -= 600; //I force this anim to play to the end to prevent landing on your head and suddenly flipping over.
 											  //It is a bit too long at the end though, so I'll just shorten it.
 
@@ -9108,6 +9110,9 @@ void PM_FinishWeaponChange( void ) {
 	else
 		pm->ps->weaponTime += 50;
 #else
+	if (IsJaPRO() && (cgs.jcinfo2 & JAPRO_CINFO2_FIXEDWEAPONS))
+		pm->ps->weaponTime += 50;
+	else
 		pm->ps->weaponTime += 250;
 #endif
 
@@ -9365,8 +9370,10 @@ static qboolean PM_DoChargedWeapons( qboolean vehicleRocketLock, bgEntity_t *veh
 				}
 				altFire = qtrue;
 #else
-				PM_RocketLock(2048,qfalse);
-				charging = qtrue;
+				if (!(IsJaPRO() && (cgs.jcinfo2 & JAPRO_CINFO2_FIXEDWEAPONS)) || pm->ps->stats[STAT_RACEMODE]) {//fixed jaPRO only locks on in racemode, older builds always do
+					PM_RocketLock(2048,qfalse);
+					charging = qtrue;
+				}
 				altFire = qtrue;
 #endif
 			}
@@ -9464,6 +9471,8 @@ static qboolean PM_DoChargedWeapons( qboolean vehicleRocketLock, bgEntity_t *veh
 				{
 #ifdef _GAME
 					if (!pm->ps->stats[STAT_RACEMODE] && !(g_tweakWeapons.integer & WT_INFINITE_AMMO))
+#else
+					if (!IsRacemode(pm->ps))
 #endif
 						pm->ps->ammo[weaponData[pm->ps->weapon].ammoIndex] -= weaponData[pm->ps->weapon].altChargeSub;
 					pm->ps->weaponChargeSubtractTime = pm->cmd.serverTime + weaponData[pm->ps->weapon].altChargeSubTime;
@@ -9505,6 +9514,8 @@ static qboolean PM_DoChargedWeapons( qboolean vehicleRocketLock, bgEntity_t *veh
 				{
 #ifdef _GAME
 					if (!pm->ps->stats[STAT_RACEMODE] && !(g_tweakWeapons.integer & WT_INFINITE_AMMO))
+#else
+					if (!IsRacemode(pm->ps))
 #endif
 						pm->ps->ammo[weaponData[pm->ps->weapon].ammoIndex] -= weaponData[pm->ps->weapon].chargeSub;
 					pm->ps->weaponChargeSubtractTime = pm->cmd.serverTime + weaponData[pm->ps->weapon].chargeSubTime;
@@ -11085,6 +11096,15 @@ if (pm->ps->duelInProgress)
 			else if (pm->ps->weapon == WP_FLECHETTE && g_tweakWeapons.integer & WT_STAKE_GUN)
 				amount = 0;//Detonating stakes shouldnt take ammo
 		}
+#else
+		if (IsRacemode(pm->ps)) {
+			if (pm->ps->stats[STAT_MOVEMENTSTYLE] == MV_COOP_JKA)
+				amount = 0;
+			else if (pm->ps->weapon == WP_ROCKET_LAUNCHER)
+				amount = 1;
+		}
+		else if (IsJaPRO() && pm->ps->weapon == WP_ROCKET_LAUNCHER && (cgs.jcinfo2 & JAPRO_CINFO2_WTTRIBES))
+			amount = 1;
 #endif
 	}
 	else
@@ -11104,6 +11124,15 @@ if (pm->ps->duelInProgress)
 				amount = 0;
 			else if (pm->ps->weapon == WP_FLECHETTE && g_tweakWeapons.integer & WT_STAKE_GUN)
 				amount = 10;//5 ammo per stake? eh
+		}
+#else
+		if (IsRacemode(pm->ps)) {
+			if (pm->ps->stats[STAT_MOVEMENTSTYLE] == MV_COOP_JKA)
+				amount = 0;
+			else if (pm->ps->weapon == WP_ROCKET_LAUNCHER)
+				amount = 1;
+			else if (pm->ps->weapon == WP_DET_PACK)
+				amount = 1;
 		}
 #endif
 	}
@@ -11252,6 +11281,8 @@ if (pm->ps->duelInProgress)
 			addTime = 100;
 		break;
 	case WP_BRYAR_PISTOL:
+		if (!pm->ps->stats[STAT_RACEMODE] && (cgs.jcinfo2 & JAPRO_CINFO2_WTTRIBES))
+			addTime = 1000;
 		break;
 	case WP_BLASTER:
 		if ((pm->cmd.buttons & BUTTON_ALT_ATTACK) && IsRacemode(pm->ps))
@@ -11275,7 +11306,7 @@ if (pm->ps->duelInProgress)
 		break;
 	case WP_REPEATER:
 		if ((pm->cmd.buttons & BUTTON_ALT_ATTACK) && !pm->ps->stats[STAT_RACEMODE] && (cgs.jcinfo2 & JAPRO_CINFO2_WTTRIBES))
-			addTime = 3000;
+			addTime = 2500;
 		else if (!(pm->cmd.buttons & BUTTON_ALT_ATTACK) && !pm->ps->stats[STAT_RACEMODE] && (cgs.jcinfo2 & JAPRO_CINFO2_WTTRIBES))
 			addTime = 200;
 		break;
@@ -11303,7 +11334,7 @@ if (pm->ps->duelInProgress)
 		break;
 	case WP_CONCUSSION:
 		if ((pm->cmd.buttons & BUTTON_ALT_ATTACK) && !pm->ps->stats[STAT_RACEMODE] && (cgs.jcinfo2 & JAPRO_CINFO2_WTTRIBES))
-			addTime = 800;
+			addTime = 1400;
 		else if (!(pm->cmd.buttons & BUTTON_ALT_ATTACK) && !pm->ps->stats[STAT_RACEMODE] && (cgs.jcinfo2 & JAPRO_CINFO2_WTTRIBES))
 			addTime = 1200;
 		break;
@@ -15643,6 +15674,8 @@ void PmoveSingle (pmove_t *pmove) {
 	{
 #if _GAME
 		if (!(g_tweakWeapons.integer & WT_TRIBES) || pm->ps->stats[STAT_RACEMODE])
+#else
+		if (!(cgs.jcinfo2 & JAPRO_CINFO2_WTTRIBES) || IsRacemode(pm->ps))
 #endif
 			pm->ps->fd.forcePowerSelected = pm->cmd.forcesel;
 	}
@@ -15877,4 +15910,3 @@ void Pmove (pmove_t *pmove) {
 		}
 	}
 }
-
