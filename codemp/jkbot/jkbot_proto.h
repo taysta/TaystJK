@@ -95,7 +95,7 @@ typedef struct jkb_agent_setup_s {
 	int32_t		client;			// client slot
 	int32_t		ping_up_ms;
 	int32_t		ping_down_ms;
-	int32_t		num_chat_events;	// scripted chat for this agent's opponent, if a stock bot
+	int32_t		num_chat_events;	// scripted chat (stock bot only; agents chat by command)
 	char		name[JKB_NAME_LEN];
 	char		model[JKB_NAME_LEN];
 	char		saber1[JKB_NAME_LEN];
@@ -113,8 +113,9 @@ typedef struct jkb_reset_s {
 	int32_t		timelimit_min;
 	int32_t		pad0;
 	jkb_agent_setup_t	agents[JKB_MAX_AGENTS];
+	jkb_agent_setup_t	bot;	// the stock bot when opponent_kind is JKB_OPPONENT_STOCK_BOT
 } jkb_reset_t;
-JKB_STATIC_ASSERT( sizeof( jkb_reset_t ) == 768, "jkb_reset_t size" );
+JKB_STATIC_ASSERT( sizeof( jkb_reset_t ) == 1136, "jkb_reset_t size" );
 
 typedef struct jkb_usercmd_s {	// usercmd_t, fixed width
 	int32_t		server_time;
@@ -184,7 +185,7 @@ typedef struct jkb_obs_s {
 	uint32_t	frame_hash[2];	// state hash of the server frame (P1-ENG-07), low word first
 	int32_t		level_start_time;	// configstring CS_LEVEL_START_TIME
 	int32_t		pad0;
-	int32_t		scores[JKB_MAX_AGENTS];	// scoreboard score per agent, in agents[] order
+	int32_t		scores[2];		// duelist scores: [0] agents[0]'s client, [1] the other duelist
 	jkb_agent_obs_t	agents[JKB_MAX_AGENTS];
 } jkb_obs_t;
 JKB_STATIC_ASSERT( sizeof( jkb_obs_t ) == 73456, "jkb_obs_t size" );
