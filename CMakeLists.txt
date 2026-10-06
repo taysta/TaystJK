@@ -46,6 +46,8 @@ option(BuildMPRend2 "Whether to create projects for the EXPERIMENTAL MP rend2 re
 
 option(BuildDiscordRichPresence "Whether to build with Discord Rich Presence integration" ON)
 
+option(JKBOT_AGENT "Build the JKBot agent and bridge endpoint into the dedicated server (simulator only; never set for release builds)" OFF)
+
 option(BuildTests "Whether to build automatic unit tests (requires Boost)" OFF)
 option(UseAddressSanitizer "Whether to enable runtime address sanitizer" OFF)
 option(UseUndefinedSanitizer "Whether to enable runtime Undefined Behavior sanitizer" OFF)

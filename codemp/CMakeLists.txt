@@ -790,6 +790,17 @@ if(BuildMPDed)
 		)
 	source_group("null" FILES ${MPDedNullFiles})
 	set(MPDedFiles ${MPDedFiles} ${MPDedNullFiles})
+
+	# JKBot (codemp/jkbot/README.md): the agent and bridge endpoint compile only with JKBOT_AGENT.
+	set(MPDedJKBotFiles
+		"${MPDir}/jkbot/jkbot_agent.cpp"
+		"${MPDir}/jkbot/jkbot_agent.h"
+		)
+	source_group("jkbot" FILES ${MPDedJKBotFiles})
+	set(MPDedFiles ${MPDedFiles} ${MPDedJKBotFiles})
+	if(JKBOT_AGENT)
+		set(MPDedDefines ${MPDedDefines} "JKBOT_AGENT")
+	endif()
 	if(WIN32)
 		set(MPDedWin32Files
 			"${MPDir}/win32/openjkded.rc"
