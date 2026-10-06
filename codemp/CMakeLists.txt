@@ -795,6 +795,7 @@ if(BuildMPDed)
 	set(MPDedJKBotFiles
 		"${MPDir}/jkbot/jkbot_agent.cpp"
 		"${MPDir}/jkbot/jkbot_agent.h"
+		"${MPDir}/jkbot/jkbot_proto.h"
 		)
 	source_group("jkbot" FILES ${MPDedJKBotFiles})
 	set(MPDedFiles ${MPDedFiles} ${MPDedJKBotFiles})
