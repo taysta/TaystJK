@@ -37,6 +37,9 @@ void JKBot_AgentForget( int clientNum );
 usercmd_t *JKBot_AgentCmd( int clientNum );  // the agent's held usercmd
 void JKBot_AgentCmdConsumed( int clientNum );  // a client frame took it
 
+// bridge.cpp
+void JKBot_BridgeService( void );  // from SV_Frame while lockstep is idle
+
 // reset.cpp
 struct jkb_reset_s;
 void JKBot_ResetInit( void );

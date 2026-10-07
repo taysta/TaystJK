@@ -1200,6 +1200,7 @@ void SV_Frame( int msec ) {
 #ifdef JKBOT_AGENT
 	// Lockstep: time advances only through STEP, which calls SV_Frame itself (jkbot/lockstep.cpp).
 	if ( JKBot_Lockstep() && !JKBot_Stepping() ) {
+		JKBot_BridgeService();  // with jkbot_bridge set: serve the env until it disconnects
 		return;
 	}
 #endif

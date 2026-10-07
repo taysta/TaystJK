@@ -803,6 +803,7 @@ if(BuildMPDed)
 			"${MPDir}/jkbot/export.cpp"
 			"${MPDir}/jkbot/netsched.cpp"
 			"${MPDir}/jkbot/reset.cpp"
+			"${MPDir}/jkbot/bridge.cpp"
 			"${MPDir}/jkbot/jkbot_fields.h"
 			)
 		source_group("jkbot" FILES ${MPDedJKBotFiles})
