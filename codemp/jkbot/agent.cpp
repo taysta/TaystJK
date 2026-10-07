@@ -55,7 +55,7 @@ static client_t *AgentClient( const char *arg ) {
 	return &svs.clients[n];
 }
 
-static int AddAgent( const char *name, const char *model, const char *saber1, const char *saber2 ) {
+int JKBot_AddAgent( const char *name, const char *model, const char *saber1, const char *saber2 ) {
 	if ( !com_sv_running->integer || sv.state != SS_GAME ) {
 		Com_Printf( "jkbot_agent_add: no game running\n" );
 		return -1;
@@ -124,6 +124,14 @@ static int AddAgent( const char *name, const char *model, const char *saber1, co
 	return clientNum;
 }
 
+// Stop treating the slot as an agent (before the server drops the client).
+void JKBot_AgentForget( int clientNum ) {
+	if ( clientNum >= 0 && clientNum < MAX_CLIENTS ) {
+		agents[clientNum].active = qfalse;
+		JKBot_NetDrop( clientNum );
+	}
+}
+
 usercmd_t *JKBot_AgentCmd( int clientNum ) {
 	return &agents[clientNum].cmd;
 }
@@ -149,7 +157,7 @@ static void JKBot_AgentAdd_f( void ) {
 		Com_Printf( "usage: jkbot_agent_add <name> <model> <saber1> [saber2]\n" );
 		return;
 	}
-	int n = AddAgent( Cmd_Argv( 1 ), Cmd_Argv( 2 ), Cmd_Argv( 3 ), Cmd_Argc() > 4 ? Cmd_Argv( 4 ) : "none" );
+	int n = JKBot_AddAgent( Cmd_Argv( 1 ), Cmd_Argv( 2 ), Cmd_Argv( 3 ), Cmd_Argc() > 4 ? Cmd_Argv( 4 ) : "none" );
 	Com_Printf( "jkbot_agent %d\n", n );
 }
 

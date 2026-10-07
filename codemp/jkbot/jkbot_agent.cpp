@@ -18,9 +18,10 @@ static int jkbot_gameTime;
 // jkbot_status: one machine-readable line for the sim harness.
 static void JKBot_Status_f( void ) {
 	Com_Printf( "jkbot_status frames=%d sv.time=%d svs.time=%d state=%d game.time=%d residual=%d "
-		"lockstep=%d steps=%d virtual=%d step_msec=%d hash=%016llx\n", jkbot_frames, sv.time,
-		svs.time, (int)sv.state, jkbot_gameTime, sv.timeResidual, (int)JKBot_Lockstep(),
-		JKBot_Steps(), JKBot_VirtualMsec(), JKB_USERCMD_MSEC, (unsigned long long)JKBot_FrameHash() );
+		"lockstep=%d steps=%d virtual=%d step_msec=%d hash=%016llx episode=%d round_start=%d\n",
+		jkbot_frames, sv.time, svs.time, (int)sv.state, jkbot_gameTime, sv.timeResidual,
+		(int)JKBot_Lockstep(), JKBot_Steps(), JKBot_VirtualMsec(), JKB_USERCMD_MSEC,
+		(unsigned long long)JKBot_FrameHash(), JKBot_EpisodeIndex(), JKBot_RoundStart() );
 }
 
 // jkbot_clients: one line per connected client (number, state, bot or agent, command time, origin,
@@ -37,11 +38,11 @@ static void JKBot_Clients_f( void ) {
 			Q_strcat( levels, sizeof( levels ), va( p ? ",%d" : "%d", ps->fd.forcePowerLevel[p] ) );
 		}
 		Com_Printf( "jkbot_client %d state=%d bot=%d agent=%d commandTime=%d origin=%.3f,%.3f,%.3f "
-			"velocity=%.3f,%.3f,%.3f groundEntityNum=%d pm_type=%d forceKnown=%d levitation=%d "
+			"velocity=%.3f,%.3f,%.3f groundEntityNum=%d pm_type=%d eFlags=%d forceKnown=%d levitation=%d "
 			"saberOffense=%d saberDefense=%d forceLevels=%s name=%s\n", i, (int)cl->state,
 			cl->netchan.remoteAddress.type == NA_BOT, (int)JKBot_IsAgent( i ), ps->commandTime,
 			ps->origin[0], ps->origin[1], ps->origin[2], ps->velocity[0], ps->velocity[1],
-			ps->velocity[2], ps->groundEntityNum, ps->pm_type, ps->fd.forcePowersKnown,
+			ps->velocity[2], ps->groundEntityNum, ps->pm_type, ps->eFlags, ps->fd.forcePowersKnown,
 			ps->fd.forcePowerLevel[FP_LEVITATION], ps->fd.forcePowerLevel[FP_SABER_OFFENSE],
 			ps->fd.forcePowerLevel[FP_SABER_DEFENSE], levels, cl->name );
 	}
@@ -55,6 +56,7 @@ void JKBot_Init( void ) {
 	JKBot_AgentInit();
 	JKBot_ExportInit();
 	JKBot_NetInit();
+	JKBot_ResetInit();
 	Com_Printf( "JKBot agent build (simulator only)\n" );
 }
 

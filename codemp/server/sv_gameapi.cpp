@@ -1241,6 +1241,9 @@ static int SV_BotGetServerCommand( int clientNum, char *message, int size ) {
 }
 
 static void SV_BotUserCommand( int clientNum, usercmd_t *ucmd ) {
+#ifdef JKBOT_AGENT
+	JKBot_BotUsercmd( clientNum, ucmd );  // scripted chat (episode samples)
+#endif
 	SV_ClientThink( &svs.clients[clientNum], ucmd );
 }
 
@@ -2255,6 +2258,9 @@ intptr_t SV_GameSystemCalls( intptr_t *args ) {
 	case BOTLIB_GET_CONSOLE_MESSAGE:
 		return SV_BotGetConsoleMessage( args[1], (char *)VMA(2), args[3] );
 	case BOTLIB_USER_COMMAND:
+#ifdef JKBOT_AGENT
+		JKBot_BotUsercmd( args[1], (struct usercmd_s *)VMA(2) );  // scripted chat (episode samples)
+#endif
 		SV_ClientThink( &svs.clients[args[1]], (struct usercmd_s *)VMA(2) );
 		return 0;
 

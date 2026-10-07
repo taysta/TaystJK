@@ -802,6 +802,7 @@ if(BuildMPDed)
 			"${MPDir}/jkbot/agent.cpp"
 			"${MPDir}/jkbot/export.cpp"
 			"${MPDir}/jkbot/netsched.cpp"
+			"${MPDir}/jkbot/reset.cpp"
 			"${MPDir}/jkbot/jkbot_fields.h"
 			)
 		source_group("jkbot" FILES ${MPDedJKBotFiles})

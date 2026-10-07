@@ -32,8 +32,18 @@ int JKBot_RandomSeed( int fallback );  // jkbot_seed if set
 void JKBot_AgentInit( void );
 qboolean JKBot_IsAgent( int clientNum );
 void JKBot_AgentsThink( void );  // after each STEP's SV_Frame
+int JKBot_AddAgent( const char *name, const char *model, const char *saber1, const char *saber2 );
+void JKBot_AgentForget( int clientNum );
 usercmd_t *JKBot_AgentCmd( int clientNum );  // the agent's held usercmd
 void JKBot_AgentCmdConsumed( int clientNum );  // a client frame took it
+
+// reset.cpp
+struct jkb_reset_s;
+void JKBot_ResetInit( void );
+qboolean JKBot_Reset( const struct jkb_reset_s *r, int *agentClients, int *botClient );
+void JKBot_BotUsercmd( int clientNum, usercmd_t *cmd );  // stock bots' usercmds (scripted chat)
+int JKBot_EpisodeIndex( void );
+int JKBot_RoundStart( void );
 
 // netsched.cpp
 void JKBot_NetInit( void );
