@@ -1051,6 +1051,9 @@ void CL_FlushMemory( void );
 void CL_StartHunkUsers( void );
 // start all the client stuff using the hunk
 
+void CL_SelfTest( void );
+// with the self-test cvar set: check the stock assets load, print the result and quit
+
 qboolean CL_ConnectedToRemoteServer( void );
 // returns qtrue if connected to a server
 

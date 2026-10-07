@@ -1551,6 +1551,8 @@ void Com_Init( char *commandLine ) {
 
 		com_fullyInitialized = qtrue;
 		Com_Printf ("--- Common Initialization Complete ---\n");
+
+		CL_SelfTest();
 	}
 	catch ( int code )
 	{

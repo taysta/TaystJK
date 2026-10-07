@@ -551,6 +551,14 @@ if(BuildMPEngine)
 	source_group("client" FILES ${MPEngineClientFiles})
 	set(MPEngineFiles ${MPEngineFiles} ${MPEngineClientFiles})
 
+	# JKBot recording and self-test code (codemp/jkbot/record/): no input endpoint, so it builds
+	# into every client, release included
+	set(MPEngineJKBotRecordFiles
+		"${MPDir}/jkbot/record/selftest.cpp"
+		)
+	source_group("jkbot\\record" FILES ${MPEngineJKBotRecordFiles})
+	set(MPEngineFiles ${MPEngineFiles} ${MPEngineJKBotRecordFiles})
+
 	set(MPEngineRatlFiles
 		"${MPDir}/Ratl/bits_vs.h"
 		"${MPDir}/Ratl/ratl_common.h"

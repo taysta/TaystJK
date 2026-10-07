@@ -82,6 +82,9 @@ void CL_FlushMemory( void ) {
 void CL_StartHunkUsers( void ) {
 }
 
+void CL_SelfTest( void ) {
+}
+
 qboolean CL_ConnectedToRemoteServer( void ) {
 	return qfalse;
 }

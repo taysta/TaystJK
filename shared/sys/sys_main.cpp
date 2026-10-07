@@ -258,9 +258,11 @@ void NORETURN QDECL Sys_Error( const char *error, ... )
 
 	// Only print Sys_ErrorDialog for client binary. The dedicated
 	// server binary is meant to be a command line program so you would
-	// expect to see the error printed.
+	// expect to see the error printed. Scripted client runs set
+	// com_noErrorDialog: the error is printed and nothing waits for a click.
 #if !defined(DEDICATED)
-	Sys_ErrorDialog( string );
+	if ( !Cvar_VariableIntegerValue( "com_noErrorDialog" ) )
+		Sys_ErrorDialog( string );
 #endif
 
 	Sys_Exit( 3 );
