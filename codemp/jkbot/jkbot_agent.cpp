@@ -54,6 +54,7 @@ void JKBot_Init( void ) {
 	JKBot_LockstepInit();
 	JKBot_AgentInit();
 	JKBot_ExportInit();
+	JKBot_NetInit();
 	Com_Printf( "JKBot agent build (simulator only)\n" );
 }
 

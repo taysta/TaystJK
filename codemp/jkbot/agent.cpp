@@ -6,15 +6,12 @@
  * called with isBot qfalse, then SV_UserinfoChanged and SV_ClientEnterWorld (GVM_ClientBegin).
  * The game module (jampgame) is untouched and sees an ordinary client.
  *
- * Each lockstep STEP, after SV_Frame, every agent's held usercmd goes to the game through
- * SV_ClientThink (GAME_CLIENT_THINK), stamped with the virtual time (sv.time + residual), so its
- * playerState's commandTime advances one usercmd period per STEP. Command strings go through
- * SV_ExecuteClientCommand (GAME_CLIENT_COMMAND).
- *
- * The loopback netchan never answers, so each STEP stands in for a zero-latency client's
- * replies: reliable commands and snapshots count as acknowledged (else the server drops the
- * client after MAX_RELIABLE_COMMANDS) and lastPacketTime is now. Latency arrives with the packet
- * scheduler (P1-ENG-08).
+ * Each lockstep STEP, after SV_Frame, every agent's held usercmd becomes one client frame's
+ * usercmd; netsched.cpp sends them in the client's packet pattern over the agent's link and, on
+ * arrival, gives them to the game through SV_ClientThink (GAME_CLIENT_THINK), then acknowledges
+ * snapshots and reliable commands as the client's packet would (else the server drops the
+ * client after MAX_RELIABLE_COMMANDS). Command strings go through SV_ExecuteClientCommand
+ * (GAME_CLIENT_COMMAND) at once.
  *
  * The agent's name always carries the bot label (ROADMAP System 7; ruleset 6.7, §4.1.2).
  *
@@ -123,35 +120,28 @@ static int AddAgent( const char *name, const char *model, const char *saber1, co
 	usercmd_t cmd = agents[clientNum].cmd;
 	cmd.serverTime = sv.time + sv.timeResidual;
 	SV_ClientEnterWorld( cl, &cmd );
+	JKBot_NetReset( clientNum, 0, 0, 100, 1 );  // until jkbot_agent_net or RESET sets the link
 	return clientNum;
 }
 
-// After each STEP's SV_Frame (lockstep.cpp).
+usercmd_t *JKBot_AgentCmd( int clientNum ) {
+	return &agents[clientNum].cmd;
+}
+
+void JKBot_AgentCmdConsumed( int clientNum ) {
+	agents[clientNum].cmd.generic_cmd = 0;  // a one-shot event, like a key press
+}
+
+// After each STEP's SV_Frame (lockstep.cpp): drop departed agents, then the agents' client frames
+// and packet arrivals (netsched.cpp).
 void JKBot_AgentsThink( void ) {
-	const int now = sv.time + sv.timeResidual;
-	for ( int i = 0; i < sv_maxclients->integer; i++ ) {
-		if ( !agents[i].active ) {
-			continue;
-		}
-		client_t *cl = &svs.clients[i];
-		if ( cl->state < CS_CONNECTED ) {  // dropped by the game or the server
+	for ( int i = 0; i < sv_maxclients->integer && i < MAX_CLIENTS; i++ ) {
+		if ( agents[i].active && svs.clients[i].state < CS_CONNECTED ) {  // dropped by the game
 			agents[i].active = qfalse;
-			continue;
+			JKBot_NetDrop( i );
 		}
-		// the zero-latency client's replies
-		cl->lastPacketTime = svs.time;
-		cl->reliableAcknowledge = cl->reliableSequence;
-		for ( int f = 0; f < PACKET_BACKUP; f++ ) {
-			if ( cl->frames[f].messageAcked == -1 ) {
-				// acknowledged on arrival: ping 0 whichever clock sv_pingFix stamps it with
-				cl->frames[f].messageAcked = cl->frames[f].messageSent;
-			}
-		}
-		usercmd_t cmd = agents[i].cmd;
-		cmd.serverTime = now;
-		SV_ClientThink( cl, &cmd );
-		agents[i].cmd.generic_cmd = 0;  // a one-shot event, like a key press
 	}
+	JKBot_NetStep();
 }
 
 static void JKBot_AgentAdd_f( void ) {
@@ -198,6 +188,7 @@ static void JKBot_AgentDrop_f( void ) {
 	if ( cl ) {
 		SV_DropClient( cl, "left" );
 		agents[cl - svs.clients].active = qfalse;
+		JKBot_NetDrop( cl - svs.clients );
 	}
 }
 

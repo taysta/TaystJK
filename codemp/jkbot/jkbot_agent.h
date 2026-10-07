@@ -32,5 +32,14 @@ int JKBot_RandomSeed( int fallback );  // jkbot_seed if set
 void JKBot_AgentInit( void );
 qboolean JKBot_IsAgent( int clientNum );
 void JKBot_AgentsThink( void );  // after each STEP's SV_Frame
+usercmd_t *JKBot_AgentCmd( int clientNum );  // the agent's held usercmd
+void JKBot_AgentCmdConsumed( int clientNum );  // a client frame took it
+
+// netsched.cpp
+void JKBot_NetInit( void );
+void JKBot_NetReset( int clientNum, int pingUp, int pingDown, int maxPackets, int packetDup );
+void JKBot_NetDrop( int clientNum );
+void JKBot_NetStep( void );
+int JKBot_NetHeld( int clientNum, int *serverTime );  // the snapshot the agent holds, -1 none
 
 #endif // JKBOT_AGENT
