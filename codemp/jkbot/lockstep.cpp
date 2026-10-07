@@ -6,8 +6,8 @@
  * period (JKB_USERCMD_MSEC, the 142 fps client of environment.md §2) and runs SV_Frame once with
  * that msec, so the stock code path decides everything else exactly as on a live server: game
  * frames run whenever the residual crosses 1000/sv_fps, SV_BotFrame runs (stock bots think and
- * send their usercmds), timeouts and snapshots follow svs.time. Agents' usercmds are injected per
- * STEP once agent clients exist (P1-ENG-06). Nothing here sleeps or reads the wall clock.
+ * send their usercmds), timeouts and snapshots follow svs.time. Then each agent client's usercmd
+ * runs (agent.cpp). Nothing here sleeps or reads the wall clock.
  *
  * Until the bridge carries STEP (P1-BR-04), the console command `jkbot_step [n]` runs n steps.
  */
@@ -42,6 +42,7 @@ void JKBot_Step( int n ) {
 		stepping = qtrue;
 		SV_Frame( JKB_USERCMD_MSEC );
 		stepping = qfalse;
+		JKBot_AgentsThink();
 		steps++;
 		virtualMsec += JKB_USERCMD_MSEC;
 	}

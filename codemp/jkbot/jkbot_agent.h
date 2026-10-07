@@ -18,4 +18,9 @@ void JKBot_Step( int n );
 int JKBot_Steps( void );
 int JKBot_VirtualMsec( void );
 
+// agent.cpp
+void JKBot_AgentInit( void );
+qboolean JKBot_IsAgent( int clientNum );
+void JKBot_AgentsThink( void );  // after each STEP's SV_Frame
+
 #endif // JKBOT_AGENT
