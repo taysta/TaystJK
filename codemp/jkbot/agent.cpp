@@ -31,9 +31,12 @@
 #include "jkbot_agent.h"
 
 #define JKB_BOT_LABEL "[BOT] "
-// The stock JKA client's default force configuration (cvar forcepowers): what a human with
-// default settings sends. The server's disable mask and rank limit apply on top.
-#define JKB_FORCEPOWERS "7-1-032330000000001333"
+// The agent's force configuration (userinfo forcepowers: rank-side-levels, one digit per power
+// in forcePowers_t order). User ruling: levitation, saber offense and saber defense at 3, every
+// other power 0 (the stock client default "7-1-032330000000001333" also had speed, push, pull,
+// sight and saber throw, all disabled by the FACEIT mask anyway). The server's disable mask and
+// rank limit apply on top; P1-M-03 measures the levels the game grants.
+#define JKB_FORCEPOWERS "7-1-030000000000000330"
 
 typedef struct {
 	qboolean active;
