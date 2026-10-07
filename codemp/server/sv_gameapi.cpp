@@ -30,6 +30,9 @@ along with this program; if not, see <http://www.gnu.org/licenses/>.
 #include "icarus/GameInterface.h"
 #include "qcommon/timing.h"
 #include "NPCNav/navigator.h"
+#ifdef JKBOT_AGENT
+#include "jkbot/jkbot_agent.h"
+#endif
 
 botlib_export_t	*botlib_export;
 
@@ -2798,7 +2801,11 @@ void SV_InitGame( qboolean restart ) {
 	for ( i=0, cl=svs.clients; i<sv_maxclients->integer; i++, cl++ )
 		cl->gentity = NULL;
 
+#ifdef JKBOT_AGENT
+	GVM_InitGame( sv.time, JKBot_RandomSeed( Com_Milliseconds() ), restart );  // jkbot_seed
+#else
 	GVM_InitGame( sv.time, Com_Milliseconds(), restart );
+#endif
 
 	svs.servermod = SVMOD_UNKNOWN;
 	if (sv_legacyFixes->integer) {

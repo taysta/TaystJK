@@ -43,6 +43,7 @@ void JKBot_Step( int n ) {
 		SV_Frame( JKB_USERCMD_MSEC );
 		stepping = qfalse;
 		JKBot_AgentsThink();
+		JKBot_ExportStep();
 		steps++;
 		virtualMsec += JKB_USERCMD_MSEC;
 	}

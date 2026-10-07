@@ -18,9 +18,9 @@ static int jkbot_gameTime;
 // jkbot_status: one machine-readable line for the sim harness.
 static void JKBot_Status_f( void ) {
 	Com_Printf( "jkbot_status frames=%d sv.time=%d svs.time=%d state=%d game.time=%d residual=%d "
-		"lockstep=%d steps=%d virtual=%d step_msec=%d\n", jkbot_frames, sv.time, svs.time,
-		(int)sv.state, jkbot_gameTime, sv.timeResidual, (int)JKBot_Lockstep(), JKBot_Steps(),
-		JKBot_VirtualMsec(), JKB_USERCMD_MSEC );
+		"lockstep=%d steps=%d virtual=%d step_msec=%d hash=%016llx\n", jkbot_frames, sv.time,
+		svs.time, (int)sv.state, jkbot_gameTime, sv.timeResidual, (int)JKBot_Lockstep(),
+		JKBot_Steps(), JKBot_VirtualMsec(), JKB_USERCMD_MSEC, (unsigned long long)JKBot_FrameHash() );
 }
 
 // jkbot_clients: one line per connected client (number, state, bot or agent, command time, origin,
@@ -53,6 +53,7 @@ void JKBot_Init( void ) {
 	Cmd_AddCommand( "jkbot_clients", JKBot_Clients_f, "JKBot sim harness client list (agent builds only)" );
 	JKBot_LockstepInit();
 	JKBot_AgentInit();
+	JKBot_ExportInit();
 	Com_Printf( "JKBot agent build (simulator only)\n" );
 }
 
@@ -62,6 +63,7 @@ void JKBot_Shutdown( void ) {
 void JKBot_GameFrame( int gameTime ) {
 	jkbot_frames++;
 	jkbot_gameTime = gameTime;
+	JKBot_HashFrame( gameTime );
 }
 
 #endif // JKBOT_AGENT
