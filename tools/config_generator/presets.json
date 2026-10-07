@@ -132,9 +132,10 @@
       "id": "saber-tffa",
       "label": "Saber team FFA",
       "summary": "A base server's rules: sabers only, force limited to jumping and saber skills, no health or shield pickups, friendly fire on.",
-      "flow": {"gametype": 6, "map": "mp/ffa2", "fraglimit": 20, "timelimit": 10},
+      "flow": {"gametype": 6, "map": "mp/ffa3", "fraglimit": 20, "timelimit": 10},
       "server": [
-        ["sv_fps", "30", null]
+        ["sv_fps", "30", null],
+        ["sv_maxRate", "90000", null]
       ],
       "default": [
         {"section": "Saber"},
