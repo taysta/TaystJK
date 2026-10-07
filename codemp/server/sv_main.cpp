@@ -26,6 +26,9 @@ along with this program; if not, see <http://www.gnu.org/licenses/>.
 
 #include "ghoul2/ghoul2_shared.h"
 #include "sv_gameapi.h"
+#ifdef JKBOT_AGENT
+#include "jkbot/jkbot_agent.h"
+#endif
 
 serverStatic_t	svs;				// persistant server info
 server_t		sv;					// local server
@@ -1297,6 +1300,9 @@ void SV_Frame( int msec ) {
 
 		// let everything in the world think and move
 		GVM_RunFrame( sv.time );
+#ifdef JKBOT_AGENT
+		JKBot_GameFrame();
+#endif
 	}
 
 	//rww - RAGDOLL_BEGIN

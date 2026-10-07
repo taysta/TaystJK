@@ -7,5 +7,6 @@
 
 void JKBot_Init( void );
 void JKBot_Shutdown( void );
+void JKBot_GameFrame( void );  // after each GVM_RunFrame in SV_Frame
 
 #endif // JKBOT_AGENT
