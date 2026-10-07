@@ -19,6 +19,7 @@
  * Console commands (until the bridge carries OBS, P1-BR-04):
  *   jkbot_export <path> | stop   write each agent's new snapshots to <path> after every STEP
  *   jkbot_xxh64 [text]           xxh64 of the text (self-test)
+ *   jkbot_hashlog <path> | stop  every game frame's "<game time> <hash>" (determinism gate)
  */
 #ifdef JKBOT_AGENT
 
@@ -113,6 +114,8 @@ uint64_t JKBot_XXH64( const void *data, size_t len, uint64_t seed ) {
 
 // ---- frame hash ----
 
+static FILE *hashLog;  // jkbot_hashlog: every game frame's time and hash
+
 static byte hashBuf[sizeof( int ) * ( 2 + MAX_CLIENTS ) + MAX_CLIENTS * sizeof( playerState_t ) +
 	MAX_GENTITIES * sizeof( entityState_t )];
 static uint64_t frameHash;
@@ -136,6 +139,9 @@ void JKBot_HashFrame( int gameTime ) {
 		n = Put( n, &SV_GentityNum( i )->s, sizeof( entityState_t ) );
 	}
 	frameHash = JKBot_XXH64( hashBuf, n, 0 );
+	if ( hashLog ) {
+		fprintf( hashLog, "%d %016llx\n", gameTime, (unsigned long long)frameHash );
+	}
 }
 
 uint64_t JKBot_FrameHash( void ) {
@@ -255,6 +261,23 @@ static void JKBot_Export_f( void ) {
 	Com_Printf( exportFile ? "jkbot_export started\n" : "jkbot_export: can't open the file\n" );
 }
 
+static void JKBot_HashLog_f( void ) {
+	if ( Cmd_Argc() < 2 ) {
+		Com_Printf( "usage: jkbot_hashlog <path> | stop\n" );
+		return;
+	}
+	if ( hashLog ) {
+		fclose( hashLog );
+		hashLog = NULL;
+	}
+	if ( !Q_stricmp( Cmd_Argv( 1 ), "stop" ) ) {
+		Com_Printf( "jkbot_hashlog stopped\n" );
+		return;
+	}
+	hashLog = fopen( Cmd_Argv( 1 ), "w" );
+	Com_Printf( hashLog ? "jkbot_hashlog started\n" : "jkbot_hashlog: can't open the file\n" );
+}
+
 static void JKBot_XXH64_f( void ) {
 	const char *text = Cmd_Argc() > 1 ? Cmd_ArgsFrom( 1 ) : "";
 	unsigned long long h = JKBot_XXH64( text, strlen( text ), 0 );
@@ -276,6 +299,7 @@ void JKBot_ExportInit( void ) {
 	jkbot_seed = Cvar_Get( "jkbot_seed", "", 0, "JKBot: G_InitGame random seed; empty uses the clock (agent builds only)" );
 	Cmd_AddCommand( "jkbot_export", JKBot_Export_f, "JKBot: dump agents' snapshots after each STEP (agent builds only)" );
 	Cmd_AddCommand( "jkbot_xxh64", JKBot_XXH64_f, "JKBot: xxh64 of a string (agent builds only)" );
+	Cmd_AddCommand( "jkbot_hashlog", JKBot_HashLog_f, "JKBot: log every game frame's state hash (agent builds only)" );
 }
 
 #endif // JKBOT_AGENT
