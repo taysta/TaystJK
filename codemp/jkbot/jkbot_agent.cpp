@@ -24,7 +24,7 @@ static void JKBot_Status_f( void ) {
 }
 
 // jkbot_clients: one line per connected client (number, state, bot or agent, command time, origin,
-// velocity, ground entity, pm_type, name).
+// velocity, ground entity, pm_type, known force powers and the three FACEIT-enabled levels, name).
 static void JKBot_Clients_f( void ) {
 	for ( int i = 0; i < sv_maxclients->integer; i++ ) {
 		const client_t *cl = &svs.clients[i];
@@ -33,10 +33,13 @@ static void JKBot_Clients_f( void ) {
 		}
 		const playerState_t *ps = SV_GameClientNum( i );
 		Com_Printf( "jkbot_client %d state=%d bot=%d agent=%d commandTime=%d origin=%.3f,%.3f,%.3f "
-			"velocity=%.3f,%.3f,%.3f groundEntityNum=%d pm_type=%d name=%s\n", i, (int)cl->state,
+			"velocity=%.3f,%.3f,%.3f groundEntityNum=%d pm_type=%d forceKnown=%d levitation=%d "
+			"saberOffense=%d saberDefense=%d name=%s\n", i, (int)cl->state,
 			cl->netchan.remoteAddress.type == NA_BOT, (int)JKBot_IsAgent( i ), ps->commandTime,
 			ps->origin[0], ps->origin[1], ps->origin[2], ps->velocity[0], ps->velocity[1],
-			ps->velocity[2], ps->groundEntityNum, ps->pm_type, cl->name );
+			ps->velocity[2], ps->groundEntityNum, ps->pm_type, ps->fd.forcePowersKnown,
+			ps->fd.forcePowerLevel[FP_LEVITATION], ps->fd.forcePowerLevel[FP_SABER_OFFENSE],
+			ps->fd.forcePowerLevel[FP_SABER_DEFENSE], cl->name );
 	}
 }
 
