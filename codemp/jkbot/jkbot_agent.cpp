@@ -32,14 +32,18 @@ static void JKBot_Clients_f( void ) {
 			continue;
 		}
 		const playerState_t *ps = SV_GameClientNum( i );
+		char levels[NUM_FORCE_POWERS * 2 + 1] = "";
+		for ( int p = 0; p < NUM_FORCE_POWERS; p++ ) {
+			Q_strcat( levels, sizeof( levels ), va( p ? ",%d" : "%d", ps->fd.forcePowerLevel[p] ) );
+		}
 		Com_Printf( "jkbot_client %d state=%d bot=%d agent=%d commandTime=%d origin=%.3f,%.3f,%.3f "
 			"velocity=%.3f,%.3f,%.3f groundEntityNum=%d pm_type=%d forceKnown=%d levitation=%d "
-			"saberOffense=%d saberDefense=%d name=%s\n", i, (int)cl->state,
+			"saberOffense=%d saberDefense=%d forceLevels=%s name=%s\n", i, (int)cl->state,
 			cl->netchan.remoteAddress.type == NA_BOT, (int)JKBot_IsAgent( i ), ps->commandTime,
 			ps->origin[0], ps->origin[1], ps->origin[2], ps->velocity[0], ps->velocity[1],
 			ps->velocity[2], ps->groundEntityNum, ps->pm_type, ps->fd.forcePowersKnown,
 			ps->fd.forcePowerLevel[FP_LEVITATION], ps->fd.forcePowerLevel[FP_SABER_OFFENSE],
-			ps->fd.forcePowerLevel[FP_SABER_DEFENSE], cl->name );
+			ps->fd.forcePowerLevel[FP_SABER_DEFENSE], levels, cl->name );
 	}
 }
 
