@@ -791,15 +791,16 @@ if(BuildMPDed)
 	source_group("null" FILES ${MPDedNullFiles})
 	set(MPDedFiles ${MPDedFiles} ${MPDedNullFiles})
 
-	# JKBot (codemp/jkbot/README.md): the agent and bridge endpoint compile only with JKBOT_AGENT.
-	set(MPDedJKBotFiles
-		"${MPDir}/jkbot/jkbot_agent.cpp"
-		"${MPDir}/jkbot/jkbot_agent.h"
-		"${MPDir}/jkbot/jkbot_proto.h"
-		)
-	source_group("jkbot" FILES ${MPDedJKBotFiles})
-	set(MPDedFiles ${MPDedFiles} ${MPDedJKBotFiles})
+	# JKBot (codemp/jkbot/README.md): the agent and bridge endpoint compile only with JKBOT_AGENT;
+	# release builds don't even list the sources, so not even their file names reach the binary.
 	if(JKBOT_AGENT)
+		set(MPDedJKBotFiles
+			"${MPDir}/jkbot/jkbot_agent.cpp"
+			"${MPDir}/jkbot/jkbot_agent.h"
+			"${MPDir}/jkbot/jkbot_proto.h"
+			)
+		source_group("jkbot" FILES ${MPDedJKBotFiles})
+		set(MPDedFiles ${MPDedFiles} ${MPDedJKBotFiles})
 		set(MPDedDefines ${MPDedDefines} "JKBOT_AGENT")
 	endif()
 	if(WIN32)

@@ -28,6 +28,9 @@ along with this program; if not, see <http://www.gnu.org/licenses/>.
 #include "qcommon/MiniHeap.h"
 #include "qcommon/stringed_ingame.h"
 #include "sv_gameapi.h"
+#ifdef JKBOT_AGENT
+#include "jkbot/jkbot_agent.h"
+#endif
 
 /*
 ===============
@@ -1088,6 +1091,10 @@ void SV_Init (void) {
 #ifdef DEDICATED
 	SV_InitRef();
 #endif
+
+#ifdef JKBOT_AGENT
+	JKBot_Init();
+#endif
 }
 
 
@@ -1149,6 +1156,9 @@ void SV_Shutdown( char *finalmsg )
 	SV_ChallengeShutdown();
 	SV_ShutdownGameProgs();
 	svs.gameStarted = qfalse;
+#ifdef JKBOT_AGENT
+	JKBot_Shutdown();
+#endif
 /*
 Ghoul2 Insert Start
 */
