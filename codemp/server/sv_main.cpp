@@ -1197,6 +1197,17 @@ void SV_Frame( int msec ) {
 		return;
 	}
 
+#ifdef JKBOT_AGENT
+	// Lockstep: time advances only through STEP, which calls SV_Frame itself (jkbot/lockstep.cpp).
+	if ( JKBot_Lockstep() && !JKBot_Stepping() ) {
+		return;
+	}
+#endif
+
+	// Hibernation follows the wall clock, so lockstep never enters it.
+#ifdef JKBOT_AGENT
+	if ( !JKBot_Lockstep() )
+#endif
 	if (svs.initialized && svs.gameStarted) {
 		int i = 0;
 		qboolean humans = qfalse;
@@ -1301,7 +1312,7 @@ void SV_Frame( int msec ) {
 		// let everything in the world think and move
 		GVM_RunFrame( sv.time );
 #ifdef JKBOT_AGENT
-		JKBot_GameFrame();
+		JKBot_GameFrame( sv.time );
 #endif
 	}
 
