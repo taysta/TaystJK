@@ -62,4 +62,11 @@ void Sys_SnapVector(float *v)
 
 	fesetround(oldround);
 #endif
+#ifdef JKBOT_AGENT
+	// JKBot sim: Raven's 1.01 engine snaps with x87 fistp/fild, which can't produce -0.0; match it
+	// bit for bit (P1-M-23). Under round-to-nearest, -0.0 + 0.0 is +0.0 and no other value changes.
+	v[0] += 0.0f;
+	v[1] += 0.0f;
+	v[2] += 0.0f;
+#endif
 }
