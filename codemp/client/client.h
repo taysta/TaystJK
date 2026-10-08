@@ -593,6 +593,13 @@ extern int cl_connectedToCheatServer;
 void CL_SystemInfoChanged( void );
 void CL_ParseServerMessage( msg_t *msg );
 
+//
+// demo dump (jkbot/record/dump.cpp): with the dump cvar set, demo playback writes every snapshot
+//
+qboolean CL_DemoDumpGamestate( void );	// qtrue: dumping, skip downloads and the cgame
+void CL_DemoDumpSnapshot( void );
+void CL_DemoDumpCompleted( void );		// dumping: finish and quit
+
 void CL_EndHTTPDownload(dlHandle_t handle, qboolean success, const char *err_msg);
 void CL_ProcessHTTPDownload(size_t dltotal, size_t dlnow);
 void CL_KillDownload();

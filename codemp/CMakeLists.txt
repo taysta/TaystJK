@@ -554,6 +554,8 @@ if(BuildMPEngine)
 	# JKBot recording and self-test code (codemp/jkbot/record/): no input endpoint, so it builds
 	# into every client, release included
 	set(MPEngineJKBotRecordFiles
+		"${MPDir}/jkbot/record/dump.cpp"
+		"${MPDir}/jkbot/record/dump_fields.h"
 		"${MPDir}/jkbot/record/selftest.cpp"
 		)
 	source_group("jkbot\\record" FILES ${MPEngineJKBotRecordFiles})
@@ -739,6 +741,27 @@ if(BuildMPEngine)
 	set_target_properties(${MPEngine} PROPERTIES INCLUDE_DIRECTORIES "${MPEngineIncludeDirectories}")
 	set_target_properties(${MPEngine} PROPERTIES PROJECT_LABEL "MP Client")
 	target_link_libraries(${MPEngine} ${MPEngineLibraries})
+
+	# JKBot demo dump (jkbot/record/dump.cpp): zstd's compressor from the source tree JKBOT_ZSTD_DIR
+	# names (scripts/build_client.sh fetches a pinned release); without it the dump refuses to
+	# run. JKBOT_ENGINE_SHA is the commit the dump header records.
+	set(DemoDumpDefines "")
+	if(JKBOT_ENGINE_SHA)
+		set(DemoDumpDefines "DEMO_DUMP_ENGINE_SHA=\"${JKBOT_ENGINE_SHA}\"")
+	endif()
+	if(JKBOT_ZSTD_DIR)
+		file(GLOB DemoDumpZstdFiles
+			"${JKBOT_ZSTD_DIR}/lib/common/*.c"
+			"${JKBOT_ZSTD_DIR}/lib/compress/*.c")
+		add_library(demodump_zstd STATIC ${DemoDumpZstdFiles})
+		target_compile_definitions(demodump_zstd PRIVATE ZSTD_DISABLE_ASM)
+		target_link_libraries(${MPEngine} demodump_zstd)
+		set(DemoDumpDefines ${DemoDumpDefines} "DEMO_DUMP_ZSTD")
+		set_source_files_properties("${MPDir}/jkbot/record/dump.cpp" PROPERTIES
+			INCLUDE_DIRECTORIES "${JKBOT_ZSTD_DIR}/lib")
+	endif()
+	set_source_files_properties("${MPDir}/jkbot/record/dump.cpp" PROPERTIES
+		COMPILE_DEFINITIONS "${DemoDumpDefines}")
 
 	if (GIT_FOUND)
 		add_dependencies(${MPEngine} GET_GIT_TAG_AND_HASH)

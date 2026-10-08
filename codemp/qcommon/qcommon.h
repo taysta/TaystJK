@@ -1054,6 +1054,9 @@ void CL_StartHunkUsers( void );
 void CL_SelfTest( void );
 // with the self-test cvar set: check the stock assets load, print the result and quit
 
+qboolean CL_DemoDumpError( const char *message );
+// with the demo dump cvar set: end the dump with the error; qtrue makes the error fatal
+
 qboolean CL_ConnectedToRemoteServer( void );
 // returns qtrue if connected to a server
 

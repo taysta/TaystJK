@@ -326,6 +326,11 @@ void NORETURN QDECL Com_Error( int code, const char *fmt, ... ) {
 	Q_vsnprintf (com_errorMessage,sizeof(com_errorMessage), fmt,argptr);
 	va_end (argptr);
 
+	// a scripted demo dump records the error and exits nonzero
+	if ( CL_DemoDumpError( com_errorMessage ) ) {
+		code = ERR_FATAL;
+	}
+
 	if ( code != ERR_DISCONNECT && code != ERR_NEED_CD ) {
 		Cvar_Get("com_errorMessage", "", CVAR_ROM);	//give com_errorMessage a default so it won't come back to life after a resetDefaults
 		Cvar_Set("com_errorMessage", com_errorMessage);

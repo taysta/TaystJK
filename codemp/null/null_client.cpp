@@ -85,6 +85,10 @@ void CL_StartHunkUsers( void ) {
 void CL_SelfTest( void ) {
 }
 
+qboolean CL_DemoDumpError( const char *message ) {
+	return qfalse;
+}
+
 qboolean CL_ConnectedToRemoteServer( void ) {
 	return qfalse;
 }

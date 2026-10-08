@@ -354,6 +354,8 @@ void CL_ParseSnapshot( msg_t *msg ) {
 	}
 
 	cl.newSnapshots = qtrue;
+
+	CL_DemoDumpSnapshot();
 }
 
 
@@ -625,6 +627,11 @@ void CL_ParseGamestate( msg_t *msg ) {
 		// enabling this can cause double loading of a map when connecting to
 		// a server which has a different game directory set
 		//clc.downloadRestart = qtrue;
+	}
+
+	// a demo dump records the gamestate and reads on without downloads, the map or the cgame
+	if ( CL_DemoDumpGamestate() ) {
+		return;
 	}
 
 	// This used to call CL_StartHunkUsers, but now we enter the download state before loading the

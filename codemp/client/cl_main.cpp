@@ -447,6 +447,8 @@ CL_DemoCompleted
 =================
 */
 void CL_DemoCompleted( void ) {
+	CL_DemoDumpCompleted();  // a demo dump ends here and quits
+
 	if (cl_timedemo && cl_timedemo->integer) {
 		int	time;
 
