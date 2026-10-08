@@ -187,7 +187,7 @@ static void JKBot_ClientCmd_f( void ) {
 	}
 	client_t *cl = AgentClient( Cmd_Argv( 1 ) );
 	if ( cl ) {
-		SV_ExecuteClientCommand( cl, Cmd_ArgsFrom( 2 ), qtrue );
+		SV_ExecuteClientCommand( cl, Cmd_ArgsFrom( 2, true ), qtrue );  // quoted args stay whole (userinfo)
 	}
 }
 
