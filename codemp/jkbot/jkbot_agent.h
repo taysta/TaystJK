@@ -48,6 +48,12 @@ void JKBot_BotUsercmd( int clientNum, usercmd_t *cmd );  // stock bots' usercmds
 int JKBot_EpisodeIndex( void );
 int JKBot_RoundStart( void );
 
+// calllog.cpp
+void JKBot_CallLogInit( void );
+void JKBot_CallLogEnter( char kind, int a, int b );  // 'F' level time / 'T' client, cmd time
+void JKBot_CallLogLeave( char kind );  // 'f' / 't'
+void JKBot_CallLogSyscall( const intptr_t *args );  // from SV_GameSystemCalls
+
 // netsched.cpp
 void JKBot_NetInit( void );
 void JKBot_NetReset( int clientNum, int pingUp, int pingDown, int maxPackets, int packetDup );

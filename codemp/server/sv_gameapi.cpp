@@ -112,7 +112,13 @@ void GVM_ClientCommand( int clientNum ) {
 
 void GVM_ClientThink( int clientNum, usercmd_t *ucmd ) {
 	if ( gvm->isLegacy ) {
+#ifdef JKBOT_AGENT
+		JKBot_CallLogEnter( 'T', clientNum, svs.clients[clientNum].lastUsercmd.serverTime );  // jkbot_calllog (ucmd is NULL: the game reads lastUsercmd)
+#endif
 		VM_Call( gvm, GAME_CLIENT_THINK, clientNum, reinterpret_cast< intptr_t >( ucmd ) );
+#ifdef JKBOT_AGENT
+		JKBot_CallLogLeave( 't' );
+#endif
 		return;
 	}
 	VMSwap v( gvm );
@@ -124,7 +130,13 @@ void GVM_RunFrame( int levelTime ) {
 	if (!gvm)
 		return;
 	if ( gvm->isLegacy ) {
+#ifdef JKBOT_AGENT
+		JKBot_CallLogEnter( 'F', levelTime, 0 );  // jkbot_calllog
+#endif
 		VM_Call( gvm, GAME_RUN_FRAME, levelTime );
+#ifdef JKBOT_AGENT
+		JKBot_CallLogLeave( 'f' );
+#endif
 		return;
 	}
 	VMSwap v( gvm );
@@ -1761,6 +1773,9 @@ static void GVM_Cvar_Set( const char *var_name, const char *value ) {
 // legacy syscall
 
 intptr_t SV_GameSystemCalls( intptr_t *args ) {
+#ifdef JKBOT_AGENT
+	JKBot_CallLogSyscall( args );  // jkbot_calllog: traces and Ghoul2 collision, read only
+#endif
 	switch( args[0] ) {
 
 		//rww - alright, DO NOT EVER add a game/cgame/ui generic call without adding a trap to match, and

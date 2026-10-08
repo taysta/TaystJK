@@ -57,6 +57,7 @@ void JKBot_Init( void ) {
 	JKBot_ExportInit();
 	JKBot_NetInit();
 	JKBot_ResetInit();
+	JKBot_CallLogInit();
 	Com_Printf( "JKBot agent build (simulator only)\n" );
 }
 
