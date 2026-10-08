@@ -25,3 +25,7 @@ Recording-only code (no input endpoint) lives here and may ship in release build
   its command number, key catcher and frame msec, raw key and mouse events (`CL_CmdLogKey` in
   CL_KeyEvent, `CL_CmdLogMouse` in CL_MouseEvent) and the input cvars again when they change.
   Buffered (64 KB), flushed when full, once a second and at exit. jkbot.demos.cmdlog parses it.
+- `probe.cpp`: `+set jkbot_probeRefdef 1` prints the world refdef (width, height, fov_x, fov_y)
+  whenever it changes, for measuring what the client renders (P1-M-08). Hooked where the cgame's
+  scenes reach the renderer: `CL_ProbeRefdef` in CL_R_RenderScene (new API) and the legacy
+  CG_R_RENDERSCENE syscall.

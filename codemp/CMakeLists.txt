@@ -556,6 +556,7 @@ if(BuildMPEngine)
 	set(MPEngineJKBotRecordFiles
 		"${MPDir}/jkbot/record/cmdlog.cpp"
 		"${MPDir}/jkbot/record/dump.cpp"
+		"${MPDir}/jkbot/record/probe.cpp"
 		"${MPDir}/jkbot/record/dump_fields.h"
 		"${MPDir}/jkbot/record/selftest.cpp"
 		)

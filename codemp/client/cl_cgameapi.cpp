@@ -1170,6 +1170,7 @@ intptr_t CL_CgameSystemCalls( intptr_t *args ) {
 		return 0;
 
 	case CG_R_RENDERSCENE:
+		CL_ProbeRefdef( (const refdef_t *)VMA(1) );
 		re->RenderScene( (const refdef_t *)VMA(1) );
 		return 0;
 
@@ -1696,6 +1697,12 @@ intptr_t CL_CgameSystemCalls( intptr_t *args ) {
 // Stub function for old RMG system.
 static void RE_InitRendererTerrain ( const char * /*info*/ ) {}
 
+// The world refdef probe (jkbot/record/probe.cpp) sees each scene before the renderer.
+static void CL_R_RenderScene( const refdef_t *fd ) {
+	CL_ProbeRefdef( fd );
+	re->RenderScene( fd );
+}
+
 void CL_BindCGame( void ) {
 	static cgameImport_t cgi;
 	cgameExport_t		*ret;
@@ -1798,7 +1805,7 @@ void CL_BindCGame( void ) {
 		cgi.R_RegisterShaderNoMip				= re->RegisterShaderNoMip;
 		cgi.R_RegisterSkin						= re->RegisterSkin;
 		cgi.R_RemapShader						= re->RemapShader;
-		cgi.R_RenderScene						= re->RenderScene;
+		cgi.R_RenderScene						= CL_R_RenderScene;
 		cgi.R_SetColor							= re->SetColor;
 		cgi.R_SetLightStyle						= re->SetLightStyle;
 		cgi.R_SetRangedFog						= re->SetRangedFog;

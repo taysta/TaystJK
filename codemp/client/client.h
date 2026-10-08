@@ -607,6 +607,9 @@ void CL_CmdLogUsercmd( const usercmd_t *cmd );
 void CL_CmdLogKey( int key, qboolean down, unsigned time );
 void CL_CmdLogMouse( int dx, int dy, int time );
 
+// client probes (jkbot/record/probe.cpp): with its cvar set, print the world refdef when it changes
+void CL_ProbeRefdef( const refdef_t *fd );
+
 void CL_EndHTTPDownload(dlHandle_t handle, qboolean success, const char *err_msg);
 void CL_ProcessHTTPDownload(size_t dltotal, size_t dlnow);
 void CL_KillDownload();
