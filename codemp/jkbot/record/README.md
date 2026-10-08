@@ -10,7 +10,9 @@ usercmd logger hooked after `CL_FinishMove`. See `../README.md`.
 - `dump.cpp`: `+set jkbot_dump <out> +demo <name>` reads the whole demo through the client's own
   parser without loading the map or cgame and writes zstd ndjson: a header (engine SHA, zstd
   version), every gamestate (configstrings, baselines), configstring changes, every snapshot (ps,
-  entities in RawFrame fields, server commands) and an end record; then quits with status 0. Any
+  entities in RawFrame fields, server commands) and an end record; then quits with status 0.
+  `+set jkbot_dumpGamestate 1` keeps only snapshot timing (no ps, entities or commands), for the
+  manifest. Any
   Com_Error during a dump ends it with the error and exits nonzero. Hooks: `CL_DemoDumpGamestate`
   (CL_ParseGamestate, before downloads), `CL_DemoDumpSnapshot` (end of CL_ParseSnapshot),
   `CL_DemoDumpCompleted` (CL_DemoCompleted) and `CL_DemoDumpError` (Com_Error; a stub in the

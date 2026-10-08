@@ -10,7 +10,7 @@
  * demo ends. The output is zstd-compressed ndjson, one record per line, keys in a fixed order:
  *
  *   {"type":"header","decoder":"taystjk","format":1,"engine":"<sha>","zstd":"<version>",
- *    "file":"<demo file name>"}
+ *    "file":"<demo file name>","mode":"full"|"gamestate"}
  *   {"type":"gamestate","serverCommandSequence":S,"clientNum":C,"checksumFeed":F,
  *    "configstrings":{"<index>":"<string>",...},"baselines":[{...},...]}
  *   {"type":"configstrings","serverTime":T,"set":{"<index>":"<string>",...}}
@@ -30,6 +30,9 @@
  * - configstrings: before a snapshot whose commands changed configstrings (cs, and bcs0/1/2
  *   reassembled), the changed ones, applied as CL_GetServerCommand would ("" = cleared). The
  *   dump keeps its own copy; the client's gameState isn't touched.
+ * - mode "gamestate" (`+set jkbot_dumpGamestate 1`, for the manifest): the same records, but a
+ *   snapshot record stops after snapFlags (no ps, entities or commands), so the gamestate,
+ *   configstring changes and snapshot timing come out at a fraction of the size.
  * - end: written when the demo ends (CL_DemoCompleted), then the client quits with status 0. Any
  *   Com_Error while the dump cvar is set ends the dump with "error":"<message>" and is made
  *   fatal, so the client exits nonzero.
@@ -64,6 +67,7 @@
 
 static FILE							*dumpFile;
 static qboolean						dumpFinishing;	// a write error while finishing doesn't finish again
+static qboolean						dumpGamestateOnly;
 static std::string					dumpPending;	// ndjson not yet compressed
 static long							dumpSnapshots;
 static int							dumpLastCommand;	// last server command written
@@ -193,6 +197,7 @@ static void Begin( void ) {
 	dumpLastCommand = 0;
 	dumpConfigstrings.clear();
 	dumpBigConfigString[0] = '\0';
+	dumpGamestateOnly = (qboolean)( Cvar_VariableIntegerValue( "jkbot_dumpGamestate" ) != 0 );
 
 	const char *name = strrchr( clc.demoName, '/' );
 	Putf( "{\"type\":\"header\",\"decoder\":\"taystjk\",\"format\":%d,\"engine\":", DUMP_FORMAT );
@@ -201,7 +206,7 @@ static void Begin( void ) {
 	PutString( ZSTD_versionString() );
 	Put( ",\"file\":" );
 	PutString( name ? name + 1 : clc.demoName );
-	Put( "}" );
+	Putf( ",\"mode\":\"%s\"}", dumpGamestateOnly ? "gamestate" : "full" );
 	EndLine();
 #endif
 }
@@ -341,25 +346,29 @@ void CL_DemoDumpSnapshot( void ) {
 		EndLine();
 	}
 
-	Putf( "{\"type\":\"snapshot\",\"serverTime\":%d,\"messageNum\":%d,\"snapFlags\":%d,\"ps\":",
+	Putf( "{\"type\":\"snapshot\",\"serverTime\":%d,\"messageNum\":%d,\"snapFlags\":%d",
 		snap.serverTime, snap.messageNum, snap.snapFlags );
-	PutFields( &snap.ps, dumpPsFields, ARRAY_LEN( dumpPsFields ) );
-	Put( ",\"entities\":[" );
-	for ( int i = 0; i < snap.numEntities; i++ ) {
-		if ( i ) {
-			Put( "," );
+	if ( !dumpGamestateOnly ) {
+		Put( ",\"ps\":" );
+		PutFields( &snap.ps, dumpPsFields, ARRAY_LEN( dumpPsFields ) );
+		Put( ",\"entities\":[" );
+		for ( int i = 0; i < snap.numEntities; i++ ) {
+			if ( i ) {
+				Put( "," );
+			}
+			const entityState_t *es = &cl.parseEntities[( snap.parseEntitiesNum + i ) & ( MAX_PARSE_ENTITIES - 1 )];
+			PutFields( es, dumpEsFields, ARRAY_LEN( dumpEsFields ) );
 		}
-		const entityState_t *es = &cl.parseEntities[( snap.parseEntitiesNum + i ) & ( MAX_PARSE_ENTITIES - 1 )];
-		PutFields( es, dumpEsFields, ARRAY_LEN( dumpEsFields ) );
-	}
-	Put( "],\"commands\":[" );
-	for ( int i = start; i <= seq; i++ ) {
-		if ( i > start ) {
-			Put( "," );
+		Put( "],\"commands\":[" );
+		for ( int i = start; i <= seq; i++ ) {
+			if ( i > start ) {
+				Put( "," );
+			}
+			PutString( clc.serverCommands[i & ( MAX_RELIABLE_COMMANDS - 1 )] );
 		}
-		PutString( clc.serverCommands[i & ( MAX_RELIABLE_COMMANDS - 1 )] );
+		Put( "]" );
 	}
-	Put( "]}" );
+	Put( "}" );
 	EndLine();
 	if ( seq > dumpLastCommand ) {
 		dumpLastCommand = seq;
