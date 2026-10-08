@@ -554,6 +554,7 @@ if(BuildMPEngine)
 	# JKBot recording and self-test code (codemp/jkbot/record/): no input endpoint, so it builds
 	# into every client, release included
 	set(MPEngineJKBotRecordFiles
+		"${MPDir}/jkbot/record/cmdlog.cpp"
 		"${MPDir}/jkbot/record/dump.cpp"
 		"${MPDir}/jkbot/record/dump_fields.h"
 		"${MPDir}/jkbot/record/selftest.cpp"
@@ -762,6 +763,10 @@ if(BuildMPEngine)
 	endif()
 	set_source_files_properties("${MPDir}/jkbot/record/dump.cpp" PROPERTIES
 		COMPILE_DEFINITIONS "${DemoDumpDefines}")
+	if(JKBOT_ENGINE_SHA)  # the usercmd logger's session record names it too
+		set_source_files_properties("${MPDir}/jkbot/record/cmdlog.cpp" PROPERTIES
+			COMPILE_DEFINITIONS "DEMO_DUMP_ENGINE_SHA=\"${JKBOT_ENGINE_SHA}\"")
+	endif()
 
 	if (GIT_FOUND)
 		add_dependencies(${MPEngine} GET_GIT_TAG_AND_HASH)

@@ -1888,6 +1888,7 @@ Called by the system for both key up and key down events
 ===================
 */
 void CL_KeyEvent (int key, qboolean down, unsigned time) {
+	CL_CmdLogKey( key, down, time );
 	if( down )
 		CL_KeyDownEvent( key, time );
 	else

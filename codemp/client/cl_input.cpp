@@ -962,6 +962,7 @@ CL_MouseEvent
 =================
 */
 void CL_MouseEvent( int dx, int dy, int time ) {
+	CL_CmdLogMouse( dx, dy, time );
 	if (cls.cursorActive) {
 		CL_UpdateCursorPosition( dx, dy );
 	} else if (g_clAutoMapMode && cls.cgameStarted)
@@ -1420,6 +1421,7 @@ usercmd_t CL_CreateCmd( void ) {
 
 	// store out the final values
 	CL_FinishMove( &cmd );
+	CL_CmdLogUsercmd( &cmd );  // the usercmd logger, when its cvar is set
 
 	// draw debug graphs of turning for mouse testing
 	if ( cl_debugMove->integer ) {
