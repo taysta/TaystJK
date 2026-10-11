@@ -305,6 +305,20 @@ void UpdateEAXBuffer(channel_t *ch);
 void EALFileInit(const char *level);
 float CalcDistance(EMPOINT A, EMPOINT B);
 
+static const char *S_GetCurrentMapName()
+{
+	const char *serverInfo = cl.gameState.stringData
+		+ cl.gameState.stringOffsets[CS_SERVERINFO];
+	const char *mapName = Info_ValueForKey(serverInfo, "mapname");
+
+	if (mapName[0])
+	{
+		return mapName;
+	}
+
+	return Cvar_VariableString("mapname");
+}
+
 static void S_AL_SetSourceAttenuation(ALuint source, qboolean reducedAttenuation)
 {
 	if (s_bEAX)
@@ -564,7 +578,6 @@ void S_Init( void ) {
 
 		InitEAXManager();
 		alDistanceModel(s_bEAX ? AL_INVERSE_DISTANCE_CLAMPED : AL_LINEAR_DISTANCE_CLAMPED);
-		S_SoundInfo_f();
 
 		memset(s_channels, 0, sizeof(s_channels));
 
@@ -653,8 +666,8 @@ void S_Init( void ) {
 		// s_init could be called in game, if so there may be an .eal file
 		// for this level
 
-		const char *mapname = Cvar_VariableString( "mapname" );
-		EALFileInit(mapname);
+		EALFileInit(S_GetCurrentMapName());
+		S_SoundInfo_f();
 
 	}
 	else
@@ -979,8 +992,7 @@ void S_BeginRegistration( void )
 	// Find name of level so we can load in the appropriate EAL file
 	if (s_UseOpenAL)
 	{
-		const char *mapname = Cvar_VariableString( "mapname" );
-		EALFileInit(mapname);
+		EALFileInit(S_GetCurrentMapName());
 		// clear carry crap from previous map
 		for (int i = 0; i < EAX_MAX_FXSLOTS; i++)
 		{
@@ -1021,6 +1033,10 @@ void EALFileInit(const char *level)
 	char		name[MAX_QPATH];
 	char		szEALFilename[MAX_QPATH];
 	COM_StripExtension(level, name, sizeof( name ));
+	if (!Q_stricmpn(name, "maps/", 5))
+	{
+		memmove(name, name + 5, strlen(name + 5) + 1);
+	}
 	Com_sprintf(szEALFilename, MAX_QPATH, "eagle/%s.eal", name);
 
 	s_bEALFileLoaded = LoadEALFile(szEALFilename);
