@@ -235,8 +235,12 @@ int			s_numChannels;			// Number of AL Sources == Num of Channels
 
 //#define DISPLAY_CLOSEST_ENVS		// Displays the closest env. zones (including the one the listener is in)
 
-#define DEFAULT_REF_DISTANCE		300.0f		// Default reference distance
-#define DEFAULT_VOICE_REF_DISTANCE	1500.0f		// Default voice reference distance
+#define EAX_REF_DISTANCE			300.0f
+#define EAX_VOICE_REF_DISTANCE		1500.0f		// retail JKA's reduced fall-off for voices
+#define FALLBACK_REF_DISTANCE		256.0f
+#define FALLBACK_MAX_DISTANCE		1506.0f
+#define FALLBACK_VOICE_REF_DISTANCE	768.0f
+#define FALLBACK_VOICE_MAX_DISTANCE	2018.0f
 
 int			s_UseOpenAL	= 0;	// Determines if using Open AL or the default software mixer
 
@@ -300,6 +304,24 @@ void UpdateEAXListener();
 void UpdateEAXBuffer(channel_t *ch);
 void EALFileInit(const char *level);
 float CalcDistance(EMPOINT A, EMPOINT B);
+
+static void S_AL_SetSourceAttenuation(ALuint source, qboolean reducedAttenuation)
+{
+	if (s_bEAX)
+	{
+		alSourcef(source, AL_REFERENCE_DISTANCE, reducedAttenuation ? EAX_VOICE_REF_DISTANCE : EAX_REF_DISTANCE);
+	}
+	else if (reducedAttenuation)
+	{
+		alSourcef(source, AL_REFERENCE_DISTANCE, FALLBACK_VOICE_REF_DISTANCE);
+		alSourcef(source, AL_MAX_DISTANCE, FALLBACK_VOICE_MAX_DISTANCE);
+	}
+	else
+	{
+		alSourcef(source, AL_REFERENCE_DISTANCE, FALLBACK_REF_DISTANCE);
+		alSourcef(source, AL_MAX_DISTANCE, FALLBACK_MAX_DISTANCE);
+	}
+}
 
 void Normalize(EAXVECTOR *v)
 {
@@ -541,6 +563,7 @@ void S_Init( void ) {
 		alListenerfv(AL_ORIENTATION,listenerOri);
 
 		InitEAXManager();
+		alDistanceModel(s_bEAX ? AL_INVERSE_DISTANCE_CLAMPED : AL_LINEAR_DISTANCE_CLAMPED);
 		S_SoundInfo_f();
 
 		memset(s_channels, 0, sizeof(s_channels));
@@ -556,7 +579,7 @@ void S_Init( void ) {
 				// Reached limit of sources
 				break;
 			}
-			alSourcef(s_channels[i].alSource, AL_REFERENCE_DISTANCE, DEFAULT_REF_DISTANCE);
+			S_AL_SetSourceAttenuation(s_channels[i].alSource, qfalse);
 			if (alGetError() != AL_NO_ERROR)
 			{
 				break;
@@ -2990,25 +3013,25 @@ void S_Update_(void) {
 				if (ch->entchannel == CHAN_VOICE)
 				{
 					// Reduced fall-off (Large Reference Distance), affected by Voice Volume
-					alSourcef(s_channels[source].alSource, AL_REFERENCE_DISTANCE, DEFAULT_VOICE_REF_DISTANCE);
+					S_AL_SetSourceAttenuation(s_channels[source].alSource, qtrue);
 					alSourcef(s_channels[source].alSource, AL_GAIN, ((float)(ch->master_vol) * s_volumeVoice->value) / 255.0f);
 				}
 				else if (ch->entchannel == CHAN_VOICE_ATTEN)
 				{
 					// Normal fall-off, affected by Voice Volume
-					alSourcef(s_channels[source].alSource, AL_REFERENCE_DISTANCE, DEFAULT_REF_DISTANCE);
+					S_AL_SetSourceAttenuation(s_channels[source].alSource, qfalse);
 					alSourcef(s_channels[source].alSource, AL_GAIN, ((float)(ch->master_vol) * s_volumeVoice->value) / 255.0f);
 				}
 				else if (ch->entchannel == CHAN_LESS_ATTEN)
 				{
 					// Reduced fall-off, affected by Sound Effect Volume
-					alSourcef(s_channels[source].alSource, AL_REFERENCE_DISTANCE, DEFAULT_VOICE_REF_DISTANCE);
+					S_AL_SetSourceAttenuation(s_channels[source].alSource, qtrue);
 					alSourcef(s_channels[source].alSource, AL_GAIN, ((float)(ch->master_vol) * s_volume->value) / 255.f);
 				}
 				else
 				{
 					// Normal fall-off, affect by Sound Effect Volume
-					alSourcef(s_channels[source].alSource, AL_REFERENCE_DISTANCE, DEFAULT_REF_DISTANCE);
+					S_AL_SetSourceAttenuation(s_channels[source].alSource, qfalse);
 					alSourcef(s_channels[source].alSource, AL_GAIN, ((float)(ch->master_vol) * s_volume->value) / 255.f);
 				}
 			}
@@ -3515,7 +3538,7 @@ void UpdateLoopingSounds()
 			alSourcei(s_channels[source].alSource, AL_BUFFER, ch->thesfx->Buffer);
 			alSourcefv(s_channels[source].alSource, AL_POSITION, pos);
 			alSourcei(s_channels[source].alSource, AL_LOOPING, AL_TRUE);
-			alSourcef(s_channels[source].alSource, AL_REFERENCE_DISTANCE, DEFAULT_REF_DISTANCE);
+			S_AL_SetSourceAttenuation(s_channels[source].alSource, qfalse);
 			alSourcef(s_channels[source].alSource, AL_GAIN, ((float)(ch->master_vol) * s_volume->value) / 255.0f);
 			alSourcei(s_channels[source].alSource, AL_SOURCE_RELATIVE, ch->fixed_origin ? AL_TRUE : AL_FALSE);
 
