@@ -581,6 +581,13 @@ void S_Init( void ) {
 			s_numChannels++;
 		}
 
+		if (s_numChannels > 0 && alIsExtensionPresent("AL_SOFT_direct_channels") == AL_TRUE)
+		{
+			// Keep stereo music on the device's front-left/front-right channels.
+			const ALenum directChannels = alGetEnumValue("AL_DIRECT_CHANNELS_SOFT");
+			alSourcei(s_channels[0].alSource, directChannels, AL_TRUE);
+		}
+
 		// Generate AL Buffers for streaming audio playback (used for MP3s)
 		channel_t *ch = s_channels + 1;
 		for (i = 1; i < s_numChannels; i++, ch++)
