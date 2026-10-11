@@ -16,9 +16,9 @@
 # along with this program; if not, see <http://www.gnu.org/licenses/>.
 #============================================================================
 
-# The <min>...<policy_max> syntax is needed to remain compatible with 3.1, but also newer versions that dropped 3.1 compatibility
+# The <min>...<policy_max> syntax is needed to remain compatible with 3.14, but also newer versions that dropped older compatibility modes.
 # More info here: https://cmake.org/cmake/help/latest/command/cmake_minimum_required.html
-cmake_minimum_required(VERSION 3.1...3.31)
+cmake_minimum_required(VERSION 3.14...3.31)
 set(CMAKE_OSX_DEPLOYMENT_TARGET "10.11" CACHE STRING "Minimum OS X deployment version")
 
 set(InOpenJK ON)
@@ -47,19 +47,27 @@ option(BuildMPRend2 "Whether to create projects for the EXPERIMENTAL MP rend2 re
 option(BuildDiscordRichPresence "Whether to build with Discord Rich Presence integration" ON)
 
 option(BuildTests "Whether to build automatic unit tests (requires Boost)" OFF)
+option(BuildEaxMan "Build the portable EAX Manager library" ON)
+option(BuildOpenALSupport "Build the optional OpenAL sound backend" ON)
 option(UseAddressSanitizer "Whether to enable runtime address sanitizer" OFF)
 option(UseUndefinedSanitizer "Whether to enable runtime Undefined Behavior sanitizer" OFF)
 
 include(CMakeDependentOption)
 cmake_dependent_option(BuildSymbolServer "Build WIP Windows Symbol Server (experimental and unused)" OFF "WIN32;MSVC" OFF)
 
-# Configure the use of bundled libraries.  By default, we assume the user is on
-# a platform that does not require any bundling.
+# Configure the use of bundled libraries. OpenAL Soft is packaged by default on
+# every desktop platform; the other dependencies retain their platform defaults.
 #
 # Note that we always use the bundled copy of minizip, since it is modified to
 # use Z_Malloc.
 
-set(UseInternalOpenALDefault OFF)
+# Bundled OpenAL Soft needs GCC 12; older GCC defaults to the system OpenAL.
+if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU" AND
+	CMAKE_CXX_COMPILER_VERSION VERSION_LESS "12")
+	set(UseInternalOpenALDefault OFF)
+else()
+	set(UseInternalOpenALDefault ON)
+endif()
 set(UseInternalZlibDefault   OFF)
 set(UseInternalPNGDefault    OFF)
 set(UseInternalJPEGDefault   OFF)
@@ -67,7 +75,6 @@ set(UseInternalSDL2Default   OFF)
 
 if(UseInternalLibs OR WIN32 OR APPLE)
   if(WIN32)
-    set(UseInternalOpenALDefault ON)
     set(UseInternalZlibDefault   ON)
     set(UseInternalPNGDefault    ON)
     set(UseInternalJPEGDefault   ON)
@@ -82,7 +89,7 @@ if(UseInternalLibs OR WIN32 OR APPLE)
   endif()
 endif()
 
-option(UseInternalOpenAL "If set, use bundled OpenAL."  ${UseInternalOpenALDefault})
+option(UseInternalOpenAL "If set, build and package TaystJK's pinned OpenAL Soft runtime." ${UseInternalOpenALDefault})
 option(UseInternalZlib   "If set, use bundled zlib."    ${UseInternalZlibDefault})
 option(UseInternalPNG    "If set, use bundled libpng."  ${UseInternalPNGDefault})
 option(UseInternalJPEG   "If set, use bundled libjpeg." ${UseInternalJPEGDefault})
@@ -547,6 +554,98 @@ endif()
 # Always use bundled minizip (sets MINIZIP_{LIBRARIES,INCLUDE_DIR})
 add_subdirectory(lib/minizip)
 add_subdirectory(lib/cJSON)
+
+include(FetchContent)
+
+# The OpenAL backend is wired up for MSVC on Windows and for every other
+# desktop OS; MinGW and server-only builds keep the software mixer and skip
+# fetching OpenAL Soft and EalMan.
+set(TaystJKOpenAL OFF)
+if(BuildMPEngine AND BuildOpenALSupport AND (MSVC OR NOT WIN32))
+	if(UseInternalOpenAL)
+		set(TaystJKOpenAL ON)
+	else()
+		find_package(OpenAL)
+		if(OPENAL_FOUND)
+			set(TaystJKOpenAL ON)
+		else()
+			message(WARNING
+				"System OpenAL not found; building without the OpenAL backend. "
+				"Install OpenAL or configure with UseInternalOpenAL=ON.")
+		endif()
+	endif()
+endif()
+
+if(TaystJKOpenAL AND BuildEaxMan)
+	# Upstream's own CMakeLists builds its GoogleTest suite, so only fetch the
+	# sources and compile the library here. EAXMANVERSION=3 selects the EAX 4
+	# records of Jedi Academy's EAX Manager 3.0.0.0.
+	set(TaystJKEalManCommit "5ef97400ebc05fc0b458e9bf30306f0c9f22b0bd")
+	set(TaystJKEalManArchiveHash
+		"ccde4a7a6a942a434382f45adf6bea9583c37bbcc339e72f589ebaebc8f60921")
+	FetchContent_Declare(ealman
+		URL "https://github.com/senneschall/EalMan/archive/${TaystJKEalManCommit}.tar.gz"
+		URL_HASH "SHA256=${TaystJKEalManArchiveHash}"
+		SOURCE_SUBDIR "no-cmake-project")
+	FetchContent_MakeAvailable(ealman)
+	add_library(EalMan STATIC
+		"${ealman_SOURCE_DIR}/src/Chunk.cpp"
+		"${ealman_SOURCE_DIR}/src/EalMan.cpp")
+	target_include_directories(EalMan PUBLIC "${ealman_SOURCE_DIR}/src")
+	target_compile_definitions(EalMan PUBLIC EAXMANVERSION=3)
+endif()
+
+# Build the same pinned, EAX-capable OpenAL Soft release on every desktop
+# platform and package it with the client.
+if(TaystJKOpenAL AND UseInternalOpenAL)
+	set(TaystJKOpenALSoftVersion "1.25.2")
+	set(TaystJKOpenALSoftArchiveHash
+		"fb27e5839aa11f0e5b9d33756965291fad5d6909ab928ea1f796f4a1a6877894")
+	if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU" AND
+		CMAKE_CXX_COMPILER_VERSION VERSION_LESS "12")
+		message(FATAL_ERROR
+			"Bundled OpenAL Soft ${TaystJKOpenALSoftVersion} requires GCC 12 or newer. "
+			"Select a newer compiler or configure with UseInternalOpenAL=OFF.")
+	endif()
+
+	# These cache variables are consumed by the OpenAL Soft subproject. EAX is
+	# deliberately explicit because upstream only enables it by default on
+	# Windows.
+	set(ALSOFT_EAX ON CACHE BOOL "Build OpenAL Soft legacy EAX extensions" FORCE)
+	set(ALSOFT_UTILS OFF CACHE BOOL "Build OpenAL Soft utilities" FORCE)
+	set(ALSOFT_EXAMPLES OFF CACHE BOOL "Build OpenAL Soft examples" FORCE)
+	set(ALSOFT_TESTS OFF CACHE BOOL "Build OpenAL Soft tests" FORCE)
+	set(ALSOFT_INSTALL OFF CACHE BOOL "Install OpenAL Soft independently" FORCE)
+	set(ALSOFT_INSTALL_CONFIG OFF CACHE BOOL "Install the OpenAL Soft config" FORCE)
+	set(ALSOFT_INSTALL_HRTF_DATA OFF CACHE BOOL "Install external OpenAL Soft HRTFs" FORCE)
+	set(ALSOFT_INSTALL_AMBDEC_PRESETS OFF CACHE BOOL "Install OpenAL Soft AmbDec presets" FORCE)
+	set(ALSOFT_UPDATE_BUILD_VERSION OFF CACHE BOOL "Query Git for the OpenAL Soft version" FORCE)
+	set(ALSOFT_ENABLE_MODULES OFF CACHE BOOL "Build OpenAL Soft C++ modules" FORCE)
+	set(LIBTYPE SHARED)
+
+	FetchContent_Declare(openalsoft
+		URL "https://github.com/kcat/openal-soft/archive/refs/tags/${TaystJKOpenALSoftVersion}.tar.gz"
+		URL_HASH "SHA256=${TaystJKOpenALSoftArchiveHash}")
+	FetchContent_MakeAvailable(openalsoft)
+	if(WIN32)
+		# Keep TaystJK's architecture-qualified Win64 name so it cannot
+		# collide with Jedi Academy's legacy OpenAL32.dll. OUTPUT_NAME also
+		# gives the generated MSVC import library the matching name.
+		if(CMAKE_SIZEOF_VOID_P EQUAL 8)
+			set_target_properties(OpenAL PROPERTIES OUTPUT_NAME "OpenAL32.x86_64")
+		else()
+			set_target_properties(OpenAL PROPERTIES OUTPUT_NAME "OpenAL32")
+		endif()
+	endif()
+	if(APPLE AND HAVE_WFUNCTION_EFFECTS)
+		# AppleClang 21 diagnoses CoreAudio callback conversions more strictly
+		# than the compiler shipped when 1.25.2 was released. Keep the useful
+		# warning without promoting this upstream warning to an error.
+		target_compile_options(OpenAL PRIVATE
+			$<$<COMPILE_LANGUAGE:CXX>:-Wno-error=function-effects>)
+	endif()
+
+endif()
 # Add projects
 add_subdirectory(${MPDir})
 

@@ -20,7 +20,9 @@ See below for the ioEF snd_codec_mp3 which can be worked with?
 OpenAL Interface split off into its own interface file:
 - There is a lot of rethinking to do because Raven actually seems to maybe have semi-real channel support and Q3 does not.
 - The ioq3 implementation also does some things differently that do not mix very well with Raven's mashup codebase.
-- Add EFX support to replace EAX.  Though we can't really do much about the EAL files can we?  Currently "OpenAL" at all is only supported on Win32 anyway since it depends on the proprietary version with EAX.
+- OpenAL is available on Windows (MSVC), macOS, and Linux. Release builds package OpenAL Soft 1.25.2 on all three platforms, built from the pinned upstream source with `ALSOFT_EAX=ON`. `s_UseOpenAL` remains opt-in and defaults to `0`.
+- Keep TaystJK's collision-safe Windows names intact when updating OpenAL Soft: x86 uses `OpenAL32.dll`, while x86_64 uses `OpenAL32.x86_64.dll`. CMake sets these as the target's `OUTPUT_NAME`, so the generated import library embeds the matching DLL name.
+- EAL environments go through EalMan (github.com/senneschall/EalMan, built with `EAXMANVERSION=3`), a portable reimplementation of Creative's EAX Manager linked statically into the client.
 - There is also a serious issue with allowing OJK on windows to be installed on the same directory as JO/JA.  Both regular versions of the games ship with an OpenAL32.dll which crashes since its some ancient dll from Creative when using OJK with alsoft lib/headers and vice versa.
 - https://github.com/ioquake/ioq3/blob/master/code/client/snd_openal.c
 

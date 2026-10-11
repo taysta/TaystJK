@@ -439,31 +439,25 @@ if(BuildMPEngine)
 		endif()
 	endif()
 
-	# OpenAL (is optionally included for Windows)
-	if(MSVC)
+	# OpenAL. EAX-capable OpenAL Soft builds are supported on every desktop OS.
+	if(TaystJKOpenAL)
+		set(MPEngineDefines ${MPEngineDefines} "USE_OPENAL")
 		if(UseInternalOpenAL)
-			if(CMAKE_SIZEOF_VOID_P EQUAL 4)
-				# There's a libs/OpenAL32.lib
-				# (mrw) TODO Is this actually required on windows? It is loaded at runtime, should not be linked?
-				find_library(OpenALLibrary NAMES OpenAL32 PATHS ${OpenJKLibDir})
-				if(NOT OpenALLibrary)
-					message(FATAL_ERROR "UseInternalOpenAL enabled, but libs/OpenAL32.lib not found!")
-				endif(NOT OpenALLibrary)
-			else()
-				# There's a libs/OpenAL32.x86_64.lib
-				# (mrw) TODO Is this actually required on windows? It is loaded at runtime, should not be linked?
-				find_library(OpenALLibrary NAMES OpenAL32.x86_64 PATHS ${OpenJKLibDir})
-				if(NOT OpenALLibrary)
-					message(FATAL_ERROR "UseInternalOpenAL enabled, but libs/OpenAL32.x86_64.lib not found!")
-				endif(NOT OpenALLibrary)
+			if(NOT TARGET OpenAL)
+				message(FATAL_ERROR "UseInternalOpenAL enabled, but the bundled OpenAL Soft target is unavailable")
 			endif()
-			set(MPEngineLibraries ${MPEngineLibraries} ${OpenALLibrary})
-		else(UseInternalOpenAL)
-			find_package(OpenAL REQUIRED)
+			set(MPEngineLibraries ${MPEngineLibraries} OpenAL)
+		else()
 			set(MPEngineIncludeDirectories ${MPEngineIncludeDirectories} ${OPENAL_INCLUDE_DIR})
 			set(MPEngineLibraries ${MPEngineLibraries} ${OPENAL_LIBRARY})
-		endif(UseInternalOpenAL)
-	endif(MSVC)
+		endif()
+		if(TARGET EalMan)
+			# EalMan is the EAX Manager on every platform.
+			set(MPEngineLibraries ${MPEngineLibraries} EalMan)
+		else()
+			message(FATAL_ERROR "OpenAL support requires BuildEaxMan=ON")
+		endif()
+	endif()
 
 
 	if(UseInternalSDL2)
@@ -494,15 +488,15 @@ if(BuildMPEngine)
 		set(MPEngineLibraries ${MPEngineLibraries} ${SDL2_LIBRARY})
 	endif()
 
-	# EAX is Windows-Only (right?)
-	if(MSVC)
-		set(MPEngineEAXFiles
-			"${MPDir}/client/eax/eax.h"
-			"${MPDir}/client/eax/EaxMan.h"
-			)
-		source_group("eax" FILES ${MPEngineEAXFiles})
-		set(MPEngineFiles ${MPEngineFiles} ${MPEngineEAXFiles})
-	endif(MSVC)
+	set(MPEngineEAXFiles
+		"${MPDir}/client/eax/eax.h"
+		"${MPDir}/client/eax/EaxMan.h"
+		)
+	if(TaystJKOpenAL)
+		set(MPEngineEAXFiles ${MPEngineEAXFiles} "${MPDir}/client/eax/EaxMan.cpp")
+	endif()
+	source_group("eax" FILES ${MPEngineEAXFiles})
+	set(MPEngineFiles ${MPEngineFiles} ${MPEngineEAXFiles})
 
 	#    Source Files
 
@@ -699,6 +693,60 @@ if(BuildMPEngine)
 			endif()
 		endif()
 	endif(WIN32)
+
+	if(NOT WIN32 AND TARGET OpenAL)
+		if(APPLE AND MakeApplicationBundles)
+			set_target_properties(${MPEngine} PROPERTIES
+				BUILD_WITH_INSTALL_RPATH TRUE)
+			set_property(TARGET ${MPEngine} APPEND PROPERTY
+				INSTALL_RPATH "@executable_path/../Frameworks")
+		elseif(APPLE)
+			set_property(TARGET ${MPEngine} APPEND PROPERTY INSTALL_RPATH
+				"@executable_path")
+		else()
+			set_property(TARGET ${MPEngine} APPEND PROPERTY INSTALL_RPATH
+				"$ORIGIN")
+		endif()
+	endif()
+
+	if(TARGET OpenAL)
+		if(WIN32)
+			# CMAKE_RUNTIME_OUTPUT_DIRECTORY already places the DLL beside the
+			# client in build trees; install the source-built runtime as well.
+			install(TARGETS OpenAL
+				RUNTIME DESTINATION ${JKAInstallDir}
+				COMPONENT ${JKAMPClientComponent})
+		elseif(APPLE AND MakeApplicationBundles)
+			add_custom_command(TARGET ${MPEngine} POST_BUILD
+				COMMAND ${CMAKE_COMMAND} -E make_directory
+				"$<TARGET_FILE_DIR:${MPEngine}>/../Frameworks"
+				COMMAND ${CMAKE_COMMAND} -E copy_if_different
+				"$<TARGET_FILE:OpenAL>"
+				"$<TARGET_FILE_DIR:${MPEngine}>/../Frameworks/$<TARGET_SONAME_FILE_NAME:OpenAL>")
+			set(MPEngineBundleSearchDirs
+				"${MPEngineBundleSearchDirs};$<TARGET_FILE_DIR:OpenAL>")
+		else()
+			add_custom_command(TARGET ${MPEngine} POST_BUILD
+				COMMAND ${CMAKE_COMMAND} -E copy_if_different
+				"$<TARGET_FILE:OpenAL>"
+				"$<TARGET_FILE_DIR:${MPEngine}>/$<TARGET_SONAME_FILE_NAME:OpenAL>")
+			install(TARGETS OpenAL
+				LIBRARY DESTINATION ${JKAInstallDir}
+				COMPONENT ${JKAMPClientComponent})
+		endif()
+	endif()
+	if(TARGET OpenAL)
+		install(FILES "${openalsoft_SOURCE_DIR}/COPYING"
+			DESTINATION "${JKAInstallDir}/licenses"
+			RENAME "OpenAL-Soft-LGPL-2.0.txt"
+			COMPONENT ${JKAMPClientComponent})
+	endif()
+	if(TARGET EalMan)
+		install(FILES "${ealman_SOURCE_DIR}/LICENSE"
+			DESTINATION "${JKAInstallDir}/licenses"
+			RENAME "EalMan-LGPL-2.1.txt"
+			COMPONENT ${JKAMPClientComponent})
+	endif()
 
 	if(MakeApplicationBundles)
 		install(CODE "
