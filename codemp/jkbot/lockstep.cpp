@@ -3,7 +3,7 @@
  *
  * With jkbot_lockstep 1 the server's clock no longer follows the wall clock: the main loop's
  * SV_Frame calls return at once, and time advances only through STEP. Each STEP is one usercmd
- * period (jkbot_step_msec, default JKB_USERCMD_MSEC: the 142 fps client of environment.md §2;
+ * period (jkbot_step_msec, default JKB_USERCMD_MSEC: the 125 fps client of environment.md §2;
  * other values emulate other client frame rates, P1-M-07) and runs SV_Frame once with that msec,
  * so the stock code path decides everything else exactly as on a live server: game frames run
  * whenever the residual crosses 1000/sv_fps, SV_BotFrame runs (stock bots think and send their
