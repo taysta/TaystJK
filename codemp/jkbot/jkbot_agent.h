@@ -11,6 +11,7 @@ void JKBot_GameFrame( int gameTime );  // after each GVM_RunFrame in SV_Frame
 
 // lockstep.cpp
 #define JKB_USERCMD_MSEC 7  // one usercmd period: the 142 fps client (environment.md §2)
+int JKBot_StepMsec( void );  // the STEP period: jkbot_step_msec (default JKB_USERCMD_MSEC)
 void JKBot_LockstepInit( void );
 qboolean JKBot_Lockstep( void );  // jkbot_lockstep is on
 qboolean JKBot_Stepping( void );  // inside a STEP's SV_Frame

@@ -214,7 +214,7 @@ static void SendHello( void ) {
 	Com_Memset( &h, 0, sizeof( h ) );
 	h.proto_version = JKB_PROTO_VERSION;
 	h.sv_fps = Cvar_VariableIntegerValue( "sv_fps" );
-	h.usercmd_ms = JKB_USERCMD_MSEC;
+	h.usercmd_ms = JKBot_StepMsec();
 	h.max_agents = JKB_MAX_AGENTS;
 	h.max_entities = JKB_MAX_SNAP_ENTITIES;
 	Q_strncpyz( h.engine_build, Cvar_VariableString( "version" ), sizeof( h.engine_build ) );

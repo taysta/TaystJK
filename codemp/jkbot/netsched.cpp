@@ -2,7 +2,7 @@
  * JKBot packet and latency scheduler (simulator only). See README.md in this directory.
  *
  * Each agent client is emulated as a real client on a link with ping_up / ping_down, on the
- * lockstep clock (now = sv.time + sv.timeResidual, advancing JKB_USERCMD_MSEC per STEP). The
+ * lockstep clock (now = sv.time + sv.timeResidual, advancing jkbot_step_msec per STEP). The
  * semantics are the reference model's (training/src/jkbot/net/model.py, P1-NET-01), so the
  * delivery log equals it:
  *
