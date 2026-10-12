@@ -2630,7 +2630,15 @@ intptr_t SV_GameSystemCalls( intptr_t *args ) {
 		return 0;
 
 	case G_G2_GETBOLT:
+#ifdef JKBOT_AGENT
+		{
+			const intptr_t r = SV_G2API_GetBoltMatrix(VMA(1), args[2], args[3], (mdxaBone_t *)VMA(4), (const float *)VMA(5),(const float *)VMA(6), args[7], (qhandle_t *)VMA(8), (float *)VMA(9));
+			JKBot_CallLogBolt( args[2], args[3], (const float *)VMA(4), (const float *)VMA(5), (const float *)VMA(6) );  // jkbot_calllog, read only
+			return r;
+		}
+#else
 		return SV_G2API_GetBoltMatrix(VMA(1), args[2], args[3], (mdxaBone_t *)VMA(4), (const float *)VMA(5),(const float *)VMA(6), args[7], (qhandle_t *)VMA(8), (float *)VMA(9));
+#endif
 
 	case G_G2_GETBOLT_NOREC:
 		return SV_G2API_GetBoltMatrix_NoReconstruct(VMA(1), args[2], args[3], (mdxaBone_t *)VMA(4), (const float *)VMA(5),(const float *)VMA(6), args[7], (qhandle_t *)VMA(8), (float *)VMA(9));

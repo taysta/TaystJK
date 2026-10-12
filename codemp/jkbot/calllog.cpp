@@ -17,6 +17,10 @@
  *                                 b = contentmask
  *   g2col / g2colc                G_G2_COLLISIONDETECT(CACHE): a = the entity tested, b = frameNumber
  *   bolt                          G_G2_GETBOLT(_NOREC(_NOROT)): a = modelIndex, b = boltIndex
+ * and after each G_G2_GETBOLT returns (P1-M-09: where a hilt's blade starts and points):
+ *   M <modelIndex> <boltIndex> <origin xyz> <-Y axis xyz> <position xyz> <angles pyr>
+ * the returned bolt matrix's origin and negative Y axis (the game's muzzlePoint and muzzleDir for
+ * a blade bolt) and the position and angles the game passed (zeros when NULL).
  */
 #ifdef JKBOT_AGENT
 
@@ -62,6 +66,18 @@ void JKBot_CallLogSyscall( const intptr_t *args ) {
 	default: return;
 	}
 	fprintf( calllog, "C %s %d %d\n", name, a, b );
+}
+
+void JKBot_CallLogBolt( int modelIndex, int boltIndex, const float *m, const float *angles, const float *pos ) {
+	if ( !calllog || !m ) {
+		return;
+	}
+	static const float zero[3] = { 0, 0, 0 };
+	angles = angles ? angles : zero;
+	pos = pos ? pos : zero;
+	// mdxaBone_t: float matrix[3][4], row-major; column 3 is the origin
+	fprintf( calllog, "M %d %d %.3f %.3f %.3f %.5f %.5f %.5f %.3f %.3f %.3f %.3f %.3f %.3f\n", modelIndex, boltIndex,
+		m[3], m[7], m[11], -m[1], -m[5], -m[9], pos[0], pos[1], pos[2], angles[0], angles[1], angles[2] );
 }
 
 static void JKBot_CallLog_f( void ) {

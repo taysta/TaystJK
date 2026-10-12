@@ -54,6 +54,7 @@ void JKBot_CallLogInit( void );
 void JKBot_CallLogEnter( char kind, int a, int b );  // 'F' level time / 'T' client, cmd time
 void JKBot_CallLogLeave( char kind );  // 'f' / 't'
 void JKBot_CallLogSyscall( const intptr_t *args );  // from SV_GameSystemCalls
+void JKBot_CallLogBolt( int modelIndex, int boltIndex, const float *matrix, const float *angles, const float *pos );  // after G_G2_GETBOLT
 
 // netsched.cpp
 void JKBot_NetInit( void );
