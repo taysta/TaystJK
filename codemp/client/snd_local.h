@@ -42,6 +42,8 @@ void S_AL_MuteAllSounds(qboolean bMute);
 //from SND_AMBIENT
 extern void AS_Init( void );
 extern void AS_Free( void );
+extern void AS_ParseSets( void );
+extern void S_ReloadAllUsedSounds( void );
 
 
 #define	PAINTBUFFER_SIZE	1024
