@@ -62,5 +62,7 @@ void JKBot_NetReset( int clientNum, int pingUp, int pingDown, int maxPackets, in
 void JKBot_NetDrop( int clientNum );
 void JKBot_NetStep( void );
 int JKBot_NetHeld( int clientNum, int *serverTime );  // the snapshot the agent holds, -1 none
+void JKBot_NetLogClientPacket( int clientNum, int cmdCount, int newCount, int firstNew, int last );  // real clients
+void JKBot_NetLogClientSnapshot( int clientNum, int messageNum );  // real clients
 
 #endif // JKBOT_AGENT

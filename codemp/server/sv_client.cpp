@@ -35,6 +35,10 @@ along with this program; if not, see <http://www.gnu.org/licenses/>.
 
 #include "server/sv_gameapi.h"
 
+#ifdef JKBOT_AGENT
+#include "jkbot/jkbot_agent.h"
+#endif
+
 static void SV_CloseDownload( client_t *cl );
 
 /*
@@ -1774,6 +1778,22 @@ static void SV_UserMove( client_t *cl, msg_t *msg, qboolean delta ) {
 		cl->deltaMessage = -1;
 		return;
 	}
+
+#ifdef JKBOT_AGENT
+	if ( !JKBot_IsAgent( cl - svs.clients ) ) {  // log only: the same skip rules as the loop below
+		int newCount = 0, firstNew = -1, last = cl->lastUsercmd.serverTime;
+		for ( i = 0 ; i < cmdCount ; i++ ) {
+			if ( cmds[i].serverTime > cmds[cmdCount-1].serverTime || cmds[i].serverTime <= last ) {
+				continue;
+			}
+			if ( !newCount++ ) {
+				firstNew = cmds[i].serverTime;
+			}
+			last = cmds[i].serverTime;
+		}
+		JKBot_NetLogClientPacket( cl - svs.clients, cmdCount, newCount, firstNew, cmds[cmdCount-1].serverTime );
+	}
+#endif
 
 	// usually, the first couple commands will be duplicates
 	// of ones we have previously received, but the servertimes

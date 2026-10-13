@@ -24,6 +24,10 @@ along with this program; if not, see <http://www.gnu.org/licenses/>.
 #include "server.h"
 #include "qcommon/cm_public.h"
 
+#ifdef JKBOT_AGENT
+#include "jkbot/jkbot_agent.h"
+#endif
+
 #ifdef DEDICATED
 std::vector<std::unique_ptr<bufferedMessageContainer_t>> demoPreRecordBuffer[MAX_CLIENTS];
 std::map<std::string,std::string> demoMetaData[MAX_CLIENTS];
@@ -1062,6 +1066,12 @@ void SV_SendClientSnapshot( client_t *client ) {
 		Com_Printf ("WARNING: msg overflowed for %s\n", client->name);
 		MSG_Clear (&msg);
 	}
+
+#ifdef JKBOT_AGENT
+	if ( !JKBot_IsAgent( client - svs.clients ) ) {  // log only
+		JKBot_NetLogClientSnapshot( client - svs.clients, client->netchan.outgoingSequence );
+	}
+#endif
 
 	SV_SendMessageToClient( &msg, client );
 }

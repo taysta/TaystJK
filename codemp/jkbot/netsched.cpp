@@ -23,7 +23,9 @@
  *
  * Console commands until RESET carries the link (P1-ENG-09):
  *   jkbot_agent_net <client> <ping_up> <ping_down> [maxpackets] [packetdup]   (resets the link)
- *   jkbot_netlog <path> | stop     log packets (P) and snapshots (S sent, H held), one per line
+ *   jkbot_netlog <path> | stop     log packets (P) and snapshots (S sent, H held), one per line;
+ *                                  for real (non-agent) clients, the packets the server reads (C)
+ *                                  and the snapshots it sends (N), on the real clock (P1-M-06)
  */
 #ifdef JKBOT_AGENT
 
@@ -234,6 +236,18 @@ static void JKBot_AgentNet_f( void ) {
 	Com_Printf( "jkbot_agent_net %d\n", n );
 }
 
+// Real clients, logged only (P1-M-06): a clc_move packet SV_UserMove read, with its usercmd count
+// and how many of them are new (the rest are cl_packetdup resends the server skips), and a
+// snapshot SV_SendClientSnapshot sent. Times: Sys_Milliseconds (the real clock) and svs.time.
+void JKBot_NetLogClientPacket( int clientNum, int cmdCount, int newCount, int firstNew, int last ) {
+	Log( "C %d %d %d %d %d %d %d\n", clientNum, Sys_Milliseconds(), svs.time, cmdCount, newCount,
+		firstNew, last );
+}
+
+void JKBot_NetLogClientSnapshot( int clientNum, int messageNum ) {
+	Log( "N %d %d %d %d %d\n", clientNum, Sys_Milliseconds(), svs.time, sv.time, messageNum );
+}
+
 static void JKBot_NetLog_f( void ) {
 	if ( Cmd_Argc() < 2 ) {
 		Com_Printf( "usage: jkbot_netlog <path> | stop\n" );
@@ -253,7 +267,7 @@ static void JKBot_NetLog_f( void ) {
 
 void JKBot_NetInit( void ) {
 	Cmd_AddCommand( "jkbot_agent_net", JKBot_AgentNet_f, "JKBot: set an agent's link (agent builds only)" );
-	Cmd_AddCommand( "jkbot_netlog", JKBot_NetLog_f, "JKBot: log agents' packets and snapshots (agent builds only)" );
+	Cmd_AddCommand( "jkbot_netlog", JKBot_NetLog_f, "JKBot: log agents' and real clients' packets and snapshots (agent builds only)" );
 }
 
 #endif // JKBOT_AGENT
