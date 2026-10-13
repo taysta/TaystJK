@@ -168,6 +168,13 @@ static uint32_t WireValue( const void *base, const jkbField_t *f ) {
 	return v;
 }
 
+// A playerState in RawFrame order with the network encoding (e.g. the predicted one, P1-ENG-11).
+void JKBot_ExportPS( const playerState_t *ps, uint32_t *out ) {
+	for ( int i = 0; i < JKB_PS_NUM_FIELDS; i++ ) {
+		out[i] = WireValue( ps, &jkbPsFields[i] );
+	}
+}
+
 // The snapshot the agent holds: the newest that has arrived over its link (netsched.cpp), as
 // SV_BuildClientSnapshot built it.
 qboolean JKBot_ExportSnapshot( int clientNum, jkb_agent_obs_t *out, int *messageNum ) {

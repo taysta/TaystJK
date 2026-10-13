@@ -842,6 +842,7 @@ if(BuildMPDed)
 			"${MPDir}/jkbot/reset.cpp"
 			"${MPDir}/jkbot/bridge.cpp"
 			"${MPDir}/jkbot/calllog.cpp"
+			"${MPDir}/jkbot/predict.cpp"
 			"${MPDir}/jkbot/jkbot_fields.h"
 			)
 		source_group("jkbot" FILES ${MPDedJKBotFiles})
@@ -903,6 +904,47 @@ if(BuildMPDed)
 
 	if (GIT_FOUND)
 		add_dependencies(${MPDed} GET_GIT_TAG_AND_HASH)
+	endif()
+
+	# JKBot own-state prediction (codemp/jkbot/predict/jkbpredict.h): the cgame's bg_* movement
+	# code built as the cgame builds it (_CGAME), into libjkbpredict.so next to the server, which
+	# the agent server loads with RTLD_LOCAL. Agent builds only.
+	if(JKBOT_AGENT)
+		add_library(jkbpredict SHARED
+			"${MPDir}/game/AnimalNPC.c"
+			"${MPDir}/game/bg_g2_utils.c"
+			"${MPDir}/game/bg_misc.c"
+			"${MPDir}/game/bg_panimate.c"
+			"${MPDir}/game/bg_pmove.c"
+			"${MPDir}/game/bg_saber.c"
+			"${MPDir}/game/bg_saberLoad.c"
+			"${MPDir}/game/bg_saga.c"
+			"${MPDir}/game/bg_slidemove.c"
+			"${MPDir}/game/bg_vehicleLoad.c"
+			"${MPDir}/game/bg_weapons.c"
+			"${MPDir}/game/FighterNPC.c"
+			"${MPDir}/game/SpeederNPC.c"
+			"${MPDir}/game/WalkerNPC.c"
+			"${MPDir}/qcommon/q_shared.c"
+			"${SharedDir}/qcommon/q_color.c"
+			"${SharedDir}/qcommon/q_math.c"
+			"${SharedDir}/qcommon/q_string.c"
+			"${MPDir}/jkbot/predict/jkbpredict.c"
+			"${MPDir}/jkbot/predict/jkbpredict.h"
+			)
+		set_target_properties(jkbpredict PROPERTIES
+			COMPILE_DEFINITIONS "${MPSharedDefines};_CGAME;JKBOT_AGENT"
+			INCLUDE_DIRECTORIES "${MPDir};${SharedDir};${GSLIncludeDirectory};${CMAKE_BINARY_DIR}/shared"
+			LIBRARY_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}"
+			PREFIX "lib")
+		# hidden symbols but JKBP_GetAPI; -fcommon as the cgame's tentative definitions need;
+		# x87 math like Raven's jampgame (it has no SSE code), so predictions match it to the bit
+		set_property(TARGET jkbpredict APPEND PROPERTY COMPILE_OPTIONS ${OPENJK_VISIBILITY_FLAGS} -fcommon -mfpmath=387)
+		target_link_libraries(jkbpredict m -Wl,--no-undefined)
+		if (GIT_FOUND)
+			add_dependencies(jkbpredict GET_GIT_TAG_AND_HASH)
+		endif()
+		add_dependencies(${MPDed} jkbpredict)
 	endif()
 endif(BuildMPDed)
 

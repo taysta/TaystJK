@@ -17,3 +17,10 @@ Rules:
 - Nothing here changes player physics, saber combat or anything else that affects gameplay.
 
 The JKBot repo checks these rules in `training/tests/test_engine_guard.py`.
+
+Own-state prediction (`predict.cpp`, `predict/`): the agent server predicts each agent's
+playerState as a human client's cgame does, with the cgame's own `bg_*` movement code built as
+the cgame builds it (`_CGAME`, x87 math like Raven's jampgame) into `libjkbpredict.so` next to the
+server. The server loads it with `RTLD_LOCAL` and reaches it only through `predict/jkbpredict.h`,
+so none of its symbols (Pmove, pm, bgAllAnims...) bind to or from the game module's: the game's
+mechanics stay in jampgame. Agent builds only.

@@ -13,9 +13,10 @@
  * OBS per agent: the snapshot it holds (export.cpp), the frame hash, CS_LEVEL_START_TIME, both
  * duelists' scores, and the step's events read from server state: damage (a drop in health plus
  * armour, attacker from PERS_ATTACKER), frags (PERS_KILLED), respawns (PERS_SPAWN_COUNT), chat
- * (EF_TALK) and round end. Until their items arrive: predicted_ps is the held snapshot's
- * playerState (P1-ENG-11), cg_time is 0 (client clock, P1-BR-05), opponent_visible is "the
- * opponent is in the snapshot" (visibility model, P1-ENG-12), and there are no rays (P1-ENG-13).
+ * (EF_TALK) and round end. predicted_ps is the own-state prediction (predict.cpp; the held
+ * snapshot's playerState until there is one). Until their items arrive: cg_time is 0 (client
+ * clock, P1-BR-05), opponent_visible is "the opponent is in the snapshot" (visibility model,
+ * P1-ENG-12), and there are no rays (P1-ENG-13).
  */
 #ifdef JKBOT_AGENT
 
@@ -236,7 +237,12 @@ static void SendObs( uint32_t stepIndex ) {
 		const int c = agentClients[k];
 		a->client = c;
 		JKBot_ExportSnapshot( c, a, NULL );  // leaves zeros until a snapshot has arrived
-		memcpy( a->predicted_ps, a->ps, sizeof( a->ps ) );  // until prediction (P1-ENG-11)
+		playerState_t pps;
+		if ( JKBot_Predicted( c, &pps ) ) {
+			JKBot_ExportPS( &pps, a->predicted_ps );  // after its latest client frame (P1-ENG-11)
+		} else {
+			memcpy( a->predicted_ps, a->ps, sizeof( a->ps ) );  // nothing to predict from yet
+		}
 		a->cg_time = 0;  // until the client clock (P1-BR-05)
 		for ( int e = 0; e < a->num_entities; e++ ) {
 			if ( (int)a->entities[e].fields[0] == opponentClient ) {

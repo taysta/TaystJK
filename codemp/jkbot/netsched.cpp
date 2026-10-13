@@ -97,10 +97,25 @@ void JKBot_NetReset( int clientNum, int pingUp, int pingDown, int maxPackets, in
 	l->lastBuilt = svs.clients[clientNum].netchan.outgoingSequence;
 	Log( "R %d %d %d %d %d %d\n", clientNum, sv.time + sv.timeResidual, l->pingUp, l->pingDown,
 		l->maxPackets, l->packetDup );
+	JKBot_PredictForget( clientNum );
 }
 
 void JKBot_NetDrop( int clientNum ) {
 	links[clientNum].active = qfalse;
+	JKBot_PredictForget( clientNum );
+}
+
+// The agent's latest usercmds, oldest first (at most max): what its client keeps for prediction.
+int JKBot_NetRecentCmds( int clientNum, usercmd_t *out, int max ) {
+	const jkbLink_t *l = &links[clientNum];
+	int n = l->numCmds < max ? l->numCmds : max;
+	if ( n > JKB_CMD_RING ) {
+		n = JKB_CMD_RING;
+	}
+	for ( int i = 0; i < n; i++ ) {
+		out[i] = l->cmds[( l->numCmds - n + i ) % JKB_CMD_RING];
+	}
+	return n;
 }
 
 int JKBot_NetHeld( int clientNum, int *serverTime ) {
@@ -189,6 +204,7 @@ static void DeliverPackets( int clientNum, jkbLink_t *l, client_t *cl, int now )
 			if ( cl->state < CS_CONNECTED ) {
 				return;  // dropped during the usercmd
 			}
+			JKBot_PredictAuthoritative( clientNum, n );
 		}
 		cl->lastPacketTime = svs.time;
 		if ( p.ackMessage >= 0 ) {
@@ -217,6 +233,7 @@ void JKBot_NetStep( void ) {
 		RecordSnapshots( i, l, cl );
 		ReceiveSnapshots( i, l, now );
 		ClientFrame( i, l, now );
+		JKBot_PredictAgent( i, l->numCmds - 1 );  // as the cgame predicts each frame
 		DeliverPackets( i, l, cl, now );
 	}
 }
