@@ -14,9 +14,9 @@
  * duelists' scores, and the step's events read from server state: damage (a drop in health plus
  * armour, attacker from PERS_ATTACKER), frags (PERS_KILLED), respawns (PERS_SPAWN_COUNT), chat
  * (EF_TALK) and round end. predicted_ps is the own-state prediction (predict.cpp; the held
- * snapshot's playerState until there is one). Until their items arrive: cg_time is 0 (client
- * clock, P1-BR-05), opponent_visible is "the opponent is in the snapshot" (visibility model,
- * P1-ENG-12), and there are no rays (P1-ENG-13).
+ * snapshot's playerState until there is one); opponent_visible is the visibility model's flag
+ * (visibility.cpp; "in the snapshot" until the agent has a view). Until their items arrive:
+ * cg_time is 0 (client clock, P1-BR-05) and there are no rays (P1-ENG-13).
  */
 #ifdef JKBOT_AGENT
 
@@ -244,9 +244,14 @@ static void SendObs( uint32_t stepIndex ) {
 			memcpy( a->predicted_ps, a->ps, sizeof( a->ps ) );  // nothing to predict from yet
 		}
 		a->cg_time = 0;  // until the client clock (P1-BR-05)
-		for ( int e = 0; e < a->num_entities; e++ ) {
-			if ( (int)a->entities[e].fields[0] == opponentClient ) {
-				a->opponent_visible = 1;  // until the visibility model (P1-ENG-12)
+		const int sees = JKBot_Sees( c, opponentClient );
+		if ( sees >= 0 ) {
+			a->opponent_visible = (uint32_t)sees;  // the visibility model (visibility.cpp)
+		} else {  // no view yet: whether the opponent is in the snapshot
+			for ( int e = 0; e < a->num_entities; e++ ) {
+				if ( (int)a->entities[e].fields[0] == opponentClient ) {
+					a->opponent_visible = 1;
+				}
 			}
 		}
 		a->num_rays = 0;  // until P1-ENG-13

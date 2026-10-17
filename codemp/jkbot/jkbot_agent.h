@@ -74,4 +74,10 @@ void JKBot_PredictAuthoritative( int clientNum, int cmdNum );  // after the serv
 qboolean JKBot_Predicted( int clientNum, playerState_t *out );
 void JKBot_PredictForget( int clientNum );
 
+// visibility.cpp
+void JKBot_VisInit( void );
+void JKBot_VisAgent( int clientNum );  // after the agent's client frame and prediction
+int JKBot_Sees( int clientNum, int target );  // 1, 0, or -1 without a view yet
+void JKBot_VisForget( int clientNum );
+
 #endif // JKBOT_AGENT

@@ -24,3 +24,10 @@ the cgame builds it (`_CGAME`, x87 math like Raven's jampgame) into `libjkbpredi
 server. The server loads it with `RTLD_LOCAL` and reaches it only through `predict/jkbpredict.h`,
 so none of its symbols (Pmove, pm, bgAllAnims...) bind to or from the game module's: the game's
 mechanics stay in jampgame. Agent builds only.
+
+Visibility (`visibility.cpp`, `shared/vis.c`): each agent's camera follows its predicted
+playerState as the cgame's third-person camera does, and the players in its held snapshot are
+tested for visibility (frustum at the rendered FOV, clear sight past MASK_OPAQUE world brushes and
+the extra occluding surfaces of measurements/sightsurfaces.json). `shared/` is plain computation
+over a playerState and the map's BSP bytes, meant for the client dump too (P2-DM-05); for now only
+the agent server builds it.
