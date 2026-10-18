@@ -15,8 +15,9 @@
  * armour, attacker from PERS_ATTACKER), frags (PERS_KILLED), respawns (PERS_SPAWN_COUNT), chat
  * (EF_TALK) and round end. predicted_ps is the own-state prediction (predict.cpp; the held
  * snapshot's playerState until there is one); opponent_visible is the visibility model's flag
- * (visibility.cpp; "in the snapshot" until the agent has a view). Until their items arrive:
- * cg_time is 0 (client clock, P1-BR-05) and there are no rays (P1-ENG-13).
+ * (visibility.cpp; "in the snapshot" until the agent has a view); rays are the static-geometry rays
+ * (geometry.cpp; none until there is a prediction). Until its item arrives, cg_time is 0 (client
+ * clock, P1-BR-05).
  */
 #ifdef JKBOT_AGENT
 
@@ -254,7 +255,7 @@ static void SendObs( uint32_t stepIndex ) {
 				}
 			}
 		}
-		a->num_rays = 0;  // until P1-ENG-13
+		a->num_rays = JKBot_Rays( c, a->rays );  // static geometry (geometry.cpp); 0 until predicted
 		a->num_events = numEvents;
 		memcpy( a->events, events, sizeof( events[0] ) * numEvents );
 		if ( eventsTruncated ) {

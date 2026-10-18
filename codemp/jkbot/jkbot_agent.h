@@ -80,4 +80,10 @@ void JKBot_VisAgent( int clientNum );  // after the agent's client frame and pre
 int JKBot_Sees( int clientNum, int target );  // 1, 0, or -1 without a view yet
 void JKBot_VisForget( int clientNum );
 
+// geometry.cpp
+void JKBot_GeometryInit( void );
+void JKBot_RaysAgent( int clientNum );  // after the agent's client frame and prediction
+int JKBot_Rays( int clientNum, float *out );  // the latest rays (JKB_MAX_RAYS), count or 0
+void JKBot_RaysForget( int clientNum );
+
 #endif // JKBOT_AGENT

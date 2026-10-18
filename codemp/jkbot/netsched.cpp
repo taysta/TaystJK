@@ -99,12 +99,14 @@ void JKBot_NetReset( int clientNum, int pingUp, int pingDown, int maxPackets, in
 		l->maxPackets, l->packetDup );
 	JKBot_PredictForget( clientNum );
 	JKBot_VisForget( clientNum );
+	JKBot_RaysForget( clientNum );
 }
 
 void JKBot_NetDrop( int clientNum ) {
 	links[clientNum].active = qfalse;
 	JKBot_PredictForget( clientNum );
 	JKBot_VisForget( clientNum );
+	JKBot_RaysForget( clientNum );
 }
 
 // The agent's latest usercmds, oldest first (at most max): what its client keeps for prediction.
@@ -237,6 +239,7 @@ void JKBot_NetStep( void ) {
 		ClientFrame( i, l, now );
 		JKBot_PredictAgent( i, l->numCmds - 1 );  // as the cgame predicts each frame
 		JKBot_VisAgent( i );  // and renders it
+		JKBot_RaysAgent( i );
 		DeliverPackets( i, l, cl, now );
 	}
 }

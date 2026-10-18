@@ -32,6 +32,13 @@ the extra occluding surfaces of measurements/sightsurfaces.json). `shared/` is p
 over a playerState and the map's BSP bytes, meant for the client dump too (P2-DM-05); the agent
 server builds it, and so does the agent client's cgame for the visibility probe.
 
+Static-geometry rays (`geometry.cpp`, `shared/rays.c`, P1-ENG-13): after each agent client frame,
+rays from the eye of the predicted playerState over a Fibonacci sphere in its yaw frame, each a CM
+point trace against the world model only (what blocks movement: solid, playerclip, terrain), so
+no player or other entity stops one. Count and length come from config (`jkbot_rays`); the bridge
+sends the hit fractions in OBS. `shared/rays.c` takes the trace as a callback, so the client dump
+can cast the same rays with CM after loading the map's clip model (P2-DM-05).
+
 Visibility probe (`visprobe.c`, P1-M-21): measures the model against renders. It compiles into the
 cgame only with `JKBOT_AGENT` (`scripts/build_client.sh --agent`, a measurement build never
 shipped), with its cgame hooks inside `#ifdef JKBOT_AGENT`, and acts only during demo playback:

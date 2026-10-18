@@ -62,6 +62,7 @@ void JKBot_Init( void ) {
 	JKBot_CallLogInit();
 	JKBot_PredictInit();
 	JKBot_VisInit();
+	JKBot_GeometryInit();
 	Com_Printf( "JKBot agent build (simulator only)\n" );
 }
 

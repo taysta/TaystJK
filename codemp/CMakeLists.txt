@@ -846,10 +846,15 @@ if(BuildMPDed)
 			"${MPDir}/jkbot/visibility.cpp"
 			"${MPDir}/jkbot/shared/vis.c"
 			"${MPDir}/jkbot/shared/vis.h"
+			"${MPDir}/jkbot/geometry.cpp"
+			"${MPDir}/jkbot/shared/rays.c"
+			"${MPDir}/jkbot/shared/rays.h"
 			"${MPDir}/jkbot/jkbot_fields.h"
 			)
-		# the shared visibility model is plain C; the server compiles it as C++ like its own code
-		set_source_files_properties("${MPDir}/jkbot/shared/vis.c" PROPERTIES LANGUAGE CXX)
+		# the shared visibility model and rays are plain C; the server compiles them as C++ like
+		# its own code
+		set_source_files_properties("${MPDir}/jkbot/shared/vis.c" "${MPDir}/jkbot/shared/rays.c"
+			PROPERTIES LANGUAGE CXX)
 		source_group("jkbot" FILES ${MPDedJKBotFiles})
 		set(MPDedFiles ${MPDedFiles} ${MPDedJKBotFiles})
 		set(MPDedDefines ${MPDedDefines} "JKBOT_AGENT")
