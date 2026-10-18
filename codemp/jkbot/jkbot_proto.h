@@ -24,7 +24,7 @@
 #endif
 
 #define JKB_PROTO_MAGIC			0x31424B4A	// "JKB1"
-#define JKB_PROTO_VERSION		1
+#define JKB_PROTO_VERSION		2
 
 #define JKB_MAX_AGENTS			2
 #define JKB_MAX_CHAT_EVENTS		32
@@ -171,13 +171,15 @@ typedef struct jkb_agent_obs_s {
 	int32_t		num_entities;
 	int32_t		num_rays;
 	int32_t		num_events;
+	float		view_origin[3];		// the client's camera (refdef vieworg; zeros before a view)
+	float		view_angles[3];		// and its angles (pitch, yaw, roll)
 	uint32_t	ps[JKB_PS_NUM_FIELDS];			// snapshot playerState
 	uint32_t	predicted_ps[JKB_PS_NUM_FIELDS];	// client-predicted playerState
 	jkb_entity_t	entities[JKB_MAX_SNAP_ENTITIES];
 	float		rays[JKB_MAX_RAYS];		// hit fraction of ray_length
 	jkb_event_t	events[JKB_MAX_EVENTS];
 } jkb_agent_obs_t;
-JKB_STATIC_ASSERT( sizeof( jkb_agent_obs_t ) == 36712, "jkb_agent_obs_t size" );
+JKB_STATIC_ASSERT( sizeof( jkb_agent_obs_t ) == 36736, "jkb_agent_obs_t size" );
 
 typedef struct jkb_obs_s {
 	uint32_t	step_index;
@@ -188,7 +190,7 @@ typedef struct jkb_obs_s {
 	int32_t		scores[2];		// duelist scores: [0] agents[0]'s client, [1] the other duelist
 	jkb_agent_obs_t	agents[JKB_MAX_AGENTS];
 } jkb_obs_t;
-JKB_STATIC_ASSERT( sizeof( jkb_obs_t ) == 73456, "jkb_obs_t size" );
+JKB_STATIC_ASSERT( sizeof( jkb_obs_t ) == 73504, "jkb_obs_t size" );
 
 typedef struct jkb_done_s {
 	uint32_t	step_index;

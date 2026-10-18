@@ -16,8 +16,9 @@
  * (EF_TALK) and round end. predicted_ps is the own-state prediction (predict.cpp; the held
  * snapshot's playerState until there is one); opponent_visible is the visibility model's flag
  * (visibility.cpp; "in the snapshot" until the agent has a view); rays are the static-geometry rays
- * (geometry.cpp; none until there is a prediction). Until its item arrives, cg_time is 0 (client
- * clock, P1-BR-05).
+ * (geometry.cpp; none until there is a prediction); cg_time is the client clock (netsched.cpp; 0
+ * before the first snapshot); view_origin/view_angles are the agent's camera (visibility.cpp),
+ * where its client renders and hears from.
  */
 #ifdef JKBOT_AGENT
 
@@ -244,7 +245,12 @@ static void SendObs( uint32_t stepIndex ) {
 		} else {
 			memcpy( a->predicted_ps, a->ps, sizeof( a->ps ) );  // nothing to predict from yet
 		}
-		a->cg_time = 0;  // until the client clock (P1-BR-05)
+		a->cg_time = JKBot_NetClientTime( c );  // the client clock (netsched.cpp)
+		vec3_t viewOrg, viewAngles;
+		if ( JKBot_View( c, viewOrg, viewAngles ) ) {
+			VectorCopy( viewOrg, a->view_origin );
+			VectorCopy( viewAngles, a->view_angles );
+		}
 		const int sees = JKBot_Sees( c, opponentClient );
 		if ( sees >= 0 ) {
 			a->opponent_visible = (uint32_t)sees;  // the visibility model (visibility.cpp)

@@ -62,6 +62,7 @@ void JKBot_NetInit( void );
 void JKBot_NetReset( int clientNum, int pingUp, int pingDown, int maxPackets, int packetDup );
 void JKBot_NetDrop( int clientNum );
 void JKBot_NetStep( void );
+int JKBot_NetClientTime( int clientNum );  // cl.serverTime; 0 before the first snapshot
 int JKBot_NetHeld( int clientNum, int *serverTime );  // the snapshot the agent holds, -1 none
 void JKBot_NetLogClientPacket( int clientNum, int cmdCount, int newCount, int firstNew, int last );  // real clients
 void JKBot_NetLogClientSnapshot( int clientNum, int messageNum );  // real clients
@@ -78,6 +79,7 @@ void JKBot_PredictForget( int clientNum );
 void JKBot_VisInit( void );
 void JKBot_VisAgent( int clientNum );  // after the agent's client frame and prediction
 int JKBot_Sees( int clientNum, int target );  // 1, 0, or -1 without a view yet
+qboolean JKBot_View( int clientNum, vec3_t origin, vec3_t angles );  // the agent's camera
 void JKBot_VisForget( int clientNum );
 
 // geometry.cpp

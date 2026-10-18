@@ -32,6 +32,12 @@ the extra occluding surfaces of measurements/sightsurfaces.json). `shared/` is p
 over a playerState and the map's BSP bytes, meant for the client dump too (P2-DM-05); the agent
 server builds it, and so does the agent client's cgame for the visibility probe.
 
+Client clock and camera in OBS (P1-BR-05): each agent's cl.serverTime (`netsched.cpp`, a port of
+CL_SetCGameTime/CL_AdjustTimeDelta at cl_timeNudge 0, equal to the Python reference
+`jkbot.features.interp.ClientClock`) is OBS `cg_time`, the time its cgame renders at; the env
+interpolates the opponent and picks up sounds there. OBS `view_origin`/`view_angles` are the
+agent's camera from the visibility model, where its client hears from (S_Respatialize).
+
 Static-geometry rays (`geometry.cpp`, `shared/rays.c`, P1-ENG-13): after each agent client frame,
 rays from the eye of the predicted playerState over a Fibonacci sphere in its yaw frame, each a CM
 point trace against the world model only (what blocks movement: solid, playerclip, terrain), so

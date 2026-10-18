@@ -116,6 +116,16 @@ void JKBot_VisAgent( int clientNum ) {
 	}
 }
 
+// The agent's camera after its latest client frame; qfalse if it has no view yet.
+qboolean JKBot_View( int clientNum, vec3_t origin, vec3_t angles ) {
+	if ( clientNum < 0 || clientNum >= MAX_CLIENTS || !haveView[clientNum] ) {
+		return qfalse;
+	}
+	VectorCopy( camOrg[clientNum], origin );
+	VectorCopy( camAngles[clientNum], angles );
+	return qtrue;
+}
+
 // Whether the agent saw the target client after its latest client frame; -1 if it has no view.
 int JKBot_Sees( int clientNum, int target ) {
 	if ( clientNum < 0 || clientNum >= MAX_CLIENTS || !haveView[clientNum] || target < 0 || target >= MAX_CLIENTS ) {

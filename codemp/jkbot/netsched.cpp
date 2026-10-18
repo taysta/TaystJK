@@ -21,6 +21,10 @@
  * (cl_timeNudge 0: the latest snapshot's time plus the time since it arrived; the client's drift
  * correction isn't modelled).
  *
+ * The client clock (cl.serverTime, the cgame's render time; P1-BR-05): each client frame, after
+ * its arrivals, CL_SetCGameTime and CL_AdjustTimeDelta at cl_timeNudge 0, as the reference port
+ * training/src/jkbot/features/interp.py ClientClock (realtime = now).
+ *
  * Console commands until RESET carries the link (P1-ENG-09):
  *   jkbot_agent_net <client> <ping_up> <ping_down> [maxpackets] [packetdup]   (resets the link)
  *   jkbot_netlog <path> | stop     log packets (P) and snapshots (S sent, H held), one per line;
@@ -53,6 +57,14 @@ typedef struct {
 	int reliableSequence;  // reliable commands the snapshot carried
 } jkbSnap_t;
 
+// cl.serverTime and its delta (cl_cgame.cpp CL_SetCGameTime, CL_AdjustTimeDelta)
+typedef struct {
+	qboolean active;  // CL_FirstSnapshot happened
+	int serverTimeDelta, oldServerTime, serverTime;
+	qboolean extrapolatedSnapshot;
+	int snapTime;  // cl.snap.serverTime
+} jkbClock_t;
+
 typedef struct {
 	qboolean active;
 	int pingUp, pingDown, maxPackets, packetDup;
@@ -69,6 +81,7 @@ typedef struct {
 	int held;  // messageNum of the newest arrived snapshot, -1 none
 	int heldServerTime;
 	int heldReliable;
+	jkbClock_t clock;
 } jkbLink_t;
 
 static jkbLink_t links[MAX_CLIENTS];
@@ -147,8 +160,11 @@ static void RecordSnapshots( int clientNum, jkbLink_t *l, const client_t *cl ) {
 	}
 }
 
-static void ReceiveSnapshots( int clientNum, jkbLink_t *l, int now ) {
+// Whether a snapshot arrived (became held) this client frame.
+static qboolean ReceiveSnapshots( int clientNum, jkbLink_t *l, int now ) {
+	qboolean any = qfalse;
 	while ( l->snapCount && l->snaps[l->snapHead].arriveMs <= now ) {
+		any = qtrue;
 		const jkbSnap_t *s = &l->snaps[l->snapHead];
 		l->held = s->messageNum;
 		l->heldServerTime = s->serverTime;
@@ -157,6 +173,59 @@ static void ReceiveSnapshots( int clientNum, jkbLink_t *l, int now ) {
 		l->snapHead = ( l->snapHead + 1 ) % JKB_MAX_INFLIGHT;
 		l->snapCount--;
 	}
+	return any;
+}
+
+#define CLOCK_RESET_TIME 500  // cl_cgame.cpp RESET_TIME
+
+static void AdjustTimeDelta( jkbClock_t *c, int realtime ) {
+	const int newDelta = c->snapTime - realtime;
+	const int deltaDelta = abs( newDelta - c->serverTimeDelta );
+	if ( deltaDelta > CLOCK_RESET_TIME ) {
+		c->serverTimeDelta = newDelta;
+		c->oldServerTime = c->snapTime;
+		c->serverTime = c->snapTime;
+	} else if ( deltaDelta > 100 ) {
+		c->serverTimeDelta = ( c->serverTimeDelta + newDelta ) >> 1;
+	} else if ( c->extrapolatedSnapshot ) {
+		c->extrapolatedSnapshot = qfalse;
+		c->serverTimeDelta -= 2;
+	} else {
+		c->serverTimeDelta++;
+	}
+}
+
+// One client frame of CL_SetCGameTime (cl_timeNudge 0), after the frame's arrivals.
+static void ClockFrame( jkbClock_t *c, int realtime, qboolean newSnapshot, int snapTime ) {
+	if ( newSnapshot ) {
+		c->snapTime = snapTime;
+	}
+	if ( !c->active ) {
+		if ( !newSnapshot ) {
+			return;
+		}
+		c->active = qtrue;  // CL_FirstSnapshot; newSnapshots is cleared, so no adjust this frame
+		c->serverTimeDelta = c->snapTime - realtime;
+		c->oldServerTime = c->snapTime;
+		newSnapshot = qfalse;
+	}
+	c->serverTime = realtime + c->serverTimeDelta;
+	if ( c->serverTime < c->oldServerTime ) {
+		c->serverTime = c->oldServerTime;
+	}
+	c->oldServerTime = c->serverTime;
+	if ( realtime + c->serverTimeDelta >= c->snapTime - 5 ) {
+		c->extrapolatedSnapshot = qtrue;
+	}
+	if ( newSnapshot ) {
+		AdjustTimeDelta( c, realtime );
+	}
+}
+
+// The agent's cl.serverTime after its latest client frame; 0 before its first snapshot.
+int JKBot_NetClientTime( int clientNum ) {
+	const jkbLink_t *l = &links[clientNum];
+	return l->active && l->clock.active ? l->clock.serverTime : 0;
 }
 
 static void ClientFrame( int clientNum, jkbLink_t *l, int now ) {
@@ -235,7 +304,8 @@ void JKBot_NetStep( void ) {
 		}
 		client_t *cl = &svs.clients[i];
 		RecordSnapshots( i, l, cl );
-		ReceiveSnapshots( i, l, now );
+		const qboolean newSnapshot = ReceiveSnapshots( i, l, now );
+		ClockFrame( &l->clock, now, newSnapshot, l->heldServerTime );
 		ClientFrame( i, l, now );
 		JKBot_PredictAgent( i, l->numCmds - 1 );  // as the cgame predicts each frame
 		JKBot_VisAgent( i );  // and renders it
