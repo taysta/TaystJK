@@ -29,8 +29,8 @@ Visibility (`visibility.cpp`, `shared/vis.c`): each agent's camera follows its p
 playerState as the cgame's third-person camera does, and the players in its held snapshot are
 tested for visibility (frustum at the rendered FOV, clear sight past MASK_OPAQUE world brushes and
 the extra occluding surfaces of measurements/sightsurfaces.json). `shared/` is plain computation
-over a playerState and the map's BSP bytes, meant for the client dump too (P2-DM-05); the agent
-server builds it, and so does the agent client's cgame for the visibility probe.
+over a playerState and the map's BSP bytes: the agent server builds it, the agent client's cgame
+for the visibility probe, and the agent client's demo dump (P2-DM-05).
 
 Client clock and camera in OBS (P1-BR-05): each agent's cl.serverTime (`netsched.cpp`, a port of
 CL_SetCGameTime/CL_AdjustTimeDelta at cl_timeNudge 0, equal to the Python reference
@@ -43,7 +43,13 @@ rays from the eye of the predicted playerState over a Fibonacci sphere in its ya
 point trace against the world model only (what blocks movement: solid, playerclip, terrain), so
 no player or other entity stops one. Count and length come from config (`jkbot_rays`); the bridge
 sends the hit fractions in OBS. `shared/rays.c` takes the trace as a callback, so the client dump
-can cast the same rays with CM after loading the map's clip model (P2-DM-05).
+casts the same rays with CM after loading the map's clip model (P2-DM-05).
+
+Demo dump POV (`record/dump.cpp`, P2-DM-05): in the agent client build only (the per-file
+`JKBOT_AGENT` define on dump.cpp and the shared sources; the client compiles the server too, so
+the macro isn't target-wide), each full-mode snapshot also gets the POV's camera, the players it
+sees and the rays, from the snapshot's playerState with the shared code above. A release client's
+dump has `"pov":null` in its header.
 
 Throughput timers (`bench.cpp`, P1-BEN-01/02): with `jkbot_bench 1`, each STEP's wall time and
 the game frames run are counted, and so is the time spent in Ghoul2: at load the server points

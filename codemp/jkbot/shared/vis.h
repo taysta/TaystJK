@@ -79,6 +79,10 @@ qboolean JKBVis_SegmentClear( const jkbVisSight_t *s, const vec3_t a, const vec3
 qboolean JKBVis_InFrustum( const jkbVisParams_t *p, const vec3_t viewOrg, const vec3_t viewAngles,
 	const vec3_t point );
 
+// A player entity's box: the packed solid (BG_PlayerStateToEntityState), else a player's default
+// box.
+void JKBVis_PlayerBox( int solid, vec3_t mins, vec3_t maxs );
+
 #define JKB_VIS_SAMPLES 15
 
 // The visibility test (environment.md §5.2, placeholder method): sample points on the target's

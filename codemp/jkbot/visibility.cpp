@@ -74,17 +74,6 @@ static qboolean Sight( void ) {
 	return ok;
 }
 
-static void PlayerBox( const entityState_t *es, vec3_t mins, vec3_t maxs ) {
-	if ( es->solid && es->solid != SOLID_BMODEL ) {  // the packed box (BG_PlayerStateToEntityState)
-		const int x = es->solid & 255, zd = ( es->solid >> 8 ) & 255, zu = ( ( es->solid >> 16 ) & 255 ) - 32;
-		VectorSet( mins, -x, -x, -zd );
-		VectorSet( maxs, x, x, zu );
-	} else {  // a player's default box
-		VectorSet( mins, -15, -15, DEFAULT_MINS_2 );
-		VectorSet( maxs, 15, 15, DEFAULT_MAXS_2 );
-	}
-}
-
 // After the agent's client frame and prediction (netsched.cpp).
 void JKBot_VisAgent( int clientNum ) {
 	playerState_t ps;
@@ -108,7 +97,7 @@ void JKBot_VisAgent( int clientNum ) {
 			continue;
 		}
 		vec3_t mins, maxs;
-		PlayerBox( es, mins, maxs );
+		JKBVis_PlayerBox( es->solid, mins, maxs );
 		if ( JKBVis_Visible( &sight, &params, camOrg[clientNum], camAngles[clientNum], es->pos.trBase,
 				mins, maxs, NULL, NULL ) ) {
 			visibleMask[clientNum] |= 1 << es->number;

@@ -444,6 +444,17 @@ qboolean JKBVis_SegmentClear( const jkbVisSight_t *s, const vec3_t a, const vec3
 
 // ---- the test ----
 
+void JKBVis_PlayerBox( int solid, vec3_t mins, vec3_t maxs ) {
+	if ( solid && solid != SOLID_BMODEL ) {
+		const int x = solid & 255, zd = ( solid >> 8 ) & 255, zu = ( ( solid >> 16 ) & 255 ) - 32;
+		VectorSet( mins, -x, -x, -zd );
+		VectorSet( maxs, x, x, zu );
+	} else {
+		VectorSet( mins, -15, -15, -24 );  // DEFAULT_MINS_2
+		VectorSet( maxs, 15, 15, 40 );  // DEFAULT_MAXS_2
+	}
+}
+
 qboolean JKBVis_Visible( const jkbVisSight_t *s, const jkbVisParams_t *p, const vec3_t viewOrg,
 	const vec3_t viewAngles, const vec3_t origin, const vec3_t mins, const vec3_t maxs,
 	int *inView, int *clear ) {

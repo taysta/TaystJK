@@ -769,6 +769,24 @@ if(BuildMPEngine)
 			COMPILE_DEFINITIONS "DEMO_DUMP_ENGINE_SHA=\"${JKBOT_ENGINE_SHA}\"")
 	endif()
 
+	# JKBot (codemp/jkbot/README.md): with JKBOT_AGENT (the agent client build, never shipped), the
+	# demo dump also gives the POV's visibility and rays (P2-DM-05) with the shared C code. Only
+	# these files see the macro: the client compiles the server too, whose agent hooks would need
+	# the agent server's code.
+	if(JKBOT_AGENT)
+		set(MPEngineJKBotFiles
+			"${MPDir}/jkbot/shared/vis.c"
+			"${MPDir}/jkbot/shared/vis.h"
+			"${MPDir}/jkbot/shared/rays.c"
+			"${MPDir}/jkbot/shared/rays.h"
+			)
+		target_sources(${MPEngine} PRIVATE ${MPEngineJKBotFiles})
+		set_source_files_properties("${MPDir}/jkbot/shared/vis.c" "${MPDir}/jkbot/shared/rays.c"
+			PROPERTIES LANGUAGE CXX)
+		set_property(SOURCE ${MPEngineJKBotFiles} "${MPDir}/jkbot/record/dump.cpp"
+			APPEND PROPERTY COMPILE_DEFINITIONS "JKBOT_AGENT")
+	endif()
+
 	if (GIT_FOUND)
 		add_dependencies(${MPEngine} GET_GIT_TAG_AND_HASH)
 	endif()
