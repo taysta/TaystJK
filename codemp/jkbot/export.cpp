@@ -20,6 +20,15 @@
  *   jkbot_export <path> | stop   write each agent's new snapshots to <path> after every STEP
  *   jkbot_xxh64 [text]           xxh64 of the text (self-test)
  *   jkbot_hashlog <path> | stop  every game frame's "<game time> <hash>" (determinism gate)
+ *   jkbot_hashdump <path> <from> <to> [ps] | stop
+ *                                the hashed bytes of every game frame with from <= game time <= to,
+ *                                each as int32 game time, int32 length, the bytes (parity
+ *                                diagnosis: which field differs, P1-REB-02); with "ps", only the
+ *                                game time and the clients' numbers and playerStates (parity
+ *                                statistics over whole matches)
+ *   jkbot_fieldmap               sizeof(playerState_t) and sizeof(entityState_t), then the net
+ *                                fields' offsets, wire widths (0: float) and names
+ *                                ("jkbot_field ps|es <offset> <bits> <name>")
  */
 #ifdef JKBOT_AGENT
 
@@ -119,6 +128,9 @@ static FILE *hashLog;  // jkbot_hashlog: every game frame's time and hash
 static byte hashBuf[sizeof( int ) * ( 2 + MAX_CLIENTS ) + MAX_CLIENTS * sizeof( playerState_t ) +
 	MAX_GENTITIES * sizeof( entityState_t )];
 static uint64_t frameHash;
+static FILE *hashDump;  // jkbot_hashdump
+static int hashDumpFrom, hashDumpTo;
+static qboolean hashDumpPS;
 
 static size_t Put( size_t n, const void *data, size_t len ) {
 	memcpy( hashBuf + n, data, len );
@@ -134,11 +146,19 @@ void JKBot_HashFrame( int gameTime ) {
 		n = Put( n, &i, sizeof( i ) );
 		n = Put( n, SV_GameClientNum( i ), sizeof( playerState_t ) );
 	}
+	const size_t psEnd = n;
 	n = Put( n, &sv.num_entities, sizeof( sv.num_entities ) );
 	for ( int i = 0; i < sv.num_entities; i++ ) {
 		n = Put( n, &SV_GentityNum( i )->s, sizeof( entityState_t ) );
 	}
 	frameHash = JKBot_XXH64( hashBuf, n, 0 );
+	if ( hashDump && gameTime >= hashDumpFrom && gameTime <= hashDumpTo ) {
+		const size_t len = hashDumpPS ? psEnd : n;
+		const int32_t head[2] = { gameTime, (int32_t)len };
+		fwrite( head, sizeof( head ), 1, hashDump );
+		fwrite( hashBuf, 1, len, hashDump );
+		fflush( hashDump );
+	}
 	if ( hashLog ) {
 		fprintf( hashLog, "%d %016llx\n", gameTime, (unsigned long long)frameHash );
 	}
@@ -285,6 +305,37 @@ static void JKBot_HashLog_f( void ) {
 	Com_Printf( hashLog ? "jkbot_hashlog started\n" : "jkbot_hashlog: can't open the file\n" );
 }
 
+static void JKBot_HashDump_f( void ) {
+	if ( hashDump ) {
+		fclose( hashDump );
+		hashDump = NULL;
+	}
+	if ( Cmd_Argc() == 2 && !Q_stricmp( Cmd_Argv( 1 ), "stop" ) ) {
+		Com_Printf( "jkbot_hashdump stopped\n" );
+		return;
+	}
+	if ( Cmd_Argc() < 4 ) {
+		Com_Printf( "usage: jkbot_hashdump <path> <from game time> <to game time> [ps] | stop\n" );
+		return;
+	}
+	hashDumpFrom = atoi( Cmd_Argv( 2 ) );
+	hashDumpTo = atoi( Cmd_Argv( 3 ) );
+	hashDumpPS = (qboolean)( Cmd_Argc() > 4 && !Q_stricmp( Cmd_Argv( 4 ), "ps" ) );
+	hashDump = fopen( Cmd_Argv( 1 ), "wb" );
+	Com_Printf( hashDump ? "jkbot_hashdump started\n" : "jkbot_hashdump: can't open the file\n" );
+}
+
+static void JKBot_FieldMap_f( void ) {
+	Com_Printf( "jkbot_fieldmap ps %d es %d\n", (int)sizeof( playerState_t ), (int)sizeof( entityState_t ) );
+	for ( int i = 0; i < JKB_PS_NUM_FIELDS; i++ ) {
+		Com_Printf( "jkbot_field ps %d %d %s\n", (int)jkbPsFields[i].offset, jkbPsFields[i].bits, jkbPsFields[i].name );
+	}
+	for ( int i = 0; i < JKB_ES_NUM_FIELDS; i++ ) {
+		Com_Printf( "jkbot_field es %d %d %s\n", (int)jkbEsFields[i].offset, jkbEsFields[i].bits, jkbEsFields[i].name );
+	}
+	Com_Printf( "jkbot_fieldmap end\n" );
+}
+
 static void JKBot_XXH64_f( void ) {
 	const char *text = Cmd_Argc() > 1 ? Cmd_ArgsFrom( 1 ) : "";
 	unsigned long long h = JKBot_XXH64( text, strlen( text ), 0 );
@@ -307,6 +358,8 @@ void JKBot_ExportInit( void ) {
 	Cmd_AddCommand( "jkbot_export", JKBot_Export_f, "JKBot: dump agents' snapshots after each STEP (agent builds only)" );
 	Cmd_AddCommand( "jkbot_xxh64", JKBot_XXH64_f, "JKBot: xxh64 of a string (agent builds only)" );
 	Cmd_AddCommand( "jkbot_hashlog", JKBot_HashLog_f, "JKBot: log every game frame's state hash (agent builds only)" );
+	Cmd_AddCommand( "jkbot_hashdump", JKBot_HashDump_f, "JKBot: dump the hashed state of game frames in a time range (agent builds only)" );
+	Cmd_AddCommand( "jkbot_fieldmap", JKBot_FieldMap_f, "JKBot: print the state structs' sizes and net field offsets (agent builds only)" );
 }
 
 #endif // JKBOT_AGENT

@@ -18,9 +18,14 @@
  *      armed: during each, the talk button is held in its usercmds, as a human opening the chat.
  * Between frags the game respawns players itself; the engine does nothing.
  *
- * Console command until the bridge carries RESET (P1-BR-04):
+ * Console commands:
  *   jkbot_reset <path>   a jkb_reset_t read from the file; prints
- *                        "jkbot_reset <episode> agents <client...> bot <client>"
+ *                        "jkbot_reset <episode> agents <client...> bot <client>" (until the bridge
+ *                        carries RESET, P1-BR-04)
+ *   jkbot_botcmdlog <path> | stop
+ *                        every stock-bot usercmd as the server gets it, one line each: sv.time,
+ *                        client, serverTime, angles[3], buttons, forward, right, up, weapon,
+ *                        generic_cmd (parity diagnosis: the game's AI makes them, P1-REB-02)
  */
 #ifdef JKBOT_AGENT
 
@@ -40,6 +45,7 @@ static int roundStart;  // sv.time when the episode's round started
 static int chatBot = -1;
 static int numChat;
 static jkb_chat_event_t chat[JKB_MAX_CHAT_EVENTS];
+static FILE *botCmdLog;
 
 static void FixedString( char *out, size_t size, const char *in, size_t inSize ) {
 	size_t n = 0;
@@ -63,18 +69,26 @@ static void SetUserinfoKey( int clientNum, const char *key, const char *value ) 
 	GVM_ClientUserinfoChanged( clientNum );
 }
 
+static void LogBotCmd( int clientNum, const usercmd_t *cmd ) {
+	if ( botCmdLog ) {
+		fprintf( botCmdLog, "%d %d %d %d %d %d %d %d %d %d %d %d\n", sv.time, clientNum, cmd->serverTime,
+			cmd->angles[0], cmd->angles[1], cmd->angles[2], cmd->buttons, cmd->forwardmove,
+			cmd->rightmove, cmd->upmove, cmd->weapon, cmd->generic_cmd );
+	}
+}
+
 // The talk button during the stock bot's scripted chat windows (BOTLIB_USER_COMMAND).
 void JKBot_BotUsercmd( int clientNum, usercmd_t *cmd ) {
-	if ( clientNum != chatBot || !numChat ) {
-		return;
-	}
-	const int t = sv.time - roundStart;
-	for ( int i = 0; i < numChat; i++ ) {
-		if ( t >= chat[i].start_ms && t < chat[i].start_ms + chat[i].duration_ms ) {
-			cmd->buttons |= BUTTON_TALK;
-			return;
+	if ( clientNum == chatBot && numChat ) {
+		const int t = sv.time - roundStart;
+		for ( int i = 0; i < numChat; i++ ) {
+			if ( t >= chat[i].start_ms && t < chat[i].start_ms + chat[i].duration_ms ) {
+				cmd->buttons |= BUTTON_TALK;
+				break;
+			}
 		}
 	}
+	LogBotCmd( clientNum, cmd );
 }
 
 int JKBot_EpisodeIndex( void ) {
@@ -218,7 +232,25 @@ static void JKBot_Reset_f( void ) {
 	Com_Printf( "%s bot %d\n", line, bot );
 }
 
+static void JKBot_BotCmdLog_f( void ) {
+	if ( Cmd_Argc() < 2 ) {
+		Com_Printf( "usage: jkbot_botcmdlog <path> | stop\n" );
+		return;
+	}
+	if ( botCmdLog ) {
+		fclose( botCmdLog );
+		botCmdLog = NULL;
+	}
+	if ( !Q_stricmp( Cmd_Argv( 1 ), "stop" ) ) {
+		Com_Printf( "jkbot_botcmdlog stopped\n" );
+		return;
+	}
+	botCmdLog = fopen( Cmd_Argv( 1 ), "w" );
+	Com_Printf( botCmdLog ? "jkbot_botcmdlog started\n" : "jkbot_botcmdlog: can't open the file\n" );
+}
+
 void JKBot_ResetInit( void ) {
+	Cmd_AddCommand( "jkbot_botcmdlog", JKBot_BotCmdLog_f, "JKBot: log every stock-bot usercmd (agent builds only)" );
 	Cmd_AddCommand( "jkbot_reset", JKBot_Reset_f, "JKBot: start an episode from a jkb_reset_t file (agent builds only)" );
 }
 
