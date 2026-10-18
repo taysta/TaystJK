@@ -9,6 +9,9 @@
  *            packet pattern), its client command runs, one lockstep STEP, then OBS, or DONE
  *            once the round has ended (CS_INTERMISSION: fraglimit or timelimit).
  * SOCK_SEQPACKET: one message per packet (jkbot_proto.h framing). Linux only, like the sim.
+ * When the env closes the connection, a "jkbot bridge: stats" line gives the STEPs' engine cost
+ * (from STEP received to the reply's send) and the reply send() calls' time, for the transport
+ * benchmark (P1-BEN-03).
  *
  * OBS per agent: the snapshot it holds (export.cpp), the frame hash, CS_LEVEL_START_TIME, both
  * duelists' scores, and the step's events read from server state: damage (a drop in health plus
@@ -28,6 +31,7 @@
 #ifdef __linux__
 #include <sys/socket.h>
 #include <sys/un.h>
+#include <time.h>
 #include <unistd.h>
 #endif
 
@@ -51,6 +55,21 @@ static qboolean bridgeFailed;
 static uint32_t sendSeq;
 static byte inBuf[JKB_MAX_MESSAGE];
 static jkb_obs_t obs;
+
+// STEP timing (CLOCK_MONOTONIC ns): the engine's work per STEP, and its reply's send() call
+static int64_t stepStart, stepEngineNs, stepSendNs;
+static int64_t numSteps;
+static qboolean inStep;
+
+static int64_t NowNs( void ) {
+#ifdef __linux__
+	struct timespec ts;
+	clock_gettime( CLOCK_MONOTONIC, &ts );
+	return (int64_t)ts.tv_sec * 1000000000 + ts.tv_nsec;
+#else
+	return 0;
+#endif
+}
 
 typedef struct {
 	int health, armor, score, killed, spawns, talk;
@@ -76,7 +95,14 @@ static qboolean JKB_Send( uint16_t type, const void *body, uint32_t length ) {
 	memcpy( out, &h, sizeof( h ) );
 	memcpy( out + sizeof( h ), body, length );
 #ifdef __linux__
+	const int64_t t0 = NowNs();
 	const ssize_t n = send( bridgeFd, out, sizeof( h ) + length, 0 );
+	if ( inStep ) {
+		stepEngineNs += t0 - stepStart;
+		stepSendNs += NowNs() - t0;
+		numSteps++;
+		inStep = qfalse;
+	}
 	return (qboolean)( n == (ssize_t)( sizeof( h ) + length ) );
 #else
 	return qfalse;
@@ -378,6 +404,8 @@ void JKBot_BridgeService( void ) {
 			HandleReset( &r );
 		} else if ( h.type == JKB_MSG_STEP && h.length == sizeof( jkb_step_t ) ) {
 			static jkb_step_t s;
+			stepStart = NowNs();
+			inStep = qtrue;
 			memcpy( &s, body, sizeof( s ) );
 			HandleStep( &s );
 		} else {
@@ -385,6 +413,8 @@ void JKBot_BridgeService( void ) {
 		}
 	}
 	Com_Printf( "jkbot bridge: the env closed the connection\n" );
+	Com_Printf( "jkbot bridge: stats steps=%lld engine_ns=%lld send_ns=%lld\n", (long long)numSteps,
+		(long long)stepEngineNs, (long long)stepSendNs );
 #ifdef __linux__
 	close( bridgeFd );
 #endif
