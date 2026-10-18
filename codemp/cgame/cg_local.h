@@ -2815,5 +2815,13 @@ Ghoul2 Insert End
 void CG_RailSpiral( clientInfo_t *ci, vec3_t start, vec3_t end, int time );
 void CG_RailTrail( clientInfo_t *ci, vec3_t start, vec3_t end, int time );
 
+#ifdef JKBOT_AGENT
+// the visibility probe (jkbot/visprobe.c; agent client builds only)
+void CG_VisProbeInit( void );
+void CG_VisProbeShutdown( void );
+void CG_VisProbePlayer( const centity_t *cent, refEntity_t *legs );
+qboolean CG_VisProbeHideOverlays( void );
+void CG_VisProbeFrame( void );
+#endif
 
 extern cgameImport_t *trap;

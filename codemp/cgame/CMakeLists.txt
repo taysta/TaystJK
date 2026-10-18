@@ -148,6 +148,19 @@ set(MPCGameGFiles
 source_group("ghoul2" FILES ${MPCGameG2Files})
 set(MPCGameFiles ${MPCGameFiles} ${MPCGameG2Files})
 
+# JKBot (codemp/jkbot/README.md): the visibility probe compiles into the cgame only with
+# JKBOT_AGENT (the agent client build, scripts/build_client.sh --agent); release builds don't list it.
+if(JKBOT_AGENT)
+	set(MPCGameJKBotFiles
+		"${MPDir}/jkbot/visprobe.c"
+		"${MPDir}/jkbot/shared/vis.c"
+		"${MPDir}/jkbot/shared/vis.h"
+		)
+	source_group("jkbot" FILES ${MPCGameJKBotFiles})
+	set(MPCGameFiles ${MPCGameFiles} ${MPCGameJKBotFiles})
+	set(MPCGameDefines ${MPCGameDefines} "JKBOT_AGENT")
+endif()
+
 list(APPEND MPCGameIncludeDirectories ${CJSON_INCLUDE_DIRS})
 list(APPEND MPCGameLibraries          ${CJSON_LIBRARIES})
 

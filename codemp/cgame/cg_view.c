@@ -3131,6 +3131,9 @@ void CG_DrawActiveFrame( int serverTime, stereoFrame_t stereoView, qboolean demo
 
 	// actually issue the rendering calls
 	CG_DrawActive( stereoView );
+#ifdef JKBOT_AGENT
+	CG_VisProbeFrame();
+#endif
 
 	CG_DrawAutoMap();
 

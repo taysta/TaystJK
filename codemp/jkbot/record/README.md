@@ -28,4 +28,8 @@ Recording-only code (no input endpoint) lives here and may ship in release build
 - `probe.cpp`: `+set jkbot_probeRefdef 1` prints the world refdef (width, height, fov_x, fov_y)
   whenever it changes, for measuring what the client renders (P1-M-08). Hooked where the cgame's
   scenes reach the renderer: `CL_ProbeRefdef` in CL_R_RenderScene (new API) and the legacy
-  CG_R_RENDERSCENE syscall.
+  CG_R_RENDERSCENE syscall. `+set jkbot_probePixels "R G B"` counts that colour's pixels in each
+  presented frame while a demo plays (exact, and brightened by an additive surface inside
+  jkbot_probeRect) and saves a few frames whose presence differs from jkbot_probeExpect (P1-M-21;
+  the agent cgame's visibility probe sets both cvars). Hooked as `CL_ProbePixels` in the client's
+  wrapper of the renderer's buffer swap (`CL_PresentWindow`, cl_main.cpp).

@@ -3117,6 +3117,9 @@ Ghoul2 Insert End
 	cgs.media.mSaberDamageGlow = trap->R_RegisterShader("gfx/effects/saberDamageGlow");
 
 	CG_RegisterCvars();
+#ifdef JKBOT_AGENT
+	CG_VisProbeInit();
+#endif
 
 	CG_InitConsoleCommands();
 
@@ -3311,6 +3314,9 @@ Called before every level change or subsystem restart
 */
 void CG_Shutdown( void )
 {
+#ifdef JKBOT_AGENT
+	CG_VisProbeShutdown();
+#endif
 	BG_ClearAnimsets(); //free all dynamic allocations made through the engine
 
     CG_DestroyAllGhoul2();

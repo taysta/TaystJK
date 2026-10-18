@@ -7449,6 +7449,10 @@ void CG_AddSaberBlade( centity_t *cent, centity_t *scent, refEntity_t *saber, in
 	int	useModelIndex = 0;
 	qboolean sfxSabers = (cg_saberTrail.integer == 3 || cg_saberTrail.integer == -3);
 
+#ifdef JKBOT_AGENT
+	if (CG_VisProbeHideOverlays())
+		dontDraw = qtrue;
+#endif
 	if (cent->currentState.eType == ET_NPC)
 	{
 		client = cent->npcClient;
@@ -8253,6 +8257,10 @@ void CG_DrawPlayerSphere(centity_t *cent, vec3_t origin, float scale, int shader
 	float vLen;
 	vec3_t viewDir;
 
+#ifdef JKBOT_AGENT
+	if (CG_VisProbeHideOverlays())
+		return;
+#endif
 	// Don't draw the shield when the player is dead.
 	if (cent->currentState.eFlags & EF_DEAD)
 	{
@@ -13229,6 +13237,10 @@ stillDoSaber:
 				legs.shaderRGBA[3] = Com_Clampi( 1, 255, cp_altDimAlpha.integer );
 			}
 
+#ifdef JKBOT_AGENT
+			if (drawPlayer)
+				CG_VisProbePlayer( cent, &legs );
+#endif
 			trap->R_AddRefEntityToScene(&legs);
 		}
 	}

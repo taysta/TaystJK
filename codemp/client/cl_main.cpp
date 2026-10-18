@@ -2737,6 +2737,12 @@ static IHeapAllocator *GetG2VertSpaceServer( void ) {
 
 #define DEFAULT_RENDER_LIBRARY "rd-taystjk"
 
+// The renderer's buffer swap, after the client probes have read the frame (jkbot/record/probe.cpp).
+static void CL_PresentWindow( window_t *window ) {
+	CL_ProbePixels();
+	WIN_Present( window );
+}
+
 void CL_InitRef( void ) {
 	static refimport_t ri;
 	refexport_t	*ret;
@@ -2837,7 +2843,7 @@ void CL_InitRef( void ) {
     ri.WIN_Init = WIN_Init;
 	ri.WIN_SetGamma = WIN_SetGamma;
     ri.WIN_Shutdown = WIN_Shutdown;
-    ri.WIN_Present = WIN_Present;
+    ri.WIN_Present = CL_PresentWindow;
 	ri.GL_GetProcAddress = WIN_GL_GetProcAddress;
 	ri.GL_ExtensionSupported = WIN_GL_ExtensionSupported;
 

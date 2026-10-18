@@ -29,5 +29,12 @@ Visibility (`visibility.cpp`, `shared/vis.c`): each agent's camera follows its p
 playerState as the cgame's third-person camera does, and the players in its held snapshot are
 tested for visibility (frustum at the rendered FOV, clear sight past MASK_OPAQUE world brushes and
 the extra occluding surfaces of measurements/sightsurfaces.json). `shared/` is plain computation
-over a playerState and the map's BSP bytes, meant for the client dump too (P2-DM-05); for now only
-the agent server builds it.
+over a playerState and the map's BSP bytes, meant for the client dump too (P2-DM-05); the agent
+server builds it, and so does the agent client's cgame for the visibility probe.
+
+Visibility probe (`visprobe.c`, P1-M-21): measures the model against renders. It compiles into the
+cgame only with `JKBOT_AGENT` (`scripts/build_client.sh --agent`, a measurement build never
+shipped), with its cgame hooks inside `#ifdef JKBOT_AGENT`, and acts only during demo playback:
+it draws the other player in a flat colour, leaves translucent overlays (saber blades, player
+spheres) undrawn, runs the model on each rendered frame and prints the result for the engine's
+pixel probe (`record/probe.cpp`) to compare with the frame's pixels.
