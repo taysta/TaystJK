@@ -3,12 +3,14 @@
  *
  * RESET (jkb_reset_t) starts a new round through the game's normal paths:
  *   1. every agent and stock bot is dropped (SV_DropClient), so no session data (Duel wins and
- *      losses survive a map_restart) carries into the episode;
+ *      losses survive a map_restart) carries into the episode; agent slots are freed at once (no
+ *      zombie state), so an episode's agents always take the same slots;
  *   2. fraglimit / timelimit are set when the message gives them;
  *   3. the seed: jkbot_seed (G_InitGame's randomSeed, export.cpp) and srand( seed ) for the
  *      engine's libc rand(), which the game module and the botlib share;
  *   4. map_restart 0: the game module restarts and seeds itself from randomSeed; the lockstep
- *      residual is zeroed so every episode starts on a server-frame boundary;
+ *      residual is zeroed so every episode starts on a server-frame boundary, and a finished
+ *      round's CS_INTERMISSION is cleared;
  *   5. the agents connect as clients (agent.cpp) with the episode's name, model and hilt
  *      (userinfo) and link (netsched.cpp);
  *   6. the opponent: a stock bot joins through the game's addbot (profile and skill), its model and
@@ -125,8 +127,14 @@ qboolean JKBot_Reset( const jkb_reset_t *r, int *agentClients, int *botClient ) 
 	for ( int i = 0; i < sv_maxclients->integer && i < MAX_CLIENTS; i++ ) {
 		client_t *cl = &svs.clients[i];
 		if ( cl->state >= CS_CONNECTED && ( JKBot_IsAgent( i ) || cl->netchan.remoteAddress.type == NA_BOT ) ) {
+			const qboolean agent = JKBot_IsAgent( i );
 			JKBot_AgentForget( i );
 			SV_DropClient( cl, "episode reset" );
+			if ( agent ) {
+				// no real net connection, as for bots: free the slot now rather than after
+				// sv_zombietime, so the episode's agents get the same client slots every time
+				cl->state = CS_FREE;
+			}
 		}
 	}
 	chatBot = -1;
@@ -145,6 +153,10 @@ qboolean JKBot_Reset( const jkb_reset_t *r, int *agentClients, int *botClient ) 
 	// idle time) would otherwise carry the previous episode's step phase into this one
 	Cmd_ExecuteString( "map_restart 0" );
 	sv.timeResidual = 0;
+	// the game sets CS_INTERMISSION at a round's end and never clears it (map_restart keeps
+	// configstrings; the stock cgame drops its intermission flag in CG_MapRestart), so after a
+	// finished round the bridge would see the new one as over. The game module never reads it.
+	SV_SetConfigstring( CS_INTERMISSION, "" );
 	roundStart = sv.time;
 	episodeIndex = (int)r->episode_index;
 	// 5. agents
