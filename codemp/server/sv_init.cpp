@@ -950,7 +950,11 @@ static void SV_InitRef( void ) {
 		Com_Error (ERR_FATAL, "Couldn't initialize refresh" );
 	}
 
+#ifdef JKBOT_AGENT
+	re = JKBot_BenchWrapRef( ret );  // jkbot_bench: Ghoul2 API timers, forwarding only
+#else
 	re = ret;
+#endif
 }
 #endif
 

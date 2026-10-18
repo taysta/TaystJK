@@ -83,6 +83,14 @@ qboolean JKBot_View( int clientNum, vec3_t origin, vec3_t angles );  // the agen
 void JKBot_VisForget( int clientNum );
 
 // geometry.cpp
+// Throughput timers (bench.cpp, P1-BEN-01/02)
+void JKBot_BenchInit( void );
+int64_t JKBot_BenchNow( void );  // CLOCK_MONOTONIC, ns
+void JKBot_BenchStep( int64_t start );  // after each STEP
+void JKBot_BenchGameFrame( void );  // after each game frame
+void JKBot_BenchReport( void );
+struct refexport_s *JKBot_BenchWrapRef( struct refexport_s *ref );  // the table re points at
+
 void JKBot_GeometryInit( void );
 void JKBot_RaysAgent( int clientNum );  // after the agent's client frame and prediction
 int JKBot_Rays( int clientNum, float *out );  // the latest rays (JKB_MAX_RAYS), count or 0

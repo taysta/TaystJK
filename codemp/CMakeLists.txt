@@ -850,6 +850,7 @@ if(BuildMPDed)
 			"${MPDir}/jkbot/shared/rays.c"
 			"${MPDir}/jkbot/shared/rays.h"
 			"${MPDir}/jkbot/jkbot_fields.h"
+			"${MPDir}/jkbot/bench.cpp"
 			)
 		# the shared visibility model and rays are plain C; the server compiles them as C++ like
 		# its own code

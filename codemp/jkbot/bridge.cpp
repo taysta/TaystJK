@@ -415,6 +415,9 @@ void JKBot_BridgeService( void ) {
 	Com_Printf( "jkbot bridge: the env closed the connection\n" );
 	Com_Printf( "jkbot bridge: stats steps=%lld engine_ns=%lld send_ns=%lld\n", (long long)numSteps,
 		(long long)stepEngineNs, (long long)stepSendNs );
+	if ( Cvar_VariableIntegerValue( "jkbot_bench" ) ) {
+		JKBot_BenchReport();
+	}
 #ifdef __linux__
 	close( bridgeFd );
 #endif

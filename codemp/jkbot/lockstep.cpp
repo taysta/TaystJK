@@ -46,12 +46,14 @@ void JKBot_Step( int n ) {
 		return;
 	}
 	for ( int i = 0; i < n; i++ ) {
+		const int64_t start = JKBot_BenchNow();
 		const int msec = JKBot_StepMsec();
 		stepping = qtrue;
 		SV_Frame( msec );
 		stepping = qfalse;
 		JKBot_AgentsThink();
 		JKBot_ExportStep();
+		JKBot_BenchStep( start );
 		steps++;
 		virtualMsec += msec;
 	}

@@ -45,6 +45,14 @@ no player or other entity stops one. Count and length come from config (`jkbot_r
 sends the hit fractions in OBS. `shared/rays.c` takes the trace as a callback, so the client dump
 can cast the same rays with CM after loading the map's clip model (P2-DM-05).
 
+Throughput timers (`bench.cpp`, P1-BEN-01/02): with `jkbot_bench 1`, each STEP's wall time and
+the game frames run are counted, and so is the time spent in Ghoul2: at load the server points
+`re` at a copy of the renderer's export table whose `G2API_*` entries time the outermost call and
+forward to the renderer's own. Every Ghoul2 call the server makes goes through `re` (the original
+module's G_G2_* syscalls, a rebuilt module's import table, SV_Trace's Ghoul2 collision), so the
+same timers cover both modules. `jkbot_bench_report` prints and zeroes the counts; the bridge
+prints them when the env disconnects.
+
 Visibility probe (`visprobe.c`, P1-M-21): measures the model against renders. It compiles into the
 cgame only with `JKBOT_AGENT` (`scripts/build_client.sh --agent`, a measurement build never
 shipped), with its cgame hooks inside `#ifdef JKBOT_AGENT`, and acts only during demo playback:

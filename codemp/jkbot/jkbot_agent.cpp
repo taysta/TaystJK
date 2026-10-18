@@ -63,6 +63,7 @@ void JKBot_Init( void ) {
 	JKBot_PredictInit();
 	JKBot_VisInit();
 	JKBot_GeometryInit();
+	JKBot_BenchInit();
 	Com_Printf( "JKBot agent build (simulator only)\n" );
 }
 
@@ -73,6 +74,7 @@ void JKBot_GameFrame( int gameTime ) {
 	jkbot_frames++;
 	jkbot_gameTime = gameTime;
 	JKBot_HashFrame( gameTime );
+	JKBot_BenchGameFrame();
 }
 
 #endif // JKBOT_AGENT
