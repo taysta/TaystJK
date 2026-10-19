@@ -125,11 +125,18 @@ static void CaptureGamestate( jkbLink_t *l, const client_t *cl ) {
 }
 
 static jkbLink_t links[MAX_CLIENTS];
-static int snapshotTimes[MAX_CLIENTS][PACKET_BACKUP];  // serverTime per message, by sequence
+typedef struct {
+	int serverTime;  // written into the message
+	int reliableSequence;  // the reliable commands it carries
+} jkbWritten_t;
 
-void JKBot_NetSnapshotTime( int clientNum, int sequence, int serverTime ) {
+static jkbWritten_t written[MAX_CLIENTS][PACKET_BACKUP];  // per message, by sequence
+
+void JKBot_NetMessageWritten( int clientNum, int sequence, int serverTime ) {
 	if ( clientNum >= 0 && clientNum < MAX_CLIENTS ) {
-		snapshotTimes[clientNum][sequence & PACKET_MASK] = serverTime;
+		jkbWritten_t *w = &written[clientNum][sequence & PACKET_MASK];
+		w->serverTime = serverTime;
+		w->reliableSequence = svs.clients[clientNum].reliableSequence;
 	}
 }
 static FILE *netlog;
@@ -241,12 +248,14 @@ static void RecordSnapshots( int clientNum, jkbLink_t *l, const client_t *cl ) {
 		}
 		jkbSnap_t *s = &l->snaps[( l->snapHead + l->snapCount++ ) % JKB_MAX_INFLIGHT];
 		s->messageNum = l->lastBuilt++;
-		// the serverTime written into it (JKBot_NetSnapshotTime), which a demo records and cl.snap
-		// holds. A message in fragments (a big non-delta snapshot, e.g. the first one a demo
-		// recording forces) counts as sent, and arrives, from its last fragment: this STEP.
-		s->serverTime = snapshotTimes[clientNum][s->messageNum & PACKET_MASK];
+		// the serverTime and reliable commands written into it (JKBot_NetMessageWritten), which a
+		// demo records and the client gets. A message in fragments (a big non-delta snapshot, e.g.
+		// the first one a demo recording forces) counts as sent, and arrives, from its last
+		// fragment: this STEP.
+		const jkbWritten_t *w = &written[clientNum][s->messageNum & PACKET_MASK];
+		s->serverTime = w->serverTime;
 		s->arriveMs = svs.time + l->pingDown;
-		s->reliableSequence = cl->reliableSequence;
+		s->reliableSequence = w->reliableSequence;
 		Log( "S %d %d %d %d\n", clientNum, s->messageNum, s->serverTime, s->arriveMs );
 	}
 }
