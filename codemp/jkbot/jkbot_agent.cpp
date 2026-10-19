@@ -60,6 +60,7 @@ void JKBot_Init( void ) {
 	JKBot_NetInit();
 	JKBot_ResetInit();
 	JKBot_CallLogInit();
+	JKBot_ThinkLogInit();
 	JKBot_PredictInit();
 	JKBot_VisInit();
 	JKBot_GeometryInit();

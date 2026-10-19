@@ -860,6 +860,7 @@ if(BuildMPDed)
 			"${MPDir}/jkbot/reset.cpp"
 			"${MPDir}/jkbot/bridge.cpp"
 			"${MPDir}/jkbot/calllog.cpp"
+			"${MPDir}/jkbot/thinklog.cpp"
 			"${MPDir}/jkbot/predict.cpp"
 			"${MPDir}/jkbot/visibility.cpp"
 			"${MPDir}/jkbot/shared/vis.c"

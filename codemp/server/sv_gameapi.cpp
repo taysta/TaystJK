@@ -114,6 +114,7 @@ void GVM_ClientThink( int clientNum, usercmd_t *ucmd ) {
 	if ( gvm->isLegacy ) {
 #ifdef JKBOT_AGENT
 		JKBot_CallLogEnter( 'T', clientNum, svs.clients[clientNum].lastUsercmd.serverTime );  // jkbot_calllog (ucmd is NULL: the game reads lastUsercmd)
+		JKBot_ThinkLogUsercmd( clientNum );  // jkbot_thinklog, read only
 #endif
 		VM_Call( gvm, GAME_CLIENT_THINK, clientNum, reinterpret_cast< intptr_t >( ucmd ) );
 #ifdef JKBOT_AGENT
@@ -132,6 +133,7 @@ void GVM_RunFrame( int levelTime ) {
 	if ( gvm->isLegacy ) {
 #ifdef JKBOT_AGENT
 		JKBot_CallLogEnter( 'F', levelTime, 0 );  // jkbot_calllog
+		JKBot_ThinkLogFrame( levelTime );  // jkbot_thinklog
 #endif
 		VM_Call( gvm, GAME_RUN_FRAME, levelTime );
 #ifdef JKBOT_AGENT

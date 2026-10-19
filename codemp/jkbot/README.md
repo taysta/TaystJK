@@ -65,3 +65,12 @@ shipped), with its cgame hooks inside `#ifdef JKBOT_AGENT`, and acts only during
 it draws the other player in a flat colour, leaves translucent overlays (saber blades, player
 spheres) undrawn, runs the model on each rendered frame and prints the result for the engine's
 pixel probe (`record/probe.cpp`) to compare with the frame's pixels.
+
+Think log (`thinklog.cpp`, P2-LBL-01): `jkbot_thinklog <client> <path>` writes every usercmd the
+game receives for that client at GAME_CLIENT_THINK, in the client usercmd logger's format
+(`record/cmdlog.cpp`), plus a frame record before each GAME_RUN_FRAME: a stock bot's Pmove runs in
+the frame on its latest usercmd, an agent's inside GAME_CLIENT_THINK. With it, `svrecord` demos of
+stock bots and agents carry exact input labels. In lockstep the server also holds a recorded bot's
+next demo snapshot until svs.time moves on (`sv_snapshot.cpp`): SV_Frame runs every STEP there, not
+once per server frame as on a dedicated server, which would write each frame's snapshot 4-5 times.
+Read only; agent builds only.

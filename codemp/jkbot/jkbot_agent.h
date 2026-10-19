@@ -57,6 +57,11 @@ void JKBot_CallLogLeave( char kind );  // 'f' / 't'
 void JKBot_CallLogSyscall( const intptr_t *args );  // from SV_GameSystemCalls
 void JKBot_CallLogBolt( int modelIndex, int boltIndex, const float *matrix, const float *angles, const float *pos );  // after G_G2_GETBOLT
 
+// thinklog.cpp
+void JKBot_ThinkLogInit( void );
+void JKBot_ThinkLogUsercmd( int clientNum );  // at GVM_ClientThink, before the game runs it
+void JKBot_ThinkLogFrame( int levelTime );  // at GVM_RunFrame, before the game runs it
+
 // netsched.cpp
 void JKBot_NetInit( void );
 void JKBot_NetReset( int clientNum, int pingUp, int pingDown, int maxPackets, int packetDup );

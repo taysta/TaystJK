@@ -348,7 +348,9 @@ static cvar_t *jkbot_seed;
 
 int JKBot_RandomSeed( int fallback ) {
 	if ( jkbot_seed && jkbot_seed->string[0] ) {
-		return jkbot_seed->integer;
+		// RESET's seed is a uint32: parse it unsigned and keep its bits. The cvar's integer is
+		// atoi, which saturates at INT_MAX, so every seed from 2^31 up gave the same game.
+		return (int)(unsigned int)strtoul( jkbot_seed->string, NULL, 10 );
 	}
 	return fallback;
 }

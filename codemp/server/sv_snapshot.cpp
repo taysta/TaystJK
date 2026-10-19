@@ -919,6 +919,13 @@ void SV_SendMessageToClient( msg_t *msg, client_t *client ) {
 	if ( client->demo.isBot ) {
 		client->netchan.outgoingSequence++;
 		client->demo.botReliableAcknowledge = client->reliableSent;
+#ifdef JKBOT_AGENT
+		// Lockstep runs SV_Frame (and so this) every STEP, not once per server frame as a dedicated
+		// server does: hold a recorded bot's next snapshot until svs.time moves on (P2-LBL-01).
+		if ( JKBot_Lockstep() ) {
+			client->nextSnapshotTime = svs.time + 1;
+		}
+#endif
 		return;
 	}
 #endif
