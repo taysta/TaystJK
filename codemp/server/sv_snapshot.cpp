@@ -243,8 +243,14 @@ static void SV_WriteSnapshotToClient( client_t *client, msg_t *msg ) {
 		// incorrect, but since it'll be busy loading a map at
 		// the time it doesn't really matter.
 		MSG_WriteLong (msg, sv.time + client->oldServerTime);
+#ifdef JKBOT_AGENT
+		JKBot_NetSnapshotTime( client - svs.clients, client->netchan.outgoingSequence, sv.time + client->oldServerTime );
+#endif
 	} else {
 		MSG_WriteLong (msg, sv.time);
+#ifdef JKBOT_AGENT
+		JKBot_NetSnapshotTime( client - svs.clients, client->netchan.outgoingSequence, sv.time );
+#endif
 	}
 
 	// what we are delta'ing from

@@ -125,6 +125,13 @@ static void CaptureGamestate( jkbLink_t *l, const client_t *cl ) {
 }
 
 static jkbLink_t links[MAX_CLIENTS];
+static int snapshotTimes[MAX_CLIENTS][PACKET_BACKUP];  // serverTime per message, by sequence
+
+void JKBot_NetSnapshotTime( int clientNum, int sequence, int serverTime ) {
+	if ( clientNum >= 0 && clientNum < MAX_CLIENTS ) {
+		snapshotTimes[clientNum][sequence & PACKET_MASK] = serverTime;
+	}
+}
 static FILE *netlog;
 
 static void Log( const char *fmt, ... ) {
@@ -234,10 +241,10 @@ static void RecordSnapshots( int clientNum, jkbLink_t *l, const client_t *cl ) {
 		}
 		jkbSnap_t *s = &l->snaps[( l->snapHead + l->snapCount++ ) % JKB_MAX_INFLIGHT];
 		s->messageNum = l->lastBuilt++;
-		// the serverTime the snapshot carries (sv_snapshot.cpp SV_WriteSnapshotToClient), which a
-		// demo records and cl.snap holds; right after a RESET sv.time can trail svs.time by a
-		// couple of frames (P2-PAR-01). It was sent in this STEP's SV_Frame, at svs.time.
-		s->serverTime = sv.time + cl->oldServerTime;
+		// the serverTime written into it (JKBot_NetSnapshotTime), which a demo records and cl.snap
+		// holds. A message in fragments (a big non-delta snapshot, e.g. the first one a demo
+		// recording forces) counts as sent, and arrives, from its last fragment: this STEP.
+		s->serverTime = snapshotTimes[clientNum][s->messageNum & PACKET_MASK];
 		s->arriveMs = svs.time + l->pingDown;
 		s->reliableSequence = cl->reliableSequence;
 		Log( "S %d %d %d %d\n", clientNum, s->messageNum, s->serverTime, s->arriveMs );

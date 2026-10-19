@@ -72,6 +72,9 @@ int JKBot_NetHeld( int clientNum, int *serverTime );  // the snapshot the agent 
 void JKBot_NetLogClientPacket( int clientNum, int cmdCount, int newCount, int firstNew, int last );  // real clients
 void JKBot_NetLogClientSnapshot( int clientNum, int messageNum );  // real clients
 int JKBot_NetRecentCmds( int clientNum, usercmd_t *out, int max );  // oldest first
+// The serverTime written into the client's message `sequence` (sv_snapshot.cpp), so a snapshot
+// that goes out in fragments over several frames keeps the time it carries (P2-PAR-01).
+void JKBot_NetSnapshotTime( int clientNum, int sequence, int serverTime );
 // The server commands the held snapshot brought, each NUL-terminated, after the link's captured
 // gamestate; returns the bytes written (P2-PAR-01).
 int JKBot_NetCommands( int clientNum, char *out, int size, int *count, qboolean *truncated );
