@@ -288,6 +288,11 @@ static void SendObs( uint32_t stepIndex ) {
 			}
 		}
 		a->num_rays = JKBot_Rays( c, a->rays );  // static geometry (geometry.cpp); 0 until predicted
+		qboolean cut;
+		a->commands_len = JKBot_NetCommands( c, a->commands, sizeof( a->commands ), &a->num_commands, &cut );
+		if ( cut ) {
+			a->flags |= JKB_OBS_COMMANDS_TRUNCATED;
+		}
 		a->num_events = numEvents;
 		memcpy( a->events, events, sizeof( events[0] ) * numEvents );
 		if ( eventsTruncated ) {
@@ -361,6 +366,12 @@ static void HandleStep( const jkb_step_t *s ) {
 			text[JKB_COMMAND_LEN] = 0;
 			SV_ExecuteClientCommand( &svs.clients[a->client], text, qtrue );
 		}
+	}
+	if ( s->has_server_command ) {
+		char text[JKB_COMMAND_LEN + 1];
+		memcpy( text, s->server_command, JKB_COMMAND_LEN );
+		text[JKB_COMMAND_LEN] = 0;
+		Cmd_ExecuteString( text );
 	}
 	JKBot_Step( 1 );
 	Cbuf_Execute();

@@ -72,6 +72,9 @@ int JKBot_NetHeld( int clientNum, int *serverTime );  // the snapshot the agent 
 void JKBot_NetLogClientPacket( int clientNum, int cmdCount, int newCount, int firstNew, int last );  // real clients
 void JKBot_NetLogClientSnapshot( int clientNum, int messageNum );  // real clients
 int JKBot_NetRecentCmds( int clientNum, usercmd_t *out, int max );  // oldest first
+// The server commands the held snapshot brought, each NUL-terminated, after the link's captured
+// gamestate; returns the bytes written (P2-PAR-01).
+int JKBot_NetCommands( int clientNum, char *out, int size, int *count, qboolean *truncated );
 
 // predict.cpp
 void JKBot_PredictInit( void );

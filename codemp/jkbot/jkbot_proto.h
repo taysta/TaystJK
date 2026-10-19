@@ -24,13 +24,14 @@
 #endif
 
 #define JKB_PROTO_MAGIC			0x31424B4A	// "JKB1"
-#define JKB_PROTO_VERSION		2
+#define JKB_PROTO_VERSION		3
 
 #define JKB_MAX_AGENTS			2
 #define JKB_MAX_CHAT_EVENTS		32
 #define JKB_MAX_SNAP_ENTITIES	64
 #define JKB_MAX_RAYS			64
 #define JKB_MAX_EVENTS			32
+#define JKB_MAX_COMMAND_BYTES	16384	// server commands per OBS, NUL-terminated each
 #define JKB_PS_NUM_FIELDS		201		// 137 netfields + 64 array entries
 #define JKB_ES_NUM_FIELDS		133		// number + 132 netfields
 #define JKB_NAME_LEN			32
@@ -53,6 +54,7 @@
 // jkb_agent_obs_t.flags
 #define JKB_OBS_ENTITIES_TRUNCATED	1	// the snapshot held more than JKB_MAX_SNAP_ENTITIES
 #define JKB_OBS_EVENTS_TRUNCATED	2
+#define JKB_OBS_COMMANDS_TRUNCATED	4	// the rest come in the next OBS
 
 // jkb_reset_t opponent kind
 #define JKB_OPPONENT_AGENT		0
@@ -144,8 +146,10 @@ typedef struct jkb_step_s {
 	uint32_t	step_index;
 	int32_t		num_agents;
 	jkb_agent_step_t	agents[JKB_MAX_AGENTS];
+	int32_t		has_server_command;	// 1: run server_command on the console before this step
+	char		server_command[JKB_COMMAND_LEN];	// e.g. svrecord (the console isn't read in bridge mode)
 } jkb_step_t;
-JKB_STATIC_ASSERT( sizeof( jkb_step_t ) == 208, "jkb_step_t size" );
+JKB_STATIC_ASSERT( sizeof( jkb_step_t ) == 276, "jkb_step_t size" );
 
 typedef struct jkb_entity_s {
 	uint32_t	fields[JKB_ES_NUM_FIELDS];
@@ -178,8 +182,11 @@ typedef struct jkb_agent_obs_s {
 	jkb_entity_t	entities[JKB_MAX_SNAP_ENTITIES];
 	float		rays[JKB_MAX_RAYS];		// hit fraction of ray_length
 	jkb_event_t	events[JKB_MAX_EVENTS];
+	int32_t		num_commands;	// the server commands the held snapshot brought (netsched.cpp)
+	int32_t		commands_len;	// bytes used in commands
+	char		commands[JKB_MAX_COMMAND_BYTES];
 } jkb_agent_obs_t;
-JKB_STATIC_ASSERT( sizeof( jkb_agent_obs_t ) == 36736, "jkb_agent_obs_t size" );
+JKB_STATIC_ASSERT( sizeof( jkb_agent_obs_t ) == 53128, "jkb_agent_obs_t size" );
 
 typedef struct jkb_obs_s {
 	uint32_t	step_index;
@@ -190,7 +197,7 @@ typedef struct jkb_obs_s {
 	int32_t		scores[2];		// duelist scores: [0] agents[0]'s client, [1] the other duelist
 	jkb_agent_obs_t	agents[JKB_MAX_AGENTS];
 } jkb_obs_t;
-JKB_STATIC_ASSERT( sizeof( jkb_obs_t ) == 73504, "jkb_obs_t size" );
+JKB_STATIC_ASSERT( sizeof( jkb_obs_t ) == 106288, "jkb_obs_t size" );
 
 typedef struct jkb_done_s {
 	uint32_t	step_index;

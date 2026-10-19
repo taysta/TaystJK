@@ -21,6 +21,13 @@
  * (cl_timeNudge 0: the latest snapshot's time plus the time since it arrived; the client's drift
  * correction isn't modelled).
  *
+ * Server commands (P2-PAR-01): what the client's cgame gets, for the bridge's match state
+ * (training/src/jkbot/features/match.py). An agent has no gamestate message (agent.cpp), so the
+ * link reset captures one: the line "jkbot_gamestate", then a `cs <index> "<value>"` line for each
+ * non-empty configstring of JKB_GAMESTATE_CS, as of the reliable sequence it starts from. A held
+ * snapshot brings the reliable commands up to the sequence it carried, as a real client's message
+ * does; JKBot_NetCommands hands each command over once, in order, the gamestate first.
+ *
  * The client clock (cl.serverTime, the cgame's render time; P1-BR-05): each client frame, after
  * its arrivals, CL_SetCGameTime and CL_AdjustTimeDelta at cl_timeNudge 0, as the reference port
  * training/src/jkbot/features/interp.py ClientClock (realtime = now).
@@ -39,6 +46,7 @@
 
 #include "server/server.h"
 #include "jkbot_agent.h"
+#include "jkbot_proto.h"
 
 #define JKB_MAX_INFLIGHT	256
 #define JKB_CMD_RING		1024
@@ -81,8 +89,40 @@ typedef struct {
 	int held;  // messageNum of the newest arrived snapshot, -1 none
 	int heldServerTime;
 	int heldReliable;
+	int exportedReliable;  // reliable commands handed to the bridge so far
+	int gamestateLen;  // bytes of the captured gamestate not yet handed over (0: none)
+	char gamestate[JKB_MAX_COMMAND_BYTES];
 	jkbClock_t clock;
 } jkbLink_t;
+
+// Raven's SDK bg_public.h (the game module's indices; the engine doesn't define them)
+#define JKB_CS_LEVEL_START_TIME	21
+#define JKB_CS_CLIENT_DUELISTS	30
+#define JKB_CS_PLAYERS			1131
+
+// The configstrings features/match.py reads: serverinfo, level start time, the duelists, players.
+static qboolean GamestateCS( int index ) {
+	return (qboolean)( index == CS_SERVERINFO || index == JKB_CS_LEVEL_START_TIME
+		|| index == JKB_CS_CLIENT_DUELISTS
+		|| ( index >= JKB_CS_PLAYERS && index < JKB_CS_PLAYERS + MAX_CLIENTS ) );
+}
+
+static void CaptureGamestate( jkbLink_t *l, const client_t *cl ) {
+	l->exportedReliable = cl->reliableSequence;
+	int len = Com_sprintf( l->gamestate, sizeof( l->gamestate ), "jkbot_gamestate" ) + 1;
+	for ( int i = 0; i < MAX_CONFIGSTRINGS; i++ ) {
+		const char *v = sv.configstrings[i];
+		if ( !GamestateCS( i ) || !v || !v[0] ) {
+			continue;
+		}
+		const int n = Com_sprintf( l->gamestate + len, sizeof( l->gamestate ) - len, "cs %d \"%s\"", i, v );
+		if ( len + n + 1 >= (int)sizeof( l->gamestate ) ) {
+			Com_Error( ERR_DROP, "jkbot netsched: gamestate over %d bytes", (int)sizeof( l->gamestate ) );
+		}
+		len += n + 1;
+	}
+	l->gamestateLen = len;
+}
 
 static jkbLink_t links[MAX_CLIENTS];
 static FILE *netlog;
@@ -108,6 +148,7 @@ void JKBot_NetReset( int clientNum, int pingUp, int pingDown, int maxPackets, in
 	l->lastSend = -1;
 	l->held = -1;
 	l->lastBuilt = svs.clients[clientNum].netchan.outgoingSequence;
+	CaptureGamestate( l, &svs.clients[clientNum] );
 	Log( "R %d %d %d %d %d %d\n", clientNum, sv.time + sv.timeResidual, l->pingUp, l->pingDown,
 		l->maxPackets, l->packetDup );
 	JKBot_PredictForget( clientNum );
@@ -144,6 +185,46 @@ int JKBot_NetHeld( int clientNum, int *serverTime ) {
 		*serverTime = l->heldServerTime;
 	}
 	return l->held;
+}
+
+int JKBot_NetCommands( int clientNum, char *out, int size, int *count, qboolean *truncated ) {
+	jkbLink_t *l = &links[clientNum];
+	const client_t *cl = &svs.clients[clientNum];
+	int len = 0;
+	*count = 0;
+	*truncated = qfalse;
+	if ( !l->active || l->held < 0 ) {
+		return 0;  // the client has no snapshot yet, so no gamestate either
+	}
+	if ( l->gamestateLen ) {
+		if ( l->gamestateLen > size ) {
+			*truncated = qtrue;
+			return 0;
+		}
+		memcpy( out, l->gamestate, l->gamestateLen );
+		len = l->gamestateLen;
+		for ( int i = 0; i < len; i++ ) {
+			*count += out[i] == 0;
+		}
+		l->gamestateLen = 0;
+	}
+	if ( l->heldReliable - l->exportedReliable > MAX_RELIABLE_COMMANDS ) {
+		Com_Error( ERR_DROP, "jkbot netsched: client %d's commands left the reliable ring", clientNum );
+	}
+	while ( l->exportedReliable < l->heldReliable ) {
+		const int seq = l->exportedReliable + 1;
+		const char *cmd = cl->reliableCommands[seq & ( MAX_RELIABLE_COMMANDS - 1 )];
+		const int n = (int)strlen( cmd ) + 1;
+		if ( len + n > size ) {
+			*truncated = qtrue;
+			break;
+		}
+		memcpy( out + len, cmd, n );
+		len += n;
+		( *count )++;
+		l->exportedReliable = seq;
+	}
+	return len;
 }
 
 static void RecordSnapshots( int clientNum, jkbLink_t *l, const client_t *cl ) {
