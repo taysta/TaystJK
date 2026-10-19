@@ -331,6 +331,7 @@ static char		fs_temporaryFileNames[8][MAX_OSPATH];
 char lastValidBase[MAX_OSPATH];
 char lastValidGame[MAX_OSPATH];
 static char lastValidWriteDir[MAX_OSPATH];	// fs_gamedir after the last successful start
+static qboolean fs_configPending = qfalse;	// the write folder changed: its config is queued but not read yet
 
 #ifdef FS_MISSING
 FILE*		missingFiles = NULL;
@@ -2293,6 +2294,10 @@ long FS_ReadFile( const char *qpath, void **buffer ) {
 
 	if ( !qpath || !qpath[0] ) {
 		Com_Error( ERR_FATAL, "FS_ReadFile with empty name\n" );
+	}
+
+	if ( fs_configPending && !Q_stricmp( qpath, Q3CONFIG_CFG ) ) {
+		fs_configPending = qfalse;	// the exec queued by FS_Restart is loading it now
 	}
 
 	buf = NULL;	// quiet compiler warning
@@ -4510,6 +4515,12 @@ FS_Restart
 */
 void FS_Restart( int checksumFeed, qboolean inPlace ) {
 
+	// the write folder may change below: save pending config changes into the folder they
+	// belong to first (not when recovering from an invalid game folder)
+	if ( lastValidBase[0] ) {
+		Com_WriteConfiguration();
+	}
+
 	// free anything we currently have loaded
 	FS_Shutdown(qfalse, inPlace);
 
@@ -4541,12 +4552,14 @@ void FS_Restart( int checksumFeed, qboolean inPlace ) {
 		Com_Error( ERR_FATAL, "Couldn't load mpdefault.cfg" );
 	}
 
-	// exec the config of the folder we now write to whenever that folder changed. While
-	// fs_forcegame is in effect it never changes; with it empty this is "fs_game changed".
+	// exec the config again whenever the folder we write to changed. While fs_forcegame is
+	// in effect it never changes; with it empty this is "fs_game changed".
 	if ( Q_stricmp( fs_gamedir, lastValidWriteDir ) ) {
 		// skip the jampconfig.cfg if "safe" is on the command line
 		if ( !Com_SafeMode() ) {
-			Cbuf_AddText ("exec " Q3CONFIG_CFG "\n");
+			// in front of anything else queued, so it runs first and can't be swallowed
+			Cbuf_ExecuteText( EXEC_INSERT, "exec " Q3CONFIG_CFG );
+			fs_configPending = qtrue;	// don't save the previous folder's settings over it meanwhile
 		}
 	}
 
@@ -4689,6 +4702,13 @@ void FS_FilenameCompletion( const char *dir, const char *ext, qboolean stripExt,
 		callback( filename );
 	}
 	FS_FreeFileList( filenames );
+}
+
+// qtrue while the config of a new write folder is queued but not read yet: until then the
+// settings in memory still belong to the previous folder, so they must not be saved
+qboolean FS_ConfigPending( void )
+{
+	return fs_configPending;
 }
 
 const char *FS_GetCurrentGameDir(bool emptybase)

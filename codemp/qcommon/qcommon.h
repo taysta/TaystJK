@@ -658,6 +658,7 @@ void	FS_Shutdown( qboolean closemfp, qboolean keepModuleFiles = qfalse );
 
 qboolean	FS_ConditionalRestart( int checksumFeed );
 void	FS_Restart( int checksumFeed, qboolean inPlace = qfalse );
+qboolean	FS_ConfigPending( void );
 // shutdown and restart the filesystem so changes to fs_gamedir can take effect
 
 char	**FS_ListFiles( const char *directory, const char *extension, int *numfiles );
@@ -853,6 +854,7 @@ int			Com_Filter(char *filter, char *name, int casesensitive);
 int			Com_FilterPath(char *filter, char *name, int casesensitive);
 int			Com_RealTime(qtime_t *qtime);
 qboolean	Com_SafeMode( void );
+void		Com_WriteConfiguration( void );
 void		Com_RunAndTimeServerPacket(const netadr_t *evFrom, msg_t *buf);
 
 void		Com_StartupVariable( const char *match );
