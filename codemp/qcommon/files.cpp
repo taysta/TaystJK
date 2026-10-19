@@ -252,6 +252,9 @@ static cvar_t		*fs_copyfiles;
 static cvar_t		*fs_gamedirvar;
 static cvar_t		*fs_dirbeforepak; //rww - when building search path, keep directories at top and insert pk3's under them
 static cvar_t		*fs_forcegame;
+#ifndef DEDICATED
+static qboolean		fs_forcegameSuspended = qfalse;	// fs_forcegame default blanked for a mod with taystjk_mod.txt
+#endif
 static searchpath_t	*fs_searchpaths;
 static int			fs_readCount;			// total bytes read
 static int			fs_loadCount;			// total files read
@@ -327,6 +330,7 @@ static char		fs_temporaryFileNames[8][MAX_OSPATH];
 // last valid game folder used
 char lastValidBase[MAX_OSPATH];
 char lastValidGame[MAX_OSPATH];
+static char lastValidWriteDir[MAX_OSPATH];	// fs_gamedir after the last successful start
 
 #ifdef FS_MISSING
 FILE*		missingFiles = NULL;
@@ -3524,6 +3528,49 @@ qboolean FS_CheckDirTraversal(const char *checkdir)
 	return qfalse;
 }
 
+#ifndef DEDICATED
+/*
+================
+FS_ModOwnsFolder
+
+A mod that ships its own TaystJK-compatible client (cgame/ui) opts out of the
+fs_forcegame default with a LOOSE <game>/taystjk_mod.txt starting with "ownfolder 1".
+It is never read from pk3s, so a server download cannot opt a folder in.
+================
+*/
+static qboolean FS_ModOwnsFolder( const char *game ) {
+	const char *roots[] = { fs_homepath->string, fs_basepath->string, fs_cdpath->string };
+
+	if ( !game[0] || !FS_FilenameCompare( game, BASEGAME ) || !FS_FilenameCompare( game, TAYSTJKGAME )
+		|| FS_CheckDirTraversal( game ) ) {
+		return qfalse;
+	}
+
+	for ( size_t i = 0; i < ARRAY_LEN( roots ); i++ ) {
+		char buf[1024];
+		const char *p = buf;
+		FILE *f;
+		size_t len;
+
+		if ( !roots[i][0] || !( f = fopen( FS_BuildOSPath( roots[i], game, "taystjk_mod.txt" ), "rb" ) ) ) {
+			continue;
+		}
+		len = fread( buf, 1, sizeof( buf ) - 1, f );
+		fclose( f );
+		buf[len] = '\0';
+		if ( len >= 3 && !memcmp( buf, "\xEF\xBB\xBF", 3 ) ) {
+			p += 3;	// UTF-8 BOM, as some editors save it
+		}
+
+		// the first root that has the file decides
+		COM_BeginParseSession( "taystjk_mod.txt" );
+		return (qboolean)( !Q_stricmp( COM_ParseExt( &p, qtrue ), "ownfolder" )
+			&& atoi( COM_ParseExt( &p, qfalse ) ) == 1 );
+	}
+	return qfalse;
+}
+#endif
+
 /*
 ================
 FS_ComparePaks
@@ -3915,10 +3962,6 @@ void FS_Startup( const char *gameName ) {
 	fs_forcegame = Cvar_Get("fs_forcegame", TAYSTJKGAME, CVAR_INIT, "Folder to use for overriding of fs_game (can not be set by the server).");
 #endif
 
-	const char *baseGame = fs_forcegame->string[0] ? fs_forcegame->string : "";
-	fs_basegame = Cvar_Get ("fs_basegame", baseGame, CVAR_INIT );
-	Cvar_Set("fs_basegame", baseGame);
-
 	fs_portable = Cvar_Get ("fs_portable", "1", CVAR_INIT|CVAR_PROTECTED, "Disable fs_homepath and use only one folder for all game files" );
 	homePath = Sys_DefaultHomePath();
 	if (!homePath || !homePath[0]) {
@@ -3927,6 +3970,26 @@ void FS_Startup( const char *gameName ) {
 	fs_homepath = Cvar_Get ("fs_homepath", homePath, CVAR_INIT|CVAR_PROTECTED, "(Read/Write) Location for user generated files" );
 
 	fs_gamedirvar = Cvar_Get ("fs_game", "", CVAR_INIT|CVAR_SYSTEMINFO, "Mod directory" );
+
+#ifndef DEDICATED
+	// a mod whose folder has taystjk_mod.txt ships its own client: suspend the fs_forcegame
+	// default while it is fs_game, so it keeps its own folder (no taystjk/ layer, its own
+	// write folder and config, its own cgame/ui). Restore the default first when fs_game
+	// moves on. Only the default is ever suspended: a value the player chose wins.
+	if ( fs_forcegameSuspended && !fs_forcegame->string[0] ) {
+		Cvar_Set( "fs_forcegame", fs_forcegame->resetString );
+	}
+	fs_forcegameSuspended = qfalse;
+	if ( !Q_stricmp( fs_forcegame->string, fs_forcegame->resetString ) && FS_ModOwnsFolder( fs_gamedirvar->string ) ) {
+		Com_Printf( "%s has taystjk_mod.txt: using its own client and folder, fs_forcegame suspended\n", fs_gamedirvar->string );
+		Cvar_Set( "fs_forcegame", "" );
+		fs_forcegameSuspended = qtrue;
+	}
+#endif
+
+	const char *baseGame = fs_forcegame->string[0] ? fs_forcegame->string : "";
+	fs_basegame = Cvar_Get ("fs_basegame", baseGame, CVAR_INIT );
+	Cvar_Set("fs_basegame", baseGame);
 
 	fs_dirbeforepak = Cvar_Get("fs_dirbeforepak", "0", CVAR_INIT|CVAR_PROTECTED, "Prioritize directories before paks if not pure" );
 
@@ -4431,6 +4494,7 @@ void FS_InitFilesystem( void ) {
 
 	Q_strncpyz(lastValidBase, fs_basepath->string, sizeof(lastValidBase));
 	Q_strncpyz(lastValidGame, fs_gamedirvar->string, sizeof(lastValidGame));
+	Q_strncpyz(lastValidWriteDir, fs_gamedir, sizeof(lastValidWriteDir));
 
 #if defined(_WIN32)
 	Com_Memset(fs_temporaryFileNames, 0, sizeof(fs_temporaryFileNames));
@@ -4477,7 +4541,9 @@ void FS_Restart( int checksumFeed, qboolean inPlace ) {
 		Com_Error( ERR_FATAL, "Couldn't load mpdefault.cfg" );
 	}
 
-	if ( Q_stricmp(fs_gamedirvar->string, lastValidGame) && !fs_forcegame->string[0] ) {
+	// exec the config of the folder we now write to whenever that folder changed. While
+	// fs_forcegame is in effect it never changes; with it empty this is "fs_game changed".
+	if ( Q_stricmp( fs_gamedir, lastValidWriteDir ) ) {
 		// skip the jampconfig.cfg if "safe" is on the command line
 		if ( !Com_SafeMode() ) {
 			Cbuf_AddText ("exec " Q3CONFIG_CFG "\n");
@@ -4486,6 +4552,7 @@ void FS_Restart( int checksumFeed, qboolean inPlace ) {
 
 	Q_strncpyz(lastValidBase, fs_basepath->string, sizeof(lastValidBase));
 	Q_strncpyz(lastValidGame, fs_gamedirvar->string, sizeof(lastValidGame));
+	Q_strncpyz(lastValidWriteDir, fs_gamedir, sizeof(lastValidWriteDir));
 
 }
 
