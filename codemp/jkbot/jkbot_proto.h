@@ -24,7 +24,7 @@
 #endif
 
 #define JKB_PROTO_MAGIC			0x31424B4A	// "JKB1"
-#define JKB_PROTO_VERSION		3
+#define JKB_PROTO_VERSION		4
 
 #define JKB_MAX_AGENTS			2
 #define JKB_MAX_CHAT_EVENTS		32
@@ -175,6 +175,8 @@ typedef struct jkb_agent_obs_s {
 	int32_t		num_entities;
 	int32_t		num_rays;
 	int32_t		num_events;
+	int32_t		snap_message_num;	// the held snapshot's message number (0: none yet): a new one
+									// is a new snapshot even at the same serverTime
 	float		view_origin[3];		// the client's camera (refdef vieworg; zeros before a view)
 	float		view_angles[3];		// and its angles (pitch, yaw, roll)
 	uint32_t	ps[JKB_PS_NUM_FIELDS];			// snapshot playerState
@@ -186,7 +188,7 @@ typedef struct jkb_agent_obs_s {
 	int32_t		commands_len;	// bytes used in commands
 	char		commands[JKB_MAX_COMMAND_BYTES];
 } jkb_agent_obs_t;
-JKB_STATIC_ASSERT( sizeof( jkb_agent_obs_t ) == 53128, "jkb_agent_obs_t size" );
+JKB_STATIC_ASSERT( sizeof( jkb_agent_obs_t ) == 53132, "jkb_agent_obs_t size" );
 
 typedef struct jkb_obs_s {
 	uint32_t	step_index;
@@ -197,7 +199,7 @@ typedef struct jkb_obs_s {
 	int32_t		scores[2];		// duelist scores: [0] agents[0]'s client, [1] the other duelist
 	jkb_agent_obs_t	agents[JKB_MAX_AGENTS];
 } jkb_obs_t;
-JKB_STATIC_ASSERT( sizeof( jkb_obs_t ) == 106288, "jkb_obs_t size" );
+JKB_STATIC_ASSERT( sizeof( jkb_obs_t ) == 106296, "jkb_obs_t size" );
 
 typedef struct jkb_done_s {
 	uint32_t	step_index;

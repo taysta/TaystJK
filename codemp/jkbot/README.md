@@ -38,13 +38,16 @@ CL_SetCGameTime/CL_AdjustTimeDelta at cl_timeNudge 0, equal to the Python refere
 interpolates the opponent and picks up sounds there. OBS `view_origin`/`view_angles` are the
 agent's camera from the visibility model, where its client hears from (S_Respatialize).
 
-Server commands in OBS (P2-PAR-01, proto 3): the reliable commands each agent's client received
+Server commands in OBS (P2-PAR-01, proto 3-4): the reliable commands each agent's client received
 with the snapshot it holds (`netsched.cpp` JKBot_NetCommands), so the env builds match state
 (scores, configstrings) from the same inputs as a demo (`training/src/jkbot/features/match.py`).
 An agent has no gamestate message, so its link reset captures one: the line `jkbot_gamestate`,
 then `cs` lines for serverinfo, CS_LEVEL_START_TIME, CS_CLIENT_DUELISTS and CS_PLAYERS. STEP's
 `server_command` runs one console command before the step (the console isn't read in bridge
-mode), e.g. `svrecord` for the parity test.
+mode), e.g. `svrecord` for the parity test. A held snapshot carries the serverTime and reliable
+sequence written into its message (`JKBot_NetMessageWritten`, from SV_WriteSnapshotToClient), so
+a snapshot sent in fragments keeps both; OBS `snap_message_num` (proto 4) marks a new snapshot even
+when two share a serverTime.
 
 Static-geometry rays (`geometry.cpp`, `shared/rays.c`, P1-ENG-13): after each agent client frame,
 rays from the eye of the predicted playerState over a Fibonacci sphere in its yaw frame, each a CM

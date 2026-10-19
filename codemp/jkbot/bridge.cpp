@@ -264,7 +264,7 @@ static void SendObs( uint32_t stepIndex ) {
 		jkb_agent_obs_t *a = &obs.agents[k];
 		const int c = agentClients[k];
 		a->client = c;
-		JKBot_ExportSnapshot( c, a, NULL );  // leaves zeros until a snapshot has arrived
+		JKBot_ExportSnapshot( c, a, &a->snap_message_num );  // leaves zeros until a snapshot has arrived
 		playerState_t pps;
 		if ( JKBot_Predicted( c, &pps ) ) {
 			JKBot_ExportPS( &pps, a->predicted_ps );  // after its latest client frame (P1-ENG-11)
