@@ -13,6 +13,12 @@
  * (from STEP received to the reply's send) and the reply send() calls' time, for the transport
  * benchmark (P1-BEN-03).
  *
+ * Play mode (P3-PLAY-01): with jkbot_netpump 1, each STEP first reads the UDP packets waiting on
+ * the server's socket (NET_Sleep(0) runs them through SV_PacketEvent, as a dedicated server does
+ * between frames), so real clients connect and play while the env paces STEPs to the wall clock.
+ * RESET's JKB_OPPONENT_HUMAN makes the opponent the first connected real client (not an agent, not
+ * a bot), looked up again each STEP until there is one. Off by default: training reads no packets.
+ *
  * OBS per agent: the snapshot it holds (export.cpp), the frame hash, CS_LEVEL_START_TIME, both
  * duelists' scores, and the step's events read from server state: damage (a drop in health plus
  * armour, attacker from PERS_ATTACKER), frags (PERS_KILLED), respawns (PERS_SPAWN_COUNT), chat
@@ -78,6 +84,7 @@ typedef struct {
 
 static jkbTrack_t track[MAX_CLIENTS];
 static int numAgents, agentClients[JKB_MAX_AGENTS], opponentClient = -1;
+static qboolean humanOpponent;  // JKB_OPPONENT_HUMAN: opponentClient follows the real client
 static jkb_event_t events[JKB_MAX_EVENTS];
 static int numEvents;
 static qboolean eventsTruncated;
@@ -225,6 +232,17 @@ static void CollectEvents( void ) {
 	}
 }
 
+// The first active real client (play mode's opponent), or -1.
+static int FindHuman( void ) {
+	for ( int i = 0; i < sv_maxclients->integer && i < MAX_CLIENTS; i++ ) {
+		const client_t *cl = &svs.clients[i];
+		if ( cl->state == CS_ACTIVE && !JKBot_IsAgent( i ) && cl->netchan.remoteAddress.type != NA_BOT ) {
+			return i;
+		}
+	}
+	return -1;
+}
+
 static int ConfigInt( int index ) {
 	char buf[64];
 	SV_GetConfigstring( index, buf, sizeof( buf ) );
@@ -277,12 +295,14 @@ static void SendObs( uint32_t stepIndex ) {
 			VectorCopy( viewOrg, a->view_origin );
 			VectorCopy( viewAngles, a->view_angles );
 		}
-		const int sees = JKBot_Sees( c, opponentClient );
+		// two agents (JKB_OPPONENT_AGENT): each one's opponent is the other
+		const int opp = c == opponentClient && numAgents > 1 ? agentClients[0] : opponentClient;
+		const int sees = JKBot_Sees( c, opp );
 		if ( sees >= 0 ) {
 			a->opponent_visible = (uint32_t)sees;  // the visibility model (visibility.cpp)
 		} else {  // no view yet: whether the opponent is in the snapshot
 			for ( int e = 0; e < a->num_entities; e++ ) {
-				if ( (int)a->entities[e].fields[0] == opponentClient ) {
+				if ( (int)a->entities[e].fields[0] == opp ) {
 					a->opponent_visible = 1;
 				}
 			}
@@ -329,8 +349,9 @@ static void HandleReset( const jkb_reset_t *r ) {
 			return;
 		}
 	}
+	humanOpponent = (qboolean)( r->opponent_kind == JKB_OPPONENT_HUMAN );
 	opponentClient = r->opponent_kind == JKB_OPPONENT_STOCK_BOT ? bot :
-		numAgents > 1 ? agentClients[1] : -1;
+		humanOpponent ? FindHuman() : numAgents > 1 ? agentClients[1] : -1;
 	Cbuf_Execute();
 	ResetTracking();
 	numEvents = 0;
@@ -372,6 +393,17 @@ static void HandleStep( const jkb_step_t *s ) {
 		memcpy( text, s->server_command, JKB_COMMAND_LEN );
 		text[JKB_COMMAND_LEN] = 0;
 		Cmd_ExecuteString( text );
+	}
+	static cvar_t *netpump;
+	if ( !netpump ) {
+		netpump = Cvar_Get( "jkbot_netpump", "0", 0, "JKBot play mode: read real clients' packets each STEP (agent builds only)" );
+	}
+	if ( netpump->integer ) {
+		NET_Sleep( 0 );
+		Cbuf_Execute();
+	}
+	if ( humanOpponent && !InRound( opponentClient ) ) {
+		opponentClient = FindHuman();
 	}
 	JKBot_Step( 1 );
 	Cbuf_Execute();

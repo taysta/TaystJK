@@ -59,6 +59,7 @@
 // jkb_reset_t opponent kind
 #define JKB_OPPONENT_AGENT		0
 #define JKB_OPPONENT_STOCK_BOT	1
+#define JKB_OPPONENT_HUMAN		2	// a real client that connects over the network (play mode)
 
 // jkb_done_t.reason
 #define JKB_DONE_FRAGLIMIT		1
