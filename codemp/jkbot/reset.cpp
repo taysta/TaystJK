@@ -165,6 +165,15 @@ qboolean JKBot_Reset( const jkb_reset_t *r, int *agentClients, int *botClient ) 
 	srand( r->engine_seed );
 	// 4. a new round, starting on a server-frame boundary: the lockstep residual (under one frame of
 	// idle time) would otherwise carry the previous episode's step phase into this one
+	// SV_MapRestart_f returns early when it already ran this frame (com_frameTime == sv.serverId),
+	// and the bridge serves the whole session inside one SV_Frame, so com_frameTime never moves:
+	// every RESET after the first was skipped, the round carrying on. Lockstep time is virtual;
+	// step the frame clock past the last restart. A restart the game itself scheduled (a delayed
+	// map_restart at a round's end) is superseded by this one.
+	if ( com_frameTime == sv.serverId ) {
+		com_frameTime++;
+	}
+	sv.restartTime = 0;
 	Cmd_ExecuteString( "map_restart 0" );
 	sv.timeResidual = 0;
 	// the game sets CS_INTERMISSION at a round's end and never clears it (map_restart keeps
