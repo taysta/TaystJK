@@ -4247,13 +4247,22 @@ void ClientSpawn(gentity_t *ent) {
 					client->ps.origin,
 					spawn_origin, spawn_angles, client->sess.sessionTeam, !!(ent->r.svFlags & SVF_BOT) );
 
-				if (g_duelRespawn.integer && level.gametype == GT_FFA && VectorLength(client->pers.respawnLocation) && !SpotWouldTelefrag3(client->pers.respawnLocation)) {
+				if (!client->pers.raceRespawn && g_duelRespawn.integer && level.gametype == GT_FFA && VectorLength(client->pers.respawnLocation) && !SpotWouldTelefrag3(client->pers.respawnLocation)) {
 					VectorCopy(client->pers.respawnLocation, spawn_origin);
 					spawn_angles[YAW] = client->pers.respawnAngle;
 				}//sad hack
 
 			}
 		}
+	}
+	if (client->pers.raceRespawn) {
+		if (client->sess.sessionTeam != TEAM_SPECTATOR && !SpotWouldTelefrag3(client->pers.respawnLocation)) {
+			VectorCopy(client->pers.respawnLocation, spawn_origin);
+			spawn_angles[YAW] = client->pers.respawnAngle;
+		}
+		// Consume the override even if the saved spot is occupied or we joined spectators.
+		client->pers.raceRespawn = qfalse;
+		VectorClear(client->pers.respawnLocation);
 	}
 	client->pers.teamState.state = TEAM_ACTIVE;
 

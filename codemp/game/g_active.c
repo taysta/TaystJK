@@ -5185,6 +5185,12 @@ void ClientThink_real( gentity_t *ent ) {
 
 	Pmove (&pmove);
 
+	if (client->raceNeedsGroundStop && !client->noclip && client->ps.pm_type != PM_NOCLIP &&
+		client->ps.stats[STAT_HEALTH] > 0 && client->ps.groundEntityNum != ENTITYNUM_NONE &&
+		client->ps.velocity[0] == 0.0f && client->ps.velocity[1] == 0.0f && client->ps.velocity[2] == 0.0f) {
+		client->raceNeedsGroundStop = qfalse;
+	}
+
 	if (ent->client->solidHack)
 	{
 		if (ent->client->solidHack > level.time)

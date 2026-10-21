@@ -1447,6 +1447,15 @@ static QINLINE int GetTimeMS() {
 struct sqlite3;
 void G_UpdatePlaytime(struct sqlite3 *db, char *username, int seconds );
 static void G_ClearRunCheckpoints(gclient_t *client);
+
+static void TimerStartBlockedMessage(gentity_t *player, const char *message) {
+	if (level.time < player->client->raceStartBlockedMessageTime)
+		return;
+
+	player->client->raceStartBlockedMessageTime = level.time + 2000;
+	trap->SendServerCommand(player-g_entities, va("cp \"^3Race start blocked\n^7%s\n\"", message));
+}
+
 void TimerStart(gentity_t *trigger, gentity_t *player, trace_t *trace) {//JAPRO Timers
 	int lessTime;
 	char userinfo[MAX_INFO_STRING];
@@ -1470,6 +1479,20 @@ void TimerStart(gentity_t *trigger, gentity_t *player, trace_t *trace) {//JAPRO 
 		return;
 	if (player->client->ps.pm_type != PM_NORMAL && player->client->ps.pm_type != PM_FLOAT && player->client->ps.pm_type != PM_FREEZE && player->client->ps.pm_type != PM_JETPACK) //Allow racemode emotes?
 		return;
+	if (player->client->sess.raceMode) {
+		if (player->client->noclip || player->client->raceNeedsGroundStop) {
+			TimerStartBlockedMessage(player, "Exit noclip and come to a complete stop\non the ground before starting.");
+			return;
+		}
+		if (player->client->ps.duelInProgress && player->client->ps.duelIndex != ENTITYNUM_NONE) {
+			gentity_t *partner = &g_entities[player->client->ps.duelIndex];
+			if (partner->client && partner->client->sess.raceMode &&
+				(partner->client->noclip || partner->client->raceNeedsGroundStop)) {
+				TimerStartBlockedMessage(player, "Your co-op partner must exit noclip\nand stop on the ground before starting.");
+				return;
+			}
+		}
+	}
 	if (player->client->ps.legsAnim == BOTH_JUMPATTACK6) //heh
 		return;
 	if (player->client->sess.raceMode && player->client->sess.movementStyle == MV_SWOOP && !player->client->ps.m_iVehicleNum) //Dont start the timer for swoop racers if they dont have a swoop

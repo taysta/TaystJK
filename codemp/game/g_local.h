@@ -851,6 +851,7 @@ typedef struct clientPersistant_s {
 	float		telemarkPitchAngle;//JAPRO - Serverside - Admin - Telemark storage
 	vec3_t		respawnLocation;//JAPRO - Serverside - Admin - Telemark storage
 	float		respawnAngle;
+	qboolean	raceRespawn; // Use the saved location for the next /race respawn only.
 	//char		clanpass[MAX_QPATH];//Japro - Serverside Clanpass
 	//int			sayteammod;//0 = normal, 1 = clan, 2 = admin
 	int			lastChatTime;//godchat fuck idk why im doing this
@@ -1035,6 +1036,8 @@ struct gclient_s {
 	qboolean	readyToExit;		// wishes to leave the intermission
 
 	qboolean	noclip;
+	qboolean	raceNeedsGroundStop; // Noclip momentum must be lost before starting another race.
+	int			raceStartBlockedMessageTime; // Next time a blocked-start centerprint is allowed.
 
 	int			lastCmdTime;		// level.time of last usercmd_t, for EF_CONNECTION
 									// we can't just use pers.lastCommand.time, because

@@ -808,6 +808,27 @@ argv(0) noclip
 ==================
 */
 
+static void Noclip_Toggle(gentity_t *ent, qboolean resetTimers) {
+	gclient_t *client = ent->client;
+	qboolean raceExit = client->sess.raceMode && client->noclip;
+	vec3_t velocity;
+
+	if (raceExit)
+		VectorCopy(client->ps.velocity, velocity);
+
+	trap->SendServerCommand(ent-g_entities, va("print \"%s\n\"", client->noclip ? "noclip OFF" : "noclip ON"));
+	client->noclip = !client->noclip;
+	if (!client->pers.practice && (raceExit || (resetTimers && !sv_cheats.integer)))
+		ResetPlayerTimers(ent, qtrue);
+
+	if (raceExit) {
+		// Keep flight smooth, but require a normal grounded stop before another race.
+		VectorCopy(velocity, client->ps.velocity);
+		client->raceNeedsGroundStop = qtrue;
+		client->ps.groundEntityNum = ENTITYNUM_NONE; // Noclip leaves stale ground contact.
+	}
+}
+
 void Cmd_Noclip_f( gentity_t *ent ) {
 	int allowed;
 	if (ent->client && ent->client->ps.duelInProgress && ent->client->pers.lastUserName[0]) {
@@ -833,39 +854,23 @@ void Cmd_Noclip_f( gentity_t *ent ) {
 			target = &g_entities[clientid];
 			if (!target->client || target->client->ps.m_iVehicleNum)
 				return;
-			trap->SendServerCommand(target-g_entities, va("print \"%s\n\"", target->client->noclip ? "noclip OFF" : "noclip ON"));
-			if (target->client->sess.raceMode && target->client->noclip && !target->client->pers.practice)
-				AmTeleportPlayer( target, target->client->ps.origin, target->client->ps.viewangles, qtrue, qtrue, qfalse ); //Good
-			target->client->noclip = !target->client->noclip;
-			if (!sv_cheats.integer && !target->client->pers.practice)
-				ResetPlayerTimers(target, qtrue);
+			Noclip_Toggle(target, qtrue);
 			return;
 		}
 		if (trap->Argc() == 1) {
 			if (ent->client->ps.m_iVehicleNum)
 				return;
-			trap->SendServerCommand(ent-g_entities, va("print \"%s\n\"", ent->client->noclip ? "noclip OFF" : "noclip ON"));
-			if (ent->client->sess.raceMode && ent->client->noclip && !ent->client->pers.practice)
-				AmTeleportPlayer( ent, ent->client->ps.origin, ent->client->ps.viewangles, qtrue, qtrue, qfalse ); //Good
-			ent->client->noclip = !ent->client->noclip;
-			if (!sv_cheats.integer && !ent->client->pers.practice)
-				ResetPlayerTimers(ent, qtrue);
+			Noclip_Toggle(ent, qtrue);
 			return;
 		}
 	}
 	else if (allowed == 2) { //Race only
 		if (ent->client->ps.m_iVehicleNum)
 			return;
-		trap->SendServerCommand(ent-g_entities, va("print \"%s\n\"", ent->client->noclip ? "noclip OFF" : "noclip ON"));
-		if (ent->client->sess.raceMode && ent->client->noclip && !ent->client->pers.practice)
-			AmTeleportPlayer( ent, ent->client->ps.origin, ent->client->ps.viewangles, qtrue, qtrue, qfalse ); //Good
-		ent->client->noclip = !ent->client->noclip;
-		if (!sv_cheats.integer && !ent->client->pers.practice)
-			ResetPlayerTimers(ent, qtrue);
+		Noclip_Toggle(ent, qtrue);
 	}
 	else if (allowed) { //Cheats enabled only
-		trap->SendServerCommand(ent-g_entities, va("print \"%s\n\"", ent->client->noclip ? "noclip OFF" : "noclip ON"));
-		ent->client->noclip = !ent->client->noclip;
+		Noclip_Toggle(ent, qfalse);
 	}
 }
 
@@ -7947,6 +7952,9 @@ void Cmd_Race_f(gentity_t *ent)
 			Cmd_ForceChanged_f(ent);//Make sure their jump level is valid.. if leaving racemode :S
 
 			ent->client->sess.raceMode = qfalse;//Set it false here cuz we are flipping it next
+			if (ent->client->sess.sessionTeam != TEAM_SPECTATOR && ent->health > 0 && ent->client->ps.pm_type != PM_DEAD) {
+				ent->client->pers.raceRespawn = qtrue;
+			}
 			if (ent->client->sess.sessionTeam != TEAM_FREE) {
 				SetTeam(ent, "race", qfalse);
 			}
@@ -7997,7 +8005,13 @@ void Cmd_Race_f(gentity_t *ent)
 			ent->client->pers.tribesClass = 0;
 		}
 
+		if (ent->health > 0 && ent->client->ps.pm_type != PM_DEAD) {
+			ent->client->pers.raceRespawn = qtrue;
+		}
 		G_Kill( ent ); //stop abuse
+		if (ent->client->ps.pm_type != PM_DEAD) {
+			ent->client->pers.raceRespawn = qfalse; // The kill may be blocked while paused.
+		}
 		ent->client->ps.persistant[PERS_SCORE] = 0;
 		ent->client->ps.persistant[PERS_KILLED] = 0;
 		ent->client->pers.stats.kills = 0;
@@ -8007,6 +8021,9 @@ void Cmd_Race_f(gentity_t *ent)
 		ent->client->accuracy_hits = 0;
 		ent->client->ps.fd.suicides = 0;
 		ent->client->pers.enterTime = level.time; //reset scoreboard kills/deaths i guess... and time?
+		if (ent->client->sess.raceMode && ent->client->ps.pm_type == PM_DEAD) {
+			ClientRespawn(ent); // Enter race mode immediately after the full death/reset.
+		}
 	}
 }
 
