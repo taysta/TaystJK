@@ -867,6 +867,7 @@ typedef struct clientPersistant_s {
 	qboolean	backwardsRocket;
 	qboolean	noFollow;
 	qboolean	practice;
+	int			practiceMaxForce; // Max force points while in practice mode (0 = no limit)
 	qboolean	haste;
 	qboolean	validPlugin;
 	qboolean	recordingDemo;//japro autodemo for defrag... :S

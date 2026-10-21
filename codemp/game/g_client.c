@@ -4746,6 +4746,11 @@ void ClientSpawn(gentity_t *ent) {
 		ent->health = client->ps.stats[STAT_HEALTH] = client->ps.stats[STAT_MAX_HEALTH] = 100;
 		if (client->sess.movementStyle == MV_COOP_JKA)
 			client->ps.fd.forcePowerLevel[FP_LEVITATION] = 1;
+		if (client->pers.practice && client->pers.practiceMaxForce > 0) {
+			client->ps.fd.forcePowerMax = client->pers.practiceMaxForce;
+			if (client->ps.fd.forcePower > client->pers.practiceMaxForce)
+				client->ps.fd.forcePower = client->pers.practiceMaxForce;
+		}
 	}
 	// health will count down towards max_health
 	else if (level.gametype == GT_SIEGE &&
