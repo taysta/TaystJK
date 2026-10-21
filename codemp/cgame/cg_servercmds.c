@@ -59,7 +59,8 @@ static void CG_ParseScores( void ) {
 	memset( cg.scores, 0, sizeof( cg.scores ) );
 	for ( i=0; i<readScores; i++ ) {
 //JAPRO - Clientside - Scoreboard Deaths - Start
-		if ((cgs.serverMod == SVMOD_JAPLUS && (!Q_stricmp(cjp_client.string, "1.4JAPRO"))) || cgs.serverMod == SVMOD_JAPRO) {
+		if ((cgs.serverMod == SVMOD_JAPLUS && (!Q_stricmp(cjp_client.string, "1.4JAPRO"))) || cgs.serverMod == SVMOD_JAPRO
+			|| (cgs.taystJKinfo & TAYSTJK_INFO_SCORE_DEATHS)) {
 			scoreOffset = 15;
 			cg.scores[i].deaths = atoi(CG_Argv(i * scoreOffset + 18));
 		}
