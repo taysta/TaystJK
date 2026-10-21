@@ -798,6 +798,25 @@ typedef struct {//JAPRO - Serverside - Stats
 	char checkpointTimes[MAX_RUN_CHECKPOINT_STRING];
 } stats_t;
 
+// State captured by "amtelemark exact" (practice mode only) and put back by amtele / the race tele key
+typedef struct telemarkExact_s {
+	qboolean	valid;
+	vec3_t		origin;
+	vec3_t		velocity;
+	vec3_t		viewAngles;
+	int			forcePower;
+	// timerElapsed == 0 means the timer was not running when the mark was made
+	int			timerElapsed;		// trap->Milliseconds() - stats.startTime
+	int			levelTimeElapsed;	// level.time - stats.startLevelTime
+	int			startLag;
+	float		displacement;
+	int			displacementSamples;
+	float		topSpeed;
+	int			checkpoints;
+	int			checkpointCount;
+	char		checkpointTimes[MAX_RUN_CHECKPOINT_STRING];
+} telemarkExact_t;
+
 // client data that stays across multiple respawns, but is cleared
 // on each level change or team change at ClientBegin()
 typedef struct clientPersistant_s {
@@ -883,6 +902,7 @@ typedef struct clientPersistant_s {
 	short		tribesClass;
 	short		activeCapRoute;
 	stats_t		stats;
+	telemarkExact_t	telemarkExact;
 } clientPersistant_t;
 
 typedef struct renderInfo_s

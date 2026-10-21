@@ -7305,6 +7305,7 @@ static void Cmd_Practice_f(gentity_t *ent)
 
 	ent->client->pers.practice = (qboolean)!ent->client->pers.practice; //toggle it
 	ent->client->pers.haste = qfalse;
+	ent->client->pers.telemarkExact.valid = qfalse; //An exact mark only means something inside one practice session
 
 	if (ent->client->pers.practice) {
 		if (ent->client->pers.practiceMaxForce > 0) {
@@ -7381,6 +7382,8 @@ static qboolean Cmd_AmteleMatchTargetRuntimeMap( gentity_t *teleporter, gentity_
 //[JAPRO - Serverside - All - Amtelemark Function - Start]
 void Cmd_Amtelemark_f(gentity_t *ent)
 {
+		qboolean exact = qfalse;
+
 		if (!ent->client)
 			return;
 
@@ -7402,7 +7405,32 @@ void Cmd_Amtelemark_f(gentity_t *ent)
 		}
 		*/
 
-		if ((ent->client->ps.stats[STAT_RESTRICTIONS] & JAPRO_RESTRICT_ALLOWTELES) && ent->client->sess.sessionTeam != TEAM_SPECTATOR) {
+		if (trap->Argc() > 2) {
+			trap->SendServerCommand(ent - g_entities, "print \"Usage: /amTelemark or /amTelemark exact\n\"");
+			return;
+		}
+		if (trap->Argc() == 2) {
+			char arg[8];
+			trap->Argv(1, arg, sizeof(arg));
+			if (Q_stricmp(arg, "exact")) {
+				trap->SendServerCommand(ent - g_entities, "print \"Usage: /amTelemark or /amTelemark exact\n\"");
+				return;
+			}
+			exact = qtrue;
+		}
+
+		if (exact) {
+			if (!ent->client->sess.raceMode || !ent->client->pers.practice) {
+				trap->SendServerCommand(ent - g_entities, "print \"/amTelemark exact is only available in practice mode.\n\"");
+				return;
+			}
+			if (ent->client->sess.sessionTeam == TEAM_SPECTATOR || ent->health <= 0 || ent->client->ps.m_iVehicleNum) {
+				trap->SendServerCommand(ent - g_entities, "print \"You must be alive and ingame to use /amTelemark exact.\n\"");
+				return;
+			}
+		}
+
+		if (!exact && (ent->client->ps.stats[STAT_RESTRICTIONS] & JAPRO_RESTRICT_ALLOWTELES) && ent->client->sess.sessionTeam != TEAM_SPECTATOR) {
 			if (ent->client->ps.groundEntityNum == ENTITYNUM_NONE || ent->client->ps.velocity[2] != 0) { //so they can't accidentally teleport midair
 				trap->SendServerCommand(ent - g_entities, "print \"You must be on the ground to telemark midrun!\n\"");
 				return;
@@ -7415,14 +7443,93 @@ void Cmd_Amtelemark_f(gentity_t *ent)
 			ent->client->pers.telemarkOrigin[2] += 58;
 		ent->client->pers.telemarkAngle = ent->client->ps.viewangles[YAW];
 		ent->client->pers.telemarkPitchAngle = ent->client->ps.viewangles[PITCH];
-		trap->SendServerCommand( ent-g_entities, va("print \"Teleport Marker: ^3<%i, %i, %i> %i, %i\n\"",
+
+		if (exact) {
+			telemarkExact_t *mark = &ent->client->pers.telemarkExact;
+			stats_t *stats = &ent->client->pers.stats;
+
+			memset(mark, 0, sizeof(*mark));
+			mark->valid = qtrue;
+			VectorCopy(ent->client->ps.origin, mark->origin);
+			VectorCopy(ent->client->ps.velocity, mark->velocity);
+			VectorCopy(ent->client->ps.viewangles, mark->viewAngles);
+			mark->forcePower = ent->client->ps.fd.forcePower;
+			if (stats->startTime) {
+				mark->timerElapsed = trap->Milliseconds() - stats->startTime;
+				mark->levelTimeElapsed = level.time - stats->startLevelTime;
+				mark->startLag = ent->client->pers.startLag;
+				mark->displacement = stats->displacement;
+				mark->displacementSamples = stats->displacementSamples;
+				mark->topSpeed = stats->topSpeed;
+				mark->checkpoints = stats->checkpoints;
+				mark->checkpointCount = stats->checkpointCount;
+				Q_strncpyz(mark->checkpointTimes, stats->checkpointTimes, sizeof(mark->checkpointTimes));
+			}
+		}
+		else {
+			ent->client->pers.telemarkExact.valid = qfalse; //The exact state belongs to the previous mark
+		}
+
+		trap->SendServerCommand( ent-g_entities, va("print \"Teleport Marker%s: ^3<%i, %i, %i> %i, %i\n\"", exact ? " (exact)" : "",
 			(int)ent->client->pers.telemarkOrigin[0], (int)ent->client->pers.telemarkOrigin[1], (int)ent->client->pers.telemarkOrigin[2], (int)ent->client->pers.telemarkAngle, (int)ent->client->pers.telemarkPitchAngle ));
+}
+
+// Practice mode only: put the player back exactly as they were at "amtelemark exact" (velocity, view, force, running timer).
+// Returns qfalse when there is nothing to restore, so the caller does the normal telemark teleport.
+static qboolean Telemark_RestoreExact(gentity_t *ent)
+{
+	telemarkExact_t *mark = &ent->client->pers.telemarkExact;
+	stats_t *stats = &ent->client->pers.stats;
+
+	if (!mark->valid || !ent->client->sess.raceMode || !ent->client->pers.practice)
+		return qfalse;
+	if (ent->client->sess.sessionTeam == TEAM_SPECTATOR || ent->health <= 0 || ent->client->ps.m_iVehicleNum)
+		return qfalse;
+
+	if (BG_InRoll(&ent->client->ps, ent->s.legsAnim))
+		G_SetAnim(ent, &ent->client->pers.cmd, SETANIM_BOTH, BOTH_UNCROUCH1, SETANIM_FLAG_RESTART|SETANIM_FLAG_OVERRIDE|SETANIM_FLAG_HOLD, 0);
+
+	trap->UnlinkEntity((sharedEntity_t *)ent);
+
+	VectorCopy(mark->origin, ent->client->ps.origin);
+	VectorCopy(mark->velocity, ent->client->ps.velocity);
+	ent->client->ps.eFlags ^= EF_TELEPORT_BIT;
+	ent->client->ps.fd.forceJumpZStart = -65536;
+	G_ResetTrail(ent);
+	SetClientViewAngle(ent, mark->viewAngles);
+	ent->client->ps.fd.forcePower = mark->forcePower < ent->client->ps.fd.forcePowerMax ? mark->forcePower : ent->client->ps.fd.forcePowerMax;
+
+	if (mark->timerElapsed) {
+		stats->startTime = trap->Milliseconds() - mark->timerElapsed;
+		stats->startLevelTime = level.time - mark->levelTimeElapsed;
+		ent->client->pers.startLag = mark->startLag;
+		stats->displacement = mark->displacement;
+		stats->displacementSamples = mark->displacementSamples;
+		stats->topSpeed = mark->topSpeed;
+		stats->checkpoints = mark->checkpoints;
+		stats->checkpointCount = mark->checkpointCount;
+		Q_strncpyz(stats->checkpointTimes, mark->checkpointTimes, sizeof(stats->checkpointTimes));
+		stats->lastCheckpointTime = 0;
+		ent->client->ps.duelTime = level.time - mark->levelTimeElapsed;
+	}
+	else { //Timer was not running at the mark, so drop any run started since
+		stats->startTime = 0;
+		stats->startLevelTime = 0;
+		ent->client->ps.duelTime = 0;
+	}
+
+	BG_PlayerStateToEntityState(&ent->client->ps, &ent->s, qtrue);
+	VectorCopy(ent->client->ps.origin, ent->r.currentOrigin);
+	trap->LinkEntity((sharedEntity_t *)ent);
+	return qtrue;
 }
 //[JAPRO - Serverside - All - Amtelemark Function - End]
 
 void Cmd_RaceTele_f(gentity_t *ent, qboolean useForce)
 {
 	if (useForce || trap->Argc() == 1) {//Amtele to telemark
+		if (Telemark_RestoreExact(ent))
+			return;
 		if (ent->client->pers.telemarkOrigin[0] != 0 || ent->client->pers.telemarkOrigin[1] != 0 || ent->client->pers.telemarkOrigin[2] != 0 || ent->client->pers.telemarkAngle != 0) {
 			vec3_t	angles = {0, 0, 0};
 			angles[YAW] = ent->client->pers.telemarkAngle;
@@ -7603,6 +7710,8 @@ void Cmd_Amtele_f(gentity_t *ent)
 
 		if (trap->Argc() == 1)//Amtele to telemark
 		{
+			if (Telemark_RestoreExact(ent))
+				return;
 			if (ent->client->pers.telemarkOrigin[0] != 0 || ent->client->pers.telemarkOrigin[1] != 0 || ent->client->pers.telemarkOrigin[2] != 0 || ent->client->pers.telemarkAngle != 0)
 			{
 				angles[YAW] = ent->client->pers.telemarkAngle;
