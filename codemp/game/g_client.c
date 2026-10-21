@@ -2508,6 +2508,25 @@ qboolean ClientUserinfoChanged( int clientNum ) { //I think anything treated as 
 	else
 		client->pers.noCartwheel = qfalse;
 
+	// Changing a plugin that affects movement during a run invalidates the run. maxFPS is deliberately not checked, since it is client reported.
+	if (client->pers.stats.startTime > 0 && !client->pers.practice) {
+		const int movementPlugins = JAPRO_PLUGIN_BHOP | JAPRO_PLUGIN_NOROLL | JAPRO_PLUGIN_NOCART;
+		const int changedPlugins = (atoi(s) ^ client->pers.stats.pluginsAtStart) & movementPlugins;
+
+		if (changedPlugins) {
+			char pluginNames[64] = "";
+			if (changedPlugins & JAPRO_PLUGIN_BHOP)
+				Q_strcat(pluginNames, sizeof(pluginNames), "BHOP ");
+			if (changedPlugins & JAPRO_PLUGIN_NOROLL)
+				Q_strcat(pluginNames, sizeof(pluginNames), "NOROLL ");
+			if (changedPlugins & JAPRO_PLUGIN_NOCART)
+				Q_strcat(pluginNames, sizeof(pluginNames), "NOCART ");
+
+			trap->SendServerCommand(ent - g_entities, va("cp \"Timer reset!\n^3Plugin changed: %s\"", pluginNames));
+			ResetPlayerTimers(ent, qfalse);
+		}
+	}
+
 	if (atoi(s) & JAPRO_PLUGIN_CENTERMUZZLE)
 		client->pers.centerMuzzle = qtrue;
 	else

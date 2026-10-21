@@ -1449,6 +1449,7 @@ void G_UpdatePlaytime(struct sqlite3 *db, char *username, int seconds );
 static void G_ClearRunCheckpoints(gclient_t *client);
 void TimerStart(gentity_t *trigger, gentity_t *player, trace_t *trace) {//JAPRO Timers
 	int lessTime;
+	char userinfo[MAX_INFO_STRING];
 
 	if (!player->client)
 		return;
@@ -1588,6 +1589,10 @@ void TimerStart(gentity_t *trigger, gentity_t *player, trace_t *trace) {//JAPRO 
 	player->client->pers.stats.checkpoints = 0;
 	player->client->pers.stats.courseID = trigger->courseID;
 	G_ClearRunCheckpoints(player->client);
+
+	// Snapshot plugin state at timer start for mid-run change detection (see ClientUserinfoChanged)
+	trap->GetUserinfo(player - g_entities, userinfo, sizeof(userinfo));
+	player->client->pers.stats.pluginsAtStart = atoi(Info_ValueForKey(userinfo, "cp_pluginDisable"));
 
 	if (player->client->ps.stats[STAT_RESTRICTIONS] & JAPRO_RESTRICT_ALLOWTELES) { //Reset their telemark on map start if this is the case
 		player->client->pers.telemarkOrigin[0] = 0;
