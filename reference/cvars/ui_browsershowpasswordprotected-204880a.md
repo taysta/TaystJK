@@ -40,8 +40,8 @@ Controls `ui_browserShowPasswordProtected` in the ui module. Consult the cited b
 
 | Value | Meaning | Evidence |
 |:--|:--|:--|
-| `0` | Disabled. | [codemp/ui/ui_main.c:9181](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/codemp/ui/ui_main.c#L9181) |
-| `1` | Enabled. | [codemp/ui/ui_main.c:9181](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/codemp/ui/ui_main.c#L9181) |
+| `0` | Disabled. | [codemp/ui/ui_main.c:9181](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/ui/ui_main.c#L9181) |
+| `1` | Enabled. | [codemp/ui/ui_main.c:9181](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/ui/ui_main.c#L9181) |
 
 ## Flags
 
@@ -53,7 +53,7 @@ Controls `ui_browserShowPasswordProtected` in the ui module. Consult the cited b
 Origin: <span class="label ref-origin ref-origin-openjk">OpenJK</span>
 
 - Ultimate-origin introduction: [`8fdb5fb65dbe`](https://github.com/JACoders/OpenJK/commit/8fdb5fb65dbe118ba0208194e9cf42ace7d6a6dd) in <span class="label ref-origin ref-origin-openjk">OpenJK</span> (content authored `2013-09-28`, integrated `2013-09-28`)
-- Upstream registration evidence: [codemp/ui/ui_xcvar.h:60](https://github.com/JACoders/OpenJK/blame/1a6a643427aa347553e9073dac5570b33337c4d9/codemp/ui/ui_xcvar.h#L60)
+- Upstream registration evidence: [codemp/ui/ui_xcvar.h:60](https://github.com/JACoders/OpenJK/blame/260c59c2907187af555a676fe0cc798893bf7757/codemp/ui/ui_xcvar.h#L60)
 - Attribution method: `shared-earliest-commit-lineage-order`
 - Attribution confidence: `medium`
 - Notes: The earliest authored/submitted introduction is shared by openjk, eternaljk, rend2, taystjk, japro, newjk, vulkan; fork-lineage order selects openjk.
@@ -82,8 +82,8 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 ## Evidence
 
-- registration: [codemp/ui/ui_xcvar.h:65](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/codemp/ui/ui_xcvar.h#L65) (XCVAR_DEF)
-- behavior: [codemp/ui/ui_main.c:9181](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/codemp/ui/ui_main.c#L9181)
-- behavior: [codemp/ui/ui_main.c:9183](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/codemp/ui/ui_main.c#L9183)
+- registration: [codemp/ui/ui_xcvar.h:65](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/ui/ui_xcvar.h#L65) (XCVAR_DEF)
+- behavior: [codemp/ui/ui_main.c:9181](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/ui/ui_main.c#L9181)
+- behavior: [codemp/ui/ui_main.c:9183](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/ui/ui_main.c#L9183)
 
-<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a"><code>c722804317d7</code></a> on 2026-09-28. Anything merged after that is not reflected here.</p>
+<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/f999cbc0912773164962d8be37737a31fe9ade8d"><code>f999cbc09127</code></a> on 2026-10-22. Anything merged after that is not reflected here.</p>

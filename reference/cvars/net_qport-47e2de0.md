@@ -66,11 +66,11 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 ## Evidence
 
-- registration: [codemp/qcommon/net_chan.cpp:75](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/codemp/qcommon/net_chan.cpp#L75) (Cvar_Get)
-- behavior: [codemp/qcommon/common.cpp:1515](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/codemp/qcommon/common.cpp#L1515)
-- behavior: [codemp/qcommon/net_chan.cpp:114](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/codemp/qcommon/net_chan.cpp#L114)
-- behavior: [codemp/qcommon/net_chan.cpp:193](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/codemp/qcommon/net_chan.cpp#L193)
-- behavior: [codemp/qcommon/qcommon.h:251](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/codemp/qcommon/qcommon.h#L251)
-- behavior: [codemp/server/sv_main.cpp:847](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/codemp/server/sv_main.cpp#L847)
+- registration: [codemp/qcommon/net_chan.cpp:75](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/qcommon/net_chan.cpp#L75) (Cvar_Get)
+- behavior: [codemp/qcommon/common.cpp:1515](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/qcommon/common.cpp#L1515)
+- behavior: [codemp/qcommon/net_chan.cpp:114](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/qcommon/net_chan.cpp#L114)
+- behavior: [codemp/qcommon/net_chan.cpp:193](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/qcommon/net_chan.cpp#L193)
+- behavior: [codemp/qcommon/qcommon.h:251](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/qcommon/qcommon.h#L251)
+- behavior: [codemp/server/sv_main.cpp:847](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/server/sv_main.cpp#L847)
 
-<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a"><code>c722804317d7</code></a> on 2026-09-28. Anything merged after that is not reflected here.</p>
+<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/f999cbc0912773164962d8be37737a31fe9ade8d"><code>f999cbc09127</code></a> on 2026-10-22. Anything merged after that is not reflected here.</p>

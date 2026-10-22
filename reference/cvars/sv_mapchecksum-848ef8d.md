@@ -74,13 +74,13 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 ## Evidence
 
-- registration: [codemp/game/g_main.c:412](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/codemp/game/g_main.c#L412) (Cvar_Register)
-- registration: [codemp/game/g_main.c:3373](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/codemp/game/g_main.c#L3373) (Cvar_Register)
-- registration: [codemp/server/sv_init.cpp:1031](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/codemp/server/sv_init.cpp#L1031) (Cvar_Get)
-- behavior: [codemp/game/g_main.c:3390](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/codemp/game/g_main.c#L3390)
-- behavior: [codemp/game/g_main.c:414](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/codemp/game/g_main.c#L414)
-- behavior: [codemp/game/sqlite3.c:41949](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/codemp/game/sqlite3.c#L41949)
-- behavior: [codemp/game/g_main.c:3379](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/codemp/game/g_main.c#L3379)
-- behavior: [codemp/game/g_main.c:3392](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/codemp/game/g_main.c#L3392)
+- registration: [codemp/game/g_main.c:412](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/game/g_main.c#L412) (Cvar_Register)
+- registration: [codemp/game/g_main.c:3373](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/game/g_main.c#L3373) (Cvar_Register)
+- registration: [codemp/server/sv_init.cpp:1031](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/server/sv_init.cpp#L1031) (Cvar_Get)
+- behavior: [codemp/game/g_main.c:3390](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/game/g_main.c#L3390)
+- behavior: [codemp/game/g_main.c:414](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/game/g_main.c#L414)
+- behavior: [codemp/game/sqlite3.c:41949](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/game/sqlite3.c#L41949)
+- behavior: [codemp/game/g_main.c:3379](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/game/g_main.c#L3379)
+- behavior: [codemp/game/g_main.c:3392](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/game/g_main.c#L3392)
 
-<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a"><code>c722804317d7</code></a> on 2026-09-28. Anything merged after that is not reflected here.</p>
+<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/f999cbc0912773164962d8be37737a31fe9ade8d"><code>f999cbc09127</code></a> on 2026-10-22. Anything merged after that is not reflected here.</p>

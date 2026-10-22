@@ -40,8 +40,8 @@ Sets protocol based on server info response
 
 | Value | Meaning | Evidence |
 |:--|:--|:--|
-| `0` | Selects the code path tested for value 0. | [codemp/client/cl_main.cpp:1785](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/codemp/client/cl_main.cpp#L1785) |
-| `2` | Selects the code path tested for value 2. | [codemp/client/cl_main.cpp:337](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/codemp/client/cl_main.cpp#L337) |
+| `0` | Selects the code path tested for value 0. | [codemp/client/cl_main.cpp:1785](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/client/cl_main.cpp#L1785) |
+| `2` | Selects the code path tested for value 2. | [codemp/client/cl_main.cpp:337](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/client/cl_main.cpp#L337) |
 
 ## Flags
 
@@ -86,11 +86,11 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 ## Evidence
 
-- registration: [codemp/client/cl_main.cpp:3337](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/codemp/client/cl_main.cpp#L3337) (Cvar_Get)
-- behavior: [codemp/client/cl_main.cpp:337](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/codemp/client/cl_main.cpp#L337)
-- behavior: [codemp/client/cl_main.cpp:1785](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/codemp/client/cl_main.cpp#L1785)
-- behavior: [codemp/client/cl_main.cpp:1796](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/codemp/client/cl_main.cpp#L1796)
-- behavior: [codemp/qcommon/files.cpp:4170](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/codemp/qcommon/files.cpp#L4170)
-- behavior: [codemp/cgame/cg_main.c:3174](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/codemp/cgame/cg_main.c#L3174)
+- registration: [codemp/client/cl_main.cpp:3337](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/client/cl_main.cpp#L3337) (Cvar_Get)
+- behavior: [codemp/client/cl_main.cpp:337](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/client/cl_main.cpp#L337)
+- behavior: [codemp/client/cl_main.cpp:1785](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/client/cl_main.cpp#L1785)
+- behavior: [codemp/client/cl_main.cpp:1796](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/client/cl_main.cpp#L1796)
+- behavior: [codemp/qcommon/files.cpp:4170](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/qcommon/files.cpp#L4170)
+- behavior: [codemp/cgame/cg_main.c:3174](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/cgame/cg_main.c#L3174)
 
-<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a"><code>c722804317d7</code></a> on 2026-09-28. Anything merged after that is not reflected here.</p>
+<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/f999cbc0912773164962d8be37737a31fe9ade8d"><code>f999cbc09127</code></a> on 2026-10-22. Anything merged after that is not reflected here.</p>

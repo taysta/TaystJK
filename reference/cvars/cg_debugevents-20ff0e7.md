@@ -37,8 +37,8 @@ Controls `cg_debugEvents` in the cgame module. Consult the cited behavior reads 
 
 | Value | Meaning | Evidence |
 |:--|:--|:--|
-| `1` | Selects the code path tested for value 1. | [codemp/cgame/cg_event.c:1531](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/codemp/cgame/cg_event.c#L1531) |
-| `3` | Selects the code path tested for value 3. | [codemp/cgame/cg_event.c:3726](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/codemp/cgame/cg_event.c#L3726) |
+| `1` | Selects the code path tested for value 1. | [codemp/cgame/cg_event.c:1531](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/cgame/cg_event.c#L1531) |
+| `3` | Selects the code path tested for value 3. | [codemp/cgame/cg_event.c:3726](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/cgame/cg_event.c#L3726) |
 
 ## Flags
 
@@ -68,10 +68,10 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 ## Evidence
 
-- registration: [codemp/cgame/cg_xcvar.h:300](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/codemp/cgame/cg_xcvar.h#L300) (XCVAR_DEF)
-- behavior: [codemp/cgame/cg_event.c:1515](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/codemp/cgame/cg_event.c#L1515)
-- behavior: [codemp/cgame/cg_event.c:1531](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/codemp/cgame/cg_event.c#L1531)
-- behavior: [codemp/cgame/cg_event.c:3726](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/codemp/cgame/cg_event.c#L3726)
-- behavior: [codemp/cgame/cg_event.c:1534](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/codemp/cgame/cg_event.c#L1534)
+- registration: [codemp/cgame/cg_xcvar.h:300](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/cgame/cg_xcvar.h#L300) (XCVAR_DEF)
+- behavior: [codemp/cgame/cg_event.c:1515](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/cgame/cg_event.c#L1515)
+- behavior: [codemp/cgame/cg_event.c:1531](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/cgame/cg_event.c#L1531)
+- behavior: [codemp/cgame/cg_event.c:3726](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/cgame/cg_event.c#L3726)
+- behavior: [codemp/cgame/cg_event.c:1534](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/cgame/cg_event.c#L1534)
 
-<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a"><code>c722804317d7</code></a> on 2026-09-28. Anything merged after that is not reflected here.</p>
+<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/f999cbc0912773164962d8be37737a31fe9ade8d"><code>f999cbc09127</code></a> on 2026-10-22. Anything merged after that is not reflected here.</p>

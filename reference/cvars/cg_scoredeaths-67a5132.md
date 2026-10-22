@@ -24,23 +24,23 @@ Display score AND deaths on the scoreboard
 | Restart | No latch flag is registered. |
 | Manually settable | Yes |
 | Cheat protected | No |
-| Network scope | `client-only`: Local to the client/UI/renderer. |
+| Network scope | `feature-flagged`: Client behavior is negotiated through a server feature flag. |
 | Category | Gameplay & combat |
 | Module | `cgame` |
 | Renderer | All / not renderer-specific |
 | Derivation | `documented` |
 | Confidence | `medium` |
 | Added | 2018-09-03 in [`bdcd618c6`](https://github.com/taysta/TaystJK/commit/bdcd618c67713b86946b720d791c382d3908d97c) <span class="status-chip">needs review</span> ([how to compare this against your build](/TaystJK/features/whats-new/#how-to-tell-what-your-build-has)) |
-| In-game xdocs | Yes: [codemp/ui/ui_xdocs.h:198](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/codemp/ui/ui_xdocs.h#L198) |
+| In-game xdocs | Yes: [codemp/ui/ui_xdocs.h:198](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/ui/ui_xdocs.h#L198) |
 | In-game menu | No |
 
 ## Values
 
 | Value | Meaning | Evidence |
 |:--|:--|:--|
-| `0` | Scoreboard only shows score (Base JAMP behavior) | [codemp/ui/ui_xdocs.h:198](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/codemp/ui/ui_xdocs.h#L198) |
-| `1` | Scoreboard shows score and deaths on JA+ or jaPRO servers (default) | [codemp/ui/ui_xdocs.h:200](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/codemp/ui/ui_xdocs.h#L200) |
-| `2` | Scoreboard shows score and locally counted deaths | [codemp/ui/ui_xdocs.h:201](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/codemp/ui/ui_xdocs.h#L201) |
+| `0` | Scoreboard only shows score (Base JAMP behavior) | [codemp/ui/ui_xdocs.h:198](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/ui/ui_xdocs.h#L198) |
+| `1` | Scoreboard shows score and deaths on JA+ or jaPRO servers (default) | [codemp/ui/ui_xdocs.h:200](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/ui/ui_xdocs.h#L200) |
+| `2` | Scoreboard shows score and locally counted deaths | [codemp/ui/ui_xdocs.h:201](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/ui/ui_xdocs.h#L201) |
 
 ## Flags
 
@@ -51,7 +51,7 @@ Display score AND deaths on the scoreboard
 Origin: <span class="label ref-origin ref-origin-japro">jaPRO</span>
 
 - Ultimate-origin introduction: [`bdcd618c6771`](https://github.com/videoP/jaPRO/commit/bdcd618c67713b86946b720d791c382d3908d97c) in <span class="label ref-origin ref-origin-japro">jaPRO</span> (content authored `2018-09-03`, integrated `2018-09-03`)
-- Upstream registration evidence: [codemp/cgame/cg_xcvar.h:67](https://github.com/videoP/jaPRO/blame/33d1f1e22ac6db0c17beedbcc419ffef98bbe3c3/codemp/cgame/cg_xcvar.h#L67)
+- Upstream registration evidence: [codemp/cgame/cg_xcvar.h:67](https://github.com/videoP/jaPRO/blame/a4d22a138f1e055c8d8fe6109926dff84c4233a2/codemp/cgame/cg_xcvar.h#L67)
 - Attribution method: `squash-feature-group-explicit-credit`
 - Attribution confidence: `medium`
 - Notes: The identifier's single-prefix squash feature group explicitly credits japro.
@@ -78,10 +78,11 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 ## Evidence
 
-- registration: [codemp/cgame/cg_xcvar.h:70](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/codemp/cgame/cg_xcvar.h#L70) (XCVAR_DEF)
-- behavior: [codemp/cgame/cg_scoreboard.c:188](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/codemp/cgame/cg_scoreboard.c#L188)
-- behavior: [codemp/cgame/cg_scoreboard.c:190](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/codemp/cgame/cg_scoreboard.c#L190)
-- behavior: [codemp/ui/ui_xdocs.h:198](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/codemp/ui/ui_xdocs.h#L198)
-- documentation: [codemp/ui/ui_xdocs.h:198](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/codemp/ui/ui_xdocs.h#L198)
+- registration: [codemp/cgame/cg_xcvar.h:70](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/cgame/cg_xcvar.h#L70) (XCVAR_DEF)
+- behavior: [codemp/cgame/cg_scoreboard.c:190](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/cgame/cg_scoreboard.c#L190)
+- behavior: [codemp/cgame/cg_scoreboard.c:192](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/cgame/cg_scoreboard.c#L192)
+- behavior: [codemp/cgame/cg_scoreboard.c:188](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/cgame/cg_scoreboard.c#L188)
+- behavior: [codemp/ui/ui_xdocs.h:198](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/ui/ui_xdocs.h#L198)
+- documentation: [codemp/ui/ui_xdocs.h:198](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/ui/ui_xdocs.h#L198)
 
-<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a"><code>c722804317d7</code></a> on 2026-09-28. Anything merged after that is not reflected here.</p>
+<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/f999cbc0912773164962d8be37737a31fe9ade8d"><code>f999cbc09127</code></a> on 2026-10-22. Anything merged after that is not reflected here.</p>

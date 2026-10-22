@@ -38,8 +38,8 @@ Controls `pmove_float` in the cgame module. Consult the cited behavior reads bef
 
 | Value | Meaning | Evidence |
 |:--|:--|:--|
-| `0` | Disabled. | [codemp/cgame/cg_predict.c:1179](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/codemp/cgame/cg_predict.c#L1179) |
-| `1` | Enabled. | [codemp/cgame/cg_predict.c:1179](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/codemp/cgame/cg_predict.c#L1179) |
+| `0` | Disabled. | [codemp/cgame/cg_predict.c:1179](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/cgame/cg_predict.c#L1179) |
+| `1` | Enabled. | [codemp/cgame/cg_predict.c:1179](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/cgame/cg_predict.c#L1179) |
 
 ## Flags
 
@@ -58,7 +58,7 @@ Controls `pmove_float` in the cgame module. Consult the cited behavior reads bef
 Origin: <span class="label ref-origin ref-origin-openjk">OpenJK</span>
 
 - Ultimate-origin introduction: [`f203e799b14c`](https://github.com/JACoders/OpenJK/commit/f203e799b14c0716833793eed611c272111c3cb6) in <span class="label ref-origin ref-origin-openjk">OpenJK</span> (content authored `2013-05-03`, integrated `2013-05-11`)
-- Upstream registration evidence: [codemp/cgame/cg_xcvar.h:158](https://github.com/JACoders/OpenJK/blame/1a6a643427aa347553e9073dac5570b33337c4d9/codemp/cgame/cg_xcvar.h#L158)
+- Upstream registration evidence: [codemp/cgame/cg_xcvar.h:158](https://github.com/JACoders/OpenJK/blame/260c59c2907187af555a676fe0cc798893bf7757/codemp/cgame/cg_xcvar.h#L158)
 - Attribution method: `squash-feature-group-explicit-credit`
 - Attribution confidence: `medium`
 - Notes: The identifier's single-prefix squash feature group explicitly credits openjk.
@@ -92,12 +92,12 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 ## Evidence
 
-- registration: [codemp/cgame/cg_xcvar.h:381](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/codemp/cgame/cg_xcvar.h#L381) (XCVAR_DEF)
-- registration: [codemp/game/g_xcvar.h:173](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/codemp/game/g_xcvar.h#L173) (XCVAR_DEF)
-- behavior: [codemp/cgame/cg_predict.c:1179](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/codemp/cgame/cg_predict.c#L1179)
-- behavior: [codemp/game/g_active.c:4918](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/codemp/game/g_active.c#L4918)
-- behavior: [codemp/game/bg_pmove.c:15713](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/codemp/game/bg_pmove.c#L15713)
-- behavior: [codemp/game/bg_pmove.c:15723](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/codemp/game/bg_pmove.c#L15723)
-- behavior: [codemp/game/bg_pmove.c:15141](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/codemp/game/bg_pmove.c#L15141)
+- registration: [codemp/cgame/cg_xcvar.h:381](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/cgame/cg_xcvar.h#L381) (XCVAR_DEF)
+- registration: [codemp/game/g_xcvar.h:173](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/game/g_xcvar.h#L173) (XCVAR_DEF)
+- behavior: [codemp/cgame/cg_predict.c:1179](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/cgame/cg_predict.c#L1179)
+- behavior: [codemp/game/g_active.c:4918](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/game/g_active.c#L4918)
+- behavior: [codemp/game/bg_pmove.c:15713](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/game/bg_pmove.c#L15713)
+- behavior: [codemp/game/bg_pmove.c:15723](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/game/bg_pmove.c#L15723)
+- behavior: [codemp/game/bg_pmove.c:15141](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/game/bg_pmove.c#L15141)
 
-<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a"><code>c722804317d7</code></a> on 2026-09-28. Anything merged after that is not reflected here.</p>
+<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/f999cbc0912773164962d8be37737a31fe9ade8d"><code>f999cbc09127</code></a> on 2026-10-22. Anything merged after that is not reflected here.</p>

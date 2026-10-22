@@ -33,7 +33,7 @@ Controls `ui_teamSize` in the ui module. Consult the cited behavior reads before
 | Confidence | `medium` |
 | Added | 2015-04-24 in [`3a5f856a0`](https://github.com/taysta/TaystJK/commit/3a5f856a0bb455686515e55ba6068a9b72a82c28) <span class="status-chip">needs review</span> ([how to compare this against your build](/TaystJK/features/whats-new/#how-to-tell-what-your-build-has)) |
 | In-game xdocs | No |
-| In-game menu | Yes: [ingame_callvote_japro.menu:832](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/assets/japro/ui/jamp/ingame_callvote_japro.menu#L832) |
+| In-game menu | Yes: [ingame_callvote_japro.menu:832](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/assets/japro/ui/jamp/ingame_callvote_japro.menu#L832) |
 
 ## Values
 
@@ -76,8 +76,8 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 ## Evidence
 
-- registration: [codemp/ui/ui_xcvar.h:151](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/codemp/ui/ui_xcvar.h#L151) (XCVAR_DEF)
-- behavior: [codemp/ui/ui_main.c:7802](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/codemp/ui/ui_main.c#L7802)
-- behavior: [codemp/ui/ui_main.c:7803](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/codemp/ui/ui_main.c#L7803)
+- registration: [codemp/ui/ui_xcvar.h:151](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/ui/ui_xcvar.h#L151) (XCVAR_DEF)
+- behavior: [codemp/ui/ui_main.c:7802](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/ui/ui_main.c#L7802)
+- behavior: [codemp/ui/ui_main.c:7803](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/ui/ui_main.c#L7803)
 
-<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a"><code>c722804317d7</code></a> on 2026-09-28. Anything merged after that is not reflected here.</p>
+<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/f999cbc0912773164962d8be37737a31fe9ade8d"><code>f999cbc09127</code></a> on 2026-10-22. Anything merged after that is not reflected here.</p>

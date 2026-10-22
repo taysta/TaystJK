@@ -40,7 +40,7 @@ No discrete value list is enforced or documented in the inspected source.
 
 ## Enforced ranges
 
-- `1` through `2` (integer; Cvar_CheckRange). Evidence: [codemp/qcommon/common.cpp:1436](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/codemp/qcommon/common.cpp#L1436)
+- `1` through `2` (integer; Cvar_CheckRange). Evidence: [codemp/qcommon/common.cpp:1436](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/qcommon/common.cpp#L1436)
 
 ## Flags
 
@@ -116,12 +116,12 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 ## Evidence
 
-- registration: [codemp/game/g_xcvar.h:61](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/codemp/game/g_xcvar.h#L61) (XCVAR_DEF)
-- registration: [codemp/qcommon/common.cpp:1435](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/codemp/qcommon/common.cpp#L1435) (Cvar_Get); condition `defined(DEDICATED)`
-- behavior: [codemp/client/cl_scrn.cpp:608](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/codemp/client/cl_scrn.cpp#L608)
-- behavior: [codemp/game/g_svcmds.c:1747](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/codemp/game/g_svcmds.c#L1747)
-- behavior: [codemp/qcommon/common.cpp:310](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/codemp/qcommon/common.cpp#L310)
-- behavior: [codemp/qcommon/common.cpp:1521](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/codemp/qcommon/common.cpp#L1521)
-- behavior: [codemp/qcommon/common.cpp:1535](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/codemp/qcommon/common.cpp#L1535)
+- registration: [codemp/game/g_xcvar.h:61](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/game/g_xcvar.h#L61) (XCVAR_DEF)
+- registration: [codemp/qcommon/common.cpp:1435](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/qcommon/common.cpp#L1435) (Cvar_Get); condition `defined(DEDICATED)`
+- behavior: [codemp/client/cl_scrn.cpp:608](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/client/cl_scrn.cpp#L608)
+- behavior: [codemp/game/g_svcmds.c:1747](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/game/g_svcmds.c#L1747)
+- behavior: [codemp/qcommon/common.cpp:310](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/qcommon/common.cpp#L310)
+- behavior: [codemp/qcommon/common.cpp:1521](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/qcommon/common.cpp#L1521)
+- behavior: [codemp/qcommon/common.cpp:1535](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/qcommon/common.cpp#L1535)
 
-<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a"><code>c722804317d7</code></a> on 2026-09-28. Anything merged after that is not reflected here.</p>
+<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/f999cbc0912773164962d8be37737a31fe9ade8d"><code>f999cbc09127</code></a> on 2026-10-22. Anything merged after that is not reflected here.</p>

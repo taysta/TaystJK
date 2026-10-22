@@ -38,8 +38,8 @@ Use native console key detection
 
 | Value | Meaning | Evidence |
 |:--|:--|:--|
-| `0` | Disabled. | [shared/sdl/sdl_input.cpp:401](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/shared/sdl/sdl_input.cpp#L401) |
-| `1` | Enabled. | [shared/sdl/sdl_input.cpp:401](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/shared/sdl/sdl_input.cpp#L401) |
+| `0` | Disabled. | [shared/sdl/sdl_input.cpp:401](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/shared/sdl/sdl_input.cpp#L401) |
+| `1` | Enabled. | [shared/sdl/sdl_input.cpp:401](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/shared/sdl/sdl_input.cpp#L401) |
 
 ## Flags
 
@@ -51,7 +51,7 @@ Origin: <span class="label ref-origin ref-origin-openjk">OpenJK</span>
 
 - Ultimate-origin introduction: [`0a65fd6a7237`](https://github.com/JACoders/OpenJK/commit/0a65fd6a7237f66369e2b3a339b633e0e5f42be3) in <span class="label ref-origin ref-origin-openjk">OpenJK</span> (content authored `2016-09-11`, integrated `2016-09-11`)
 - TaystJK integration evidence: [`13791f7ad4fe`](https://github.com/taysta/TaystJK/commit/13791f7ad4fee5f2c6fa10b7aaed10212d26ac0f)
-- Upstream registration evidence: [code/client/cl_main.cpp:1283](https://github.com/JACoders/OpenJK/blame/1a6a643427aa347553e9073dac5570b33337c4d9/code/client/cl_main.cpp#L1283)
+- Upstream registration evidence: [code/client/cl_main.cpp:1283](https://github.com/JACoders/OpenJK/blame/260c59c2907187af555a676fe0cc798893bf7757/code/client/cl_main.cpp#L1283)
 - Attribution method: `squash-feature-group-explicit-credit`
 - Attribution confidence: `medium`
 - Notes: The identifier's single-prefix squash feature group explicitly credits openjk.
@@ -80,8 +80,8 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 ## Evidence
 
-- registration: [codemp/client/cl_main.cpp:3405](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/codemp/client/cl_main.cpp#L3405) (Cvar_Get)
-- behavior: [shared/sdl/sdl_input.cpp:401](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/shared/sdl/sdl_input.cpp#L401)
-- behavior: [shared/sdl/sdl_input.cpp:888](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/shared/sdl/sdl_input.cpp#L888)
+- registration: [codemp/client/cl_main.cpp:3405](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/client/cl_main.cpp#L3405) (Cvar_Get)
+- behavior: [shared/sdl/sdl_input.cpp:401](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/shared/sdl/sdl_input.cpp#L401)
+- behavior: [shared/sdl/sdl_input.cpp:888](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/shared/sdl/sdl_input.cpp#L888)
 
-<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a"><code>c722804317d7</code></a> on 2026-09-28. Anything merged after that is not reflected here.</p>
+<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/f999cbc0912773164962d8be37737a31fe9ade8d"><code>f999cbc09127</code></a> on 2026-10-22. Anything merged after that is not reflected here.</p>

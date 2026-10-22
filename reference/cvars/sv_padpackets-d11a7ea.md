@@ -37,8 +37,8 @@ Controls `sv_padPackets` in the engine-server module. Consult the cited behavior
 
 | Value | Meaning | Evidence |
 |:--|:--|:--|
-| `0` | Disabled. | [codemp/server/sv_snapshot.cpp:310](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/codemp/server/sv_snapshot.cpp#L310) |
-| `1` | Enabled. | [codemp/server/sv_snapshot.cpp:310](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/codemp/server/sv_snapshot.cpp#L310) |
+| `0` | Disabled. | [codemp/server/sv_snapshot.cpp:310](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/server/sv_snapshot.cpp#L310) |
+| `1` | Enabled. | [codemp/server/sv_snapshot.cpp:310](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/server/sv_snapshot.cpp#L310) |
 
 ## Flags
 
@@ -56,8 +56,8 @@ Origin: <span class="label ref-origin ref-origin-basejka">Base Jedi Academy</spa
 
 ## Evidence
 
-- registration: [codemp/server/sv_init.cpp:1029](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/codemp/server/sv_init.cpp#L1029) (Cvar_Get)
-- behavior: [codemp/server/sv_snapshot.cpp:310](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/codemp/server/sv_snapshot.cpp#L310)
-- behavior: [codemp/server/sv_snapshot.cpp:311](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/codemp/server/sv_snapshot.cpp#L311)
+- registration: [codemp/server/sv_init.cpp:1029](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/server/sv_init.cpp#L1029) (Cvar_Get)
+- behavior: [codemp/server/sv_snapshot.cpp:310](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/server/sv_snapshot.cpp#L310)
+- behavior: [codemp/server/sv_snapshot.cpp:311](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/server/sv_snapshot.cpp#L311)
 
-<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a"><code>c722804317d7</code></a> on 2026-09-28. Anything merged after that is not reflected here.</p>
+<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/f999cbc0912773164962d8be37737a31fe9ade8d"><code>f999cbc09127</code></a> on 2026-10-22. Anything merged after that is not reflected here.</p>

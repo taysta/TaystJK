@@ -36,8 +36,8 @@ Disable/enable generating normal maps from diffuse maps
 
 | Value | Meaning | Evidence |
 |:--|:--|:--|
-| `0` | Disabled. | [shared/rd-rend2/tr_shader.cpp:1294](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/shared/rd-rend2/tr_shader.cpp#L1294) |
-| `1` | Enabled. | [shared/rd-rend2/tr_shader.cpp:1294](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/shared/rd-rend2/tr_shader.cpp#L1294) |
+| `0` | Disabled. | [shared/rd-rend2/tr_shader.cpp:1294](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/shared/rd-rend2/tr_shader.cpp#L1294) |
+| `1` | Enabled. | [shared/rd-rend2/tr_shader.cpp:1294](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/shared/rd-rend2/tr_shader.cpp#L1294) |
 
 ## Flags
 
@@ -78,11 +78,11 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 ## Evidence
 
-- registration: [codemp/rd-rend2/tr_init.cpp:1574](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/codemp/rd-rend2/tr_init.cpp#L1574) (Cvar_Get)
-- behavior: [shared/rd-rend2/tr_shader.cpp:1294](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/shared/rd-rend2/tr_shader.cpp#L1294)
-- behavior: [shared/rd-rend2/tr_shader.cpp:1489](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/shared/rd-rend2/tr_shader.cpp#L1489)
-- behavior: [shared/rd-rend2/tr_shader.cpp:4629](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/shared/rd-rend2/tr_shader.cpp#L4629)
-- behavior: [codemp/ui/ui_main.c:6251](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/codemp/ui/ui_main.c#L6251)
-- behavior: [codemp/ui/ui_main.c:6422](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/codemp/ui/ui_main.c#L6422)
+- registration: [codemp/rd-rend2/tr_init.cpp:1574](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/rd-rend2/tr_init.cpp#L1574) (Cvar_Get)
+- behavior: [shared/rd-rend2/tr_shader.cpp:1294](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/shared/rd-rend2/tr_shader.cpp#L1294)
+- behavior: [shared/rd-rend2/tr_shader.cpp:1489](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/shared/rd-rend2/tr_shader.cpp#L1489)
+- behavior: [shared/rd-rend2/tr_shader.cpp:4629](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/shared/rd-rend2/tr_shader.cpp#L4629)
+- behavior: [codemp/ui/ui_main.c:6251](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/ui/ui_main.c#L6251)
+- behavior: [codemp/ui/ui_main.c:6422](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/ui/ui_main.c#L6422)
 
-<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a"><code>c722804317d7</code></a> on 2026-09-28. Anything merged after that is not reflected here.</p>
+<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/f999cbc0912773164962d8be37737a31fe9ade8d"><code>f999cbc09127</code></a> on 2026-10-22. Anything merged after that is not reflected here.</p>

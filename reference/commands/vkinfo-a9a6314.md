@@ -40,7 +40,7 @@ Origin: <span class="label ref-origin ref-origin-vulkan">Vulkan</span>
 
 - Ultimate-origin introduction: [`bd3a458a8bb2`](https://github.com/JKSunny/EternalJK/commit/bd3a458a8bb29a0348177f586389b98b5f7592a5) in <span class="label ref-origin ref-origin-vulkan">Vulkan</span> (content authored `2021-10-24`, integrated `2021-10-24`)
 - Matching squash bullet: `Added /vkinfo which shows Vulkan stats`
-- Upstream registration evidence: [codemp/rd-vulkan/tr_init.cpp:758](https://github.com/JKSunny/EternalJK/blame/a4ab639bdfb9da2a3d63e9748eb57a72fb988552/codemp/rd-vulkan/tr_init.cpp#L758)
+- Upstream registration evidence: [codemp/rd-vulkan/tr_init.cpp:758](https://github.com/JKSunny/EternalJK/blame/362b28150b83e1d077137c5ea67ebb8a123629ba/codemp/rd-vulkan/tr_init.cpp#L758)
 - Attribution method: `identifier-adjacent-explicit-credit`
 - Attribution confidence: `high`
 - Notes: The earliest authored/submitted introduction is shared by taystjk, japro, vulkan; fork-lineage order selects taystjk. An identifier-adjacent source/commit/PR line explicitly credits vulkan.
@@ -69,7 +69,7 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 ## Evidence
 
-- registration: [codemp/rd-vulkan/tr_init.cpp:758](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/codemp/rd-vulkan/tr_init.cpp#L758) (renderer command table)
-- handler: [codemp/rd-vulkan/vk_info.cpp:456](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/codemp/rd-vulkan/vk_info.cpp#L456)
+- registration: [codemp/rd-vulkan/tr_init.cpp:758](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/rd-vulkan/tr_init.cpp#L758) (renderer command table)
+- handler: [codemp/rd-vulkan/vk_info.cpp:456](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/rd-vulkan/vk_info.cpp#L456)
 
-<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a"><code>c722804317d7</code></a> on 2026-09-28. Anything merged after that is not reflected here.</p>
+<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/f999cbc0912773164962d8be37737a31fe9ade8d"><code>f999cbc09127</code></a> on 2026-10-22. Anything merged after that is not reflected here.</p>

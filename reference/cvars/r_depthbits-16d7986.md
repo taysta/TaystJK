@@ -38,8 +38,8 @@ Controls `r_depthbits` in the renderer module. Consult the cited behavior reads 
 
 | Value | Meaning | Evidence |
 |:--|:--|:--|
-| `0` | Disabled. | [shared/sdl/sdl_window.cpp:468](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/shared/sdl/sdl_window.cpp#L468) |
-| `1` | Enabled. | [shared/sdl/sdl_window.cpp:468](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/shared/sdl/sdl_window.cpp#L468) |
+| `0` | Disabled. | [shared/sdl/sdl_window.cpp:468](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/shared/sdl/sdl_window.cpp#L468) |
+| `1` | Enabled. | [shared/sdl/sdl_window.cpp:468](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/shared/sdl/sdl_window.cpp#L468) |
 
 ## Flags
 
@@ -82,11 +82,11 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 ## Evidence
 
-- registration: [codemp/rd-dedicated/tr_init.cpp:342](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/codemp/rd-dedicated/tr_init.cpp#L342) (Cvar_Get)
-- registration: [shared/sdl/sdl_window.cpp:813](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/shared/sdl/sdl_window.cpp#L813) (Cvar_Get)
-- behavior: [shared/sdl/sdl_window.cpp:468](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/shared/sdl/sdl_window.cpp#L468)
-- behavior: [shared/sdl/sdl_window.cpp:471](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/shared/sdl/sdl_window.cpp#L471)
-- behavior: [codemp/ui/ui_main.c:6230](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/codemp/ui/ui_main.c#L6230)
-- behavior: [codemp/ui/ui_main.c:6402](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/codemp/ui/ui_main.c#L6402)
+- registration: [codemp/rd-dedicated/tr_init.cpp:342](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/rd-dedicated/tr_init.cpp#L342) (Cvar_Get)
+- registration: [shared/sdl/sdl_window.cpp:813](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/shared/sdl/sdl_window.cpp#L813) (Cvar_Get)
+- behavior: [shared/sdl/sdl_window.cpp:468](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/shared/sdl/sdl_window.cpp#L468)
+- behavior: [shared/sdl/sdl_window.cpp:471](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/shared/sdl/sdl_window.cpp#L471)
+- behavior: [codemp/ui/ui_main.c:6230](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/ui/ui_main.c#L6230)
+- behavior: [codemp/ui/ui_main.c:6402](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/ui/ui_main.c#L6402)
 
-<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a"><code>c722804317d7</code></a> on 2026-09-28. Anything merged after that is not reflected here.</p>
+<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/f999cbc0912773164962d8be37737a31fe9ade8d"><code>f999cbc09127</code></a> on 2026-10-22. Anything merged after that is not reflected here.</p>

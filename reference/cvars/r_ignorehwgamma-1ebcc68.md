@@ -37,12 +37,12 @@ Overrides hardware gamma capabilities
 
 | Value | Meaning | Evidence |
 |:--|:--|:--|
-| `0` | Disabled. | [codemp/rd-vulkan/vk_init.cpp:326](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/codemp/rd-vulkan/vk_init.cpp#L326) |
-| `1` | Enabled. | [codemp/rd-vulkan/vk_init.cpp:326](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/codemp/rd-vulkan/vk_init.cpp#L326) |
+| `0` | Disabled. | [codemp/rd-vulkan/vk_init.cpp:326](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/rd-vulkan/vk_init.cpp#L326) |
+| `1` | Enabled. | [codemp/rd-vulkan/vk_init.cpp:326](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/rd-vulkan/vk_init.cpp#L326) |
 
 ## Enforced ranges
 
-- `0` through `1` (integer; Cvar_CheckRange). Evidence: [codemp/rd-vulkan/tr_init.cpp:975](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/codemp/rd-vulkan/tr_init.cpp#L975)
+- `0` through `1` (integer; Cvar_CheckRange). Evidence: [codemp/rd-vulkan/tr_init.cpp:975](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/rd-vulkan/tr_init.cpp#L975)
 
 ## Flags
 
@@ -87,13 +87,13 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 ## Evidence
 
-- registration: [codemp/rd-dedicated/tr_init.cpp:344](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/codemp/rd-dedicated/tr_init.cpp#L344) (Cvar_Get)
-- registration: [codemp/rd-vulkan/tr_init.cpp:974](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/codemp/rd-vulkan/tr_init.cpp#L974) (Cvar_Get)
-- registration: [shared/sdl/sdl_window.cpp:815](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/shared/sdl/sdl_window.cpp#L815) (Cvar_Get)
-- behavior: [codemp/rd-vulkan/vk_init.cpp:326](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/codemp/rd-vulkan/vk_init.cpp#L326)
-- behavior: [shared/sdl/sdl_window.cpp:913](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/shared/sdl/sdl_window.cpp#L913)
-- behavior: [shared/sdl/sdl_window.cpp:837](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/shared/sdl/sdl_window.cpp#L837)
-- behavior: [codemp/rd-rend2/tr_init.cpp:515](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/codemp/rd-rend2/tr_init.cpp#L515)
-- behavior: [codemp/rd-vanilla/tr_init.cpp:803](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/codemp/rd-vanilla/tr_init.cpp#L803)
+- registration: [codemp/rd-dedicated/tr_init.cpp:344](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/rd-dedicated/tr_init.cpp#L344) (Cvar_Get)
+- registration: [codemp/rd-vulkan/tr_init.cpp:974](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/rd-vulkan/tr_init.cpp#L974) (Cvar_Get)
+- registration: [shared/sdl/sdl_window.cpp:815](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/shared/sdl/sdl_window.cpp#L815) (Cvar_Get)
+- behavior: [codemp/rd-vulkan/vk_init.cpp:326](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/rd-vulkan/vk_init.cpp#L326)
+- behavior: [shared/sdl/sdl_window.cpp:913](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/shared/sdl/sdl_window.cpp#L913)
+- behavior: [shared/sdl/sdl_window.cpp:837](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/shared/sdl/sdl_window.cpp#L837)
+- behavior: [codemp/rd-rend2/tr_init.cpp:515](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/rd-rend2/tr_init.cpp#L515)
+- behavior: [codemp/rd-vanilla/tr_init.cpp:803](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/rd-vanilla/tr_init.cpp#L803)
 
-<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a"><code>c722804317d7</code></a> on 2026-09-28. Anything merged after that is not reflected here.</p>
+<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/f999cbc0912773164962d8be37737a31fe9ade8d"><code>f999cbc09127</code></a> on 2026-10-22. Anything merged after that is not reflected here.</p>

@@ -38,14 +38,14 @@ Controls `cg_logChat` in the cgame module. Consult the cited behavior reads befo
 
 ## Bits
 
-Use [`chatlog`](/TaystJK/reference/commands/chatlog-84c4a99/) to toggle one option at a time; see the command page for syntax. The value column is that bit on its own. [The labels come from the source table](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/codemp/cgame/cg_consolecmds.c#L1914).
+Use [`chatlog`](/TaystJK/reference/commands/chatlog-84c4a99/) to toggle one option at a time; see the command page for syntax. The value column is that bit on its own. [The labels come from the source table](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/cgame/cg_consolecmds.c#L1914).
 
 | Bit | Value | Meaning | Read by |
 |:--|:--|:--|:--|
-| 0 | `1` | Enable | [codemp/cgame/cg_local.h:163](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/codemp/cgame/cg_local.h#L163) |
+| 0 | `1` | Enable | [codemp/cgame/cg_local.h:163](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/cgame/cg_local.h#L163) |
 | 1 | `2` | Log Sync | — |
-| 2 | `4` | Legacy Timestamps | [codemp/cgame/cg_local.h:165](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/codemp/cgame/cg_local.h#L165) |
-| 3 | `8` | Log Console Prints | [codemp/cgame/cg_local.h:167](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/codemp/cgame/cg_local.h#L167) |
+| 2 | `4` | Legacy Timestamps | [codemp/cgame/cg_local.h:165](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/cgame/cg_local.h#L165) |
+| 3 | `8` | Log Console Prints | [codemp/cgame/cg_local.h:167](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/cgame/cg_local.h#L167) |
 | 4 | `16` | Log Center Prints | — |
 ## Flags
 
@@ -87,11 +87,11 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 ## Evidence
 
-- registration: [codemp/cgame/cg_xcvar.h:186](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/codemp/cgame/cg_xcvar.h#L186) (XCVAR_DEF)
-- behavior: [codemp/cgame/cg_consolecmds.c:1929](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/codemp/cgame/cg_consolecmds.c#L1929)
-- behavior: [codemp/cgame/cg_draw.c:10656](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/codemp/cgame/cg_draw.c#L10656)
-- behavior: [codemp/cgame/cg_main.c:2719](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/codemp/cgame/cg_main.c#L2719)
-- behavior: [codemp/cgame/cg_main.c:3124](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/codemp/cgame/cg_main.c#L3124)
-- behavior: [codemp/cgame/cg_servercmds.c:1659](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/codemp/cgame/cg_servercmds.c#L1659)
+- registration: [codemp/cgame/cg_xcvar.h:186](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/cgame/cg_xcvar.h#L186) (XCVAR_DEF)
+- behavior: [codemp/cgame/cg_consolecmds.c:1929](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/cgame/cg_consolecmds.c#L1929)
+- behavior: [codemp/cgame/cg_draw.c:10656](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/cgame/cg_draw.c#L10656)
+- behavior: [codemp/cgame/cg_main.c:2719](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/cgame/cg_main.c#L2719)
+- behavior: [codemp/cgame/cg_main.c:3124](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/cgame/cg_main.c#L3124)
+- behavior: [codemp/cgame/cg_servercmds.c:1661](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/cgame/cg_servercmds.c#L1661)
 
-<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a"><code>c722804317d7</code></a> on 2026-09-28. Anything merged after that is not reflected here.</p>
+<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/f999cbc0912773164962d8be37737a31fe9ade8d"><code>f999cbc09127</code></a> on 2026-10-22. Anything merged after that is not reflected here.</p>

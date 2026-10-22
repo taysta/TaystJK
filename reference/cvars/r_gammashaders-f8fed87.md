@@ -38,8 +38,8 @@ Set gamma using pixel shaders inside the game window only.
 
 | Value | Meaning | Evidence |
 |:--|:--|:--|
-| `0` | Disabled. | [codemp/rd-vanilla/tr_init.cpp:718](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/codemp/rd-vanilla/tr_init.cpp#L718) |
-| `1` | Enabled. | [codemp/rd-vanilla/tr_init.cpp:718](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/codemp/rd-vanilla/tr_init.cpp#L718) |
+| `0` | Disabled. | [codemp/rd-vanilla/tr_init.cpp:718](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/rd-vanilla/tr_init.cpp#L718) |
+| `1` | Enabled. | [codemp/rd-vanilla/tr_init.cpp:718](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/rd-vanilla/tr_init.cpp#L718) |
 
 ## Flags
 
@@ -59,7 +59,7 @@ Origin: <span class="label ref-origin ref-origin-openjk">OpenJK</span>
 
 - Ultimate-origin introduction: [`ead8e3618248`](https://github.com/JACoders/OpenJK/commit/ead8e36182483c48b624b7631ce0e37146054de7) in <span class="label ref-origin ref-origin-openjk">OpenJK</span> (content authored `2015-07-25`, integrated `2015-07-25`)
 - TaystJK integration evidence: [`5ef5d7214371`](https://github.com/taysta/TaystJK/commit/5ef5d7214371ff3d3d0d84544ad8bbbd975e6593)
-- Upstream registration evidence: [codemp/rd-vanilla/tr_init.cpp:1575](https://github.com/JACoders/OpenJK/blame/1a6a643427aa347553e9073dac5570b33337c4d9/codemp/rd-vanilla/tr_init.cpp#L1575)
+- Upstream registration evidence: [codemp/rd-vanilla/tr_init.cpp:1575](https://github.com/JACoders/OpenJK/blame/260c59c2907187af555a676fe0cc798893bf7757/codemp/rd-vanilla/tr_init.cpp#L1575)
 - Attribution method: `squash-feature-group-explicit-credit`
 - Attribution confidence: `medium`
 - Notes: The identifier's single-prefix squash feature group explicitly credits openjk. Dated commit evidence identifies later registration changes relative to the origin snapshot.
@@ -95,8 +95,8 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 ## Evidence
 
-- registration: [codemp/rd-vanilla/tr_init.cpp:1641](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/codemp/rd-vanilla/tr_init.cpp#L1641) (Cvar_Get)
-- registration: [codemp/rd-vulkan/tr_init.cpp:792](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/codemp/rd-vulkan/tr_init.cpp#L792) (Cvar_Get)
-- behavior: [codemp/rd-vanilla/tr_init.cpp:718](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/codemp/rd-vanilla/tr_init.cpp#L718)
+- registration: [codemp/rd-vanilla/tr_init.cpp:1641](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/rd-vanilla/tr_init.cpp#L1641) (Cvar_Get)
+- registration: [codemp/rd-vulkan/tr_init.cpp:792](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/rd-vulkan/tr_init.cpp#L792) (Cvar_Get)
+- behavior: [codemp/rd-vanilla/tr_init.cpp:718](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/rd-vanilla/tr_init.cpp#L718)
 
-<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a"><code>c722804317d7</code></a> on 2026-09-28. Anything merged after that is not reflected here.</p>
+<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/f999cbc0912773164962d8be37737a31fe9ade8d"><code>f999cbc09127</code></a> on 2026-10-22. Anything merged after that is not reflected here.</p>

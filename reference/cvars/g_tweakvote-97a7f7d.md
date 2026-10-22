@@ -39,14 +39,14 @@ Latch cuz of calculateRanks? not sure man
 
 ## Bits
 
-Use [`tweakVote`](/TaystJK/reference/commands/tweakvote-97236e2/) to toggle one option at a time; see the command page for syntax. The value column is that bit on its own. [The labels come from the source table](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/codemp/game/g_svcmds.c#L1480).
+Use [`tweakVote`](/TaystJK/reference/commands/tweakvote-97236e2/) to toggle one option at a time; see the command page for syntax. The value column is that bit on its own. [The labels come from the source table](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/game/g_svcmds.c#L1480).
 
 | Bit | Value | Meaning | Read by |
 |:--|:--|:--|:--|
-| 0 | `1` | Allow spec callvote in siege gametype | [codemp/game/g_local.h:334](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/codemp/game/g_local.h#L334) |
+| 0 | `1` | Allow spec callvote in siege gametype | [codemp/game/g_local.h:334](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/game/g_local.h#L334) |
 | 1 | `2` | Allow spec callvote in CTF/TFFA gametypes | — |
-| 2 | `4` | Clear vote when going to spectate | [codemp/game/g_local.h:336](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/codemp/game/g_local.h#L336) |
-| 3 | `8` | Dont allow callvote for 30s after mapload | [codemp/game/g_local.h:337](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/codemp/game/g_local.h#L337) |
+| 2 | `4` | Clear vote when going to spectate | [codemp/game/g_local.h:336](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/game/g_local.h#L336) |
+| 3 | `8` | Dont allow callvote for 30s after mapload | [codemp/game/g_local.h:337](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/game/g_local.h#L337) |
 | 4 | `16` | Floodprotect callvotes by IP | — |
 | 5 | `32` | Dont allow map callvotes for 10 minutes at start of each map | — |
 | 6 | `64` | Add vote delay for map callvotes only | — |
@@ -54,7 +54,7 @@ Use [`tweakVote`](/TaystJK/reference/commands/tweakvote-97236e2/) to toggle one 
 | 8 | `256` | Show votes in console | — |
 | 9 | `512` | Only count voters in pass/fail calculation | — |
 | 10 | `1024` | Fix mapchange after gametype vote | — |
-| 11 | `2048` | Ignore gametype restrictions for map callvote | [codemp/game/g_local.h:345](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/codemp/game/g_local.h#L345) |
+| 11 | `2048` | Ignore gametype restrictions for map callvote | [codemp/game/g_local.h:345](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/game/g_local.h#L345) |
 ## Flags
 
 - `CVAR_ARCHIVE`: saved to the user configuration
@@ -65,7 +65,7 @@ Use [`tweakVote`](/TaystJK/reference/commands/tweakvote-97236e2/) to toggle one 
 Origin: <span class="label ref-origin ref-origin-japro">jaPRO</span>
 
 - Ultimate-origin introduction: [`d9d510063ce6`](https://github.com/videoP/jaPRO/commit/d9d510063ce680639e6ba060021b6d40ee0c1419) in <span class="label ref-origin ref-origin-japro">jaPRO</span> (content authored `2015-04-29`, integrated `2018-01-01`)
-- Upstream registration evidence: [codemp/game/g_xcvar.h:310](https://github.com/videoP/jaPRO/blame/33d1f1e22ac6db0c17beedbcc419ffef98bbe3c3/codemp/game/g_xcvar.h#L310)
+- Upstream registration evidence: [codemp/game/g_xcvar.h:310](https://github.com/videoP/jaPRO/blame/a4d22a138f1e055c8d8fe6109926dff84c4233a2/codemp/game/g_xcvar.h#L310)
 - Attribution method: `squash-feature-group-explicit-credit`
 - Attribution confidence: `medium`
 - Notes: The earliest authored/submitted introduction is shared by eternaljk, taystjk, japro, vulkan; fork-lineage order selects eternaljk. The identifier's single-prefix squash feature group explicitly credits japro.
@@ -93,12 +93,12 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 ## Evidence
 
-- registration: [codemp/game/g_xcvar.h:309](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/codemp/game/g_xcvar.h#L309) (XCVAR_DEF)
-- behavior: [codemp/game/g_cmds.c:1488](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/codemp/game/g_cmds.c#L1488)
-- behavior: [codemp/game/g_cmds.c:2746](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/codemp/game/g_cmds.c#L2746)
-- behavior: [codemp/game/g_cmds.c:2917](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/codemp/game/g_cmds.c#L2917)
-- behavior: [codemp/game/g_cmds.c:3146](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/codemp/game/g_cmds.c#L3146)
-- behavior: [codemp/game/g_cmds.c:3165](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/codemp/game/g_cmds.c#L3165)
-- documentation: [docs/japro_docs.md:111](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/docs/japro_docs.md#L111)
+- registration: [codemp/game/g_xcvar.h:309](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/game/g_xcvar.h#L309) (XCVAR_DEF)
+- behavior: [codemp/game/g_cmds.c:1488](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/game/g_cmds.c#L1488)
+- behavior: [codemp/game/g_cmds.c:2746](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/game/g_cmds.c#L2746)
+- behavior: [codemp/game/g_cmds.c:2917](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/game/g_cmds.c#L2917)
+- behavior: [codemp/game/g_cmds.c:3146](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/game/g_cmds.c#L3146)
+- behavior: [codemp/game/g_cmds.c:3165](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/game/g_cmds.c#L3165)
+- documentation: [docs/japro_docs.md:111](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/docs/japro_docs.md#L111)
 
-<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a"><code>c722804317d7</code></a> on 2026-09-28. Anything merged after that is not reflected here.</p>
+<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/f999cbc0912773164962d8be37737a31fe9ade8d"><code>f999cbc09127</code></a> on 2026-10-22. Anything merged after that is not reflected here.</p>

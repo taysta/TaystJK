@@ -38,8 +38,8 @@ Enable GUID userinfo identifier
 
 | Value | Meaning | Evidence |
 |:--|:--|:--|
-| `0` | Disabled. | [codemp/client/cl_main.cpp:870](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/codemp/client/cl_main.cpp#L870) |
-| `1` | Enabled. | [codemp/client/cl_main.cpp:870](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/codemp/client/cl_main.cpp#L870) |
+| `0` | Disabled. | [codemp/client/cl_main.cpp:870](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/client/cl_main.cpp#L870) |
+| `1` | Enabled. | [codemp/client/cl_main.cpp:870](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/client/cl_main.cpp#L870) |
 
 ## Flags
 
@@ -51,7 +51,7 @@ Origin: <span class="label ref-origin ref-origin-openjk">OpenJK</span>
 
 - Ultimate-origin introduction: [`bad3bbcc9ae6`](https://github.com/JACoders/OpenJK/commit/bad3bbcc9ae69fa8bd75fd760f20371226b50f95) in <span class="label ref-origin ref-origin-openjk">OpenJK</span> (content authored `2015-09-05`, integrated `2015-11-19`)
 - TaystJK integration evidence: [`d5970a9804aa`](https://github.com/taysta/TaystJK/commit/d5970a9804aad8ebe9bd8989c4e9e2354b627667)
-- Upstream registration evidence: [codemp/client/cl_main.cpp:2822](https://github.com/JACoders/OpenJK/blame/1a6a643427aa347553e9073dac5570b33337c4d9/codemp/client/cl_main.cpp#L2822)
+- Upstream registration evidence: [codemp/client/cl_main.cpp:2822](https://github.com/JACoders/OpenJK/blame/260c59c2907187af555a676fe0cc798893bf7757/codemp/client/cl_main.cpp#L2822)
 - Attribution method: `shared-earliest-commit-lineage-order`
 - Attribution confidence: `medium`
 - Notes: The earliest authored/submitted introduction is shared by openjk, rend2, newjk; fork-lineage order selects openjk. The TaystJK integration evidence credits japro as an immediate port source, but openjk has an earlier dated introduction and remains the ultimate origin.
@@ -83,8 +83,8 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 ## Evidence
 
-- registration: [codemp/client/cl_main.cpp:3400](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/codemp/client/cl_main.cpp#L3400) (Cvar_Get)
-- behavior: [codemp/client/cl_main.cpp:870](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/codemp/client/cl_main.cpp#L870)
-- behavior: [codemp/client/cl_main.cpp:3259](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/codemp/client/cl_main.cpp#L3259)
+- registration: [codemp/client/cl_main.cpp:3400](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/client/cl_main.cpp#L3400) (Cvar_Get)
+- behavior: [codemp/client/cl_main.cpp:870](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/client/cl_main.cpp#L870)
+- behavior: [codemp/client/cl_main.cpp:3259](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/client/cl_main.cpp#L3259)
 
-<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a"><code>c722804317d7</code></a> on 2026-09-28. Anything merged after that is not reflected here.</p>
+<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/f999cbc0912773164962d8be37737a31fe9ade8d"><code>f999cbc09127</code></a> on 2026-10-22. Anything merged after that is not reflected here.</p>

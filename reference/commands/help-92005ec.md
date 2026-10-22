@@ -28,7 +28,7 @@ Print command help
 | Confidence | `high` |
 | Added | 2016-03-24 in [`c9c6ab99f`](https://github.com/taysta/TaystJK/commit/c9c6ab99fdd24759cc32d45f642d63ebd3361b62) ([how to compare this against your build](/TaystJK/features/whats-new/#how-to-tell-what-your-build-has)) |
 | In-game xdocs | No |
-| In-game menu | Yes: [ingame_vgs.menu:5141](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/assets/japro/ui/jamp/ingame_vgs.menu#L5141) |
+| In-game menu | Yes: [ingame_vgs.menu:5141](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/assets/japro/ui/jamp/ingame_vgs.menu#L5141) |
 
 ## Arguments and gating
 
@@ -40,7 +40,7 @@ Origin: <span class="label ref-origin ref-origin-openjk">OpenJK</span>
 
 - Ultimate-origin introduction: [`55d9184d89f7`](https://github.com/JACoders/OpenJK/commit/55d9184d89f7a5d260af5a486f02fe1afd3f6c16) in <span class="label ref-origin ref-origin-openjk">OpenJK</span> (content authored `2016-03-22`, integrated `2016-03-22`)
 - TaystJK integration evidence: [`c9c6ab99fdd2`](https://github.com/taysta/TaystJK/commit/c9c6ab99fdd24759cc32d45f642d63ebd3361b62)
-- Upstream registration evidence: [codemp/qcommon/cmd.cpp:984](https://github.com/JACoders/OpenJK/blame/1a6a643427aa347553e9073dac5570b33337c4d9/codemp/qcommon/cmd.cpp#L984)
+- Upstream registration evidence: [codemp/qcommon/cmd.cpp:984](https://github.com/JACoders/OpenJK/blame/260c59c2907187af555a676fe0cc798893bf7757/codemp/qcommon/cmd.cpp#L984)
 - Attribution method: `shared-integration-explicit-credit`
 - Attribution confidence: `high`
 - Notes: Dated commit evidence identifies later registration changes relative to the origin snapshot.
@@ -69,9 +69,9 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 ## Evidence
 
-- registration: [codemp/cgame/cg_consolecmds.c:2506](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/codemp/cgame/cg_consolecmds.c#L2506) (cgame command table)
-- registration: [codemp/qcommon/cmd.cpp:1208](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/codemp/qcommon/cmd.cpp#L1208) (Cmd_AddCommand)
-- handler: [codemp/cgame/cg_consolecmds.c:537](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/codemp/cgame/cg_consolecmds.c#L537)
-- handler: [codemp/qcommon/cmd.cpp:1151](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/codemp/qcommon/cmd.cpp#L1151)
+- registration: [codemp/cgame/cg_consolecmds.c:2506](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/cgame/cg_consolecmds.c#L2506) (cgame command table)
+- registration: [codemp/qcommon/cmd.cpp:1208](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/qcommon/cmd.cpp#L1208) (Cmd_AddCommand)
+- handler: [codemp/cgame/cg_consolecmds.c:537](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/cgame/cg_consolecmds.c#L537)
+- handler: [codemp/qcommon/cmd.cpp:1151](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/qcommon/cmd.cpp#L1151)
 
-<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a"><code>c722804317d7</code></a> on 2026-09-28. Anything merged after that is not reflected here.</p>
+<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/f999cbc0912773164962d8be37737a31fe9ade8d"><code>f999cbc09127</code></a> on 2026-10-22. Anything merged after that is not reflected here.</p>

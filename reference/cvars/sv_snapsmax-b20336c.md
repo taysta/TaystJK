@@ -38,8 +38,8 @@ Sv_snapsMin <=> sv_fps
 
 | Value | Meaning | Evidence |
 |:--|:--|:--|
-| `0` | Disabled. | [codemp/server/sv_client.cpp:1227](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/codemp/server/sv_client.cpp#L1227) |
-| `1` | Enabled. | [codemp/server/sv_client.cpp:1227](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/codemp/server/sv_client.cpp#L1227) |
+| `0` | Disabled. | [codemp/server/sv_client.cpp:1227](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/server/sv_client.cpp#L1227) |
+| `1` | Enabled. | [codemp/server/sv_client.cpp:1227](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/server/sv_client.cpp#L1227) |
 
 ## Flags
 
@@ -50,7 +50,7 @@ Sv_snapsMin <=> sv_fps
 Origin: <span class="label ref-origin ref-origin-openjk">OpenJK</span>
 
 - Ultimate-origin introduction: [`9f0123a1e1fd`](https://github.com/JACoders/OpenJK/commit/9f0123a1e1fdd1e7bd5c4532fdffd7f952b1d907) in <span class="label ref-origin ref-origin-openjk">OpenJK</span> (content authored `2013-04-25`, integrated `2013-04-27`)
-- Upstream registration evidence: [codemp/server/sv_init.cpp:980](https://github.com/JACoders/OpenJK/blame/1a6a643427aa347553e9073dac5570b33337c4d9/codemp/server/sv_init.cpp#L980)
+- Upstream registration evidence: [codemp/server/sv_init.cpp:980](https://github.com/JACoders/OpenJK/blame/260c59c2907187af555a676fe0cc798893bf7757/codemp/server/sv_init.cpp#L980)
 - Attribution method: `squash-feature-group-explicit-credit`
 - Attribution confidence: `medium`
 - Notes: The identifier's single-prefix squash feature group explicitly credits openjk. Dated commit evidence identifies later registration changes relative to the origin snapshot.
@@ -81,11 +81,11 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 ## Evidence
 
-- registration: [codemp/server/sv_init.cpp:1011](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/codemp/server/sv_init.cpp#L1011) (Cvar_Get)
-- behavior: [codemp/server/sv_client.cpp:1227](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/codemp/server/sv_client.cpp#L1227)
-- behavior: [codemp/server/sv_client.cpp:1228](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/codemp/server/sv_client.cpp#L1228)
-- behavior: [codemp/server/sv_main.cpp:1137](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/codemp/server/sv_main.cpp#L1137)
-- behavior: [codemp/server/sv_main.cpp:1138](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/codemp/server/sv_main.cpp#L1138)
-- behavior: [codemp/server/sv_client.cpp:1226](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/codemp/server/sv_client.cpp#L1226)
+- registration: [codemp/server/sv_init.cpp:1011](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/server/sv_init.cpp#L1011) (Cvar_Get)
+- behavior: [codemp/server/sv_client.cpp:1227](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/server/sv_client.cpp#L1227)
+- behavior: [codemp/server/sv_client.cpp:1228](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/server/sv_client.cpp#L1228)
+- behavior: [codemp/server/sv_main.cpp:1137](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/server/sv_main.cpp#L1137)
+- behavior: [codemp/server/sv_main.cpp:1138](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/server/sv_main.cpp#L1138)
+- behavior: [codemp/server/sv_client.cpp:1226](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/server/sv_client.cpp#L1226)
 
-<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a"><code>c722804317d7</code></a> on 2026-09-28. Anything merged after that is not reflected here.</p>
+<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/f999cbc0912773164962d8be37737a31fe9ade8d"><code>f999cbc09127</code></a> on 2026-10-22. Anything merged after that is not reflected here.</p>

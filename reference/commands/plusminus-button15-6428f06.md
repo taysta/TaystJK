@@ -39,7 +39,7 @@ Origin: <span class="label ref-origin ref-origin-openjk">OpenJK</span>
 
 - Ultimate-origin introduction: [`3e986be9ab0d`](https://github.com/JACoders/OpenJK/commit/3e986be9ab0dff376102717e0a693d58f048a66b) in <span class="label ref-origin ref-origin-openjk">OpenJK</span> (content authored `2013-04-24`, integrated `2013-04-24`)
 - TaystJK integration evidence: [`c9c6ab99fdd2`](https://github.com/taysta/TaystJK/commit/c9c6ab99fdd24759cc32d45f642d63ebd3361b62)
-- Upstream registration evidence: [code/client/cl_input.cpp:1027](https://github.com/JACoders/OpenJK/blame/1a6a643427aa347553e9073dac5570b33337c4d9/code/client/cl_input.cpp#L1027)
+- Upstream registration evidence: [code/client/cl_input.cpp:1027](https://github.com/JACoders/OpenJK/blame/260c59c2907187af555a676fe0cc798893bf7757/code/client/cl_input.cpp#L1027)
 - Attribution method: `shared-integration-explicit-credit`
 - Attribution confidence: `high`
 - Notes: Dated commit evidence identifies later registration changes relative to the origin snapshot.
@@ -70,7 +70,7 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 ## Evidence
 
-- registration: [codemp/client/cl_input.cpp:1779](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/codemp/client/cl_input.cpp#L1779) (input command table)
-- handler: [codemp/client/cl_input.cpp:795](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/codemp/client/cl_input.cpp#L795)
+- registration: [codemp/client/cl_input.cpp:1779](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/client/cl_input.cpp#L1779) (input command table)
+- handler: [codemp/client/cl_input.cpp:795](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/client/cl_input.cpp#L795)
 
-<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a"><code>c722804317d7</code></a> on 2026-09-28. Anything merged after that is not reflected here.</p>
+<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/f999cbc0912773164962d8be37737a31fe9ade8d"><code>f999cbc09127</code></a> on 2026-10-22. Anything merged after that is not reflected here.</p>

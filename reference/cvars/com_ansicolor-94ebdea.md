@@ -37,8 +37,8 @@ Controls `com_ansiColor` in the engine-shared module. Consult the cited behavior
 
 | Value | Meaning | Evidence |
 |:--|:--|:--|
-| `0` | Disabled. | [shared/sys/con_tty.cpp:509](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/shared/sys/con_tty.cpp#L509) |
-| `1` | Enabled. | [shared/sys/con_tty.cpp:509](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/shared/sys/con_tty.cpp#L509) |
+| `0` | Disabled. | [shared/sys/con_tty.cpp:509](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/shared/sys/con_tty.cpp#L509) |
+| `1` | Enabled. | [shared/sys/con_tty.cpp:509](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/shared/sys/con_tty.cpp#L509) |
 
 ## Flags
 
@@ -49,7 +49,7 @@ Controls `com_ansiColor` in the engine-shared module. Consult the cited behavior
 Origin: <span class="label ref-origin ref-origin-openjk">OpenJK</span>
 
 - Ultimate-origin introduction: [`a7c43677a2bb`](https://github.com/JACoders/OpenJK/commit/a7c43677a2bbba956ac3c5f14f2bf869ea660230) in <span class="label ref-origin ref-origin-openjk">OpenJK</span> (content authored `2015-01-17`, integrated `2015-02-07`)
-- Upstream registration evidence: [codemp/qcommon/common.cpp:1264](https://github.com/JACoders/OpenJK/blame/1a6a643427aa347553e9073dac5570b33337c4d9/codemp/qcommon/common.cpp#L1264)
+- Upstream registration evidence: [codemp/qcommon/common.cpp:1264](https://github.com/JACoders/OpenJK/blame/260c59c2907187af555a676fe0cc798893bf7757/codemp/qcommon/common.cpp#L1264)
 - Attribution method: `shared-earliest-commit-lineage-order`
 - Attribution confidence: `medium`
 - Notes: The earliest authored/submitted introduction is shared by openjk, eternaljk, rend2, taystjk, japro, newjk, vulkan; fork-lineage order selects openjk. Dated commit evidence identifies later registration changes relative to the origin snapshot.
@@ -79,7 +79,7 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 ## Evidence
 
-- registration: [codemp/qcommon/common.cpp:1487](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/codemp/qcommon/common.cpp#L1487) (Cvar_Get); condition `!defined(_WIN32)`
-- behavior: [shared/sys/con_tty.cpp:509](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/shared/sys/con_tty.cpp#L509)
+- registration: [codemp/qcommon/common.cpp:1487](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/qcommon/common.cpp#L1487) (Cvar_Get); condition `!defined(_WIN32)`
+- behavior: [shared/sys/con_tty.cpp:509](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/shared/sys/con_tty.cpp#L509)
 
-<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a"><code>c722804317d7</code></a> on 2026-09-28. Anything merged after that is not reflected here.</p>
+<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/f999cbc0912773164962d8be37737a31fe9ade8d"><code>f999cbc09127</code></a> on 2026-10-22. Anything merged after that is not reflected here.</p>

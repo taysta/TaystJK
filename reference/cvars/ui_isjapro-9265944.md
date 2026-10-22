@@ -34,14 +34,14 @@ Menu-only state the UI keeps while reading server info. `UI_UpdateCurrentServerI
 | Confidence | `medium` |
 | Added | 2018-02-05 in [`f4405327b`](https://github.com/taysta/TaystJK/commit/f4405327b9363ad0b91cd0ae1717fe9ed939982b) <span class="status-chip">needs review</span> ([how to compare this against your build](/TaystJK/features/whats-new/#how-to-tell-what-your-build-has)) |
 | In-game xdocs | No |
-| In-game menu | Yes: [ingame.menu:584](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/assets/japro/ui/jamp/ingame.menu#L584), [ingame.menu:618](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/assets/japro/ui/jamp/ingame.menu#L618), [ingame_setup.menu:4508](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/assets/japro/ui/jamp/ingame_setup.menu#L4508) |
+| In-game menu | Yes: [ingame.menu:584](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/assets/japro/ui/jamp/ingame.menu#L584), [ingame.menu:618](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/assets/japro/ui/jamp/ingame.menu#L618), [ingame_setup.menu:4508](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/assets/japro/ui/jamp/ingame_setup.menu#L4508) |
 
 ## Values
 
 | Value | Meaning | Evidence |
 |:--|:--|:--|
-| `0` | Disabled. | [codemp/ui/ui_main.c:1061](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/codemp/ui/ui_main.c#L1061) |
-| `1` | Enabled. | [codemp/ui/ui_main.c:1061](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/codemp/ui/ui_main.c#L1061) |
+| `0` | Disabled. | [codemp/ui/ui_main.c:1061](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/ui/ui_main.c#L1061) |
+| `1` | Enabled. | [codemp/ui/ui_main.c:1061](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/ui/ui_main.c#L1061) |
 
 ## Flags
 
@@ -53,7 +53,7 @@ Menu-only state the UI keeps while reading server info. `UI_UpdateCurrentServerI
 Origin: <span class="label ref-origin ref-origin-japro">jaPRO</span>
 
 - Ultimate-origin introduction: [`f4405327b936`](https://github.com/videoP/jaPRO/commit/f4405327b9363ad0b91cd0ae1717fe9ed939982b) in <span class="label ref-origin ref-origin-japro">jaPRO</span> (content authored `2018-02-06`, integrated `2018-02-06`)
-- Upstream registration evidence: [codemp/ui/ui_xcvar.h:159](https://github.com/videoP/jaPRO/blame/33d1f1e22ac6db0c17beedbcc419ffef98bbe3c3/codemp/ui/ui_xcvar.h#L159)
+- Upstream registration evidence: [codemp/ui/ui_xcvar.h:159](https://github.com/videoP/jaPRO/blame/a4d22a138f1e055c8d8fe6109926dff84c4233a2/codemp/ui/ui_xcvar.h#L159)
 - Attribution method: `squash-feature-group-explicit-credit`
 - Attribution confidence: `medium`
 - Notes: The identifier's single-prefix squash feature group explicitly credits japro.
@@ -82,9 +82,9 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 ## Evidence
 
-- registration: [codemp/ui/ui_xcvar.h:159](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/codemp/ui/ui_xcvar.h#L159) (XCVAR_DEF)
-- behavior: [codemp/ui/ui_main.c:1061](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/codemp/ui/ui_main.c#L1061)
-- behavior: [codemp/ui/ui_main.c:628](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/codemp/ui/ui_main.c#L628)
-- behavior: [codemp/ui/ui_main.c:652](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/codemp/ui/ui_main.c#L652)
+- registration: [codemp/ui/ui_xcvar.h:159](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/ui/ui_xcvar.h#L159) (XCVAR_DEF)
+- behavior: [codemp/ui/ui_main.c:1061](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/ui/ui_main.c#L1061)
+- behavior: [codemp/ui/ui_main.c:628](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/ui/ui_main.c#L628)
+- behavior: [codemp/ui/ui_main.c:652](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/ui/ui_main.c#L652)
 
-<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a"><code>c722804317d7</code></a> on 2026-09-28. Anything merged after that is not reflected here.</p>
+<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/f999cbc0912773164962d8be37737a31fe9ade8d"><code>f999cbc09127</code></a> on 2026-10-22. Anything merged after that is not reflected here.</p>

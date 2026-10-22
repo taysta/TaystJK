@@ -31,16 +31,16 @@ Controls target-name display below the crosshair. Zero disables it, negative val
 | Derivation | `mixed` |
 | Confidence | `high` |
 | Added | 2013-04-08 in [`14cea1563`](https://github.com/taysta/TaystJK/commit/14cea1563762076974bee277afadbd5bf234c494) ([how to compare this against your build](/TaystJK/features/whats-new/#how-to-tell-what-your-build-has)) |
-| In-game xdocs | Yes: [codemp/ui/ui_xdocs.h:599](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/codemp/ui/ui_xdocs.h#L599) |
-| In-game menu | Yes: [setup.menu:2642](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/assets/japro/ui/jamp/setup.menu#L2642) |
+| In-game xdocs | Yes: [codemp/ui/ui_xdocs.h:599](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/ui/ui_xdocs.h#L599) |
+| In-game menu | Yes: [setup.menu:2642](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/assets/japro/ui/jamp/setup.menu#L2642) |
 
 ## Values
 
 | Value | Meaning | Evidence |
 |:--|:--|:--|
-| `0` | Do not draw target names. | [codemp/cgame/cg_draw.c:9482](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/codemp/cgame/cg_draw.c#L9482) |
-| `<0` | Draw only while the crosshair is currently on the target; do not fade afterward. | [codemp/cgame/cg_draw.c:9513](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/codemp/cgame/cg_draw.c#L9513) |
-| `>0` | Fade for this many seconds. | [codemp/cgame/cg_draw.c:9517](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/codemp/cgame/cg_draw.c#L9517) |
+| `0` | Do not draw target names. | [codemp/cgame/cg_draw.c:9482](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/cgame/cg_draw.c#L9482) |
+| `<0` | Draw only while the crosshair is currently on the target; do not fade afterward. | [codemp/cgame/cg_draw.c:9513](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/cgame/cg_draw.c#L9513) |
+| `>0` | Fade for this many seconds. | [codemp/cgame/cg_draw.c:9517](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/cgame/cg_draw.c#L9517) |
 
 ## Flags
 
@@ -80,13 +80,13 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 ## Evidence
 
-- registration: [codemp/cgame/cg_xcvar.h:274](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/codemp/cgame/cg_xcvar.h#L274) (XCVAR_DEF)
-- registration: [codemp/ui/ui_xcvar.h:39](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/codemp/ui/ui_xcvar.h#L39) (XCVAR_DEF)
-- behavior: [codemp/cgame/cg_draw.c:9513](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/codemp/cgame/cg_draw.c#L9513)
-- behavior: [codemp/cgame/cg_draw.c:9482](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/codemp/cgame/cg_draw.c#L9482)
-- behavior: [codemp/cgame/cg_draw.c:9517](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/codemp/cgame/cg_draw.c#L9517)
-- behavior: [codemp/cgame/cg_draw.c:9463](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/codemp/cgame/cg_draw.c#L9463)
-- behavior: [codemp/cgame/cg_draw.c:9466](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/codemp/cgame/cg_draw.c#L9466)
-- documentation: [codemp/ui/ui_xdocs.h:599](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/codemp/ui/ui_xdocs.h#L599)
+- registration: [codemp/cgame/cg_xcvar.h:274](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/cgame/cg_xcvar.h#L274) (XCVAR_DEF)
+- registration: [codemp/ui/ui_xcvar.h:39](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/ui/ui_xcvar.h#L39) (XCVAR_DEF)
+- behavior: [codemp/cgame/cg_draw.c:9513](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/cgame/cg_draw.c#L9513)
+- behavior: [codemp/cgame/cg_draw.c:9482](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/cgame/cg_draw.c#L9482)
+- behavior: [codemp/cgame/cg_draw.c:9517](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/cgame/cg_draw.c#L9517)
+- behavior: [codemp/cgame/cg_draw.c:9463](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/cgame/cg_draw.c#L9463)
+- behavior: [codemp/cgame/cg_draw.c:9466](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/cgame/cg_draw.c#L9466)
+- documentation: [codemp/ui/ui_xdocs.h:599](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/ui/ui_xdocs.h#L599)
 
-<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a"><code>c722804317d7</code></a> on 2026-09-28. Anything merged after that is not reflected here.</p>
+<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/f999cbc0912773164962d8be37737a31fe9ade8d"><code>f999cbc09127</code></a> on 2026-10-22. Anything merged after that is not reflected here.</p>

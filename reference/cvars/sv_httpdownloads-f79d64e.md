@@ -36,8 +36,8 @@ Enables fast HTTP downloads for referenced PK3 files. When enabled, the server a
 
 | Value | Meaning | Evidence |
 |:--|:--|:--|
-| `0` | Disable HTTP auto-download advertising and stop the built-in HTTP server. | [codemp/server/sv_init.cpp:763](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/codemp/server/sv_init.cpp#L763) |
-| `1` | Advertise HTTP downloads and start or redirect the HTTP endpoint. | [codemp/server/sv_init.cpp:763](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/codemp/server/sv_init.cpp#L763) |
+| `0` | Disable HTTP auto-download advertising and stop the built-in HTTP server. | [codemp/server/sv_init.cpp:763](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/server/sv_init.cpp#L763) |
+| `1` | Advertise HTTP downloads and start or redirect the HTTP endpoint. | [codemp/server/sv_init.cpp:763](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/server/sv_init.cpp#L763) |
 
 ## Flags
 
@@ -75,11 +75,11 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 ## Evidence
 
-- registration: [codemp/server/sv_init.cpp:760](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/codemp/server/sv_init.cpp#L760) (Cvar_Get)
-- behavior: [codemp/server/sv_init.cpp:763](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/codemp/server/sv_init.cpp#L763)
-- behavior: [codemp/server/sv_main.cpp:579](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/codemp/server/sv_main.cpp#L579)
-- behavior: [codemp/server/sv_init.cpp:755](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/codemp/server/sv_init.cpp#L755)
-- behavior: [codemp/client/cl_main.cpp:1709](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/codemp/client/cl_main.cpp#L1709)
-- behavior: [codemp/client/cl_main.cpp:1716](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/codemp/client/cl_main.cpp#L1716)
+- registration: [codemp/server/sv_init.cpp:760](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/server/sv_init.cpp#L760) (Cvar_Get)
+- behavior: [codemp/server/sv_init.cpp:763](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/server/sv_init.cpp#L763)
+- behavior: [codemp/server/sv_main.cpp:579](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/server/sv_main.cpp#L579)
+- behavior: [codemp/server/sv_init.cpp:755](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/server/sv_init.cpp#L755)
+- behavior: [codemp/client/cl_main.cpp:1709](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/client/cl_main.cpp#L1709)
+- behavior: [codemp/client/cl_main.cpp:1716](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/client/cl_main.cpp#L1716)
 
-<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a"><code>c722804317d7</code></a> on 2026-09-28. Anything merged after that is not reflected here.</p>
+<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/f999cbc0912773164962d8be37737a31fe9ade8d"><code>f999cbc09127</code></a> on 2026-10-22. Anything merged after that is not reflected here.</p>

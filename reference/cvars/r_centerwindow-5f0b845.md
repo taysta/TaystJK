@@ -38,8 +38,8 @@ Controls `r_centerWindow` in the renderer module. Consult the cited behavior rea
 
 | Value | Meaning | Evidence |
 |:--|:--|:--|
-| `0` | Disabled. | [shared/sdl/sdl_window.cpp:423](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/shared/sdl/sdl_window.cpp#L423) |
-| `1` | Enabled. | [shared/sdl/sdl_window.cpp:423](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/shared/sdl/sdl_window.cpp#L423) |
+| `0` | Disabled. | [shared/sdl/sdl_window.cpp:423](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/shared/sdl/sdl_window.cpp#L423) |
+| `1` | Enabled. | [shared/sdl/sdl_window.cpp:423](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/shared/sdl/sdl_window.cpp#L423) |
 
 ## Flags
 
@@ -59,7 +59,7 @@ Controls `r_centerWindow` in the renderer module. Consult the cited behavior rea
 Origin: <span class="label ref-origin ref-origin-openjk">OpenJK</span>
 
 - Ultimate-origin introduction: [`f203e799b14c`](https://github.com/JACoders/OpenJK/commit/f203e799b14c0716833793eed611c272111c3cb6) in <span class="label ref-origin ref-origin-openjk">OpenJK</span> (content authored `2013-05-06`, integrated `2013-05-11`)
-- Upstream registration evidence: [codemp/rd-dedicated/tr_init.cpp:349](https://github.com/JACoders/OpenJK/blame/1a6a643427aa347553e9073dac5570b33337c4d9/codemp/rd-dedicated/tr_init.cpp#L349)
+- Upstream registration evidence: [codemp/rd-dedicated/tr_init.cpp:349](https://github.com/JACoders/OpenJK/blame/260c59c2907187af555a676fe0cc798893bf7757/codemp/rd-dedicated/tr_init.cpp#L349)
 - Attribution method: `squash-feature-group-explicit-credit`
 - Attribution confidence: `medium`
 - Notes: The identifier's single-prefix squash feature group explicitly credits openjk. Dated commit evidence identifies later registration changes relative to the origin snapshot.
@@ -94,8 +94,8 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 ## Evidence
 
-- registration: [codemp/rd-dedicated/tr_init.cpp:348](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/codemp/rd-dedicated/tr_init.cpp#L348) (Cvar_Get)
-- registration: [shared/sdl/sdl_window.cpp:800](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/shared/sdl/sdl_window.cpp#L800) (Cvar_Get)
-- behavior: [shared/sdl/sdl_window.cpp:423](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/shared/sdl/sdl_window.cpp#L423)
+- registration: [codemp/rd-dedicated/tr_init.cpp:348](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/rd-dedicated/tr_init.cpp#L348) (Cvar_Get)
+- registration: [shared/sdl/sdl_window.cpp:800](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/shared/sdl/sdl_window.cpp#L800) (Cvar_Get)
+- behavior: [shared/sdl/sdl_window.cpp:423](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/shared/sdl/sdl_window.cpp#L423)
 
-<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a"><code>c722804317d7</code></a> on 2026-09-28. Anything merged after that is not reflected here.</p>
+<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/f999cbc0912773164962d8be37737a31fe9ade8d"><code>f999cbc09127</code></a> on 2026-10-22. Anything merged after that is not reflected here.</p>

@@ -37,8 +37,8 @@ Controls `r_noServerGhoul2` in the renderer module. Consult the cited behavior r
 
 | Value | Meaning | Evidence |
 |:--|:--|:--|
-| `0` | Disabled. | [codemp/rd-vanilla/tr_ghoul2.cpp:3237](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/codemp/rd-vanilla/tr_ghoul2.cpp#L3237) |
-| `1` | Enabled. | [codemp/rd-vanilla/tr_ghoul2.cpp:3237](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/codemp/rd-vanilla/tr_ghoul2.cpp#L3237) |
+| `0` | Disabled. | [codemp/rd-vanilla/tr_ghoul2.cpp:3237](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/rd-vanilla/tr_ghoul2.cpp#L3237) |
+| `1` | Enabled. | [codemp/rd-vanilla/tr_ghoul2.cpp:3237](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/rd-vanilla/tr_ghoul2.cpp#L3237) |
 
 ## Flags
 
@@ -83,18 +83,18 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 ## Evidence
 
-- registration: [codemp/rd-dedicated/tr_init.cpp:439](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/codemp/rd-dedicated/tr_init.cpp#L439) (Cvar_Get)
-- registration: [codemp/rd-dedicated/tr_model.cpp:999](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/codemp/rd-dedicated/tr_model.cpp#L999) (Cvar_Get)
-- registration: [codemp/rd-rend2/tr_init.cpp:1706](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/codemp/rd-rend2/tr_init.cpp#L1706) (Cvar_Get)
-- registration: [codemp/rd-vanilla/tr_init.cpp:1752](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/codemp/rd-vanilla/tr_init.cpp#L1752) (Cvar_Get)
-- registration: [codemp/rd-vanilla/tr_model.cpp:1060](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/codemp/rd-vanilla/tr_model.cpp#L1060) (Cvar_Get)
-- registration: [codemp/rd-vulkan/tr_init.cpp:984](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/codemp/rd-vulkan/tr_init.cpp#L984) (Cvar_Get)
-- registration: [codemp/rd-vulkan/tr_model.cpp:683](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/codemp/rd-vulkan/tr_model.cpp#L683) (Cvar_Get)
-- registration: [shared/rd-rend2/tr_model.cpp:774](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/shared/rd-rend2/tr_model.cpp#L774) (Cvar_Get); condition `!defined(REND2_SP)`
-- behavior: [codemp/rd-vanilla/tr_ghoul2.cpp:3237](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/codemp/rd-vanilla/tr_ghoul2.cpp#L3237)
-- behavior: [codemp/rd-vulkan/tr_ghoul2.cpp:3332](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/codemp/rd-vulkan/tr_ghoul2.cpp#L3332)
-- behavior: [codemp/rd-vulkan/tr_ghoul2.cpp:3572](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/codemp/rd-vulkan/tr_ghoul2.cpp#L3572)
-- behavior: [shared/rd-rend2/tr_ghoul2.cpp:3221](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/shared/rd-rend2/tr_ghoul2.cpp#L3221)
-- behavior: [shared/rd-rend2/tr_ghoul2.cpp:3492](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/shared/rd-rend2/tr_ghoul2.cpp#L3492)
+- registration: [codemp/rd-dedicated/tr_init.cpp:439](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/rd-dedicated/tr_init.cpp#L439) (Cvar_Get)
+- registration: [codemp/rd-dedicated/tr_model.cpp:999](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/rd-dedicated/tr_model.cpp#L999) (Cvar_Get)
+- registration: [codemp/rd-rend2/tr_init.cpp:1706](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/rd-rend2/tr_init.cpp#L1706) (Cvar_Get)
+- registration: [codemp/rd-vanilla/tr_init.cpp:1752](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/rd-vanilla/tr_init.cpp#L1752) (Cvar_Get)
+- registration: [codemp/rd-vanilla/tr_model.cpp:1060](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/rd-vanilla/tr_model.cpp#L1060) (Cvar_Get)
+- registration: [codemp/rd-vulkan/tr_init.cpp:984](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/rd-vulkan/tr_init.cpp#L984) (Cvar_Get)
+- registration: [codemp/rd-vulkan/tr_model.cpp:683](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/rd-vulkan/tr_model.cpp#L683) (Cvar_Get)
+- registration: [shared/rd-rend2/tr_model.cpp:774](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/shared/rd-rend2/tr_model.cpp#L774) (Cvar_Get); condition `!defined(REND2_SP)`
+- behavior: [codemp/rd-vanilla/tr_ghoul2.cpp:3237](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/rd-vanilla/tr_ghoul2.cpp#L3237)
+- behavior: [codemp/rd-vulkan/tr_ghoul2.cpp:3332](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/rd-vulkan/tr_ghoul2.cpp#L3332)
+- behavior: [codemp/rd-vulkan/tr_ghoul2.cpp:3572](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/rd-vulkan/tr_ghoul2.cpp#L3572)
+- behavior: [shared/rd-rend2/tr_ghoul2.cpp:3221](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/shared/rd-rend2/tr_ghoul2.cpp#L3221)
+- behavior: [shared/rd-rend2/tr_ghoul2.cpp:3492](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/shared/rd-rend2/tr_ghoul2.cpp#L3492)
 
-<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a"><code>c722804317d7</code></a> on 2026-09-28. Anything merged after that is not reflected here.</p>
+<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/f999cbc0912773164962d8be37737a31fe9ade8d"><code>f999cbc09127</code></a> on 2026-10-22. Anything merged after that is not reflected here.</p>

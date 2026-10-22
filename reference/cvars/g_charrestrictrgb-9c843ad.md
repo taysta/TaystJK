@@ -37,8 +37,8 @@ Controls `g_charRestrictRGB` in the game module. Consult the cited behavior read
 
 | Value | Meaning | Evidence |
 |:--|:--|:--|
-| `0` | Disabled. | [codemp/game/g_client.c:2554](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/codemp/game/g_client.c#L2554) |
-| `1` | Enabled. | [codemp/game/g_client.c:2554](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/codemp/game/g_client.c#L2554) |
+| `0` | Disabled. | [codemp/game/g_client.c:2554](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/game/g_client.c#L2554) |
+| `1` | Enabled. | [codemp/game/g_client.c:2554](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/game/g_client.c#L2554) |
 
 ## Flags
 
@@ -49,7 +49,7 @@ Controls `g_charRestrictRGB` in the game module. Consult the cited behavior read
 Origin: <span class="label ref-origin ref-origin-openjk">OpenJK</span>
 
 - Ultimate-origin introduction: [`b319c52fd4ed`](https://github.com/JACoders/OpenJK/commit/b319c52fd4ed1e4fb5dae4e468a1a791091b63a5) in <span class="label ref-origin ref-origin-openjk">OpenJK</span> (content authored `2013-04-07`, integrated `2013-04-07`)
-- Upstream registration evidence: [codemp/game/g_xcvar.h:79](https://github.com/JACoders/OpenJK/blame/1a6a643427aa347553e9073dac5570b33337c4d9/codemp/game/g_xcvar.h#L79)
+- Upstream registration evidence: [codemp/game/g_xcvar.h:79](https://github.com/JACoders/OpenJK/blame/260c59c2907187af555a676fe0cc798893bf7757/codemp/game/g_xcvar.h#L79)
 - Attribution method: `shared-earliest-commit-lineage-order`
 - Attribution confidence: `medium`
 - Notes: The earliest authored/submitted introduction is shared by openjk, eternaljk, rend2, taystjk, japro, newjk, vulkan; fork-lineage order selects openjk.
@@ -70,8 +70,8 @@ Authored dates come from the exact registration's first content commit, PR dates
 
 ## Evidence
 
-- registration: [codemp/game/g_xcvar.h:77](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/codemp/game/g_xcvar.h#L77) (XCVAR_DEF)
-- behavior: [codemp/game/g_client.c:2554](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/codemp/game/g_client.c#L2554)
-- behavior: [codemp/game/g_client.c:4125](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/codemp/game/g_client.c#L4125)
+- registration: [codemp/game/g_xcvar.h:77](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/game/g_xcvar.h#L77) (XCVAR_DEF)
+- behavior: [codemp/game/g_client.c:2554](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/game/g_client.c#L2554)
+- behavior: [codemp/game/g_client.c:4125](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/game/g_client.c#L4125)
 
-<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a"><code>c722804317d7</code></a> on 2026-09-28. Anything merged after that is not reflected here.</p>
+<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/f999cbc0912773164962d8be37737a31fe9ade8d"><code>f999cbc09127</code></a> on 2026-10-22. Anything merged after that is not reflected here.</p>

@@ -47,7 +47,7 @@ Origin: <span class="label ref-origin ref-origin-openjk">OpenJK</span>
 
 - Ultimate-origin introduction: [`5a3f8d969d6c`](https://github.com/JACoders/OpenJK/commit/5a3f8d969d6c24706639fc9290f69ac5283ba006) in <span class="label ref-origin ref-origin-openjk">OpenJK</span> (content authored `2017-03-11`, integrated `2017-03-11`)
 - TaystJK integration evidence: [`913e3cc57ec7`](https://github.com/taysta/TaystJK/commit/913e3cc57ec761400db576456e91d71e70a2485f)
-- Upstream registration evidence: [code/ui/ui_main.cpp:470](https://github.com/JACoders/OpenJK/blame/1a6a643427aa347553e9073dac5570b33337c4d9/code/ui/ui_main.cpp#L470)
+- Upstream registration evidence: [code/ui/ui_main.cpp:470](https://github.com/JACoders/OpenJK/blame/260c59c2907187af555a676fe0cc798893bf7757/code/ui/ui_main.cpp#L470)
 - Attribution method: `squash-feature-group-explicit-credit`
 - Attribution confidence: `medium`
 - Notes: The identifier's single-prefix squash feature group explicitly credits openjk. Dated commit evidence identifies later registration changes relative to the origin snapshot.
@@ -77,11 +77,11 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 ## Evidence
 
-- registration: [codemp/ui/ui_xcvar.h:144](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/codemp/ui/ui_xcvar.h#L144) (XCVAR_DEF)
-- behavior: [codemp/ui/ui_cvar.c:61](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/codemp/ui/ui_cvar.c#L61)
-- behavior: [codemp/ui/ui_cvar.c:73](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/codemp/ui/ui_cvar.c#L73)
-- behavior: [codemp/ui/ui_cvar.c:66](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/codemp/ui/ui_cvar.c#L66)
-- behavior: [codemp/ui/ui_cvar.c:75](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/codemp/ui/ui_cvar.c#L75)
-- behavior: [codemp/ui/ui_cvar.c:63](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/codemp/ui/ui_cvar.c#L63)
+- registration: [codemp/ui/ui_xcvar.h:144](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/ui/ui_xcvar.h#L144) (XCVAR_DEF)
+- behavior: [codemp/ui/ui_cvar.c:61](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/ui/ui_cvar.c#L61)
+- behavior: [codemp/ui/ui_cvar.c:73](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/ui/ui_cvar.c#L73)
+- behavior: [codemp/ui/ui_cvar.c:66](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/ui/ui_cvar.c#L66)
+- behavior: [codemp/ui/ui_cvar.c:75](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/ui/ui_cvar.c#L75)
+- behavior: [codemp/ui/ui_cvar.c:63](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/ui/ui_cvar.c#L63)
 
-<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a"><code>c722804317d7</code></a> on 2026-09-28. Anything merged after that is not reflected here.</p>
+<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/f999cbc0912773164962d8be37737a31fe9ade8d"><code>f999cbc09127</code></a> on 2026-10-22. Anything merged after that is not reflected here.</p>

@@ -38,7 +38,7 @@ Controls `d_altRoutes` in the game module. Consult the cited behavior reads befo
 
 | Value | Meaning | Evidence |
 |:--|:--|:--|
-| `-1` | Selects the code path tested for value -1. | [codemp/server/NPCNav/navigator.cpp:2287](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/codemp/server/NPCNav/navigator.cpp#L2287) |
+| `-1` | Selects the code path tested for value -1. | [codemp/server/NPCNav/navigator.cpp:2287](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/server/NPCNav/navigator.cpp#L2287) |
 
 ## Flags
 
@@ -72,12 +72,12 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 ## Evidence
 
-- registration: [codemp/game/g_xcvar.h:38](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/codemp/game/g_xcvar.h#L38) (XCVAR_DEF)
-- registration: [codemp/server/NPCNav/navigator.cpp:46](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/codemp/server/NPCNav/navigator.cpp#L46) (Cvar_Get)
-- behavior: [codemp/server/NPCNav/navigator.cpp:1412](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/codemp/server/NPCNav/navigator.cpp#L1412)
-- behavior: [codemp/server/NPCNav/navigator.cpp:1427](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/codemp/server/NPCNav/navigator.cpp#L1427)
-- behavior: [codemp/server/NPCNav/navigator.cpp:1442](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/codemp/server/NPCNav/navigator.cpp#L1442)
-- behavior: [codemp/server/NPCNav/navigator.cpp:1507](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/codemp/server/NPCNav/navigator.cpp#L1507)
-- behavior: [codemp/server/NPCNav/navigator.cpp:2287](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/codemp/server/NPCNav/navigator.cpp#L2287)
+- registration: [codemp/game/g_xcvar.h:38](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/game/g_xcvar.h#L38) (XCVAR_DEF)
+- registration: [codemp/server/NPCNav/navigator.cpp:46](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/server/NPCNav/navigator.cpp#L46) (Cvar_Get)
+- behavior: [codemp/server/NPCNav/navigator.cpp:1412](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/server/NPCNav/navigator.cpp#L1412)
+- behavior: [codemp/server/NPCNav/navigator.cpp:1427](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/server/NPCNav/navigator.cpp#L1427)
+- behavior: [codemp/server/NPCNav/navigator.cpp:1442](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/server/NPCNav/navigator.cpp#L1442)
+- behavior: [codemp/server/NPCNav/navigator.cpp:1507](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/server/NPCNav/navigator.cpp#L1507)
+- behavior: [codemp/server/NPCNav/navigator.cpp:2287](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/server/NPCNav/navigator.cpp#L2287)
 
-<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a"><code>c722804317d7</code></a> on 2026-09-28. Anything merged after that is not reflected here.</p>
+<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/f999cbc0912773164962d8be37737a31fe9ade8d"><code>f999cbc09127</code></a> on 2026-10-22. Anything merged after that is not reflected here.</p>

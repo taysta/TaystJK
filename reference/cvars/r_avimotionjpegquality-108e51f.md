@@ -39,8 +39,8 @@ No discrete value list is enforced or documented in the inspected source.
 
 ## Enforced ranges
 
-- `10` through `100` (integer; Cvar_CheckRange). Evidence: [codemp/rd-vanilla/tr_init.cpp:1777](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/codemp/rd-vanilla/tr_init.cpp#L1777)
-- `10` through `100` (integer; Cvar_CheckRange). Evidence: [codemp/rd-vulkan/tr_init.cpp:1009](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/codemp/rd-vulkan/tr_init.cpp#L1009)
+- `10` through `100` (integer; Cvar_CheckRange). Evidence: [codemp/rd-vanilla/tr_init.cpp:1777](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/rd-vanilla/tr_init.cpp#L1777)
+- `10` through `100` (integer; Cvar_CheckRange). Evidence: [codemp/rd-vulkan/tr_init.cpp:1009](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/rd-vulkan/tr_init.cpp#L1009)
 
 ## Flags
 
@@ -60,7 +60,7 @@ No discrete value list is enforced or documented in the inspected source.
 Origin: <span class="label ref-origin ref-origin-openjk">OpenJK</span>
 
 - Ultimate-origin introduction: [`714c868b42c6`](https://github.com/JACoders/OpenJK/commit/714c868b42c6eaa5a1d2704d3425419f6e55579c) in <span class="label ref-origin ref-origin-openjk">OpenJK</span> (content authored `2013-04-16`, integrated `2013-04-16`)
-- Upstream registration evidence: [codemp/rd-rend2/tr_init.cpp:1615](https://github.com/JACoders/OpenJK/blame/1a6a643427aa347553e9073dac5570b33337c4d9/codemp/rd-rend2/tr_init.cpp#L1615)
+- Upstream registration evidence: [codemp/rd-rend2/tr_init.cpp:1615](https://github.com/JACoders/OpenJK/blame/260c59c2907187af555a676fe0cc798893bf7757/codemp/rd-rend2/tr_init.cpp#L1615)
 - Attribution method: `squash-feature-group-explicit-credit`
 - Attribution confidence: `medium`
 - Notes: The identifier's single-prefix squash feature group explicitly credits openjk. Dated commit evidence identifies later registration changes relative to the origin snapshot.
@@ -97,13 +97,13 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 ## Evidence
 
-- registration: [codemp/rd-rend2/tr_init.cpp:1691](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/codemp/rd-rend2/tr_init.cpp#L1691) (Cvar_Get)
-- registration: [codemp/rd-vanilla/tr_init.cpp:1774](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/codemp/rd-vanilla/tr_init.cpp#L1774) (Cvar_Get)
-- registration: [codemp/rd-vulkan/tr_init.cpp:1006](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/codemp/rd-vulkan/tr_init.cpp#L1006) (Cvar_Get)
-- behavior: [codemp/rd-rend2/tr_init.cpp:1147](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/codemp/rd-rend2/tr_init.cpp#L1147)
-- behavior: [codemp/rd-vanilla/tr_init.cpp:1304](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/codemp/rd-vanilla/tr_init.cpp#L1304)
-- behavior: [codemp/rd-vulkan/tr_init.cpp:676](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/codemp/rd-vulkan/tr_init.cpp#L676)
-- behavior: [codemp/rd-vanilla/tr_init.cpp:1777](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/codemp/rd-vanilla/tr_init.cpp#L1777)
-- behavior: [codemp/rd-vulkan/tr_init.cpp:1009](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/codemp/rd-vulkan/tr_init.cpp#L1009)
+- registration: [codemp/rd-rend2/tr_init.cpp:1691](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/rd-rend2/tr_init.cpp#L1691) (Cvar_Get)
+- registration: [codemp/rd-vanilla/tr_init.cpp:1774](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/rd-vanilla/tr_init.cpp#L1774) (Cvar_Get)
+- registration: [codemp/rd-vulkan/tr_init.cpp:1006](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/rd-vulkan/tr_init.cpp#L1006) (Cvar_Get)
+- behavior: [codemp/rd-rend2/tr_init.cpp:1147](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/rd-rend2/tr_init.cpp#L1147)
+- behavior: [codemp/rd-vanilla/tr_init.cpp:1304](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/rd-vanilla/tr_init.cpp#L1304)
+- behavior: [codemp/rd-vulkan/tr_init.cpp:676](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/rd-vulkan/tr_init.cpp#L676)
+- behavior: [codemp/rd-vanilla/tr_init.cpp:1777](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/rd-vanilla/tr_init.cpp#L1777)
+- behavior: [codemp/rd-vulkan/tr_init.cpp:1009](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/rd-vulkan/tr_init.cpp#L1009)
 
-<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a"><code>c722804317d7</code></a> on 2026-09-28. Anything merged after that is not reflected here.</p>
+<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/f999cbc0912773164962d8be37737a31fe9ade8d"><code>f999cbc09127</code></a> on 2026-10-22. Anything merged after that is not reflected here.</p>

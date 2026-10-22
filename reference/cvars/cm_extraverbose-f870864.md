@@ -37,8 +37,8 @@ Controls `cm_extraVerbose` in the engine-shared module. Consult the cited behavi
 
 | Value | Meaning | Evidence |
 |:--|:--|:--|
-| `0` | Disabled. | [codemp/qcommon/cm_patch.cpp:585](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/codemp/qcommon/cm_patch.cpp#L585) |
-| `1` | Enabled. | [codemp/qcommon/cm_patch.cpp:585](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/codemp/qcommon/cm_patch.cpp#L585) |
+| `0` | Disabled. | [codemp/qcommon/cm_patch.cpp:585](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/qcommon/cm_patch.cpp#L585) |
+| `1` | Enabled. | [codemp/qcommon/cm_patch.cpp:585](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/qcommon/cm_patch.cpp#L585) |
 
 ## Flags
 
@@ -49,7 +49,7 @@ Controls `cm_extraVerbose` in the engine-shared module. Consult the cited behavi
 Origin: <span class="label ref-origin ref-origin-openjk">OpenJK</span>
 
 - Ultimate-origin introduction: [`cd9bd8d9c874`](https://github.com/JACoders/OpenJK/commit/cd9bd8d9c8746b0043d9a561eeea03f83107d705) in <span class="label ref-origin ref-origin-openjk">OpenJK</span> (content authored `2014-02-06`, integrated `2014-02-06`)
-- Upstream registration evidence: [codemp/qcommon/cm_load.cpp:637](https://github.com/JACoders/OpenJK/blame/1a6a643427aa347553e9073dac5570b33337c4d9/codemp/qcommon/cm_load.cpp#L637)
+- Upstream registration evidence: [codemp/qcommon/cm_load.cpp:637](https://github.com/JACoders/OpenJK/blame/260c59c2907187af555a676fe0cc798893bf7757/codemp/qcommon/cm_load.cpp#L637)
 - Attribution method: `shared-earliest-commit-lineage-order`
 - Attribution confidence: `medium`
 - Notes: The earliest authored/submitted introduction is shared by openjk, eternaljk, rend2, taystjk, japro, newjk, vulkan; fork-lineage order selects openjk.
@@ -70,7 +70,7 @@ Authored dates come from the exact registration's first content commit, PR dates
 
 ## Evidence
 
-- registration: [codemp/qcommon/cm_load.cpp:637](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/codemp/qcommon/cm_load.cpp#L637) (Cvar_Get); condition `!defined(BSPC)`
-- behavior: [codemp/qcommon/cm_patch.cpp:585](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/codemp/qcommon/cm_patch.cpp#L585)
+- registration: [codemp/qcommon/cm_load.cpp:637](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/qcommon/cm_load.cpp#L637) (Cvar_Get); condition `!defined(BSPC)`
+- behavior: [codemp/qcommon/cm_patch.cpp:585](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/qcommon/cm_patch.cpp#L585)
 
-<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a"><code>c722804317d7</code></a> on 2026-09-28. Anything merged after that is not reflected here.</p>
+<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/f999cbc0912773164962d8be37737a31fe9ade8d"><code>f999cbc09127</code></a> on 2026-10-22. Anything merged after that is not reflected here.</p>

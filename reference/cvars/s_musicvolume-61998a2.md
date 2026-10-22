@@ -30,7 +30,7 @@ Music volume
 | Confidence | `high` |
 | Added | 2013-04-08 in [`14cea1563`](https://github.com/taysta/TaystJK/commit/14cea1563762076974bee277afadbd5bf234c494) ([how to compare this against your build](/TaystJK/features/whats-new/#how-to-tell-what-your-build-has)) |
 | In-game xdocs | No |
-| In-game menu | Yes: [ingame_setup.menu:4383](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/assets/japro/ui/jamp/ingame_setup.menu#L4383), [setup.menu:2453](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/assets/japro/ui/jamp/setup.menu#L2453) |
+| In-game menu | Yes: [ingame_setup.menu:4383](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/assets/japro/ui/jamp/ingame_setup.menu#L4383), [setup.menu:2453](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/assets/japro/ui/jamp/setup.menu#L2453) |
 
 ## Values
 
@@ -38,7 +38,7 @@ No discrete value list is enforced or documented in the inspected source.
 
 ## Enforced ranges
 
-- `0` through `1` (numeric; Cvar_CheckRange). Evidence: [codemp/client/snd_dma.cpp:460](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/codemp/client/snd_dma.cpp#L460)
+- `0` through `1` (numeric; Cvar_CheckRange). Evidence: [codemp/client/snd_dma.cpp:460](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/client/snd_dma.cpp#L460)
 
 ## Flags
 
@@ -67,11 +67,11 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 ## Evidence
 
-- registration: [codemp/client/snd_dma.cpp:459](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/codemp/client/snd_dma.cpp#L459) (Cvar_Get)
-- behavior: [codemp/client/snd_dma.cpp:615](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/codemp/client/snd_dma.cpp#L615)
-- behavior: [codemp/client/snd_dma.cpp:617](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/codemp/client/snd_dma.cpp#L617)
-- behavior: [codemp/client/snd_dma.cpp:616](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/codemp/client/snd_dma.cpp#L616)
-- behavior: [codemp/client/snd_dma.cpp:618](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/codemp/client/snd_dma.cpp#L618)
-- behavior: [codemp/client/snd_dma.cpp:4717](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/codemp/client/snd_dma.cpp#L4717)
+- registration: [codemp/client/snd_dma.cpp:459](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/client/snd_dma.cpp#L459) (Cvar_Get)
+- behavior: [codemp/client/snd_dma.cpp:615](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/client/snd_dma.cpp#L615)
+- behavior: [codemp/client/snd_dma.cpp:617](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/client/snd_dma.cpp#L617)
+- behavior: [codemp/client/snd_dma.cpp:616](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/client/snd_dma.cpp#L616)
+- behavior: [codemp/client/snd_dma.cpp:618](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/client/snd_dma.cpp#L618)
+- behavior: [codemp/client/snd_dma.cpp:4717](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/client/snd_dma.cpp#L4717)
 
-<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a"><code>c722804317d7</code></a> on 2026-09-28. Anything merged after that is not reflected here.</p>
+<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/f999cbc0912773164962d8be37737a31fe9ade8d"><code>f999cbc09127</code></a> on 2026-10-22. Anything merged after that is not reflected here.</p>

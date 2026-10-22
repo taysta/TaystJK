@@ -41,7 +41,7 @@ Gating: `CMD_NOINTERMISSION`, `sent-to-server`.
 Origin: <span class="label ref-origin ref-origin-japro">jaPRO</span>
 
 - Ultimate-origin introduction: [`fa2b5ba6883b`](https://github.com/videoP/jaPRO/commit/fa2b5ba6883ba72c77c53130fedf2d3d2bfb86ea) in <span class="label ref-origin ref-origin-japro">jaPRO</span> (content authored `2018-08-08`, integrated `2018-08-20`)
-- Upstream registration evidence: [codemp/cgame/cg_consolecmds.c:2607](https://github.com/videoP/jaPRO/blame/33d1f1e22ac6db0c17beedbcc419ffef98bbe3c3/codemp/cgame/cg_consolecmds.c#L2607)
+- Upstream registration evidence: [codemp/cgame/cg_consolecmds.c:2607](https://github.com/videoP/jaPRO/blame/a4d22a138f1e055c8d8fe6109926dff84c4233a2/codemp/cgame/cg_consolecmds.c#L2607)
 - Attribution method: `shared-earliest-commit-module-lineage`
 - Attribution confidence: `medium`
 - Notes: The earliest authored/submitted introduction is shared by eternaljk, taystjk, japro, vulkan; module lineage selects japro.
@@ -68,10 +68,10 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 ## Evidence
 
-- registration: [codemp/cgame/cg_consolecmds.c:2607](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/codemp/cgame/cg_consolecmds.c#L2607) (forwarded client command table)
-- registration: [codemp/game/g_cmds.c:8936](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/codemp/game/g_cmds.c#L8936) (game command table)
-- registration: [codemp/game/g_svcmds.c:1672](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/codemp/game/g_svcmds.c#L1672) (game-console command table)
-- handler: [codemp/game/g_account.c:3770](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/codemp/game/g_account.c#L3770)
-- handler: [codemp/game/g_account.c:3167](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/codemp/game/g_account.c#L3167)
+- registration: [codemp/cgame/cg_consolecmds.c:2607](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/cgame/cg_consolecmds.c#L2607) (forwarded client command table)
+- registration: [codemp/game/g_cmds.c:8936](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/game/g_cmds.c#L8936) (game command table)
+- registration: [codemp/game/g_svcmds.c:1672](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/game/g_svcmds.c#L1672) (game-console command table)
+- handler: [codemp/game/g_account.c:3770](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/game/g_account.c#L3770)
+- handler: [codemp/game/g_account.c:3167](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/game/g_account.c#L3167)
 
-<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a"><code>c722804317d7</code></a> on 2026-09-28. Anything merged after that is not reflected here.</p>
+<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/f999cbc0912773164962d8be37737a31fe9ade8d"><code>f999cbc09127</code></a> on 2026-10-22. Anything merged after that is not reflected here.</p>
