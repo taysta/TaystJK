@@ -179,6 +179,7 @@ jobs:
             --title "Latest WinXP Build" \
             --notes "$RELEASE_BODY" \
             --target ${{ github.sha }} \
+            --latest=false \
             $RELEASE_FILES
 
   create-release-winxp:

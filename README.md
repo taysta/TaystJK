@@ -5,7 +5,7 @@
 
 TaystJK is a Jedi Academy multiplayer client and dedicated server built on EternalJK, which is built on OpenJK and jaPRO. It focuses on compatibility across Base JKA, JA+, jaPRO, and Lugormod servers, engine stability and performance, and improvements to everyday play.
 
-**[Download the latest build](https://github.com/taysta/TaystJK/releases/tag/latest)** · **[Documentation and wiki](https://taysta.github.io/TaystJK/)**
+**[Download the latest build](https://github.com/taysta/TaystJK/releases/latest)** · **[Documentation and wiki](https://taysta.github.io/TaystJK/)**
 
 When you join a server, its game module determines the gameplay and which mod-specific features are available.
 
@@ -13,7 +13,7 @@ When you join a server, its game module determines the gameplay and which mod-sp
 
 You need a copy of Jedi Academy and its retail `base/assets0.pk3` through `base/assets3.pk3` files.
 
-1. Download the [latest build](https://github.com/taysta/TaystJK/releases/tag/latest) for your operating system and architecture, and extract the whole archive into a writable directory.
+1. Download the [latest build](https://github.com/taysta/TaystJK/releases/latest) for your operating system and architecture, and extract the whole archive into a writable directory.
 2. Copy the game's `base` directory beside the TaystJK executable or macOS app bundle, or point TaystJK at an existing installation with `fs_cdPath` as described in the installation guide.
 3. Launch the TaystJK executable or app included in the archive.
 
