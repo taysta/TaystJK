@@ -3979,14 +3979,14 @@ void FS_Startup( const char *gameName ) {
 #ifndef DEDICATED
 	// a mod whose folder has taystjk_mod.txt ships its own client: suspend the fs_forcegame
 	// default while it is fs_game, so it keeps its own folder (no taystjk/ layer, its own
-	// write folder and config, its own cgame/ui). Restore the default first when fs_game
+	// write folder and config). Restore the default first when fs_game
 	// moves on. Only the default is ever suspended: a value the player chose wins.
 	if ( fs_forcegameSuspended && !fs_forcegame->string[0] ) {
 		Cvar_Set( "fs_forcegame", fs_forcegame->resetString );
 	}
 	fs_forcegameSuspended = qfalse;
 	if ( !Q_stricmp( fs_forcegame->string, fs_forcegame->resetString ) && FS_ModOwnsFolder( fs_gamedirvar->string ) ) {
-		Com_Printf( "%s has taystjk_mod.txt: using its own client and folder, fs_forcegame suspended\n", fs_gamedirvar->string );
+		Com_Printf( "%s has taystjk_mod.txt: using its own folder and config, fs_forcegame suspended\n", fs_gamedirvar->string );
 		Cvar_Set( "fs_forcegame", "" );
 		fs_forcegameSuspended = qtrue;
 	}

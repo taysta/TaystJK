@@ -478,26 +478,6 @@ static void FreeUnpackDLLResult(UnpackDLLResult *result)
 		Z_Free((void *)result->tempDLLPath);
 }
 
-/*
-=================
-Sys_ModuleGameDir
-
-The client modules (cgame, ui) load from the fs_forcegame folder whenever it is set,
-so joining a server does not switch to that mod's client. fs_forcegame is suspended
-for a mod whose folder has taystjk_mod.txt (see FS_Startup), which then loads its own.
-The game module always follows fs_game.
-=================
-*/
-static const char *Sys_ModuleGameDir( const char *name )
-{
-	const char *forcegame = Cvar_VariableString( "fs_forcegame" );
-
-	if ( forcegame[0] && Q_stricmp( name, "jampgame" ) )
-		return forcegame;
-
-	return Cvar_VariableString( "fs_game" );
-}
-
 void *Sys_LoadLegacyGameDll( const char *name, VMMainProc **vmMain, SystemCallProc *systemcalls )
 {
 	void	*libHandle = NULL;
@@ -541,7 +521,7 @@ void *Sys_LoadLegacyGameDll( const char *name, VMMainProc **vmMain, SystemCallPr
 				char *basepath = Cvar_VariableString( "fs_basepath" );
 				char *homepath = Cvar_VariableString( "fs_homepath" );
 				char *cdpath = Cvar_VariableString( "fs_cdpath" );
-				const char *gamedir = Sys_ModuleGameDir( name );
+				char *gamedir = Cvar_VariableString( "fs_game" );
 		#ifdef MACOS_X
 				char *apppath = Cvar_VariableString( "fs_apppath" );
 		#endif
@@ -623,7 +603,7 @@ void *Sys_LoadGameDll( const char *name, GetModuleAPIProc **moduleAPI )
 				char *basepath = Cvar_VariableString( "fs_basepath" );
 				char *homepath = Cvar_VariableString( "fs_homepath" );
 				char *cdpath = Cvar_VariableString( "fs_cdpath" );
-				const char *gamedir = Sys_ModuleGameDir( name );
+				char *gamedir = Cvar_VariableString( "fs_game" );
 #ifdef MACOS_X
 				char *apppath = Cvar_VariableString( "fs_apppath" );
 #endif
