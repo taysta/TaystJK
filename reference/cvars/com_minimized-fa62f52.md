@@ -39,8 +39,8 @@ Controls `com_minimized` in the engine-shared module. Consult the cited behavior
 
 | Value | Meaning | Evidence |
 |:--|:--|:--|
-| `0` | Disabled. | [codemp/client/cl_input.cpp:1264](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/codemp/client/cl_input.cpp#L1264) |
-| `1` | Enabled. | [codemp/client/cl_input.cpp:1264](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/codemp/client/cl_input.cpp#L1264) |
+| `0` | Disabled. | [codemp/client/cl_input.cpp:1264](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/client/cl_input.cpp#L1264) |
+| `1` | Enabled. | [codemp/client/cl_input.cpp:1264](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/client/cl_input.cpp#L1264) |
 
 ## Flags
 
@@ -51,7 +51,7 @@ Controls `com_minimized` in the engine-shared module. Consult the cited behavior
 Origin: <span class="label ref-origin ref-origin-openjk">OpenJK</span>
 
 - Ultimate-origin introduction: [`a7c43677a2bb`](https://github.com/JACoders/OpenJK/commit/a7c43677a2bbba956ac3c5f14f2bf869ea660230) in <span class="label ref-origin ref-origin-openjk">OpenJK</span> (content authored `2015-01-10`, integrated `2015-02-07`)
-- Upstream registration evidence: [shared/sys/sys_main.cpp:160](https://github.com/JACoders/OpenJK/blame/1a6a643427aa347553e9073dac5570b33337c4d9/shared/sys/sys_main.cpp#L160)
+- Upstream registration evidence: [shared/sys/sys_main.cpp:160](https://github.com/JACoders/OpenJK/blame/260c59c2907187af555a676fe0cc798893bf7757/shared/sys/sys_main.cpp#L160)
 - Attribution method: `shared-earliest-commit-lineage-order`
 - Attribution confidence: `medium`
 - Notes: The earliest authored/submitted introduction is shared by openjk, eternaljk, rend2, taystjk, japro, newjk, vulkan; fork-lineage order selects openjk.
@@ -90,11 +90,11 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 ## Evidence
 
-- registration: [shared/sys/sys_main.cpp:170](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/shared/sys/sys_main.cpp#L170) (Cvar_Get)
-- behavior: [codemp/client/cl_input.cpp:1264](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/codemp/client/cl_input.cpp#L1264)
-- behavior: [codemp/client/snd_dma.cpp:1581](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/codemp/client/snd_dma.cpp#L1581)
-- behavior: [codemp/qcommon/common.cpp:1755](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/codemp/qcommon/common.cpp#L1755)
-- behavior: [shared/sdl/sdl_input.cpp:845](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/shared/sdl/sdl_input.cpp#L845)
-- behavior: [shared/sdl/sdl_window.cpp:978](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/shared/sdl/sdl_window.cpp#L978)
+- registration: [shared/sys/sys_main.cpp:170](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/shared/sys/sys_main.cpp#L170) (Cvar_Get)
+- behavior: [codemp/client/cl_input.cpp:1264](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/client/cl_input.cpp#L1264)
+- behavior: [codemp/client/snd_dma.cpp:1581](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/client/snd_dma.cpp#L1581)
+- behavior: [codemp/qcommon/common.cpp:1755](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/qcommon/common.cpp#L1755)
+- behavior: [shared/sdl/sdl_input.cpp:845](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/shared/sdl/sdl_input.cpp#L845)
+- behavior: [shared/sdl/sdl_window.cpp:978](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/shared/sdl/sdl_window.cpp#L978)
 
-<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a"><code>c722804317d7</code></a> on 2026-09-28. Anything merged after that is not reflected here.</p>
+<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/f999cbc0912773164962d8be37737a31fe9ade8d"><code>f999cbc09127</code></a> on 2026-10-22. Anything merged after that is not reflected here.</p>

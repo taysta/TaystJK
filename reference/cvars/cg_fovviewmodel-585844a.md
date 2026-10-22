@@ -31,7 +31,7 @@ Controls `cg_fovViewmodel` in the cgame module. Consult the cited behavior reads
 | Confidence | `medium` |
 | Added | 2013-08-04 in [`004c73dcf`](https://github.com/taysta/TaystJK/commit/004c73dcfeb386fb520067d21963db250e6bdd2d) <span class="status-chip">needs review</span> ([how to compare this against your build](/TaystJK/features/whats-new/#how-to-tell-what-your-build-has)) |
 | In-game xdocs | No |
-| In-game menu | Yes: [ingame_camera.menu:191](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/assets/japro/ui/jamp/ingame_camera.menu#L191), [ingame_camera.menu:211](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/assets/japro/ui/jamp/ingame_camera.menu#L211), [ingame_camera.menu:234](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/assets/japro/ui/jamp/ingame_camera.menu#L234) |
+| In-game menu | Yes: [ingame_camera.menu:191](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/assets/japro/ui/jamp/ingame_camera.menu#L191), [ingame_camera.menu:211](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/assets/japro/ui/jamp/ingame_camera.menu#L211), [ingame_camera.menu:234](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/assets/japro/ui/jamp/ingame_camera.menu#L234) |
 
 ## Values
 
@@ -46,7 +46,7 @@ No discrete value list is enforced or documented in the inspected source.
 Origin: <span class="label ref-origin ref-origin-openjk">OpenJK</span>
 
 - Ultimate-origin introduction: [`004c73dcfeb3`](https://github.com/JACoders/OpenJK/commit/004c73dcfeb386fb520067d21963db250e6bdd2d) in <span class="label ref-origin ref-origin-openjk">OpenJK</span> (content authored `2013-08-04`, integrated `2013-08-04`)
-- Upstream registration evidence: [code/cgame/cg_main.cpp:458](https://github.com/JACoders/OpenJK/blame/1a6a643427aa347553e9073dac5570b33337c4d9/code/cgame/cg_main.cpp#L458)
+- Upstream registration evidence: [code/cgame/cg_main.cpp:458](https://github.com/JACoders/OpenJK/blame/260c59c2907187af555a676fe0cc798893bf7757/code/cgame/cg_main.cpp#L458)
 - Attribution method: `shared-earliest-commit-lineage-order`
 - Attribution confidence: `medium`
 - Notes: The earliest authored/submitted introduction is shared by openjk, eternaljk, rend2, taystjk, japro, newjk, vulkan; fork-lineage order selects openjk. Dated commit evidence identifies later registration changes relative to the origin snapshot.
@@ -79,8 +79,8 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 ## Evidence
 
-- registration: [codemp/cgame/cg_xcvar.h:307](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/codemp/cgame/cg_xcvar.h#L307) (XCVAR_DEF)
-- behavior: [codemp/cgame/cg_weapons.c:885](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/codemp/cgame/cg_weapons.c#L885)
-- behavior: [codemp/cgame/cg_weapons.c:821](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/codemp/cgame/cg_weapons.c#L821)
+- registration: [codemp/cgame/cg_xcvar.h:307](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/cgame/cg_xcvar.h#L307) (XCVAR_DEF)
+- behavior: [codemp/cgame/cg_weapons.c:885](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/cgame/cg_weapons.c#L885)
+- behavior: [codemp/cgame/cg_weapons.c:821](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/cgame/cg_weapons.c#L821)
 
-<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a"><code>c722804317d7</code></a> on 2026-09-28. Anything merged after that is not reflected here.</p>
+<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/f999cbc0912773164962d8be37737a31fe9ade8d"><code>f999cbc09127</code></a> on 2026-10-22. Anything merged after that is not reflected here.</p>

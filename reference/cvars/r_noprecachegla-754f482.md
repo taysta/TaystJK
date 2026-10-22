@@ -37,8 +37,8 @@ Controls `r_noPrecacheGLA` in the renderer module. Consult the cited behavior re
 
 | Value | Meaning | Evidence |
 |:--|:--|:--|
-| `0` | Disabled. | [codemp/rd-dedicated/tr_model.cpp:1340](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/codemp/rd-dedicated/tr_model.cpp#L1340) |
-| `1` | Enabled. | [codemp/rd-dedicated/tr_model.cpp:1340](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/codemp/rd-dedicated/tr_model.cpp#L1340) |
+| `0` | Disabled. | [codemp/rd-dedicated/tr_model.cpp:1340](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/rd-dedicated/tr_model.cpp#L1340) |
+| `1` | Enabled. | [codemp/rd-dedicated/tr_model.cpp:1340](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/rd-dedicated/tr_model.cpp#L1340) |
 
 ## Flags
 
@@ -81,11 +81,11 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 ## Evidence
 
-- registration: [codemp/rd-dedicated/tr_init.cpp:437](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/codemp/rd-dedicated/tr_init.cpp#L437) (Cvar_Get); condition `defined(_DEBUG)`
-- registration: [codemp/rd-rend2/tr_init.cpp:1704](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/codemp/rd-rend2/tr_init.cpp#L1704) (Cvar_Get); condition `defined(_DEBUG)`
-- registration: [codemp/rd-vanilla/tr_init.cpp:1750](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/codemp/rd-vanilla/tr_init.cpp#L1750) (Cvar_Get); condition `defined(_DEBUG)`
-- registration: [codemp/rd-vulkan/tr_init.cpp:982](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/codemp/rd-vulkan/tr_init.cpp#L982) (Cvar_Get); condition `defined(_DEBUG)`
-- behavior: [codemp/rd-dedicated/tr_model.cpp:1340](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/codemp/rd-dedicated/tr_model.cpp#L1340)
-- behavior: [codemp/rd-vanilla/tr_model.cpp:1408](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/codemp/rd-vanilla/tr_model.cpp#L1408)
+- registration: [codemp/rd-dedicated/tr_init.cpp:437](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/rd-dedicated/tr_init.cpp#L437) (Cvar_Get); condition `defined(_DEBUG)`
+- registration: [codemp/rd-rend2/tr_init.cpp:1704](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/rd-rend2/tr_init.cpp#L1704) (Cvar_Get); condition `defined(_DEBUG)`
+- registration: [codemp/rd-vanilla/tr_init.cpp:1750](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/rd-vanilla/tr_init.cpp#L1750) (Cvar_Get); condition `defined(_DEBUG)`
+- registration: [codemp/rd-vulkan/tr_init.cpp:982](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/rd-vulkan/tr_init.cpp#L982) (Cvar_Get); condition `defined(_DEBUG)`
+- behavior: [codemp/rd-dedicated/tr_model.cpp:1340](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/rd-dedicated/tr_model.cpp#L1340)
+- behavior: [codemp/rd-vanilla/tr_model.cpp:1408](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/rd-vanilla/tr_model.cpp#L1408)
 
-<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a"><code>c722804317d7</code></a> on 2026-09-28. Anything merged after that is not reflected here.</p>
+<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/f999cbc0912773164962d8be37737a31fe9ade8d"><code>f999cbc09127</code></a> on 2026-10-22. Anything merged after that is not reflected here.</p>

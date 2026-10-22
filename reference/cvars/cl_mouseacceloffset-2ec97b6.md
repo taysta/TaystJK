@@ -47,7 +47,7 @@ No discrete value list is enforced or documented in the inspected source.
 Origin: <span class="label ref-origin ref-origin-openjk">OpenJK</span>
 
 - Ultimate-origin introduction: [`ae0f733b9635`](https://github.com/JACoders/OpenJK/commit/ae0f733b9635c7e17c8fc644ea1133ffb399ae37) in <span class="label ref-origin ref-origin-openjk">OpenJK</span> (content authored `2014-05-15`, integrated `2014-05-15`)
-- Upstream registration evidence: [codemp/client/cl_main.cpp:2783](https://github.com/JACoders/OpenJK/blame/1a6a643427aa347553e9073dac5570b33337c4d9/codemp/client/cl_main.cpp#L2783)
+- Upstream registration evidence: [codemp/client/cl_main.cpp:2783](https://github.com/JACoders/OpenJK/blame/260c59c2907187af555a676fe0cc798893bf7757/codemp/client/cl_main.cpp#L2783)
 - Attribution method: `shared-earliest-commit-lineage-order`
 - Attribution confidence: `medium`
 - Notes: The earliest authored/submitted introduction is shared by openjk, eternaljk, rend2, taystjk, japro, newjk, vulkan; fork-lineage order selects openjk.
@@ -77,11 +77,11 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 ## Evidence
 
-- registration: [codemp/client/cl_main.cpp:3360](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/codemp/client/cl_main.cpp#L3360) (Cvar_Get)
-- behavior: [codemp/client/cl_input.cpp:1142](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/codemp/client/cl_input.cpp#L1142)
-- behavior: [codemp/client/cl_input.cpp:1143](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/codemp/client/cl_input.cpp#L1143)
-- behavior: [codemp/client/cl_input.cpp:1151](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/codemp/client/cl_input.cpp#L1151)
-- behavior: [codemp/client/cl_input.cpp:1152](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/codemp/client/cl_input.cpp#L1152)
-- behavior: [codemp/client/cl_input.cpp:1156](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/codemp/client/cl_input.cpp#L1156)
+- registration: [codemp/client/cl_main.cpp:3360](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/client/cl_main.cpp#L3360) (Cvar_Get)
+- behavior: [codemp/client/cl_input.cpp:1142](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/client/cl_input.cpp#L1142)
+- behavior: [codemp/client/cl_input.cpp:1143](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/client/cl_input.cpp#L1143)
+- behavior: [codemp/client/cl_input.cpp:1151](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/client/cl_input.cpp#L1151)
+- behavior: [codemp/client/cl_input.cpp:1152](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/client/cl_input.cpp#L1152)
+- behavior: [codemp/client/cl_input.cpp:1156](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/client/cl_input.cpp#L1156)
 
-<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a"><code>c722804317d7</code></a> on 2026-09-28. Anything merged after that is not reflected here.</p>
+<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/f999cbc0912773164962d8be37737a31fe9ade8d"><code>f999cbc09127</code></a> on 2026-10-22. Anything merged after that is not reflected here.</p>

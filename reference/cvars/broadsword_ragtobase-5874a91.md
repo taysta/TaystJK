@@ -78,14 +78,14 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 ## Evidence
 
-- registration: [codemp/rd-dedicated/tr_init.cpp:452](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/codemp/rd-dedicated/tr_init.cpp#L452) (Cvar_Get)
-- registration: [codemp/rd-rend2/tr_init.cpp:1719](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/codemp/rd-rend2/tr_init.cpp#L1719) (Cvar_Get)
-- registration: [codemp/rd-vanilla/tr_init.cpp:1765](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/codemp/rd-vanilla/tr_init.cpp#L1765) (Cvar_Get)
-- registration: [codemp/rd-vulkan/tr_init.cpp:997](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/codemp/rd-vulkan/tr_init.cpp#L997) (Cvar_Get)
-- behavior: [codemp/rd-dedicated/G2_bones.cpp:3429](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/codemp/rd-dedicated/G2_bones.cpp#L3429)
-- behavior: [codemp/rd-rend2/G2_bones.cpp:3606](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/codemp/rd-rend2/G2_bones.cpp#L3606)
-- behavior: [codemp/rd-vanilla/G2_bones.cpp:3621](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/codemp/rd-vanilla/G2_bones.cpp#L3621)
-- behavior: [codemp/rd-vulkan/G2_bones.cpp:3624](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/codemp/rd-vulkan/G2_bones.cpp#L3624)
-- behavior: [codemp/rd-dedicated/G2_bones.cpp:3292](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/codemp/rd-dedicated/G2_bones.cpp#L3292)
+- registration: [codemp/rd-dedicated/tr_init.cpp:452](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/rd-dedicated/tr_init.cpp#L452) (Cvar_Get)
+- registration: [codemp/rd-rend2/tr_init.cpp:1719](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/rd-rend2/tr_init.cpp#L1719) (Cvar_Get)
+- registration: [codemp/rd-vanilla/tr_init.cpp:1765](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/rd-vanilla/tr_init.cpp#L1765) (Cvar_Get)
+- registration: [codemp/rd-vulkan/tr_init.cpp:997](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/rd-vulkan/tr_init.cpp#L997) (Cvar_Get)
+- behavior: [codemp/rd-dedicated/G2_bones.cpp:3429](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/rd-dedicated/G2_bones.cpp#L3429)
+- behavior: [codemp/rd-rend2/G2_bones.cpp:3606](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/rd-rend2/G2_bones.cpp#L3606)
+- behavior: [codemp/rd-vanilla/G2_bones.cpp:3621](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/rd-vanilla/G2_bones.cpp#L3621)
+- behavior: [codemp/rd-vulkan/G2_bones.cpp:3624](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/rd-vulkan/G2_bones.cpp#L3624)
+- behavior: [codemp/rd-dedicated/G2_bones.cpp:3292](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/rd-dedicated/G2_bones.cpp#L3292)
 
-<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a"><code>c722804317d7</code></a> on 2026-09-28. Anything merged after that is not reflected here.</p>
+<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/f999cbc0912773164962d8be37737a31fe9ade8d"><code>f999cbc09127</code></a> on 2026-10-22. Anything merged after that is not reflected here.</p>

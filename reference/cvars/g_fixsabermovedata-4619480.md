@@ -37,8 +37,8 @@ Controls `g_fixSaberMoveData` in the game module. Consult the cited behavior rea
 
 | Value | Meaning | Evidence |
 |:--|:--|:--|
-| `0` | Disabled. | [codemp/game/bg_saber.c:366](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/codemp/game/bg_saber.c#L366) |
-| `1` | Enabled. | [codemp/game/bg_saber.c:366](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/codemp/game/bg_saber.c#L366) |
+| `0` | Disabled. | [codemp/game/bg_saber.c:366](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/game/bg_saber.c#L366) |
+| `1` | Enabled. | [codemp/game/bg_saber.c:366](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/game/bg_saber.c#L366) |
 
 ## Flags
 
@@ -52,7 +52,7 @@ Origin: <span class="label ref-origin ref-origin-openjk">OpenJK</span>
 - TaystJK integration evidence: [`530446764ef0`](https://github.com/taysta/TaystJK/commit/530446764ef05a4c0cff2b29b9eb2b514c5c2b2a)
 - Origin pull request: [#1178](https://github.com/JACoders/OpenJK/pull/1178)
 - TaystJK integration pull request: [#29](https://github.com/taysta/TaystJK/pull/29)
-- Upstream registration evidence: [codemp/game/g_xcvar.h:96](https://github.com/JACoders/OpenJK/blame/1a6a643427aa347553e9073dac5570b33337c4d9/codemp/game/g_xcvar.h#L96)
+- Upstream registration evidence: [codemp/game/g_xcvar.h:96](https://github.com/JACoders/OpenJK/blame/260c59c2907187af555a676fe0cc798893bf7757/codemp/game/g_xcvar.h#L96)
 - Attribution method: `curated-historical-attribution`
 - Attribution confidence: `high`
 - Notes: Razish introduced g_fixSaberMoveData in OpenJK PR #1178 on 2023-10-08; TaystJK PR #29 imported the still-open OpenJK work later that month. The cvar optionally restores Base JKA behavior but is not itself present in the Base JKA source snapshot.
@@ -78,8 +78,8 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 ## Evidence
 
-- registration: [codemp/game/g_xcvar.h:93](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/codemp/game/g_xcvar.h#L93) (XCVAR_DEF)
-- behavior: [codemp/game/bg_saber.c:366](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/codemp/game/bg_saber.c#L366)
-- behavior: [codemp/game/g_cvar.c:627](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/codemp/game/g_cvar.c#L627)
+- registration: [codemp/game/g_xcvar.h:93](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/game/g_xcvar.h#L93) (XCVAR_DEF)
+- behavior: [codemp/game/bg_saber.c:366](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/game/bg_saber.c#L366)
+- behavior: [codemp/game/g_cvar.c:627](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/game/g_cvar.c#L627)
 
-<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a"><code>c722804317d7</code></a> on 2026-09-28. Anything merged after that is not reflected here.</p>
+<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/f999cbc0912773164962d8be37737a31fe9ade8d"><code>f999cbc09127</code></a> on 2026-10-22. Anything merged after that is not reflected here.</p>

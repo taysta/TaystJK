@@ -37,8 +37,8 @@ Controls `sv_lanForceRate` in the engine-server module. Consult the cited behavi
 
 | Value | Meaning | Evidence |
 |:--|:--|:--|
-| `1` | Selects the code path tested for value 1. | [codemp/server/sv_client.cpp:1202](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/codemp/server/sv_client.cpp#L1202) |
-| `2` | Selects the code path tested for value 2. | [codemp/server/sv_client.cpp:1202](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/codemp/server/sv_client.cpp#L1202) |
+| `1` | Selects the code path tested for value 1. | [codemp/server/sv_client.cpp:1202](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/server/sv_client.cpp#L1202) |
+| `2` | Selects the code path tested for value 2. | [codemp/server/sv_client.cpp:1202](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/server/sv_client.cpp#L1202) |
 
 ## Flags
 
@@ -49,7 +49,7 @@ Controls `sv_lanForceRate` in the engine-server module. Consult the cited behavi
 Origin: <span class="label ref-origin ref-origin-openjk">OpenJK</span>
 
 - Ultimate-origin introduction: [`9950d594349c`](https://github.com/JACoders/OpenJK/commit/9950d594349cfc625be716fa33372a493604a948) in <span class="label ref-origin ref-origin-openjk">OpenJK</span> (content authored `2013-04-08`, integrated `2013-04-08`)
-- Upstream registration evidence: [codemp/server/sv_init.cpp:999](https://github.com/JACoders/OpenJK/blame/1a6a643427aa347553e9073dac5570b33337c4d9/codemp/server/sv_init.cpp#L999)
+- Upstream registration evidence: [codemp/server/sv_init.cpp:999](https://github.com/JACoders/OpenJK/blame/260c59c2907187af555a676fe0cc798893bf7757/codemp/server/sv_init.cpp#L999)
 - Attribution method: `squash-feature-group-explicit-credit`
 - Attribution confidence: `medium`
 - Notes: The identifier's single-prefix squash feature group explicitly credits openjk.
@@ -79,11 +79,11 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 ## Evidence
 
-- registration: [codemp/server/sv_init.cpp:1032](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/codemp/server/sv_init.cpp#L1032) (Cvar_Get)
-- behavior: [codemp/server/sv_client.cpp:1202](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/codemp/server/sv_client.cpp#L1202)
-- behavior: [codemp/server/sv_main.cpp:1070](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/codemp/server/sv_main.cpp#L1070)
-- behavior: [codemp/server/sv_main.cpp:1090](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/codemp/server/sv_main.cpp#L1090)
-- behavior: [codemp/server/sv_snapshot.cpp:930](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/codemp/server/sv_snapshot.cpp#L930)
-- behavior: [codemp/server/sv_snapshot.cpp:929](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/codemp/server/sv_snapshot.cpp#L929)
+- registration: [codemp/server/sv_init.cpp:1032](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/server/sv_init.cpp#L1032) (Cvar_Get)
+- behavior: [codemp/server/sv_client.cpp:1202](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/server/sv_client.cpp#L1202)
+- behavior: [codemp/server/sv_main.cpp:1070](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/server/sv_main.cpp#L1070)
+- behavior: [codemp/server/sv_main.cpp:1090](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/server/sv_main.cpp#L1090)
+- behavior: [codemp/server/sv_snapshot.cpp:930](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/server/sv_snapshot.cpp#L930)
+- behavior: [codemp/server/sv_snapshot.cpp:929](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/server/sv_snapshot.cpp#L929)
 
-<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a"><code>c722804317d7</code></a> on 2026-09-28. Anything merged after that is not reflected here.</p>
+<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/f999cbc0912773164962d8be37737a31fe9ade8d"><code>f999cbc09127</code></a> on 2026-10-22. Anything merged after that is not reflected here.</p>

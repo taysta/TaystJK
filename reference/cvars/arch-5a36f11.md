@@ -63,10 +63,10 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 ## Evidence
 
-- registration: [shared/sys/sys_main.cpp:166](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/shared/sys/sys_main.cpp#L166) (Cvar_Get)
-- behavior: [codemp/botlib/be_aas_route.cpp:1189](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/codemp/botlib/be_aas_route.cpp#L1189)
-- behavior: [codemp/qcommon/files.cpp:1862](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/codemp/qcommon/files.cpp#L1862)
-- behavior: [lib/libpng/arm/arm_init.c:41](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/lib/libpng/arm/arm_init.c#L41)
-- behavior: [lib/libpng/pngpriv.h:101](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/lib/libpng/pngpriv.h#L101)
+- registration: [shared/sys/sys_main.cpp:166](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/shared/sys/sys_main.cpp#L166) (Cvar_Get)
+- behavior: [codemp/botlib/be_aas_route.cpp:1189](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/botlib/be_aas_route.cpp#L1189)
+- behavior: [codemp/qcommon/files.cpp:1862](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/qcommon/files.cpp#L1862)
+- behavior: [lib/libpng/arm/arm_init.c:41](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/lib/libpng/arm/arm_init.c#L41)
+- behavior: [lib/libpng/pngpriv.h:101](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/lib/libpng/pngpriv.h#L101)
 
-<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a"><code>c722804317d7</code></a> on 2026-09-28. Anything merged after that is not reflected here.</p>
+<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/f999cbc0912773164962d8be37737a31fe9ade8d"><code>f999cbc09127</code></a> on 2026-10-22. Anything merged after that is not reflected here.</p>

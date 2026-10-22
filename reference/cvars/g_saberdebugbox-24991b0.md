@@ -37,10 +37,10 @@ Controls `g_saberDebugBox` in the game module. Consult the cited behavior reads 
 
 | Value | Meaning | Evidence |
 |:--|:--|:--|
-| `1` | Selects the code path tested for value 1. | [codemp/game/w_saber.c:349](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/codemp/game/w_saber.c#L349) |
-| `2` | Selects the code path tested for value 2. | [codemp/game/w_saber.c:2943](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/codemp/game/w_saber.c#L2943) |
-| `3` | Selects the code path tested for value 3. | [codemp/game/w_saber.c:4355](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/codemp/game/w_saber.c#L4355) |
-| `4` | Selects the code path tested for value 4. | [codemp/game/w_saber.c:349](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/codemp/game/w_saber.c#L349) |
+| `1` | Selects the code path tested for value 1. | [codemp/game/w_saber.c:349](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/game/w_saber.c#L349) |
+| `2` | Selects the code path tested for value 2. | [codemp/game/w_saber.c:2943](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/game/w_saber.c#L2943) |
+| `3` | Selects the code path tested for value 3. | [codemp/game/w_saber.c:4355](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/game/w_saber.c#L4355) |
+| `4` | Selects the code path tested for value 4. | [codemp/game/w_saber.c:349](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/game/w_saber.c#L349) |
 
 ## Flags
 
@@ -66,9 +66,9 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 ## Evidence
 
-- registration: [codemp/game/g_xcvar.h:133](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/codemp/game/g_xcvar.h#L133) (XCVAR_DEF)
-- behavior: [codemp/game/w_saber.c:349](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/codemp/game/w_saber.c#L349)
-- behavior: [codemp/game/w_saber.c:2943](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/codemp/game/w_saber.c#L2943)
-- behavior: [codemp/game/w_saber.c:4355](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/codemp/game/w_saber.c#L4355)
+- registration: [codemp/game/g_xcvar.h:133](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/game/g_xcvar.h#L133) (XCVAR_DEF)
+- behavior: [codemp/game/w_saber.c:349](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/game/w_saber.c#L349)
+- behavior: [codemp/game/w_saber.c:2943](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/game/w_saber.c#L2943)
+- behavior: [codemp/game/w_saber.c:4355](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/game/w_saber.c#L4355)
 
-<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a"><code>c722804317d7</code></a> on 2026-09-28. Anything merged after that is not reflected here.</p>
+<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/f999cbc0912773164962d8be37737a31fe9ade8d"><code>f999cbc09127</code></a> on 2026-10-22. Anything merged after that is not reflected here.</p>

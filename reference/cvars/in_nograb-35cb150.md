@@ -37,8 +37,8 @@ Controls `in_nograb` in the engine-shared module. Consult the cited behavior rea
 
 | Value | Meaning | Evidence |
 |:--|:--|:--|
-| `0` | Disabled. | [shared/sdl/sdl_input.cpp:471](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/shared/sdl/sdl_input.cpp#L471) |
-| `1` | Enabled. | [shared/sdl/sdl_input.cpp:471](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/shared/sdl/sdl_input.cpp#L471) |
+| `0` | Disabled. | [shared/sdl/sdl_input.cpp:471](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/shared/sdl/sdl_input.cpp#L471) |
+| `1` | Enabled. | [shared/sdl/sdl_input.cpp:471](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/shared/sdl/sdl_input.cpp#L471) |
 
 ## Flags
 
@@ -49,7 +49,7 @@ Controls `in_nograb` in the engine-shared module. Consult the cited behavior rea
 Origin: <span class="label ref-origin ref-origin-openjk">OpenJK</span>
 
 - Ultimate-origin introduction: [`a7c43677a2bb`](https://github.com/JACoders/OpenJK/commit/a7c43677a2bbba956ac3c5f14f2bf869ea660230) in <span class="label ref-origin ref-origin-openjk">OpenJK</span> (content authored `2013-04-12`, integrated `2015-02-07`)
-- Upstream registration evidence: [shared/sdl/sdl_input.cpp:629](https://github.com/JACoders/OpenJK/blame/1a6a643427aa347553e9073dac5570b33337c4d9/shared/sdl/sdl_input.cpp#L629)
+- Upstream registration evidence: [shared/sdl/sdl_input.cpp:629](https://github.com/JACoders/OpenJK/blame/260c59c2907187af555a676fe0cc798893bf7757/shared/sdl/sdl_input.cpp#L629)
 - Attribution method: `shared-earliest-commit-lineage-order`
 - Attribution confidence: `medium`
 - Notes: The earliest authored/submitted introduction is shared by openjk, eternaljk, rend2, taystjk, japro, newjk, vulkan; fork-lineage order selects openjk.
@@ -81,11 +81,11 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 ## Evidence
 
-- registration: [shared/sdl/sdl_input.cpp:645](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/shared/sdl/sdl_input.cpp#L645) (Cvar_Get)
-- behavior: [shared/sdl/sdl_input.cpp:471](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/shared/sdl/sdl_input.cpp#L471)
-- behavior: [shared/sdl/sdl_window.cpp:185](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/shared/sdl/sdl_window.cpp#L185)
-- behavior: [shared/sdl/sdl_input.cpp:469](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/shared/sdl/sdl_input.cpp#L469)
-- behavior: [shared/sdl/sdl_window.cpp:758](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/shared/sdl/sdl_window.cpp#L758)
-- behavior: [shared/sdl/sdl_input.cpp:479](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/shared/sdl/sdl_input.cpp#L479)
+- registration: [shared/sdl/sdl_input.cpp:645](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/shared/sdl/sdl_input.cpp#L645) (Cvar_Get)
+- behavior: [shared/sdl/sdl_input.cpp:471](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/shared/sdl/sdl_input.cpp#L471)
+- behavior: [shared/sdl/sdl_window.cpp:185](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/shared/sdl/sdl_window.cpp#L185)
+- behavior: [shared/sdl/sdl_input.cpp:469](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/shared/sdl/sdl_input.cpp#L469)
+- behavior: [shared/sdl/sdl_window.cpp:758](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/shared/sdl/sdl_window.cpp#L758)
+- behavior: [shared/sdl/sdl_input.cpp:479](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/shared/sdl/sdl_input.cpp#L479)
 
-<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a"><code>c722804317d7</code></a> on 2026-09-28. Anything merged after that is not reflected here.</p>
+<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/f999cbc0912773164962d8be37737a31fe9ade8d"><code>f999cbc09127</code></a> on 2026-10-22. Anything merged after that is not reflected here.</p>

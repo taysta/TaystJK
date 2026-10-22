@@ -39,8 +39,8 @@ Automatically clear console input on close
 
 | Value | Meaning | Evidence |
 |:--|:--|:--|
-| `0` | Disabled. | [codemp/client/cl_console.cpp:76](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/codemp/client/cl_console.cpp#L76) |
-| `1` | Enabled. | [codemp/client/cl_console.cpp:76](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/codemp/client/cl_console.cpp#L76) |
+| `0` | Disabled. | [codemp/client/cl_console.cpp:76](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/client/cl_console.cpp#L76) |
+| `1` | Enabled. | [codemp/client/cl_console.cpp:76](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/client/cl_console.cpp#L76) |
 
 ## Flags
 
@@ -51,7 +51,7 @@ Automatically clear console input on close
 Origin: <span class="label ref-origin ref-origin-openjk">OpenJK</span>
 
 - Ultimate-origin introduction: [`f8564ad61037`](https://github.com/JACoders/OpenJK/commit/f8564ad6103745b83f63e4a2f52e8dbdd1a899d0) in <span class="label ref-origin ref-origin-openjk">OpenJK</span> (content authored `2013-09-02`, integrated `2013-09-02`)
-- Upstream registration evidence: [code/client/cl_console.cpp:420](https://github.com/JACoders/OpenJK/blame/1a6a643427aa347553e9073dac5570b33337c4d9/code/client/cl_console.cpp#L420)
+- Upstream registration evidence: [code/client/cl_console.cpp:420](https://github.com/JACoders/OpenJK/blame/260c59c2907187af555a676fe0cc798893bf7757/code/client/cl_console.cpp#L420)
 - Attribution method: `shared-earliest-commit-lineage-order`
 - Attribution confidence: `medium`
 - Notes: The earliest authored/submitted introduction is shared by openjk, eternaljk, rend2, taystjk, japro, newjk, vulkan; fork-lineage order selects openjk.
@@ -83,7 +83,7 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 ## Evidence
 
-- registration: [codemp/client/cl_console.cpp:660](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/codemp/client/cl_console.cpp#L660) (Cvar_Get)
-- behavior: [codemp/client/cl_console.cpp:76](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/codemp/client/cl_console.cpp#L76)
+- registration: [codemp/client/cl_console.cpp:660](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/client/cl_console.cpp#L660) (Cvar_Get)
+- behavior: [codemp/client/cl_console.cpp:76](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/client/cl_console.cpp#L76)
 
-<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a"><code>c722804317d7</code></a> on 2026-09-28. Anything merged after that is not reflected here.</p>
+<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/f999cbc0912773164962d8be37737a31fe9ade8d"><code>f999cbc09127</code></a> on 2026-10-22. Anything merged after that is not reflected here.</p>

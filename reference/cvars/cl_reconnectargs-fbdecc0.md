@@ -49,7 +49,7 @@ Origin: <span class="label ref-origin ref-origin-openjk">OpenJK</span>
 - Ultimate-origin introduction: [`e65d1a743959`](https://github.com/JACoders/OpenJK/commit/e65d1a743959a81d839c06809d39505d57fa90ec) in <span class="label ref-origin ref-origin-openjk">OpenJK</span> (content authored `2025-10-09`, integrated `2026-05-12`)
 - TaystJK integration evidence: [`a6f521232afb`](https://github.com/taysta/TaystJK/commit/a6f521232afba109e20275bac4a71369ba5b5ae1)
 - Origin pull request: [#311](https://github.com/taysta/TaystJK/pull/311)
-- Upstream registration evidence: [codemp/client/cl_main.cpp:2836](https://github.com/JACoders/OpenJK/blame/1a6a643427aa347553e9073dac5570b33337c4d9/codemp/client/cl_main.cpp#L2836)
+- Upstream registration evidence: [codemp/client/cl_main.cpp:2836](https://github.com/JACoders/OpenJK/blame/260c59c2907187af555a676fe0cc798893bf7757/codemp/client/cl_main.cpp#L2836)
 - Attribution method: `squash-feature-group-explicit-credit`
 - Attribution confidence: `medium`
 - Notes: The identifier's single-prefix squash feature group explicitly credits openjk.
@@ -67,9 +67,9 @@ Authored dates come from the exact registration's first content commit, PR dates
 
 ## Evidence
 
-- registration: [codemp/client/cl_main.cpp:3415](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/codemp/client/cl_main.cpp#L3415) (Cvar_Get)
-- behavior: [codemp/client/cl_main.cpp:1126](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/codemp/client/cl_main.cpp#L1126)
-- behavior: [codemp/client/cl_main.cpp:1130](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/codemp/client/cl_main.cpp#L1130)
-- behavior: [codemp/client/cl_main.cpp:1149](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/codemp/client/cl_main.cpp#L1149)
+- registration: [codemp/client/cl_main.cpp:3415](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/client/cl_main.cpp#L3415) (Cvar_Get)
+- behavior: [codemp/client/cl_main.cpp:1126](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/client/cl_main.cpp#L1126)
+- behavior: [codemp/client/cl_main.cpp:1130](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/client/cl_main.cpp#L1130)
+- behavior: [codemp/client/cl_main.cpp:1149](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/client/cl_main.cpp#L1149)
 
-<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a"><code>c722804317d7</code></a> on 2026-09-28. Anything merged after that is not reflected here.</p>
+<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/f999cbc0912773164962d8be37737a31fe9ade8d"><code>f999cbc09127</code></a> on 2026-10-22. Anything merged after that is not reflected here.</p>

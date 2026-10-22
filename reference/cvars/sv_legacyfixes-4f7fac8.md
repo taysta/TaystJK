@@ -37,9 +37,9 @@ Controls `sv_legacyFixes` in the engine-server module. Consult the cited behavio
 
 | Value | Meaning | Evidence |
 |:--|:--|:--|
-| `128` | Rancor/wampa skins | [codemp/server/server.h:356](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/codemp/server/server.h#L356) |
-| `8` | Enables the `SVFIXES_ALLOW_INVALID_FORCEPOWERS` code path. | [codemp/server/server.h:352](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/codemp/server/server.h#L352) |
-| `64` | Enables the `SVFIXES_ALLOW_INVALID_PLAYER_NAMES` code path. | [codemp/server/server.h:355](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/codemp/server/server.h#L355) |
+| `128` | Rancor/wampa skins | [codemp/server/server.h:356](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/server/server.h#L356) |
+| `8` | Enables the `SVFIXES_ALLOW_INVALID_FORCEPOWERS` code path. | [codemp/server/server.h:352](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/server/server.h#L352) |
+| `64` | Enables the `SVFIXES_ALLOW_INVALID_PLAYER_NAMES` code path. | [codemp/server/server.h:355](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/server/server.h#L355) |
 
 ## Flags
 
@@ -58,7 +58,7 @@ Origin: <span class="label ref-origin ref-origin-openjk">OpenJK</span>
 
 - Ultimate-origin introduction: [`8b07e58c1c28`](https://github.com/JACoders/OpenJK/commit/8b07e58c1c2875e94823c8afe5443e003370349b) in <span class="label ref-origin ref-origin-openjk">OpenJK</span> (content authored `2017-12-06`, integrated `2017-12-06`)
 - TaystJK integration evidence: [`43b393062090`](https://github.com/taysta/TaystJK/commit/43b393062090de615d5e5e694ef4fb5fd42ce59a)
-- Upstream registration evidence: [codemp/server/sv_init.cpp:1009](https://github.com/JACoders/OpenJK/blame/1a6a643427aa347553e9073dac5570b33337c4d9/codemp/server/sv_init.cpp#L1009)
+- Upstream registration evidence: [codemp/server/sv_init.cpp:1009](https://github.com/JACoders/OpenJK/blame/260c59c2907187af555a676fe0cc798893bf7757/codemp/server/sv_init.cpp#L1009)
 - Attribution method: `shared-earliest-commit-lineage-order`
 - Attribution confidence: `medium`
 - Notes: The earliest authored/submitted introduction is shared by openjk, rend2; fork-lineage order selects openjk. Dated commit evidence identifies later registration changes relative to the origin snapshot.
@@ -96,12 +96,12 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 ## Evidence
 
-- registration: [codemp/server/sv_init.cpp:1044](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/codemp/server/sv_init.cpp#L1044) (Cvar_Get); condition `!defined(DEDICATED)`
-- registration: [codemp/server/sv_init.cpp:1046](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/codemp/server/sv_init.cpp#L1046) (Cvar_Get); condition `else(!defined(DEDICATED))`
-- behavior: [codemp/server/sv_client.cpp:1181](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/codemp/server/sv_client.cpp#L1181)
-- behavior: [codemp/server/sv_client.cpp:1286](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/codemp/server/sv_client.cpp#L1286)
-- behavior: [codemp/server/sv_client.cpp:1304](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/codemp/server/sv_client.cpp#L1304)
-- behavior: [codemp/server/sv_client.cpp:1477](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/codemp/server/sv_client.cpp#L1477)
-- behavior: [codemp/server/sv_client.cpp:1483](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/codemp/server/sv_client.cpp#L1483)
+- registration: [codemp/server/sv_init.cpp:1044](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/server/sv_init.cpp#L1044) (Cvar_Get); condition `!defined(DEDICATED)`
+- registration: [codemp/server/sv_init.cpp:1046](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/server/sv_init.cpp#L1046) (Cvar_Get); condition `else(!defined(DEDICATED))`
+- behavior: [codemp/server/sv_client.cpp:1181](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/server/sv_client.cpp#L1181)
+- behavior: [codemp/server/sv_client.cpp:1286](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/server/sv_client.cpp#L1286)
+- behavior: [codemp/server/sv_client.cpp:1304](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/server/sv_client.cpp#L1304)
+- behavior: [codemp/server/sv_client.cpp:1477](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/server/sv_client.cpp#L1477)
+- behavior: [codemp/server/sv_client.cpp:1483](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/server/sv_client.cpp#L1483)
 
-<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a"><code>c722804317d7</code></a> on 2026-09-28. Anything merged after that is not reflected here.</p>
+<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/f999cbc0912773164962d8be37737a31fe9ade8d"><code>f999cbc09127</code></a> on 2026-10-22. Anything merged after that is not reflected here.</p>

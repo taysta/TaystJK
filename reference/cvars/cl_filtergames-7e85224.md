@@ -48,7 +48,7 @@ Origin: <span class="label ref-origin ref-origin-openjk">OpenJK</span>
 - TaystJK integration evidence: [`47e33dfb6fd5`](https://github.com/taysta/TaystJK/commit/47e33dfb6fd55a1ae75888b7a33f056a8aba91ae)
 - Origin pull request: [#1188](https://github.com/JACoders/OpenJK/pull/1188)
 - TaystJK integration pull request: [#53](https://github.com/taysta/TaystJK/pull/53)
-- Upstream registration evidence: [codemp/client/cl_main.cpp:2830](https://github.com/JACoders/OpenJK/blame/1a6a643427aa347553e9073dac5570b33337c4d9/codemp/client/cl_main.cpp#L2830)
+- Upstream registration evidence: [codemp/client/cl_main.cpp:2830](https://github.com/JACoders/OpenJK/blame/260c59c2907187af555a676fe0cc798893bf7757/codemp/client/cl_main.cpp#L2830)
 - Attribution method: `curated-historical-attribution`
 - Attribution confidence: `high`
 - Notes: Daggolin authored cl_filterGames for OpenJK PR #1188, linked by TaystJK integration PR #53. OpenJK's later squash commit does not make the earlier TaystJK import the origin.
@@ -75,8 +75,8 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 ## Evidence
 
-- registration: [codemp/client/cl_main.cpp:3411](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/codemp/client/cl_main.cpp#L3411) (Cvar_Get)
-- behavior: [codemp/client/cl_main.cpp:3754](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/codemp/client/cl_main.cpp#L3754)
-- behavior: [codemp/client/cl_main.cpp:3763](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/codemp/client/cl_main.cpp#L3763)
+- registration: [codemp/client/cl_main.cpp:3411](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/client/cl_main.cpp#L3411) (Cvar_Get)
+- behavior: [codemp/client/cl_main.cpp:3754](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/client/cl_main.cpp#L3754)
+- behavior: [codemp/client/cl_main.cpp:3763](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/client/cl_main.cpp#L3763)
 
-<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a"><code>c722804317d7</code></a> on 2026-09-28. Anything merged after that is not reflected here.</p>
+<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/f999cbc0912773164962d8be37737a31fe9ade8d"><code>f999cbc09127</code></a> on 2026-10-22. Anything merged after that is not reflected here.</p>

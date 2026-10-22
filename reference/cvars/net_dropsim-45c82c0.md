@@ -47,7 +47,7 @@ Origin: <span class="label ref-origin ref-origin-openjk">OpenJK</span>
 
 - Ultimate-origin introduction: [`e8453d791c74`](https://github.com/JACoders/OpenJK/commit/e8453d791c746cf10be9312cf52dd82421d74aa0) in <span class="label ref-origin ref-origin-openjk">OpenJK</span> (content authored `2016-03-12`, integrated `2016-03-20`)
 - TaystJK integration evidence: [`f5defc782a90`](https://github.com/taysta/TaystJK/commit/f5defc782a901c885afbd5d8f1c3cb23072583dc)
-- Upstream registration evidence: [codemp/qcommon/net_ip.cpp:894](https://github.com/JACoders/OpenJK/blame/1a6a643427aa347553e9073dac5570b33337c4d9/codemp/qcommon/net_ip.cpp#L894)
+- Upstream registration evidence: [codemp/qcommon/net_ip.cpp:894](https://github.com/JACoders/OpenJK/blame/260c59c2907187af555a676fe0cc798893bf7757/codemp/qcommon/net_ip.cpp#L894)
 - Attribution method: `shared-integration-explicit-credit`
 - Attribution confidence: `high`
 
@@ -68,8 +68,8 @@ Authored dates come from the exact registration's first content commit, PR dates
 
 ## Evidence
 
-- registration: [codemp/qcommon/net_ip.cpp:910](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/codemp/qcommon/net_ip.cpp#L910) (Cvar_Get)
-- behavior: [codemp/qcommon/net_ip.cpp:1035](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/codemp/qcommon/net_ip.cpp#L1035)
-- behavior: [codemp/qcommon/net_ip.cpp:1038](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/codemp/qcommon/net_ip.cpp#L1038)
+- registration: [codemp/qcommon/net_ip.cpp:910](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/qcommon/net_ip.cpp#L910) (Cvar_Get)
+- behavior: [codemp/qcommon/net_ip.cpp:1035](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/qcommon/net_ip.cpp#L1035)
+- behavior: [codemp/qcommon/net_ip.cpp:1038](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/qcommon/net_ip.cpp#L1038)
 
-<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a"><code>c722804317d7</code></a> on 2026-09-28. Anything merged after that is not reflected here.</p>
+<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/f999cbc0912773164962d8be37737a31fe9ade8d"><code>f999cbc09127</code></a> on 2026-10-22. Anything merged after that is not reflected here.</p>

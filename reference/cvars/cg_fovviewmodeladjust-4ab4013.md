@@ -38,8 +38,8 @@ Shifts viewmodels down above cg_fov 90
 
 | Value | Meaning | Evidence |
 |:--|:--|:--|
-| `0` | Disabled. | [codemp/cgame/cg_weapons.c:865](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/codemp/cgame/cg_weapons.c#L865) |
-| `1` | Enabled. | [codemp/cgame/cg_weapons.c:865](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/codemp/cgame/cg_weapons.c#L865) |
+| `0` | Disabled. | [codemp/cgame/cg_weapons.c:865](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/cgame/cg_weapons.c#L865) |
+| `1` | Enabled. | [codemp/cgame/cg_weapons.c:865](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/cgame/cg_weapons.c#L865) |
 
 ## Flags
 
@@ -50,7 +50,7 @@ Shifts viewmodels down above cg_fov 90
 Origin: <span class="label ref-origin ref-origin-openjk">OpenJK</span>
 
 - Ultimate-origin introduction: [`004c73dcfeb3`](https://github.com/JACoders/OpenJK/commit/004c73dcfeb386fb520067d21963db250e6bdd2d) in <span class="label ref-origin ref-origin-openjk">OpenJK</span> (content authored `2013-08-04`, integrated `2013-08-04`)
-- Upstream registration evidence: [code/cgame/cg_main.cpp:459](https://github.com/JACoders/OpenJK/blame/1a6a643427aa347553e9073dac5570b33337c4d9/code/cgame/cg_main.cpp#L459)
+- Upstream registration evidence: [code/cgame/cg_main.cpp:459](https://github.com/JACoders/OpenJK/blame/260c59c2907187af555a676fe0cc798893bf7757/code/cgame/cg_main.cpp#L459)
 - Attribution method: `shared-earliest-commit-lineage-order`
 - Attribution confidence: `medium`
 - Notes: The earliest authored/submitted introduction is shared by openjk, eternaljk, rend2, taystjk, japro, newjk, vulkan; fork-lineage order selects openjk. Dated commit evidence identifies later registration changes relative to the origin snapshot.
@@ -82,7 +82,7 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 ## Evidence
 
-- registration: [codemp/cgame/cg_xcvar.h:308](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/codemp/cgame/cg_xcvar.h#L308) (XCVAR_DEF)
-- behavior: [codemp/cgame/cg_weapons.c:865](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/codemp/cgame/cg_weapons.c#L865)
+- registration: [codemp/cgame/cg_xcvar.h:308](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/cgame/cg_xcvar.h#L308) (XCVAR_DEF)
+- behavior: [codemp/cgame/cg_weapons.c:865](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/cgame/cg_weapons.c#L865)
 
-<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a"><code>c722804317d7</code></a> on 2026-09-28. Anything merged after that is not reflected here.</p>
+<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/f999cbc0912773164962d8be37737a31fe9ade8d"><code>f999cbc09127</code></a> on 2026-10-22. Anything merged after that is not reflected here.</p>

@@ -36,8 +36,8 @@ In Vanilla certain glow stages are skipped, render those anyway
 
 | Value | Meaning | Evidence |
 |:--|:--|:--|
-| `0` | Disabled. | [codemp/rd-vulkan/tr_shader.cpp:3510](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/codemp/rd-vulkan/tr_shader.cpp#L3510) |
-| `1` | Enabled. | [codemp/rd-vulkan/tr_shader.cpp:3510](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/codemp/rd-vulkan/tr_shader.cpp#L3510) |
+| `0` | Disabled. | [codemp/rd-vulkan/tr_shader.cpp:3510](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/rd-vulkan/tr_shader.cpp#L3510) |
+| `1` | Enabled. | [codemp/rd-vulkan/tr_shader.cpp:3510](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/rd-vulkan/tr_shader.cpp#L3510) |
 
 ## Flags
 
@@ -50,7 +50,7 @@ Origin: <span class="label ref-origin ref-origin-vulkan">Vulkan</span>
 
 - Ultimate-origin introduction: [`3e62987235a8`](https://github.com/JKSunny/EternalJK/commit/3e62987235a820df146da90520b73b6fb3844bfe) in <span class="label ref-origin ref-origin-vulkan">Vulkan</span> (content authored `2023-09-03`, integrated `2023-09-03`)
 - TaystJK integration evidence: [`a435f91de078`](https://github.com/taysta/TaystJK/commit/a435f91de078325de74408f44053240448efe1b4)
-- Upstream registration evidence: [codemp/rd-vulkan/tr_init.cpp:794](https://github.com/JKSunny/EternalJK/blame/a4ab639bdfb9da2a3d63e9748eb57a72fb988552/codemp/rd-vulkan/tr_init.cpp#L794)
+- Upstream registration evidence: [codemp/rd-vulkan/tr_init.cpp:794](https://github.com/JKSunny/EternalJK/blame/362b28150b83e1d077137c5ea67ebb8a123629ba/codemp/rd-vulkan/tr_init.cpp#L794)
 - Attribution method: `introduction-commit-explicit-credit`
 - Attribution confidence: `high`
 
@@ -67,7 +67,7 @@ Authored dates come from the exact registration's first content commit, PR dates
 
 ## Evidence
 
-- registration: [codemp/rd-vulkan/tr_init.cpp:795](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/codemp/rd-vulkan/tr_init.cpp#L795) (Cvar_Get)
-- behavior: [codemp/rd-vulkan/tr_shader.cpp:3510](https://github.com/taysta/TaystJK/blame/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a/codemp/rd-vulkan/tr_shader.cpp#L3510)
+- registration: [codemp/rd-vulkan/tr_init.cpp:795](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/rd-vulkan/tr_init.cpp#L795) (Cvar_Get)
+- behavior: [codemp/rd-vulkan/tr_shader.cpp:3510](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/rd-vulkan/tr_shader.cpp#L3510)
 
-<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/c722804317d7f9e3ce78b05a7ba67cd8e09b0c0a"><code>c722804317d7</code></a> on 2026-09-28. Anything merged after that is not reflected here.</p>
+<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/f999cbc0912773164962d8be37737a31fe9ade8d"><code>f999cbc09127</code></a> on 2026-10-22. Anything merged after that is not reflected here.</p>
