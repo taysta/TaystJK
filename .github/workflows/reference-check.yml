@@ -14,7 +14,7 @@ on:
   schedule:
     - cron: "17 6 * * 1"
   # Catch a stale reference on release day rather than up to a week later. This only fires
-  # for releases a person publishes: build.yml makes `latest` with GITHUB_TOKEN, which does
+  # for releases a person publishes: build.yml makes `latest-build` with GITHUB_TOKEN, which does
   # not trigger other workflows, so it dispatches this one directly with the tag instead.
   release:
     types: [published]
@@ -63,7 +63,7 @@ jobs:
         id: source-drift
         if: >-
           github.event_name == 'schedule' ||
-          (github.event_name == 'workflow_dispatch' && inputs.release_tag == 'latest')
+          (github.event_name == 'workflow_dispatch' && inputs.release_tag == 'latest-build')
         run: |
           set -euo pipefail
           pinned_sha=$(jq -r '.source_commit' _data/reference-meta.json)

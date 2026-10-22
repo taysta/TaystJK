@@ -465,7 +465,7 @@ jobs:
           if [ "${{ github.event_name }}" == "push" ] && [ "${{ github.ref }}" == "refs/heads/beta" ]; then
             TAG="latest-beta"
           else
-            TAG="latest"
+            TAG="latest-build"
           fi
 
           LATEST_COMMIT=$(gh api repos/${{ github.repository }}/releases/tags/${TAG} --jq '.target_commitish' 2>/dev/null || echo "")
@@ -520,7 +520,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          gh release delete latest --cleanup-tag --yes 2>/dev/null || true
+          gh release delete latest-build --cleanup-tag --yes 2>/dev/null || true
 
           RELEASE_FILES=""
           for artifact_dir in artifacts/*; do
@@ -535,10 +535,11 @@ jobs:
             fi
           done
 
-          gh release create latest \
+          gh release create latest-build \
             --title "Latest Build" \
             --notes "${{ needs.generate-release-body.outputs.release_body }}" \
             --target ${{ github.sha }} \
+            --latest \
             $RELEASE_FILES
 
       # A release made with GITHUB_TOKEN does not fire `release` events for other
@@ -549,7 +550,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           gh workflow run reference-check.yml --repo ${{ github.repository }} \
-            --ref master -f release_tag=latest
+            --ref master -f release_tag=latest-build
 
   create-prerelease:
     if: github.event_name == 'push' && github.ref == 'refs/heads/beta'
