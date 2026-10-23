@@ -164,6 +164,22 @@ void G_CacheMapname( const vmCvar_t *mapname )
 	Com_sprintf( level.rawmapname, sizeof( level.rawmapname ), "maps/%s", mapname->string );
 }
 
+void G_SetTaystJKFlags( void)
+{
+    // example only: shows how to declare every taystjk feature flag. a mod should only
+    // set the flags for features it has actually implemented, implementing them is up to the mod
+    int taystJKFeatures = 0;
+    taystJKFeatures |= TAYSTJK_INFO_RGBSABERS;
+    taystJKFeatures |= TAYSTJK_INFO_BLACKSABERS;
+    taystJKFeatures |= TAYSTJK_INFO_FLIPKICK;
+    taystJKFeatures |= TAYSTJK_INFO_GRAPPLE;
+    taystJKFeatures |= TAYSTJK_INFO_FIXROLL_1;
+    taystJKFeatures |= TAYSTJK_INFO_FIXROLL_2;
+    taystJKFeatures |= TAYSTJK_INFO_FIXROLL_3;
+    taystJKFeatures |= TAYSTJK_INFO_SCORE_DEATHS;
+    trap->Cvar_Set("taystJKinfo", va("%d", taystJKFeatures));
+}
+
 /*
 ============
 G_InitGame
@@ -210,6 +226,8 @@ void G_InitGame( int levelTime, int randomSeed, int restart ) {
 	G_RegisterCvars();
 
 	G_ProcessIPBans();
+
+    G_SetTaystJKFlags();
 
 	G_InitMemory();
 

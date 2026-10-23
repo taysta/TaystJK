@@ -487,6 +487,7 @@ typedef struct clientPersistant_s {
 	qboolean	initialSpawn;		// the first spawn should be at a cool location
 	qboolean	predictItemPickup;	// based on cg_predictItems userinfo
 	qboolean	pmoveFixed;			//
+	int			taystJKcgflags;		// taystjk cgame capabilities from userinfo
 	char		netname[MAX_NETNAME];
 	char		netname_nocolor[MAX_NETNAME];
 	int			netnameTime;				// Last time the name was changed

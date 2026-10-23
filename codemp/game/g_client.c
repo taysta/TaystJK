@@ -2137,6 +2137,10 @@ qboolean ClientUserinfoChanged( int clientNum ) {
 	if ( !atoi( s ) )	client->pers.predictItemPickup = qfalse;
 	else				client->pers.predictItemPickup = qtrue;
 
+	// check the taystjk cgame capabilities
+	s = Info_ValueForKey( userinfo, "taystJKcgflags" );
+	client->pers.taystJKcgflags = atoi( s );
+
 	// set name
 	Q_strncpyz( oldname, client->pers.netname, sizeof( oldname ) );
 	s = Info_ValueForKey( userinfo, "name" );

@@ -462,6 +462,19 @@ extern int forceMasteryPoints[NUM_FORCE_MASTERY_LEVELS];
 
 extern int bgForcePowerCost[NUM_FORCE_POWERS][NUM_FORCE_POWER_LEVELS];
 
+//taystjk feature flags
+#define TAYSTJK_INFO_RGBSABERS              (1<<0)
+#define TAYSTJK_INFO_BLACKSABERS            (1<<1)
+#define TAYSTJK_INFO_FLIPKICK	            (1<<2)
+#define TAYSTJK_INFO_GRAPPLE	            (1<<3)
+#define TAYSTJK_INFO_FIXROLL_1	            (1<<4) // enable rolling while using force grip (1.0.0)
+#define TAYSTJK_INFO_FIXROLL_2	            (1<<5) // enable rolling while using force grip + chaining rolls
+#define TAYSTJK_INFO_FIXROLL_3	            (1<<6) // jk2 roll
+#define TAYSTJK_INFO_SCORE_DEATHS           (1<<7) // server sends a 15th per-client scoreboard int (deaths)
+
+//taystjk cgame capabilities, read from the client's taystJKcgflags userinfo
+#define TAYSTJK_CGFLAG_SCORE_DEATHS         (1<<0) // cgame can parse per-client deaths in the scores command
+
 // pmove->pm_flags
 #define	PMF_DUCKED			1
 #define	PMF_JUMP_HELD		2
