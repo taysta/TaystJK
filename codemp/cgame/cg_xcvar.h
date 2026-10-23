@@ -453,4 +453,7 @@ XCVAR_DEF(cg_pitchHudX, 						"320", 					NULL, 						CVAR_ARCHIVE )
 XCVAR_DEF(cg_pitchHudWidth, 					"10", 					NULL, 						CVAR_ARCHIVE )
 XCVAR_DEF(cg_pitchHudRgba, 						"204 204 204 204", 		CG_PitchHUDColorChange, 						CVAR_ARCHIVE )
 
+// TaystJK cgame capabilities advertised to the game through userinfo. Third-party cgame forks MUST use their own userinfo cvar and bit namespace.
+XCVAR_DEF( taystJKcgflags,						"0",					CG_UpdateTaystJKCGFlags,	CVAR_ROM|CVAR_USERINFO )
+
 #undef XCVAR_DEF

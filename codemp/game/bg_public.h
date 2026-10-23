@@ -556,6 +556,10 @@ extern int bgForcePowerCost[NUM_FORCE_POWERS][NUM_FORCE_POWER_LEVELS];
 #define TAYSTJK_INFO_FIXROLL_3	            (1<<6) // jk2 roll
 #define TAYSTJK_INFO_SCORE_DEATHS           (1<<7) // server sends a 15th per-client scoreboard int (deaths)
 
+// TaystJK cgame capabilities advertised to the game through userinfo.
+// Third-party cgame forks MUST use their own userinfo cvar and bit namespace.
+#define TAYSTJK_CGFLAG_SCORE_DEATHS         (1<<0)
+
 #define _SPPHYSICS 1
 #define _COOP 1
 typedef enum //movementstyle enum

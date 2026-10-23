@@ -283,6 +283,17 @@ typedef struct cvarTable_s {
 	#include "cg_xcvar.h"
 #undef XCVAR_DECL
 
+// TaystJK cgame capabilities advertised to the game through userinfo.
+// Third-party cgame forks MUST use their own userinfo cvar and bit namespace.
+static void CG_UpdateTaystJKCGFlags( void ) {
+	int flags = 0;
+
+	flags |= TAYSTJK_CGFLAG_SCORE_DEATHS;
+
+	if ( taystJKcgflags.integer != flags )
+		trap->Cvar_Set( "taystJKcgflags", va( "%i", flags ) );
+}
+
 static const cvarTable_t cvarTable[] = {
 	#define XCVAR_LIST
 		#include "cg_xcvar.h"
