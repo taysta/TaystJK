@@ -3334,6 +3334,9 @@ void CG_Shutdown( void )
 	CG_CloseLog( &cg.log.file);
 
 	CG_FreeCosmetics();
+
+	// don't advertise our capabilities to whatever cgame loads next
+	trap->Cvar_Set( "taystJKcgflags", "0" );
 }
 
 /*
