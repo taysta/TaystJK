@@ -1591,6 +1591,11 @@ void Com_WriteConfiguration( void ) {
 		return;
 	}
 
+	// the write folder changed and its config is not loaded yet: save after it is
+	if ( FS_ConfigPending() ) {
+		return;
+	}
+
 	if ( !(cvar_modifiedFlags & CVAR_ARCHIVE ) ) {
 		return;
 	}
