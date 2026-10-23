@@ -137,7 +137,7 @@ sections:
         items:
           - title: Feature flags
             url: /development/feature-flags/
-            description: Advertise the optional client-side features your game module supports, without being detected as JA+ or jaPRO.
+            description: Advertise the optional client-side features your game module supports, without being detected as JA+ or jaPRO, and read which ones each client can parse.
             cta: taystJKinfo spec
           - title: Contributing
             url: /development/contributing/

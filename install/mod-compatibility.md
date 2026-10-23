@@ -101,8 +101,11 @@ capabilities it supports by putting a bitmask in the `taystJKinfo` serverinfo ke
 the client reads on connect
 ([`cg_servercmds.c`](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/codemp/cgame/cg_servercmds.c#L246)).
 
-The mask covers RGB and black sabers, flipkick, grapple, and the three roll fixes. The
-bits are listed on [the feature flags spec](/TaystJK/development/feature-flags/#the-bits).
+The mask covers RGB and black sabers, flipkick, grapple, the three roll fixes, and
+server-supplied scoreboard deaths. The bits are listed on
+[the feature flags spec](/TaystJK/development/feature-flags/#the-bits). Scoreboard deaths
+also depends on the client advertising support in its `taystJKcgflags` userinfo, so the
+server only sends the extended scoreboard to clients that can read it.
 It does not bypass the `plugin` command's JA+/jaPRO check
 ([`cg_consolecmds.c`](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/codemp/cgame/cg_consolecmds.c#L1292)),
 or enable the team overlay's force column on other mods: that still requires jaPRO
