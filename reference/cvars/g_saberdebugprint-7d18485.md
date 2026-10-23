@@ -37,8 +37,8 @@ Controls `g_saberDebugPrint` in the game module. Consult the cited behavior read
 
 | Value | Meaning | Evidence |
 |:--|:--|:--|
-| `0` | Disabled. | [codemp/game/w_saber.c:201](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/game/w_saber.c#L201) |
-| `1` | Enabled. | [codemp/game/w_saber.c:201](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/game/w_saber.c#L201) |
+| `0` | Disabled. | [codemp/game/w_saber.c:201](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/game/w_saber.c#L201) |
+| `1` | Enabled. | [codemp/game/w_saber.c:201](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/game/w_saber.c#L201) |
 
 ## Flags
 
@@ -66,11 +66,11 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 ## Evidence
 
-- registration: [codemp/game/g_xcvar.h:135](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/game/g_xcvar.h#L135) (XCVAR_DEF); condition `!defined(FINAL_BUILD)`
-- behavior: [codemp/game/w_saber.c:201](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/game/w_saber.c#L201)
-- behavior: [codemp/game/w_saber.c:478](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/game/w_saber.c#L478)
-- behavior: [codemp/game/w_saber.c:4763](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/game/w_saber.c#L4763)
-- behavior: [codemp/game/w_saber.c:2024](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/game/w_saber.c#L2024)
-- behavior: [codemp/game/w_saber.c:2079](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/game/w_saber.c#L2079)
+- registration: [codemp/game/g_xcvar.h:135](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/game/g_xcvar.h#L135) (XCVAR_DEF); condition `!defined(FINAL_BUILD)`
+- behavior: [codemp/game/w_saber.c:201](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/game/w_saber.c#L201)
+- behavior: [codemp/game/w_saber.c:478](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/game/w_saber.c#L478)
+- behavior: [codemp/game/w_saber.c:4763](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/game/w_saber.c#L4763)
+- behavior: [codemp/game/w_saber.c:2024](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/game/w_saber.c#L2024)
+- behavior: [codemp/game/w_saber.c:2079](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/game/w_saber.c#L2079)
 
-<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/f999cbc0912773164962d8be37737a31fe9ade8d"><code>f999cbc09127</code></a> on 2026-10-22. Anything merged after that is not reflected here.</p>
+<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/76943f046bbbdc23d67323b838cb1c4c1e3fba0e"><code>76943f046bbb</code></a> on 2026-10-23. Anything merged after that is not reflected here.</p>

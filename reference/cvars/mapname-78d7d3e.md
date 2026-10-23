@@ -118,17 +118,17 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 ## Evidence
 
-- registration: [codemp/game/ai_wpnav.c:3288](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/game/ai_wpnav.c#L3288) (Cvar_Register)
-- registration: [codemp/game/ai_wpnav.c:3730](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/game/ai_wpnav.c#L3730) (Cvar_Register)
-- registration: [codemp/game/g_bot.c:242](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/game/g_bot.c#L242) (Cvar_Register)
-- registration: [codemp/game/g_main.c:410](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/game/g_main.c#L410) (Cvar_Register)
-- registration: [codemp/game/g_main.c:3372](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/game/g_main.c#L3372) (Cvar_Register)
-- registration: [codemp/game/g_saga.c:163](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/game/g_saga.c#L163) (Cvar_Register)
-- registration: [codemp/server/sv_init.cpp:980](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/server/sv_init.cpp#L980) (Cvar_Get)
-- behavior: [codemp/game/ai_wpnav.c:3309](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/game/ai_wpnav.c#L3309)
-- behavior: [codemp/game/g_account.c:1746](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/game/g_account.c#L1746)
-- behavior: [codemp/client/cl_discordrpc.cpp:137](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/client/cl_discordrpc.cpp#L137)
-- behavior: [codemp/cgame/cg_servercmds.c:155](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/cgame/cg_servercmds.c#L155)
-- behavior: [codemp/game/g_account.c:1813](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/game/g_account.c#L1813)
+- registration: [codemp/game/ai_wpnav.c:3288](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/game/ai_wpnav.c#L3288) (Cvar_Register)
+- registration: [codemp/game/ai_wpnav.c:3730](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/game/ai_wpnav.c#L3730) (Cvar_Register)
+- registration: [codemp/game/g_bot.c:242](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/game/g_bot.c#L242) (Cvar_Register)
+- registration: [codemp/game/g_main.c:410](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/game/g_main.c#L410) (Cvar_Register)
+- registration: [codemp/game/g_main.c:3372](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/game/g_main.c#L3372) (Cvar_Register)
+- registration: [codemp/game/g_saga.c:163](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/game/g_saga.c#L163) (Cvar_Register)
+- registration: [codemp/server/sv_init.cpp:980](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/server/sv_init.cpp#L980) (Cvar_Get)
+- behavior: [codemp/game/ai_wpnav.c:3309](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/game/ai_wpnav.c#L3309)
+- behavior: [codemp/game/g_account.c:1746](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/game/g_account.c#L1746)
+- behavior: [codemp/client/cl_discordrpc.cpp:137](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/client/cl_discordrpc.cpp#L137)
+- behavior: [codemp/cgame/cg_servercmds.c:155](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/cgame/cg_servercmds.c#L155)
+- behavior: [codemp/game/g_account.c:1813](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/game/g_account.c#L1813)
 
-<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/f999cbc0912773164962d8be37737a31fe9ade8d"><code>f999cbc09127</code></a> on 2026-10-22. Anything merged after that is not reflected here.</p>
+<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/76943f046bbbdc23d67323b838cb1c4c1e3fba0e"><code>76943f046bbb</code></a> on 2026-10-23. Anything merged after that is not reflected here.</p>

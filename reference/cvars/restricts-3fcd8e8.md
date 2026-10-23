@@ -38,17 +38,17 @@ Bitmask of client-side restrictions a jaPRO server advertises in its server info
 
 | Value | Meaning | Evidence |
 |:--|:--|:--|
-| `1` | Disable the client-side strafe bot in race mode. | [codemp/game/bg_pmove.c:15276](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/game/bg_pmove.c#L15276) |
-| `2` | No effect: defined but never read. | [codemp/cgame/cg_local.h:119](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/cgame/cg_local.h#L119) |
-| `4` | Hide the lead indicator. | [codemp/cgame/cg_draw.c:12051](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/cgame/cg_draw.c#L12051) |
-| `8` | No effect: defined but never read. | [codemp/cgame/cg_local.h:121](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/cgame/cg_local.h#L121) |
-| `16` | Force `cl_yawspeed` to 0 while racing on a jaPRO server. | [codemp/cgame/cg_view.c:2846](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/cgame/cg_view.c#L2846) |
-| `32` | No effect: defined but never read. | [codemp/cgame/cg_local.h:123](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/cgame/cg_local.h#L123) |
-| `64` | Hide player name labels. | [codemp/cgame/cg_draw.c:12152](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/cgame/cg_draw.c#L12152) |
-| `128` | Disable the `flipkick` command. | [codemp/cgame/cg_consolecmds.c:1002](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/cgame/cg_consolecmds.c#L1002) |
-| `256` | Hide other players' strafe trails. | [codemp/cgame/cg_snapshot.c:741](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/cgame/cg_snapshot.c#L741) |
-| `512` | Disable `/do`, and make `lowjump` and the `+duck` no-roll bind fall back to `wait`-based sequences instead of the client's timed follow-up. | [codemp/cgame/cg_consolecmds.c:786](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/cgame/cg_consolecmds.c#L786) |
-| `1024` | Reset `cg_thirdPersonAngle` to 0 while moving in a race on a jaPRO server. | [codemp/cgame/cg_view.c:2868](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/cgame/cg_view.c#L2868) |
+| `1` | Disable the client-side strafe bot in race mode. | [codemp/game/bg_pmove.c:15276](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/game/bg_pmove.c#L15276) |
+| `2` | No effect: defined but never read. | [codemp/cgame/cg_local.h:119](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/cgame/cg_local.h#L119) |
+| `4` | Hide the lead indicator. | [codemp/cgame/cg_draw.c:12051](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/cgame/cg_draw.c#L12051) |
+| `8` | No effect: defined but never read. | [codemp/cgame/cg_local.h:121](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/cgame/cg_local.h#L121) |
+| `16` | Force `cl_yawspeed` to 0 while racing on a jaPRO server. | [codemp/cgame/cg_view.c:2846](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/cgame/cg_view.c#L2846) |
+| `32` | No effect: defined but never read. | [codemp/cgame/cg_local.h:123](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/cgame/cg_local.h#L123) |
+| `64` | Hide player name labels. | [codemp/cgame/cg_draw.c:12152](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/cgame/cg_draw.c#L12152) |
+| `128` | Disable the `flipkick` command. | [codemp/cgame/cg_consolecmds.c:1002](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/cgame/cg_consolecmds.c#L1002) |
+| `256` | Hide other players' strafe trails. | [codemp/cgame/cg_snapshot.c:741](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/cgame/cg_snapshot.c#L741) |
+| `512` | Disable `/do`, and make `lowjump` and the `+duck` no-roll bind fall back to `wait`-based sequences instead of the client's timed follow-up. | [codemp/cgame/cg_consolecmds.c:786](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/cgame/cg_consolecmds.c#L786) |
+| `1024` | Reset `cg_thirdPersonAngle` to 0 while moving in a race on a jaPRO server. | [codemp/cgame/cg_view.c:2868](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/cgame/cg_view.c#L2868) |
 
 ## Flags
 
@@ -94,11 +94,11 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 ## Evidence
 
-- registration: [codemp/game/g_xcvar.h:316](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/game/g_xcvar.h#L316) (XCVAR_DEF)
-- behavior: [lib/SDL2/include/SDL_render.h:853](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/lib/SDL2/include/SDL_render.h#L853)
-- behavior: [codemp/cgame/cg_consolecmds.c:786](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/cgame/cg_consolecmds.c#L786)
-- behavior: [codemp/cgame/cg_consolecmds.c:1002](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/cgame/cg_consolecmds.c#L1002)
-- behavior: [codemp/cgame/cg_consolecmds.c:1020](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/cgame/cg_consolecmds.c#L1020)
-- behavior: [codemp/cgame/cg_consolecmds.c:1032](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/cgame/cg_consolecmds.c#L1032)
+- registration: [codemp/game/g_xcvar.h:316](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/game/g_xcvar.h#L316) (XCVAR_DEF)
+- behavior: [lib/SDL2/include/SDL_render.h:853](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/lib/SDL2/include/SDL_render.h#L853)
+- behavior: [codemp/cgame/cg_consolecmds.c:786](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/cgame/cg_consolecmds.c#L786)
+- behavior: [codemp/cgame/cg_consolecmds.c:1002](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/cgame/cg_consolecmds.c#L1002)
+- behavior: [codemp/cgame/cg_consolecmds.c:1020](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/cgame/cg_consolecmds.c#L1020)
+- behavior: [codemp/cgame/cg_consolecmds.c:1032](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/cgame/cg_consolecmds.c#L1032)
 
-<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/f999cbc0912773164962d8be37737a31fe9ade8d"><code>f999cbc09127</code></a> on 2026-10-22. Anything merged after that is not reflected here.</p>
+<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/76943f046bbbdc23d67323b838cb1c4c1e3fba0e"><code>76943f046bbb</code></a> on 2026-10-23. Anything merged after that is not reflected here.</p>

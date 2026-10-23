@@ -85,12 +85,12 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 ## Evidence
 
-- registration: [codemp/rd-dedicated/tr_init.cpp:345](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/rd-dedicated/tr_init.cpp#L345) (Cvar_Get)
-- registration: [shared/sdl/sdl_window.cpp:807](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/shared/sdl/sdl_window.cpp#L807) (Cvar_Get)
-- behavior: [shared/sdl/sdl_window.cpp:821](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/shared/sdl/sdl_window.cpp#L821)
-- behavior: [shared/sdl/sdl_window.cpp:824](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/shared/sdl/sdl_window.cpp#L824)
-- behavior: [shared/sdl/sdl_window.cpp:826](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/shared/sdl/sdl_window.cpp#L826)
-- behavior: [codemp/ui/ui_main.c:6216](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/ui/ui_main.c#L6216)
-- behavior: [codemp/ui/ui_main.c:6295](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/ui/ui_main.c#L6295)
+- registration: [codemp/rd-dedicated/tr_init.cpp:345](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/rd-dedicated/tr_init.cpp#L345) (Cvar_Get)
+- registration: [shared/sdl/sdl_window.cpp:807](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/shared/sdl/sdl_window.cpp#L807) (Cvar_Get)
+- behavior: [shared/sdl/sdl_window.cpp:821](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/shared/sdl/sdl_window.cpp#L821)
+- behavior: [shared/sdl/sdl_window.cpp:824](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/shared/sdl/sdl_window.cpp#L824)
+- behavior: [shared/sdl/sdl_window.cpp:826](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/shared/sdl/sdl_window.cpp#L826)
+- behavior: [codemp/ui/ui_main.c:6216](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/ui/ui_main.c#L6216)
+- behavior: [codemp/ui/ui_main.c:6295](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/ui/ui_main.c#L6295)
 
-<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/f999cbc0912773164962d8be37737a31fe9ade8d"><code>f999cbc09127</code></a> on 2026-10-22. Anything merged after that is not reflected here.</p>
+<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/76943f046bbbdc23d67323b838cb1c4c1e3fba0e"><code>76943f046bbb</code></a> on 2026-10-23. Anything merged after that is not reflected here.</p>

@@ -40,8 +40,8 @@ Menu-only state the UI keeps while reading server info. `UI_UpdateCurrentServerI
 
 | Value | Meaning | Evidence |
 |:--|:--|:--|
-| `0` | The server does not advertise account registration, or its info has not been read yet. | [codemp/ui/ui_main.c:631](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/ui/ui_main.c#L631) |
-| `1` | The connected jaPRO server accepts account registration. | [codemp/ui/ui_main.c:662](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/ui/ui_main.c#L662) |
+| `0` | The server does not advertise account registration, or its info has not been read yet. | [codemp/ui/ui_main.c:631](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/ui/ui_main.c#L631) |
+| `1` | The connected jaPRO server accepts account registration. | [codemp/ui/ui_main.c:662](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/ui/ui_main.c#L662) |
 
 ## Flags
 
@@ -77,7 +77,7 @@ Authored dates come from the exact registration's first content commit, PR dates
 
 ## Evidence
 
-- registration: [codemp/ui/ui_main.c:631](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/ui/ui_main.c#L631) (implicit Cvar_Set)
-- registration: [codemp/ui/ui_main.c:662](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/ui/ui_main.c#L662) (implicit Cvar_Set)
+- registration: [codemp/ui/ui_main.c:631](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/ui/ui_main.c#L631) (implicit Cvar_Set)
+- registration: [codemp/ui/ui_main.c:662](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/ui/ui_main.c#L662) (implicit Cvar_Set)
 
-<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/f999cbc0912773164962d8be37737a31fe9ade8d"><code>f999cbc09127</code></a> on 2026-10-22. Anything merged after that is not reflected here.</p>
+<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/76943f046bbbdc23d67323b838cb1c4c1e3fba0e"><code>76943f046bbb</code></a> on 2026-10-23. Anything merged after that is not reflected here.</p>

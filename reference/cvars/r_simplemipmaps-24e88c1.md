@@ -37,8 +37,8 @@ Controls `r_simpleMipMaps` in the renderer module. Consult the cited behavior re
 
 | Value | Meaning | Evidence |
 |:--|:--|:--|
-| `0` | Disabled. | [codemp/rd-vanilla/tr_image.cpp:436](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/rd-vanilla/tr_image.cpp#L436) |
-| `1` | Enabled. | [codemp/rd-vanilla/tr_image.cpp:436](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/rd-vanilla/tr_image.cpp#L436) |
+| `0` | Disabled. | [codemp/rd-vanilla/tr_image.cpp:436](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/rd-vanilla/tr_image.cpp#L436) |
+| `1` | Enabled. | [codemp/rd-vanilla/tr_image.cpp:436](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/rd-vanilla/tr_image.cpp#L436) |
 
 ## Flags
 
@@ -86,13 +86,13 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 ## Evidence
 
-- registration: [codemp/rd-dedicated/tr_init.cpp:351](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/rd-dedicated/tr_init.cpp#L351) (Cvar_Get)
-- registration: [codemp/rd-rend2/tr_init.cpp:1528](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/rd-rend2/tr_init.cpp#L1528) (Cvar_Get)
-- registration: [codemp/rd-vanilla/tr_init.cpp:1660](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/rd-vanilla/tr_init.cpp#L1660) (Cvar_Get)
-- registration: [codemp/rd-vulkan/tr_init.cpp:812](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/rd-vulkan/tr_init.cpp#L812) (Cvar_Get)
-- behavior: [codemp/rd-vanilla/tr_image.cpp:436](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/rd-vanilla/tr_image.cpp#L436)
-- behavior: [codemp/rd-vulkan/vk_image_process.cpp:269](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/rd-vulkan/vk_image_process.cpp#L269)
-- behavior: [shared/rd-rend2/tr_image.cpp:1984](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/shared/rd-rend2/tr_image.cpp#L1984)
-- behavior: [shared/rd-rend2/tr_image.cpp:2475](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/shared/rd-rend2/tr_image.cpp#L2475)
+- registration: [codemp/rd-dedicated/tr_init.cpp:351](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/rd-dedicated/tr_init.cpp#L351) (Cvar_Get)
+- registration: [codemp/rd-rend2/tr_init.cpp:1528](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/rd-rend2/tr_init.cpp#L1528) (Cvar_Get)
+- registration: [codemp/rd-vanilla/tr_init.cpp:1660](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/rd-vanilla/tr_init.cpp#L1660) (Cvar_Get)
+- registration: [codemp/rd-vulkan/tr_init.cpp:812](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/rd-vulkan/tr_init.cpp#L812) (Cvar_Get)
+- behavior: [codemp/rd-vanilla/tr_image.cpp:436](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/rd-vanilla/tr_image.cpp#L436)
+- behavior: [codemp/rd-vulkan/vk_image_process.cpp:269](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/rd-vulkan/vk_image_process.cpp#L269)
+- behavior: [shared/rd-rend2/tr_image.cpp:1984](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/shared/rd-rend2/tr_image.cpp#L1984)
+- behavior: [shared/rd-rend2/tr_image.cpp:2475](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/shared/rd-rend2/tr_image.cpp#L2475)
 
-<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/f999cbc0912773164962d8be37737a31fe9ade8d"><code>f999cbc09127</code></a> on 2026-10-22. Anything merged after that is not reflected here.</p>
+<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/76943f046bbbdc23d67323b838cb1c4c1e3fba0e"><code>76943f046bbb</code></a> on 2026-10-23. Anything merged after that is not reflected here.</p>

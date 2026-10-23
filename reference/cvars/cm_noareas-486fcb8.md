@@ -37,7 +37,7 @@ Controls `cm_noAreas` in the engine-shared module. Consult the cited behavior re
 
 | Value | Meaning | Evidence |
 |:--|:--|:--|
-| `-1` | Selects the code path tested for value -1. | [codemp/qcommon/cm_test.cpp:448](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/qcommon/cm_test.cpp#L448) |
+| `-1` | Selects the code path tested for value -1. | [codemp/qcommon/cm_test.cpp:448](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/qcommon/cm_test.cpp#L448) |
 
 ## Flags
 
@@ -63,8 +63,8 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 ## Evidence
 
-- registration: [codemp/qcommon/cm_load.cpp:634](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/qcommon/cm_load.cpp#L634) (Cvar_Get); condition `!defined(BSPC)`
-- behavior: [codemp/qcommon/cm_test.cpp:405](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/qcommon/cm_test.cpp#L405)
-- behavior: [codemp/qcommon/cm_test.cpp:448](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/qcommon/cm_test.cpp#L448)
+- registration: [codemp/qcommon/cm_load.cpp:634](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/qcommon/cm_load.cpp#L634) (Cvar_Get); condition `!defined(BSPC)`
+- behavior: [codemp/qcommon/cm_test.cpp:405](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/qcommon/cm_test.cpp#L405)
+- behavior: [codemp/qcommon/cm_test.cpp:448](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/qcommon/cm_test.cpp#L448)
 
-<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/f999cbc0912773164962d8be37737a31fe9ade8d"><code>f999cbc09127</code></a> on 2026-10-22. Anything merged after that is not reflected here.</p>
+<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/76943f046bbbdc23d67323b838cb1c4c1e3fba0e"><code>76943f046bbb</code></a> on 2026-10-23. Anything merged after that is not reflected here.</p>

@@ -40,7 +40,7 @@ No discrete value list is enforced or documented in the inspected source.
 
 ## Enforced ranges
 
-- `0.1f` through `1` (numeric; Cvar_CheckRange). Evidence: [codemp/rd-vulkan/tr_init.cpp:952](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/rd-vulkan/tr_init.cpp#L952)
+- `0.1f` through `1` (numeric; Cvar_CheckRange). Evidence: [codemp/rd-vulkan/tr_init.cpp:952](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/rd-vulkan/tr_init.cpp#L952)
 
 ## Flags
 
@@ -69,11 +69,11 @@ Authored dates come from the exact registration's first content commit, PR dates
 
 ## Evidence
 
-- registration: [codemp/rd-vulkan/tr_init.cpp:951](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/rd-vulkan/tr_init.cpp#L951) (Cvar_Get); condition `defined(USE_PMLIGHT)`
-- behavior: [codemp/rd-vulkan/tr_scene.cpp:315](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/rd-vulkan/tr_scene.cpp#L315)
-- behavior: [codemp/rd-vulkan/tr_scene.cpp:316](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/rd-vulkan/tr_scene.cpp#L316)
-- behavior: [codemp/rd-vulkan/tr_scene.cpp:317](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/rd-vulkan/tr_scene.cpp#L317)
-- behavior: [codemp/rd-vulkan/tr_scene.cpp:362](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/rd-vulkan/tr_scene.cpp#L362)
-- behavior: [codemp/rd-vulkan/tr_scene.cpp:363](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/rd-vulkan/tr_scene.cpp#L363)
+- registration: [codemp/rd-vulkan/tr_init.cpp:951](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/rd-vulkan/tr_init.cpp#L951) (Cvar_Get); condition `defined(USE_PMLIGHT)`
+- behavior: [codemp/rd-vulkan/tr_scene.cpp:315](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/rd-vulkan/tr_scene.cpp#L315)
+- behavior: [codemp/rd-vulkan/tr_scene.cpp:316](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/rd-vulkan/tr_scene.cpp#L316)
+- behavior: [codemp/rd-vulkan/tr_scene.cpp:317](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/rd-vulkan/tr_scene.cpp#L317)
+- behavior: [codemp/rd-vulkan/tr_scene.cpp:362](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/rd-vulkan/tr_scene.cpp#L362)
+- behavior: [codemp/rd-vulkan/tr_scene.cpp:363](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/rd-vulkan/tr_scene.cpp#L363)
 
-<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/f999cbc0912773164962d8be37737a31fe9ade8d"><code>f999cbc09127</code></a> on 2026-10-22. Anything merged after that is not reflected here.</p>
+<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/76943f046bbbdc23d67323b838cb1c4c1e3fba0e"><code>76943f046bbb</code></a> on 2026-10-23. Anything merged after that is not reflected here.</p>

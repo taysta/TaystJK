@@ -37,7 +37,7 @@ Controls `net_enabled` in the engine-shared module. Consult the cited behavior r
 
 | Value | Meaning | Evidence |
 |:--|:--|:--|
-| `0x01` | Enables the `NET_ENABLEV4` code path. | [codemp/qcommon/qcommon.h:116](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/qcommon/qcommon.h#L116) |
+| `0x01` | Enables the `NET_ENABLEV4` code path. | [codemp/qcommon/qcommon.h:116](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/qcommon/qcommon.h#L116) |
 
 ## Flags
 
@@ -79,11 +79,11 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 ## Evidence
 
-- registration: [codemp/qcommon/net_ip.cpp:874](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/qcommon/net_ip.cpp#L874) (Cvar_Get)
-- behavior: [codemp/qcommon/net_ip.cpp:844](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/qcommon/net_ip.cpp#L844)
-- behavior: [codemp/qcommon/net_ip.cpp:928](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/qcommon/net_ip.cpp#L928)
-- behavior: [codemp/qcommon/net_ip.cpp:971](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/qcommon/net_ip.cpp#L971)
-- behavior: [codemp/qcommon/net_ip.cpp:875](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/qcommon/net_ip.cpp#L875)
-- behavior: [codemp/qcommon/net_ip.cpp:876](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/qcommon/net_ip.cpp#L876)
+- registration: [codemp/qcommon/net_ip.cpp:874](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/qcommon/net_ip.cpp#L874) (Cvar_Get)
+- behavior: [codemp/qcommon/net_ip.cpp:844](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/qcommon/net_ip.cpp#L844)
+- behavior: [codemp/qcommon/net_ip.cpp:928](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/qcommon/net_ip.cpp#L928)
+- behavior: [codemp/qcommon/net_ip.cpp:971](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/qcommon/net_ip.cpp#L971)
+- behavior: [codemp/qcommon/net_ip.cpp:875](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/qcommon/net_ip.cpp#L875)
+- behavior: [codemp/qcommon/net_ip.cpp:876](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/qcommon/net_ip.cpp#L876)
 
-<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/f999cbc0912773164962d8be37737a31fe9ade8d"><code>f999cbc09127</code></a> on 2026-10-22. Anything merged after that is not reflected here.</p>
+<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/76943f046bbbdc23d67323b838cb1c4c1e3fba0e"><code>76943f046bbb</code></a> on 2026-10-23. Anything merged after that is not reflected here.</p>

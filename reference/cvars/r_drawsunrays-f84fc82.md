@@ -37,8 +37,8 @@ Controls `r_drawSunRays` in the renderer module. Consult the cited behavior read
 
 | Value | Meaning | Evidence |
 |:--|:--|:--|
-| `0` | Disabled. | [codemp/rd-rend2/tr_init.cpp:1735](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/rd-rend2/tr_init.cpp#L1735) |
-| `1` | Enabled. | [codemp/rd-rend2/tr_init.cpp:1735](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/rd-rend2/tr_init.cpp#L1735) |
+| `0` | Disabled. | [codemp/rd-rend2/tr_init.cpp:1735](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/rd-rend2/tr_init.cpp#L1735) |
+| `1` | Enabled. | [codemp/rd-rend2/tr_init.cpp:1735](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/rd-rend2/tr_init.cpp#L1735) |
 
 ## Flags
 
@@ -78,11 +78,11 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 ## Evidence
 
-- registration: [codemp/rd-rend2/tr_init.cpp:1580](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/rd-rend2/tr_init.cpp#L1580) (Cvar_Get)
-- behavior: [codemp/rd-rend2/tr_init.cpp:1735](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/rd-rend2/tr_init.cpp#L1735)
-- behavior: [codemp/rd-rend2/tr_init.cpp:1741](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/rd-rend2/tr_init.cpp#L1741)
-- behavior: [shared/rd-rend2/tr_backend.cpp:2243](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/shared/rd-rend2/tr_backend.cpp#L2243)
-- behavior: [shared/rd-rend2/tr_backend.cpp:3266](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/shared/rd-rend2/tr_backend.cpp#L3266)
-- behavior: [shared/rd-rend2/tr_fbo.cpp:577](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/shared/rd-rend2/tr_fbo.cpp#L577)
+- registration: [codemp/rd-rend2/tr_init.cpp:1580](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/rd-rend2/tr_init.cpp#L1580) (Cvar_Get)
+- behavior: [codemp/rd-rend2/tr_init.cpp:1735](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/rd-rend2/tr_init.cpp#L1735)
+- behavior: [codemp/rd-rend2/tr_init.cpp:1741](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/rd-rend2/tr_init.cpp#L1741)
+- behavior: [shared/rd-rend2/tr_backend.cpp:2243](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/shared/rd-rend2/tr_backend.cpp#L2243)
+- behavior: [shared/rd-rend2/tr_backend.cpp:3266](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/shared/rd-rend2/tr_backend.cpp#L3266)
+- behavior: [shared/rd-rend2/tr_fbo.cpp:577](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/shared/rd-rend2/tr_fbo.cpp#L577)
 
-<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/f999cbc0912773164962d8be37737a31fe9ade8d"><code>f999cbc09127</code></a> on 2026-10-22. Anything merged after that is not reflected here.</p>
+<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/76943f046bbbdc23d67323b838cb1c4c1e3fba0e"><code>76943f046bbb</code></a> on 2026-10-23. Anything merged after that is not reflected here.</p>

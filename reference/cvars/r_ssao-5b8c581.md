@@ -37,7 +37,7 @@ Controls `r_ssao` in the renderer module. Consult the cited behavior reads befor
 
 | Value | Meaning | Evidence |
 |:--|:--|:--|
-| `2` | Selects the code path tested for value 2. | [shared/rd-rend2/tr_backend.cpp:3119](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/shared/rd-rend2/tr_backend.cpp#L3119) |
+| `2` | Selects the code path tested for value 2. | [shared/rd-rend2/tr_backend.cpp:3119](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/shared/rd-rend2/tr_backend.cpp#L3119) |
 
 ## Flags
 
@@ -79,11 +79,11 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 ## Evidence
 
-- registration: [codemp/rd-rend2/tr_init.cpp:1556](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/rd-rend2/tr_init.cpp#L1556) (Cvar_Get)
-- behavior: [shared/rd-rend2/tr_backend.cpp:2217](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/shared/rd-rend2/tr_backend.cpp#L2217)
-- behavior: [shared/rd-rend2/tr_backend.cpp:2288](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/shared/rd-rend2/tr_backend.cpp#L2288)
-- behavior: [shared/rd-rend2/tr_backend.cpp:3107](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/shared/rd-rend2/tr_backend.cpp#L3107)
-- behavior: [shared/rd-rend2/tr_backend.cpp:3119](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/shared/rd-rend2/tr_backend.cpp#L3119)
-- behavior: [shared/rd-rend2/tr_backend.cpp:3279](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/shared/rd-rend2/tr_backend.cpp#L3279)
+- registration: [codemp/rd-rend2/tr_init.cpp:1556](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/rd-rend2/tr_init.cpp#L1556) (Cvar_Get)
+- behavior: [shared/rd-rend2/tr_backend.cpp:2217](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/shared/rd-rend2/tr_backend.cpp#L2217)
+- behavior: [shared/rd-rend2/tr_backend.cpp:2288](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/shared/rd-rend2/tr_backend.cpp#L2288)
+- behavior: [shared/rd-rend2/tr_backend.cpp:3107](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/shared/rd-rend2/tr_backend.cpp#L3107)
+- behavior: [shared/rd-rend2/tr_backend.cpp:3119](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/shared/rd-rend2/tr_backend.cpp#L3119)
+- behavior: [shared/rd-rend2/tr_backend.cpp:3279](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/shared/rd-rend2/tr_backend.cpp#L3279)
 
-<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/f999cbc0912773164962d8be37737a31fe9ade8d"><code>f999cbc09127</code></a> on 2026-10-22. Anything merged after that is not reflected here.</p>
+<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/76943f046bbbdc23d67323b838cb1c4c1e3fba0e"><code>76943f046bbb</code></a> on 2026-10-23. Anything merged after that is not reflected here.</p>

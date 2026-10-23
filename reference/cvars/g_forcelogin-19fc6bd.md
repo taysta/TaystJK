@@ -38,9 +38,9 @@ description: "1=Force players to login in order to be ingame. 2=also block them 
 
 | Value | Meaning | Evidence |
 |:--|:--|:--|
-| `1` | Force players to login in order to be ingame. | [docs/japro_docs.md:126](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/docs/japro_docs.md#L126) |
-| `2` | Also block them from chatting until logging in. | [docs/japro_docs.md:126](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/docs/japro_docs.md#L126) |
-| `3` | Also block them from renaming until logging in. | [docs/japro_docs.md:126](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/docs/japro_docs.md#L126) |
+| `1` | Force players to login in order to be ingame. | [docs/japro_docs.md:126](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/docs/japro_docs.md#L126) |
+| `2` | Also block them from chatting until logging in. | [docs/japro_docs.md:126](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/docs/japro_docs.md#L126) |
+| `3` | Also block them from renaming until logging in. | [docs/japro_docs.md:126](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/docs/japro_docs.md#L126) |
 
 ## Flags
 
@@ -78,12 +78,12 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 ## Evidence
 
-- registration: [codemp/game/g_xcvar.h:325](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/game/g_xcvar.h#L325) (XCVAR_DEF)
-- behavior: [codemp/game/g_active.c:3785](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/game/g_active.c#L3785)
-- behavior: [codemp/game/g_client.c:2520](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/game/g_client.c#L2520)
-- behavior: [codemp/game/g_cmds.c:1231](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/game/g_cmds.c#L1231)
-- behavior: [codemp/game/g_cmds.c:1247](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/game/g_cmds.c#L1247)
-- behavior: [codemp/game/g_cmds.c:1367](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/game/g_cmds.c#L1367)
-- documentation: [docs/japro_docs.md:126](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/docs/japro_docs.md#L126)
+- registration: [codemp/game/g_xcvar.h:325](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/game/g_xcvar.h#L325) (XCVAR_DEF)
+- behavior: [codemp/game/g_active.c:3785](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/game/g_active.c#L3785)
+- behavior: [codemp/game/g_client.c:2520](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/game/g_client.c#L2520)
+- behavior: [codemp/game/g_cmds.c:1231](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/game/g_cmds.c#L1231)
+- behavior: [codemp/game/g_cmds.c:1247](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/game/g_cmds.c#L1247)
+- behavior: [codemp/game/g_cmds.c:1367](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/game/g_cmds.c#L1367)
+- documentation: [docs/japro_docs.md:126](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/docs/japro_docs.md#L126)
 
-<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/f999cbc0912773164962d8be37737a31fe9ade8d"><code>f999cbc09127</code></a> on 2026-10-22. Anything merged after that is not reflected here.</p>
+<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/76943f046bbbdc23d67323b838cb1c4c1e3fba0e"><code>76943f046bbb</code></a> on 2026-10-23. Anything merged after that is not reflected here.</p>

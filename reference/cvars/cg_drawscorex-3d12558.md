@@ -29,7 +29,7 @@ Horizontal offset for score counter on HUD
 | Derivation | `documented` |
 | Confidence | `high` |
 | Added | 2026-06-01 in [`4e5065dab`](https://github.com/taysta/TaystJK/commit/4e5065dabda1ea838fc9aa8bb9eaccaa161770fc) ([how to compare this against your build](/TaystJK/features/whats-new/#how-to-tell-what-your-build-has)) |
-| In-game xdocs | Yes: [codemp/ui/ui_xdocs.h:272](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/ui/ui_xdocs.h#L272) |
+| In-game xdocs | Yes: [codemp/ui/ui_xdocs.h:272](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/ui/ui_xdocs.h#L272) |
 | In-game menu | No |
 
 ## Values
@@ -61,10 +61,10 @@ Authored dates come from the exact registration's first content commit, PR dates
 
 ## Evidence
 
-- registration: [codemp/cgame/cg_xcvar.h:85](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/cgame/cg_xcvar.h#L85) (XCVAR_DEF)
-- behavior: [codemp/cgame/cg_draw.c:2220](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/cgame/cg_draw.c#L2220)
-- behavior: [codemp/cgame/cg_draw.c:2229](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/cgame/cg_draw.c#L2229)
-- behavior: [codemp/ui/ui_xdocs.h:272](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/ui/ui_xdocs.h#L272)
-- documentation: [codemp/ui/ui_xdocs.h:272](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/ui/ui_xdocs.h#L272)
+- registration: [codemp/cgame/cg_xcvar.h:85](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/cgame/cg_xcvar.h#L85) (XCVAR_DEF)
+- behavior: [codemp/cgame/cg_draw.c:2220](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/cgame/cg_draw.c#L2220)
+- behavior: [codemp/cgame/cg_draw.c:2229](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/cgame/cg_draw.c#L2229)
+- behavior: [codemp/ui/ui_xdocs.h:272](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/ui/ui_xdocs.h#L272)
+- documentation: [codemp/ui/ui_xdocs.h:272](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/ui/ui_xdocs.h#L272)
 
-<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/f999cbc0912773164962d8be37737a31fe9ade8d"><code>f999cbc09127</code></a> on 2026-10-22. Anything merged after that is not reflected here.</p>
+<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/76943f046bbbdc23d67323b838cb1c4c1e3fba0e"><code>76943f046bbb</code></a> on 2026-10-23. Anything merged after that is not reflected here.</p>

@@ -38,8 +38,8 @@ Snapshot-based duel isolation
 
 | Value | Meaning | Evidence |
 |:--|:--|:--|
-| `0` | Disabled. | [codemp/server/duel_cull.cpp:103](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/server/duel_cull.cpp#L103) |
-| `1` | Enabled. | [codemp/server/duel_cull.cpp:103](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/server/duel_cull.cpp#L103) |
+| `0` | Disabled. | [codemp/server/duel_cull.cpp:103](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/server/duel_cull.cpp#L103) |
+| `1` | Enabled. | [codemp/server/duel_cull.cpp:103](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/server/duel_cull.cpp#L103) |
 
 ## Flags
 
@@ -68,8 +68,8 @@ Authored dates come from the exact registration's first content commit, PR dates
 
 ## Evidence
 
-- registration: [codemp/server/sv_init.cpp:1063](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/server/sv_init.cpp#L1063) (Cvar_Get)
-- behavior: [codemp/server/duel_cull.cpp:103](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/server/duel_cull.cpp#L103)
-- behavior: [codemp/server/duel_cull.cpp:100](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/server/duel_cull.cpp#L100)
+- registration: [codemp/server/sv_init.cpp:1063](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/server/sv_init.cpp#L1063) (Cvar_Get)
+- behavior: [codemp/server/duel_cull.cpp:103](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/server/duel_cull.cpp#L103)
+- behavior: [codemp/server/duel_cull.cpp:100](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/server/duel_cull.cpp#L100)
 
-<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/f999cbc0912773164962d8be37737a31fe9ade8d"><code>f999cbc09127</code></a> on 2026-10-22. Anything merged after that is not reflected here.</p>
+<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/76943f046bbbdc23d67323b838cb1c4c1e3fba0e"><code>76943f046bbb</code></a> on 2026-10-23. Anything merged after that is not reflected here.</p>

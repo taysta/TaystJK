@@ -31,8 +31,8 @@ Amount of time to display disruptor alt fire
 | Derivation | `documented` |
 | Confidence | `medium` |
 | Added | 2022-04-20 in [`1dd571383`](https://github.com/taysta/TaystJK/commit/1dd571383a0d16520e69ce209f8a2d21b2943a62) <span class="status-chip">needs review</span> ([how to compare this against your build](/TaystJK/features/whats-new/#how-to-tell-what-your-build-has)) |
-| In-game xdocs | Yes: [codemp/ui/ui_xdocs.h:359](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/ui/ui_xdocs.h#L359) |
-| In-game menu | Yes: [ingame_setup.menu:3753](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/assets/japro/ui/jamp/ingame_setup.menu#L3753) |
+| In-game xdocs | Yes: [codemp/ui/ui_xdocs.h:359](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/ui/ui_xdocs.h#L359) |
+| In-game menu | Yes: [ingame_setup.menu:3753](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/assets/japro/ui/jamp/ingame_setup.menu#L3753) |
 
 ## Values
 
@@ -63,12 +63,12 @@ Authored dates come from the exact registration's first content commit, PR dates
 
 ## Evidence
 
-- registration: [codemp/cgame/cg_xcvar.h:420](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/cgame/cg_xcvar.h#L420) (XCVAR_DEF)
-- behavior: [codemp/cgame/cg_weapons.c:2690](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/cgame/cg_weapons.c#L2690)
-- behavior: [codemp/cgame/cg_weapons.c:2692](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/cgame/cg_weapons.c#L2692)
-- behavior: [codemp/cgame/fx_disruptor.c:67](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/cgame/fx_disruptor.c#L67)
-- behavior: [codemp/cgame/fx_disruptor.c:78](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/cgame/fx_disruptor.c#L78)
-- behavior: [codemp/cgame/cg_event.c:2895](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/cgame/cg_event.c#L2895)
-- documentation: [codemp/ui/ui_xdocs.h:359](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/ui/ui_xdocs.h#L359)
+- registration: [codemp/cgame/cg_xcvar.h:420](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/cgame/cg_xcvar.h#L420) (XCVAR_DEF)
+- behavior: [codemp/cgame/cg_weapons.c:2690](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/cgame/cg_weapons.c#L2690)
+- behavior: [codemp/cgame/cg_weapons.c:2692](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/cgame/cg_weapons.c#L2692)
+- behavior: [codemp/cgame/fx_disruptor.c:67](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/cgame/fx_disruptor.c#L67)
+- behavior: [codemp/cgame/fx_disruptor.c:78](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/cgame/fx_disruptor.c#L78)
+- behavior: [codemp/cgame/cg_event.c:2895](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/cgame/cg_event.c#L2895)
+- documentation: [codemp/ui/ui_xdocs.h:359](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/ui/ui_xdocs.h#L359)
 
-<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/f999cbc0912773164962d8be37737a31fe9ade8d"><code>f999cbc09127</code></a> on 2026-10-22. Anything merged after that is not reflected here.</p>
+<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/76943f046bbbdc23d67323b838cb1c4c1e3fba0e"><code>76943f046bbb</code></a> on 2026-10-23. Anything merged after that is not reflected here.</p>

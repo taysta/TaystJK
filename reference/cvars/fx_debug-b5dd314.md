@@ -37,7 +37,7 @@ Controls `fx_debug` in the engine-client module. Consult the cited behavior read
 
 | Value | Meaning | Evidence |
 |:--|:--|:--|
-| `2` | Selects the code path tested for value 2. | [codemp/client/FxScheduler.cpp:860](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/client/FxScheduler.cpp#L860) |
+| `2` | Selects the code path tested for value 2. | [codemp/client/FxScheduler.cpp:860](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/client/FxScheduler.cpp#L860) |
 
 ## Flags
 
@@ -64,8 +64,8 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 ## Evidence
 
-- registration: [codemp/client/FxUtil.cpp:112](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/client/FxUtil.cpp#L112) (Cvar_Get)
-- behavior: [codemp/client/FxScheduler.cpp:860](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/client/FxScheduler.cpp#L860)
-- behavior: [codemp/client/FxUtil.cpp:229](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/client/FxUtil.cpp#L229)
+- registration: [codemp/client/FxUtil.cpp:112](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/client/FxUtil.cpp#L112) (Cvar_Get)
+- behavior: [codemp/client/FxScheduler.cpp:860](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/client/FxScheduler.cpp#L860)
+- behavior: [codemp/client/FxUtil.cpp:229](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/client/FxUtil.cpp#L229)
 
-<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/f999cbc0912773164962d8be37737a31fe9ade8d"><code>f999cbc09127</code></a> on 2026-10-22. Anything merged after that is not reflected here.</p>
+<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/76943f046bbbdc23d67323b838cb1c4c1e3fba0e"><code>76943f046bbb</code></a> on 2026-10-23. Anything merged after that is not reflected here.</p>

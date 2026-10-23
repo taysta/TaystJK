@@ -38,8 +38,8 @@ Controls `pmove_float` in the cgame module. Consult the cited behavior reads bef
 
 | Value | Meaning | Evidence |
 |:--|:--|:--|
-| `0` | Disabled. | [codemp/cgame/cg_predict.c:1179](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/cgame/cg_predict.c#L1179) |
-| `1` | Enabled. | [codemp/cgame/cg_predict.c:1179](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/cgame/cg_predict.c#L1179) |
+| `0` | Disabled. | [codemp/cgame/cg_predict.c:1179](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/cgame/cg_predict.c#L1179) |
+| `1` | Enabled. | [codemp/cgame/cg_predict.c:1179](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/cgame/cg_predict.c#L1179) |
 
 ## Flags
 
@@ -92,12 +92,12 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 ## Evidence
 
-- registration: [codemp/cgame/cg_xcvar.h:381](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/cgame/cg_xcvar.h#L381) (XCVAR_DEF)
-- registration: [codemp/game/g_xcvar.h:173](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/game/g_xcvar.h#L173) (XCVAR_DEF)
-- behavior: [codemp/cgame/cg_predict.c:1179](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/cgame/cg_predict.c#L1179)
-- behavior: [codemp/game/g_active.c:4918](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/game/g_active.c#L4918)
-- behavior: [codemp/game/bg_pmove.c:15713](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/game/bg_pmove.c#L15713)
-- behavior: [codemp/game/bg_pmove.c:15723](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/game/bg_pmove.c#L15723)
-- behavior: [codemp/game/bg_pmove.c:15141](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/game/bg_pmove.c#L15141)
+- registration: [codemp/cgame/cg_xcvar.h:381](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/cgame/cg_xcvar.h#L381) (XCVAR_DEF)
+- registration: [codemp/game/g_xcvar.h:173](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/game/g_xcvar.h#L173) (XCVAR_DEF)
+- behavior: [codemp/cgame/cg_predict.c:1179](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/cgame/cg_predict.c#L1179)
+- behavior: [codemp/game/g_active.c:4918](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/game/g_active.c#L4918)
+- behavior: [codemp/game/bg_pmove.c:15713](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/game/bg_pmove.c#L15713)
+- behavior: [codemp/game/bg_pmove.c:15723](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/game/bg_pmove.c#L15723)
+- behavior: [codemp/game/bg_pmove.c:15141](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/game/bg_pmove.c#L15141)
 
-<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/f999cbc0912773164962d8be37737a31fe9ade8d"><code>f999cbc09127</code></a> on 2026-10-22. Anything merged after that is not reflected here.</p>
+<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/76943f046bbbdc23d67323b838cb1c4c1e3fba0e"><code>76943f046bbb</code></a> on 2026-10-23. Anything merged after that is not reflected here.</p>

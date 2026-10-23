@@ -37,8 +37,8 @@ Controls `r_noServerGhoul2` in the renderer module. Consult the cited behavior r
 
 | Value | Meaning | Evidence |
 |:--|:--|:--|
-| `0` | Disabled. | [codemp/rd-vanilla/tr_ghoul2.cpp:3237](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/rd-vanilla/tr_ghoul2.cpp#L3237) |
-| `1` | Enabled. | [codemp/rd-vanilla/tr_ghoul2.cpp:3237](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/rd-vanilla/tr_ghoul2.cpp#L3237) |
+| `0` | Disabled. | [codemp/rd-vanilla/tr_ghoul2.cpp:3237](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/rd-vanilla/tr_ghoul2.cpp#L3237) |
+| `1` | Enabled. | [codemp/rd-vanilla/tr_ghoul2.cpp:3237](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/rd-vanilla/tr_ghoul2.cpp#L3237) |
 
 ## Flags
 
@@ -75,11 +75,11 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 ## Evidence
 
-- registration: [shared/rd-rend2/tr_model.cpp:776](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/shared/rd-rend2/tr_model.cpp#L776) (Cvar_Get); condition `else(!defined(REND2_SP))`
-- behavior: [codemp/rd-vanilla/tr_ghoul2.cpp:3237](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/rd-vanilla/tr_ghoul2.cpp#L3237)
-- behavior: [codemp/rd-vulkan/tr_ghoul2.cpp:3332](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/rd-vulkan/tr_ghoul2.cpp#L3332)
-- behavior: [codemp/rd-vulkan/tr_ghoul2.cpp:3572](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/rd-vulkan/tr_ghoul2.cpp#L3572)
-- behavior: [shared/rd-rend2/tr_ghoul2.cpp:3221](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/shared/rd-rend2/tr_ghoul2.cpp#L3221)
-- behavior: [shared/rd-rend2/tr_ghoul2.cpp:3492](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/shared/rd-rend2/tr_ghoul2.cpp#L3492)
+- registration: [shared/rd-rend2/tr_model.cpp:776](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/shared/rd-rend2/tr_model.cpp#L776) (Cvar_Get); condition `else(!defined(REND2_SP))`
+- behavior: [codemp/rd-vanilla/tr_ghoul2.cpp:3237](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/rd-vanilla/tr_ghoul2.cpp#L3237)
+- behavior: [codemp/rd-vulkan/tr_ghoul2.cpp:3332](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/rd-vulkan/tr_ghoul2.cpp#L3332)
+- behavior: [codemp/rd-vulkan/tr_ghoul2.cpp:3572](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/rd-vulkan/tr_ghoul2.cpp#L3572)
+- behavior: [shared/rd-rend2/tr_ghoul2.cpp:3221](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/shared/rd-rend2/tr_ghoul2.cpp#L3221)
+- behavior: [shared/rd-rend2/tr_ghoul2.cpp:3492](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/shared/rd-rend2/tr_ghoul2.cpp#L3492)
 
-<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/f999cbc0912773164962d8be37737a31fe9ade8d"><code>f999cbc09127</code></a> on 2026-10-22. Anything merged after that is not reflected here.</p>
+<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/76943f046bbbdc23d67323b838cb1c4c1e3fba0e"><code>76943f046bbb</code></a> on 2026-10-23. Anything merged after that is not reflected here.</p>
