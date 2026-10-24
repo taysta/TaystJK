@@ -102,9 +102,11 @@ you want everywhere, such as maps; put TaystJK-only content in `taystjk/`. See
 **Mod directory:** a sibling of `base` under `GameData` holding one mod's files. TaystJK's
 own is `taystjk`, which is where `japro-assets.pk3` is installed.
 
-**`fs_game` / `fs_forcegame`:** `fs_game` selects the mod directory and a server can set
-it. `fs_forcegame` is a client-side override that a server cannot change. See
-[what `fs_forcegame` does](/TaystJK/install/mod-compatibility/#what-fs_forcegame-does).
+**`fs_game` / `fs_basegame` / `fs_forcegame`:** `fs_game` selects the mod directory, and a
+server can set it. `fs_basegame` is a mod searched underneath it; on TaystJK it always copies
+`fs_forcegame`. `fs_forcegame` is a client-side setting a server cannot change, which decides
+where your files are written and, by default, keeps them in `taystjk/`. See
+[where TaystJK reads and writes files](/TaystJK/install/mod-compatibility/#where-taystjk-reads-and-writes-files).
 
 **homepath, basepath, cdpath:** the three roots the filesystem searches. `fs_basepath` is
 the installation directory, `fs_homepath` is where your own generated files are written

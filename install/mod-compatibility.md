@@ -78,33 +78,6 @@ install those as loose files
 ([Windows unpacker](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/shared/sys/sys_win32.cpp#L603),
 [Unix behaviour](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/shared/sys/sys_unix.cpp#L566)).
 
-### What `fs_forcegame` does
-
-On a normal client, `fs_forcegame` defaults to `taystjk`. That keeps TaystJK's directory at
-the highest filesystem priority when a server sets a different `fs_game`, and keeps configs,
-demos, screenshots and other generated files under `taystjk/`. A server cannot change
-`fs_forcegame`.
-
-Leave it at the default to keep TaystJK's own client files and settings on JA+, JA++, jaPRO
-and other modded servers. Do not add `fs_game` just to join a server; the server sends its
-own game directory when you connect.
-
-Native libraries are a separate matter: a matching loose library in the server's `fs_game`
-directory is tried before the copy in `taystjk/`. Keep other mods' client libraries out of a
-clean TaystJK install unless you mean to load them.
-
-To use another mod's client libraries and assets on purpose, install them in that mod's
-directory and select it at startup. JA++, for example, uses `japlus/` to stay compatible
-with JA+:
-
-```text
-taystjk.x86_64.exe +set fs_game japlus +set fs_forcegame japlus
-```
-
-Setting both loads the mod from the start, including a custom UI, and stops a server's
-`fs_game` from moving your files elsewhere later. To go back to the normal setup, remove
-`fs_game japlus` and either remove `fs_forcegame` or set it back to `taystjk`.
-
 ### When to use `vm_legacy`
 
 You should not need it. For each native module, TaystJK looks for the newer OpenJK-style
@@ -135,6 +108,91 @@ changing it later does not affect a module that is already running.
 If the console then reports `VM_CreateLegacy: ... succeeded`, the older interface loaded. If
 it reports `failed`, the library has no older interface; remove the setting and check that
 the mod build matches your platform.
+
+## Where TaystJK reads and writes files
+
+Three cvars decide which directories the client reads files from and which one it writes
+to. All three can only be set at startup, on the command line or in a launch script.
+
+### The search order
+
+The client searches these directories, lowest priority first, and a file in a later one
+replaces the same file in an earlier one
+([`files.cpp`](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/qcommon/files.cpp#L3933)):
+
+| Order | Directory | Holds |
+|--:|:--|:--|
+| 1 | `base` | The retail game files. |
+| 2 | `fs_basegame` | A mod other mods build on. On TaystJK this is `taystjk`, with `japro-assets.pk3`. |
+| 3 | `fs_game` | The mod the server runs, or the one you chose at startup. |
+
+Each directory is looked for under `fs_cdpath`, `fs_basepath` and `fs_homepath` in turn. Run
+`path` in the console to see the result.
+
+**On TaystJK, `fs_basegame` always copies `fs_forcegame`.** The client sets it from
+`fs_forcegame` every time the filesystem starts, overwriting any `+set fs_basegame` of your own
+([`files.cpp`](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/qcommon/files.cpp#L3920)). So `taystjk/` is only searched while `fs_forcegame` is `taystjk`,
+and you cannot keep TaystJK's assets while clearing `fs_forcegame`.
+
+`fs_forcegame` also decides where the client **writes**: configs, screenshots, demos and
+downloads go to the `fs_forcegame` directory when it is set
+([`files.cpp`](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/qcommon/files.cpp#L4000)), and to the `fs_game` directory, or `base`, when it is empty.
+
+Client modules are found separately. The client tries the `fs_game` directory first, then
+`taystjk`, then `base`, whatever these cvars say
+([`sys_main.cpp`](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/shared/sys/sys_main.cpp#L404)).
+
+### What `fs_forcegame` does
+
+`fs_forcegame` defaults to `taystjk` on the client and to nothing on a dedicated server
+([`files.cpp`](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/qcommon/files.cpp#L3915)). A server cannot change it. The three ways to set it behave
+differently:
+
+| `fs_forcegame` | Searched | Written to | When you join a server with another mod |
+|:--|:--|:--|:--|
+| `taystjk`, the default | `base`, `taystjk`, then the server's mod | `taystjk/` | The mod's files override TaystJK's. Your settings stay in one `taystjk/taystjk.cfg` on every server. |
+| A mod, such as `japlus`, with `fs_game` set to the same | `base`, then that mod, then the server's mod if it is a different one. `taystjk/` is not searched, so TaystJK's own assets are not loaded. | that mod's directory | Your settings stay in that mod's directory on every server, and its files stay in the search order under the server's. |
+| Empty: `+set fs_forcegame ""` | `base`, then the server's mod | the server's mod directory, or `base/` | The client switches to that mod's directory and loads the `taystjk.cfg` in it ([`files.cpp`](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/qcommon/files.cpp#L4480)), so each mod keeps its own settings. A mod you have never played starts a new directory and config. |
+
+Leave it at the default to keep TaystJK's own client files and one set of settings on JA+,
+JA++, jaPRO and other modded servers. Do not add `fs_game` just to join a server; the server
+sends its own game directory when you connect. The Mods menu only changes `fs_game`, so it
+does not change where your files are written
+([`ui_main.c`](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/ui/ui_main.c#L7625)).
+
+To use another mod's client libraries and assets everywhere, install them in that mod's
+directory and set both at startup. JA++, for example, uses `japlus/` to stay compatible with
+JA+:
+
+```text
+taystjk.x86_64.exe +set fs_game japlus +set fs_forcegame japlus
+```
+
+To go back to the normal setup, remove `fs_game japlus` and either remove `fs_forcegame` or
+set it back to `taystjk`.
+
+### Running TaystJK for one mod
+
+A mod with its own client files, such as a roleplay mod with its own models and settings, may
+want its players' settings and assets kept apart from the rest of their TaystJK install. Ship a
+launch script that clears `fs_forcegame` and selects the mod:
+
+```bat
+taystjk.x86_64.exe +set fs_forcegame "" +set fs_game mymod
+```
+
+With that, the mod's settings are saved to `mymod/taystjk.cfg`, TaystJK's own assets are not
+loaded, and the mod's `cgame` and `ui` load from `mymod/`. If the player then joins a server
+running a different mod, the client switches to that mod's directory and settings, which is
+the point of clearing `fs_forcegame`.
+
+Setting `fs_forcegame mymod` instead keeps the settings in `mymod/` and the mod's files in the
+search order even on other servers, so its settings and assets follow the player to servers
+that were not made for them.
+
+Either way the script is the only signal. A player who starts TaystJK normally gets the
+default setup, with their settings in `taystjk/taystjk.cfg`, so tell players to start the
+game from a shortcut to your script.
 
 ## What the client decides
 
