@@ -32,18 +32,20 @@ know exactly what it will change. They are short.
 ## Strafe helper presets
 
 Seven presets for the strafe helper and speedometer, which are bitmask cvars that are
-awkward to set by hand. They differ in which display modes they turn on and how they are
-tuned; pick one and adjust from there.
+awkward to set by hand. Pick the closest and adjust from there.
 
 | Config | Sets |
 |:--|:--|
-| `strafehelper` | The general-purpose preset. |
-| `strafehelper_off` | Turns the helper's display bits off again. |
-| `strafehelper_jk2` | A JK2-flavoured setup. |
-| `strafehelper_loda` | Preset with the speedometer enabled. |
-| `strafehelper_source` | Source-engine-flavoured setup, with the speedometer. |
-| `strafehelper_tayst` | The maintainer's own preset. |
-| `strafehelper_tayst2` | A variant, with the helper's precision raised. |
+| `strafehelper` | The general-purpose preset: helper, speedometer and movement keys, with a small crosshair and a steady third-person camera. |
+| `strafehelper_off` | Turns the helper, speedometer and movement keys off, and puts the crosshair and camera back to normal. |
+| `strafehelper_jk2` | Helper, speedometer and movement keys, with no crosshair and a steady third-person camera. |
+| `strafehelper_loda` | Helper with shorter, thinner lines, a magenta crosshair, the speedometer and movement keys. |
+| `strafehelper_source` | A more precise helper drawn on the optimal angle, the speedometer near the centre, and the race timer on the left. No movement keys. |
+| `strafehelper_tayst` | Helper, the full speedometer with its jumps array, small movement keys at the crosshair, the race timer and start speed, in first person. |
+| `strafehelper_tayst2` | Only the helper: more precise, drawn on the optimal angle, with faint lines. Nothing else changes. |
+
+Most of them also change the crosshair and the third-person camera, so read one before you run
+it if you have those set up the way you like.
 
 Because these are bitmasks, `exec`ing one replaces the whole value rather than merging with
 what you had. The `strafehelper` and `speedometer` commands print what each bit means; see
@@ -53,9 +55,9 @@ what you had. The `strafehelper` and `speedometer` commands print what each bit 
 
 | Config | What it does |
 |:--|:--|
-| `japro_default` | A broad baseline touching movement keys and general client settings. The longest of the set. |
-| `japro_loda` | An alternative baseline, including client smoothing settings. |
-| `hud_tayst` | A HUD layout preset with an FPS display, timers and placement. |
+| `japro_default` | A baseline HUD layout: positions for the movement keys, speedometer, team overlay and chat box, the race timer, and the strafe helper display turned off. |
+| `japro_loda` | loda's own settings: client smoothing and screen shake off, hit, jump and roll sounds on, a smaller chat box and an FPS counter. |
+| `hud_tayst` | The FPS counter and lagometer, the [centre timer](/TaystJK/features/hud-and-movement/#the-centre-timer-and-team-score) counting down with team scores, the team overlay, scoreboard deaths and clock, and the killfeed. |
 
 ## Motion sickness
 
@@ -75,7 +77,7 @@ head-bob makes you unwell and you have never changed them, there is nothing to u
 
 | Config | What it does |
 |:--|:--|
-| `japro_tribes` | Client-side setup for the Tribes movement style, including the key binds the mode expects. |
+| `japro_tribes` | Client-side setup for the Tribes movement style: the key binds the mode expects, including the number keys, and network settings for its fast movement. |
 
 The server side is not a client config. The Docker image's
 [bundled server configs](/TaystJK/server-hosting/bundled-configs/#game-modes), written for

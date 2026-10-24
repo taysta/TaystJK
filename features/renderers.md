@@ -24,7 +24,7 @@ toc: true
 | `rd-vulkant` | `codemp/rd-vulkan` | A Vulkan backend derived from [Quake3e](https://github.com/ec-/Quake3e)'s, developed upstream by JKSunny. |
 
 **The names you type are not the directory names.** The library names are set in
-[`CMakeLists.txt`](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/CMakeLists.txt#L179),
+[`CMakeLists.txt`](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/CMakeLists.txt#L179-L181),
 and `cl_renderer` is used verbatim to build the library filename
 ([`cl_main.cpp`](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/client/cl_main.cpp#L2748)).
 `cl_renderer rd-vanilla` will not find anything.

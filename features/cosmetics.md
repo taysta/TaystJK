@@ -156,7 +156,7 @@ Both levels resolve the same way
    offsets, `false` leaves them at zero. `desann` above therefore gives an unlisted skin
    nothing, while `kyle` gives it `30, 15, -24`.
 
-Two details worth knowing. All three offsets must be present and numeric or the whole entry
+Two more details. All three offsets must be present and numeric or the whole entry
 is rejected with a console warning and treated as zero. There is no partial application.
 And the values are read as whole numbers, so a fractional offset is truncated.
 

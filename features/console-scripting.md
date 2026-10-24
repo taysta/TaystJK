@@ -13,7 +13,7 @@ origin: newjk
 
 # Console scripting
 
-<p class="page-lede">Four additions turn binds and configs from fixed strings into something you can branch on, substitute into, and schedule. They are most useful together, so they are documented together.</p>
+<p class="page-lede">Four additions turn binds and configs from fixed strings into something you can branch on, substitute into, and schedule. They are most useful together, so this page covers all four.</p>
 </div>
 
 Everything here came from NewJK and NewMod, and
@@ -32,8 +32,7 @@ The console reference has the catalogue entries:
 ## Quoting and nested quotes
 
 Stock Jedi Academy ends a quoted string at the next `"`, so a bind cannot contain a bind.
-TaystJK tracks quote depth instead, and the rule that makes it work is worth stating
-directly:
+TaystJK tracks how deeply quotes are nested instead, and one rule makes it work:
 
 **Each time a command is executed, exactly one layer of quotes is removed.**
 
@@ -77,7 +76,7 @@ strSub say "Hello, I am $name$"
 ```
 
 The name is delimited on **both** sides by `$`. Write `$$` for a literal dollar sign
-([`common.cpp:454`](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/qcommon/common.cpp#L454)).
+([`common.cpp`](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/qcommon/common.cpp#L454)).
 Substitution happens per argument, so a value containing spaces is re-quoted as one
 argument before the command runs.
 
@@ -125,7 +124,7 @@ string match.
 | `$else` | Always true |
 
 `$startswith` is accepted alongside `$beginswith`
-([`common.cpp:394`](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/qcommon/common.cpp#L394));
+([`common.cpp`](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/qcommon/common.cpp#L394));
 the NewMod documentation lists only `$beginswith`.
 
 The text follows the modifier with no space: `$containsbeer`, `$>=50`, `$else`. Put a
@@ -149,10 +148,10 @@ command's own name**. This is the part that trips people up.
 | `bind x say_team "hello there"` | `4` | `"hello there"` is quoted, so it is **one** argument. |
 
 A quoted phrase counts once, and the client re-adds the quotes when it runs the command
-([`common.cpp:417`](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/qcommon/common.cpp#L417)).
+([`common.cpp`](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/qcommon/common.cpp#L417)).
 Get the count wrong and `ifCvar` reads the following condition from the middle of your
 command; the count must be between 1 and 1023 or it refuses and prints why
-([`common.cpp:410`](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/qcommon/common.cpp#L410)).
+([`common.cpp`](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/qcommon/common.cpp#L410)).
 
 Putting it together:
 
@@ -165,9 +164,9 @@ switches model; otherwise the bind is set.
 
 ## Timed commands: `delay` and `waitf`
 
-Stock `wait` stalls the entire command buffer. `delay` and `waitf` do not: they set the rest
-of the line aside and let everything else keep running. `delay` counts milliseconds,
-`waitf` counts frames.
+Stock `wait` stalls the entire command buffer. `delay` and `waitf` take what comes after them
+out of the buffer and run it later, so the game keeps going in the meantime. `delay` counts
+milliseconds, `waitf` counts frames.
 
 ```text
 say darth;delay 1000;say vader
@@ -179,14 +178,16 @@ in the command buffer rather than run as ordinary commands
 
 - **A `;` or a newline must follow the number.** `delay 1000 say vader` prints usage and
   does nothing. `delay 1000;say vader` works.
-- **Everything after that `;` is deferred as one unit**, to the end of the line
-  ([`cmd.cpp:324`](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/qcommon/cmd.cpp#L324)).
-  So `a;delay 500;b;delay 500;c` runs `a`, waits, then runs `b;delay 500;c`. The delays
-  chain instead of both counting from now.
+- **Everything after that `;` is deferred as one unit**: not just the rest of the line, but
+  everything else waiting in the command buffer
+  ([`cmd.cpp`](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/qcommon/cmd.cpp#L324)).
+  So `a;delay 500;b;delay 500;c` runs `a`, waits, then runs `b;delay 500;c`; the delays chain
+  instead of both counting from now. In a config run with `exec`, a `delay` holds back every
+  line after it in that file too.
 
 Omitting the number entirely is the same as `1`, but a space must remain between the
 command and the separator: `delay ;say vader` works, while `delay;say vader` does not
-([`cmd.cpp:314`](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/qcommon/cmd.cpp#L314)).
+([`cmd.cpp`](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/qcommon/cmd.cpp#L301)).
 
 `delaycancel` and `waitfcancel` drop pending entries whose text contains the argument, so
 `delaycancel vader` cancels the example above. `delaycancel ""` cancels every pending
@@ -194,11 +195,11 @@ command and the separator: `delay ;say vader` works, while `delay;say vader` doe
 
 ## What does not work
 
-Verified against the source this reference is generated from. These are defects in the
-client, not deliberate limits, so they may be fixed in a build newer than this page.
+These are bugs in the client, not deliberate limits, so a build newer than this page may
+have fixed them.
 [Compare the dates](/TaystJK/features/whats-new/#how-to-tell-what-your-build-has).
 
-**Cvar indirection is broken for the three text operators.** `$contains$myCvar`,
+**Cvar indirection is broken for the text operators.** `$contains$myCvar`,
 `$beginswith$myCvar`, `$startswith$myCvar` and `$endswith$myCvar` all read the wrong
 position when resolving the cvar name
 ([`$contains`](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/qcommon/common.cpp#L392),
@@ -210,16 +211,16 @@ with these operators.
 
 **`$endswith` needs at least three characters.** `$endswithab` falls through to plain string
 equality instead of testing the suffix
-([`common.cpp:398`](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/qcommon/common.cpp#L398)).
+([`common.cpp`](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/qcommon/common.cpp#L398)).
 
 **Do not pass an empty setting.** `ifCvar someCvar "" 2 say hi` reaches a loop that does not
 advance
-([`common.cpp:363`](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/qcommon/common.cpp#L363)).
+([`common.cpp`](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/qcommon/common.cpp#L363)).
 Use `$else` when you want a condition that always matches.
 
 **`strSub` needs the closing `$`.** `$name` without a trailing `$` is read to the end of the
 argument
-([`common.cpp:461`](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/qcommon/common.cpp#L461)),
+([`common.cpp`](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/qcommon/common.cpp#L461)),
 which is rarely the cvar you meant.
 
 Report anything else you hit at
