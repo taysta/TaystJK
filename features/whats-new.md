@@ -24,18 +24,18 @@ page links the source that reads it.
 ## How to tell what your build has
 
 Availability here is a date, because TaystJK has no release versioning. Releases roll under
-a single `latest` tag, so a build identifies itself by when it was compiled.
+the `latest-build` tag, so a build identifies itself by when it was compiled.
 
 - `version` prints the engine build and ends with the date it was compiled.
 - `modversion` prints the game module's compile date and time, followed by an identifier
-  like `latest-6ff04c0ba`.
+  like `latest-build-6ff04c0ba`.
 
 **Compare the date.** If your build is older than the date on an entry, your build does not
 have it.
 
-The rest of that identifier cannot answer "is mine newer". The `latest` in front is the
-same string on every release. The hash behind it is not ordered either: two short hashes
-cannot be ranked against each other without the repository.
+The rest of that identifier cannot answer "is mine newer". The tag in front is the same
+string on every release. The hash behind it is not ordered either: two short hashes cannot be
+ranked against each other without the repository.
 
 A date marked *needs review* rests on an attribution that could not be proven exactly. The
 entry is real; treat the date as approximate.

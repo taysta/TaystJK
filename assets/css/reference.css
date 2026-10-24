@@ -432,6 +432,13 @@ th { color: var(--text); background: var(--surface); }
   font-size: .9rem;
 }
 
+.docs-intro-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: .6rem;
+  margin-top: 1.6rem;
+}
+
 .docs-intro-links a { color: var(--text-soft); }
 .docs-intro-links a:hover { color: var(--accent); }
 
@@ -465,8 +472,7 @@ th { color: var(--text); background: var(--surface); }
 
 .home-purpose,
 .home-compatibility,
-.home-guides,
-.home-resources { margin-top: 4.5rem; }
+.home-guides { margin-top: 4.5rem; }
 
 .home-section-heading {
   display: flex;
@@ -589,33 +595,6 @@ th { color: var(--text); background: var(--surface); }
   font-weight: 800;
   line-height: 1.45;
 }
-
-.home-resource-list {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  border-top: 1px solid var(--line-bright);
-  border-bottom: 1px solid var(--line);
-}
-
-.home-resource-list a {
-  display: grid;
-  gap: .35rem;
-  padding: 1rem 1.2rem;
-  color: var(--text);
-  border-right: 1px solid var(--line);
-  text-decoration: none;
-}
-
-/* Align by grid column, not document order: with more than three items the fourth
-   starts a new row in column one, and a :first-child rule leaves it indented against
-   the item above it. */
-.home-resource-list a:nth-child(3n+1) { padding-left: 0; }
-.home-resource-list a:nth-child(3n) { padding-right: 0; border-right: 0; }
-.home-resource-list a:last-child { border-right: 0; }
-.home-resource-list a:nth-child(n+4) { border-top: 1px solid var(--line); }
-.home-resource-list a:hover strong { color: var(--accent); }
-.home-resource-list strong { font-size: .86rem; }
-.home-resource-list span { color: var(--muted); font-size: .76rem; line-height: 1.5; }
 
 .reference-stats {
   display: grid;
@@ -1267,11 +1246,6 @@ kbd { padding: .15rem .42rem; color: var(--text-soft); background: var(--surface
   .purpose-principles article:first-child,
   .purpose-principles article:last-child { padding: 1rem 0; border-right: 0; border-bottom: 1px solid var(--line); }
   .purpose-principles article:last-child { border-bottom: 0; }
-  .home-resource-list { grid-template-columns: 1fr; }
-  .home-resource-list a,
-  .home-resource-list a:first-child,
-  .home-resource-list a:last-child { padding: .9rem 0; border-right: 0; border-bottom: 1px solid var(--line); }
-  .home-resource-list a:last-child { border-bottom: 0; }
   .catalog-filters { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .filter-dropdown:nth-child(3n) .filter-popover { right: auto; left: 0; }
   .filter-dropdown:nth-child(even) .filter-popover { right: 0; left: auto; }

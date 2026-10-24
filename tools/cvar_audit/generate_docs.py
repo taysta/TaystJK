@@ -472,18 +472,18 @@ ADDED_ON_ANCHOR = "/TaystJK/features/whats-new/#how-to-tell-what-your-build-has"
 ADDED_ON_NOTE = """## How to tell what your build has
 
 Availability here is a date, because TaystJK has no release versioning. Releases roll under
-a single `latest` tag, so a build identifies itself by when it was compiled.
+the `latest-build` tag, so a build identifies itself by when it was compiled.
 
 - `version` prints the engine build and ends with the date it was compiled.
 - `modversion` prints the game module's compile date and time, followed by an identifier
-  like `latest-6ff04c0ba`.
+  like `latest-build-6ff04c0ba`.
 
 **Compare the date.** If your build is older than the date on an entry, your build does not
 have it.
 
-The rest of that identifier cannot answer "is mine newer". The `latest` in front is the
-same string on every release. The hash behind it is not ordered either: two short hashes
-cannot be ranked against each other without the repository.
+The rest of that identifier cannot answer "is mine newer". The tag in front is the same
+string on every release. The hash behind it is not ordered either: two short hashes cannot be
+ranked against each other without the repository.
 
 A date marked *needs review* rests on an attribution that could not be proven exactly. The
 entry is real; treat the date as approximate.
@@ -1416,24 +1416,26 @@ def home_page(cvars: list[dict[str, Any]], commands: list[dict[str, Any]]) -> st
   <section class="docs-intro" aria-labelledby="page-title">
     <p class="eyebrow">TaystJK documentation</p>
     <h1 id="page-title">One client for Jedi Academy multiplayer</h1>
-    <p class="page-lede">One client for Base JKA, JA+ and JA++, jaPRO, and Lugormod servers on Windows, Linux, and macOS. Install it beside your Jedi Academy game files, then use <a href="{{{{ '/features/' | relative_url }}}}">Features</a> for client controls, <a href="{{{{ '/server-hosting/' | relative_url }}}}">Host</a> for a dedicated server, and <a href="{{{{ '/reference/' | relative_url }}}}">Reference</a> for exact cvars and commands.</p>
+    <p class="page-lede">TaystJK replaces the multiplayer executable of your own copy of Jedi Academy. It plays on Base JKA, JA+ and JA++, jaPRO and Lugormod servers, and runs on Windows, Linux and macOS.</p>
+    <div class="docs-intro-actions">
+      <a class="button button-primary" href="{{{{ '/install/' | relative_url }}}}">Install TaystJK</a>
+      <a class="button button-secondary" href="https://github.com/taysta/TaystJK/releases/latest">Latest release</a>
+    </div>
     <nav class="docs-intro-links" aria-label="Project links">
-      <a href="{{{{ '/install/' | relative_url }}}}">Installation</a>
-      <a href="{{{{ '/overview/' | relative_url }}}}">Documentation overview</a>
-      <a href="https://github.com/taysta/TaystJK/releases/tag/latest">Latest release</a>
+      <a href="{{{{ '/overview/' | relative_url }}}}">How these docs are organised</a>
       <a href="https://github.com/taysta/TaystJK">Source repository</a>
     </nav>
   </section>
 
   <nav class="docs-quick-links" aria-labelledby="quick-links-heading">
     <h2 id="quick-links-heading" data-toc-skip>Quick links</h2>
-    <a href="{{{{ '/server-hosting/' | relative_url }}}}">
+    <a href="{{{{ '/server-hosting/run-a-server/' | relative_url }}}}">
       <strong>Run a server</strong>
-      <span>Docker Compose, bundled game modes, downloads, and reflists</span>
+      <span>Docker Compose or a native binary, then the checks before going public</span>
     </a>
-    <a href="{{{{ '/development/' | relative_url }}}}">
-      <strong>Work on TaystJK</strong>
-      <span>Compilation, debugging, and bundled libraries</span>
+    <a href="{{{{ '/troubleshooting/' | relative_url }}}}">
+      <strong>Fix a problem</strong>
+      <span>Common problems, listed by what you see</span>
     </a>
     <a href="{{{{ '/reference/' | relative_url }}}}">
       <strong>Find a console control</strong>
@@ -1445,27 +1447,27 @@ def home_page(cvars: list[dict[str, Any]], commands: list[dict[str, Any]]) -> st
 <section class="home-purpose" aria-labelledby="purpose-heading">
   <div class="home-section-heading">
     <div>
-      <p class="section-kicker">Why TaystJK exists</p>
-      <h2 id="purpose-heading">Keep the community connected</h2>
+      <p class="section-kicker">What it does</p>
+      <h2 id="purpose-heading">One client for every server mod</h2>
     </div>
-    <p>Jedi Academy multiplayer is spread across server mods with distinct rules and features. TaystJK is maintained as a dependable everyday client across those communities.</p>
+    <p>Jedi Academy servers run different mods with different rules. TaystJK works out which one you joined and adjusts to it, so you do not need a separate client per community.</p>
   </div>
 
   <div class="purpose-principles">
     <article>
       <span>01</span>
-      <h3>Compatibility first</h3>
-      <p>Detect the server family and adapt prediction, presentation, and client behavior while leaving gameplay authority with the server.</p>
+      <h3>Adapts to the server</h3>
+      <p>It recognises the server's mod and changes movement prediction and which client features it turns on. The server still decides how the game plays.</p>
     </article>
     <article>
       <span>02</span>
-      <h3>Current platforms</h3>
-      <p>Maintain builds for Windows, Linux, and macOS, including 64-bit and Apple Silicon systems.</p>
+      <h3>Windows, Linux and macOS</h3>
+      <p>32- and 64-bit builds for Windows and Linux, and Intel, Apple silicon and universal builds for macOS.</p>
     </article>
     <article>
       <span>03</span>
-      <h3>HUD, controls, and rendering</h3>
-      <p>Refine the HUD, controls, console, demos, downloads, rendering, and other everyday details without losing the feel of JKA.</p>
+      <h3>Everyday fixes</h3>
+      <p>HUD tools, console and bind improvements, server-side demos, HTTP downloads and three renderers.</p>
     </article>
   </div>
 
@@ -1521,7 +1523,7 @@ def home_page(cvars: list[dict[str, Any]], commands: list[dict[str, Any]]) -> st
       <span>Installation guide →</span>
     </a>
     <a class="home-guide" href="{{{{ '/server-hosting/' | relative_url }}}}">
-      <h3>Server administration</h3>
+      <h3>Server hosting</h3>
       <p>Dedicated server deployment, bundled game modes, downloads, and PK3 references.</p>
       <span>Server guide →</span>
     </a>
@@ -1544,41 +1546,6 @@ def home_page(cvars: list[dict[str, Any]], commands: list[dict[str, Any]]) -> st
       <h3>Help</h3>
       <p>Troubleshooting by symptom, where to report a problem, and the glossary.</p>
       <span>Get help →</span>
-    </a>
-  </div>
-</section>
-
-<section class="home-resources" aria-labelledby="resources-heading">
-  <div class="home-section-heading">
-    <div>
-      <p class="section-kicker">Project details</p>
-      <h2 id="resources-heading">Technical information</h2>
-    </div>
-  </div>
-  <div class="home-resource-list">
-    <a href="{{{{ '/development/libraries/' | relative_url }}}}">
-      <strong>Bundled libraries</strong>
-      <span>Dependency versions and system-library selection rules.</span>
-    </a>
-    <a href="{{{{ '/reference/sources/' | relative_url }}}}">
-      <strong>Source provenance</strong>
-      <span>How reference entries and code lineage are determined.</span>
-    </a>
-    <a href="{{{{ '/troubleshooting/' | relative_url }}}}">
-      <strong>Troubleshooting</strong>
-      <span>Common problems listed by the symptom you actually see.</span>
-    </a>
-    <a href="{{{{ '/install/mod-compatibility/' | relative_url }}}}">
-      <strong>Mod compatibility</strong>
-      <span>Why a feature works on one server and does nothing on another.</span>
-    </a>
-    <a href="{{{{ '/ai-disclosure/' | relative_url }}}}">
-      <strong>AI disclosure</strong>
-      <span>How this documentation was produced and reviewed.</span>
-    </a>
-    <a href="{{{{ '/devlog/' | relative_url }}}}">
-      <strong>Devlog</strong>
-      <span>Dated posts about what has changed and why.</span>
     </a>
   </div>
 </section>

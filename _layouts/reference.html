@@ -79,7 +79,6 @@
           <a href="{{ '/features/' | relative_url }}"{% if nav_root == '/features/' %} class="active"{% endif %}>Features</a>
           <a href="{{ '/development/' | relative_url }}"{% if nav_root == '/development/' %} class="active"{% endif %}>Develop</a>
           <a href="{{ '/reference/' | relative_url }}"{% if nav_root == '/reference/' %} class="active"{% endif %}>Reference</a>
-          <a href="{{ '/devlog/' | relative_url }}"{% if nav_root == '/devlog/' %} class="active"{% endif %}>Devlog</a>
           <a href="{{ '/help/' | relative_url }}"{% if nav_root == '/help/' %} class="active"{% endif %}>Help</a>
         </nav>
 
@@ -106,7 +105,7 @@
     {% if site.show_wip_banner %}
     <aside class="wip-banner" aria-label="Documentation status">
       <div class="wip-banner-inner">
-        <strong>Wiki work in progress.</strong>
+        <strong>These docs are a work in progress.</strong>
         <span>Some pages may be incomplete or inaccurate.</span>
         <a href="{{ '/ai-disclosure/' | relative_url }}">Read the AI disclosure</a>
       </div>
@@ -201,11 +200,12 @@
           <img class="brand-mark" src="{{ '/shared/icons/TaystJK.ico' | relative_url }}" width="32" height="32" alt="">
           <span><strong>TaystJK</strong><small>One client for JKA multiplayer.</small></span>
         </a>
-        <p>A cross-platform, mod-aware client focused on compatibility, performance, and everyday quality of life.</p>
+        <p>A Jedi Academy multiplayer client for Windows, Linux and macOS.</p>
       </div>
       {%- comment -%}
         Deliberately short, and deliberately not a copy of the top nav. These are shortcuts
-        to the Help pages readers look for at the foot of a page; the full list is on /help/.
+        to the Help pages readers look for at the foot of a page, plus the devlog and the
+        release; the full Help list is on /help/.
       {%- endcomment -%}
       <nav aria-label="Footer navigation">
         <a href="{{ '/overview/' | relative_url }}">Documentation overview</a>
@@ -213,7 +213,8 @@
         <a href="{{ '/where-to-report/' | relative_url }}">Where to report</a>
         <a href="{{ '/glossary/' | relative_url }}">Glossary</a>
         <a href="{{ '/licensing/' | relative_url }}">Licensing</a>
-        <a href="https://github.com/taysta/TaystJK/releases/tag/latest">Latest release</a>
+        <a href="{{ '/devlog/' | relative_url }}">Devlog</a>
+        <a href="https://github.com/taysta/TaystJK/releases/latest">Latest release</a>
       </nav>
     </footer>
   </body>
