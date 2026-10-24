@@ -2023,7 +2023,7 @@ CG_NewClientInfo
 ======================
 */
 void WP_SetSaber( int entNum, saberInfo_t *sabers, int saberNum, const char *saberName );
-void WP_ScaleSaber( int entNum, saberInfo_t *sabers, int saberNum, const char *saberName, float scale, qboolean speedScale );
+void WP_ScaleSaber( int entNum, saberInfo_t *sabers, int saberNum, const char *saberName, float scale, qboolean speedScale, qboolean radiusScale );
 static QINLINE void ParseRGBSaber(char *str, vec3_t c);//rgb
 
 void CG_NewClientInfo( int clientNum, qboolean entitiesInitialized ) {
@@ -2076,7 +2076,7 @@ void CG_NewClientInfo( int clientNum, qboolean entitiesInitialized ) {
 	// build into a temp buffer so the defer checks can use
 	// the old value
 	memset( &newInfo, 0, sizeof( newInfo ) );
-	newInfo.jpSaberScale = -1; //rescale for a JA+ modelscale once we see the entity
+	newInfo.saberModelScale = -1; //rescale for a JA+ or Lugormod modelscale once we see the entity
 
 	// isolate the player's name
 	v = Info_ValueForKey(configstring, "n");
@@ -10056,20 +10056,41 @@ static qboolean CG_JAPlusInOtherDimension( const centity_t *cent )
 		&& ((cent->currentState.eFlags ^ cg.predictedPlayerState.eFlags) & EF_ALT_DIM));
 }
 
-//JA+ with jp_allowModelScale scales players' sabers to their model, which also changes their speed with jp_allowDmgSpeedScale
-static void CG_JAPlusUpdateSaberScale( const centity_t *cent, clientInfo_t *ci )
+//JA+ with jp_allowModelScale scales players' sabers to their model, which also changes their speed with jp_allowDmgSpeedScale.
+//Lugormod always scales them, blade width too
+static void CG_UpdateSaberScale( const centity_t *cent, clientInfo_t *ci )
 {
-	const int iModelScale = JAPLUS_SERVER_HAS(JAPLUS_CINFO_MODELSCALE) ? cent->currentState.iModelScale : 0;
-	const float scale = (iModelScale > 0) ? iModelScale / 100.0f : 1.0f;
-	const qboolean speedScale = (qboolean)!!(cgs.cinfo & JAPLUS_CINFO_DMGSPEEDSCALE);
+	int iModelScale;
+	float scale;
+	qboolean speedScale = qfalse, radiusScale = qfalse;
 
-	if ( cgs.serverMod != SVMOD_JAPLUS || cent->currentState.number >= MAX_CLIENTS || ci->jpSaberScale == iModelScale )
+	if ( cent->currentState.number >= MAX_CLIENTS )
 	{
 		return;
 	}
-	ci->jpSaberScale = iModelScale;
-	WP_ScaleSaber( cent->currentState.number, ci->saber, 0, ci->saberName, scale, speedScale );
-	WP_ScaleSaber( cent->currentState.number, ci->saber, 1, ci->saber2Name, scale, speedScale );
+	if ( cgs.serverMod == SVMOD_JAPLUS )
+	{
+		iModelScale = JAPLUS_SERVER_HAS(JAPLUS_CINFO_MODELSCALE) ? cent->currentState.iModelScale : 0;
+		speedScale = (qboolean)!!(cgs.cinfo & JAPLUS_CINFO_DMGSPEEDSCALE);
+	}
+	else if ( cgs.serverMod == SVMOD_LMD )
+	{
+		iModelScale = cent->currentState.iModelScale;
+		radiusScale = qtrue;
+	}
+	else
+	{
+		return;
+	}
+
+	if ( ci->saberModelScale == iModelScale )
+	{
+		return;
+	}
+	ci->saberModelScale = iModelScale;
+	scale = (iModelScale > 0) ? iModelScale / 100.0f : 1.0f;
+	WP_ScaleSaber( cent->currentState.number, ci->saber, 0, ci->saberName, scale, speedScale, radiusScale );
+	WP_ScaleSaber( cent->currentState.number, ci->saber, 1, ci->saber2Name, scale, speedScale, radiusScale );
 }
 
 static float cg_vehThirdPersonAlpha = 1.0f;
@@ -10577,7 +10598,7 @@ void CG_Player( centity_t *cent ) {
 
 	if ( cent->currentState.eType != ET_NPC )
 	{
-		CG_JAPlusUpdateSaberScale( cent, ci );
+		CG_UpdateSaberScale( cent, ci );
 	}
 
 	// Add the player to the radar if on the same team and its a team game
@@ -12918,9 +12939,18 @@ stillDoSaber:
 
 	if ((cg.snap->ps.fd.forcePowersActive & (1 << FP_SEE)) && cg.snap->ps.clientNum != cent->currentState.number)
 	{
-		legs.shaderRGBA[0] = 255;
-		legs.shaderRGBA[1] = 255;
-		legs.shaderRGBA[2] = 0;
+		if (cgs.serverMod == SVMOD_LMD && (cent->currentState.eFlags2 & EF2_LMD_CANSEE))
+		{//Lugormod shows who's carrying a money stash in green
+			legs.shaderRGBA[0] = 100;
+			legs.shaderRGBA[1] = 255;
+			legs.shaderRGBA[2] = 100;
+		}
+		else
+		{
+			legs.shaderRGBA[0] = 255;
+			legs.shaderRGBA[1] = 255;
+			legs.shaderRGBA[2] = 0;
+		}
 		legs.renderfx |= RF_MINLIGHT;
 	}
 	
@@ -13630,6 +13660,13 @@ stillDoSaber:
 			legs.shaderRGBA[0] = 255;
 			legs.shaderRGBA[1] = 255;
 			legs.shaderRGBA[2] = 0;
+		}
+
+		if (cgs.serverMod == SVMOD_LMD && (cent->currentState.eFlags2 & EF2_LMD_CANSEE))
+		{//stash carrier
+			legs.shaderRGBA[0] = 100;
+			legs.shaderRGBA[1] = 255;
+			legs.shaderRGBA[2] = 100;
 		}
 
 /*		if (cg.snap->ps.fd.forcePowerLevel[FP_SEE] <= FORCE_LEVEL_1)

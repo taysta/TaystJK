@@ -988,6 +988,14 @@ void PM_StepSlideMove( qboolean gravity ) {
 	qboolean skipStep = qfalse;
 	int NEW_STEPSIZE = STEPSIZE;
 	const int moveStyle = PM_GetMovePhysics();
+	float stepScale = 1.0f;
+
+#ifdef _CGAME
+	if (cgs.serverMod == SVMOD_LMD)
+	{//Lugormod steps higher the bigger you are
+		stepScale = scaleh;
+	}
+#endif
 
 	if (moveStyle == MV_CPM || moveStyle == MV_OCPM || moveStyle == MV_Q3 || moveStyle == MV_WSW || moveStyle == MV_RJQ3 || moveStyle == MV_RJCPM || moveStyle == MV_SLICK || moveStyle == MV_BOTCPM) {
 		if (pm->ps->velocity[2] > 0 && pm->cmd.upmove > 0) {
@@ -1037,7 +1045,7 @@ void PM_StepSlideMove( qboolean gravity ) {
 	}
 
 	VectorCopy(start_o, down);
-	down[2] -= NEW_STEPSIZE;
+	down[2] -= NEW_STEPSIZE * stepScale;
 	pm->trace (&trace, start_o, pm->mins, pm->maxs, down, pm->ps->clientNum, pm->tracemask);
 	VectorSet(up, 0, 0, 1);
 	// never step up when you still have up velocity
@@ -1059,22 +1067,26 @@ void PM_StepSlideMove( qboolean gravity ) {
 			(pEnt->s.NPC_class == CLASS_ATST ||
 			(pEnt->s.NPC_class == CLASS_VEHICLE && pEnt->m_pVehicle && pEnt->m_pVehicle->m_pVehicleInfo->type == VH_WALKER) ) )
 		{//AT-STs can step high
-			up[2] += 66.0f;
+			up[2] += 66.0f * stepScale;
 			isGiant = qtrue;
 		}
 		else if ( pEnt && pEnt->s.NPC_class == CLASS_RANCOR )
 		{//also can step up high
-			up[2] += 64.0f;
+			up[2] += 64.0f * stepScale;
 			isGiant = qtrue;
 		}
 		else
 		{
-			up[2] += NEW_STEPSIZE;
+			up[2] += NEW_STEPSIZE * stepScale;
 		}
 	}
 	else
 	{
-		up[2] += NEW_STEPSIZE;
+		up[2] += NEW_STEPSIZE * stepScale;
+	}
+	if (stepScale >= 4.0f)
+	{//and steps like a giant from four times the size
+		isGiant = qtrue;
 	}
 
 	// test the player position if they were a stepheight higher

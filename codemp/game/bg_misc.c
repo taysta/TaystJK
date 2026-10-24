@@ -2314,6 +2314,21 @@ qboolean BG_CanItemBeGrabbed( int gametype, const entityState_t *ent, const play
 	{
 		if ( ps->trueJedi )
 		{//force powers and saber only
+#ifdef _CGAME
+			if ( cgs.serverMod == SVMOD_LMD )
+			{//Lugormod also lets them take medpacks and any holdable but the jetpack
+				if ( item->giType != IT_TEAM
+					&& item->giType != IT_HEALTH
+					&& item->giType != IT_ARMOR
+					&& (item->giType != IT_WEAPON || item->giTag != WP_SABER)
+					&& (item->giType != IT_HOLDABLE || item->giTag == HI_JETPACK)
+					&& (item->giType != IT_POWERUP || item->giTag == PW_YSALAMIRI) )
+				{
+					return qfalse;
+				}
+			}
+			else
+#endif
 			if ( item->giType != IT_TEAM //not a flag
 				&& item->giType != IT_ARMOR//not shields
 				&& (item->giType != IT_WEAPON || item->giTag != WP_SABER)//not a saber
@@ -2332,7 +2347,11 @@ qboolean BG_CanItemBeGrabbed( int gametype, const entityState_t *ent, const play
 				return qfalse;
 			}
 		}
-		if ( ps->isJediMaster && item && (item->giType == IT_WEAPON || item->giType == IT_AMMO))
+		if ( ps->isJediMaster && item && (item->giType == IT_WEAPON || item->giType == IT_AMMO
+#ifdef _CGAME
+			|| (cgs.serverMod == SVMOD_LMD && (item->giType == IT_HEALTH || item->giType == IT_ARMOR)) //nor heal up on Lugormod
+#endif
+			))
 		{//jedi master cannot pick up weapons
 			return qfalse;
 		}
@@ -2821,6 +2840,24 @@ void BG_TouchJumpPad( playerState_t *ps, entityState_t *jumppad ) {
 	ps->jumppad_ent = jumppad->number;
 	ps->jumppad_frame = ps->pmove_framecount;
 	// give the player the velocity from the jumppad
+#ifdef _CGAME
+	if ( cgs.serverMod == SVMOD_LMD && jumppad->bolt1 )
+	{//Lugormod RELATIVE pushes send the target point, and throw you in an arc that peaks on it
+		const float height = jumppad->origin2[2] - ps->origin[2];
+
+		if ( height > 0 && ps->gravity > 0 )
+		{//Lugormod's sqrt goes bad otherwise, so leave that to the server
+			const float time = sqrtf( height / (0.5f * ps->gravity) );
+			vec3_t dir;
+
+			VectorSubtract( jumppad->origin2, ps->origin, dir );
+			dir[2] = 0;
+			VectorScale( dir, 1.0f / time, ps->velocity );
+			ps->velocity[2] = time * ps->gravity;
+		}
+	}
+	else
+#endif
 	VectorCopy( jumppad->origin2, ps->velocity );
 	// fix: no more force draining after bouncing the jumppad
 	ps->fd.forcePowersActive &= ~(1<<FP_LEVITATION);
@@ -3306,7 +3343,7 @@ qboolean BG_OutOfMemory ( void )
 	return bg_poolSize >= MAX_POOL_SIZE;
 }
 
-const char *gametypeStringShort[GT_MAX_GAME_TYPE] = {
+static const char *gametypeStringShort[GT_MAX_GAME_TYPE] = {
 	"FFA",
 	"HOLO",
 	"JM",
@@ -3318,6 +3355,14 @@ const char *gametypeStringShort[GT_MAX_GAME_TYPE] = {
 	"CTF",
 	"CTY"
 };
+
+//Lugormod sends gametypes past GT_MAX_GAME_TYPE
+const char *BG_GetGametypeStringShort( int gametype )
+{
+	if ( gametype < 0 || gametype >= GT_MAX_GAME_TYPE )
+		return "UNK";
+	return gametypeStringShort[gametype];
+}
 
 const char *BG_GetGametypeString( int gametype )
 {

@@ -2898,6 +2898,16 @@ void BG_SaberStartTransAnim( int clientNum, int saberAnimLevel, int weapon, int 
 		{
 			*animSpeed *= 0.75f;
 		}
+#ifdef _CGAME
+		else if ( cgs.serverMod == SVMOD_LMD && saberAnimLevel == SS_DESANN )
+		{//Lugormod's saber files hand out these styles, and it slows their transitions down
+			*animSpeed *= 0.5f;
+		}
+		else if ( cgs.serverMod == SVMOD_LMD && saberAnimLevel == SS_TAVION )
+		{
+			*animSpeed *= 0.25f;
+		}
+#endif
 
 		if (broken & (1<<BROKENLIMB_RARM))
 		{

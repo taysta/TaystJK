@@ -2504,6 +2504,77 @@ CG_FireWeapon
 Caused by an EV_FIRE_WEAPON event
 ================
 */
+//Lugormod's stun baton fires a grappling hook (g_grapplingHook) that the server keeps to itself,
+//so trace our shots the way it does for the prediction to pull on
+static void CG_LugormodHookShot( qboolean altFire )
+{
+	const playerState_t *ps = &cg.predictedPlayerState;
+	vec3_t start, forward, end;
+	trace_t tr;
+
+	VectorCopy( ps->origin, start );
+	start[2] += ps->viewheight;
+	AngleVectors( ps->viewangles, forward, NULL, NULL );
+	VectorMA( start, 2048, forward, end );
+	CG_Trace( &tr, start, NULL, NULL, end, ps->clientNum, MASK_PLAYERSOLID );
+
+	//it won't hook players, sky or anything that moves
+	cg.lmdHookShot = (qboolean)(tr.fraction < 1.0f && tr.entityNum >= MAX_CLIENTS && !(tr.surfaceFlags & SURF_SKY)
+		&& (tr.entityNum == ENTITYNUM_WORLD || cg_entities[tr.entityNum].currentState.pos.trType == TR_STATIONARY));
+	VectorCopy( tr.endpos, cg.lmdHookShotPoint );
+	cg.lmdHookShotTime = ps->commandTime;
+
+	if ( altFire && cg.lmdHookSet )
+	{//alt fire lets go
+		cg.lmdHookSet = qfalse;
+	}
+	else if ( cg.lmdHookShot )
+	{
+		cg.lmdHookSet = qtrue;
+		VectorCopy( tr.endpos, cg.lmdHookPoint );
+	}
+}
+
+//Keep our hook in step with the server, which drops it when the baton is put away or you get too far from it,
+//and moves it to wherever the rope catches
+void CG_LugormodUpdateHook( void )
+{
+	const playerState_t *ps = &cg.snap->ps;
+	vec3_t start;
+	trace_t tr;
+
+	if ( cgs.serverMod != SVMOD_LMD || ps->weapon != WP_STUN_BATON || ps->pm_type == PM_DEAD )
+	{
+		cg.lmdHookSet = cg.lmdHookShot = qfalse;
+		return;
+	}
+
+	if ( ps->pm_type == PM_GRAPPLING && !cg.lmdHookSet && cg.lmdHookShot && ps->commandTime >= cg.lmdHookShotTime )
+	{//the server hooked a shot we took for an attack or for letting go
+		cg.lmdHookSet = qtrue;
+		VectorCopy( cg.lmdHookShotPoint, cg.lmdHookPoint );
+	}
+
+	if ( !cg.lmdHookSet )
+	{
+		return;
+	}
+
+	if ( Distance( ps->origin, cg.lmdHookPoint ) > 2048 + 128 )
+	{
+		cg.lmdHookSet = qfalse;
+		return;
+	}
+
+	VectorCopy( ps->origin, start );
+	start[2] += ps->viewheight;
+	CG_Trace( &tr, start, NULL, NULL, cg.lmdHookPoint, ps->clientNum, MASK_PLAYERSOLID );
+	if ( tr.fraction < 1.0f && Distance( tr.endpos, cg.lmdHookPoint ) > 8 )
+	{//the rope caught on something
+		VectorCopy( tr.endpos, cg.lmdHookPoint );
+	}
+}
+
 void CG_FireWeapon( centity_t *cent, qboolean altFire ) {
 	entityState_t *ent;
 	int				c;
@@ -2518,6 +2589,11 @@ void CG_FireWeapon( centity_t *cent, qboolean altFire ) {
 	if ( ent->weapon >= WP_NUM_WEAPONS ) {
 		trap->Error( ERR_DROP, "CG_FireWeapon: ent->weapon >= WP_NUM_WEAPONS" );
 		return;
+	}
+
+	if ( cgs.serverMod == SVMOD_LMD && ent->weapon == WP_STUN_BATON && ent->number == cg.predictedPlayerState.clientNum )
+	{
+		CG_LugormodHookShot( altFire );
 	}
 
 	if (((cgs.serverMod == SVMOD_JAPRO) && (cg.predictedPlayerState.stats[STAT_RACEMODE]))

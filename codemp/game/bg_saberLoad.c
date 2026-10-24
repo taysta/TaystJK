@@ -2347,12 +2347,13 @@ void WP_SetSaber( int entNum, saberInfo_t *sabers, int saberNum, const char *sab
 }
 
 #ifdef _CGAME
-//JA+ modelscale: blades follow the player's scale, and with speedScale (jp_allowDmgSpeedScale) so do the saber's damage, move and anim speed
-void WP_ScaleSaber( int entNum, saberInfo_t *sabers, int saberNum, const char *saberName, float scale, qboolean speedScale )
+//JA+ and Lugormod modelscale: blades follow the player's scale, with radiusScale (Lugormod) so does their width,
+//and with speedScale (JA+ jp_allowDmgSpeedScale) so do the saber's damage, move and anim speed
+void WP_ScaleSaber( int entNum, saberInfo_t *sabers, int saberNum, const char *saberName, float scale, qboolean speedScale, qboolean radiusScale )
 {
 	saberInfo_t *saber = &sabers[saberNum];
 	char value[MAX_TOKEN_CHARS] = {0};
-	float saberLength = 32.0f, damageScale = 1.0f, damageScale2 = 1.0f, moveSpeedScale = 1.0f, animSpeedScale = 1.0f;
+	float saberLength = 32.0f, saberRadius = SABER_RADIUS_STANDARD, damageScale = 1.0f, damageScale2 = 1.0f, moveSpeedScale = 1.0f, animSpeedScale = 1.0f;
 	int i;
 
 	if ( !saberName || !saberName[0] || !Q_stricmp( saberName, "none" ) || !Q_stricmp( saberName, "remove" ) )
@@ -2367,6 +2368,8 @@ void WP_ScaleSaber( int entNum, saberInfo_t *sabers, int saberNum, const char *s
 	//always rescale from the saber file's values
 	if ( WP_SaberParseParm( saberName, "saberLength", value ) )
 		saberLength = atof( value );
+	if ( WP_SaberParseParm( saberName, "saberRadius", value ) )
+		saberRadius = atof( value );
 	if ( WP_SaberParseParm( saberName, "damageScale", value ) )
 		damageScale = atof( value );
 	if ( WP_SaberParseParm( saberName, "damageScale2", value ) )
@@ -2383,6 +2386,17 @@ void WP_ScaleSaber( int entNum, saberInfo_t *sabers, int saberNum, const char *s
 		if ( WP_SaberParseParm( saberName, va( "saberLength%i", i + 1 ), value ) )
 			length = (int)atof( value );
 		saber->blade[i].lengthMax = length * scale;
+
+		if ( radiusScale )
+		{
+			float radius = saberRadius;
+
+			if ( WP_SaberParseParm( saberName, va( "saberRadius%i", i + 1 ), value ) )
+				radius = atof( value );
+			if ( radius < 0.25f )
+				radius = 0.25f;
+			saber->blade[i].radius = radius * scale;
+		}
 	}
 
 	{

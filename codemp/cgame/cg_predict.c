@@ -1074,6 +1074,8 @@ void CG_PredictPlayerState( void ) {
 		return;
 	}
 
+	CG_LugormodUpdateHook();
+
 	// prepare for pmove
 	cg_pmove.ps = &cg.predictedPlayerState;
 	cg_pmove.trace = CG_Trace;
