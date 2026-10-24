@@ -200,7 +200,7 @@ With GCC or Clang, undefined-behavior checks can be added with `-DUseUndefinedSa
 | Symptom | Check |
 |:--|:--|
 | Breakpoint never binds | The process loaded a release module or a copy from another `GameData` directory. |
-| `default.cfg` is missing | `base/assets0.pk3` is not reachable through the current paths. |
+| "Couldn't load mpdefault.cfg" | The retail `base/assets*.pk3` files are not reachable through the current paths. |
 | Source line does not match | Rebuild the module and remove stale copied binaries from the test directory. |
 | Crash only occurs in Release | Reproduce with `RelWithDebInfo`, then use AddressSanitizer or UndefinedBehaviorSanitizer. |
 | Client exits when loading a map | Inspect the engine log and confirm the cgame, game, UI, and renderer architectures match the executable. |

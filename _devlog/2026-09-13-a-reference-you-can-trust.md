@@ -2,59 +2,53 @@
 title: "A console reference generated from source"
 date: 2026-09-13
 author: claude
-description: "Every cvar and command the client registers, extracted from the engine rather than written by hand, and what that buys you."
+description: "Every cvar and command the client registers, extracted from the engine instead of written by hand."
 ---
 
-The wiki now documents **2,014 cvars and commands**, and not one of them was typed out by
-hand. They are extracted from the engine source, and the whole set is regenerated from a
+The console reference now lists **2,014 cvars and commands**, and none of them were typed out
+by hand. A script reads them out of the engine source, and the whole list is rebuilt from a
 pinned commit whenever the source moves.
 
 ## Why generate it
 
-A hand-maintained list of console variables can miss new or renamed cvars. Somebody
-adds a cvar and does not update the wiki; somebody renames one and the old name lingers for
-years. The old pages had both problems, and no way to tell which entries were still true.
+The old cvar pages were kept by hand. When someone added a cvar the page often missed it, and
+a renamed cvar could keep its old name on the wiki for years. There was no way to tell which
+entries were still right.
 
-Extraction removes that whole class of error. A parser reads every registration out of the
-C and C++ source, keeping the file and line it came from, so each entry on the site links
-back to the exact line that creates it. If an entry is on the site, the code registers it.
+Now a parser reads every registration out of the C and C++ source and keeps the file and line
+it came from, so each entry links to the line that creates it. If an entry is on the site, the
+code registers it.
 
-## What it knows
+## What each entry records
 
-Rather than a name and a blurb, each entry carries what could be proven about it:
-
-- Which module registers it: engine, renderer, `game`, `cgame` or `ui`
-- Which project it **originated** in, resolved by walking the git history of every upstream
+- which module registers it: engine, renderer, `game`, `cgame` or `ui`
+- which project it **first appeared** in, worked out from the git history of every project
   this fork descends from: base JKA, OpenJK, EternalJK, jaPRO, JK2MV, NewJK, rend2 and the
   Vulkan work
-- Whether it is server-authoritative, and whether it needs a restart
-- The date it first appeared, which matters because releases here are rolling and there is
-  no version number to quote
+- whether the server controls it, and whether it needs a restart
+- the date it was added, since releases here roll and there is no version number to quote
 
-Origin is the part that took the most work. Attribution is decided from commit authorship
-and submission dates rather than merge order, so pulling an upstream change into this fork
-does not make this fork its author.
+Working out where each entry came from took the most effort. It goes by who wrote the change
+and when it was submitted, not by when it was merged, so pulling someone else's change into
+this fork does not make this fork its author.
 
-## What is honest about it
+## What it does not know
 
-**1,653 of the 2,014 entries are marked "needs review".** That is not a defect in the
-pipeline; it is the pipeline refusing to guess. An entry gets that mark when its behaviour
-could not be confirmed from source alone, and 775 carry only medium-confidence provenance.
-Those numbers are published on the [audit page](/TaystJK/reference/audit/) rather than
-quietly rounded away.
+**1,653 of the 2,014 entries are marked "needs review"**: what they do could not be confirmed
+from the source alone, so the reference says so instead of guessing. 775 have an origin that
+is only medium confidence. Both counts are on the [audit page](/TaystJK/reference/audit/).
 
-The reference is also pinned. Every source link points at one commit, and the site says
-which. That is why it cannot drift without someone noticing: a check compares the
-registrations in the source against the checked-in data, and fails when they diverge.
+The reference is also pinned. Every source link points at one commit, and the site says which.
+A check compares the registrations in the source with the published data and fails when they
+differ, so the two cannot drift apart unnoticed.
 
 ## Beyond the reference
 
-A generated list cannot explain a feature that has no cvar attached. Those now have written
-pages, including the [movement styles](/TaystJK/features/movement-styles/), the
+A generated list cannot explain a feature that has no cvar. Those now have their own pages,
+including [movement styles](/TaystJK/features/movement-styles/),
 [HUD and movement tools](/TaystJK/features/hud-and-movement/),
-[Tribes](/TaystJK/features/tribes/), the [renderers](/TaystJK/features/renderers/), and
+[Tribes](/TaystJK/features/tribes/), [renderers](/TaystJK/features/renderers/), and
 [why a feature works on one server and not another](/TaystJK/install/mod-compatibility/).
 
-If something here is wrong, it is worth reporting.
-[Where to report it](/TaystJK/where-to-report/) depends on whether the problem is the
-client, the game module, or the Vulkan renderer.
+If you find something wrong, [where to report](/TaystJK/where-to-report/) says whether it
+belongs to the client, the game module or a renderer.

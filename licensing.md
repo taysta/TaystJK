@@ -8,7 +8,7 @@ toc: true
 ---
 
 <div class="page-heading" markdown="1">
-<p class="eyebrow">Reference</p>
+<p class="eyebrow">Help</p>
 
 # Licensing and attribution
 
@@ -26,8 +26,9 @@ you distribute built from it carries the same licence and the same source-availa
 obligation. It is not a permissive licence: shipping a closed-source client built on this
 code is not permitted.
 
-The bundled third-party libraries, such as SDL, zlib, libpng, OpenAL Soft, cJSON and
-SQLite, are not GPLv2 code; each keeps the licence its own project publishes it under.
+The bundled third-party libraries keep the licences their own projects publish them under.
+Most, such as SDL, zlib, libpng, OpenAL Soft, cJSON and SQLite, are not GPLv2 code. Mongoose,
+the HTTP library used for downloads, is GPLv2 (or a commercial licence).
 [Libraries and versions](/TaystJK/development/libraries/) lists them.
 The Steamworks library is the one TaystJK cannot bundle at all; see
 [Steam playtime and overlay](/TaystJK/install/#steam-playtime-and-overlay).

@@ -8,7 +8,7 @@ toc: true
 ---
 
 <div class="page-heading" markdown="1">
-<p class="eyebrow">Start here</p>
+<p class="eyebrow">Help</p>
 
 # Where to report a problem
 
@@ -24,7 +24,7 @@ toc: true
 | Something only wrong on the Vulkan renderer | [JKSunny/EternalJK](https://github.com/JKSunny/EternalJK), if it also happens on EternalJK |
 | Something only wrong on the rend2 renderer | [SomaZ/OpenJK](https://github.com/SomaZ/OpenJK), if it also happens on SomaZ's build |
 | Any of those, but only in TaystJK | [taysta/TaystJK](https://github.com/taysta/TaystJK) |
-| Something only wrong on a JA+ server | Nowhere; see below |
+| Something only wrong on a JA+ server | Usually nowhere, but client crashes still come here; see [JA+](#ja) |
 
 ## Before you send it elsewhere
 

@@ -8,7 +8,7 @@ toc: true
 ---
 
 <div class="page-heading" markdown="1">
-<p class="eyebrow">Start here</p>
+<p class="eyebrow">Help</p>
 
 # Glossary
 
@@ -24,8 +24,8 @@ Every cvar the client registers has an entry in the [console reference](/TaystJK
 **Command:** a console action rather than a stored value, such as `vid_restart` or
 `strafehelper`. Commands and cvars share the console and the reference.
 
-**Archived:** a cvar flagged `CVAR_ARCHIVE` is written to the generated config when the
-game exits, `taystjk.cfg` for the client and `taystjk_server.cfg` for a dedicated server
+**Archived:** a cvar flagged `CVAR_ARCHIVE` is written to the generated config whenever
+an archived setting changes, `taystjk.cfg` for the client and `taystjk_server.cfg` for a dedicated server
 ([`qcommon.h`](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/qcommon/qcommon.h#L648)), and so keeps its value next time.
 
 **Latched:** a cvar flagged `CVAR_LATCH` holds a new value aside and only applies it when
@@ -69,6 +69,11 @@ SnapHUD computes them from both and draws them
 ([`hud_strafehelper.c`](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/cgame/hud_strafehelper.c#L2510)).
 Enable it with `cg_snapHud`. See [HUD and movement tools](/TaystJK/features/hud-and-movement/).
 
+**Racemode, defrag:** jaPRO's timed racing mode, where you run a course in a movement style
+of your choice and your best times are kept per style. "Defrag" is the Quake 3 mod the idea
+comes from. Players switch it on for themselves with `race`. See
+[racing on jaPRO](/TaystJK/features/racing/).
+
 **Movement style:** the rule set a server applies to player movement, changing
 acceleration, air control and what tricks are possible. The client knows nineteen, from
 `MV_SIEGE` and `MV_JKA` through `MV_CPM`, `MV_WSW` and `MV_TRIBES`
@@ -85,6 +90,9 @@ distance so it stays readable far away, and enemies are only marked within a lim
 See [Tribes](/TaystJK/features/tribes/).
 
 ## Files and directories
+
+**PK3:** a zip archive with a `.pk3` extension. The game loads its maps, models, sounds,
+shaders and configs from PK3s, and servers send the ones you are missing.
 
 **Base directory:** `GameData/base`, holding the four retail `assets*.pk3` files. Anything
 else placed here is loaded whichever mod directory is active, so keep additions to PK3s
@@ -134,13 +142,20 @@ instead of `GetModuleAPI`; it does not enable QVM bytecode support
 A native module must match the client's architecture, so a 32-bit mod library cannot be
 loaded by a 64-bit client.
 
+**Master server:** a server that keeps the list of public game servers. A dedicated server
+with `dedicated 2` reports itself to the masters in `sv_master1` to `sv_master5`, and the
+in-game server browser asks them for the list. See
+[my server does not appear](/TaystJK/troubleshooting/#my-server-does-not-appear-in-the-server-list).
+
 **Serverinfo:** the small set of values a server publishes about itself, visible in the
 server browser before you connect. A cvar registered `CVAR_SERVERINFO` is part of it.
 
 **Feature flag:** `taystJKinfo`, a serverinfo key through which a server mod advertises
 which TaystJK client features it supports, independently of which mod it is. It is why a
 feature can work on one server and silently do nothing on another; see
-[mod compatibility](/TaystJK/install/mod-compatibility/).
+[mod compatibility](/TaystJK/install/mod-compatibility/). Its counterpart, `taystJKcgflags`,
+goes the other way: the client's userinfo tells the server which extended commands it can
+read. See [feature flags](/TaystJK/development/feature-flags/).
 
 **Origin:** in the console reference, the project an entry *first appeared* in, not every
 fork that ships it. See [sources and methodology](/TaystJK/reference/sources/).

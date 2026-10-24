@@ -63,11 +63,10 @@ rules and your bundled copy is not used at all. That is why the same feature can
 differently from server to server. See
 [mod compatibility](/TaystJK/install/mod-compatibility/).
 
-**This matters when something is wrong.** Gameplay belongs to the game module, and that
-code is maintained upstream at <https://github.com/videoP/jaPRO> and pulled down here, so
-that is where a rules problem goes, even though a copy of the module ships with this client,
-once you have checked it also happens without TaystJK
-([where to report](/TaystJK/where-to-report/#before-you-send-it-elsewhere)).
+**This matters when something is wrong.** Gameplay belongs to the game module. A copy ships
+with this client, but the code is maintained upstream at <https://github.com/videoP/jaPRO>
+and pulled down here, so a rules problem goes there, once you have checked it also happens
+without TaystJK ([where to report](/TaystJK/where-to-report/#before-you-send-it-elsewhere)).
 How the client renders, connects, binds keys or loads files belongs here. The reference's
 **network scope** field is the quickest way to tell which side owns a given cvar.
 
@@ -98,8 +97,8 @@ why some entries do nothing until you switch renderer.
 **Added** is a date, because there are no version numbers to quote. Compare it against the
 date your build reports: `version` for the engine, `modversion` for the game module. If
 your build is older than the date shown, it does not have that entry. The identifier beside
-the date cannot be compared: `latest` is the same string on every release, and two short
-hashes cannot be ranked against each other. A date marked *needs review* rests on an
+the date cannot be compared: its tag part is the same on every release, and two short hashes
+cannot be ranked against each other. A date marked *needs review* rests on an
 attribution that could not be pinned exactly, so treat it as approximate.
 
 ## Where the data comes from

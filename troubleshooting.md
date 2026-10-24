@@ -8,12 +8,38 @@ toc: true
 ---
 
 <div class="page-heading" markdown="1">
-<p class="eyebrow">Start here</p>
+<p class="eyebrow">Help</p>
 
 # Troubleshooting
 
 <p class="page-lede">Listed by symptom: what you see, not what causes it. If your problem is that something behaves differently on one server than another, that is usually not a bug; see mod compatibility.</p>
 </div>
+
+## The game will not start
+
+Each of these stops the client before the menu, with a message that names the problem.
+
+**Windows: "MSVCP140.dll was not found" or "VCRUNTIME140.dll was not found".** The Visual C++
+Redistributable is missing. Install the **x64** package for the 64-bit build or the **x86**
+package for the 32-bit build; [install](/TaystJK/install/#install-for-your-platform) links it.
+
+**"Couldn't load mpdefault.cfg".** The client cannot find the retail game files
+([`files.cpp`](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/qcommon/files.cpp#L4428)). Put `assets0.pk3` to `assets3.pk3` in a
+`base` directory beside TaystJK, or point `fs_cdPath` at an existing Jedi Academy
+installation. Run `path` in the console to see where the client is looking.
+
+**"Failed to load renderer".** The client could not load the renderer you chose, or the
+default one it falls back to
+([`cl_main.cpp`](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/client/cl_main.cpp#L2760)). The renderer libraries sit beside the
+executable, or inside the app on macOS, so extract the whole archive again, and check it is
+the right build for your system. If it only happens with Vulkan on a Mac, see
+[Vulkan on macOS](/TaystJK/features/renderers/#vulkan-on-macos).
+
+**Linux: "error while loading shared libraries".** A system library is missing. Install the
+packages for your distribution from [install](/TaystJK/install/#install-for-your-platform), and
+run `ldd ./taystjk.x86_64 | grep "not found"` to see what is still missing.
+
+**macOS: the app will not open at all.** See [below](#the-game-will-not-open-on-macos-after-an-update).
 
 ## My server does not appear in the server list
 
@@ -43,10 +69,10 @@ Beyond that: the game port is UDP and must be forwarded to the server. If you ch
 
 ## The dedicated server keeps rewriting my config
 
-It is doing what it was built to do. On shutdown the engine writes every archived cvar back
-to its own generated config, `taystjk_server.cfg` on a dedicated server
-([`common.cpp`](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/qcommon/common.cpp#L1587)),
-so anything you typed into that file by hand is replaced by the engine's own idea of the
+It is doing what it was built to do. Whenever an archived cvar changes, the engine writes
+every archived cvar to its own generated config, `taystjk_server.cfg` on a dedicated server
+([`common.cpp`](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/qcommon/common.cpp#L1586)),
+so anything you typed into that file by hand is soon replaced by the engine's own idea of the
 current value.
 
 Keep your settings in a file of your own and load it explicitly:
@@ -59,7 +85,7 @@ Your file is then the source of truth and the generated config is just a dump. D
 the generated one. See [run a server](/TaystJK/server-hosting/run-a-server/#customize-the-shipped-servercfg).
 
 The same dump explains a server that starts up with the previous game mode's weapons or force
-powers still applied: the mode's settings were saved at shutdown and loaded again. The Docker
+powers still applied: the mode's settings were saved to that file and loaded again. The Docker
 image's `server.cfg` avoids this by running `exec default` before the first map, which puts
 gameplay back to its baseline; see
 [bundled server configs](/TaystJK/server-hosting/bundled-configs/#server-settings-and-gameplay-are-kept-apart).
@@ -70,9 +96,14 @@ macOS re-applies the quarantine attribute to every fresh download, so an update 
 the new copy even though the previous one ran. The app is ad-hoc signed at release, so this
 is not a signing problem and re-signing is not the fix.
 
-Clearing the attribute is covered step by step on the
-[install page](/TaystJK/install/). Follow it there rather than copying a command from
-memory, because the guidance about when `sudo` is and is not appropriate matters.
+Clear it from the extracted app, without `sudo` if the app is in a directory you own:
+
+```sh
+xattr -dr com.apple.quarantine "/path/to/taystjk.app"
+```
+
+The macOS tab of the [install guide](/TaystJK/install/#install-for-your-platform) has the
+details.
 
 Approving the app in System Settings is not a substitute for clearing the attribute, and
 this is why an install that worked yesterday can fail today: it is the *replacement* that

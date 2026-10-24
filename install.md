@@ -223,7 +223,7 @@ can download its Windows release, app `6020`, after you set
 ## First-launch checks
 
 - Open the console with <kbd>Shift</kbd> + <kbd>~</kbd> and run `version` to confirm that TaystJK is running.
-- If the console says it cannot find `default.cfg`, TaystJK cannot see `base/assets0.pk3`. Check where you extracted it, or your `fs_cdPath`.
+- If the game stops with "Couldn't load mpdefault.cfg", TaystJK cannot see the retail `assets*.pk3` files in `base/`. Check where you put them, or your `fs_cdPath`.
 - If the client cannot load a renderer or library, re-extract the complete release, check it matches your system's architecture, and recheck the prerequisites above.
 - If settings or downloaded PK3s turn up somewhere unexpected, run `path` in the console and look at `fs_homepath`, `fs_basepath` and `fs_game`.
 
