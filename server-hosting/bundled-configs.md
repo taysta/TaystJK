@@ -68,7 +68,7 @@ so when a match ends the current map restarts, and players change maps with
 `server.cfg`, and the game picks the next map for the current gametype from the arena
 files
 ([`g_bot.c`](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/game/g_bot.c#L232)). For a fixed list of maps instead, the
-[server config generator](/TaystJK/server-hosting/config-generator/#map-rotation) writes a
+[server config generator](/TaystJK/server-hosting/config-generator/) can write a
 rotation.
 
 ## Server settings and gameplay are kept apart
