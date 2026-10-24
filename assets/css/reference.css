@@ -267,6 +267,10 @@ table {
    reason. */
 .page-content table { display: block; overflow-x: auto; }
 .page-content :not(pre) > code { overflow-wrap: anywhere; }
+/* In a table, break code only at spaces: a narrow column then widens the table, which
+   scrolls sideways, instead of splitting a name like fs_forcegame across lines. */
+.page-content td > code,
+.page-content th > code { overflow-wrap: normal; }
 .page-content > h1 code { overflow-wrap: anywhere; font-size: .78em; }
 
 .table-wrapper { overflow-x: auto; }
@@ -1261,12 +1265,16 @@ kbd { padding: .15rem .42rem; color: var(--text-soft); background: var(--surface
   .brand-mark { width: 34px; height: 34px; }
   /* The header is flex here, so the grid-column rule the search box gets at 900px does
      nothing. The search box shares the first row with the brand and the theme toggle.
-     The seven tabs take a full-width grid below it, four to a row, so each keeps
-     readable text and a tap target about 40px tall down to 360px. */
+     The six tabs take a full-width grid below it, three to a row, so each keeps
+     readable text and a tap target about 40px tall down to 360px. That makes the sticky
+     header about 145px tall, so anchors leave that much room above a heading. */
   .header-inner { flex-wrap: wrap; row-gap: .5rem; padding-bottom: .5rem; }
   .site-search { flex: 1; order: 1; }
   .theme-toggle { order: 2; }
-  .site-nav { display: grid; flex: 1 0 100%; order: 3; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: .15rem; overflow: visible; }
+  .site-nav { display: grid; flex: 1 0 100%; order: 3; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: .15rem; overflow: visible; }
+  html { scroll-padding-top: 156px; }
+  html :target,
+  .reference-catalog { scroll-margin-top: 156px; }
   .site-nav a { display: flex; align-items: center; justify-content: center; min-height: 40px; padding: .35rem .25rem; font-size: .82rem; text-align: center; }
   .wip-banner-inner { flex-wrap: wrap; gap: .1rem .45rem; width: min(calc(100% - 1.25rem), var(--wide)); padding: .5rem 0; line-height: 1.4; }
   .site-main,
