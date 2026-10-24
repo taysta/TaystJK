@@ -224,6 +224,10 @@ void CModelCacheManager::DumpNonPure( void )
 		}
 	}
 
+#ifdef VK_G2_POINTER_FRAMECACHE
+	// force revalidating the ghoul2 per-frame pointers
+	tr.g2PtrInvalidation++;
+#endif
 	ri.Printf( PRINT_DEVELOPER, "CCacheManager::DumpNonPure(): Ok\n");
 }
 
@@ -301,6 +305,10 @@ qboolean CModelCacheManager::LevelLoadEnd( qboolean deleteUnusedByLevel )
 		}
 	}
 
+#ifdef VK_G2_POINTER_FRAMECACHE
+	// force revalidating the ghoul2 per-frame pointers
+	tr.g2PtrInvalidation++;
+#endif
 	ri.Printf( PRINT_DEVELOPER, S_COLOR_GREEN "CModelCacheManager::LevelLoadEnd(): Ok\n");
 
 	return bAtLeastOneModelFreed;
