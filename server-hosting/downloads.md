@@ -52,17 +52,17 @@ seta sv_httpServerPort "http://downloads.example.org/jka"
 
 For a referenced file named `taystjk/maps-pack.pk3`, the web server must therefore serve `http://downloads.example.org/jka/taystjk/maps-pack.pk3`. The current implementation accepts `http://`, not `https://`; put a compatible HTTP endpoint in front of the files if you use an external host.
 
-Do not put spaces or `@` in downloadable PK3 filenames. After changing downloadable content, restart the map and check the reference list before inviting players.
+Do not put spaces or `@` in downloadable PK3 filenames. The download list sent to clients is one string with `@` between its entries, so the server leaves out any PK3 whose name contains one ([`files.cpp`](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/qcommon/files.cpp#L3607)), and a space splits the name in two. After changing downloadable content, restart the map and check the reference list before inviting players.
 
 ## PK3 referencing and reflists
 
 Only referenced PK3s are offered to clients. TaystJK automatically references a PK3 when:
 
 1. A BSP map is loaded from it.
-2. A recognized native client module marker, currently `cgamex86.dll` or `uix86.dll`, is loaded from it.
+2. It holds a client module the engine looks for: `vm/cgame.qvm`, `vm/ui.qvm`, `cgamex86.dll` or `uix86.dll` ([`files.cpp`](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/qcommon/files.cpp#L1640)).
 3. It is in the active `fs_game` directory rather than `base`.
 
-TaystJK does not currently execute `cgame.qvm` or `ui.qvm`. Its modules are native libraries: `.dll` on Windows, `.so` on Linux, and `.dylib` on macOS. Because the automatic PK3 check uses the two x86 Windows marker names for cross-platform pure-server bookkeeping, add a package explicitly to `ref_forcelist.txt` when it contains only another architecture's module names or client assets that do not otherwise trigger a reference.
+TaystJK does not run `cgame.qvm` or `ui.qvm`; its modules are native libraries, `.dll` on Windows, `.so` on Linux and `.dylib` on macOS. The check still looks for those four names because they are what stock clients load. A PK3 that holds only other module names, such as `cgamex86_64.dll`, or only client assets, is not referenced on its own; add it to `ref_forcelist.txt`.
 
 Run `sv_referencedPakNames` in the server console to inspect the current result. Reflist files let you correct the automatic decision:
 
@@ -72,7 +72,7 @@ Run `sv_referencedPakNames` in the server console to inspect the current result.
 | `ref_blacklist.txt` | Never reference the listed PK3s. |
 | `ref_whitelist.txt` | Allow only the listed PK3s to be referenced. |
 
-Place reflists in `base/` or the active `taystjk/` directory. Use one `game-directory/pak-name.pk3` path per line:
+Place reflists in `base/` or the server's mod directory, which is `taystjk/` unless you run another mod. Use one `game-directory/pak-name.pk3` path per line:
 
 ```text
 base/ffa_custom.pk3

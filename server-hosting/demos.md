@@ -73,6 +73,25 @@ A player who is still connecting or loading cannot be recorded yet; the server a
 `Client is not active.`
 ([`sv_ccmds.cpp`](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/server/sv_ccmds.cpp#L2141)).
 
+## Recording every player automatically
+
+[`sv_autoDemo`](/TaystJK/reference/?q=sv_autoDemo) records a demo of every player without
+anyone typing a command
+([`sv_init.cpp`](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/server/sv_init.cpp#L1038)):
+
+| Setting | Does |
+|:--|:--|
+| `sv_autoDemo 1` | Records one demo per player, from when they enter the game or the map loads until the map ends. Bots are skipped unless `sv_autoDemoBots` is `1`. |
+| `sv_autoDemo 2` | Records only a spectating bot named `RECORDER`, and only while at least one human is on the server. Pair it with a game module that sends spectators every player's information, and one demo covers the whole match. |
+| `sv_autoDemoMaxMaps` | Keeps the demos of this many maps and deletes older ones. `0` keeps everything. |
+
+The demos go under `demos/autorecord/`, in a folder per day and per map, and each file is
+named after the client number, player, map and time
+([`sv_ccmds.cpp`](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/server/sv_ccmds.cpp#L1929)).
+The shipped `server.cfg` leaves `sv_autoDemo` off and sets `sv_autoDemoMaxMaps 50`, so turning
+it on keeps the last fifty maps. Every player's demo is written for every map, so watch the
+disk.
+
 ## Automatic race demos
 
 TaystJK's bundled jaPRO game module can record race runs by itself when `sv_autoRaceDemo` is

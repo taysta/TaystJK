@@ -30,7 +30,7 @@ in the source repository holds them.
 
 | File | When | Holds |
 |:--|:--|:--|
-| `server.cfg` | Always | Identity, passwords, listing, downloads and the other server settings, then `exec bans`, `exec votes` and `exec default`, and the map last. |
+| `server.cfg` | Always | Identity, passwords, listing, downloads and the other server settings, then `exec bans`, `exec votes` and `exec default`, and last the map, or a map rotation if you pick more than one map. |
 | `default.cfg` | jaPRO and base | The gameplay preset, the gametype and limits, and your fine-tuning. Every mode runs it first. |
 | `bans.cfg` | If you keep bans | `g_filterBan`, with `g_banIPs` left commented unless you enter addresses, so bans added with `addip` are kept. |
 | `votes.cfg` | jaPRO, with vote options | One option per ticked mode and add-on, and the groups you choose. |
@@ -46,12 +46,12 @@ A few rules hold for every combination:
 - Every cvar is written with `set` or `seta`. A bare `name value` line only changes a cvar
   that already exists
   ([`cvar.cpp`](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/qcommon/cvar.cpp#L964)),
-  and the game module's cvars do not exist until it loads with the first map. The join
-  password, `g_password`, uses `set` and has `CVAR_NONE`
-  ([`g_xcvar.h`](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/game/g_xcvar.h#L125)).
-  jaPRO's `g_fullAdminPass` and `g_juniorAdminPass` use `seta` and are archived
+  and the game module's cvars do not exist until it loads with the first map.
+- The join password, `g_password`, is written with `set`, so it is never saved anywhere
+  else ([`g_xcvar.h`](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/game/g_xcvar.h#L125)).
+  jaPRO's `g_fullAdminPass` and `g_juniorAdminPass` are archived cvars
   ([`g_xcvar.h`](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/game/g_xcvar.h#L264-L265)),
-  so their values may also appear in the server's saved `taystjk_server.cfg`
+  so the server also copies them into its saved `taystjk_server.cfg`
   ([config writeback](/TaystJK/troubleshooting/#the-dedicated-server-keeps-rewriting-my-config)).
   The generator writes `rconpassword` with `set`; under Docker, keep it on the line that
   [`docker stop` reads](/TaystJK/server-hosting/bundled-configs/#passwords).
@@ -60,6 +60,14 @@ A few rules hold for every combination:
   [`sv_cheats`](/TaystJK/reference/cvars/sv_cheats-a5d6021/) and
   [`g_needpass`](/TaystJK/reference/cvars/g_needpass-d848438/). The base and other-mod targets
   only offer cvars that exist in base Jedi Academy.
+
+## Map rotation
+
+Pick more than one map and tick **Rotate through these maps**, and `server.cfg` ends with a
+chain of `vstr` entries instead of a single `map` line. Each entry loads its map and points
+`nextmap` at the next one, so when a match ends the server moves on, and after the last map
+it starts again from the first. A base-game mode that loads its own map cannot be combined
+with a rotation.
 
 ## Before you run it
 

@@ -274,7 +274,7 @@ pauses the match for up to [`g_pauseTime`](/TaystJK/reference/cvars/g_pausetime-
 ## Race records
 
 Race times only count while the server meets jaPRO's conditions for a fair run
-([`g_trigger.c`](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/game/g_trigger.c#L1341)). If players report that their times are
+([`g_trigger.c`](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/game/g_trigger.c#L1284)). If players report that their times are
 not being saved, check these first:
 
 - [`sv_cheats`](/TaystJK/reference/cvars/sv_cheats-a5d6021/) is `0`.
@@ -287,7 +287,14 @@ not being saved, check these first:
   [`g_debugMelee`](/TaystJK/reference/cvars/g_debugmelee-cf2d02e/) is below `2`.
 - [`g_knockback`](/TaystJK/reference/cvars/g_knockback-bd8fbb6/) is `1000` for the rocket-jump and Tribes
   styles ([`g_trigger.c`](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/game/g_trigger.c#L1301)).
-- The player is logged in and their account does not have the No Race flag.
+- The player is logged in, is not in practice mode, and their account does not have the
+  No Race flag.
+- The player is not using the `ocpm` style. jaPRO switches off records for it entirely for
+  now ([`g_trigger.c`](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/game/g_trigger.c#L1296)), so `ocpm` runs are timed but never saved, even though
+  the bundled vote options offer the style.
+- The player has no haste and no jetpack, unless the course allows them. The jetpack is
+  always allowed in the `jetpack` and Tribes styles
+  ([`g_trigger.c`](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/game/g_trigger.c#L1335)).
 - If [`sv_pluginKey`](/TaystJK/reference/cvars/sv_pluginkey-9d80ed4/) is set, logged-in players also need a
   client that proves itself with that key when it logs in
   ([`g_trigger.c`](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/game/g_trigger.c#L1355)). Leave it at `0` unless you use a

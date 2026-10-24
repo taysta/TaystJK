@@ -9,7 +9,7 @@ description: "Host a TaystJK dedicated server: run it with Docker or natively, s
 <div class="page-heading" markdown="1">
 <p class="eyebrow">Administrator guide</p>
 
-# Host a TaystJK server
+# Server hosting
 
 <p class="page-lede">A TaystJK server has two layers: the dedicated server engine, and the game module that decides how the game plays.</p>
 </div>

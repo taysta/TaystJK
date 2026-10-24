@@ -65,9 +65,11 @@ There is no map rotation. Each map load sets `nextmap` to restart the same map
 ([`sv_init.cpp`](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/server/sv_init.cpp#L569)),
 so when a match ends the current map restarts, and players change maps with
 `callvote map`. If you want the server to move on by itself, set `g_autoMapCycle 1` in
-`server.cfg`; the game then picks the next map for the current gametype from the arena
+`server.cfg`, and the game picks the next map for the current gametype from the arena
 files
-([`g_bot.c`](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/game/g_bot.c#L232)).
+([`g_bot.c`](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/game/g_bot.c#L232)). For a fixed list of maps instead, the
+[server config generator](/TaystJK/server-hosting/config-generator/#map-rotation) writes a
+rotation.
 
 ## Server settings and gameplay are kept apart
 
