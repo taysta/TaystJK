@@ -132,9 +132,9 @@ Each directory is looked for under `fs_cdpath`, `fs_basepath` and `fs_homepath` 
 **On TaystJK, `fs_basegame` defaults to `fs_forcegame`**
 ([`files.cpp`](https://github.com/taysta/TaystJK/blame/8b1c57f303aa18bb6f6f6d75fcd633eeb29ff8f5/codemp/qcommon/files.cpp#L3919)): it is `taystjk` on a normal client, and empty when you clear
 `fs_forcegame`. Set it yourself on the command line to choose a different one
-([`files.cpp`](https://github.com/taysta/TaystJK/blame/8b1c57f303aa18bb6f6f6d75fcd633eeb29ff8f5/codemp/qcommon/files.cpp#L4414)). `+set fs_forcegame "" +set fs_basegame taystjk`, for example, keeps
-TaystJK's assets underneath every mod while each mod keeps its own settings. Builds from before
-24 October 2026 ignore a `+set fs_basegame` and always copy `fs_forcegame`.
+([`files.cpp`](https://github.com/taysta/TaystJK/blame/8b1c57f303aa18bb6f6f6d75fcd633eeb29ff8f5/codemp/qcommon/files.cpp#L4414)). [Running TaystJK for one mod](#running-taystjk-for-one-mod) shows
+what that is for. Builds from before 24 October 2026 ignore a `+set fs_basegame` and always copy
+`fs_forcegame`.
 
 `fs_forcegame` also decides where the client **writes**: configs, screenshots, demos and
 downloads go to the `fs_forcegame` directory when it is set
@@ -175,29 +175,39 @@ set it back to `taystjk`.
 
 ### Running TaystJK for one mod
 
-A mod with its own client files, such as a roleplay mod with its own models and settings, may
-want its players' settings kept apart from the rest of their TaystJK install. Ship a launch
-script that clears `fs_forcegame` and selects the mod:
+A mod with its own client files, such as a roleplay mod with its own models, HUD and settings,
+has two separate choices to make about TaystJK: what happens to TaystJK's assets, and where its
+players' settings are saved.
 
-```bat
-taystjk.x86_64.exe +set fs_forcegame "" +set fs_basegame taystjk +set fs_game mymod
-```
+**Overriding TaystJK's assets** needs nothing special. The mod's directory is searched after
+`taystjk/`, so any file the mod ships under the same name, such as a HUD graphic, replaces
+TaystJK's on that mod's servers. TaystJK's other assets still load.
 
-With that, the mod's settings are saved to `mymod/taystjk.cfg`, the mod's `cgame` and `ui` load
-from `mymod/`, and the mod's files override TaystJK's, which stay loaded underneath. Leave out
-`+set fs_basegame taystjk` if the mod should not load TaystJK's assets at all.
+**Bypassing TaystJK's assets**, so that none of them load, means keeping `taystjk/` out of the
+search order. Only a launch option can do that: `fs_basegame` has to be empty, so `fs_forcegame`
+has to be cleared without setting `fs_basegame`, or set to the mod itself.
 
-If the player then joins a server running a different mod, the client switches to that mod's
-directory and settings, which is the point of clearing `fs_forcegame`. With `fs_basegame
-taystjk` they keep TaystJK's assets there too.
+**Settings** go wherever `fs_forcegame` points. By default that is one `taystjk/taystjk.cfg`
+used on every server. Clearing it gives each mod its own `taystjk.cfg` in its own directory.
 
-Setting `fs_forcegame mymod` instead keeps the settings in `mymod/` and the mod's files in the
-search order even on other servers, so its settings and assets follow the player to servers
+| TaystJK's assets | Settings | Launch with |
+|:--|:--|:--|
+| Overridden by the mod | `taystjk/taystjk.cfg`, shared with every server | nothing extra |
+| Overridden by the mod | `mymod/taystjk.cfg`, separate per mod | `+set fs_forcegame "" +set fs_basegame taystjk +set fs_game mymod` |
+| Not loaded | `mymod/taystjk.cfg`, separate per mod | `+set fs_forcegame "" +set fs_game mymod` |
+| Not loaded | `mymod/taystjk.cfg`, used on every server | `+set fs_forcegame mymod +set fs_game mymod` |
+
+In the first row the player needs no script, but if the mod has its own `ui` module, starting
+with `+set fs_game mymod` loads its menus before the player connects.
+
+With separate settings per mod, joining a server that runs a different mod switches the client
+to that mod's directory and its `taystjk.cfg`, which is the point of clearing `fs_forcegame`.
+With the last row nothing switches: the mod's settings and files follow the player to servers
 that were not made for them.
 
-Either way the script is the only signal. A player who starts TaystJK normally gets the
-default setup, with their settings in `taystjk/taystjk.cfg`, so tell players to start the
-game from a shortcut to your script.
+For every row except the first, the launch script is the only signal. A player who starts
+TaystJK normally gets the default setup, so tell players to start the game from a shortcut to
+your script.
 
 ## What the client decides
 
