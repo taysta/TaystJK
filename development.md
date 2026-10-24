@@ -11,7 +11,7 @@ description: "Build, debug, and understand the TaystJK codebase."
 
 # Work on TaystJK
 
-<p class="page-lede">TaystJK uses CMake to produce the multiplayer client, dedicated server, game modules, UI, and three renderer backends.</p>
+<p class="page-lede">TaystJK uses CMake to produce the multiplayer client, dedicated server, game modules, UI, and three renderer backends. Start with compiling, then debugging.</p>
 </div>
 
 {% include browse-grid.html section="development" %}

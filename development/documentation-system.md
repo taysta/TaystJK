@@ -25,14 +25,21 @@ The site lives on the `gh-pages` branch; the engine lives on `master`. The pipel
 - `_data/cvars.json`, `_data/commands.json`, `_data/reference-meta.json`,
   and `_data/reference_stats.json`
 - `reference.md`, `reference/cvars/*.md`, `reference/commands/*.md`
-- `reference/{all,audit,sources,removed}.md` and the `reference/categories/`,
-  `reference/features/`, `reference/modules/` and `reference/origins/` collections
-- `features/whats-new.md`, `features/emoji.md`, and the JSON under `assets/data/`
+- `reference/{all,audit,sources,removed}.md`, the `reference/{categories,features,modules,origins}.md`
+  index pages, and the collections under each of those directories
+- `features/whats-new.md`, `features/emoji.md`, the images under `assets/emoji/`, and the
+  JSON under `assets/data/`
+- `tools/cvar_audit/baseline-totals.json`, written by `validate.py --update-baseline-totals`
 - `index.md`: the homepage is generated too, which catches people out
 
+`assets/data/config-generator.json` is generated separately, by `tools/config_generator/build.py`
+from the Docker configs and the JSON beside that script.
+
 Everything else is hand-written: the guides, the Features pages, this page.
-`check_generated.py` fails if a generated file has been edited, so a mistake here is caught
-rather than silently lost.
+`check_generated.py` catches some hand edits: it fails if the homepage, the JSON under
+`assets/data/` or `reference_stats.json` no longer match the data, or if a generated page is
+missing. It does not compare the text of the other generated pages, so an edit to one of
+those passes the checks and is silently thrown away at the next regeneration.
 
 Hand-written pages that quote a count from the reference read it from
 `_data/reference_stats.json` rather than typing it, so the figure changes when the
@@ -64,7 +71,12 @@ python3 tools/cvar_audit/provenance.py --pr-json <page-1.json> --pr-json <page-2
 python3 tools/cvar_audit/build_reference.py
 python3 tools/cvar_audit/runtime_check.py --cvars <cvarlist.txt> --commands <cmdlist.txt> --build <BUILD_ID>
 python3 tools/cvar_audit/generate_docs.py
+python3 tools/cvar_audit/validate.py --update-baseline-totals
+python3 tools/config_generator/build.py
 ```
+
+The last two record the new baseline totals and rebuild the config generator's data, which
+lists only cvars the reference knows about. Skip them and `run_all.sh` fails.
 
 `provenance.py` expects remote-tracking refs for every upstream: `origin/master`,
 `openjk/master`, `eternaljk/master`, `japro/main`, `jk2mv/master`, `newjk/master`,
@@ -75,7 +87,7 @@ needs console output captured from a client you actually launched.
 `master` fetches every upstream, collects the PR metadata, reruns provenance, reference
 assembly and page generation, runs every check and a Jekyll build, and opens or updates a
 pull request against `gh-pages`. It runs weekly, when a release is published, and after each
-automatic `latest` build. Nothing is pushed to the published branch without review.
+automatic `latest-build` release. Nothing is pushed to the published branch without review.
 
 It keeps the existing runtime reconciliation rather than redoing it, because no runner
 launches the game, and an old `+cvarlist` capture must not be relabelled as current. A
@@ -91,8 +103,8 @@ current as that check. When you re-verify a guide, re-pin its links to `source_c
 
 ## Verifying a change
 
-One script runs everything CI runs, and keeps going after a failure so one run reports
-every problem:
+One script runs every check except the Jekyll build and the feed check, and keeps going
+after a failure so one run reports every problem:
 
 ```sh
 tools/cvar_audit/run_all.sh
@@ -131,5 +143,5 @@ Everything else is automatic: the page is picked up by the site search through
 ## What the site is built with
 
 No theme and no plugins. Jekyll renders Markdown through kramdown; the layouts, the CSS and
-the two JavaScript files are all local and hand-written. The search index and the Atom feed
+the three JavaScript files are all local and hand-written. The search index and the Atom feed
 are Liquid templates rather than plugins, so they cannot break when an upstream gem changes.

@@ -32,8 +32,9 @@ repository
 ## What CI does with your PR
 
 Opening a pull request builds the client for every supported platform and architecture:
-Windows x86 and x86-64, Linux x86 and x86-64, macOS Intel and Apple Silicon, and a macOS
-universal binary. Both Debug and Release are compiled as a check; only Release is packaged.
+Windows x86 and x86-64, Linux x86 and x86-64, macOS Intel and Apple silicon, and a macOS
+universal binary. Both Debug and Release are compiled as a check. The Release builds are
+packaged, along with an x86-64 Windows AddressSanitizer build for crash reports.
 
 Changes touching only Markdown, `.gitignore` or `docs/` skip the build entirely
 ([`build.yml`](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/.github/workflows/build.yml#L7)),
@@ -63,8 +64,8 @@ If you would rather build it yourself, see [compiling](/TaystJK/development/comp
 
 ## Checklist before opening the pull request
 
-Paste this into the pull request description and strike out what does not apply. Most of it
-is one line of work; the point is that none of it gets remembered later.
+Paste this into the pull request description and strike out what does not apply. Most items
+are a line of work each, and they are much easier to do now than to remember later.
 
 ```markdown
 - [ ] CHANGELOG.md updated, with the right marker
@@ -72,7 +73,7 @@ is one line of work; the point is that none of it gets remembered later.
 - [ ] New cvars and commands have a description in their registration
 - [ ] New cvars and commands have an xdocs entry
 - [ ] Menu entry added, if it is user-facing
-- [ ] Behaviour with no cvar attached is documented on the wiki
+- [ ] Behaviour with no cvar attached is documented on this site
 - [ ] Feature flag added, if the server has to agree for it to work
 - [ ] Platform differences noted, if it is not built everywhere
 ```
@@ -96,8 +97,8 @@ console command.
 
 ### xdocs
 
-xdocs are the in-client help: they are what `/help <name>` shows a player who never opens a
-browser. They live in
+xdocs are the in-client help: what a player sees when they type a cvar's name in the console,
+without ever opening a browser. They live in
 [`ui_xdocs.h`](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/ui/ui_xdocs.h)
 and are plain macro calls:
 
@@ -111,8 +112,8 @@ XDOCS_CVAR_DEF("cg_alwaysShowAbsorb", "Show absorb when it's in use",
 ```
 
 Use `XDOCS_CMD_DEF` for a command, and the `BITFLAG` and `KEYVALUE` variants for cvars
-shaped that way. They print a header explaining how to combine or format values, which is
-exactly what a reader cannot guess.
+shaped that way. Say in the entry how the values combine or are written, because that is what
+a reader cannot guess. [In-game documentation](/TaystJK/development/xdocs/) has the details.
 
 Only {{ site.data.reference_stats.cvars_with_xdocs }} of {{ site.data.reference_stats.cvars }} cvars have an entry today, so this is a backlog rather than a rule that
 has always been kept. New ones should have one.
@@ -139,6 +140,11 @@ A feature with no setting, such as a new key binding rule, a file format the cli
 or a change in how something is drawn, has nothing for the reference to hang itself on. It needs
 a page on this site instead, or a section on an existing one. The
 [Features](/TaystJK/features/) pages are all of this shape.
+
+The site lives on the `gh-pages` branch of the same repository, so documentation changes are a
+separate pull request against `gh-pages`. Every hand-written page has an "Edit this page on
+GitHub" link at the bottom, and [how this site is built](/TaystJK/development/documentation-system/)
+explains which pages are generated and must not be edited by hand.
 
 ### Behaviour the server has to agree with
 

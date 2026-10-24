@@ -35,8 +35,9 @@ the server sends the extended layout only to clients that advertise it.
 
 ## Setting it
 
-Put the bitmask in your serverinfo under the key `taystJKinfo`. The client reads it once
-per `gamestate`, alongside the rest of the server's configstring
+Put the bitmask in your serverinfo under the key `taystJKinfo`. The client reads it from the
+gamestate on connect, and again whenever the serverinfo changes, so you can change flags while
+the server runs
 ([`cg_servercmds.c`](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/cgame/cg_servercmds.c#L250)):
 
 ```c
@@ -48,9 +49,11 @@ honour can mispredict or parse a server command with the wrong layout, which is 
 the player than the feature being absent.
 
 [A worked example](https://github.com/taysta/TaystJK/commit/79a50c73cbd1e1e8faf9f612049d8a206798a85c)
-against OpenJK's game module shows the whole exchange: declaring every bit, setting
-`taystJKinfo`, and reading `taystJKcgflags` back from each client. It sets every flag to
-show the declarations; your module should set only the ones it implements.
+against OpenJK's game module, on the `ojk-cgflags` branch, shows declaring every bit, setting
+`taystJKinfo`, and reading `taystJKcgflags` back from each client. It sets every flag only to
+show the declarations, and it does not append the deaths field to `scores`, so do not copy its
+flag value: set only the bits you implement, and follow [scoreboard deaths](#scoreboard-deaths)
+before you set that one.
 
 ## The bits
 
@@ -62,7 +65,7 @@ Defined in
 | 0 | 1 | `TAYSTJK_INFO_RGBSABERS` | Sabers may use colours beyond the stock set. |
 | 1 | 2 | `TAYSTJK_INFO_BLACKSABERS` | The black saber colour is permitted. |
 | 2 | 4 | `TAYSTJK_INFO_FLIPKICK` | Flip kicks are supported. |
-| 3 | 8 | `TAYSTJK_INFO_GRAPPLE` | The grapple hook behaves as JA+'s. |
+| 3 | 8 | `TAYSTJK_INFO_GRAPPLE` | The grapple hook behaves as JA+'s. Current client builds ignore this bit; see [below](#how-the-client-uses-a-flag). |
 | 4 | 16 | `TAYSTJK_INFO_FIXROLL_1` | Rolling while using force grip. |
 | 5 | 32 | `TAYSTJK_INFO_FIXROLL_2` | The above, plus chaining rolls. |
 | 6 | 64 | `TAYSTJK_INFO_FIXROLL_3` | JK2-style rolling. |
@@ -139,24 +142,30 @@ count
 
 ## How the client uses a flag
 
-Each feature listed in the bit table accepts its flag in the client check. The grapple
-check is representative
-([`bg_pmove.c`](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/codemp/game/bg_pmove.c#L15402)): JA+, or jaPRO with its own grapple
-option set, or your flag.
+Each feature in the bit table checks for its flag next to the JA+ and jaPRO checks. RGB
+sabers are typical: they are allowed on JA+ and above, or when your flag is set
+([`cg_players.c`](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/cgame/cg_players.c#L6063)).
 
-Flags can also change behaviour on recognised JA+ and jaPRO servers. For example, the
-grapple flag enables the client path even when jaPRO's own grapple option is off. In the
-roll selection above, `FIXROLL_3` is tested before the server's roll-2 or roll-1 option, so
+The grapple is the exception. Current builds pick the plain jaPRO grapple for every server
+that is not JA+ and does not have jaPRO's own JA+-grapple option on, before they look at
+`TAYSTJK_INFO_GRAPPLE`
+([`bg_pmove.c`](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/game/bg_pmove.c#L15608)), so the flag never changes anything.
+Setting it does no harm.
+
+Flags can also change behaviour on recognised JA+ and jaPRO servers. In the roll selection
+above, `FIXROLL_3` is tested before the server's roll-2 or roll-1 option, so
 advertising it takes precedence over either lower mode
 ([`bg_pmove.c`](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/game/bg_pmove.c#L314)).
 Keep the advertised flags consistent with the server's actual movement rules and options.
 
 ## Verifying it
 
-Connect and run `serverinfo`. The key appears with the value you set, and the feature should
-behave as it does on a jaPRO server. If the key is absent from that output, the client never
-received it and nothing downstream of it will work. Fix that before looking at the feature
-itself.
+Run `serverinfo` in the server console, or `rcon serverinfo` from a client, and check the
+key is there with the value you set. A player can see the same thing with `configstrings`
+while connected: the first entry is the serverinfo
+([`cl_main.cpp`](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/client/cl_main.cpp#L3481)). `serverinfo` itself only works where
+the server is running. If the key is missing, the client never got it and nothing that depends
+on it will work, so fix that before looking at the feature.
 
 For a capability, run `dumpuser <player>` on the server console. A current TaystJK client
 connected to the server lists `taystJKcgflags` with a non-zero value. A player can check their

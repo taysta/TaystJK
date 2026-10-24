@@ -12,7 +12,7 @@ toc: true
 
 # Libraries and versions
 
-<p class="page-lede">Versions below are read from TaystJK source commit <code>77d84176b3b9</code>. A system-library build can use different runtime versions; the configure log is authoritative for that build.</p>
+<p class="page-lede">Versions below are read from TaystJK source commit <code>f999cbc0912</code>. A build that uses system libraries can end up with different versions; its configure log has the real ones.</p>
 </div>
 
 ## Versioned source dependencies
@@ -34,7 +34,7 @@ toc: true
 
 ## Bundled binaries without recorded upstream versions
 
-TaystJK also carries prebuilt Discord RPC libraries for selected platforms. Their current files do not expose an upstream release number in the repository, so this documentation does not invent one. The source commit and binary hash are the reliable identifiers until that dependency gains checked-in version metadata.
+TaystJK also carries prebuilt Discord RPC libraries for some platforms. Nothing in the repository records which upstream release they are, so identify them by the commit that added them and the file's hash.
 
 | Library | Selection | Source evidence |
 |:--|:--|:--|
@@ -48,11 +48,17 @@ On 32-bit Windows, the bundled OpenAL Soft library works with the shipped `EaxMa
 
 The relevant switches are `UseInternalOpenAL`, `UseInternalZlib`, `UseInternalPNG`, `UseInternalJPEG`, `UseTurboJPEG`, and `UseInternalSDL2`. CMake records its actual choices in the configure output and `CMakeCache.txt`.
 
+Release builds set `UseTurboJPEG=ON` on every platform
+([`build.yml`](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/.github/workflows/build.yml#L96)).
+On x86 and x86-64, including the Intel half of a universal macOS build, libjpeg-turbo needs
+the [NASM](https://www.nasm.us/) assembler for its SIMD code. Without it CMake only prints a
+warning and builds the slower plain-C version
+([`CMakeLists.txt`](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/CMakeLists.txt#L488)), so
+install NASM if you want your build to match a release.
+
 When reporting a dependency bug, include:
 
 1. The TaystJK commit and build configuration.
 2. The value of each `UseInternal…` option.
 3. The runtime library version where it can differ from the header version.
 4. The operating system and architecture.
-
-[Return to development documentation](/TaystJK/development/).

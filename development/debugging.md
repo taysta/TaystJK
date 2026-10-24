@@ -12,7 +12,7 @@ toc: true
 
 # Debug TaystJK
 
-<p class="page-lede">Debug an installed build so the engine, game modules, renderers, and bundled libraries use the same layout as a real TaystJK installation. On macOS, run <code>moveandsign.sh</code> after installing, then point CLion at the executable inside the installed app bundle.</p>
+<p class="page-lede">Debug an installed build, so the engine, game modules, renderers and bundled libraries sit in the same layout as a real TaystJK installation.</p>
 </div>
 
 ## Build with symbols
@@ -192,7 +192,7 @@ With GCC or Clang, undefined-behavior checks can be added with `-DUseUndefinedSa
 
 - Start with `+set developer 1 +set logfile 2` when you need a flushed log after a crash.
 - Run `path` to verify which base, home, and mod directories are mounted.
-- Run `which filename.pk3` or the closest available file-list command when a wrong asset version appears to load.
+- Run `which <file>`, such as `which maps/mp/ffa3.bsp`, to see which pk3 or directory a file was loaded from when the wrong version of an asset appears.
 - Use `condump debug-console.txt` before quitting if the console contains the only copy of a useful trace.
 
 ## Common breakpoint problems

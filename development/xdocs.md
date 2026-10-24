@@ -53,8 +53,9 @@ XDOCS_CVAR_DEF("cg_alwaysShowAbsorb", "Show absorb when it's in use",
 )
 ```
 
-The short description shows on its own; the long one is added when the reader asks for the
-full entry.
+Typing the cvar's name prints the short and long descriptions together
+([`cvar.cpp`](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/qcommon/cvar.cpp#L606)). The short one on its own appears in
+`cvarlist` and in tab completion.
 
 ### Which macro
 
@@ -66,11 +67,12 @@ full entry.
 | `XDOCS_CVAR_KEYVALUE_DEF` | A cvar taking `key=value` pairs |
 | `XDOCS_CVAR_BITVALUE_DEF` | A bitmask whose entry also carries exec text |
 
-The bitflag and keyvalue variants are worth reaching for rather than describing the format
-in prose: each prints a header explaining how to combine flags, or how key/value syntax
-works, before your own lines
-([`ui_xdocs.h`](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/ui/ui_xdocs.h#L31)). That is the part a reader cannot guess, and
-it is written once for everyone.
+In the help the client builds, the bitflag and keyvalue variants produce the same entry as
+`XDOCS_CVAR_DEF`
+([`ui_xdocs.h`](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/ui/ui_xdocs.h#L44-L45)). `ui_xdocs.h` also has header text that
+explains how to combine flags or write key/value pairs, but only a list mode the client does
+not build uses it. Use the variant that matches the cvar so the entry records its shape, and
+still say in your own lines how the values combine.
 
 Inside a long description, the helpers mirror what a reader sees:
 
