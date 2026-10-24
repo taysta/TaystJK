@@ -1028,8 +1028,23 @@ static void CG_JAPlusPredictHookButtons( playerState_t *ps, const usercmd_t *cmd
 	}
 }
 
+// ClientThink_real uses level.time for the countdown, rather than the command's timestamp.
+// Estimate that clock for each replayed command using the snapshot's server/command offset.
+static void CG_PredictDuelCountdown( playerState_t *ps, usercmd_t *cmd, int serverTimeOffset ) {
+	if (cgs.serverMod == SVMOD_JAPLUS || !ps->duelInProgress || IsRacemode(ps) || !ps->duelTime)
+		return;
+
+	if (ps->duelTime >= cmd->serverTime + serverTimeOffset)
+	{
+		cmd->forwardmove = 0;
+		cmd->rightmove = 0;
+		cmd->upmove = 0;
+	}
+}
+
 void CG_PredictPlayerState( void ) {
 	int			cmdNum, current, i;
+	int			serverTimeOffset;
 	playerState_t	oldPlayerState;
 	playerState_t	oldVehicleState;
 	qboolean	moved;
@@ -1161,8 +1176,13 @@ void CG_PredictPlayerState( void ) {
 		}
 		cg.physicsTime = cg.snap->serverTime;
 	}
+	if (IsJaPRO() && (cg.predictedPlayerState.fd.forcePowersKnown & (1 << FP_SABERTHROW)) && !cg.predictedPlayerState.fd.forcePowerLevel[FP_SABERTHROW])
+	{//only levitation and sight levels are networked, but every saber throw level costs the same to throw, and the server only knows powers it has a level in
+		cg.predictedPlayerState.fd.forcePowerLevel[FP_SABERTHROW] = FORCE_LEVEL_1;
+	}
+	serverTimeOffset = cg.physicsTime - cg.predictedPlayerState.commandTime;
 	if(((cg.physicsTime - cg.predictedPlayerState.commandTime) > 8)
-		&& IsJaPRO() && (cg.predictedPlayerState.stats[STAT_MOVEMENTSTYLE] == MV_OCPM)
+		&& IsRacemode(&cg.predictedPlayerState) && (cg.predictedPlayerState.stats[STAT_MOVEMENTSTYLE] == MV_OCPM)
 	) {
 		cg.physicsTime = cg.predictedPlayerState.commandTime + 8;
 	}
@@ -1214,11 +1234,11 @@ void CG_PredictPlayerState( void ) {
 
 	// Stop predicting once the server's authoritative knockback is in the snapshot base, otherwise
 	// re-injecting it during replay would double it. Two jump-immune triggers replace the old
-	// single-step velocity-jump heuristic (which false-fired on the player's own jump — a vertical
+	// single-step velocity-jump heuristic (which false-fired on the player's own jump - a vertical
 	// rocket-jump and a bunny-hop look identical in the velocity stream):
-	//   1) predictKnockbackExploded — our rocket's EV_MISSILE_MISS arrived. Authoritative; also catches
+	//   1) predictKnockbackExploded - our rocket's EV_MISSILE_MISS arrived. Authoritative; also catches
 	//      an explosion that happened earlier than our predicted explT.
-	//   2) base commandTime >= explT — the base snapshot has run the explosion command, so its velocity
+	//   2) base commandTime >= explT - the base snapshot has run the explosion command, so its velocity
 	//      already carries the real knockback. explT lives in command-time (cmd.serverTime) units, so we
 	//      MUST compare against the base's commandTime, NOT its serverTime (those clocks differ by ~ping;
 	//      the logs show the server velocity jumps exactly when snapshot commandTime reaches explT). This
@@ -1409,10 +1429,14 @@ void CG_PredictPlayerState( void ) {
 			}
 		}
 
-		/*if (cg.predictedPlayerState.stats[STAT_RACEMODE] && cg_predictRacemode.integer) { //loda fixme
-			cg_pmove.cmd.serverTime = ((cg_pmove.cmd.serverTime + 7) / 8) * 8;
+		// practice mode's 16ms snapping isn't mirrored because it isnt networked
+		if (IsRacemode(cg_pmove.ps)) {
+			if (cg_pmove.ps->stats[STAT_MOVEMENTSTYLE] == MV_OCPM)
+				cg_pmove.cmd.serverTime = ((cg_pmove.cmd.serverTime + 7) / 8) * 8;
+			else if (cg_pmove.cmd.serverTime - cg_pmove.ps->commandTime < 3)
+				cg_pmove.cmd.serverTime = ((cg_pmove.cmd.serverTime + 2) / 3) * 3;
 		}
-		else*/ if ( cg_pmove.pmove_fixed ) { //loda fixme
+		else if ( cg_pmove.pmove_fixed ) { //loda fixme
 			cg_pmove.cmd.serverTime = ((cg_pmove.cmd.serverTime + pmove_msec.integer-1) / pmove_msec.integer) * pmove_msec.integer;
 		}
 
@@ -1457,7 +1481,7 @@ void CG_PredictPlayerState( void ) {
 		// Knockback prediction: inject the impulse exactly once, at the first replayed command
 		// at/after the explosion time. Pmove then replays all subsequent commands with real
 		// physics (gravity, air control), so the arc advances naturally and smoothly as more
-		// commands accumulate each frame — just like a normal predicted jump.
+		// commands accumulate each frame - just like a normal predicted jump.
 		if (cg.predictKnockback && !knockbackAppliedThisPass &&
 			cg_pmove.cmd.serverTime >= cg.predictKnockbackServerTime)
 		{
@@ -1517,6 +1541,8 @@ void CG_PredictPlayerState( void ) {
 					cg.predictedPlayerState.velocity[0], cg.predictedPlayerState.velocity[1], cg.predictedPlayerState.velocity[2],
 					current - REAL_CMD_BACKUP + 1, current);
 		}
+
+		CG_PredictDuelCountdown(cg_pmove.ps, &cg_pmove.cmd, serverTimeOffset);
 
 		if (cgs.serverMod == SVMOD_JAPLUS)
 			CG_JAPlusPredictHookButtons(cg_pmove.ps, &cg_pmove.cmd);

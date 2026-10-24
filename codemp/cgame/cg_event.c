@@ -1765,6 +1765,10 @@ void CG_EntityEvent( centity_t *cent, vec3_t position ) {
 		}
 
 //JAPRO - Clientside - Fullforce Duels - Start
+		// Duel type is prediction state, independent of the duel sound preferences.
+		if (cgs.serverMod == SVMOD_JAPRO)
+			cg_dueltypes[es->number] = es->eventParm;
+
 		if (es->eventParm)
 		{ //starting the duel
 			if (cg_duelSounds.integer && es->eventParm == 2 && !(cgs.serverMod == SVMOD_JAPRO && cg.predictedPlayerState.stats[STAT_RACEMODE]))
