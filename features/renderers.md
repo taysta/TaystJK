@@ -20,13 +20,13 @@ toc: true
 | You type | Built from | What it is |
 |:--|:--|:--|
 | `rd-taystjk` | `codemp/rd-vanilla` | The default. The original renderer, kept as the compatibility baseline. |
-| `rd-rend2t` | `shared/rd-rend2` | The modern feature-rich backend, [labelled experimental in the build](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/CMakeLists.txt#L45). |
+| `rd-rend2t` | `shared/rd-rend2` | The modern feature-rich backend, [labelled experimental in the build](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/CMakeLists.txt#L45). |
 | `rd-vulkant` | `codemp/rd-vulkan` | A Vulkan backend derived from [Quake3e](https://github.com/ec-/Quake3e)'s, developed upstream by JKSunny. |
 
 **The names you type are not the directory names.** The library names are set in
-[`CMakeLists.txt`](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/CMakeLists.txt#L179-L181),
+[`CMakeLists.txt`](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/CMakeLists.txt#L179-L181),
 and `cl_renderer` is used verbatim to build the library filename
-([`cl_main.cpp`](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/client/cl_main.cpp#L2748)).
+([`cl_main.cpp`](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/client/cl_main.cpp#L2748)).
 `cl_renderer rd-vanilla` will not find anything.
 
 ## Switching
@@ -41,7 +41,7 @@ a restart. The menu exposes the same choice.
 
 If the library you named cannot be loaded, the client says so, resets `cl_renderer` to the
 default and loads that, instead of failing outright
-([`cl_main.cpp`](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/client/cl_main.cpp#L2750)).
+([`cl_main.cpp`](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/client/cl_main.cpp#L2750)).
 If you switch and end up back on the default, that is what happened. Usually the build
 does not include that renderer.
 
@@ -56,7 +56,7 @@ brew install molten-vk
 ```
 
 The renderer gets Vulkan through SDL
-([`sdl_window.cpp`](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/shared/sdl/sdl_window.cpp#L995)),
+([`sdl_window.cpp`](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/shared/sdl/sdl_window.cpp#L995)),
 and on Apple silicon SDL does not find Homebrew's copy unless `SDL_VULKAN_LIBRARY` names
 it. Opening the app from Finder or the Dock cannot set that, so start it from Terminal,
 replacing the path with wherever your `taystjk.app` is:
@@ -74,7 +74,7 @@ instead of the app.
 config, and this is not the missing-library case above: the renderer loads but cannot get
 Vulkan, so the client stops with "GLimp_Init() - could not load OpenGL subsystem" instead
 of falling back to the default
-([`sdl_window.cpp`](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/shared/sdl/sdl_window.cpp#L831)).
+([`sdl_window.cpp`](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/shared/sdl/sdl_window.cpp#L831)).
 Set `cl_renderer rd-taystjk` before you quit, or, if you already see that error, start it
 once with:
 
@@ -89,12 +89,12 @@ setting that works under one does nothing under another. The console reference r
 as *renderer scope* on each entry; anything listed for a backend you are not running is
 inert. The menu follows the same rule and hides the rend2 options unless `cl_renderer` is
 exactly `rd-rend2t`
-([`ui_main.c`](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/ui/ui_main.c#L6242)).
+([`ui_main.c`](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/ui/ui_main.c#L6242)).
 
 **Bloom is Vulkan-only, and needs the framebuffer path.** [`r_bloom`](/TaystJK/reference/cvars/r_bloom-656b99d/)
 is registered by the Vulkan backend and its own description says it requires
 [`r_fbo 1`](/TaystJK/reference/cvars/r_fbo-022d66e/)
-([`tr_init.cpp`](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/rd-vulkan/tr_init.cpp#L938)).
+([`tr_init.cpp`](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/rd-vulkan/tr_init.cpp#L938)).
 Both are latched, so set both and then `vid_restart`.
 
 **Override shaders work everywhere.** `.oshader` files are implemented in all three

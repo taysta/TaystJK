@@ -22,12 +22,12 @@ unanswered. See [where to report](/TaystJK/where-to-report/).
 ## Branches
 
 Pull requests target `master` or `beta`
-([`build.yml`](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/.github/workflows/build.yml#L13)).
+([`build.yml`](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/.github/workflows/build.yml#L13)).
 Use `master` unless you have been asked otherwise.
 
 Every pull request is reviewed by the maintainers team, which owns every path in the
 repository
-([`CODEOWNERS`](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/.github/CODEOWNERS)).
+([`CODEOWNERS`](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/.github/CODEOWNERS)).
 
 ## What CI does with your PR
 
@@ -37,7 +37,7 @@ universal binary. Both Debug and Release are compiled as a check. The Release bu
 packaged, along with an x86-64 Windows AddressSanitizer build for crash reports.
 
 Changes touching only Markdown, `.gitignore` or `docs/` skip the build entirely
-([`build.yml`](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/.github/workflows/build.yml#L7)),
+([`build.yml`](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/.github/workflows/build.yml#L7)),
 so a docs-only PR showing no build is behaving correctly.
 
 ## Testing a fix without building it
@@ -99,7 +99,7 @@ console command.
 
 xdocs are the in-client help: what a player sees when they type a cvar's name in the console,
 without ever opening a browser. They live in
-[`ui_xdocs.h`](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/ui/ui_xdocs.h)
+[`ui_xdocs.h`](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/ui/ui_xdocs.h)
 and are plain macro calls:
 
 ```c

@@ -39,7 +39,7 @@ exec japro_tribes
 Bit 22 of `cg_stylePlayer`, labelled "Tribes Clientside (Requires assets)", is optional. It
 only changes how the concussion rifle's shot looks, drawing it as a glowing spinfusor disc
 with its own sound
-([`cg_weaponinit.c`](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/cgame/cg_weaponinit.c#L189)). Turn it on with
+([`cg_weaponinit.c`](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/cgame/cg_weaponinit.c#L189)). Turn it on with
 `stylePlayer 22`.
 
 Servers running the Docker image's [bundled server configs](/TaystJK/server-hosting/bundled-configs/#game-modes)
@@ -60,31 +60,31 @@ shots, and give every player a jetpack.
 
 Holding the dash button removes ground friction, so instead of running you slide and keep
 momentum across terrain
-([`bg_pmove.c`](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/game/bg_pmove.c#L6094)).
+([`bg_pmove.c`](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/game/bg_pmove.c#L6094)).
 That is the whole idea of the mode: you gain speed downhill and carry it, instead of
 accelerating from a standstill.
 
 Landing while skiing plays its own sound in place of the normal landing thud
-([`cg_main.c`](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/cgame/cg_main.c#L869)).
+([`cg_main.c`](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/cgame/cg_main.c#L869)).
 
 The same button is also a dash, shared with the `wsw` style but behaving differently here:
 in Tribes it spends force power and sets a much longer cooldown
-([`bg_pmove.c`](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/game/bg_pmove.c#L5463)).
+([`bg_pmove.c`](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/game/bg_pmove.c#L5463)).
 Bots ski by pressing the same button
-([`ai_main.c`](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/game/ai_main.c#L579)).
+([`ai_main.c`](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/game/ai_main.c#L579)).
 
 ## Jetpack fuel
 
 The jetpack has a fuel level from 0 to 100, drawn as a segmented bar with a numeric readout
 that eases towards the true value instead of snapping to it
-([`hud_tribes.c`](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/cgame/hud_tribes.c#L3)).
+([`hud_tribes.c`](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/cgame/hud_tribes.c#L3)).
 Skiing and jetpacking together is how you cross a map quickly.
 
 ## IFF markers
 
 The client floats a coloured marker above other players so you can tell friend from enemy at
 speed
-([`cg_players.c`](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/cgame/cg_players.c#L11094)). In team games your teammates are
+([`cg_players.c`](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/cgame/cg_players.c#L11094)). In team games your teammates are
 marked as friends; everyone else, including every other player in FFA, is marked as an enemy.
 
 The marker grows with distance, so a far-off player still gets a readable icon rather than a
@@ -97,30 +97,30 @@ This depends on the server running Tribes weapons, not on your own settings.
 ## The Tribes HUD
 
 When you are playing the Tribes style on a jaPRO server, the client swaps in a different HUD
-entirely ([`cg_draw.c`](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/cgame/cg_draw.c#L1973),
-[`hud_tribes.c`](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/cgame/hud_tribes.c#L762)):
+entirely ([`cg_draw.c`](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/cgame/cg_draw.c#L1973),
+[`hud_tribes.c`](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/cgame/hud_tribes.c#L762)):
 a health bar, a weapon selector that greys out anything you cannot currently fire, a pack
 display, and the fuel bar above.
 
 The weapon selector greys a weapon out when you have less ammo than one shot costs
-([`hud_tribes.c`](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/cgame/hud_tribes.c#L183)).
+([`hud_tribes.c`](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/cgame/hud_tribes.c#L183)).
 
 `invfree` selects the next usable inventory item and is bound by the HUD's prompt
-([`cg_consolecmds.c`](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/cgame/cg_consolecmds.c#L2456)).
+([`cg_consolecmds.c`](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/cgame/cg_consolecmds.c#L2456)).
 
 ## Weapons and feedback
 
 The mortar has its own projectile and explosion effects under `tribes/weapons/mortar/`
-([`cg_weaponinit.c`](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/cgame/cg_weaponinit.c#L405)).
+([`cg_weaponinit.c`](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/cgame/cg_weaponinit.c#L405)).
 
 Kills play one of two sounds depending on whether the victim was airborne, so a midair hit
 is audibly different from a ground kill
-([`cg_event.c`](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/cgame/cg_event.c#L281)).
+([`cg_event.c`](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/cgame/cg_event.c#L281)).
 
 ## Classes
 
 You do not pick a class with a command. **Your player model decides it**
-([`DetectTribesClass`](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/game/g_client.c#L2263)),
+([`DetectTribesClass`](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/game/g_client.c#L2263)),
 on a server running `g_tribesMode 1`.
 
 | Class | Models |
@@ -141,22 +141,22 @@ makes you medium.
 What the class changes:
 
 - **Speed.** Light runs at 1.05×, heavy at 0.78×
-  ([`g_active.c`](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/game/g_active.c#L4322)).
+  ([`g_active.c`](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/game/g_active.c#L4322)).
 - **Weight.** Explosions throw light further and heavy less. Knockback mass is 175, 200 and
-  240 ([`g_combat.c`](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/game/g_combat.c#L5141)).
+  240 ([`g_combat.c`](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/game/g_combat.c#L5141)).
 - **What `thrownade` throws.** A thermal for light, a detpack for medium, a tripmine for
-  heavy ([`Cmd_ThrowNade_f`](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/game/g_cmds.c#L8664)).
+  heavy ([`Cmd_ThrowNade_f`](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/game/g_cmds.c#L8664)).
 
 The last two need the server's Tribes weapon tweak (`g_tweakWeapons`); the speed difference
 does not. None of it applies in racemode: there you have no class at all unless you are on a
 team in a team gametype
-([`ClientUserinfoChanged`](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/game/g_client.c#L2542)).
+([`ClientUserinfoChanged`](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/game/g_client.c#L2542)).
 
 ## Expectations
 
 This mode is experimental. It has more code of its own than any other movement style, some
 of it with the author's own notes that ground detection is unreliable while skiing
-([`bg_pmove.c`](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/game/bg_pmove.c#L5454)).
+([`bg_pmove.c`](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/game/bg_pmove.c#L5454)).
 Expect rough edges, but do report them. Gameplay problems belong to
 [videoP/jaPRO](https://github.com/videoP/jaPRO) if they also happen without TaystJK;
 [where to report](/TaystJK/where-to-report/#before-you-send-it-elsewhere) explains the check.

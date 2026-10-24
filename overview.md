@@ -44,7 +44,7 @@ than the base game itself.
 **TaystJK bundles both halves of jaPRO**, not just the client side. The build produces the
 client-side gamecode (`cgame`) *and* the server-side gamecode (`jampgame`), along with the
 UI and the engine
-([`CMakeLists.txt`](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/CMakeLists.txt#L42)).
+([`CMakeLists.txt`](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/CMakeLists.txt#L42)).
 The split shows in the reference: of those {{ site.data.reference_stats.by_origin.japro.count }} entries, {{ site.data.reference_stats.by_origin.japro.modules.cgame }} are in the `cgame` module and
 **{{ site.data.reference_stats.by_origin.japro.modules.game }} are in `game`**, the module that decides the rules.
 
@@ -52,7 +52,7 @@ The split shows in the reference: of those {{ site.data.reference_stats.by_origi
 |:--|:--|:--|
 | Client-side gamecode | `cgame` | The HUD tools, movement helpers and cosmetics, present on every server you join |
 | Server-side gamecode | `jampgame` | Race mode, the movement styles, Tribes and the admin system when *you* host |
-| Assets | `japro-assets.pk3` | The shaders, models and icons those features draw ([`codemp/CMakeLists.txt`](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/CMakeLists.txt#L81)) |
+| Assets | `japro-assets.pk3` | The shaders, models and icons those features draw ([`codemp/CMakeLists.txt`](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/CMakeLists.txt#L81)) |
 
 So a TaystJK dedicated server serves jaPRO-style gameplay out of the box, with nothing else
 installed. That is why this site can cite `codemp/game/` for things like `/move` and the

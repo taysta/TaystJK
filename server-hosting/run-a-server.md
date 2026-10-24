@@ -45,7 +45,7 @@ update and restart it. Your selection is saved on this device.
 The published image contains the 64-bit and 32-bit Linux dedicated servers and the
 [bundled server configs](/TaystJK/server-hosting/bundled-configs/). Compose restarts the
 server when it stops
-([`docker-compose.yml`](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/docker-compose.yml#L36)),
+([`docker-compose.yml`](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/docker-compose.yml#L36)),
 and everything you change lives in a mounted directory that survives image updates. You
 need Docker on the host.
 
@@ -103,7 +103,7 @@ The image launches the server with `dedicated 2`. To keep it unlisted while you 
 add `TJK_OPTS=+set dedicated 1 +exec server.cfg` under `environment`, and remove it when you
 are ready.
 
-The image already contains TaystJK's [shipped `server.cfg`](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/scripts/docker/server.cfg)
+The image already contains TaystJK's [shipped `server.cfg`](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/scripts/docker/server.cfg)
 and the game-mode, vote and ban configs that go with it, under `basepath/taystjk/`, and
 starts with `+exec server.cfg`. They are written for TaystJK's bundled jaPRO game module;
 [bundled server configs](/TaystJK/server-hosting/bundled-configs/) describes each file. Start
@@ -126,11 +126,11 @@ under `homepath/taystjk/`. Use `docker compose down` to stop the server.
 **Change ports on the host side.** Inside the container the server always listens on UDP
 `29070`: the run script sets it, and both the health check and the clean shutdown sent when
 the container stops go to that port
-([`run.sh`](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/scripts/docker/run.sh#L13),
-[`functions.sh`](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/scripts/docker/functions.sh#L11)).
+([`run.sh`](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/scripts/docker/run.sh#L13),
+[`functions.sh`](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/scripts/docker/functions.sh#L11)).
 To run on `29071`, publish `29071:29070/udp` and leave `net_port` alone. The image's health
 check asks the server for its status every ten seconds
-([`Dockerfile`](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/Dockerfile#L72)),
+([`Dockerfile`](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/Dockerfile#L72)),
 so `docker compose ps` shows whether it is answering.
 
 The compose file also has a `taystjk-build` service, behind the `build` profile, that builds
@@ -149,7 +149,7 @@ it yourself, and you look after its files, its configuration and restarting it.
 Extract the whole archive, keeping its libraries and its `taystjk/` directory, which holds
 TaystJK's game module and `japro-assets.pk3`. Put the retail assets in `base/`. Native
 releases do not include a `server.cfg`: copy the Docker image's configs from
-[`scripts/docker/`](https://github.com/taysta/TaystJK/tree/f999cbc0912773164962d8be37737a31fe9ade8d/scripts/docker)
+[`scripts/docker/`](https://github.com/taysta/TaystJK/tree/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/scripts/docker)
 into `taystjk/`, as [bundled server configs](/TaystJK/server-hosting/bundled-configs/)
 explains, build a set with the [config generator](/TaystJK/server-hosting/config-generator/),
 or write your own. Then launch it on Linux with:
@@ -217,11 +217,11 @@ Windows dedicated server loads it from there with `+set com_unpackLibraries 1` o
 line, or you can extract it beside the PK3 as
 [mods that package native libraries inside a PK3](/TaystJK/install/mod-compatibility/#mods-that-package-native-libraries-inside-a-pk3)
 describes. Linux and macOS servers never unpack a library from a PK3
-([`sys_unix.cpp`](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/shared/sys/sys_unix.cpp#L566)).
+([`sys_unix.cpp`](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/shared/sys/sys_unix.cpp#L566)).
 
 When the mod directory has no library the server can load, the engine falls back to TaystJK's
 own jaPRO module in `taystjk/`
-([`sys_main.cpp`](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/shared/sys/sys_main.cpp#L421)),
+([`sys_main.cpp`](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/shared/sys/sys_main.cpp#L421)),
 so before opening the server run `serverinfo` in its console and check that `gamename` is the
 mod's.
 
@@ -249,10 +249,10 @@ or JA+ 2.4 on the 32-bit server with:
 The engine loads either module interface by itself. It looks for the newer `GetModuleAPI`
 entry point first and, when a library does not export one, falls back to the older
 `dllEntry`/`vmMain` interface that JA+ and other older modules use
-([`sv_gameapi.cpp`](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/server/sv_gameapi.cpp#L3182)).
+([`sv_gameapi.cpp`](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/server/sv_gameapi.cpp#L3182)).
 `serverinfo` shows which one it used: `sv_legacyGameAPI` is `1` for the older interface and
 `0` for `GetModuleAPI`
-([`sv_gameapi.cpp`](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/server/sv_gameapi.cpp#L2845)).
+([`sv_gameapi.cpp`](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/server/sv_gameapi.cpp#L2845)).
 You do not need `vm_legacy` for this; it only forces the older interface on a library that
 has both ([when to use `vm_legacy`](/TaystJK/install/mod-compatibility/#when-to-use-vm_legacy)).
 Run `path` to confirm that `japlus/` is active, and check the mod's own version cvar before
@@ -263,14 +263,14 @@ opening the server.
 Put the mod and its configuration under the mounted `homepath/japlus/` and set
 `TJK_MOD=japlus`. For a 32-bit module such as JA+ 2.4, also set `TJK_ARCH=i386`: the image
 has both the `x86_64` and `i386` dedicated servers and runs the one `TJK_ARCH` names
-([`run.sh`](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/scripts/docker/run.sh#L14)).
+([`run.sh`](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/scripts/docker/run.sh#L14)).
 
 - The image's bundled configs live in `taystjk/`, so they do not load for another mod.
   Supply that mod's own `server.cfg`, or build one from base Jedi Academy's settings with the
   [server config generator](/TaystJK/server-hosting/config-generator/).
 - If you set `TJK_OPTS`, keep `+exec server.cfg` in it. The image's default `TJK_OPTS` is just
   that command
-  ([`Dockerfile`](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/Dockerfile#L69)),
+  ([`Dockerfile`](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/Dockerfile#L69)),
   and setting the variable replaces it.
 - The image does not include third-party mod files; you supply and update them.
 

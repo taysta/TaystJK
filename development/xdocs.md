@@ -19,10 +19,10 @@ toc: true
 
 When the console prints a cvar, the engine asks the UI module for a description first, and
 falls back to the string in the cvar's own registration
-([`Cvar_DescriptionString`](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/qcommon/cvar.cpp#L182)):
+([`Cvar_DescriptionString`](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/qcommon/cvar.cpp#L182)):
 
 1. **xdocs**, compiled into the UI module from
-   [`ui_xdocs.h`](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/ui/ui_xdocs.h), which is richer and able to enumerate values
+   [`ui_xdocs.h`](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/ui/ui_xdocs.h), which is richer and able to enumerate values
 2. **The registration string**, the last argument to `Cvar_Get`: one line, no structure
 3. Nothing, if neither exists
 
@@ -54,7 +54,7 @@ XDOCS_CVAR_DEF("cg_alwaysShowAbsorb", "Show absorb when it's in use",
 ```
 
 Typing the cvar's name prints the short and long descriptions together
-([`cvar.cpp`](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/qcommon/cvar.cpp#L606)). The short one on its own appears in
+([`cvar.cpp`](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/qcommon/cvar.cpp#L606)). The short one on its own appears in
 `cvarlist` and in tab completion.
 
 ### Which macro
@@ -69,7 +69,7 @@ Typing the cvar's name prints the short and long descriptions together
 
 In the help the client builds, the bitflag and keyvalue variants produce the same entry as
 `XDOCS_CVAR_DEF`
-([`ui_xdocs.h`](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/ui/ui_xdocs.h#L44-L45)). `ui_xdocs.h` also has header text that
+([`ui_xdocs.h`](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/ui/ui_xdocs.h#L44-L45)). `ui_xdocs.h` also has header text that
 explains how to combine flags or write key/value pairs, but only a list mode the client does
 not build uses it. Use the variant that matches the cvar so the entry records its shape, and
 still say in your own lines how the values combine.

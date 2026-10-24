@@ -46,7 +46,7 @@ race
 [`race`](/TaystJK/reference/commands/race-de4bedc/) toggles racemode for you. The server has
 to allow it (`g_raceMode` set to `2` or higher); otherwise it prints "This command is not
 allowed!"
-([`Cmd_Race_f`](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/game/g_cmds.c#L7691)).
+([`Cmd_Race_f`](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/game/g_cmds.c#L7691)).
 
 Then pick a physics style with [`move`](/TaystJK/reference/commands/move-379d6ce/), for
 example `move cpm`. Run it with no argument for the list your server accepts. You must be
@@ -64,14 +64,14 @@ To get around a map:
 | [`callvote`](/TaystJK/reference/commands/callvote-1457e21/) `map <mapname>` | Asks the server to change map. |
 
 `warp` matches any warp whose name **contains** what you type, and takes the first match
-([`Cmd_Warp_f`](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/game/g_cmds.c#L7431)),
+([`Cmd_Warp_f`](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/game/g_cmds.c#L7431)),
 so a short name can land you on a different course than you meant.
 
 Outside practice mode, toggling `noclip` resets your timer
-([`Cmd_Noclip_f`](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/game/g_cmds.c#L858)).
+([`Cmd_Noclip_f`](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/game/g_cmds.c#L858)).
 If the server allows marking a position during a run, `amtelemark` only works while you are
 on the ground
-([`Cmd_Amtelemark_f`](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/game/g_cmds.c#L7283)).
+([`Cmd_Amtelemark_f`](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/game/g_cmds.c#L7283)).
 Whether you can use `amtele` and `noclip` at all is a server setting (`g_allowRaceTele`).
 
 ## Practice mode
@@ -82,28 +82,28 @@ practice
 
 [`practice`](/TaystJK/reference/commands/practice-e17674f/) toggles practice mode. Like
 `move`, it needs you in racemode and standing still, and toggling it resets a running timer
-([`Cmd_Practice_f`](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/game/g_cmds.c#L7211)).
+([`Cmd_Practice_f`](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/game/g_cmds.c#L7211)).
 
 **Times are not saved in practice mode.** The server warns you on screen when you start a
 run: "times are not valid in practice mode"
-([`g_trigger.c`](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/game/g_trigger.c#L1664)).
+([`g_trigger.c`](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/game/g_trigger.c#L1664)).
 In exchange you get tools that would not be fair in a timed run:
 
 - **Strafebot.** Hold `+button14` and your strafe angle is set for you. It works in practice
   mode, and in the `botcpm` style at any time
-  ([`bg_pmove.c`](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/game/bg_pmove.c#L15476)).
+  ([`bg_pmove.c`](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/game/bg_pmove.c#L15476)).
   Bind it like any other button, for example `bind mouse4 +button14`.
 - **`launch`.** [`launch`](/TaystJK/reference/commands/launch-f7c91fe/) `<speed>` throws you
   forward from where you stand at that speed. `launch <x y z yaw xyspeed zspeed>` teleports
   you to a point first, then launches you. Both start your timer, so you can rehearse a
   section from a known entry speed
-  ([`Cmd_Launch_f`](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/game/g_cmds.c#L7130)).
+  ([`Cmd_Launch_f`](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/game/g_cmds.c#L7130)).
 
 ## Accounts and leaderboards
 
 Your times are only recorded while you are logged in. If you start a run logged out, the
 server warns you on screen
-([`g_trigger.c`](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/game/g_trigger.c#L1660)).
+([`g_trigger.c`](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/game/g_trigger.c#L1660)).
 
 | Command | What it does |
 |:--|:--|
@@ -113,14 +113,14 @@ server warns you on screen
 | [`aminfo`](/TaystJK/reference/commands/aminfo-b53555a/) | Lists the server's commands. |
 | [`whois`](/TaystJK/reference/commands/whois-a93a167/) | Lists players with their client numbers, whether they are logged in, and their style. |
 | [`stats`](/TaystJK/reference/commands/stats-e350d5c/) `<player>` | Shows a player's account statistics. |
-| [`rtop`](/TaystJK/reference/commands/rtop-56f7fba/) `<course> <style> <season> <page>` | Top ten times for a course. With no style it shows `jka` ([`Cmd_DFTop10_f`](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/game/g_account.c#L6368)). Add a season such as `s1`, or a page number, to see older or lower times. |
+| [`rtop`](/TaystJK/reference/commands/rtop-56f7fba/) `<course> <style> <season> <page>` | Top ten times for a course. With no style it shows `jka` ([`Cmd_DFTop10_f`](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/game/g_account.c#L6368)). Add a season such as `s1`, or a page number, to see older or lower times. |
 | [`rrank`](/TaystJK/reference/commands/rrank-4a8ddea/) | The overall leaderboard, or one style's. |
 | [`rlatest`](/TaystJK/reference/commands/rlatest-fa0c7ce/) | The latest times, overall or for one style. |
 | [`top`](/TaystJK/reference/commands/top-af2c7b4/) | Duel leaderboards for the fighting modes, for example `top saber`. |
 
 **Log in again after every map change.** Your login lives in data the server clears each
 time you connect, and a map change reconnects you
-([`ClientConnect`](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/game/g_client.c#L2925)).
+([`ClientConnect`](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/game/g_client.c#L2925)).
 
 ## A basic HUD setup
 
@@ -142,7 +142,7 @@ to see its options, and with a number to toggle one.
 
 | Command | What it configures |
 |:--|:--|
-| [`strafehelper`](/TaystJK/reference/commands/strafehelper-bdb34b4/) | The strafe helper. `strafehelper 14` toggles the line crosshair ([`cg_consolecmds.c`](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/cgame/cg_consolecmds.c#L1123)). |
+| [`strafehelper`](/TaystJK/reference/commands/strafehelper-bdb34b4/) | The strafe helper. `strafehelper 14` toggles the line crosshair ([`cg_consolecmds.c`](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/cgame/cg_consolecmds.c#L1123)). |
 | [`speedometer`](/TaystJK/reference/commands/speedometer-b0e26e4/) | The speedometer. Options `0`, `1`, `2`, `10` and `13` are a good start. |
 | [`stylePlayer`](/TaystJK/reference/commands/styleplayer-33ef966/) | Player-model visual options. |
 | [`pluginDisable`](/TaystJK/reference/commands/plugindisable-98b2c24/) | Toggles gameplay and presentation options the server offers. The numbers follow the list your server prints, so check it before toggling. |
@@ -154,22 +154,22 @@ completion lists the rest: type `cg_strafeHelper` or `cg_speedometer` and press 
 
 | Setting | What it does |
 |:--|:--|
-| [`cg_raceStart`](/TaystJK/reference/cvars/cg_racestart-e3c5285/) `1` | Keeps your start speed on screen for the whole run, not just the first three seconds ([`hud_strafehelper.c`](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/cgame/hud_strafehelper.c#L2431)). |
-| [`cg_raceStartX`](/TaystJK/reference/cvars/cg_racestartx-c82e957/), [`cg_raceStartY`](/TaystJK/reference/cvars/cg_racestarty-210e8af/), [`cg_startGoal`](/TaystJK/reference/cvars/cg_startgoal-086db11/) | Where that start speed is drawn, and a target: once your start speed reaches `cg_startGoal` it turns green ([`hud_strafehelper.c`](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/cgame/hud_strafehelper.c#L2433)). |
-| [`cg_jumpGoal`](/TaystJK/reference/cvars/cg_jumpgoal-829a115/) | The same for your first jump: the speedometer's jump readout turns green once the speed you jumped at reaches it ([`hud_strafehelper.c`](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/cgame/hud_strafehelper.c#L2198)). |
+| [`cg_raceStart`](/TaystJK/reference/cvars/cg_racestart-e3c5285/) `1` | Keeps your start speed on screen for the whole run, not just the first three seconds ([`hud_strafehelper.c`](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/cgame/hud_strafehelper.c#L2431)). |
+| [`cg_raceStartX`](/TaystJK/reference/cvars/cg_racestartx-c82e957/), [`cg_raceStartY`](/TaystJK/reference/cvars/cg_racestarty-210e8af/), [`cg_startGoal`](/TaystJK/reference/cvars/cg_startgoal-086db11/) | Where that start speed is drawn, and a target: once your start speed reaches `cg_startGoal` it turns green ([`hud_strafehelper.c`](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/cgame/hud_strafehelper.c#L2433)). |
+| [`cg_jumpGoal`](/TaystJK/reference/cvars/cg_jumpgoal-829a115/) | The same for your first jump: the speedometer's jump readout turns green once the speed you jumped at reaches it ([`hud_strafehelper.c`](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/cgame/hud_strafehelper.c#L2198)). |
 | [`cg_speedometerX`](/TaystJK/reference/cvars/cg_speedometerx-58598b2/), [`cg_speedometerY`](/TaystJK/reference/cvars/cg_speedometery-7d4b635/) | Move the speedometer. `400` and `200` sit it above the strafe helper. |
-| [`cg_strafeHelper_FPS`](/TaystJK/reference/cvars/cg_strafehelper_fps-c64555f/) | The frame rate the strafe helper calculates for. `0` uses your `com_maxfps`; values above `1000` are treated as `1000` ([`DF_SetFrameTime`](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/cgame/hud_strafehelper.c#L858)). |
+| [`cg_strafeHelper_FPS`](/TaystJK/reference/cvars/cg_strafehelper_fps-c64555f/) | The frame rate the strafe helper calculates for. `0` uses your `com_maxfps`; values above `1000` are treated as `1000` ([`DF_SetFrameTime`](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/cgame/hud_strafehelper.c#L858)). |
 | [`cg_strafeHelperOffset`](/TaystJK/reference/cvars/cg_strafehelperoffset-018a25b/) | How far the helper line sits from the optimal angle. The default is `75`. At `0`, keep the crosshair one pixel past the line for the most acceleration. |
 | [`cg_strafeHelperLineWidth`](/TaystJK/reference/cvars/cg_strafehelperlinewidth-790968e/) | Thickness of the helper lines and the line crosshair. |
 | [`cg_strafeHelperCutoff`](/TaystJK/reference/cvars/cg_strafehelpercutoff-2cd5794/) | How far the helper lines extend. Higher values draw shorter lines. |
 | [`com_maxfps`](/TaystJK/reference/cvars/com_maxfps-658bd0c/) `333` | For the air-control styles and `slick`, where it gives smoother mouse input and slightly more turning strength. Styles without air control move at the same speed at 125 and 333. |
-| [`cl_timeNudge`](/TaystJK/reference/cvars/cl_timenudge-4435ccb/) `-100` | On a high ping, to run a high frame rate without "Connection Interrupted" warnings. The client ignores a negative value while you spectate or play a demo ([`cl_cgame.cpp`](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/client/cl_cgame.cpp#L991)). |
-| [`cg_specCameraMode`](/TaystJK/reference/cvars/cg_speccameramode-95baeef/) | When `1`, the default, spectating someone on a jaPRO server uses their first- or third-person view and camera distance. `0` keeps your own ([`cg_view.c`](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/cgame/cg_view.c#L2960)). Your `cg_fov` applies either way. |
+| [`cl_timeNudge`](/TaystJK/reference/cvars/cl_timenudge-4435ccb/) `-100` | On a high ping, to run a high frame rate without "Connection Interrupted" warnings. The client ignores a negative value while you spectate or play a demo ([`cl_cgame.cpp`](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/client/cl_cgame.cpp#L991)). |
+| [`cg_specCameraMode`](/TaystJK/reference/cvars/cg_speccameramode-95baeef/) | When `1`, the default, spectating someone on a jaPRO server uses their first- or third-person view and camera distance. `0` keeps your own ([`cg_view.c`](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/cgame/cg_view.c#L2960)). Your `cg_fov` applies either way. |
 | [`cg_fov`](/TaystJK/reference/cvars/cg_fov-05db256/), [`cg_thirdPersonRange`](/TaystJK/reference/cvars/cg_thirdpersonrange-4c9945a/) | Field of view and third-person camera distance. |
 
 On the rocket styles, [`rocketChange`](/TaystJK/reference/commands/rocketchange-f69e6d8/)
 flips the direction your rockets fire from. It needs you standing still and resets your timer
-([`g_cmds.c`](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/game/g_cmds.c#L6919)).
+([`g_cmds.c`](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/game/g_cmds.c#L6919)).
 
 ### Your own checkpoints
 
@@ -182,11 +182,11 @@ addCheckpoint <x1> <y1> <z1> <x2> <y2> <z2>
 
 [`addCheckpoint`](/TaystJK/reference/commands/addcheckpoint-7c51bf3/) takes two opposite
 corners of a box
-([`CG_AddCheckpoint_f`](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/cgame/cg_consolecmds.c#L2073)).
+([`CG_AddCheckpoint_f`](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/cgame/cg_consolecmds.c#L2073)).
 `cg_showpos` shows your coordinates so you can find them. When you pass through the box in
 racemode with your timer running, it prints your split time, average speed and top speed in
 the centre of the screen
-([`cg_snapshot.c`](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/cgame/cg_snapshot.c#L548)).
+([`cg_snapshot.c`](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/cgame/cg_snapshot.c#L548)).
 
 [`listCheckpoints`](/TaystJK/reference/commands/listcheckpoints-86cf253/) lists them by
 number, [`deleteCheckpoint`](/TaystJK/reference/commands/deletecheckpoint-ec6c155/) `<#>`
@@ -197,7 +197,7 @@ teleports you to it.
 
 The engine can draw the parts of a map that are normally invisible, which helps when you are
 learning a course or checking your own map
-([`cl_tc_vis.cpp`](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/client/cl_tc_vis.cpp#L81)):
+([`cl_tc_vis.cpp`](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/client/cl_tc_vis.cpp#L81)):
 
 | Setting | Draws |
 |:--|:--|
@@ -227,10 +227,10 @@ clearTrail -1
 
 [`loadTrail`](/TaystJK/reference/commands/loadtrail-490c577/) `<course-style>` loads
 `strafetrails/<course-style>.cfg`
-([`CG_SpawnStrafeTrailFromCFG_f`](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/cgame/cg_consolecmds.c#L725)).
+([`CG_SpawnStrafeTrailFromCFG_f`](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/cgame/cg_consolecmds.c#L725)).
 [`clearTrail`](/TaystJK/reference/commands/cleartrail-314b9f6/) `<client #>` removes a trail,
 and `-1` removes every trail
-([`CG_RemoveStrafeTrail`](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/cgame/cg_localents.c#L1258)).
+([`CG_RemoveStrafeTrail`](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/cgame/cg_localents.c#L1258)).
 
 You can also make trails:
 
@@ -241,7 +241,7 @@ You can also make trails:
 - [`cg_logStrafeTrail`](/TaystJK/reference/cvars/cg_logstrafetrail-6216305/) `<name>`
   records your own runs to `strafetrails/<name>.cfg` while your race timer is running, in
   the format `loadTrail` reads
-  ([`cg_snapshot.c`](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/cgame/cg_snapshot.c#L777)).
+  ([`cg_snapshot.c`](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/cgame/cg_snapshot.c#L777)).
   Set it back to `0` to stop.
 
 Type `cg_strafeTrail` and press Tab for the settings that control how trails look.
@@ -253,4 +253,4 @@ Type `cg_strafeTrail` and press Tab for the settings that control how trails loo
 | [`cvarlist`](/TaystJK/reference/commands/cvarlist-5cafd84/) `<filter>` | Lists cvars whose names match a wildcard, for example `cvarlist *speedometer*`. |
 | [`cosmetics`](/TaystJK/reference/commands/cosmetics-01c96cf/) | Lists the hats and other cosmetics you can equip. On servers that set unlocks, some need you to finish a course, sometimes under a set time; the list shows what. See [Cosmetics](/TaystJK/features/cosmetics/). |
 | [`listEmojis`](/TaystJK/reference/commands/listemojis-4b9aa16/) | Lists the chat emoji your client loaded; they draw when [`cg_chatBoxEmojis`](/TaystJK/reference/cvars/cg_chatboxemojis-7bdc808/) is on. See [Chat emoji](/TaystJK/features/emoji/). |
-| [`voicechat`](/TaystJK/reference/commands/voicechat-a1c96f1/) | On a jaPRO server, opens the Tribes-style VGS voice menu, which sends a chat line and plays a voice clip. Bind it and type the letters: `bind v voicechat`, then <kbd>V</kbd> <kbd>G</kbd> <kbd>S</kbd> for "Shazbot!". `ui_vgs 0` turns the menu off ([`ui_main.c`](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/ui/ui_main.c#L1061)). |
+| [`voicechat`](/TaystJK/reference/commands/voicechat-a1c96f1/) | On a jaPRO server, opens the Tribes-style VGS voice menu, which sends a chat line and plays a voice clip. Bind it and type the letters: `bind v voicechat`, then <kbd>V</kbd> <kbd>G</kbd> <kbd>S</kbd> for "Shazbot!". `ui_vgs 0` turns the menu off ([`ui_main.c`](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/ui/ui_main.c#L1061)). |

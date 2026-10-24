@@ -19,7 +19,7 @@ description: "Build a server.cfg, a gameplay baseline, game modes and vote optio
 <div class="cfg-nojs" markdown="1">
 The generator needs JavaScript. Without it, start from the Docker image's own configs:
 [bundled server configs](/TaystJK/server-hosting/bundled-configs/) describes each file, and
-[`scripts/docker/`](https://github.com/taysta/TaystJK/tree/f999cbc0912773164962d8be37737a31fe9ade8d/scripts/docker)
+[`scripts/docker/`](https://github.com/taysta/TaystJK/tree/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/scripts/docker)
 in the source repository holds them.
 </div>
 
@@ -45,12 +45,12 @@ A few rules hold for every combination:
   never leak into the next.
 - Every cvar is written with `set` or `seta`. A bare `name value` line only changes a cvar
   that already exists
-  ([`cvar.cpp`](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/qcommon/cvar.cpp#L964)),
+  ([`cvar.cpp`](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/qcommon/cvar.cpp#L964)),
   and the game module's cvars do not exist until it loads with the first map.
 - The join password, `g_password`, is written with `set`, so it is never saved anywhere
-  else ([`g_xcvar.h`](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/game/g_xcvar.h#L125)).
+  else ([`g_xcvar.h`](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/game/g_xcvar.h#L125)).
   jaPRO's `g_fullAdminPass` and `g_juniorAdminPass` are archived cvars
-  ([`g_xcvar.h`](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/game/g_xcvar.h#L264-L265)),
+  ([`g_xcvar.h`](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/game/g_xcvar.h#L264-L265)),
   so the server also copies them into its saved `taystjk_server.cfg`
   ([config writeback](/TaystJK/troubleshooting/#the-dedicated-server-keeps-rewriting-my-config)).
   The generator writes `rconpassword` with `set`; under Docker, keep it on the line that

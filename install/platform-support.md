@@ -26,15 +26,15 @@ Each of these is decided when the client is built, so no cvar will turn it on.
 ## EAX is 32-bit Windows only
 
 The EAX headers are compiled in only under MSVC
-([`CMakeLists.txt`](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/CMakeLists.txt#L497)),
+([`CMakeLists.txt`](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/CMakeLists.txt#L497)),
 so it never exists outside Windows at all.
 
 On Windows it is narrower still. The sound code asks for `EAXMan64.dll` in a 64-bit build
 and `EaxMan.dll` otherwise
-([`snd_dma.cpp`](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/client/snd_dma.cpp#L5399)),
+([`snd_dma.cpp`](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/client/snd_dma.cpp#L5399)),
 but the installer ships `EaxMan.dll` only for 32-bit builds. A 64-bit install gets
 `OpenAL32.x86_64.dll` and nothing else
-([`InstallConfig.cmake`](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/cmake/Modules/InstallConfig.cmake#L78)).
+([`InstallConfig.cmake`](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/cmake/Modules/InstallConfig.cmake#L78)).
 The 64-bit path therefore looks for a library that is never shipped, and EAX quietly stays
 off.
 
@@ -45,7 +45,7 @@ this.
 
 Rich Presence is compiled in only where a prebuilt `discord-rpc` library exists for the
 target
-([`CMakeLists.txt`](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/CMakeLists.txt#L415)).
+([`CMakeLists.txt`](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/CMakeLists.txt#L415)).
 The macOS and Linux branches both require `Architecture MATCHES "x86_64"`, and Windows is
 covered for both 32- and 64-bit MSVC.
 
@@ -62,7 +62,7 @@ The Windows AddressSanitizer build does not have it either, for an unrelated rea
 `Sys_SteamInit` has a real implementation only in the Windows platform layer. The Unix one
 is an empty function whose comment says as much: "Only Windows has this feature at the
 moment"
-([`sys_unix.cpp`](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/shared/sys/sys_unix.cpp#L650)).
+([`sys_unix.cpp`](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/shared/sys/sys_unix.cpp#L650)).
 
 This is not a build-time choice you can change: on Linux and macOS there is no code to
 enable. `com_steamIntegration` still exists and still defaults to `1` there, because it is

@@ -110,12 +110,12 @@ solution, which needs CMake 3.25 or later
 ([`CMAKE_MSVC_DEBUG_INFORMATION_FORMAT`](https://cmake.org/cmake/help/latest/variable/CMAKE_MSVC_DEBUG_INFORMATION_FORMAT.html)),
 and debug the **Debug** configuration. It cannot be combined with `UseAddressSanitizer`,
 which turns incremental linking off
-([`CMakeLists.txt`](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/CMakeLists.txt#L258)).
+([`CMakeLists.txt`](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/CMakeLists.txt#L258)).
 Edits to the engine last for the session, but edits to the game, cgame and UI modules last
 only until the next map load: the engine unloads those libraries and loads them again from
 the installed copy
-([client](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/client/cl_main.cpp#L1517),
-[server](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/server/sv_init.cpp#L469)),
+([client](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/client/cl_main.cpp#L1517),
+[server](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/server/sv_init.cpp#L469)),
 and a `vid_restart` does the same for cgame and UI. To keep a change, build and run
 **INSTALL** as above.
 
@@ -127,7 +127,7 @@ If a breakpoint remains hollow, open **Debug → Windows → Modules** and confi
 
 ### Move and sign the installed build
 
-After the install target finishes, run TaystJK's [macOS development helper](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/scripts/macosx/moveandsign.sh):
+After the install target finishes, run TaystJK's [macOS development helper](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/scripts/macosx/moveandsign.sh):
 
 ```bash
 ./scripts/macosx/moveandsign.sh

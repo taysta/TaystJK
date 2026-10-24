@@ -152,10 +152,10 @@ This is the simplest layout when TaystJK is your only modded client.
 3. Launch the app. Release builds are portable, so configs, screenshots and downloads are
    written beside the app, in the directory that holds it, not under
    `~/Library/Application Support`
-   ([`sys_main.cpp`](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/shared/sys/sys_main.cpp#L700));
+   ([`sys_main.cpp`](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/shared/sys/sys_main.cpp#L700));
    see [builds and versioning](/TaystJK/install/builds-and-versioning/#every-published-build-is-portable).
 
-The [release workflow](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/.github/workflows/build.yml#L433)
+The [release workflow](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/.github/workflows/build.yml#L433)
 ad-hoc signs the app, so it does not need signing again. If macOS refuses to open it because
 it was downloaded, clear the quarantine attribute from the extracted app:
 
@@ -194,7 +194,7 @@ sudo pacman -S sdl2 libglvnd libjpeg-turbo libpng zlib
 
 The 32-bit build needs 32-bit versions of the same libraries, and its executables are named
 `taystjk.i386` and `taystjkded.i386`. Prefer the x86_64 release unless you specifically need
-32-bit compatibility. TaystJK's [Linux release job](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/.github/workflows/build.yml#L158) records the libraries the official archive is built against.
+32-bit compatibility. TaystJK's [Linux release job](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/.github/workflows/build.yml#L158) records the libraries the official archive is built against.
 
 If the loader still reports a missing library, run:
 
@@ -296,13 +296,13 @@ PK3.
 ## Steam playtime and overlay
 
 Optional, and **Windows only**. `Sys_SteamInit` is an empty stub everywhere else
-([`sys_unix.cpp`](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/shared/sys/sys_unix.cpp#L655)).
+([`sys_unix.cpp`](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/shared/sys/sys_unix.cpp#L655)).
 
 With it working, Steam counts your TaystJK time against Jedi Academy and the overlay works,
 without having to launch the client through Steam.
 
 `com_steamIntegration` is already **on by default**
-([`common.cpp`](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/qcommon/common.cpp#L1452)), so there is nothing to enable. It
+([`common.cpp`](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/qcommon/common.cpp#L1452)), so there is nothing to enable. It
 does nothing until you supply two files, neither of which ships with TaystJK or with retail
 Jedi Academy. Put both in `GameData`, beside the executable:
 
@@ -332,7 +332,7 @@ client looking at all.
 You have to supply these yourself because the Steamworks SDK's terms do not fit TaystJK's
 GPLv2 licence, so the library cannot be bundled. The client loads it at runtime if it finds
 it, which keeps the licences apart
-([`sys_win32.cpp`](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/shared/sys/sys_win32.cpp#L714)).
+([`sys_win32.cpp`](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/shared/sys/sys_win32.cpp#L714)).
 
 ## Next steps
 
