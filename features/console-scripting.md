@@ -19,7 +19,7 @@ origin: newjk
 Everything here came from NewJK and NewMod, and
 [their documentation](https://jkanewmod.github.io/documentation_commands.html) is the
 original account of `ifCvar` and `strSub`. This page describes what the TaystJK client
-actually does, which is not identical. See [what does not work](#what-does-not-work).
+actually does, which is not identical. See [things to watch for](#things-to-watch-for).
 
 The console reference has the catalogue entries:
 [`ifCvar`](/TaystJK/reference/commands/ifcvar-a68f57c/),
@@ -129,9 +129,12 @@ the NewMod documentation lists only `$beginswith`.
 
 The text follows the modifier with no space: `$containsbeer`, `$>=50`, `$else`. Put a
 `$` in front of the comparison value to read it from another cvar instead of using it
-literally, for example `$>=$cg_someOtherCvar`. That indirection works for the six numeric operators
-and for plain equality; it does **not** work for `$contains`, `$beginswith`, `$startswith`
-or `$endswith`, for the reasons in [what does not work](#what-does-not-work).
+literally, for example `$>=$cg_someOtherCvar` or `$contains$cg_someOtherCvar`. It works
+with every modifier and with plain equality
+([`common.cpp`](https://github.com/taysta/TaystJK/blame/4cca97d97551d2fda974e7fe7d5693f21900a2f3/codemp/qcommon/common.cpp#L389)). If a `$contains`, `$beginswith` or `$endswith` condition always
+matches, update your build: older builds looked up the wrong cvar for those.
+
+An empty setting, `""`, matches a cvar whose value is empty.
 
 `$else` should be last. It always matches, so anything after it is unreachable.
 
@@ -193,35 +196,11 @@ command and the separator: `delay ;say vader` works, while `delay;say vader` doe
 `delaycancel vader` cancels the example above. `delaycancel ""` cancels every pending
 `delay`. Each cancels only its own kind.
 
-## What does not work
+## Things to watch for
 
-These are bugs in the client, not deliberate limits, so a build newer than this page may
-have fixed them.
-[Compare the dates](/TaystJK/features/whats-new/#how-to-tell-what-your-build-has).
-
-**Cvar indirection is broken for the text operators.** `$contains$myCvar`,
-`$beginswith$myCvar`, `$startswith$myCvar` and `$endswith$myCvar` all read the wrong
-position when resolving the cvar name
-([`$contains`](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/qcommon/common.cpp#L392),
-[`$beginswith`](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/qcommon/common.cpp#L395),
-[`$endswith`](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/qcommon/common.cpp#L399)).
-The lookup returns an empty string, and an empty string matches anything, so **the condition
-silently becomes always true** rather than failing visibly. Compare against literal text
-with these operators.
-
-**`$endswith` needs at least three characters.** `$endswithab` falls through to plain string
-equality instead of testing the suffix
-([`common.cpp`](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/qcommon/common.cpp#L398)).
-
-**Do not pass an empty setting.** `ifCvar someCvar "" 2 say hi` reaches a loop that does not
-advance
-([`common.cpp`](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/qcommon/common.cpp#L363)).
-Use `$else` when you want a condition that always matches.
-
-**`strSub` needs the closing `$`.** `$name` without a trailing `$` is read to the end of the
-argument
-([`common.cpp`](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/qcommon/common.cpp#L461)),
-which is rarely the cvar you meant.
+**`strSub` needs the closing `$`.** `$name` without a trailing `$` takes the rest of the
+argument as the cvar name
+([`common.cpp`](https://github.com/taysta/TaystJK/blame/4cca97d97551d2fda974e7fe7d5693f21900a2f3/codemp/qcommon/common.cpp#L459)), which is rarely the cvar you meant.
 
 Report anything else you hit at
 <https://github.com/taysta/TaystJK/issues>.

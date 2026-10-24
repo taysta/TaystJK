@@ -134,9 +134,8 @@ Set your `model` and you change class. The server confirms with a message such a
 do not do it mid-run.
 
 Anything not on the list is medium, so an unusual model never locks you out. Names are
-matched by prefix, so a skin such as `tavion/red` still counts. In current builds
-`tribesheavy` is the exception: it only counts without a skin, and `tribesheavy/default`
-makes you medium.
+matched by prefix, so a skin such as `tavion/red` or `tribesheavy/default` still counts
+([`g_client.c`](https://github.com/taysta/TaystJK/blame/4cca97d97551d2fda974e7fe7d5693f21900a2f3/codemp/game/g_client.c#L2270)).
 
 What the class changes:
 

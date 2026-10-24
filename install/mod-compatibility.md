@@ -183,7 +183,7 @@ drawing something the server also has a say in.
 | RGB sabers | JA+ or jaPRO, or the server advertising it ([`cg_players.c`](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/cgame/cg_players.c#L6063)) |
 | Black sabers | the same, and not disabled by plugin settings ([`cg_players.c`](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/cgame/cg_players.c#L6055)) |
 | Flipkick | the server advertising it ([`bg_pmove.c`](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/game/bg_pmove.c#L272)) |
-| JA+-style grapple | JA+, or jaPRO with its JA+ grapple option on ([`bg_pmove.c`](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/game/bg_pmove.c#L15608)). Current builds ignore the server's grapple flag. |
+| JA+-style grapple | JA+, or jaPRO with its JA+ grapple option on, or the server advertising it ([`bg_pmove.c`](https://github.com/taysta/TaystJK/blame/4cca97d97551d2fda974e7fe7d5693f21900a2f3/codemp/game/bg_pmove.c#L15608)) |
 | Roll fixes 1–3 | JA+ or jaPRO with the matching option, or the server advertising it ([`bg_pmove.c`](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/game/bg_pmove.c#L314)) |
 | The `plugin` command | JA+ or above; it returns silently otherwise ([`cg_consolecmds.c`](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/cgame/cg_consolecmds.c#L1292)) |
 | Force column on the team overlay | jaPRO, which is what supplies the data |
