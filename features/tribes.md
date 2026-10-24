@@ -87,7 +87,7 @@ speed
 ([`cg_players.c`](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/cgame/cg_players.c#L11094)). In team games your teammates are
 marked as friends; everyone else, including every other player in FFA, is marked as an enemy.
 
-The marker grows with distance, so a far-off player still gets a readable icon rather than a
+The marker grows with distance, so a far-off player still gets a readable icon, not a
 dot. Friendly markers show at any range; **enemy markers only appear within 7500 units**, so an
 unmarked player far away is not necessarily a teammate. Nothing is drawn on the dead, on NPCs,
 or on yourself.

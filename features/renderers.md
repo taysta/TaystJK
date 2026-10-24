@@ -109,7 +109,7 @@ runs out of memory, the fix is the 64-bit build, not another renderer; see the
 ## Where a renderer bug goes
 
 Anything you can also reproduce on `rd-taystjk` is not a renderer bug. Switch backends before
-reporting. It is the single most useful thing you can say in the report.
+reporting, and say in the report whether it changed anything.
 
 The Vulkan backend is developed upstream by JKSunny, and fixes flow from there to TaystJK.
 A Vulkan-only problem belongs at <https://github.com/JKSunny/EternalJK/issues> only if it

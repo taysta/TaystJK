@@ -19,7 +19,7 @@ toc: true
 
 For a single-configuration generator such as Makefiles or Ninja:
 
-```bash
+```sh
 cmake -S . -B build-debug -DCMAKE_BUILD_TYPE=Debug
 cmake --build build-debug --parallel
 ```
@@ -30,7 +30,7 @@ For Visual Studio or Xcode, generate once and choose the `Debug` configuration w
 
 Building creates the targets; installing assembles the client, modules, renderers, and assets in the layout that the engine expects. Configure `CMAKE_INSTALL_PREFIX` for your platform's test or staging location, then install the same configuration you built:
 
-```bash
+```sh
 # Makefiles or Ninja
 cmake --install build-debug
 
@@ -129,7 +129,7 @@ If a breakpoint remains hollow, open **Debug → Windows → Modules** and confi
 
 After the install target finishes, run TaystJK's [macOS development helper](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/scripts/macosx/moveandsign.sh):
 
-```bash
+```sh
 ./scripts/macosx/moveandsign.sh
 ```
 
@@ -139,7 +139,7 @@ The script moves the installed files from the Steam-side `JediAcademy` staging d
 
 After running `moveandsign.sh`, launch the executable inside the installed app bundle:
 
-```bash
+```sh
 lldb -- "$HOME/Library/Application Support/TaystJK/taystjk.arm64.app/Contents/MacOS/taystjk.arm64" \
   +set r_fullscreen 0 +set fs_game taystjk
 ```
@@ -153,7 +153,7 @@ Useful first commands are `run`, `thread backtrace`, `image list`, and `break fu
 
 Launch the installed executable from the test directory so relative game paths resolve correctly:
 
-```bash
+```sh
 gdb --args ./taystjk.x86_64 +set r_fullscreen 0 +set fs_game taystjk
 ```
 
@@ -180,7 +180,7 @@ For a dedicated server, choose the installed `taystjkded` executable and use `+s
 
 AddressSanitizer catches use-after-free, buffer overflow, and related memory faults:
 
-```bash
+```sh
 cmake -S . -B build-asan -DCMAKE_BUILD_TYPE=RelWithDebInfo \
   -DUseAddressSanitizer=ON
 cmake --build build-asan --parallel

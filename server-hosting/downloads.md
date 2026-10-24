@@ -60,7 +60,7 @@ Only referenced PK3s are offered to clients. TaystJK automatically references a 
 
 1. A BSP map is loaded from it.
 2. It holds a client module the engine looks for: `vm/cgame.qvm`, `vm/ui.qvm`, `cgamex86.dll` or `uix86.dll` ([`files.cpp`](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/qcommon/files.cpp#L1640)).
-3. It is in the active `fs_game` directory rather than `base`.
+3. It is in the active `fs_game` directory, not `base`.
 
 TaystJK does not run `cgame.qvm` or `ui.qvm`; its modules are native libraries, `.dll` on Windows, `.so` on Linux and `.dylib` on macOS. The check still looks for those four names because they are what stock clients load. A PK3 that holds only other module names, such as `cgamex86_64.dll`, or only client assets, is not referenced on its own; add it to `ref_forcelist.txt`.
 

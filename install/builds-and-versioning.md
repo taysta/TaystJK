@@ -102,7 +102,7 @@ A portable build has no home directory at all: `Sys_DefaultHomePath` returns not
 and `fs_homepath` then falls back to the install path
 ([`files.cpp`](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/qcommon/files.cpp#L3923)).
 Your configs, screenshots, downloaded PK3s and logs are written next to the executable
-rather than under your user profile. That is what lets you keep TaystJK entirely separate
+instead of under your user profile. That is what lets you keep TaystJK entirely separate
 from another Jedi Academy installation, and it is why `fs_homepath` and `fs_basepath` read
 the same in `path`.
 

@@ -28,9 +28,9 @@ The sections are written by different means:
   page per cvar and console command: what it is, what it defaults to, where it is
   registered, and where it came from.
 
-The split is deliberate. A cvar list cannot tell you why `.oshader` files exist or what a
+A cvar list cannot tell you why `.oshader` files exist or what a
 movement style changes, and a hand-written page cannot stay accurate across two thousand
-cvars. When a guide mentions a cvar it links to the reference rather than repeating its
+cvars. When a guide mentions a cvar it links to the reference instead of repeating its
 default, because the reference is regenerated and the guide is not.
 
 The [glossary](/TaystJK/glossary/) defines the terms both halves assume.
@@ -55,12 +55,12 @@ The split shows in the reference: of those {{ site.data.reference_stats.by_origi
 | Assets | `japro-assets.pk3` | The shaders, models and icons those features draw ([`codemp/CMakeLists.txt`](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/CMakeLists.txt#L81)) |
 
 So a TaystJK dedicated server serves jaPRO-style gameplay out of the box, with nothing else
-installed. That is why this site can cite `codemp/game/` for things like `/move` and the
-Tribes classes: that code is in this tree.
+installed, and this site can cite `codemp/game/` for things like `/move` and the Tribes
+classes because that code is in this tree.
 
 **Joining someone else's server is the other case.** There, their game module decides the
-rules and your bundled copy is not used at all. That is why the same feature can behave
-differently from server to server. See
+rules and your bundled copy is not used at all, so the same feature can behave differently
+from server to server. See
 [mod compatibility](/TaystJK/install/mod-compatibility/).
 
 **This matters when something is wrong.** Gameplay belongs to the game module. A copy ships

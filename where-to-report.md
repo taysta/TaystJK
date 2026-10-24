@@ -78,7 +78,7 @@ is pulled downstream, so filing in the right place is also the faster route.
 
 Before filing with jaPRO, check it happens without TaystJK: for a player on the same server
 using another client, and, if you host with TaystJK's bundled game module, on a server
-running jaPRO's own build. If it only happens with TaystJK, it is ours.
+running jaPRO's own build.
 
 ## The Vulkan renderer
 
@@ -89,8 +89,8 @@ Check two things before filing:
    the single most useful sentence such a report can contain.
 2. It also happens on JKSunny's own EternalJK build with its Vulkan renderer.
 
-If both hold, report it at <https://github.com/JKSunny/EternalJK/issues>. If it only happens
-in TaystJK, it is ours.
+If both hold, report it at <https://github.com/JKSunny/EternalJK/issues>. If only the first
+does, it is a TaystJK bug.
 
 ## The rend2 renderer
 
@@ -101,8 +101,7 @@ fork, and fixes are ported down from there. Check two things before filing:
 2. It also happens on a build of SomaZ's
    [`rend2-unified-wip`](https://github.com/SomaZ/OpenJK/tree/rend2-unified-wip) branch.
 
-If both hold, report it at <https://github.com/SomaZ/OpenJK/issues>. If it only happens in
-TaystJK, it is ours.
+If both hold, report it at <https://github.com/SomaZ/OpenJK/issues>; otherwise report it here.
 
 ## JA+
 
@@ -114,7 +113,7 @@ What *is* worth reporting here is the client failing to cope, such as crashing o
 the server mod. That is our side of the boundary even when the trigger is JA+. The same check
 tells them apart: if another client copes with the same JA+ server, the fault is TaystJK's.
 
-Moderation is the usual example. Chat and bans are handled by the game module rather than
+Moderation is the usual example. Chat and bans are handled by the game module, not
 the engine, so on a JA+ server the tools you want are in code nobody else can change. The
 realistic answer is an open-source server mod, not a client change.
 

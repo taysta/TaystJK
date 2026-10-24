@@ -104,7 +104,7 @@ client->pers.taystJKcgflags = atoi( s );
 A missing key reads as `0`, which is the correct answer for every client that is not a
 current TaystJK build. The value can change after connect: the cgame registers the cvar when
 it loads, after the initial connect on a fresh start, and the client then sends updated
-userinfo. Check the stored value each time you build a command rather than caching a decision
+userinfo. Check the stored value each time you build a command; do not cache a decision
 at connect.
 
 If you maintain a fork of the TaystJK cgame that changes what any of these features parse, do

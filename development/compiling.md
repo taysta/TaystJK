@@ -19,7 +19,7 @@ toc: true
 
 Install Git, CMake, and a C/C++ compiler, then clone TaystJK:
 
-```bash
+```sh
 git clone https://github.com/taysta/TaystJK.git
 cd TaystJK
 ```
@@ -117,7 +117,7 @@ Prefer an x64 build when developing or testing rend2. Its memory use can exhaust
 
 Install Xcode Command Line Tools and CMake. The repository bundles the image libraries and SDL for the default Apple build:
 
-```bash
+```sh
 xcode-select --install
 brew install cmake
 cmake -S . -B build -G Xcode \
@@ -127,7 +127,7 @@ cmake --build build --config RelWithDebInfo --parallel
 
 On Apple silicon, CMake selects `arm64` from the host architecture and raises the deployment target to macOS 11 when necessary. For a development build, run the install target and then use the repository's helper to move and sign the installed files:
 
-```bash
+```sh
 cmake --build build --config RelWithDebInfo --target install
 ./scripts/macosx/moveandsign.sh
 ```
@@ -139,7 +139,7 @@ The helper currently expects the install staging directory under the default Ste
 
 On Debian or Ubuntu, install the normal development dependencies:
 
-```bash
+```sh
 sudo apt update
 sudo apt install build-essential cmake git libsdl2-dev libgl1-mesa-dev \
   libjpeg-dev libpng-dev zlib1g-dev
@@ -147,7 +147,7 @@ sudo apt install build-essential cmake git libsdl2-dev libgl1-mesa-dev \
 
 Configure, compile, and optionally install into a test staging directory:
 
-```bash
+```sh
 cmake -S . -B build \
   -DCMAKE_BUILD_TYPE=RelWithDebInfo \
   -DCMAKE_INSTALL_PREFIX="$HOME/.local/taystjk-test"
@@ -157,7 +157,7 @@ cmake --install build
 
 For a dedicated-server-only build, disable the client, client modules, and renderers:
 
-```bash
+```sh
 cmake -S . -B build-server -DCMAKE_BUILD_TYPE=Release \
   -DBuildMPEngine=OFF -DBuildMPCGame=OFF -DBuildMPUI=OFF \
   -DBuildMPRdVanilla=OFF -DBuildMPRend2=OFF -DBuildMPRdVulkan=OFF

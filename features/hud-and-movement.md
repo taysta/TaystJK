@@ -79,7 +79,7 @@ and CTY only
 **down** to the time limit instead of up; it only works with style `7`, and only when there is
 a time limit
 ([`cg_draw.c`](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/cgame/cg_draw.c#L5924)).
-A negative `cg_drawTimer` shows absolute client time rather than time since the map loaded.
+A negative `cg_drawTimer` shows absolute client time instead of the time since the map loaded.
 
 The quickest way to see it is the shipped preset. It sets `cg_drawTimer 7`, `cg_drawScores 3`
 and the countdown, along with the killfeed, the team overlay, the movement keys and the

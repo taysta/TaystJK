@@ -76,5 +76,5 @@ package is 32-bit only. Setting it up is covered on the
 ## Renderers
 
 Which renderer backends exist in your build is also a build-time choice, and a missing one
-falls back to the default with a message rather than failing. See
+falls back to the default with a message instead of failing. See
 [Renderers](/TaystJK/features/renderers/).

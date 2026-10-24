@@ -74,8 +74,8 @@ Four conditions must hold, and the command tells you which one you failed
 - You must be alive, not dead or spectating.
 - You must be **standing still**. Any velocity and it refuses.
 
-That last one catches people out. Try it while you are still drifting and the style does
-not change; the only sign is the refusal printed to your console.
+The last one is easy to miss: try it while you are still drifting and the style does not
+change; the only sign is the refusal printed to your console.
 
 Outside racemode there is no per-player choice: `g_movementStyle` picks the style for
 everyone, using the numbers in the table. Only some styles can be chosen this way: `siege`

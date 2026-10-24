@@ -125,7 +125,7 @@ starts from the moment you type it, as it would without pre-recording
 ([`sv_ccmds.cpp`](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/server/sv_ccmds.cpp#L1827)).
 
 Buffering runs per connected client, so the memory cost scales with your player count as
-well as with the time window. Raise `sv_demoPreRecordTime` deliberately.
+well as with the time window. Raise `sv_demoPreRecordTime` with that in mind.
 
 `sv_demoWriteMeta` controls whether the metadata set by `svdemometa` and by the game
 module is written into the demo. It is on by default and invisible to ordinary playback;

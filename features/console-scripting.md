@@ -176,7 +176,7 @@ say darth;delay 1000;say vader
 ```
 
 Two things about the syntax are not obvious, and both follow from these being intercepted
-in the command buffer rather than run as ordinary commands
+in the command buffer instead of running as ordinary commands
 ([`Cbuf_Execute`](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/qcommon/cmd.cpp#L290)):
 
 - **A `;` or a newline must follow the number.** `delay 1000 say vader` prints usage and
