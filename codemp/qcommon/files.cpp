@@ -3917,7 +3917,6 @@ void FS_Startup( const char *gameName ) {
 
 	const char *baseGame = fs_forcegame->string[0] ? fs_forcegame->string : "";
 	fs_basegame = Cvar_Get ("fs_basegame", baseGame, CVAR_INIT );
-	Cvar_Set("fs_basegame", baseGame);
 
 	fs_portable = Cvar_Get ("fs_portable", "1", CVAR_INIT|CVAR_PROTECTED, "Disable fs_homepath and use only one folder for all game files" );
 	homePath = Sys_DefaultHomePath();
@@ -4412,6 +4411,7 @@ void FS_InitFilesystem( void ) {
 	Com_StartupVariable( "fs_apppath" );
 #endif
 	Com_StartupVariable( "fs_forcegame" );
+	Com_StartupVariable( "fs_basegame" );
 
 	if(!FS_FilenameCompare(Cvar_VariableString("fs_game"), BASEGAME))
 		Cvar_Set("fs_game", "");
