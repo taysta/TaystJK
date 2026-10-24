@@ -31,7 +31,7 @@ after the intended client module has loaded.
 
 On connecting, the client reads the server's `gamename` and classifies it into one of six
 kinds
-([`cg_servercmds.c`](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/codemp/cgame/cg_servercmds.c#L248)):
+([`cg_servercmds.c`](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/cgame/cg_servercmds.c#L252)):
 
 | `gamename` starts with | Treated as |
 |:--|:--|
@@ -49,7 +49,7 @@ itself loses the classification and the features that depend on it.
 ## Why that ordering matters
 
 The six kinds are an **ordered** enum, not a set
-([`cg_local.h`](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/codemp/cgame/cg_local.h#L201)):
+([`cg_local.h`](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/cgame/cg_local.h#L205)):
 
 ```text
 basejka  <  base_enhanced  <  ojkalt  <  lugormod  <  ja+  <  japro
@@ -69,12 +69,12 @@ something the server also has an opinion about.
 
 | Feature | Needs |
 |:--|:--|
-| RGB sabers | JA+ or jaPRO, or the server advertising it ([`cg_players.c`](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/codemp/cgame/cg_players.c#L6061)) |
-| Black sabers | the same, and not disabled by plugin settings ([`cg_players.c`](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/codemp/cgame/cg_players.c#L6053)) |
-| Flipkick | the server advertising it ([`bg_pmove.c`](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/codemp/game/bg_pmove.c#L272)) |
+| RGB sabers | JA+ or jaPRO, or the server advertising it ([`cg_players.c`](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/cgame/cg_players.c#L6063)) |
+| Black sabers | the same, and not disabled by plugin settings ([`cg_players.c`](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/cgame/cg_players.c#L6055)) |
+| Flipkick | the server advertising it ([`bg_pmove.c`](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/game/bg_pmove.c#L272)) |
 | Grapple | JA+, or jaPRO with its grapple set, or the server advertising it ([`bg_pmove.c`](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/codemp/game/bg_pmove.c#L15402)) |
-| Roll fixes 1–3 | JA+ or jaPRO with the matching option, or the server advertising it ([`bg_pmove.c`](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/codemp/game/bg_pmove.c#L314)) |
-| The `plugin` command | JA+ or above; it returns silently otherwise ([`cg_consolecmds.c`](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/codemp/cgame/cg_consolecmds.c#L1292)) |
+| Roll fixes 1–3 | JA+ or jaPRO with the matching option, or the server advertising it ([`bg_pmove.c`](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/game/bg_pmove.c#L314)) |
+| The `plugin` command | JA+ or above; it returns silently otherwise ([`cg_consolecmds.c`](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/cgame/cg_consolecmds.c#L1292)) |
 | Force column on the team overlay | jaPRO, which is what supplies the data |
 
 Lugormod is a special case throughout: it is recognised on its own and several movement
@@ -99,7 +99,7 @@ around.
 A server does not have to be JA+ or jaPRO. Any game module can advertise the individual
 capabilities it supports by putting a bitmask in the `taystJKinfo` serverinfo key, which
 the client reads on connect
-([`cg_servercmds.c`](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/codemp/cgame/cg_servercmds.c#L246)).
+([`cg_servercmds.c`](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/cgame/cg_servercmds.c#L250)).
 
 The mask covers RGB and black sabers, flipkick, grapple, the three roll fixes, and
 server-supplied scoreboard deaths. The bits are listed on
@@ -107,9 +107,9 @@ server-supplied scoreboard deaths. The bits are listed on
 also depends on the client advertising support in its `taystJKcgflags` userinfo, so the
 server only sends the extended scoreboard to clients that can read it.
 It does not bypass the `plugin` command's JA+/jaPRO check
-([`cg_consolecmds.c`](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/codemp/cgame/cg_consolecmds.c#L1292)),
+([`cg_consolecmds.c`](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/cgame/cg_consolecmds.c#L1292)),
 or enable the team overlay's force column on other mods: that still requires jaPRO
-([`cg_draw.c`](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/codemp/cgame/cg_draw.c#L6082)).
+([`cg_draw.c`](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/cgame/cg_draw.c#L6082)).
 
 If you run a server on something other than JA+ or jaPRO and your players report that RGB
 sabers or flipkick do nothing, this key is the answer.

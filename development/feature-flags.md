@@ -37,7 +37,7 @@ the server sends the extended layout only to clients that advertise it.
 
 Put the bitmask in your serverinfo under the key `taystJKinfo`. The client reads it once
 per `gamestate`, alongside the rest of the server's configstring
-([`cg_servercmds.c`](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/codemp/cgame/cg_servercmds.c#L246)):
+([`cg_servercmds.c`](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/cgame/cg_servercmds.c#L250)):
 
 ```c
 Info_SetValueForKey( info, "taystJKinfo", va( "%i", flags ) );
@@ -55,7 +55,7 @@ show the declarations; your module should set only the ones it implements.
 ## The bits
 
 Defined in
-[`bg_public.h`](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/game/bg_public.h#L550):
+[`bg_public.h`](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/game/bg_public.h#L550):
 
 | Bit | Value | Constant | Means |
 |--:|--:|:--|:--|
@@ -70,7 +70,7 @@ Defined in
 
 The three roll bits are alternatives rather than a progression to be combined. The client
 tests them from 3 downwards and takes the first that matches
-([`bg_pmove.c`](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/codemp/game/bg_pmove.c#L314)).
+([`bg_pmove.c`](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/game/bg_pmove.c#L314)).
 
 ## Client capabilities: `taystJKcgflags`
 
@@ -114,7 +114,7 @@ namespace, so servers never mistake your client for one with the stock behaviour
 
 1. Set bit 7 in `taystJKinfo`. A client that sees it reads 15 integers per player instead of
    the stock 14
-   ([`cg_servercmds.c`](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/cgame/cg_servercmds.c#L63)).
+   ([`cg_servercmds.c`](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/cgame/cg_servercmds.c#L63)).
 2. In `DeathmatchScoreboardMessage`, append the deaths only when the client receiving the
    command advertises `TAYSTJK_CGFLAG_SCORE_DEATHS`. Every other client gets the stock
    14-field record.
@@ -135,7 +135,7 @@ With the deaths supplied, the client's
 [`cg_scoreDeaths`](/TaystJK/reference/cvars/cg_scoredeaths-67a5132/) treats your server as it
 treats JA+ and jaPRO: `1` and `2` show the server's count, and `3` still shows the client's own
 count
-([`cg_scoreboard.c`](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/cgame/cg_scoreboard.c#L189)).
+([`cg_scoreboard.c`](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/cgame/cg_scoreboard.c#L189)).
 
 ## How the client uses a flag
 
@@ -148,7 +148,7 @@ Flags can also change behaviour on recognised JA+ and jaPRO servers. For example
 grapple flag enables the client path even when jaPRO's own grapple option is off. In the
 roll selection above, `FIXROLL_3` is tested before the server's roll-2 or roll-1 option, so
 advertising it takes precedence over either lower mode
-([`bg_pmove.c`](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/codemp/game/bg_pmove.c#L314)).
+([`bg_pmove.c`](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/game/bg_pmove.c#L314)).
 Keep the advertised flags consistent with the server's actual movement rules and options.
 
 ## Verifying it

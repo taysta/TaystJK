@@ -43,7 +43,7 @@ TaystJK is GPLv2 software. If you distribute a changed binary, make the correspo
 | `UseAddressSanitizer` | `OFF` | Detect many memory errors at runtime. |
 | `UseUndefinedSanitizer` | `OFF` | Detect undefined behavior with GCC/Clang. |
 
-The authoritative list is in the top-level [CMake configuration](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/CMakeLists.txt#L38).
+The authoritative list is in the top-level [CMake configuration](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/CMakeLists.txt#L38).
 
 ## Compile for your platform
 
@@ -77,7 +77,7 @@ You can instead open the generated `TaystJK.sln`, select `RelWithDebInfo` and `x
 ### Generating the solution with the bundled script
 
 The repository ships a script that asks the questions and runs CMake for you
-([`build/build-windows-msvc.bat`](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/build/build-windows-msvc.bat#L1)). Run it from the
+([`build/build-windows-msvc.bat`](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/build/build-windows-msvc.bat#L1)). Run it from the
 `build` directory. It **generates the solution only**; it does not compile anything, so
 open the `.sln` afterwards and build from Visual Studio.
 
@@ -132,7 +132,7 @@ cmake --build build --config RelWithDebInfo --target install
 ./scripts/macosx/moveandsign.sh
 ```
 
-The helper currently expects the install staging directory under the default Steam location and moves the result to `~/Library/Application Support/TaystJK`. Review the path and architecture variables at the top of [the script](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/scripts/macosx/moveandsign.sh) before using it with a different setup. The [debugging guide](/TaystJK/development/debugging/#clion) covers pointing CLion at the executable in that installed layout.
+The helper currently expects the install staging directory under the default Steam location and moves the result to `~/Library/Application Support/TaystJK`. Review the path and architecture variables at the top of [the script](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/scripts/macosx/moveandsign.sh) before using it with a different setup. The [debugging guide](/TaystJK/development/debugging/#clion) covers pointing CLion at the executable in that installed layout.
   </section>
   <section class="platform-panel" id="platform-panel-linux" role="tabpanel" aria-labelledby="platform-tab-linux" tabindex="0" data-platform-panel="linux" markdown="1">
 ## Linux

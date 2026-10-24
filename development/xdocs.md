@@ -19,10 +19,10 @@ toc: true
 
 When the console prints a cvar, the engine asks the UI module for a description first, and
 falls back to the string in the cvar's own registration
-([`Cvar_DescriptionString`](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/codemp/qcommon/cvar.cpp#L182)):
+([`Cvar_DescriptionString`](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/qcommon/cvar.cpp#L182)):
 
 1. **xdocs**, compiled into the UI module from
-   [`ui_xdocs.h`](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/codemp/ui/ui_xdocs.h), which is richer and able to enumerate values
+   [`ui_xdocs.h`](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/ui/ui_xdocs.h), which is richer and able to enumerate values
 2. **The registration string**, the last argument to `Cvar_Get`: one line, no structure
 3. Nothing, if neither exists
 
@@ -69,7 +69,7 @@ full entry.
 The bitflag and keyvalue variants are worth reaching for rather than describing the format
 in prose: each prints a header explaining how to combine flags, or how key/value syntax
 works, before your own lines
-([`ui_xdocs.h`](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/codemp/ui/ui_xdocs.h#L31)). That is the part a reader cannot guess, and
+([`ui_xdocs.h`](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/ui/ui_xdocs.h#L31)). That is the part a reader cannot guess, and
 it is written once for everyone.
 
 Inside a long description, the helpers mirror what a reader sees:

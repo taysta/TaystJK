@@ -25,14 +25,14 @@ modversion     the game module
 ```
 
 `version` ends with the date the engine was compiled
-([`common.cpp`](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/codemp/qcommon/common.cpp#L1354)).
+([`common.cpp`](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/qcommon/common.cpp#L1354)).
 `modversion` prints the date and time the game module was compiled, followed by an
 identifier like `latest-6ff04c0ba`
-([`CG_ModVersion_f`](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/codemp/cgame/cg_consolecmds.c#L561)).
+([`CG_ModVersion_f`](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/cgame/cg_consolecmds.c#L561)).
 
 Both halves come from the build. `GIT_TAG` is whatever `git describe --tags --abbrev=0`
 found and `GIT_HASH` is `git rev-parse --short HEAD`
-([`CMakeLists.txt`](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/CMakeLists.txt#L411)).
+([`CMakeLists.txt`](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/CMakeLists.txt#L411)).
 Built outside a Git checkout, both read `vUNKNOWN`.
 
 ## Compare the date, not the tag
@@ -51,9 +51,9 @@ date is earlier, your build does not have that entry. See
 
 The date is strong evidence, not proof. It is the day the build was compiled, not the day
 its source was committed
-([`CMakeLists.txt`](https://github.com/taysta/TaystJK/blame/b35ed06fec41c53644352743c6b199a5d5d500f3/CMakeLists.txt#L391)).
+([`CMakeLists.txt`](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/CMakeLists.txt#L391)).
 The `latest` release is compiled on each push to `master`
-([`build.yml`](https://github.com/taysta/TaystJK/blame/b35ed06fec41c53644352743c6b199a5d5d500f3/.github/workflows/build.yml#L501)),
+([`build.yml`](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/.github/workflows/build.yml#L501)),
 so for it the two match. A build compiled later from an older commit, whether the workflow
 reran or you built an old checkout yourself, carries the later date. An earlier date still
 proves the entry is missing; a later one only suggests it is there. When that matters, the
@@ -83,32 +83,32 @@ Paste the whole line rather than summarising it. A useful report says:
 ## Every published build is portable
 
 Each artifact the build workflow uploads is built with `BuildPortableVersion=ON`
-([`build.yml`](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/.github/workflows/build.yml#L33)).
+([`build.yml`](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/.github/workflows/build.yml#L33)).
 
 A portable build has no home directory at all: `Sys_DefaultHomePath` returns nothing
-([`sys_win32.cpp`](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/shared/sys/sys_win32.cpp#L168),
-[`sys_unix.cpp`](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/shared/sys/sys_unix.cpp#L481)),
+([`sys_win32.cpp`](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/shared/sys/sys_win32.cpp#L168),
+[`sys_unix.cpp`](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/shared/sys/sys_unix.cpp#L481)),
 and `fs_homepath` then falls back to the install path
-([`files.cpp`](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/codemp/qcommon/files.cpp#L3923)).
+([`files.cpp`](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/qcommon/files.cpp#L3923)).
 Your configs, screenshots, downloaded PK3s and logs are written next to the executable
 rather than under your user profile. That is what lets you keep TaystJK entirely separate
 from another Jedi Academy installation, and it is why `fs_homepath` and `fs_basepath` read
 the same in `path`.
 
 Debug builds are compiled by CI as a check but never archived or uploaded. Only Release is
-published ([`build.yml`](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/.github/workflows/build.yml#L144)).
+published ([`build.yml`](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/.github/workflows/build.yml#L144)).
 
 ## The AddressSanitizer build
 
 One extra Windows artifact exists for diagnosing crashes: an x86-64 `RelWithDebInfo` build
 with AddressSanitizer enabled, shipped with its PDBs, the sanitizer runtime and a
 `Run-TaystJK-ASan.bat` launcher
-([`build.yml`](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/.github/workflows/build.yml#L116)).
+([`build.yml`](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/.github/workflows/build.yml#L116)).
 
 It is slower than a normal build and it has **no Discord Rich Presence**: the prebuilt
 `discord-rpc` library cannot link against an ASan-annotated binary, so the build forces the
 option off
-([`CMakeLists.txt`](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/CMakeLists.txt#L263)).
+([`CMakeLists.txt`](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/CMakeLists.txt#L263)).
 
 You want this one only when someone investigating a crash asks for a sanitizer log.
 Otherwise take the ordinary Release build.

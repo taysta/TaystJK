@@ -24,16 +24,16 @@ bitmasks, [`restricts`](/TaystJK/reference/cvars/restricts-3fcd8e8/), the
 through `vstr`. Another mod's game module does not implement most of them.
 
 The Docker image copies them into `basepath/taystjk/`
-([`Dockerfile`](https://github.com/taysta/TaystJK/blame/60fcb9cf68d38c3fede638fac4a8e42eb1123eaf/Dockerfile#L60)).
+([`Dockerfile`](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/Dockerfile#L60)).
 A dedicated server looks for configs only in `base` and in the directory `fs_game` selects,
 because dedicated builds leave `fs_forcegame` empty
-([`files.cpp`](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/qcommon/files.cpp#L3913)).
+([`files.cpp`](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/qcommon/files.cpp#L3913)).
 If you set `TJK_MOD` to another mod, none of these files load, and the server starts from
 that mod's own configuration instead; see
 [running another mod](/TaystJK/server-hosting/run-a-server/#run-the-taystjk-server-engine-with-another-mod).
 
 Native releases do not include them. To use them outside Docker, copy the `.cfg` files
-from [`scripts/docker/`](https://github.com/taysta/TaystJK/tree/60fcb9cf68d38c3fede638fac4a8e42eb1123eaf/scripts/docker)
+from [`scripts/docker/`](https://github.com/taysta/TaystJK/tree/f999cbc0912773164962d8be37737a31fe9ade8d/scripts/docker)
 in the source repository into your `taystjk/` directory, then launch with `+exec server.cfg`.
 Or build a set with the [server config generator](/TaystJK/server-hosting/config-generator/):
 its Bundled preset and jaPRO modes come from these files, with your server settings filled in.
@@ -53,21 +53,21 @@ The server only runs `server.cfg` itself, and that file loads the rest:
 | `tribesbase.cfg` | Settings shared by the Tribes modes. It is not meant to be run on its own. |
 
 `server.cfg` applies its own settings, then runs `exec bans`
-([line 49](https://github.com/taysta/TaystJK/blame/60fcb9cf68d38c3fede638fac4a8e42eb1123eaf/scripts/docker/server.cfg#L49)),
+([line 49](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/scripts/docker/server.cfg#L49)),
 `exec votes`
-([line 52](https://github.com/taysta/TaystJK/blame/60fcb9cf68d38c3fede638fac4a8e42eb1123eaf/scripts/docker/server.cfg#L52))
+([line 52](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/scripts/docker/server.cfg#L52))
 and `exec default`
-([line 110](https://github.com/taysta/TaystJK/blame/60fcb9cf68d38c3fede638fac4a8e42eb1123eaf/scripts/docker/server.cfg#L110)),
+([line 110](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/scripts/docker/server.cfg#L110)),
 and finally loads the map
-([line 122](https://github.com/taysta/TaystJK/blame/60fcb9cf68d38c3fede638fac4a8e42eb1123eaf/scripts/docker/server.cfg#L122)).
+([line 122](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/scripts/docker/server.cfg#L122)).
 
 There is no map rotation. Each map load sets `nextmap` to restart the same map
-([`sv_init.cpp`](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/server/sv_init.cpp#L569)),
+([`sv_init.cpp`](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/server/sv_init.cpp#L569)),
 so when a match ends the current map restarts, and players change maps with
 `callvote map`. If you want the server to move on by itself, set `g_autoMapCycle 1` in
 `server.cfg`; the game then picks the next map for the current gametype from the arena
 files
-([`g_bot.c`](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/game/g_bot.c#L232)).
+([`g_bot.c`](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/game/g_bot.c#L232)).
 
 ## Server settings and gameplay are kept apart
 
@@ -81,7 +81,7 @@ time, frag and capture limits. Put a limit you want in the mode's file, or let p
 for one.
 
 The baseline also sets [`restricts`](/TaystJK/reference/cvars/restricts-3fcd8e8/) to 1550
-([`default.cfg`](https://github.com/taysta/TaystJK/blame/60fcb9cf68d38c3fede638fac4a8e42eb1123eaf/scripts/docker/default.cfg#L179)).
+([`default.cfg`](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/scripts/docker/default.cfg#L179)).
 On TaystJK and jaPRO clients that hides the lead indicator, disables `/do`, and holds the
 third-person camera angle at 0 while racing. Two of its bits are defined but never read, so
 they do nothing.
@@ -107,9 +107,9 @@ explains what the two admin logins grant and the other ways to give out admin ri
 
 Keep `rconpassword` in `server.cfg`, on a line that starts with `set` or `seta`. When Docker
 stops the container, the run script sends `rcon quit` so the server shuts down cleanly
-([`run.sh`](https://github.com/taysta/TaystJK/blame/60fcb9cf68d38c3fede638fac4a8e42eb1123eaf/scripts/docker/run.sh#L24)),
+([`run.sh`](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/scripts/docker/run.sh#L24)),
 and it finds the password only by reading that line of `server.cfg`
-([`functions.sh`](https://github.com/taysta/TaystJK/blame/60fcb9cf68d38c3fede638fac4a8e42eb1123eaf/scripts/docker/functions.sh#L62)).
+([`functions.sh`](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/scripts/docker/functions.sh#L62)).
 Without it, the script has nothing to send, and Docker kills the server when its stop
 timeout runs out.
 
@@ -118,48 +118,48 @@ timeout runs out.
 Load a mode from the server console or with `rcon exec <mode>`, or let players vote for it
 with `callvote vstr <mode>`. Every mode first runs `default.cfg`, then applies its own
 settings, then reloads the map with `map_restart 0`
-([for example](https://github.com/taysta/TaystJK/blame/60fcb9cf68d38c3fede638fac4a8e42eb1123eaf/scripts/docker/saberonly.cfg#L56)).
+([for example](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/scripts/docker/saberonly.cfg#L56)).
 The reload is what makes the change complete: weapons and items on the map, and settings
 the engine only applies on a map load, change then and not before. It also resets the
 scores.
 
 A mode that does not choose a gametype plays FFA, because `default.cfg` switches back to
 FFA with `gametype 0`
-([`default.cfg`](https://github.com/taysta/TaystJK/blame/60fcb9cf68d38c3fede638fac4a8e42eb1123eaf/scripts/docker/default.cfg#L177)).
+([`default.cfg`](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/scripts/docker/default.cfg#L177)).
 In the table, "force limited to jumping and saber skills" means
 [`g_forcePowerDisable`](/TaystJK/reference/cvars/g_forcepowerdisable-370e0a6/) leaves only
 levitation and saber offense and defense.
 
 | Mode | Plays as |
 |:--|:--|
-| [`airshot`](https://github.com/taysta/TaystJK/blame/60fcb9cf68d38c3fede638fac4a8e42eb1123eaf/scripts/docker/airshot.cfg#L1) | FFA with only the rocket launcher and no splash damage, so only direct hits count. Force limited to jumping and saber skills. |
-| [`fftffa`](https://github.com/taysta/TaystJK/blame/60fcb9cf68d38c3fede638fac4a8e42eb1123eaf/scripts/docker/fftffa.cfg#L1) | Team FFA with sabers only and no pickups. Friendly fire stays at the baseline's half damage, and team heal and team energize are disabled. |
-| [`gungame`](https://github.com/taysta/TaystJK/blame/60fcb9cf68d38c3fede638fac4a8e42eb1123eaf/scripts/docker/gungame.cfg#L1) | FFA gun game ([`g_gunGame`](/TaystJK/reference/cvars/g_gungame-0b95542/) 2) with no pickups, no self damage and no falling damage. Force limited to jumping and saber skills. |
-| [`instagib`](https://github.com/taysta/TaystJK/blame/60fcb9cf68d38c3fede638fac4a8e42eb1123eaf/scripts/docker/instagib.cfg#L1) | FFA with only the disruptor, at ten times weapon damage, and a faster run speed. Force limited to jumping and saber skills. |
-| [`instagibrabbit`](https://github.com/taysta/TaystJK/blame/60fcb9cf68d38c3fede638fac4a8e42eb1123eaf/scripts/docker/instagibrabbit.cfg#L1) | Sniper rabbit: the flag carrier gets a disruptor, everyone else fights with sabers at ten times saber damage. No health or armor pickups; frag limit 50. |
-| [`jk2`](https://github.com/taysta/TaystJK/blame/60fcb9cf68d38c3fede638fac4a8e42eb1123eaf/scripts/docker/jk2.cfg#L1) | FFA with JK2 1.02-style saber combat and force, single saber only. Weapons stay on the map. |
-| [`jk2104`](https://github.com/taysta/TaystJK/blame/60fcb9cf68d38c3fede638fac4a8e42eb1123eaf/scripts/docker/jk2104.cfg#L1) | FFA with the JK2 saber damage system and rescaled stances: yellow at half damage, red at 0.7. |
-| [`lugorff`](https://github.com/taysta/TaystJK/blame/60fcb9cf68d38c3fede638fac4a8e42eb1123eaf/scripts/docker/lugorff.cfg#L1) | FFA with single-player-style saber damage and jaPRO's saber and force tweaks turned off. |
-| [`merc`](https://github.com/taysta/TaystJK/blame/60fcb9cf68d38c3fede638fac4a8e42eb1123eaf/scripts/docker/merc.cfg#L1) | FFA with every weapon except the concussion rifle, no health or armor pickups, double saber damage and force at rank 1, limited to jumping, protect and saber skills. It sets a capture limit of 7 for playing it as CTF. |
-| [`midair`](https://github.com/taysta/TaystJK/blame/60fcb9cf68d38c3fede638fac4a8e42eb1123eaf/scripts/docker/midair.cfg#L1) | `tribesctf`, with projectiles also carrying the shooter's sideways movement ([`g_fullInheritance`](/TaystJK/reference/cvars/g_fullinheritance-fb4c838/)). |
-| [`predator`](https://github.com/taysta/TaystJK/blame/60fcb9cf68d38c3fede638fac4a8e42eb1123eaf/scripts/docker/predator.cfg#L1) | Team FFA with sabers only, no pickups and single-player-style saber damage. Force limited to jumping and saber skills. |
-| [`predator2`](https://github.com/taysta/TaystJK/blame/60fcb9cf68d38c3fede638fac4a8e42eb1123eaf/scripts/docker/predator2.cfg#L1) | `predator` with multiplayer saber damage doubled, backslashes at a hundred times damage, the JK2 lunge and no friendly fire. |
-| [`prize`](https://github.com/taysta/TaystJK/blame/60fcb9cf68d38c3fede638fac4a8e42eb1123eaf/scripts/docker/prize.cfg#L1) | FFA with sabers only: saber damage cut to a tenth, but backslashes at two hundred times damage. Race mode is off. |
-| [`saberctf`](https://github.com/taysta/TaystJK/blame/60fcb9cf68d38c3fede638fac4a8e42eb1123eaf/scripts/docker/saberctf.cfg#L1) | CTF with sabers, thermal detonators and trip mines, JK2-style saber combat and no pickups. Force limited to saber skills; capture limit 5. |
-| [`saberonly`](https://github.com/taysta/TaystJK/blame/60fcb9cf68d38c3fede638fac4a8e42eb1123eaf/scripts/docker/saberonly.cfg#L1) | Team FFA with sabers only, no pickups and single-player-style saber damage. Force limited to jumping and saber skills. |
-| [`saberrabbit`](https://github.com/taysta/TaystJK/blame/60fcb9cf68d38c3fede638fac4a8e42eb1123eaf/scripts/docker/saberrabbit.cfg#L1) | Rabbit where holding the flag scores points, with sabers at double damage, backslashes at a hundred times, the JK2 lunge and red DFA. Force limited to saber skills; 30-minute time limit and frag limit 200. |
-| [`theone`](https://github.com/taysta/TaystJK/blame/60fcb9cf68d38c3fede638fac4a8e42eb1123eaf/scripts/docker/theone.cfg#L1) | Rabbit with Q3 movement at a slow run speed and only the bowcaster, whose shots travel at a fifth of their normal speed. Frag limit 50. |
-| [`tribes`](https://github.com/taysta/TaystJK/blame/60fcb9cf68d38c3fede638fac4a8e42eb1123eaf/scripts/docker/tribes.cfg#L1) | [Tribes](/TaystJK/features/tribes/) movement, classes and weapons in FFA. |
-| [`tribesctf`](https://github.com/taysta/TaystJK/blame/60fcb9cf68d38c3fede638fac4a8e42eb1123eaf/scripts/docker/tribesctf.cfg#L1) | Tribes in CTF. |
-| [`tribes1flag`](https://github.com/taysta/TaystJK/blame/60fcb9cf68d38c3fede638fac4a8e42eb1123eaf/scripts/docker/tribes1flag.cfg#L1) | Tribes in one-flag CTF: carry the neutral flag into the other team's capture zone ([`g_neutralFlag`](/TaystJK/reference/cvars/g_neutralflag-55bb88d/) 5). |
-| [`wswrabbit`](https://github.com/taysta/TaystJK/blame/60fcb9cf68d38c3fede638fac4a8e42eb1123eaf/scripts/docker/wswrabbit.cfg#L1) | Rabbit with Warsow movement and sabers only, at double saber damage and four times backslash damage. Frag limit 50. |
+| [`airshot`](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/scripts/docker/airshot.cfg#L1) | FFA with only the rocket launcher and no splash damage, so only direct hits count. Force limited to jumping and saber skills. |
+| [`fftffa`](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/scripts/docker/fftffa.cfg#L1) | Team FFA with sabers only and no pickups. Friendly fire stays at the baseline's half damage, and team heal and team energize are disabled. |
+| [`gungame`](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/scripts/docker/gungame.cfg#L1) | FFA gun game ([`g_gunGame`](/TaystJK/reference/cvars/g_gungame-0b95542/) 2) with no pickups, no self damage and no falling damage. Force limited to jumping and saber skills. |
+| [`instagib`](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/scripts/docker/instagib.cfg#L1) | FFA with only the disruptor, at ten times weapon damage, and a faster run speed. Force limited to jumping and saber skills. |
+| [`instagibrabbit`](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/scripts/docker/instagibrabbit.cfg#L1) | Sniper rabbit: the flag carrier gets a disruptor, everyone else fights with sabers at ten times saber damage. No health or armor pickups; frag limit 50. |
+| [`jk2`](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/scripts/docker/jk2.cfg#L1) | FFA with JK2 1.02-style saber combat and force, single saber only. Weapons stay on the map. |
+| [`jk2104`](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/scripts/docker/jk2104.cfg#L1) | FFA with the JK2 saber damage system and rescaled stances: yellow at half damage, red at 0.7. |
+| [`lugorff`](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/scripts/docker/lugorff.cfg#L1) | FFA with single-player-style saber damage and jaPRO's saber and force tweaks turned off. |
+| [`merc`](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/scripts/docker/merc.cfg#L1) | FFA with every weapon except the concussion rifle, no health or armor pickups, double saber damage and force at rank 1, limited to jumping, protect and saber skills. It sets a capture limit of 7 for playing it as CTF. |
+| [`midair`](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/scripts/docker/midair.cfg#L1) | `tribesctf`, with projectiles also carrying the shooter's sideways movement ([`g_fullInheritance`](/TaystJK/reference/cvars/g_fullinheritance-fb4c838/)). |
+| [`predator`](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/scripts/docker/predator.cfg#L1) | Team FFA with sabers only, no pickups and single-player-style saber damage. Force limited to jumping and saber skills. |
+| [`predator2`](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/scripts/docker/predator2.cfg#L1) | `predator` with multiplayer saber damage doubled, backslashes at a hundred times damage, the JK2 lunge and no friendly fire. |
+| [`prize`](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/scripts/docker/prize.cfg#L1) | FFA with sabers only: saber damage cut to a tenth, but backslashes at two hundred times damage. Race mode is off. |
+| [`saberctf`](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/scripts/docker/saberctf.cfg#L1) | CTF with sabers, thermal detonators and trip mines, JK2-style saber combat and no pickups. Force limited to saber skills; capture limit 5. |
+| [`saberonly`](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/scripts/docker/saberonly.cfg#L1) | Team FFA with sabers only, no pickups and single-player-style saber damage. Force limited to jumping and saber skills. |
+| [`saberrabbit`](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/scripts/docker/saberrabbit.cfg#L1) | Rabbit where holding the flag scores points, with sabers at double damage, backslashes at a hundred times, the JK2 lunge and red DFA. Force limited to saber skills; 30-minute time limit and frag limit 200. |
+| [`theone`](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/scripts/docker/theone.cfg#L1) | Rabbit with Q3 movement at a slow run speed and only the bowcaster, whose shots travel at a fifth of their normal speed. Frag limit 50. |
+| [`tribes`](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/scripts/docker/tribes.cfg#L1) | [Tribes](/TaystJK/features/tribes/) movement, classes and weapons in FFA. |
+| [`tribesctf`](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/scripts/docker/tribesctf.cfg#L1) | Tribes in CTF. |
+| [`tribes1flag`](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/scripts/docker/tribes1flag.cfg#L1) | Tribes in one-flag CTF: carry the neutral flag into the other team's capture zone ([`g_neutralFlag`](/TaystJK/reference/cvars/g_neutralflag-55bb88d/) 5). |
+| [`wswrabbit`](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/scripts/docker/wswrabbit.cfg#L1) | Rabbit with Warsow movement and sabers only, at double saber damage and four times backslash damage. Frag limit 50. |
 
 The rabbit modes need a map with a neutral flag, and the one-flag modes also need capture
 zones; the stock maps have neither. The [`g_neutralFlag`](/TaystJK/reference/cvars/g_neutralflag-55bb88d/)
 entry describes each variant and what a map must provide.
 
 The three Tribes modes share their settings through `tribesbase.cfg`
-([`tribes.cfg`](https://github.com/taysta/TaystJK/blame/60fcb9cf68d38c3fede638fac4a8e42eb1123eaf/scripts/docker/tribes.cfg#L1)),
+([`tribes.cfg`](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/scripts/docker/tribes.cfg#L1)),
 so each reloads the map only once. Players need the client-side setup as well; see
 [Tribes](/TaystJK/features/tribes/#setting-it-up).
 
@@ -175,7 +175,7 @@ is running:
 | `noboons` | Turns off the force boon and both enlightenments only. |
 
 They set `disable_<item>` cvars, which the game reads only when it spawns items
-([`g_items.c`](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/game/g_items.c#L3392)),
+([`g_items.c`](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/game/g_items.c#L3392)),
 so follow one with `map_restart`, or the `restart` vote. The baseline in `default.cfg`
 already leaves seekers, portable shields, light-side enlightenment and detpack pickups off.
 
@@ -183,9 +183,9 @@ already leaves seekers, portable shields, light-side enlightenment and detpack p
 
 `votes.cfg` defines what players can vote for. Each option is a cvar holding console
 commands, and `callvote vstr <option>` runs them if the vote passes
-([`votes.cfg`](https://github.com/taysta/TaystJK/blame/60fcb9cf68d38c3fede638fac4a8e42eb1123eaf/scripts/docker/votes.cfg#L1)).
+([`votes.cfg`](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/scripts/docker/votes.cfg#L1)).
 The baseline allows three kinds of vote: `map`, `vstr` and `poll`
-([`default.cfg`](https://github.com/taysta/TaystJK/blame/60fcb9cf68d38c3fede638fac4a8e42eb1123eaf/scripts/docker/default.cfg#L12)).
+([`default.cfg`](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/scripts/docker/default.cfg#L12)).
 `fftffa`, `merc`, `saberctf` and `saberonly` allow a few more, such as forcing a player to
 spectate.
 
@@ -206,7 +206,7 @@ spectate.
 [`startingItems`](/TaystJK/reference/commands/startingitems-2ed82fa/) command and keep the
 rest of the mode's items, so a second vote flips it back. The gametype options switch
 without reloading the map
-([`g_svcmds.c`](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/game/g_svcmds.c#L634)),
+([`g_svcmds.c`](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/game/g_svcmds.c#L634)),
 while options that change weapons or pickups on the map take effect after a `restart` vote.
 
 To add an option, put a `set` line in `votes.cfg`, for example `set mymode "exec mymode"`.
@@ -230,7 +230,7 @@ To keep the list in the file instead, uncomment the `g_banIPs` line. It then rep
 saved list at every start, so copy any `addip` bans into it first. Separate the addresses
 with spaces and end the list with a space: the game ignores a last address with nothing
 after it
-([`g_svcmds.c`](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/game/g_svcmds.c#L221)).
+([`g_svcmds.c`](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/game/g_svcmds.c#L221)).
 
 ```cfg
 seta g_banIPs "1.2.3 203.0.113.7 "

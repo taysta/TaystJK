@@ -28,12 +28,12 @@ seta sv_httpServerPort 18200
 ```
 
 A TaystJK client uses HTTP whenever the server advertises it
-([`cl_main.cpp`](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/client/cl_main.cpp#L1548)), and if an HTTP download fails it
+([`cl_main.cpp`](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/client/cl_main.cpp#L1548)), and if an HTTP download fails it
 disconnects with a download error rather than retrying over UDP
-([`cl_parse.cpp`](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/client/cl_parse.cpp#L749)). The UDP downloader serves clients
+([`cl_parse.cpp`](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/client/cl_parse.cpp#L749)). The UDP downloader serves clients
 without HTTP support, such as OpenJK, EternalJK and the original game, and only while
 `sv_allowDownload` is on
-([`sv_client.cpp`](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/server/sv_client.cpp#L766)).
+([`sv_client.cpp`](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/server/sv_client.cpp#L766)).
 
 ### Built-in HTTP server
 
@@ -86,21 +86,21 @@ The behavior is inherited from JK2MV; its wiki has useful background on [downloa
 ## What `sv_pure` checks
 
 TaystJK's bundled `server.cfg` leaves `sv_pure` at `0`
-([`server.cfg`](https://github.com/taysta/TaystJK/blame/60fcb9cf68d38c3fede638fac4a8e42eb1123eaf/scripts/docker/server.cfg#L30)),
+([`server.cfg`](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/scripts/docker/server.cfg#L30)),
 and the [server config generator](/TaystJK/server-hosting/config-generator/) does not turn it
 on. This section is for servers that already run it.
 
 `sv_pure 1` checks the client's PK3 checksums against the server's expected files. The
 module checks specifically look for `cgamex86.dll` and `uix86.dll` inside PK3s
-([`sv_client.cpp`](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/codemp/server/sv_client.cpp#L957)).
+([`sv_client.cpp`](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/server/sv_client.cpp#L957)).
 
 TaystJK loads native modules as loose libraries. Its build installs them that way
-([cgame install rules](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/codemp/cgame/CMakeLists.txt#L162),
-[UI install rules](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/codemp/ui/CMakeLists.txt#L105)). Before loading a module,
+([cgame install rules](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/cgame/CMakeLists.txt#L162),
+[UI install rules](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/ui/CMakeLists.txt#L105)). Before loading a module,
 `FS_FindPureDLL` reads the corresponding legacy `x86.dll` so other platforms and
 architectures can account for the expected pure-server PK3 checksums
-([`files.cpp`](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/codemp/qcommon/files.cpp#L1862),
-[`vm.cpp`](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/codemp/qcommon/vm.cpp#L169)).
+([`files.cpp`](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/qcommon/files.cpp#L1862),
+[`vm.cpp`](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/qcommon/vm.cpp#L169)).
 
 Loose native libraries do not fail these checks by themselves. If clients fail pure
 validation, check that the server and clients have the expected PK3s, including
@@ -111,18 +111,18 @@ PK3 does not satisfy a check for an `x86.dll` entry.
 
 TaystJK clients skip the pure restriction unless the player turns it off. The client-side
 cvar [`cl_pureBaseBypass`](/TaystJK/reference/cvars/cl_purebasebypass-b099e31/) defaults to
-`1` ([`cl_main.cpp`](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/codemp/client/cl_main.cpp#L3460)), and the client applies it on
+`1` ([`cl_main.cpp`](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/client/cl_main.cpp#L3460)), and the client applies it on
 every connection, whatever `gamename` your server reports
-([`cl_parse.cpp`](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/codemp/client/cl_parse.cpp#L456)). Its own description speaks of "pure
+([`cl_parse.cpp`](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/client/cl_parse.cpp#L456)). Its own description speaks of "pure
 base servers", which is the case it was written for, but the code does not check what the
 server runs.
 
 Two things happen at once. The client marks the base assets pak as referenced so the
 checksums it reports back look like a stock client's
-([`files.cpp`](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/codemp/qcommon/files.cpp#L4169)), and it skips loading your pak list
+([`files.cpp`](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/qcommon/files.cpp#L4169)), and it skips loading your pak list
 altogether. This leaves it with no list to restrict against, so every pak it has is
 treated as allowed
-([`FS_PakIsPure`](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/codemp/qcommon/files.cpp#L393)).
+([`FS_PakIsPure`](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/qcommon/files.cpp#L393)).
 
 The effect is that the client authenticates as pure while still loading its own assets:
 emoji, cosmetics, HUD files and any other PK3 the player has installed. This is deliberate:
@@ -131,4 +131,4 @@ it lets TaystJK's client-side additions work on pure servers, but it means
 `cl_pureBaseBypass 0` gets the normal restriction again from their next connection. A server
 cannot set it for them: it is an ordinary archived cvar, and the client discards server
 values for those
-([`Cvar_Server_Set`](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/codemp/qcommon/cvar.cpp#L807)).
+([`Cvar_Server_Set`](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/qcommon/cvar.cpp#L807)).

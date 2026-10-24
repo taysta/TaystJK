@@ -19,7 +19,7 @@ description: "Build a server.cfg, a gameplay baseline, game modes and vote optio
 <div class="cfg-nojs" markdown="1">
 The generator needs JavaScript. Without it, start from the Docker image's own configs:
 [bundled server configs](/TaystJK/server-hosting/bundled-configs/) describes each file, and
-[`scripts/docker/`](https://github.com/taysta/TaystJK/tree/60fcb9cf68d38c3fede638fac4a8e42eb1123eaf/scripts/docker)
+[`scripts/docker/`](https://github.com/taysta/TaystJK/tree/f999cbc0912773164962d8be37737a31fe9ade8d/scripts/docker)
 in the source repository holds them.
 </div>
 
@@ -45,12 +45,12 @@ A few rules hold for every combination:
   never leak into the next.
 - Every cvar is written with `set` or `seta`. A bare `name value` line only changes a cvar
   that already exists
-  ([`cvar.cpp`](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/codemp/qcommon/cvar.cpp#L964)),
+  ([`cvar.cpp`](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/qcommon/cvar.cpp#L964)),
   and the game module's cvars do not exist until it loads with the first map. The join
   password, `g_password`, uses `set` and has `CVAR_NONE`
-  ([`g_xcvar.h`](https://github.com/taysta/TaystJK/blame/b35ed06fec41c53644352743c6b199a5d5d500f3/codemp/game/g_xcvar.h#L125)).
+  ([`g_xcvar.h`](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/game/g_xcvar.h#L125)).
   jaPRO's `g_fullAdminPass` and `g_juniorAdminPass` use `seta` and are archived
-  ([`g_xcvar.h`](https://github.com/taysta/TaystJK/blame/b35ed06fec41c53644352743c6b199a5d5d500f3/codemp/game/g_xcvar.h#L264-L265)),
+  ([`g_xcvar.h`](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/game/g_xcvar.h#L264-L265)),
   so their values may also appear in the server's saved `taystjk_server.cfg`
   ([config writeback](/TaystJK/troubleshooting/#the-dedicated-server-keeps-rewriting-my-config)).
   The generator writes `rconpassword` with `set`; under Docker, keep it on the line that

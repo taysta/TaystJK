@@ -120,10 +120,10 @@ This is the simplest layout when TaystJK is your only modded client.
 3. Launch the app. Release builds are portable, so configs, screenshots and downloads are
    written beside the app, in the directory that holds it, rather than under
    `~/Library/Application Support`
-   ([`sys_main.cpp`](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/shared/sys/sys_main.cpp#L700));
+   ([`sys_main.cpp`](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/shared/sys/sys_main.cpp#L700));
    see [builds and versioning](/TaystJK/install/builds-and-versioning/#every-published-build-is-portable).
 
-The [release workflow](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/.github/workflows/build.yml#L433) ad-hoc signs the universal app before packaging, so a normal installation does not need another `codesign` command. If macOS quarantines the downloaded app and refuses to open it, clear that attribute from the extracted bundle:
+The [release workflow](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/.github/workflows/build.yml#L433) ad-hoc signs the universal app before packaging, so a normal installation does not need another `codesign` command. If macOS quarantines the downloaded app and refuses to open it, clear that attribute from the extracted bundle:
 
 ```bash
 xattr -dr com.apple.quarantine "/path/to/taystjk.app"
@@ -161,7 +161,7 @@ sudo dnf install SDL2 libglvnd-glx libjpeg-turbo libpng zlib libstdc++
 sudo pacman -S sdl2 libglvnd libjpeg-turbo libpng zlib
 ```
 
-The 32-bit TaystJK build needs 32-bit versions of the same libraries. Prefer the x86_64 release unless you specifically need 32-bit compatibility. TaystJK's [Linux release job](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/.github/workflows/build.yml#L158) records the libraries against which the official archive is built.
+The 32-bit TaystJK build needs 32-bit versions of the same libraries. Prefer the x86_64 release unless you specifically need 32-bit compatibility. TaystJK's [Linux release job](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/.github/workflows/build.yml#L158) records the libraries against which the official archive is built.
 
 If the loader still reports a missing library, run:
 
@@ -250,9 +250,9 @@ Many older mods put `cgame`, `ui`, or `jampgame` native libraries inside a PK3. 
 still mounts the PK3 and reads its assets, but it does not unpack and execute those
 libraries by default: [`com_unpackLibraries`](/TaystJK/reference/cvars/com_unpacklibraries-27a5b09/)
 defaults to `0`, and both module loaders only try PK3 unpacking when it is enabled
-([registration](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/shared/sys/sys_main.cpp#L179),
-[legacy loader](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/shared/sys/sys_main.cpp#L493),
-[OpenJK-style loader](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/shared/sys/sys_main.cpp#L575)).
+([registration](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/shared/sys/sys_main.cpp#L179),
+[legacy loader](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/shared/sys/sys_main.cpp#L493),
+[OpenJK-style loader](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/shared/sys/sys_main.cpp#L575)).
 This can make an old mod's assets appear while its custom HUD, menus, or game code does
 not load.
 
@@ -286,8 +286,8 @@ taystjk.x86.exe +set fs_game japlus +set fs_forcegame japlus +set com_unpackLibr
 than changing it after launch. This fallback is implemented on Windows. It does not
 extract ordinary `.so` or `.dylib` modules on Linux or macOS, so install those as loose
 native libraries
-([Windows unpacker](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/shared/sys/sys_win32.cpp#L603),
-[Unix behavior](https://github.com/taysta/TaystJK/blame/f4643281440c626cb7e30444c8c392606167a7f8/shared/sys/sys_unix.cpp#L566)).
+([Windows unpacker](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/shared/sys/sys_win32.cpp#L603),
+[Unix behavior](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/shared/sys/sys_unix.cpp#L566)).
 
 ### What `fs_forcegame` does
 
@@ -313,9 +313,9 @@ Setting both values loads the mod from the beginning, including a custom UI, and
 
 ### When to use `vm_legacy`
 
-You should not need it. For each native module, TaystJK looks for the newer OpenJK-style `GetModuleAPI` entry point and, when the library does not export one, loads it through the older `dllEntry`/`vmMain` interface instead ([`sys_main.cpp`](https://github.com/taysta/TaystJK/blame/60fcb9cf68d38c3fede638fac4a8e42eb1123eaf/shared/sys/sys_main.cpp#L628), [`cl_uiapi.cpp`](https://github.com/taysta/TaystJK/blame/60fcb9cf68d38c3fede638fac4a8e42eb1123eaf/codemp/client/cl_uiapi.cpp#L1485)). Older mods such as JA+ load this way with no setting. UI libraries built for other OpenJK-based clients load through `GetModuleAPI`: the engine only asks a UI library for cvar help when the library says it provides it, and otherwise uses its own descriptions ([`cl_uiapi.cpp`](https://github.com/taysta/TaystJK/blame/60fcb9cf68d38c3fede638fac4a8e42eb1123eaf/codemp/client/cl_uiapi.cpp#L1478)).
+You should not need it. For each native module, TaystJK looks for the newer OpenJK-style `GetModuleAPI` entry point and, when the library does not export one, loads it through the older `dllEntry`/`vmMain` interface instead ([`sys_main.cpp`](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/shared/sys/sys_main.cpp#L628), [`cl_uiapi.cpp`](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/client/cl_uiapi.cpp#L1485)). Older mods such as JA+ load this way with no setting. UI libraries built for other OpenJK-based clients load through `GetModuleAPI`: the engine only asks a UI library for cvar help when the library says it provides it, and otherwise uses its own descriptions ([`cl_uiapi.cpp`](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/client/cl_uiapi.cpp#L1478)).
 
-`vm_legacy` forces the older interface for selected module slots, on a library that exports both. That matters in one case: the library's `GetModuleAPI` rejects the engine's API version, and the client stops with `GetGameAPI failed on` followed by the library name ([`cl_uiapi.cpp`](https://github.com/taysta/TaystJK/blame/60fcb9cf68d38c3fede638fac4a8e42eb1123eaf/codemp/client/cl_uiapi.cpp#L1475)). It still loads a native library; it does not enable QVM support.
+`vm_legacy` forces the older interface for selected module slots, on a library that exports both. That matters in one case: the library's `GetModuleAPI` rejects the engine's API version, and the client stops with `GetGameAPI failed on` followed by the library name ([`cl_uiapi.cpp`](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/client/cl_uiapi.cpp#L1475)). It still loads a native library; it does not enable QVM support.
 
 `vm_legacy` is a bitmask:
 
@@ -332,13 +332,13 @@ If the console then reports `VM_CreateLegacy: ... succeeded`, the older interfac
 ## Steam playtime and overlay
 
 Optional, and **Windows only**. `Sys_SteamInit` is an empty stub everywhere else
-([`sys_unix.cpp`](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/shared/sys/sys_unix.cpp#L655)).
+([`sys_unix.cpp`](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/shared/sys/sys_unix.cpp#L655)).
 
 With it working, Steam counts your TaystJK time against Jedi Academy and the overlay works,
 without having to launch the client through Steam.
 
 `com_steamIntegration` is already **on by default**
-([`common.cpp`](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/codemp/qcommon/common.cpp#L1452)), so there is nothing to enable. It
+([`common.cpp`](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/qcommon/common.cpp#L1452)), so there is nothing to enable. It
 does nothing until you supply two files, neither of which ships with TaystJK or with retail
 Jedi Academy. Put both in `GameData`, beside the executable:
 
@@ -368,7 +368,7 @@ client looking at all.
 Why you have to supply these: the Steamworks SDK's terms do not fit TaystJK's GPLv2
 licence, so the library cannot be bundled. The client loads it at runtime if it finds it,
 which keeps the licences apart
-([`sys_win32.cpp`](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/shared/sys/sys_win32.cpp#L714)).
+([`sys_win32.cpp`](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/shared/sys/sys_win32.cpp#L714)).
 
 ## First-launch checks
 

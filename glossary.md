@@ -26,11 +26,11 @@ Every cvar the client registers has an entry in the [console reference](/TaystJK
 
 **Archived:** a cvar flagged `CVAR_ARCHIVE` is written to the generated config when the
 game exits, `taystjk.cfg` for the client and `taystjk_server.cfg` for a dedicated server
-([`qcommon.h`](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/codemp/qcommon/qcommon.h#L648)), and so keeps its value next time.
+([`qcommon.h`](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/qcommon/qcommon.h#L648)), and so keeps its value next time.
 
 **Latched:** a cvar flagged `CVAR_LATCH` holds a new value aside and only applies it when
 the part of the game that reads it restarts
-([`cvar.cpp`](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/codemp/qcommon/cvar.cpp#L402)): `vid_restart` for a renderer setting, the
+([`cvar.cpp`](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/qcommon/cvar.cpp#L402)): `vid_restart` for a renderer setting, the
 next map for a game setting, or a full restart. Typing the cvar's name shows the pending
 value as `latched`.
 
@@ -41,7 +41,7 @@ one option at a time instead; see
 
 **Rcon:** remote console. A server with `rconPassword` set accepts console commands from a
 client that sets the same `rconPassword` locally and then sends `rcon <command>`
-([`cl_main.cpp`](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/codemp/client/cl_main.cpp#L3326)).
+([`cl_main.cpp`](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/client/cl_main.cpp#L3326)).
 
 ## Mods, clients and renderers
 
@@ -66,13 +66,13 @@ setting rather than a separate feature; configure it with the `strafehelper` com
 angles the rounding gains you a little speed and at others it costs you. The boundaries
 between those angles are snap zones, and they move with your speed and framerate: the
 SnapHUD computes them from both and draws them
-([`hud_strafehelper.c`](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/codemp/cgame/hud_strafehelper.c#L2510)).
+([`hud_strafehelper.c`](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/cgame/hud_strafehelper.c#L2510)).
 Enable it with `cg_snapHud`. See [HUD and movement tools](/TaystJK/features/hud-and-movement/).
 
 **Movement style:** the rule set a server applies to player movement, changing
 acceleration, air control and what tricks are possible. The client knows nineteen, from
 `MV_SIEGE` and `MV_JKA` through `MV_CPM`, `MV_WSW` and `MV_TRIBES`
-([`bg_public.h`](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/codemp/game/bg_public.h#L560)).
+([`bg_public.h`](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/game/bg_public.h#L561)).
 See [movement styles](/TaystJK/features/movement-styles/).
 
 **Ski:** sliding along the ground instead of running, in the Tribes movement style, with
@@ -81,7 +81,7 @@ its own landing sound. See [Tribes](/TaystJK/features/tribes/).
 **IFF:** identification friend-or-foe, a team-coloured marker floating above other players
 in the Tribes movement style, so you can tell at a glance who is on your side. It grows with
 distance so it stays readable far away, and enemies are only marked within a limited range
-([`cg_players.c`](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/codemp/cgame/cg_players.c#L11059)).
+([`cg_players.c`](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/cgame/cg_players.c#L11094)).
 See [Tribes](/TaystJK/features/tribes/).
 
 ## Files and directories
@@ -105,7 +105,7 @@ Writes go to homepath; a file found in homepath takes precedence.
 
 **Levelshot:** the loading-screen image for a map, read from `levelshots/<mapname>`. The
 client prefers a widescreen version at `levelshots_16_9/<mapname>` when one exists
-([`cg_info.c`](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/codemp/cgame/cg_info.c#L149)).
+([`cg_info.c`](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/cgame/cg_info.c#L149)).
 
 **Pure server:** a server running `sv_pure 1`, which requires clients to load game assets
 only from pk3 files the server also has. On a stock client it stops mismatched or modified
@@ -129,8 +129,8 @@ menus. The console reference labels every entry with the module that registers i
 compiled for a particular platform and architecture. TaystJK's module loaders use native
 libraries. `vm_legacy` is a per-slot bitmask selecting the older `dllEntry`/`vmMain` API
 instead of `GetModuleAPI`; it does not enable QVM bytecode support
-([legacy loader](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/codemp/qcommon/vm.cpp#L110),
-[native API loader](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/codemp/qcommon/vm.cpp#L150)).
+([legacy loader](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/qcommon/vm.cpp#L110),
+[native API loader](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/qcommon/vm.cpp#L150)).
 A native module must match the client's architecture, so a 32-bit mod library cannot be
 loaded by a 64-bit client.
 

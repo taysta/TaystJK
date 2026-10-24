@@ -65,8 +65,8 @@ defaults to `1`. These two files switch between that and stock Jedi Academy's mo
 
 | Config | What it does |
 |:--|:--|
-| `restoreMotion` | Sets `cg_runPitch`, `cg_runRoll`, `cg_bobUp`, `cg_bobPitch` and `cg_bobRoll` to stock Jedi Academy's values and turns weapon sway back on ([`restoreMotion.cfg`](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/assets/japro/restoreMotion.cfg#L1)). |
-| `noMotion` | Resets the same cvars to TaystJK's defaults, so the view stops bobbing and rolling again ([`noMotion.cfg`](https://github.com/taysta/TaystJK/blame/77d84176b3b94356d189a4420e1bc5e68c88e1ea/assets/japro/noMotion.cfg#L1)). |
+| `restoreMotion` | Sets `cg_runPitch`, `cg_runRoll`, `cg_bobUp`, `cg_bobPitch` and `cg_bobRoll` to stock Jedi Academy's values and turns weapon sway back on ([`restoreMotion.cfg`](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/assets/japro/restoreMotion.cfg#L1)). |
+| `noMotion` | Resets the same cvars to TaystJK's defaults, so the view stops bobbing and rolling again ([`noMotion.cfg`](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/assets/japro/noMotion.cfg#L1)). |
 
 You only need `noMotion` after running `restoreMotion` or setting those cvars yourself. If
 head-bob makes you unwell and you have never changed them, there is nothing to undo.
