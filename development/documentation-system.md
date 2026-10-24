@@ -42,7 +42,7 @@ missing. It does not compare the text of the other generated pages, so an edit t
 those passes the checks and is silently thrown away at the next regeneration.
 
 Hand-written pages that quote a count from the reference read it from
-`_data/reference_stats.json` rather than typing it, so the figure changes when the
+`_data/reference_stats.json` instead of typing it, so the figure changes when the
 reference does.
 
 ## The pipeline
@@ -89,7 +89,7 @@ assembly and page generation, runs every check and a Jekyll build, and opens or 
 pull request against `gh-pages`. It runs weekly, when a release is published, and after each
 automatic `latest-build` release. Nothing is pushed to the published branch without review.
 
-It keeps the existing runtime reconciliation rather than redoing it, because no runner
+It keeps the existing runtime reconciliation instead of redoing it, because no runner
 launches the game, and an old `+cvarlist` capture must not be relabelled as current. A
 person with a real capture still runs `runtime_check.py` by hand.
 

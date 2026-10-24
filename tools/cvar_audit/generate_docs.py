@@ -1448,7 +1448,7 @@ def home_page(cvars: list[dict[str, Any]], commands: list[dict[str, Any]]) -> st
   <div class="home-section-heading">
     <div>
       <p class="section-kicker">What it does</p>
-      <h2 id="purpose-heading">One client for every server mod</h2>
+      <h2 id="purpose-heading">Works with every server mod</h2>
     </div>
     <p>Jedi Academy servers run different mods with different rules. TaystJK works out which one you joined and adjusts to it, so you do not need a separate client per community.</p>
   </div>

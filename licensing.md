@@ -38,7 +38,7 @@ The Steamworks library is the one TaystJK cannot bundle at all; see
 TaystJK is a fork several generations deep, and almost nothing here originated with it.
 The [console reference](/TaystJK/reference/) records an **origin** for every one of its
 {{ site.data.reference_stats.entries }} entries: the project where that cvar or command first appeared, resolved from commit
-history rather than assumed:
+history:
 
 | Origin | Entries |
 |:--|--:|
@@ -68,7 +68,7 @@ history. A few are noted individually where a page describes them.
 ## This documentation
 
 The pages on this site are written for TaystJK and generated from its source. Where a page
-leans on someone else's documentation it says so and links it, rather than absorbing it.
+leans on someone else's documentation it says so and links it.
 The [movement styles](/TaystJK/features/movement-styles/) page follows jaPRO's own mapping
 guide, for instance.
 

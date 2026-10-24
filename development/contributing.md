@@ -12,7 +12,7 @@ toc: true
 
 # Contributing
 
-<p class="page-lede">What to do with a change once you have it, and what a reviewer will expect. If you have a problem rather than a change, start with where to report instead.</p>
+<p class="page-lede">What to do with a change once you have it, and what a reviewer will expect. If you have a problem and not a change, start with where to report instead.</p>
 </div>
 
 Before anything else, check the problem belongs here at all. A great deal of what looks
@@ -151,7 +151,7 @@ explains which pages are generated and must not be edited by hand.
 Client features that depend on the server agreeing are gated on which mod the server runs.
 If you are adding one, read
 [feature flags](/TaystJK/development/feature-flags/) first, so other game modules have a way
-to opt in rather than being locked out by name.
+to opt in instead of being locked out by name.
 
 ### Anything not built everywhere
 

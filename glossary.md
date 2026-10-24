@@ -21,7 +21,7 @@ toc: true
 one by typing its name and a value in the console, or with `set` and `seta` in a config.
 Every cvar the client registers has an entry in the [console reference](/TaystJK/reference/).
 
-**Command:** a console action rather than a stored value, such as `vid_restart` or
+**Command:** a console action, not a stored value, such as `vid_restart` or
 `strafehelper`. Commands and cvars share the console and the reference.
 
 **Archived:** a cvar flagged `CVAR_ARCHIVE` is written to the generated config whenever
@@ -59,7 +59,7 @@ single source of its features. See [the overview](/TaystJK/overview/#what-japro-
 
 **CGAZ:** a display mode of the strafe helper, showing the angles at which you gain speed
 for your current velocity and movement style. It is one bit of the `cg_strafeHelper`
-setting rather than a separate feature; configure it with the `strafehelper` command. See
+setting, not a separate feature; configure it with the `strafehelper` command. See
 [HUD and movement tools](/TaystJK/features/hud-and-movement/).
 
 **Snaps, snap zones:** movement is applied in whole units each frame, so at some view

@@ -71,7 +71,7 @@ Defined in
 | 6 | 64 | `TAYSTJK_INFO_FIXROLL_3` | JK2-style rolling. |
 | 7 | 128 | `TAYSTJK_INFO_SCORE_DEATHS` | The server appends each player's deaths to the `scores` command for clients that advertise support. See [scoreboard deaths](#scoreboard-deaths). |
 
-The three roll bits are alternatives rather than a progression to be combined. The client
+The three roll bits are alternatives, not levels to combine. The client
 tests them from 3 downwards and takes the first that matches
 ([`bg_pmove.c`](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/game/bg_pmove.c#L314)).
 

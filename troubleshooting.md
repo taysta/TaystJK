@@ -54,7 +54,7 @@ Check the local tab before assuming it is broken.
 **You are waiting on the master.** The server sends its first heartbeat as soon as a map
 loads ([`sv_init.cpp`](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/server/sv_init.cpp#L743)) and another every five minutes
 after that ([`sv_main.cpp`](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/server/sv_main.cpp#L250)). If you think one was
-missed, run `heartbeat` in the server console to send one immediately rather than
+missed, run `heartbeat` in the server console to send one immediately instead of
 restarting the server.
 
 **The default master is dead.** `sv_master1` still defaults to `masterjk3.ravensoft.com`,

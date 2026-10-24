@@ -28,19 +28,19 @@ cannot prove, such as how an external service behaves, are called out where poss
 **The [console reference](/TaystJK/reference/) is not written, it is extracted.** All {{ site.data.reference_stats.entries }}
 cvars and commands are parsed out of the engine source, and each entry links to the exact
 line that registers it. Origin is resolved from the commit history of every upstream this
-fork descends from, rather than assumed. Nothing there is an AI summary of what a cvar
+fork descends from, not assumed. Nothing there is an AI summary of what a cvar
 probably does.
 
 **Hand-written pages cite source.** Where a page states how something behaves, it links the
 line in GitHub's blame view at a pinned commit, so the claim can be checked and so it stays
 attached to the code it came from. Where a page relies on someone else's documentation it
-says whose, rather than absorbing it.
+says whose.
 
 **What could not be verified is marked rather than guessed at.** {{ site.data.reference_stats.needs_review }} of the {{ site.data.reference_stats.entries }} entries
 carry a *needs review* status, and {{ site.data.reference_stats.provenance_needs_review }} have only medium-confidence provenance. Those figures
 are published on the [audit page](/TaystJK/reference/audit/) instead of being rounded away.
 When a page cannot answer something from source, the convention is to leave a visible note
-saying so rather than write a plausible sentence.
+saying so instead of a plausible-sounding sentence.
 
 ## What is checked automatically
 

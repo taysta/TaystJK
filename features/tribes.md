@@ -61,10 +61,10 @@ shots, and give every player a jetpack.
 Holding the dash button removes ground friction, so instead of running you slide and keep
 momentum across terrain
 ([`bg_pmove.c`](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/game/bg_pmove.c#L6094)).
-That is the whole idea of the mode: you gain speed downhill and carry it, rather than
+That is the whole idea of the mode: you gain speed downhill and carry it, instead of
 accelerating from a standstill.
 
-Landing while skiing plays its own sound rather than the normal landing thud
+Landing while skiing plays its own sound in place of the normal landing thud
 ([`cg_main.c`](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/cgame/cg_main.c#L869)).
 
 The same button is also a dash, shared with the `wsw` style but behaving differently here:
@@ -76,7 +76,7 @@ Bots ski by pressing the same button
 ## Jetpack fuel
 
 The jetpack has a fuel level from 0 to 100, drawn as a segmented bar with a numeric readout
-that eases towards the true value rather than snapping to it
+that eases towards the true value instead of snapping to it
 ([`hud_tribes.c`](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/cgame/hud_tribes.c#L3)).
 Skiing and jetpacking together is how you cross a map quickly.
 

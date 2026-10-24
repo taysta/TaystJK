@@ -151,7 +151,7 @@ same name as the map. All three renderers load the splash image.
 
 ## Sharper fonts
 
-`r_fontSharpness` scales glyph rendering with your vertical resolution rather than the
+`r_fontSharpness` scales glyph rendering with your vertical resolution instead of the
 fixed 480-line reference
 ([`tr_font.cpp`](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/rd-common/tr_font.cpp#L1171)).
 It only helps where the font assets carry enough detail to scale up; with the retail fonts

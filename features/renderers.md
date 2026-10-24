@@ -40,7 +40,7 @@ vid_restart
 a restart. The menu exposes the same choice.
 
 If the library you named cannot be loaded, the client says so, resets `cl_renderer` to the
-default and loads that instead rather than failing outright
+default and loads that, instead of failing outright
 ([`cl_main.cpp`](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/client/cl_main.cpp#L2750)).
 If you switch and end up back on the default, that is what happened. Usually the build
 does not include that renderer.
@@ -103,7 +103,7 @@ backends, so a shader override does not depend on your choice. See
 
 **Memory.** Switching renderer will not save much. Loading `mp/ffa3` on an Apple Silicon
 Mac, all three peaked within about 10% of each other, at 1.4 to 1.5 GB. If a 32-bit build
-runs out of memory, the fix is the 64-bit build rather than another renderer; see the
+runs out of memory, the fix is the 64-bit build, not another renderer; see the
 [install guide](/TaystJK/install/).
 
 ## Where a renderer bug goes

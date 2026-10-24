@@ -52,28 +52,29 @@ Rationale, one line each:
 
 ## 2. `added_on`
 
-TaystJK has no release versioning. Releases are rolling: the `latest` tag is moved onto
-each release commit, so a build identifies itself as `latest-<shorthash>` plus a compile
-date, and availability is a date, never "added in vX.Y".
+TaystJK has no release versioning. Releases are rolling: each push to `master` deletes the
+`latest-build` release and creates it again on the new commit, so a build identifies itself as
+`latest-build-<shorthash>` plus a compile date, and availability is a date, never "added in
+vX.Y". [Builds and versioning](install/builds-and-versioning.md) explains this for readers.
 
 Format: `YYYY-MM-DD (shorthash)`, for example `2025-03-14 (a1b2c3d)`.
 
 `version` ends with the engine's compile date (`SOURCE_DATE`, `codemp/qcommon/common.cpp`),
 and `modversion` prints the game module's compile date and time followed by the
 `GIT_TAG-GIT_HASH` pair (`CG_ModVersion_f`). `CMakeLists.txt` fills those from
-`git describe --tags --abbrev=0` and `git rev-parse --short`, and because `latest` sits on
-the release commit, describe resolves to `latest`.
+`git describe --tags --abbrev=0` and `git rev-parse --short`, and because the release tag is
+always the nearest one, describe resolves to `latest-build`.
 
 Tell readers to compare **the date**; an older build does not have the entry. The hash does
 not order builds because two short hashes cannot be ranked against each other. The tag is
 the same string on every release, so neither half of the identifier answers "is mine
-newer". The semver-looking tags in the repository (`1.0` … `1.5.5`) are inherited from the
-fork's ancestry and are not TaystJK releases.
+newer". Version-like tags such as `1.5.5` only appear in clones that fetched an upstream
+project; they are not TaystJK releases.
 
 State that comparison rule once and link to it from wherever `added_on` renders, rather
 than repeating it per page. For generated entries that explanation lives on
-`whats-new.md` under "How to tell what your build has"; move it to the overview page when
-Phase 3 creates one.
+`whats-new.md` under "How to tell what your build has", written by `ADDED_ON_NOTE` in
+`generate_docs.py`.
 
 ### Which date, for generated entries
 
@@ -210,9 +211,10 @@ pinned to a commit, not `blob` and never an unpinned branch link:
 https://github.com/taysta/TaystJK/blame/<full-commit-sha>/<path>#L<line>
 ```
 
-Pin to the commit the reference was generated from. That value is `source_commit` in
-`_data/reference-meta.json`; it is currently `77d84176b3b94356d189a4420e1bc5e68c88e1ea`,
-and the existing guides already use it. Blame links survive later edits to the file in a
+Pin to the commit the reference was generated from: `source_commit` in
+`_data/reference-meta.json`. Read it from there rather than copying a hash from another page,
+because it moves with every reference refresh. A claim about code that is newer than
+`source_commit` pins to the commit you checked it against instead. Blame links survive later edits to the file in a
 way that line-numbered `blob` links on a moving branch do not.
 
 If you cannot verify a claim against source, write a visible `TODO` rather than a
@@ -413,7 +415,7 @@ delete the seed entry then.
 Seed summaries are provisional. Verify them against source when writing the page, the same
 as any other factual claim (§6).
 
-### Adding a seventh feature
+### Adding a hand-written feature to the page
 
 1. Decide the origin, and confirm the mapping puts it in the baseline you expect.
 2. If the page exists, add the four front-matter fields to it and regenerate.

@@ -37,7 +37,7 @@ Built outside a Git checkout, both read `vUNKNOWN`.
 
 ## Release channels
 
-Three releases are rebuilt in place rather than numbered:
+Three releases are rebuilt in place instead of numbered:
 
 | Release | Built from | When |
 |:--|:--|:--|
@@ -80,7 +80,7 @@ TaystJK build reports them.
 
 ## Reporting a build
 
-Paste the whole line rather than summarising it. A useful report says:
+Paste the whole line; do not summarise it. A useful report says:
 
 - the output of `version` **and** `modversion`, since the engine and the game module are
   built and shipped separately and can differ

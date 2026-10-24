@@ -38,7 +38,7 @@ is ours: report it at <https://github.com/taysta/TaystJK/issues>, and say that y
 
 ## How to tell which
 
-The distinction is not obvious from inside the game, so use these tests rather than
+The distinction is not obvious from inside the game, so use these tests instead of
 guessing.
 
 **Does it happen on every server, or only some?** A problem that follows you from server to
@@ -122,7 +122,7 @@ realistic answer is an open-source server mod, not a client change.
 
 Whichever project you file with:
 
-- the output of `version` and `modversion`, pasted rather than summarised; see
+- the output of `version` and `modversion`, pasted in full; see
   [builds and versioning](/TaystJK/install/builds-and-versioning/)
 - your operating system and whether the build is 32- or 64-bit
 - which renderer, and whether switching changes anything

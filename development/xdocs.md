@@ -88,7 +88,7 @@ Inside a long description, the helpers mirror what a reader sees:
 
 {{ site.data.reference_stats.cvars_with_xdocs }} of {{ site.data.reference_stats.cvars }} cvars have an entry. The [console reference](/TaystJK/reference/) tracks this
 per entry: each detail page shows an **xdocs** badge, and the search filters include *Has
-xdocs entry* and *Missing from xdocs*, so the gap is a list you can work from rather than a
+xdocs entry* and *Missing from xdocs*, so the gap is a list you can work from, not a
 guess.
 
 That filter is the fastest way to find something worth writing. Start with a cvar you

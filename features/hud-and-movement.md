@@ -111,7 +111,7 @@ count only covers kills it saw, so it can be short if you joined mid-match.
 
 ## Whole-HUD styles
 
-`cg_hudFiles` swaps the underlying HUD layout rather than individual elements
+`cg_hudFiles` swaps the whole HUD layout, not individual elements
 ([`cg_main.c`](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/cgame/cg_main.c#L2612)):
 | Value | HUD |
 |:--|:--|
@@ -156,7 +156,7 @@ strafehelper 2      toggle option 2
 ```
 
 **Some options are radio groups.** Turning one on turns its siblings off, because they are
-alternatives rather than additions. The strafe helper's five styles behave this way
+alternatives, not additions. The strafe helper's five styles behave this way
 ([`cg_consolecmds.c`](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/cgame/cg_consolecmds.c#L1165)),
 as do the speedometer's unit and array-colour pairs
 ([`cg_consolecmds.c`](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/cgame/cg_consolecmds.c#L1560)).
@@ -184,7 +184,7 @@ radio group; the rest stack on top.
 **Add extras:** `Sound`, `Accel bar`, `Accel Zones`, `Line Crosshair`, `Small Lines`
 and `Max`.
 
-Tuning lives in separate cvars rather than bits: `cg_strafeHelperPrecision`,
+Tuning lives in separate cvars, not bits: `cg_strafeHelperPrecision`,
 `cg_strafeHelperOffset`, `cg_strafeHelperLineWidth`, `cg_strafeHelperCutoff`,
 `cg_strafeHelperActiveColor`, `cg_strafeHelperInactiveAlpha` and `cg_strafeHelper_FPS`.
 Look each up in the [console reference](/TaystJK/reference/?q=cg_strafehelper).
@@ -236,7 +236,7 @@ Two small text readouts share the movement HUD's drawing code
 ([`DF_DrawShowPos`](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/cgame/hud_strafehelper.c#L2445)).
 
 [`cg_pitchHelper`](/TaystJK/reference/cvars/cg_pitchhelper-e3dadd7/) prints your pitch angle as a number. It is
-separate from the PitchHUD above, which draws a marker rather than text. The number is green
+separate from the PitchHUD above, which draws a marker instead of text. The number is green
 while your pitch is inside a band [`cg_pitchHelperRange`](/TaystJK/reference/cvars/cg_pitchhelperrange-249a33b/)
 degrees wide, shades towards orange near the edge of the band, and turns red outside it.
 The band is centred on level unless [`cg_pitchHelperOffset`](/TaystJK/reference/cvars/cg_pitchhelperoffset-9b851a1/)
