@@ -360,8 +360,6 @@ void Com_IfCvar_f(void) {
 
     for (int i = 2; i < args;) {
         const char *argStr = Cmd_Argv(i);
-        if (!VALIDSTRING(argStr))
-            continue;
         bool checkPassed = false;
 
         // special operators beginning with $
@@ -389,14 +387,14 @@ void Com_IfCvar_f(void) {
             checkPassed = !!(cvarVal < (*(argStr + 2) == '$' && *(argStr + 3) ? atof(Cvar_VariableString(argStr + 3)) : atof(argStr + 2)));
         }
         else if (!Q_stricmpn(argStr, "$contains", 9) && *(argStr + 9)) { // contains a certain string somewhere as a substring
-            checkPassed = !!(Q_stristr((char *)cvarStr, (*(argStr + 9) == '$' && *(argStr + 10) ? Cvar_VariableString(argStr + 3) : argStr + 9)));
+            checkPassed = !!(Q_stristr((char *)cvarStr, (*(argStr + 9) == '$' && *(argStr + 10) ? Cvar_VariableString(argStr + 10) : argStr + 9)));
         }
         else if ((!Q_stricmpn(argStr, "$beginswith", 11) || !Q_stricmpn(argStr, "$startswith", 11)) && *(argStr + 11)) { // begins with a certain string
-            const char *compare = *(argStr + 11) == '$' && *(argStr + 12) ? Cvar_VariableString(argStr + 11) : argStr + 11;
+            const char *compare = *(argStr + 11) == '$' && *(argStr + 12) ? Cvar_VariableString(argStr + 12) : argStr + 11;
             checkPassed = static_cast<qboolean>(!Q_stricmpn(cvarStr, compare, strlen(compare)));
         }
-        else if (!Q_stricmpn(argStr, "$endswith", 9) && *(argStr + 11)) { // ends with a certain string
-            const char *compare = *(argStr + 9) == '$' && *(argStr + 9) ? Cvar_VariableString(argStr + 9) : argStr + 9;
+        else if (!Q_stricmpn(argStr, "$endswith", 9) && *(argStr + 9)) { // ends with a certain string
+            const char *compare = *(argStr + 9) == '$' && *(argStr + 10) ? Cvar_VariableString(argStr + 10) : argStr + 9;
             size_t compareLen = strlen(compare);
             size_t cvarStrLen = strlen(cvarStr);
             if (compareLen <= cvarStrLen)
@@ -465,7 +463,7 @@ void Com_StrSub_f(void) {
                 free(cvarName);
                 Q_strcat(writeBase, MAX_STRING_CHARS, cvarContents);
                 w += strlen(cvarContents);
-                r += 2 + cvarLen;
+                r += next$ ? 2 + cvarLen : 1 + cvarLen; // skip the closing $ only if there is one
             }
             else { // just a regular char; copy it
                 *w++ = *r++;
