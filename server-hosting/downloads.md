@@ -66,7 +66,7 @@ TaystJK automatically references a PK3 when:
 
 1. The current map's BSP is loaded from it. A map PK3 in `base` is offered once the server is on that map.
 2. It holds a client module the engine looks for: `vm/cgame.qvm`, `vm/ui.qvm`, `cgamex86.dll` or `uix86.dll` ([`files.cpp`](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/qcommon/files.cpp#L1640)).
-3. It is in a directory other than `base`. Every PK3 in the mod directory is offered on every map, whether or not anything loads from it ([`files.cpp`](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/qcommon/files.cpp#L3459)). The check compares only the first four letters, so a mod directory whose name starts with `base`, such as `base_enhanced`, counts as `base`.
+3. It is in a directory other than `base`. Every PK3 in the mod directory is offered on every map, whether or not anything loads from it ([`files.cpp`](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/qcommon/files.cpp#L3459)). Any directory whose name starts with `base`, such as `basejka`, counts as `base` here.
 
 Any other PK3 in `base`, such as a model or sound pack, is never offered unless it is on the
 force list.
