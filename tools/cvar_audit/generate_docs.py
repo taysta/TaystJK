@@ -1403,22 +1403,22 @@ def home_page(cvars: list[dict[str, Any]], commands: list[dict[str, Any]]) -> st
     total_count = len(entries)
     japro_count = sum(1 for entry in entries if entry["origin"]["source"] == "japro")
     return frontmatter(
-        "TaystJK: one client for Jedi Academy multiplayer",
+        "TaystJK documentation",
         1,
         wide=True,
         toc=True,
         description=(
-            "TaystJK is a cross-platform Jedi Academy multiplayer client built for Base JKA, "
-            "JA+/JA++, jaPRO, and Lugormod servers, on Windows, Linux, and macOS."
+            "Documentation for TaystJK, a Jedi Academy multiplayer client and dedicated server "
+            "for Windows, Linux and macOS."
         ),
     ) + f"""
 <div class="docs-overview">
   <section class="docs-intro" aria-labelledby="page-title">
-    <p class="eyebrow">TaystJK documentation</p>
-    <h1 id="page-title">One client for Jedi Academy multiplayer</h1>
-    <p class="page-lede">TaystJK replaces the multiplayer executable of your own copy of Jedi Academy. It plays on Base JKA, JA+ and JA++, jaPRO and Lugormod servers, and runs on Windows, Linux and macOS.</p>
+    <p class="eyebrow">Jedi Academy multiplayer</p>
+    <h1 id="page-title">TaystJK documentation</h1>
+    <p class="page-lede">TaystJK is a Jedi Academy multiplayer client and dedicated server for Windows, Linux and macOS. These pages cover installing it, hosting a server, what it adds, and working on the code.</p>
     <div class="docs-intro-actions">
-      <a class="button button-primary" href="{{{{ '/install/' | relative_url }}}}">Install TaystJK</a>
+      <a class="button button-primary" href="{{{{ '/install/' | relative_url }}}}">Installation</a>
       <a class="button button-secondary" href="https://github.com/taysta/TaystJK/releases/latest">Latest release</a>
     </div>
     <nav class="docs-intro-links" aria-label="Project links">
@@ -1447,10 +1447,10 @@ def home_page(cvars: list[dict[str, Any]], commands: list[dict[str, Any]]) -> st
 <section class="home-purpose" aria-labelledby="purpose-heading">
   <div class="home-section-heading">
     <div>
-      <p class="section-kicker">What it does</p>
-      <h2 id="purpose-heading">Works with every server mod</h2>
+      <p class="section-kicker">Server mods</p>
+      <h2 id="purpose-heading">How it handles different mods</h2>
     </div>
-    <p>Jedi Academy servers run different mods with different rules. TaystJK works out which one you joined and adjusts to it, so you do not need a separate client per community.</p>
+    <p>Jedi Academy servers run different mods with different rules. TaystJK detects which one a server runs and adjusts to it.</p>
   </div>
 
   <div class="purpose-principles">

@@ -54,7 +54,7 @@ The split shows in the reference: of those {{ site.data.reference_stats.by_origi
 | Server-side gamecode | `jampgame` | Race mode, the movement styles, Tribes and the admin system when *you* host |
 | Assets | `japro-assets.pk3` | The shaders, models and icons those features draw ([`codemp/CMakeLists.txt`](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/CMakeLists.txt#L81)) |
 
-So a TaystJK dedicated server serves jaPRO-style gameplay out of the box, with nothing else
+So a TaystJK dedicated server runs jaPRO-style gameplay with nothing else
 installed, and this site can cite `codemp/game/` for things like `/move` and the Tribes
 classes because that code is in this tree.
 

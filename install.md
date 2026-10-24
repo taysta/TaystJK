@@ -11,7 +11,7 @@ toc: true
 
 # Install TaystJK
 
-<p class="page-lede">TaystJK replaces the multiplayer executable, not the game's data. You need the four asset archives from your own copy of Jedi Academy, and TaystJK can sit beside them or in a directory of its own.</p>
+<p class="page-lede">TaystJK runs on the game files from your own copy of Jedi Academy. You need its four asset archives, and TaystJK can sit beside them or in a directory of its own.</p>
 </div>
 
 ## Before you start
