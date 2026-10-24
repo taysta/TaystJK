@@ -34,6 +34,7 @@ in the source repository holds them.
 | `default.cfg` | The gameplay baseline. Every mode loads it first, so one mode's settings never carry into the next. |
 | `bans.cfg` | IP bans. |
 | `votes.cfg` | Vote options, for the jaPRO module. |
+| `ref_forcelist.txt`, `ref_blacklist.txt` | PK3s to always or never offer for download, if you list any. See [reflists](/TaystJK/server-hosting/downloads/#pk3-referencing-and-reflists). |
 | One file per mode | The modes you ticked. |
 | `README.txt` | Where the files go and how to launch the server. |
 

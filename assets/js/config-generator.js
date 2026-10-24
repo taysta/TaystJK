@@ -52,6 +52,17 @@
     return parts.join(" ");
   }
 
+  // PK3 names for the reference lists, kept as entered: "name", "name.pk3" or "dir/name.pk3".
+  // The directory is filled in when the list is written, since it depends on the target.
+  function cleanPaks(value) {
+    var parts = String(value == null ? "" : value).split(/[\s,]+/).map(function (part) {
+      return part.replace(/\\/g, "/").replace(/\.pk3$/i, "");
+    }).filter(function (part) {
+      return /^([A-Za-z0-9_][A-Za-z0-9_.\-]*\/)?[A-Za-z0-9_][A-Za-z0-9_.\-]*$/.test(part);
+    });
+    return unique(parts).slice(0, 64).join(" ");
+  }
+
   function toInt(value, fallback, min, max) {
     var number = parseInt(value, 10);
     if (!isFinite(number)) number = fallback;
@@ -215,6 +226,8 @@
       httpPort: 18200,
       bans: true,
       banList: "",
+      forcelist: "",
+      blacklist: "",
       preset: presetsFor(data, target)[0].id,
       bootMode: "",
       modes: [],
@@ -258,6 +271,8 @@
     if (target === "other") state.votes = false;
     if (raw.httpPort != null) state.httpPort = toInt(raw.httpPort, 18200, 1, 65535);
     if (typeof raw.banList === "string") state.banList = cleanBans(raw.banList);
+    if (typeof raw.forcelist === "string") state.forcelist = cleanPaks(raw.forcelist);
+    if (typeof raw.blacklist === "string") state.blacklist = cleanPaks(raw.blacklist);
 
     if (gametypes.indexOf(raw.gametype) !== -1) state.gametype = raw.gametype;
     ["timelimit", "fraglimit", "capturelimit"].forEach(function (key) {
@@ -795,6 +810,14 @@
     return env;
   }
 
+  // One "dir/name.pk3" per line, the form the engine matches. A name without a directory goes
+  // in `dir`: base for the force list, which only matters there, and the mod for the blacklist.
+  function writeReflist(list, dir) {
+    return list.split(" ").map(function (name) {
+      return (name.indexOf("/") === -1 ? dir + "/" : "") + name + ".pk3";
+    }).join("\n") + "\n";
+  }
+
   function writeReadme(data, state, files, maps) {
     var target = TARGETS[state.target];
     var preset = findPreset(data, state.target, state.preset);
@@ -808,13 +831,15 @@
     out.push("");
     out.push("Files");
     out.push("-----");
+    var reflists = files.some(function (file) { return /^ref_/.test(file.name); });
+    var placed = reflists ? "the .cfg and ref_*.txt files" : "the .cfg files";
     var width = Math.max.apply(null, files.map(function (file) { return file.name.length; }));
     files.forEach(function (file) { out.push("  " + (file.name + new Array(width + 1).join(" ")).slice(0, width) + "  " + file.about); });
     out.push("");
     out.push("Where they go");
     out.push("-------------");
     if (state.run === "docker") {
-      out.push("Put the .cfg files in " + installDir(state) + "/ beside docker-compose.yml, then run");
+      out.push("Put " + placed + " in " + installDir(state) + "/ beside docker-compose.yml, then run");
       out.push("  docker compose restart taystjk");
       if (state.target === "japro") {
         out.push("A file there replaces the image's file of the same name. The image's other bundled");
@@ -826,7 +851,7 @@
         env.forEach(function (line) { out.push("  - " + line); });
       }
     } else {
-      out.push("Put the .cfg files in the " + modDir(state) + "/ directory beside the server binary, and launch:");
+      out.push("Put " + placed + " in the " + modDir(state) + "/ directory beside the server binary, and launch:");
       launchLine(state).split("\n").forEach(function (line) { out.push("  " + line); });
       out.push("On Windows, use the .exe dedicated-server binary with the same options.");
     }
@@ -853,6 +878,15 @@
     if (maps.stock.length) out.push("Stock, in the retail assets: " + maps.stock.join(", "));
     if (maps.custom.length) {
       out.push("Custom, install these on the server; players download them: " + maps.custom.join(", "));
+    }
+    if (reflists) {
+      out.push("");
+      out.push("Downloads");
+      out.push("---------");
+      if (state.forcelist) out.push("ref_forcelist.txt: offered on every map, even if nothing loads from them.");
+      if (state.blacklist) out.push("ref_blacklist.txt: never offered. Players without a blacklisted map cannot join on it.");
+      out.push("Players download offered PK3s they lack when they connect and at each map change.");
+      out.push("The server reads these lists when it loads a map, so edits apply from the next map.");
     }
     var needsFlag = state.target === "japro" && state.modes.some(function (id) {
       var mode = modesFor(data, "japro").filter(function (m) { return m.id === id; })[0];
@@ -898,6 +932,9 @@
         if (state.modes.indexOf(mode.id) !== -1) files.push({ name: mode.id + ".cfg", about: "Mode: " + mode.label, text: writeBaseMode(data, mode) });
       });
     }
+
+    if (state.downloads && state.forcelist) files.push({ name: "ref_forcelist.txt", about: "PK3s offered for download on every map", text: writeReflist(state.forcelist, "base") });
+    if (state.downloads && state.blacklist) files.push({ name: "ref_blacklist.txt", about: "PK3s never offered for download", text: writeReflist(state.blacklist, modDir(state)) });
 
     var maps = mapsNeeded(data, state);
     var readme = { name: "README.txt", about: "This file", text: "" };
@@ -1229,6 +1266,10 @@
     if (state.downloads) {
       html += checkbox('data-field="http"', state.http, "Serve them over HTTP", "Faster, for clients that support it; the rest use UDP.");
       if (state.http) html += field("HTTP port", numberInput("httpPort", state.httpPort, 1, 65535), state.run === "docker" ? "Publish the same TCP port in <code>docker-compose.yml</code>." : "Open this TCP port too.");
+      html += field("Always offer", textInput("forcelist", state.forcelist, ' spellcheck="false" autocomplete="off" placeholder="models.pk3"'),
+        "Optional. PK3s in <code>base</code> that players should get even when nothing loads from them, such as model packs. Writes <code>ref_forcelist.txt</code>.");
+      html += field("Never offer", textInput("blacklist", state.blacklist, ' spellcheck="false" autocomplete="off" placeholder="private.pk3"'),
+        "Optional. PK3s players should not get, such as server-only files. Names without a directory are in <code>" + escapeHtml(modDir(state) || "the mod directory") + "</code>. Writes <code>ref_blacklist.txt</code>.");
     }
     html += "</fieldset>";
     html += '<fieldset class="cfg-group"><legend>Bans</legend>';
@@ -1843,7 +1884,7 @@
       if (!key) return;
       if (key === "target") {
         var fresh = defaultState(data, el.value);
-        ["run", "hostname", "motd", "maxclients", "listed", "downloads", "http", "httpPort", "bans", "banList"].forEach(function (k) { fresh[k] = state[k]; });
+        ["run", "hostname", "motd", "maxclients", "listed", "downloads", "http", "httpPort", "forcelist", "blacklist", "bans", "banList"].forEach(function (k) { fresh[k] = state[k]; });
         state = fresh;
         ui.search = "";
         ui.dropped = [];

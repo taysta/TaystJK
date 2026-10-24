@@ -41,6 +41,10 @@ function checkBundle(state, result, label) {
 
   for (const [name, text] of files) {
     if (name === "README.txt") continue;
+    if (name.startsWith("ref_")) {
+      assert.match(text, /^([A-Za-z0-9_][A-Za-z0-9_.\-]*\/[A-Za-z0-9_][A-Za-z0-9_.\-]*\.pk3\n)+$/, `${label}: ${name} lists dir/name.pk3 lines`);
+      continue;
+    }
     assert.ok(text.endsWith("\n") && !text.endsWith("\n\n"), `${label}: ${name} ends with one newline`);
     const seen = new Set();
     for (const { line, number } of statements(text)) {
@@ -246,7 +250,7 @@ for (const target of Object.keys(generator.targets)) {
           }
           if (variant === 2) {
             Object.assign(raw, {
-              banList: "1.2.3.4 5.6.7 not-an-ip", voteGroups: [], allowVote: 0,
+              banList: "1.2.3.4 5.6.7 not-an-ip", forcelist: "models.pk3, base/skins", blacklist: "private ../evil", voteGroups: [], allowVote: 0,
               tune: { g_speed: "300", sv_fps: "30", g_weaponDisable: "0", disable_item_seeker: "0", sv_cheats: "1", g_needpass: "1", sv_hostname: "sneaky", bogus_cvar: "1" },
               extra: target === "other" ? "set jp_fixRoll 1\nseta jp_allowflipkick 1" : ""
             });
@@ -272,6 +276,23 @@ for (const target of Object.keys(generator.targets)) {
   assert.doesNotMatch(server, /^(?:set|seta) g_password /m);
   assert.match(server, /^seta g_fullAdminPass "" \/\/ Empty disables this login$/m);
   assert.match(server, /^seta g_juniorAdminPass "" \/\/ Empty disables this login$/m);
+}
+
+// Reference lists: written only with downloads on and entries given; bare names get the right directory.
+{
+  const files = (raw) => new Map(generator.generate(data, generator.normalizeState(data, raw), SECRETS).files.map((f) => [f.name, f.text]));
+  const base = generator.defaultState(data, "japro");
+  const plain = files(base);
+  assert.ok(!plain.has("ref_forcelist.txt") && !plain.has("ref_blacklist.txt"), "no reflists by default");
+  assert.ok(!files(Object.assign({}, base, { blacklist: "private" })).has("ref_forcelist.txt"), "an empty force list is not written");
+  const listed = files(Object.assign({}, base, { forcelist: "models.pk3 base\\skins.PK3 models", blacklist: "private, base/secret.pk3 ../x" }));
+  assert.equal(listed.get("ref_forcelist.txt"), "base/models.pk3\nbase/skins.pk3\n");
+  assert.equal(listed.get("ref_blacklist.txt"), "taystjk/private.pk3\nbase/secret.pk3\n");
+  assert.match(listed.get("README.txt"), /Put the \.cfg and ref_\*\.txt files in homepath\/taystjk\//);
+  const other = files(Object.assign(generator.defaultState(data, "other"), { mod: "japlus", blacklist: "private" }));
+  assert.equal(other.get("ref_blacklist.txt"), "japlus/private.pk3\n");
+  const off = files(Object.assign({}, base, { downloads: false, forcelist: "models", blacklist: "private" }));
+  assert.ok(!off.has("ref_forcelist.txt") && !off.has("ref_blacklist.txt"), "no reflists with downloads off");
 }
 
 // Zip and paste-in command carry exactly the generated files.

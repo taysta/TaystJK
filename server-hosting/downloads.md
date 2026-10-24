@@ -3,7 +3,7 @@ title: "Downloads and PK3 references"
 layout: reference
 nav_order: 2
 parent: "Server hosting"
-description: "Serve required PK3s over HTTP or UDP, control which PK3s are referenced with reflists, and see what sv_pure does and does not check."
+description: "Serve required PK3s over HTTP or UDP, control which PK3s are offered with reflists, and see what sv_pure does and does not check."
 toc: true
 ---
 
@@ -56,11 +56,20 @@ Do not put spaces or `@` in downloadable PK3 filenames. The download list sent t
 
 ## PK3 referencing and reflists
 
-Only referenced PK3s are offered to clients. TaystJK automatically references a PK3 when:
+Only referenced PK3s are offered to clients. The server works out which PK3s are referenced
+each time it loads a map ([`sv_init.cpp`](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/server/sv_init.cpp#L724-L727)). Clients receive
+the list when they connect and again at every map change, and download any listed PK3 they
+lack before entering the game ([`cl_parse.cpp`](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/client/cl_parse.cpp#L632)). Nothing
+downloads during a map.
 
-1. A BSP map is loaded from it.
+TaystJK automatically references a PK3 when:
+
+1. The current map's BSP is loaded from it. A map PK3 in `base` is offered once the server is on that map.
 2. It holds a client module the engine looks for: `vm/cgame.qvm`, `vm/ui.qvm`, `cgamex86.dll` or `uix86.dll` ([`files.cpp`](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/qcommon/files.cpp#L1640)).
-3. It is in the active `fs_game` directory, not `base`.
+3. It is in a directory other than `base`. Every PK3 in the mod directory is offered on every map, whether or not anything loads from it ([`files.cpp`](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/qcommon/files.cpp#L3459)). The check compares only the first four letters, so a mod directory whose name starts with `base`, such as `base_enhanced`, counts as `base`.
+
+Any other PK3 in `base`, such as a model or sound pack, is never offered unless it is on the
+force list.
 
 TaystJK does not run `cgame.qvm` or `ui.qvm`; its modules are native libraries, `.dll` on Windows, `.so` on Linux and `.dylib` on macOS. The check still looks for those four names because they are what stock clients load. A PK3 that holds only other module names, such as `cgamex86_64.dll`, or only client assets, is not referenced on its own; add it to `ref_forcelist.txt`.
 
@@ -68,18 +77,41 @@ Run `sv_referencedPakNames` in the server console to inspect the current result.
 
 | File | Effect |
 |:--|:--|
-| `ref_forcelist.txt` | Always reference each listed PK3; useful for client assets such as sounds or skins. |
-| `ref_blacklist.txt` | Never reference the listed PK3s. |
-| `ref_whitelist.txt` | Allow only the listed PK3s to be referenced. |
+| `ref_forcelist.txt` | Offer each listed PK3 on every map. It only matters for PK3s in `base`, since the mod directory's PK3s are offered anyway. |
+| `ref_blacklist.txt` | Never offer the listed PK3s, such as server-only files in the mod directory. |
+| `ref_whitelist.txt` | Offer only the listed PK3s. While this file exists, every PK3 missing from it is never offered, maps included. |
 
-Place reflists in `base/` or the server's mod directory, which is `taystjk/` unless you run another mod. Use one `game-directory/pak-name.pk3` path per line:
+A PK3 whose name starts with `noDL` is never offered either, without any list.
+
+When a PK3 matches more than one rule, the first match in this order wins
+([`files.cpp`](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/qcommon/files.cpp#L3872-L3882)):
+
+1. Not on the whitelist, when one exists: never offered.
+2. On the blacklist: never offered.
+3. Name starts with `noDL`: never offered.
+4. On the force list: offered.
+
+So a forced PK3 must also be on the whitelist if you use one, and a PK3 on both the force
+list and the blacklist is not offered. A whitelist and blacklist together work, but the
+blacklist can then only remove PK3s the whitelist allowed; use one or the other.
+
+Blacklisting a map's PK3 also stops it being offered, so players who do not have that map
+cannot join while the server runs it.
+
+Place reflists in the server's mod directory, which is `taystjk/` unless you run another
+mod, or in `base/`. Use one `game-directory/pak-name.pk3` path per line, with no leading
+spaces; case does not matter:
 
 ```text
-base/ffa_custom.pk3
-taystjk/community-assets.pk3
+base/models-pack.pk3
+base/sounds-pack.pk3
 ```
 
-You may combine a force list with a whitelist or blacklist. Avoid using whitelist and blacklist together: the result is difficult to reason about, and a whitelist is already a complete allow-list. A force list offers a file; it does not remove the client's download confirmation.
+The server reads the lists when it loads a map
+([`files.cpp`](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/qcommon/files.cpp#L4021), [`sv_init.cpp`](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/server/sv_init.cpp#L595)),
+so an edit applies from the next map change. A force list offers a file; it does not remove
+the client's download confirmation. The [server config generator](/TaystJK/server-hosting/config-generator/)
+can write the force list and blacklist for you.
 
 The behavior is inherited from JK2MV; its wiki has useful background on [downloaded files](https://github.com/mvdevs/jk2mv/wiki/Downloaded-Files), [HTTP downloads](https://github.com/mvdevs/jk2mv/wiki/HTTP-Downloads), and [PK3 referencing](https://github.com/mvdevs/jk2mv/wiki/PK3-Referencing).
 
