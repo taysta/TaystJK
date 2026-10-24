@@ -37,8 +37,8 @@ Controls `com_busyWait` in the engine-shared module. Consult the cited behavior 
 
 | Value | Meaning | Evidence |
 |:--|:--|:--|
-| `0` | Disabled. | [codemp/qcommon/common.cpp:1781](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/qcommon/common.cpp#L1781) |
-| `1` | Enabled. | [codemp/qcommon/common.cpp:1781](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/qcommon/common.cpp#L1781) |
+| `0` | Disabled. | [codemp/qcommon/common.cpp:1781](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/qcommon/common.cpp#L1781) |
+| `1` | Enabled. | [codemp/qcommon/common.cpp:1781](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/qcommon/common.cpp#L1781) |
 
 ## Flags
 
@@ -79,8 +79,8 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 ## Evidence
 
-- registration: [codemp/qcommon/common.cpp:1498](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/qcommon/common.cpp#L1498) (Cvar_Get)
-- behavior: [codemp/qcommon/common.cpp:1781](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/qcommon/common.cpp#L1781)
-- behavior: [shared/sys/sys_main.cpp:760](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/shared/sys/sys_main.cpp#L760)
+- registration: [codemp/qcommon/common.cpp:1498](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/qcommon/common.cpp#L1498) (Cvar_Get)
+- behavior: [codemp/qcommon/common.cpp:1781](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/qcommon/common.cpp#L1781)
+- behavior: [shared/sys/sys_main.cpp:760](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/shared/sys/sys_main.cpp#L760)
 
-<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/f999cbc0912773164962d8be37737a31fe9ade8d"><code>f999cbc09127</code></a> on 2026-10-22. Anything merged after that is not reflected here.</p>
+<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/76943f046bbbdc23d67323b838cb1c4c1e3fba0e"><code>76943f046bbb</code></a> on 2026-10-23. Anything merged after that is not reflected here.</p>

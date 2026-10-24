@@ -36,8 +36,8 @@ Bypass pure checks on pure base servers, takes effect on next connect
 
 | Value | Meaning | Evidence |
 |:--|:--|:--|
-| `0` | Disabled. | [codemp/client/cl_parse.cpp:457](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/client/cl_parse.cpp#L457) |
-| `1` | Enabled. | [codemp/client/cl_parse.cpp:457](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/client/cl_parse.cpp#L457) |
+| `0` | Disabled. | [codemp/client/cl_parse.cpp:457](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/client/cl_parse.cpp#L457) |
+| `1` | Enabled. | [codemp/client/cl_parse.cpp:457](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/client/cl_parse.cpp#L457) |
 
 ## Flags
 
@@ -48,7 +48,7 @@ Bypass pure checks on pure base servers, takes effect on next connect
 Origin: <span class="label ref-origin ref-origin-taystjk">TaystJK</span>
 
 - Ultimate-origin introduction: [`d376304c07ae`](https://github.com/taysta/TaystJK/commit/d376304c07aeb5d324354f8a78c7f44f83237b25) in <span class="label ref-origin ref-origin-taystjk">TaystJK</span> (content authored `2026-09-23`, integrated `2026-09-23`)
-- Upstream registration evidence: [codemp/client/cl_main.cpp:3460](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/client/cl_main.cpp#L3460)
+- Upstream registration evidence: [codemp/client/cl_main.cpp:3460](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/client/cl_main.cpp#L3460)
 - Attribution method: `earliest-authored-project-introduction`
 - Attribution confidence: `high`
 
@@ -62,8 +62,8 @@ Authored dates come from the exact registration's first content commit, PR dates
 
 ## Evidence
 
-- registration: [codemp/client/cl_main.cpp:3460](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/client/cl_main.cpp#L3460) (Cvar_Get)
-- behavior: [codemp/client/cl_parse.cpp:457](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/client/cl_parse.cpp#L457)
-- behavior: [codemp/client/cl_parse.cpp:456](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/client/cl_parse.cpp#L456)
+- registration: [codemp/client/cl_main.cpp:3460](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/client/cl_main.cpp#L3460) (Cvar_Get)
+- behavior: [codemp/client/cl_parse.cpp:457](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/client/cl_parse.cpp#L457)
+- behavior: [codemp/client/cl_parse.cpp:456](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/client/cl_parse.cpp#L456)
 
-<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/f999cbc0912773164962d8be37737a31fe9ade8d"><code>f999cbc09127</code></a> on 2026-10-22. Anything merged after that is not reflected here.</p>
+<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/76943f046bbbdc23d67323b838cb1c4c1e3fba0e"><code>76943f046bbb</code></a> on 2026-10-23. Anything merged after that is not reflected here.</p>

@@ -37,8 +37,8 @@ Controls `g_newBotAI` in the game module. Consult the cited behavior reads befor
 
 | Value | Meaning | Evidence |
 |:--|:--|:--|
-| `0` | Disabled. | [codemp/game/ai_main.c:5378](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/game/ai_main.c#L5378) |
-| `1` | Enabled. | [codemp/game/ai_main.c:5378](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/game/ai_main.c#L5378) |
+| `0` | Disabled. | [codemp/game/ai_main.c:5378](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/game/ai_main.c#L5378) |
+| `1` | Enabled. | [codemp/game/ai_main.c:5378](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/game/ai_main.c#L5378) |
 
 ## Flags
 
@@ -75,10 +75,10 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 ## Evidence
 
-- registration: [codemp/game/g_xcvar.h:340](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/game/g_xcvar.h#L340) (XCVAR_DEF)
-- behavior: [codemp/game/ai_main.c:5378](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/game/ai_main.c#L5378)
-- behavior: [codemp/game/ai_main.c:523](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/game/ai_main.c#L523)
-- behavior: [codemp/game/ai_main.c:787](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/game/ai_main.c#L787)
-- behavior: [codemp/game/g_cmds.c:8284](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/game/g_cmds.c#L8284)
+- registration: [codemp/game/g_xcvar.h:340](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/game/g_xcvar.h#L340) (XCVAR_DEF)
+- behavior: [codemp/game/ai_main.c:5378](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/game/ai_main.c#L5378)
+- behavior: [codemp/game/ai_main.c:523](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/game/ai_main.c#L523)
+- behavior: [codemp/game/ai_main.c:787](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/game/ai_main.c#L787)
+- behavior: [codemp/game/g_cmds.c:8284](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/game/g_cmds.c#L8284)
 
-<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/f999cbc0912773164962d8be37737a31fe9ade8d"><code>f999cbc09127</code></a> on 2026-10-22. Anything merged after that is not reflected here.</p>
+<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/76943f046bbbdc23d67323b838cb1c4c1e3fba0e"><code>76943f046bbb</code></a> on 2026-10-23. Anything merged after that is not reflected here.</p>

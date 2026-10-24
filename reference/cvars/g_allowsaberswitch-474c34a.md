@@ -37,8 +37,8 @@ Controls `g_allowSaberSwitch` in the game module. Consult the cited behavior rea
 
 | Value | Meaning | Evidence |
 |:--|:--|:--|
-| `0` | Disabled. | [codemp/game/g_cmds.c:4758](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/game/g_cmds.c#L4758) |
-| `1` | Enabled. | [codemp/game/g_cmds.c:4758](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/game/g_cmds.c#L4758) |
+| `0` | Disabled. | [codemp/game/g_cmds.c:4758](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/game/g_cmds.c#L4758) |
+| `1` | Enabled. | [codemp/game/g_cmds.c:4758](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/game/g_cmds.c#L4758) |
 
 ## Flags
 
@@ -80,10 +80,10 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 ## Evidence
 
-- registration: [codemp/game/g_xcvar.h:278](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/game/g_xcvar.h#L278) (XCVAR_DEF)
-- behavior: [codemp/game/g_cmds.c:4758](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/game/g_cmds.c#L4758)
-- behavior: [codemp/game/g_cmds.c:5748](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/game/g_cmds.c#L5748)
-- behavior: [codemp/game/g_cmds.c:8323](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/game/g_cmds.c#L8323)
-- behavior: [codemp/game/g_cvar.c:529](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/game/g_cvar.c#L529)
+- registration: [codemp/game/g_xcvar.h:278](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/game/g_xcvar.h#L278) (XCVAR_DEF)
+- behavior: [codemp/game/g_cmds.c:4758](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/game/g_cmds.c#L4758)
+- behavior: [codemp/game/g_cmds.c:5748](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/game/g_cmds.c#L5748)
+- behavior: [codemp/game/g_cmds.c:8323](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/game/g_cmds.c#L8323)
+- behavior: [codemp/game/g_cvar.c:529](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/game/g_cvar.c#L529)
 
-<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/f999cbc0912773164962d8be37737a31fe9ade8d"><code>f999cbc09127</code></a> on 2026-10-22. Anything merged after that is not reflected here.</p>
+<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/76943f046bbbdc23d67323b838cb1c4c1e3fba0e"><code>76943f046bbb</code></a> on 2026-10-23. Anything merged after that is not reflected here.</p>

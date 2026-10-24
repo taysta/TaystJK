@@ -33,7 +33,7 @@ Controls `ui_sab1_r` in the ui module. Consult the cited behavior reads before r
 | Confidence | `medium` |
 | Added | 2015-11-11 in [`272692a04`](https://github.com/taysta/TaystJK/commit/272692a0441369b6cde4858141428037f80f145c) <span class="status-chip">needs review</span> ([how to compare this against your build](/TaystJK/features/whats-new/#how-to-tell-what-your-build-has)) |
 | In-game xdocs | No |
-| In-game menu | Yes: [ingame_saber.menu:758](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/assets/japro/ui/jamp/ingame_saber.menu#L758), [ingame_saber.menu:783](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/assets/japro/ui/jamp/ingame_saber.menu#L783) |
+| In-game menu | Yes: [ingame_saber.menu:758](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/assets/japro/ui/jamp/ingame_saber.menu#L758), [ingame_saber.menu:783](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/assets/japro/ui/jamp/ingame_saber.menu#L783) |
 
 ## Values
 
@@ -67,9 +67,9 @@ Authored dates come from the exact registration's first content commit, PR dates
 
 ## Evidence
 
-- registration: [codemp/ui/ui_xcvar.h:117](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/ui/ui_xcvar.h#L117) (XCVAR_DEF)
-- behavior: [codemp/ui/ui_main.c:6776](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/ui/ui_main.c#L6776)
-- behavior: [codemp/ui/ui_main.c:6967](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/ui/ui_main.c#L6967)
-- behavior: [codemp/ui/ui_saber.c:315](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/ui/ui_saber.c#L315)
+- registration: [codemp/ui/ui_xcvar.h:117](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/ui/ui_xcvar.h#L117) (XCVAR_DEF)
+- behavior: [codemp/ui/ui_main.c:6776](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/ui/ui_main.c#L6776)
+- behavior: [codemp/ui/ui_main.c:6967](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/ui/ui_main.c#L6967)
+- behavior: [codemp/ui/ui_saber.c:315](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/ui/ui_saber.c#L315)
 
-<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/f999cbc0912773164962d8be37737a31fe9ade8d"><code>f999cbc09127</code></a> on 2026-10-22. Anything merged after that is not reflected here.</p>
+<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/76943f046bbbdc23d67323b838cb1c4c1e3fba0e"><code>76943f046bbb</code></a> on 2026-10-23. Anything merged after that is not reflected here.</p>

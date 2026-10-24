@@ -30,14 +30,14 @@ Sets the emulated frame rate used to make third-person camera damping frame-rate
 | Confidence | `high` |
 | Added | 2019-01-14 in [`18a8e8c9a`](https://github.com/taysta/TaystJK/commit/18a8e8c9a528dd540dddee52ae2376a7c05a5e47) ([how to compare this against your build](/TaystJK/features/whats-new/#how-to-tell-what-your-build-has)) |
 | In-game xdocs | No |
-| In-game menu | Yes: [ingame_camera.menu:111](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/assets/japro/ui/jamp/ingame_camera.menu#L111) |
+| In-game menu | Yes: [ingame_camera.menu:111](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/assets/japro/ui/jamp/ingame_camera.menu#L111) |
 
 ## Values
 
 | Value | Meaning | Evidence |
 |:--|:--|:--|
-| `<15` | Use the original frame-rate-dependent JK2/JKA multiplayer camera damping. | [codemp/cgame/cg_view.c:541](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/cgame/cg_view.c#L541) |
-| `>=15` | Use frame-rate-independent damping based on this emulated frame rate. | [codemp/cgame/cg_view.c:514](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/cgame/cg_view.c#L514) |
+| `<15` | Use the original frame-rate-dependent JK2/JKA multiplayer camera damping. | [codemp/cgame/cg_view.c:541](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/cgame/cg_view.c#L541) |
+| `>=15` | Use frame-rate-independent damping based on this emulated frame rate. | [codemp/cgame/cg_view.c:514](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/cgame/cg_view.c#L514) |
 
 ## Flags
 
@@ -74,11 +74,11 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 ## Evidence
 
-- registration: [codemp/cgame/cg_xcvar.h:133](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/cgame/cg_xcvar.h#L133) (XCVAR_DEF)
-- behavior: [codemp/cgame/cg_snapshot.c:233](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/cgame/cg_snapshot.c#L233)
-- behavior: [codemp/cgame/cg_view.c:514](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/cgame/cg_view.c#L514)
-- behavior: [codemp/cgame/cg_view.c:879](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/cgame/cg_view.c#L879)
-- behavior: [codemp/cgame/cg_view.c:529](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/cgame/cg_view.c#L529)
-- behavior: [codemp/cgame/cg_view.c:521](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/cgame/cg_view.c#L521)
+- registration: [codemp/cgame/cg_xcvar.h:133](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/cgame/cg_xcvar.h#L133) (XCVAR_DEF)
+- behavior: [codemp/cgame/cg_snapshot.c:233](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/cgame/cg_snapshot.c#L233)
+- behavior: [codemp/cgame/cg_view.c:514](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/cgame/cg_view.c#L514)
+- behavior: [codemp/cgame/cg_view.c:879](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/cgame/cg_view.c#L879)
+- behavior: [codemp/cgame/cg_view.c:529](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/cgame/cg_view.c#L529)
+- behavior: [codemp/cgame/cg_view.c:521](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/cgame/cg_view.c#L521)
 
-<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/f999cbc0912773164962d8be37737a31fe9ade8d"><code>f999cbc09127</code></a> on 2026-10-22. Anything merged after that is not reflected here.</p>
+<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/76943f046bbbdc23d67323b838cb1c4c1e3fba0e"><code>76943f046bbb</code></a> on 2026-10-23. Anything merged after that is not reflected here.</p>

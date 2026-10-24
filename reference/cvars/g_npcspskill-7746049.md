@@ -39,8 +39,8 @@ Controls `g_npcspskill` in the game module. Consult the cited behavior reads bef
 
 | Value | Meaning | Evidence |
 |:--|:--|:--|
-| `0` | Disabled. | [codemp/game/NPC.c:1873](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/game/NPC.c#L1873) |
-| `1` | Enabled. | [codemp/game/NPC.c:1873](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/game/NPC.c#L1873) |
+| `0` | Disabled. | [codemp/game/NPC.c:1873](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/game/NPC.c#L1873) |
+| `1` | Enabled. | [codemp/game/NPC.c:1873](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/game/NPC.c#L1873) |
 
 ## Flags
 
@@ -72,11 +72,11 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 ## Evidence
 
-- registration: [codemp/game/g_xcvar.h:124](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/game/g_xcvar.h#L124) (XCVAR_DEF)
-- behavior: [codemp/game/NPC.c:1873](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/game/NPC.c#L1873)
-- behavior: [codemp/game/NPC_AI_ImperialProbe.c:319](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/game/NPC_AI_ImperialProbe.c#L319)
-- behavior: [codemp/game/NPC_AI_ImperialProbe.c:347](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/game/NPC_AI_ImperialProbe.c#L347)
-- behavior: [codemp/game/NPC_AI_ImperialProbe.c:352](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/game/NPC_AI_ImperialProbe.c#L352)
-- behavior: [codemp/game/NPC_AI_Jedi.c:3117](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/game/NPC_AI_Jedi.c#L3117)
+- registration: [codemp/game/g_xcvar.h:124](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/game/g_xcvar.h#L124) (XCVAR_DEF)
+- behavior: [codemp/game/NPC.c:1873](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/game/NPC.c#L1873)
+- behavior: [codemp/game/NPC_AI_ImperialProbe.c:319](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/game/NPC_AI_ImperialProbe.c#L319)
+- behavior: [codemp/game/NPC_AI_ImperialProbe.c:347](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/game/NPC_AI_ImperialProbe.c#L347)
+- behavior: [codemp/game/NPC_AI_ImperialProbe.c:352](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/game/NPC_AI_ImperialProbe.c#L352)
+- behavior: [codemp/game/NPC_AI_Jedi.c:3117](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/game/NPC_AI_Jedi.c#L3117)
 
-<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/f999cbc0912773164962d8be37737a31fe9ade8d"><code>f999cbc09127</code></a> on 2026-10-22. Anything merged after that is not reflected here.</p>
+<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/76943f046bbbdc23d67323b838cb1c4c1e3fba0e"><code>76943f046bbb</code></a> on 2026-10-23. Anything merged after that is not reflected here.</p>

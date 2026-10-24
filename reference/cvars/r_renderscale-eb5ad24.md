@@ -38,15 +38,15 @@ Scaling mode to be used with custom render resolution: 0 - disabled. 1 - nearest
 
 | Value | Meaning | Evidence |
 |:--|:--|:--|
-| `0` | Disabled. | [codemp/rd-vulkan/tr_init.cpp:967](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/rd-vulkan/tr_init.cpp#L967) |
-| `1` | Nearest filtering, stretch to full size. | [codemp/rd-vulkan/tr_init.cpp:967](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/rd-vulkan/tr_init.cpp#L967) |
-| `2` | Nearest filtering, preserve aspect ratio (black bars on sides). | [codemp/rd-vulkan/tr_init.cpp:967](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/rd-vulkan/tr_init.cpp#L967) |
-| `3` | Linear filtering, stretch to full size. | [codemp/rd-vulkan/tr_init.cpp:967](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/rd-vulkan/tr_init.cpp#L967) |
-| `4` | Linear filtering, preserve aspect ratio (black bars on sides). | [codemp/rd-vulkan/tr_init.cpp:967](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/rd-vulkan/tr_init.cpp#L967) |
+| `0` | Disabled. | [codemp/rd-vulkan/tr_init.cpp:967](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/rd-vulkan/tr_init.cpp#L967) |
+| `1` | Nearest filtering, stretch to full size. | [codemp/rd-vulkan/tr_init.cpp:967](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/rd-vulkan/tr_init.cpp#L967) |
+| `2` | Nearest filtering, preserve aspect ratio (black bars on sides). | [codemp/rd-vulkan/tr_init.cpp:967](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/rd-vulkan/tr_init.cpp#L967) |
+| `3` | Linear filtering, stretch to full size. | [codemp/rd-vulkan/tr_init.cpp:967](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/rd-vulkan/tr_init.cpp#L967) |
+| `4` | Linear filtering, preserve aspect ratio (black bars on sides). | [codemp/rd-vulkan/tr_init.cpp:967](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/rd-vulkan/tr_init.cpp#L967) |
 
 ## Enforced ranges
 
-- `0` through `4` (integer; Cvar_CheckRange). Evidence: [codemp/rd-vulkan/tr_init.cpp:973](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/rd-vulkan/tr_init.cpp#L973)
+- `0` through `4` (integer; Cvar_CheckRange). Evidence: [codemp/rd-vulkan/tr_init.cpp:973](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/rd-vulkan/tr_init.cpp#L973)
 
 ## Flags
 
@@ -76,11 +76,11 @@ Authored dates come from the exact registration's first content commit, PR dates
 
 ## Evidence
 
-- registration: [codemp/rd-vulkan/tr_init.cpp:967](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/rd-vulkan/tr_init.cpp#L967) (Cvar_Get)
-- behavior: [codemp/rd-vulkan/vk_init.cpp:39](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/rd-vulkan/vk_init.cpp#L39)
-- behavior: [codemp/rd-vulkan/vk_init.cpp:70](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/rd-vulkan/vk_init.cpp#L70)
-- behavior: [codemp/rd-vulkan/vk_init.cpp:339](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/rd-vulkan/vk_init.cpp#L339)
-- behavior: [codemp/rd-vulkan/vk_init.cpp:41](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/rd-vulkan/vk_init.cpp#L41)
-- behavior: [codemp/rd-vulkan/tr_init.cpp:973](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/rd-vulkan/tr_init.cpp#L973)
+- registration: [codemp/rd-vulkan/tr_init.cpp:967](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/rd-vulkan/tr_init.cpp#L967) (Cvar_Get)
+- behavior: [codemp/rd-vulkan/vk_init.cpp:39](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/rd-vulkan/vk_init.cpp#L39)
+- behavior: [codemp/rd-vulkan/vk_init.cpp:70](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/rd-vulkan/vk_init.cpp#L70)
+- behavior: [codemp/rd-vulkan/vk_init.cpp:339](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/rd-vulkan/vk_init.cpp#L339)
+- behavior: [codemp/rd-vulkan/vk_init.cpp:41](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/rd-vulkan/vk_init.cpp#L41)
+- behavior: [codemp/rd-vulkan/tr_init.cpp:973](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/rd-vulkan/tr_init.cpp#L973)
 
-<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/f999cbc0912773164962d8be37737a31fe9ade8d"><code>f999cbc09127</code></a> on 2026-10-22. Anything merged after that is not reflected here.</p>
+<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/76943f046bbbdc23d67323b838cb1c4c1e3fba0e"><code>76943f046bbb</code></a> on 2026-10-23. Anything merged after that is not reflected here.</p>

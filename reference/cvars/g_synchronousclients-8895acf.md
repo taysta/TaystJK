@@ -76,12 +76,12 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 ## Evidence
 
-- registration: [codemp/cgame/cg_xcvar.h:378](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/cgame/cg_xcvar.h#L378) (XCVAR_DEF)
-- registration: [codemp/game/g_xcvar.h:160](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/game/g_xcvar.h#L160) (XCVAR_DEF)
-- behavior: [codemp/game/g_active.c:5982](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/game/g_active.c#L5982)
-- behavior: [codemp/game/g_active.c:6117](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/game/g_active.c#L6117)
-- behavior: [codemp/cgame/cg_draw.c:7268](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/cgame/cg_draw.c#L7268)
-- behavior: [codemp/cgame/cg_predict.c:1068](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/cgame/cg_predict.c#L1068)
-- behavior: [codemp/cgame/cg_servercmds.c:1272](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/cgame/cg_servercmds.c#L1272)
+- registration: [codemp/cgame/cg_xcvar.h:378](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/cgame/cg_xcvar.h#L378) (XCVAR_DEF)
+- registration: [codemp/game/g_xcvar.h:160](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/game/g_xcvar.h#L160) (XCVAR_DEF)
+- behavior: [codemp/game/g_active.c:5982](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/game/g_active.c#L5982)
+- behavior: [codemp/game/g_active.c:6117](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/game/g_active.c#L6117)
+- behavior: [codemp/cgame/cg_draw.c:7268](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/cgame/cg_draw.c#L7268)
+- behavior: [codemp/cgame/cg_predict.c:1068](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/cgame/cg_predict.c#L1068)
+- behavior: [codemp/cgame/cg_servercmds.c:1272](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/cgame/cg_servercmds.c#L1272)
 
-<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/f999cbc0912773164962d8be37737a31fe9ade8d"><code>f999cbc09127</code></a> on 2026-10-22. Anything merged after that is not reflected here.</p>
+<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/76943f046bbbdc23d67323b838cb1c4c1e3fba0e"><code>76943f046bbb</code></a> on 2026-10-23. Anything merged after that is not reflected here.</p>

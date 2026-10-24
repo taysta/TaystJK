@@ -73,11 +73,11 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 ## Evidence
 
-- registration: [codemp/cgame/cg_xcvar.h:222](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/cgame/cg_xcvar.h#L222) (XCVAR_DEF)
-- behavior: [codemp/cgame/cg_consolecmds.c:2277](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/cgame/cg_consolecmds.c#L2277)
-- behavior: [codemp/cgame/cg_consolecmds.c:2300](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/cgame/cg_consolecmds.c#L2300)
-- behavior: [codemp/cgame/cg_players.c:10873](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/cgame/cg_players.c#L10873)
-- behavior: [codemp/cgame/cg_snapshot.c:751](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/cgame/cg_snapshot.c#L751)
-- behavior: [codemp/cgame/cg_consolecmds.c:2289](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/cgame/cg_consolecmds.c#L2289)
+- registration: [codemp/cgame/cg_xcvar.h:222](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/cgame/cg_xcvar.h#L222) (XCVAR_DEF)
+- behavior: [codemp/cgame/cg_consolecmds.c:2277](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/cgame/cg_consolecmds.c#L2277)
+- behavior: [codemp/cgame/cg_consolecmds.c:2300](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/cgame/cg_consolecmds.c#L2300)
+- behavior: [codemp/cgame/cg_players.c:10873](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/cgame/cg_players.c#L10873)
+- behavior: [codemp/cgame/cg_snapshot.c:751](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/cgame/cg_snapshot.c#L751)
+- behavior: [codemp/cgame/cg_consolecmds.c:2289](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/cgame/cg_consolecmds.c#L2289)
 
-<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/f999cbc0912773164962d8be37737a31fe9ade8d"><code>f999cbc09127</code></a> on 2026-10-22. Anything merged after that is not reflected here.</p>
+<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/76943f046bbbdc23d67323b838cb1c4c1e3fba0e"><code>76943f046bbb</code></a> on 2026-10-23. Anything merged after that is not reflected here.</p>

@@ -84,11 +84,11 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 ## Evidence
 
-- registration: [codemp/rd-dedicated/tr_init.cpp:327](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/rd-dedicated/tr_init.cpp#L327) (Cvar_Get)
-- registration: [codemp/rd-rend2/tr_init.cpp:1508](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/rd-rend2/tr_init.cpp#L1508) (Cvar_Get)
-- registration: [codemp/rd-vanilla/tr_init.cpp:1644](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/rd-vanilla/tr_init.cpp#L1644) (Cvar_Get)
-- registration: [codemp/rd-vulkan/tr_init.cpp:796](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/rd-vulkan/tr_init.cpp#L796) (Cvar_Get)
-- behavior: [codemp/rd-vanilla/tr_backend.cpp:2157](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/rd-vanilla/tr_backend.cpp#L2157)
-- behavior: [shared/rd-rend2/tr_backend.cpp:3146](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/shared/rd-rend2/tr_backend.cpp#L3146)
+- registration: [codemp/rd-dedicated/tr_init.cpp:327](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/rd-dedicated/tr_init.cpp#L327) (Cvar_Get)
+- registration: [codemp/rd-rend2/tr_init.cpp:1508](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/rd-rend2/tr_init.cpp#L1508) (Cvar_Get)
+- registration: [codemp/rd-vanilla/tr_init.cpp:1644](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/rd-vanilla/tr_init.cpp#L1644) (Cvar_Get)
+- registration: [codemp/rd-vulkan/tr_init.cpp:796](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/rd-vulkan/tr_init.cpp#L796) (Cvar_Get)
+- behavior: [codemp/rd-vanilla/tr_backend.cpp:2157](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/rd-vanilla/tr_backend.cpp#L2157)
+- behavior: [shared/rd-rend2/tr_backend.cpp:3146](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/shared/rd-rend2/tr_backend.cpp#L3146)
 
-<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/f999cbc0912773164962d8be37737a31fe9ade8d"><code>f999cbc09127</code></a> on 2026-10-22. Anything merged after that is not reflected here.</p>
+<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/76943f046bbbdc23d67323b838cb1c4c1e3fba0e"><code>76943f046bbb</code></a> on 2026-10-23. Anything merged after that is not reflected here.</p>

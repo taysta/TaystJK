@@ -39,8 +39,8 @@ Widescreen aspect ratio correction
 
 | Value | Meaning | Evidence |
 |:--|:--|:--|
-| `1` | Selects the code path tested for value 1. | [codemp/rd-common/tr_font.cpp:1458](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/rd-common/tr_font.cpp#L1458) |
-| `2` | Selects the code path tested for value 2. | [codemp/rd-common/tr_font.cpp:1461](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/rd-common/tr_font.cpp#L1461) |
+| `1` | Selects the code path tested for value 1. | [codemp/rd-common/tr_font.cpp:1458](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/rd-common/tr_font.cpp#L1458) |
+| `2` | Selects the code path tested for value 2. | [codemp/rd-common/tr_font.cpp:1461](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/rd-common/tr_font.cpp#L1461) |
 
 ## Flags
 
@@ -107,16 +107,16 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 ## Evidence
 
-- registration: [codemp/cgame/cg_xcvar.h:143](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/cgame/cg_xcvar.h#L143) (XCVAR_DEF)
-- registration: [codemp/client/cl_main.cpp:3444](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/client/cl_main.cpp#L3444) (Cvar_Get)
-- registration: [codemp/rd-rend2/tr_init.cpp:1696](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/rd-rend2/tr_init.cpp#L1696) (Cvar_Get)
-- registration: [codemp/rd-vanilla/tr_init.cpp:1743](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/rd-vanilla/tr_init.cpp#L1743) (Cvar_Get)
-- registration: [codemp/rd-vulkan/tr_init.cpp:905](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/rd-vulkan/tr_init.cpp#L905) (Cvar_Get)
-- registration: [codemp/ui/ui_xcvar.h:37](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/ui/ui_xcvar.h#L37) (XCVAR_DEF)
-- behavior: [codemp/client/cl_main.cpp:2424](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/client/cl_main.cpp#L2424)
-- behavior: [codemp/rd-common/tr_font.cpp:1458](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/rd-common/tr_font.cpp#L1458)
-- behavior: [codemp/rd-common/tr_font.cpp:1461](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/rd-common/tr_font.cpp#L1461)
-- behavior: [codemp/rd-common/tr_font.cpp:1760](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/rd-common/tr_font.cpp#L1760)
-- behavior: [codemp/rd-common/tr_font.cpp:1764](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/rd-common/tr_font.cpp#L1764)
+- registration: [codemp/cgame/cg_xcvar.h:143](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/cgame/cg_xcvar.h#L143) (XCVAR_DEF)
+- registration: [codemp/client/cl_main.cpp:3444](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/client/cl_main.cpp#L3444) (Cvar_Get)
+- registration: [codemp/rd-rend2/tr_init.cpp:1696](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/rd-rend2/tr_init.cpp#L1696) (Cvar_Get)
+- registration: [codemp/rd-vanilla/tr_init.cpp:1743](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/rd-vanilla/tr_init.cpp#L1743) (Cvar_Get)
+- registration: [codemp/rd-vulkan/tr_init.cpp:905](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/rd-vulkan/tr_init.cpp#L905) (Cvar_Get)
+- registration: [codemp/ui/ui_xcvar.h:37](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/ui/ui_xcvar.h#L37) (XCVAR_DEF)
+- behavior: [codemp/client/cl_main.cpp:2424](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/client/cl_main.cpp#L2424)
+- behavior: [codemp/rd-common/tr_font.cpp:1458](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/rd-common/tr_font.cpp#L1458)
+- behavior: [codemp/rd-common/tr_font.cpp:1461](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/rd-common/tr_font.cpp#L1461)
+- behavior: [codemp/rd-common/tr_font.cpp:1760](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/rd-common/tr_font.cpp#L1760)
+- behavior: [codemp/rd-common/tr_font.cpp:1764](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/rd-common/tr_font.cpp#L1764)
 
-<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/f999cbc0912773164962d8be37737a31fe9ade8d"><code>f999cbc09127</code></a> on 2026-10-22. Anything merged after that is not reflected here.</p>
+<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/76943f046bbbdc23d67323b838cb1c4c1e3fba0e"><code>76943f046bbb</code></a> on 2026-10-23. Anything merged after that is not reflected here.</p>

@@ -25,7 +25,7 @@ Controls `ui_cl_maxpackets` in the ui module. Consult the cited behavior reads b
 | Restart | No latch flag is registered. |
 | Manually settable | No; the game writes this value. |
 | Cheat protected | No |
-| Staging copy of | [`cl_maxPackets`](/TaystJK/reference/cvars/cl_maxpackets-7b738c4/); [written through](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/ui/ui_main.c#L6430), [read back](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/ui/ui_main.c#L6436) |
+| Staging copy of | [`cl_maxPackets`](/TaystJK/reference/cvars/cl_maxpackets-7b738c4/); [written through](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/ui/ui_main.c#L6430), [read back](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/ui/ui_main.c#L6436) |
 | Network scope | `client-only`: Local to the client/UI/renderer. |
 | Category | Server & networking |
 | Module | `ui` |
@@ -34,7 +34,7 @@ Controls `ui_cl_maxpackets` in the ui module. Consult the cited behavior reads b
 | Confidence | `medium` |
 | Added | 2015-06-17 in [`d93386f34`](https://github.com/taysta/TaystJK/commit/d93386f34b71fbf1eff27f198956e519918f45a0) <span class="status-chip">needs review</span> ([how to compare this against your build](/TaystJK/features/whats-new/#how-to-tell-what-your-build-has)) |
 | In-game xdocs | No |
-| In-game menu | Yes: [ingame_setup.menu:5230](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/assets/japro/ui/jamp/ingame_setup.menu#L5230) |
+| In-game menu | Yes: [ingame_setup.menu:5230](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/assets/japro/ui/jamp/ingame_setup.menu#L5230) |
 
 ## Values
 
@@ -68,8 +68,8 @@ Authored dates come from the exact registration's first content commit, PR dates
 
 ## Evidence
 
-- registration: [codemp/ui/ui_main.c:6434](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/ui/ui_main.c#L6434) (Cvar_Register)
-- behavior: [codemp/ui/ui_main.c:6430](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/ui/ui_main.c#L6430)
-- behavior: [codemp/ui/ui_main.c:6436](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/ui/ui_main.c#L6436)
+- registration: [codemp/ui/ui_main.c:6434](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/ui/ui_main.c#L6434) (Cvar_Register)
+- behavior: [codemp/ui/ui_main.c:6430](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/ui/ui_main.c#L6430)
+- behavior: [codemp/ui/ui_main.c:6436](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/ui/ui_main.c#L6436)
 
-<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/f999cbc0912773164962d8be37737a31fe9ade8d"><code>f999cbc09127</code></a> on 2026-10-22. Anything merged after that is not reflected here.</p>
+<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/76943f046bbbdc23d67323b838cb1c4c1e3fba0e"><code>76943f046bbb</code></a> on 2026-10-23. Anything merged after that is not reflected here.</p>

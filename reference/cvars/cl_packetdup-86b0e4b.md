@@ -31,14 +31,14 @@ Controls `cl_packetdup` in the engine-client module. Consult the cited behavior 
 | Confidence | `high` |
 | Added | 2013-04-08 in [`14cea1563`](https://github.com/taysta/TaystJK/commit/14cea1563762076974bee277afadbd5bf234c494) ([how to compare this against your build](/TaystJK/features/whats-new/#how-to-tell-what-your-build-has)) |
 | In-game xdocs | No |
-| In-game menu | Yes: [ingame_setup.menu:5271](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/assets/japro/ui/jamp/ingame_setup.menu#L5271) |
+| In-game menu | Yes: [ingame_setup.menu:5271](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/assets/japro/ui/jamp/ingame_setup.menu#L5271) |
 
 ## Values
 
 | Value | Meaning | Evidence |
 |:--|:--|:--|
-| `0` | Disabled. | [codemp/client/cl_input.cpp:1600](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/client/cl_input.cpp#L1600) |
-| `1` | Enabled. | [codemp/client/cl_input.cpp:1600](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/client/cl_input.cpp#L1600) |
+| `0` | Disabled. | [codemp/client/cl_input.cpp:1600](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/client/cl_input.cpp#L1600) |
+| `1` | Enabled. | [codemp/client/cl_input.cpp:1600](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/client/cl_input.cpp#L1600) |
 
 ## Flags
 
@@ -66,11 +66,11 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 ## Evidence
 
-- registration: [codemp/client/cl_main.cpp:3348](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/client/cl_main.cpp#L3348) (Cvar_Get)
-- behavior: [codemp/client/cl_input.cpp:1600](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/client/cl_input.cpp#L1600)
-- behavior: [codemp/client/cl_input.cpp:1602](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/client/cl_input.cpp#L1602)
-- behavior: [codemp/client/cl_input.cpp:1605](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/client/cl_input.cpp#L1605)
-- behavior: [codemp/server/sv_client.cpp:1791](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/server/sv_client.cpp#L1791)
-- behavior: [codemp/ui/ui_main.c:5871](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/ui/ui_main.c#L5871)
+- registration: [codemp/client/cl_main.cpp:3348](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/client/cl_main.cpp#L3348) (Cvar_Get)
+- behavior: [codemp/client/cl_input.cpp:1600](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/client/cl_input.cpp#L1600)
+- behavior: [codemp/client/cl_input.cpp:1602](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/client/cl_input.cpp#L1602)
+- behavior: [codemp/client/cl_input.cpp:1605](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/client/cl_input.cpp#L1605)
+- behavior: [codemp/server/sv_client.cpp:1791](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/server/sv_client.cpp#L1791)
+- behavior: [codemp/ui/ui_main.c:5871](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/ui/ui_main.c#L5871)
 
-<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/f999cbc0912773164962d8be37737a31fe9ade8d"><code>f999cbc09127</code></a> on 2026-10-22. Anything merged after that is not reflected here.</p>
+<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/76943f046bbbdc23d67323b838cb1c4c1e3fba0e"><code>76943f046bbb</code></a> on 2026-10-23. Anything merged after that is not reflected here.</p>

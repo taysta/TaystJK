@@ -31,13 +31,13 @@ Controls `r_fastsky` in the renderer module. Consult the cited behavior reads be
 | Confidence | `high` |
 | Added | 2013-04-08 in [`14cea1563`](https://github.com/taysta/TaystJK/commit/14cea1563762076974bee277afadbd5bf234c494) ([how to compare this against your build](/TaystJK/features/whats-new/#how-to-tell-what-your-build-has)) |
 | In-game xdocs | No |
-| In-game menu | Yes: [ingame_setup.menu:2748](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/assets/japro/ui/jamp/ingame_setup.menu#L2748) |
+| In-game menu | Yes: [ingame_setup.menu:2748](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/assets/japro/ui/jamp/ingame_setup.menu#L2748) |
 
 ## Values
 
 | Value | Meaning | Evidence |
 |:--|:--|:--|
-| `10` | Selects the code path tested for value 10. | [codemp/rd-vanilla/tr_backend.cpp:490](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/rd-vanilla/tr_backend.cpp#L490) |
+| `10` | Selects the code path tested for value 10. | [codemp/rd-vanilla/tr_backend.cpp:490](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/rd-vanilla/tr_backend.cpp#L490) |
 
 ## Flags
 
@@ -92,14 +92,14 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 ## Evidence
 
-- registration: [codemp/rd-dedicated/tr_init.cpp:367](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/rd-dedicated/tr_init.cpp#L367) (Cvar_Get)
-- registration: [codemp/rd-rend2/tr_init.cpp:1619](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/rd-rend2/tr_init.cpp#L1619) (Cvar_Get)
-- registration: [codemp/rd-vanilla/tr_init.cpp:1677](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/rd-vanilla/tr_init.cpp#L1677) (Cvar_Get)
-- registration: [codemp/rd-vulkan/tr_init.cpp:835](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/rd-vulkan/tr_init.cpp#L835) (Cvar_Get)
-- behavior: [codemp/rd-vanilla/tr_backend.cpp:479](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/rd-vanilla/tr_backend.cpp#L479)
-- behavior: [codemp/rd-vanilla/tr_backend.cpp:487](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/rd-vanilla/tr_backend.cpp#L487)
-- behavior: [codemp/rd-vanilla/tr_backend.cpp:490](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/rd-vanilla/tr_backend.cpp#L490)
-- behavior: [codemp/rd-vanilla/tr_backend.cpp:502](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/rd-vanilla/tr_backend.cpp#L502)
-- behavior: [codemp/rd-vanilla/tr_backend.cpp:508](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/rd-vanilla/tr_backend.cpp#L508)
+- registration: [codemp/rd-dedicated/tr_init.cpp:367](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/rd-dedicated/tr_init.cpp#L367) (Cvar_Get)
+- registration: [codemp/rd-rend2/tr_init.cpp:1619](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/rd-rend2/tr_init.cpp#L1619) (Cvar_Get)
+- registration: [codemp/rd-vanilla/tr_init.cpp:1677](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/rd-vanilla/tr_init.cpp#L1677) (Cvar_Get)
+- registration: [codemp/rd-vulkan/tr_init.cpp:835](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/rd-vulkan/tr_init.cpp#L835) (Cvar_Get)
+- behavior: [codemp/rd-vanilla/tr_backend.cpp:479](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/rd-vanilla/tr_backend.cpp#L479)
+- behavior: [codemp/rd-vanilla/tr_backend.cpp:487](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/rd-vanilla/tr_backend.cpp#L487)
+- behavior: [codemp/rd-vanilla/tr_backend.cpp:490](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/rd-vanilla/tr_backend.cpp#L490)
+- behavior: [codemp/rd-vanilla/tr_backend.cpp:502](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/rd-vanilla/tr_backend.cpp#L502)
+- behavior: [codemp/rd-vanilla/tr_backend.cpp:508](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/rd-vanilla/tr_backend.cpp#L508)
 
-<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/f999cbc0912773164962d8be37737a31fe9ade8d"><code>f999cbc09127</code></a> on 2026-10-22. Anything merged after that is not reflected here.</p>
+<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/76943f046bbbdc23d67323b838cb1c4c1e3fba0e"><code>76943f046bbb</code></a> on 2026-10-23. Anything merged after that is not reflected here.</p>

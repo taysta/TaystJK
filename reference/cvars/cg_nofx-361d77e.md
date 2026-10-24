@@ -31,19 +31,19 @@ Determines if effects and map models are shown
 | Derivation | `documented` |
 | Confidence | `medium` |
 | Added | 2018-09-03 in [`bdcd618c6`](https://github.com/taysta/TaystJK/commit/bdcd618c67713b86946b720d791c382d3908d97c) <span class="status-chip">needs review</span> ([how to compare this against your build](/TaystJK/features/whats-new/#how-to-tell-what-your-build-has)) |
-| In-game xdocs | Yes: [codemp/ui/ui_xdocs.h:509](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/ui/ui_xdocs.h#L509) |
-| In-game menu | Yes: [ingame_setup.menu:3476](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/assets/japro/ui/jamp/ingame_setup.menu#L3476) |
+| In-game xdocs | Yes: [codemp/ui/ui_xdocs.h:509](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/ui/ui_xdocs.h#L509) |
+| In-game menu | Yes: [ingame_setup.menu:3476](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/assets/japro/ui/jamp/ingame_setup.menu#L3476) |
 
 ## Values
 
 | Value | Meaning | Evidence |
 |:--|:--|:--|
-| `0` | No effects are removed | [codemp/ui/ui_xdocs.h:509](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/ui/ui_xdocs.h#L509) |
-| `1` | Removes effects | [codemp/ui/ui_xdocs.h:509](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/ui/ui_xdocs.h#L509) |
-| `2` | Removes effects and speakers | [codemp/ui/ui_xdocs.h:510](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/ui/ui_xdocs.h#L510) |
-| `3` | Removes above and replaces misc map models | [codemp/ui/ui_xdocs.h:511](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/ui/ui_xdocs.h#L511) |
-| `4` | Removes effects, speakers, and misc map models | [codemp/ui/ui_xdocs.h:512](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/ui/ui_xdocs.h#L512) |
-| `5` | Completely disables all scheduled FX | [codemp/ui/ui_xdocs.h:514](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/ui/ui_xdocs.h#L514) |
+| `0` | No effects are removed | [codemp/ui/ui_xdocs.h:509](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/ui/ui_xdocs.h#L509) |
+| `1` | Removes effects | [codemp/ui/ui_xdocs.h:509](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/ui/ui_xdocs.h#L509) |
+| `2` | Removes effects and speakers | [codemp/ui/ui_xdocs.h:510](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/ui/ui_xdocs.h#L510) |
+| `3` | Removes above and replaces misc map models | [codemp/ui/ui_xdocs.h:511](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/ui/ui_xdocs.h#L511) |
+| `4` | Removes effects, speakers, and misc map models | [codemp/ui/ui_xdocs.h:512](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/ui/ui_xdocs.h#L512) |
+| `5` | Completely disables all scheduled FX | [codemp/ui/ui_xdocs.h:514](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/ui/ui_xdocs.h#L514) |
 
 ## Flags
 
@@ -82,12 +82,12 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 ## Evidence
 
-- registration: [codemp/cgame/cg_xcvar.h:141](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/cgame/cg_xcvar.h#L141) (XCVAR_DEF)
-- behavior: [codemp/cgame/cg_ents.c:1734](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/cgame/cg_ents.c#L1734)
-- behavior: [codemp/cgame/cg_ents.c:1752](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/cgame/cg_ents.c#L1752)
-- behavior: [codemp/cgame/cg_ents.c:3761](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/cgame/cg_ents.c#L3761)
-- behavior: [codemp/cgame/cg_view.c:2022](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/cgame/cg_view.c#L2022)
-- behavior: [codemp/cgame/cg_view.c:3059](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/cgame/cg_view.c#L3059)
-- documentation: [codemp/ui/ui_xdocs.h:509](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/ui/ui_xdocs.h#L509)
+- registration: [codemp/cgame/cg_xcvar.h:141](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/cgame/cg_xcvar.h#L141) (XCVAR_DEF)
+- behavior: [codemp/cgame/cg_ents.c:1734](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/cgame/cg_ents.c#L1734)
+- behavior: [codemp/cgame/cg_ents.c:1752](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/cgame/cg_ents.c#L1752)
+- behavior: [codemp/cgame/cg_ents.c:3761](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/cgame/cg_ents.c#L3761)
+- behavior: [codemp/cgame/cg_view.c:2022](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/cgame/cg_view.c#L2022)
+- behavior: [codemp/cgame/cg_view.c:3059](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/cgame/cg_view.c#L3059)
+- documentation: [codemp/ui/ui_xdocs.h:509](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/ui/ui_xdocs.h#L509)
 
-<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/f999cbc0912773164962d8be37737a31fe9ade8d"><code>f999cbc09127</code></a> on 2026-10-22. Anything merged after that is not reflected here.</p>
+<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/76943f046bbbdc23d67323b838cb1c4c1e3fba0e"><code>76943f046bbb</code></a> on 2026-10-23. Anything merged after that is not reflected here.</p>

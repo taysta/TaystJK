@@ -21,7 +21,7 @@ This is the deliberately untidy review queue behind the published reference. `un
 | JK2MV | 16 |
 | NewJK / NewMod | 12 |
 | OpenJK | 172 |
-| TaystJK | 76 |
+| TaystJK | 77 |
 | Vulkan | 24 |
 | jaPRO | 481 |
 | rend2 | 90 |
@@ -829,7 +829,7 @@ The dump was captured from stdout after loading `mp/ffa3`; stdout does not use t
 | [`write`](/TaystJK/reference/commands/write-e1d0c6c/) | command | engine-shared | Write the configuration to file |
 | [`ysal`](/TaystJK/reference/commands/ysal-49fb494/) | command | cgame | Forwards this command to the connected game server. |
 
-## Semantics or options needing review (1644)
+## Semantics or options needing review (1645)
 
 | Name | Kind | Module | Summary |
 |:--|:--|:--|:--|
@@ -1846,6 +1846,7 @@ The dump was captured from stdout after loading `mp/ffa3`; stdout does not use t
 | [`sv_timeout`](/TaystJK/reference/cvars/sv_timeout-2e15cf0/) | cvar | engine-server | Controls `sv_timeout` in the engine-server module. |
 | [`sv_zombietime`](/TaystJK/reference/cvars/sv_zombietime-c069b6b/) | cvar | engine-server | Controls `sv_zombietime` in the engine-server module. |
 | [`sys_lowmem`](/TaystJK/reference/cvars/sys_lowmem-8037c1f/) | cvar | engine-shared | Controls `sys_lowmem` in the engine-shared module. |
+| [`taystJKcgflags`](/TaystJK/reference/cvars/taystjkcgflags-ed5bbbe/) | cvar | cgame | Controls `taystJKcgflags` in the cgame module. |
 | [`team1_icon`](/TaystJK/reference/cvars/team1_icon-d94de55/) | cvar | cgame | Registered by the current source, but no user-facing behavior description has been verified. |
 | [`team2_icon`](/TaystJK/reference/cvars/team2_icon-a8c547c/) | cvar | cgame | Registered by the current source, but no user-facing behavior description has been verified. |
 | [`teamoverlay`](/TaystJK/reference/cvars/teamoverlay-f842919/) | cvar | cgame | Controls `teamoverlay` in the cgame module. |

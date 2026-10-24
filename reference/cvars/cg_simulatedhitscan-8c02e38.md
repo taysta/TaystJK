@@ -38,8 +38,8 @@ Toggle predicted hitscan weapon effects.
 
 | Value | Meaning | Evidence |
 |:--|:--|:--|
-| `0` | Disabled. | [codemp/cgame/cg_event.c:2837](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/cgame/cg_event.c#L2837) |
-| `1` | Enabled. | [codemp/cgame/cg_event.c:2837](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/cgame/cg_event.c#L2837) |
+| `0` | Disabled. | [codemp/cgame/cg_event.c:2837](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/cgame/cg_event.c#L2837) |
+| `1` | Enabled. | [codemp/cgame/cg_event.c:2837](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/cgame/cg_event.c#L2837) |
 
 ## Flags
 
@@ -79,12 +79,12 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 ## Evidence
 
-- registration: [codemp/cgame/cg_xcvar.h:147](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/cgame/cg_xcvar.h#L147) (XCVAR_DEF)
-- behavior: [codemp/cgame/cg_event.c:2837](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/cgame/cg_event.c#L2837)
-- behavior: [codemp/cgame/cg_event.c:2875](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/cgame/cg_event.c#L2875)
-- behavior: [codemp/cgame/cg_event.c:3341](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/cgame/cg_event.c#L3341)
-- behavior: [codemp/cgame/cg_weapons.c:2652](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/cgame/cg_weapons.c#L2652)
-- behavior: [codemp/cgame/cg_weapons.c:2699](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/cgame/cg_weapons.c#L2699)
-- documentation: [docs/japro_docs.md:481](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/docs/japro_docs.md#L481)
+- registration: [codemp/cgame/cg_xcvar.h:147](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/cgame/cg_xcvar.h#L147) (XCVAR_DEF)
+- behavior: [codemp/cgame/cg_event.c:2837](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/cgame/cg_event.c#L2837)
+- behavior: [codemp/cgame/cg_event.c:2875](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/cgame/cg_event.c#L2875)
+- behavior: [codemp/cgame/cg_event.c:3341](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/cgame/cg_event.c#L3341)
+- behavior: [codemp/cgame/cg_weapons.c:2652](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/cgame/cg_weapons.c#L2652)
+- behavior: [codemp/cgame/cg_weapons.c:2699](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/cgame/cg_weapons.c#L2699)
+- documentation: [docs/japro_docs.md:481](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/docs/japro_docs.md#L481)
 
-<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/f999cbc0912773164962d8be37737a31fe9ade8d"><code>f999cbc09127</code></a> on 2026-10-22. Anything merged after that is not reflected here.</p>
+<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/76943f046bbbdc23d67323b838cb1c4c1e3fba0e"><code>76943f046bbb</code></a> on 2026-10-23. Anything merged after that is not reflected here.</p>

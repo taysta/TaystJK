@@ -38,8 +38,8 @@ Allow players to hide themselves and not be spectated/seen in racemode.
 
 | Value | Meaning | Evidence |
 |:--|:--|:--|
-| `0` | Disabled. | [codemp/game/g_active.c:1700](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/game/g_active.c#L1700) |
-| `1` | Enabled. | [codemp/game/g_active.c:1700](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/game/g_active.c#L1700) |
+| `0` | Disabled. | [codemp/game/g_active.c:1700](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/game/g_active.c#L1700) |
+| `1` | Enabled. | [codemp/game/g_active.c:1700](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/game/g_active.c#L1700) |
 
 ## Flags
 
@@ -77,12 +77,12 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 ## Evidence
 
-- registration: [codemp/game/g_xcvar.h:268](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/game/g_xcvar.h#L268) (XCVAR_DEF)
-- behavior: [codemp/game/g_active.c:1700](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/game/g_active.c#L1700)
-- behavior: [codemp/game/g_active.c:6042](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/game/g_active.c#L6042)
-- behavior: [codemp/game/g_cmds.c:6990](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/game/g_cmds.c#L6990)
-- behavior: [codemp/game/g_trigger.c:1361](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/game/g_trigger.c#L1361)
-- behavior: [codemp/game/g_trigger.c:1489](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/game/g_trigger.c#L1489)
-- documentation: [docs/japro_docs.md:80](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/docs/japro_docs.md#L80)
+- registration: [codemp/game/g_xcvar.h:268](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/game/g_xcvar.h#L268) (XCVAR_DEF)
+- behavior: [codemp/game/g_active.c:1700](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/game/g_active.c#L1700)
+- behavior: [codemp/game/g_active.c:6042](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/game/g_active.c#L6042)
+- behavior: [codemp/game/g_cmds.c:6990](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/game/g_cmds.c#L6990)
+- behavior: [codemp/game/g_trigger.c:1361](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/game/g_trigger.c#L1361)
+- behavior: [codemp/game/g_trigger.c:1489](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/game/g_trigger.c#L1489)
+- documentation: [docs/japro_docs.md:80](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/docs/japro_docs.md#L80)
 
-<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/f999cbc0912773164962d8be37737a31fe9ade8d"><code>f999cbc09127</code></a> on 2026-10-22. Anything merged after that is not reflected here.</p>
+<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/76943f046bbbdc23d67323b838cb1c4c1e3fba0e"><code>76943f046bbb</code></a> on 2026-10-23. Anything merged after that is not reflected here.</p>
