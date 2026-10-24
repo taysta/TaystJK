@@ -65,7 +65,7 @@ Defined in
 | 0 | 1 | `TAYSTJK_INFO_RGBSABERS` | Sabers may use colours beyond the stock set. |
 | 1 | 2 | `TAYSTJK_INFO_BLACKSABERS` | The black saber colour is permitted. |
 | 2 | 4 | `TAYSTJK_INFO_FLIPKICK` | Flip kicks are supported. |
-| 3 | 8 | `TAYSTJK_INFO_GRAPPLE` | The grapple hook behaves as JA+'s. |
+| 3 | 8 | `TAYSTJK_INFO_GRAPPLE` | The grapple hook behaves as JA+'s ([`bg_pmove.c`](https://github.com/taysta/TaystJK/blame/4cca97d97551d2fda974e7fe7d5693f21900a2f3/codemp/game/bg_pmove.c#L15608)). Client builds from before 24 October 2026 ignore it. |
 | 4 | 16 | `TAYSTJK_INFO_FIXROLL_1` | Rolling while using force grip. |
 | 5 | 32 | `TAYSTJK_INFO_FIXROLL_2` | The above, plus chaining rolls. |
 | 6 | 64 | `TAYSTJK_INFO_FIXROLL_3` | JK2-style rolling. |
@@ -146,11 +146,8 @@ Each feature in the bit table checks for its flag next to the JA+ and jaPRO chec
 sabers are typical: they are allowed on JA+ and above, or when your flag is set
 ([`cg_players.c`](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/cgame/cg_players.c#L6063)).
 
-Flags can also change behaviour on recognised JA+ and jaPRO servers. The grapple flag gives
-a jaPRO server the JA+ grapple even when jaPRO's own JA+-grapple option is off, outside
-racemode
-([`bg_pmove.c`](https://github.com/taysta/TaystJK/blame/4cca97d97551d2fda974e7fe7d5693f21900a2f3/codemp/game/bg_pmove.c#L15608)). Builds older than that change ignore the
-grapple flag. In the roll selection above, `FIXROLL_3` is tested before the server's roll-2 or roll-1 option, so
+Flags can also change behaviour on recognised JA+ and jaPRO servers. In the roll selection
+above, `FIXROLL_3` is tested before the server's roll-2 or roll-1 option, so
 advertising it takes precedence over either lower mode
 ([`bg_pmove.c`](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/game/bg_pmove.c#L314)).
 Keep the advertised flags consistent with the server's actual movement rules and options.
