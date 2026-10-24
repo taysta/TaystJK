@@ -37,8 +37,8 @@ Controls `cg_drawRewards` in the cgame module. Consult the cited behavior reads 
 
 | Value | Meaning | Evidence |
 |:--|:--|:--|
-| `1` | Selects the code path tested for value 1. | [codemp/cgame/cg_playerstate.c:382](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/cgame/cg_playerstate.c#L382) |
-| `2` | Selects the code path tested for value 2. | [codemp/cgame/cg_playerstate.c:386](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/cgame/cg_playerstate.c#L386) |
+| `1` | Selects the code path tested for value 1. | [codemp/cgame/cg_playerstate.c:382](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/cgame/cg_playerstate.c#L382) |
+| `2` | Selects the code path tested for value 2. | [codemp/cgame/cg_playerstate.c:386](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/cgame/cg_playerstate.c#L386) |
 
 ## Flags
 
@@ -66,11 +66,11 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 ## Evidence
 
-- registration: [codemp/cgame/cg_xcvar.h:284](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/cgame/cg_xcvar.h#L284) (XCVAR_DEF)
-- behavior: [codemp/cgame/cg_playerstate.c:382](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/cgame/cg_playerstate.c#L382)
-- behavior: [codemp/cgame/cg_playerstate.c:386](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/cgame/cg_playerstate.c#L386)
-- behavior: [codemp/cgame/cg_playerstate.c:399](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/cgame/cg_playerstate.c#L399)
-- behavior: [codemp/cgame/cg_playerstate.c:403](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/cgame/cg_playerstate.c#L403)
-- behavior: [codemp/cgame/cg_playerstate.c:416](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/cgame/cg_playerstate.c#L416)
+- registration: [codemp/cgame/cg_xcvar.h:284](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/cgame/cg_xcvar.h#L284) (XCVAR_DEF)
+- behavior: [codemp/cgame/cg_playerstate.c:382](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/cgame/cg_playerstate.c#L382)
+- behavior: [codemp/cgame/cg_playerstate.c:386](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/cgame/cg_playerstate.c#L386)
+- behavior: [codemp/cgame/cg_playerstate.c:399](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/cgame/cg_playerstate.c#L399)
+- behavior: [codemp/cgame/cg_playerstate.c:403](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/cgame/cg_playerstate.c#L403)
+- behavior: [codemp/cgame/cg_playerstate.c:416](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/cgame/cg_playerstate.c#L416)
 
-<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/f999cbc0912773164962d8be37737a31fe9ade8d"><code>f999cbc09127</code></a> on 2026-10-22. Anything merged after that is not reflected here.</p>
+<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/76943f046bbbdc23d67323b838cb1c4c1e3fba0e"><code>76943f046bbb</code></a> on 2026-10-23. Anything merged after that is not reflected here.</p>

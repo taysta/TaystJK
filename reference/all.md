@@ -1270,6 +1270,7 @@ description: "A no-JavaScript index of every TaystJK cvar and console command."
 </div>
 <h3 id="cvars-t">T</h3>
 <div class="static-index-list">
+<a href="/TaystJK/reference/cvars/taystjkcgflags-ed5bbbe/"><code>taystJKcgflags</code></a>
 <a href="/TaystJK/reference/cvars/team1_icon-d94de55/"><code>team1_icon</code></a>
 <a href="/TaystJK/reference/cvars/team2_icon-a8c547c/"><code>team2_icon</code></a>
 <a href="/TaystJK/reference/cvars/teamoverlay-f842919/"><code>teamoverlay</code></a>

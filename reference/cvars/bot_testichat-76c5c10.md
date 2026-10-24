@@ -52,8 +52,8 @@ Origin: <span class="label ref-origin ref-origin-basejka">Base Jedi Academy</spa
 
 ## Evidence
 
-- registration: [codemp/server/sv_bot.cpp:670](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/server/sv_bot.cpp#L670) (Cvar_Get)
-- behavior: [codemp/botlib/be_ai_chat.cpp:2506](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/botlib/be_ai_chat.cpp#L2506)
-- behavior: [codemp/botlib/be_ai_chat.cpp:2824](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/botlib/be_ai_chat.cpp#L2824)
+- registration: [codemp/server/sv_bot.cpp:670](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/server/sv_bot.cpp#L670) (Cvar_Get)
+- behavior: [codemp/botlib/be_ai_chat.cpp:2506](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/botlib/be_ai_chat.cpp#L2506)
+- behavior: [codemp/botlib/be_ai_chat.cpp:2824](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/botlib/be_ai_chat.cpp#L2824)
 
-<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/f999cbc0912773164962d8be37737a31fe9ade8d"><code>f999cbc09127</code></a> on 2026-10-22. Anything merged after that is not reflected here.</p>
+<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/76943f046bbbdc23d67323b838cb1c4c1e3fba0e"><code>76943f046bbb</code></a> on 2026-10-23. Anything merged after that is not reflected here.</p>

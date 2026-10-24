@@ -37,8 +37,8 @@ Controls `cm_extraVerbose` in the engine-shared module. Consult the cited behavi
 
 | Value | Meaning | Evidence |
 |:--|:--|:--|
-| `0` | Disabled. | [codemp/qcommon/cm_patch.cpp:585](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/qcommon/cm_patch.cpp#L585) |
-| `1` | Enabled. | [codemp/qcommon/cm_patch.cpp:585](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/qcommon/cm_patch.cpp#L585) |
+| `0` | Disabled. | [codemp/qcommon/cm_patch.cpp:585](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/qcommon/cm_patch.cpp#L585) |
+| `1` | Enabled. | [codemp/qcommon/cm_patch.cpp:585](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/qcommon/cm_patch.cpp#L585) |
 
 ## Flags
 
@@ -70,7 +70,7 @@ Authored dates come from the exact registration's first content commit, PR dates
 
 ## Evidence
 
-- registration: [codemp/qcommon/cm_load.cpp:637](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/qcommon/cm_load.cpp#L637) (Cvar_Get); condition `!defined(BSPC)`
-- behavior: [codemp/qcommon/cm_patch.cpp:585](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/qcommon/cm_patch.cpp#L585)
+- registration: [codemp/qcommon/cm_load.cpp:637](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/qcommon/cm_load.cpp#L637) (Cvar_Get); condition `!defined(BSPC)`
+- behavior: [codemp/qcommon/cm_patch.cpp:585](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/qcommon/cm_patch.cpp#L585)
 
-<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/f999cbc0912773164962d8be37737a31fe9ade8d"><code>f999cbc09127</code></a> on 2026-10-22. Anything merged after that is not reflected here.</p>
+<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/76943f046bbbdc23d67323b838cb1c4c1e3fba0e"><code>76943f046bbb</code></a> on 2026-10-23. Anything merged after that is not reflected here.</p>

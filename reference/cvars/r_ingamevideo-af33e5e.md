@@ -38,8 +38,8 @@ Controls `cl_inGameVideo` in the renderer module. Consult the cited behavior rea
 
 | Value | Meaning | Evidence |
 |:--|:--|:--|
-| `0` | Disabled. | [codemp/client/cl_cin.cpp:1727](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/client/cl_cin.cpp#L1727) |
-| `1` | Enabled. | [codemp/client/cl_cin.cpp:1727](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/client/cl_cin.cpp#L1727) |
+| `0` | Disabled. | [codemp/client/cl_cin.cpp:1727](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/client/cl_cin.cpp#L1727) |
+| `1` | Enabled. | [codemp/client/cl_cin.cpp:1727](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/client/cl_cin.cpp#L1727) |
 
 ## Flags
 
@@ -87,15 +87,15 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 ## Evidence
 
-- registration: [codemp/client/cl_main.cpp:3371](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/client/cl_main.cpp#L3371) (Cvar_Get)
-- registration: [codemp/rd-dedicated/tr_init.cpp:368](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/rd-dedicated/tr_init.cpp#L368) (Cvar_Get)
-- registration: [codemp/rd-rend2/tr_init.cpp:1620](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/rd-rend2/tr_init.cpp#L1620) (Cvar_Get)
-- registration: [codemp/rd-vanilla/tr_init.cpp:1678](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/rd-vanilla/tr_init.cpp#L1678) (Cvar_Get)
-- registration: [codemp/rd-vulkan/tr_init.cpp:836](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/rd-vulkan/tr_init.cpp#L836) (Cvar_Get)
-- behavior: [codemp/client/cl_cin.cpp:1727](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/client/cl_cin.cpp#L1727)
-- behavior: [codemp/client/cl_cin.cpp:1730](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/client/cl_cin.cpp#L1730)
-- behavior: [codemp/client/cl_cin.cpp:1494](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/client/cl_cin.cpp#L1494)
-- behavior: [codemp/ui/ui_main.c:6237](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/ui/ui_main.c#L6237)
-- behavior: [codemp/ui/ui_main.c:6409](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/ui/ui_main.c#L6409)
+- registration: [codemp/client/cl_main.cpp:3371](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/client/cl_main.cpp#L3371) (Cvar_Get)
+- registration: [codemp/rd-dedicated/tr_init.cpp:368](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/rd-dedicated/tr_init.cpp#L368) (Cvar_Get)
+- registration: [codemp/rd-rend2/tr_init.cpp:1620](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/rd-rend2/tr_init.cpp#L1620) (Cvar_Get)
+- registration: [codemp/rd-vanilla/tr_init.cpp:1678](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/rd-vanilla/tr_init.cpp#L1678) (Cvar_Get)
+- registration: [codemp/rd-vulkan/tr_init.cpp:836](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/rd-vulkan/tr_init.cpp#L836) (Cvar_Get)
+- behavior: [codemp/client/cl_cin.cpp:1727](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/client/cl_cin.cpp#L1727)
+- behavior: [codemp/client/cl_cin.cpp:1730](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/client/cl_cin.cpp#L1730)
+- behavior: [codemp/client/cl_cin.cpp:1494](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/client/cl_cin.cpp#L1494)
+- behavior: [codemp/ui/ui_main.c:6237](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/ui/ui_main.c#L6237)
+- behavior: [codemp/ui/ui_main.c:6409](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/ui/ui_main.c#L6409)
 
-<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/f999cbc0912773164962d8be37737a31fe9ade8d"><code>f999cbc09127</code></a> on 2026-10-22. Anything merged after that is not reflected here.</p>
+<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/76943f046bbbdc23d67323b838cb1c4c1e3fba0e"><code>76943f046bbb</code></a> on 2026-10-23. Anything merged after that is not reflected here.</p>

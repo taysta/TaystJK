@@ -38,8 +38,8 @@ description: "1=Allow grip during knockdown recovery. 2=Allow grip/push/pull dur
 
 | Value | Meaning | Evidence |
 |:--|:--|:--|
-| `1` | Allow grip during knockdown recovery. | [docs/japro_docs.md:32](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/docs/japro_docs.md#L32) |
-| `2` | Allow grip/push/pull during knockdown recovery. | [docs/japro_docs.md:32](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/docs/japro_docs.md#L32) |
+| `1` | Allow grip during knockdown recovery. | [docs/japro_docs.md:32](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/docs/japro_docs.md#L32) |
+| `2` | Allow grip/push/pull during knockdown recovery. | [docs/japro_docs.md:32](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/docs/japro_docs.md#L32) |
 
 ## Flags
 
@@ -68,11 +68,11 @@ Authored dates come from the exact registration's first content commit, PR dates
 
 ## Evidence
 
-- registration: [codemp/game/g_xcvar.h:212](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/game/g_xcvar.h#L212) (XCVAR_DEF)
-- behavior: [codemp/game/g_cmds.c:8533](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/game/g_cmds.c#L8533)
-- behavior: [codemp/game/g_cmds.c:8535](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/game/g_cmds.c#L8535)
-- behavior: [codemp/game/w_force.c:1512](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/game/w_force.c#L1512)
-- behavior: [codemp/game/w_force.c:3309](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/game/w_force.c#L3309)
-- documentation: [docs/japro_docs.md:32](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/docs/japro_docs.md#L32)
+- registration: [codemp/game/g_xcvar.h:212](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/game/g_xcvar.h#L212) (XCVAR_DEF)
+- behavior: [codemp/game/g_cmds.c:8533](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/game/g_cmds.c#L8533)
+- behavior: [codemp/game/g_cmds.c:8535](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/game/g_cmds.c#L8535)
+- behavior: [codemp/game/w_force.c:1512](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/game/w_force.c#L1512)
+- behavior: [codemp/game/w_force.c:3309](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/game/w_force.c#L3309)
+- documentation: [docs/japro_docs.md:32](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/docs/japro_docs.md#L32)
 
-<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/f999cbc0912773164962d8be37737a31fe9ade8d"><code>f999cbc09127</code></a> on 2026-10-22. Anything merged after that is not reflected here.</p>
+<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/76943f046bbbdc23d67323b838cb1c4c1e3fba0e"><code>76943f046bbb</code></a> on 2026-10-23. Anything merged after that is not reflected here.</p>

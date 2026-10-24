@@ -39,7 +39,7 @@ Configured with /tweakForce command.
 
 ## Bits
 
-Use [`tweakForce`](/TaystJK/reference/commands/tweakforce-05bb9d3/) to toggle one option at a time; see the command page for syntax. The value column is that bit on its own. [The labels come from the source table](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/game/g_svcmds.c#L989).
+Use [`tweakForce`](/TaystJK/reference/commands/tweakforce-05bb9d3/) to toggle one option at a time; see the command page for syntax. The value column is that bit on its own. [The labels come from the source table](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/game/g_svcmds.c#L989).
 
 | Bit | Value | Meaning | Read by |
 |:--|:--|:--|:--|
@@ -47,10 +47,10 @@ Use [`tweakForce`](/TaystJK/reference/commands/tweakforce-05bb9d3/) to toggle on
 | 1 | `2` | Fix projectile force push dir | — |
 | 2 | `4` | Can push/pull knocked down players | — |
 | 3 | `8` | Fix grip absorb | — |
-| 4 | `16` | Allow force combo | [codemp/game/g_local.h:251](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/game/g_local.h#L251) |
+| 4 | `16` | Allow force combo | [codemp/game/g_local.h:251](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/game/g_local.h#L251) |
 | 5 | `32` | Fix pull strength | — |
 | 6 | `64` | JK2 grip | — |
-| 7 | `128` | Fast grip runspeed | [codemp/game/g_local.h:254](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/game/g_local.h#L254) |
+| 7 | `128` | Fast grip runspeed | [codemp/game/g_local.h:254](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/game/g_local.h#L254) |
 | 8 | `256` | Push/pull items | — |
 | 9 | `512` | Smaller Drain COF | — |
 | 10 | `1024` | JK2 push/pull knockdown | — |
@@ -61,9 +61,9 @@ Use [`tweakForce`](/TaystJK/reference/commands/tweakforce-05bb9d3/) to toggle on
 | 15 | `32768` | Weak force pull | — |
 | 16 | `65536` | Nerfed weapon pull distance | — |
 | 17 | `131072` | Force resistance while firing/charging weapon | — |
-| 18 | `262144` | Stop rage from affecting firerate of weapons | [codemp/game/g_local.h:265](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/game/g_local.h#L265) |
+| 18 | `262144` | Stop rage from affecting firerate of weapons | [codemp/game/g_local.h:265](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/game/g_local.h#L265) |
 | 19 | `524288` | Don't break mindtrick on attack unless trickee is looking at you | — |
-| 20 | `1048576` | Stronger / different Melee attack | [codemp/game/g_local.h:267](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/game/g_local.h#L267) |
+| 20 | `1048576` | Stronger / different Melee attack | [codemp/game/g_local.h:267](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/game/g_local.h#L267) |
 | 21 | `2097152` | Drain takes 25% less force from target | — |
 | 22 | `4194304` | Regen force while being gripped if mid jump | — |
 | 23 | `8388608` | Drain level 3 is a line | — |
@@ -111,12 +111,12 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 ## Evidence
 
-- registration: [codemp/game/g_xcvar.h:209](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/game/g_xcvar.h#L209) (XCVAR_DEF)
-- behavior: [codemp/game/ai_main.c:8079](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/game/ai_main.c#L8079)
-- behavior: [codemp/game/bg_pmove.c:11317](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/game/bg_pmove.c#L11317)
-- behavior: [codemp/game/bg_pmove.c:12106](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/game/bg_pmove.c#L12106)
-- behavior: [codemp/game/bg_pmove.c:12118](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/game/bg_pmove.c#L12118)
-- behavior: [codemp/game/bg_pmove.c:14303](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/game/bg_pmove.c#L14303)
-- documentation: [docs/japro_docs.md:29](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/docs/japro_docs.md#L29)
+- registration: [codemp/game/g_xcvar.h:209](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/game/g_xcvar.h#L209) (XCVAR_DEF)
+- behavior: [codemp/game/ai_main.c:8079](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/game/ai_main.c#L8079)
+- behavior: [codemp/game/bg_pmove.c:11317](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/game/bg_pmove.c#L11317)
+- behavior: [codemp/game/bg_pmove.c:12106](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/game/bg_pmove.c#L12106)
+- behavior: [codemp/game/bg_pmove.c:12118](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/game/bg_pmove.c#L12118)
+- behavior: [codemp/game/bg_pmove.c:14303](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/game/bg_pmove.c#L14303)
+- documentation: [docs/japro_docs.md:29](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/docs/japro_docs.md#L29)
 
-<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/f999cbc0912773164962d8be37737a31fe9ade8d"><code>f999cbc09127</code></a> on 2026-10-22. Anything merged after that is not reflected here.</p>
+<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/76943f046bbbdc23d67323b838cb1c4c1e3fba0e"><code>76943f046bbb</code></a> on 2026-10-23. Anything merged after that is not reflected here.</p>

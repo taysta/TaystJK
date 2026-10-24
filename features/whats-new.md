@@ -15,7 +15,7 @@ description: "Every cvar and console command TaystJK adds, grouped by topic and 
 
 <p class="page-lede">What TaystJK adds over the client you already know. Pick that client below to compare console entries against its recorded source snapshot, alongside the documented feature additions.</p>
 
-<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/f999cbc0912773164962d8be37737a31fe9ade8d"><code>f999cbc09127</code></a> on 2026-10-22. Anything merged after that is not reflected here.</p>
+<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/76943f046bbbdc23d67323b838cb1c4c1e3fba0e"><code>76943f046bbb</code></a> on 2026-10-23. Anything merged after that is not reflected here.</p>
 </div>
 
 Entries are grouped by topic. One listed by name alone has no verified description yet; its
@@ -45,15 +45,15 @@ entry is real; treat the date as approximate.
   <div class="baseline-selector-shell platform-selector-shell">
     <p class="platform-selector-label">Coming from</p>
     <div class="baseline-selector platform-selector" role="tablist" aria-label="Baseline client">
-      <button type="button" id="baseline-tab-eternaljk" role="tab" aria-controls="baseline-panel-eternaljk" aria-selected="false" tabindex="-1" data-baseline-choice="eternaljk">EternalJK (269)</button>
-      <button type="button" id="baseline-tab-openjk" role="tab" aria-controls="baseline-panel-openjk" aria-selected="false" tabindex="-1" data-baseline-choice="openjk">OpenJK (756)</button>
-      <button type="button" id="baseline-tab-basejka" role="tab" aria-controls="baseline-panel-basejka" aria-selected="false" tabindex="-1" data-baseline-choice="basejka">base Jedi Academy (1,000)</button>
+      <button type="button" id="baseline-tab-eternaljk" role="tab" aria-controls="baseline-panel-eternaljk" aria-selected="false" tabindex="-1" data-baseline-choice="eternaljk">EternalJK (270)</button>
+      <button type="button" id="baseline-tab-openjk" role="tab" aria-controls="baseline-panel-openjk" aria-selected="false" tabindex="-1" data-baseline-choice="openjk">OpenJK (757)</button>
+      <button type="button" id="baseline-tab-basejka" role="tab" aria-controls="baseline-panel-basejka" aria-selected="false" tabindex="-1" data-baseline-choice="basejka">base Jedi Academy (1,001)</button>
     </div>
   </div>
 
   <section class="baseline-panel platform-panel" id="baseline-panel-eternaljk" role="tabpanel" aria-labelledby="baseline-tab-eternaljk" tabindex="0" data-baseline-panel="eternaljk" markdown="1">
 
-## New since EternalJK (269)
+## New since EternalJK (270)
 
 ### Audio & music (2)
 
@@ -121,7 +121,7 @@ entry is real; treat the date as approximate.
 - [`fs_forcegame`](/TaystJK/reference/cvars/fs_forcegame-3547288/) <span class="label ref-origin ref-origin-jk2mv">JK2MV</span> <span class="meta-chip">2023-11-29</span>: Folder to use for overriding of fs_game (can not be set by the server).
 - [`sv_httpDownloads`](/TaystJK/reference/cvars/sv_httpdownloads-f79d64e/) <span class="label ref-origin ref-origin-jk2mv">JK2MV</span> <span class="meta-chip">2024-03-21</span>: Enable the server&#x27;s JK2MV-derived HTTP auto-download path.
 
-### Gameplay & combat (59)
+### Gameplay & combat (60)
 
 - [Cosmetics custom offsets](/TaystJK/features/cosmetics/) <span class="label ref-origin ref-origin-taystjk">TaystJK</span> <span class="meta-chip">feature</span>: Per-model and per-skin position offsets for hats and capes, described by a JSON file shipped alongside the cosmetic.
 - [`+singlefire`](/TaystJK/reference/commands/plusminus-singlefire-e166917/) <span class="label ref-origin ref-origin-japro">jaPRO</span> <span class="meta-chip">2024-02-28</span>
@@ -179,6 +179,7 @@ entry is real; treat the date as approximate.
 - [`slot`](/TaystJK/reference/commands/slot-462854f/) <span class="label ref-origin ref-origin-taystjk">TaystJK</span> <span class="meta-chip">2024-02-28</span>
 - [`slotnext`](/TaystJK/reference/commands/slotnext-3dbba08/) <span class="label ref-origin ref-origin-taystjk">TaystJK</span> <span class="meta-chip">2024-02-28</span>
 - [`slotprev`](/TaystJK/reference/commands/slotprev-4fb55f3/) <span class="label ref-origin ref-origin-taystjk">TaystJK</span> <span class="meta-chip">2024-02-28</span>
+- [`taystJKcgflags`](/TaystJK/reference/cvars/taystjkcgflags-ed5bbbe/) <span class="label ref-origin ref-origin-taystjk">TaystJK</span> <span class="meta-chip">2026-10-23</span>
 - [`thrownade`](/TaystJK/reference/commands/thrownade-ab0fd85/) <span class="label ref-origin ref-origin-japro">jaPRO</span> <span class="meta-chip">2024-02-06</span>
 - [`trace`](/TaystJK/reference/commands/trace-d0fa554/) <span class="label ref-origin ref-origin-japro">jaPRO</span> <span class="meta-chip">2023-12-11</span>
 - [`ui_dualforcepower`](/TaystJK/reference/cvars/ui_dualforcepower-60e193b/) <span class="label ref-origin ref-origin-basejka">Base Jedi Academy</span> <span class="meta-chip">2013-04-08</span>
@@ -367,7 +368,7 @@ entry is real; treat the date as approximate.
 
   <section class="baseline-panel platform-panel" id="baseline-panel-openjk" role="tabpanel" aria-labelledby="baseline-tab-openjk" tabindex="0" data-baseline-panel="openjk" markdown="1">
 
-## New since OpenJK (756)
+## New since OpenJK (757)
 
 ### Administration (34)
 
@@ -564,7 +565,7 @@ entry is real; treat the date as approximate.
 - [`fs_portable`](/TaystJK/reference/cvars/fs_portable-b325657/) <span class="label ref-origin ref-origin-newjk">NewJK / NewMod</span> <span class="meta-chip">2018-07-22</span>: Disable fs_homepath and use only one folder for all game files
 - [`sv_httpDownloads`](/TaystJK/reference/cvars/sv_httpdownloads-f79d64e/) <span class="label ref-origin ref-origin-jk2mv">JK2MV</span> <span class="meta-chip">2024-03-21</span>: Enable the server&#x27;s JK2MV-derived HTTP auto-download path.
 
-### Gameplay & combat (360)
+### Gameplay & combat (361)
 
 - [Cosmetics custom offsets](/TaystJK/features/cosmetics/) <span class="label ref-origin ref-origin-taystjk">TaystJK</span> <span class="meta-chip">feature</span>: Per-model and per-skin position offsets for hats and capes, described by a JSON file shipped alongside the cosmetic.
 - [`+duck`](/TaystJK/reference/commands/plusminus-duck-1aea248/) <span class="label ref-origin ref-origin-japro">jaPRO</span> <span class="status-chip">2018-09-03 · needs review</span>
@@ -906,6 +907,7 @@ entry is real; treat the date as approximate.
 - [`startingItems`](/TaystJK/reference/commands/startingitems-2ed82fa/) <span class="label ref-origin ref-origin-japro">jaPRO</span> <span class="status-chip">2018-01-01 · needs review</span>
 - [`startingWeapons`](/TaystJK/reference/commands/startingweapons-7252a71/) <span class="label ref-origin ref-origin-japro">jaPRO</span> <span class="status-chip">2018-01-01 · needs review</span>
 - [`stylePlayer`](/TaystJK/reference/commands/styleplayer-33ef966/) <span class="label ref-origin ref-origin-japro">jaPRO</span> <span class="status-chip">2018-09-03 · needs review</span>
+- [`taystJKcgflags`](/TaystJK/reference/cvars/taystjkcgflags-ed5bbbe/) <span class="label ref-origin ref-origin-taystjk">TaystJK</span> <span class="meta-chip">2026-10-23</span>
 - [`testBSP`](/TaystJK/reference/commands/testbsp-22b895a/) <span class="label ref-origin ref-origin-japro">jaPRO</span> <span class="status-chip">2018-01-01 · needs review</span>
 - [`throwflag`](/TaystJK/reference/commands/throwflag-d12a8a7/) <span class="label ref-origin ref-origin-japro">jaPRO</span> <span class="status-chip">2018-01-01 · needs review</span>
 - [`thrownade`](/TaystJK/reference/commands/thrownade-ab0fd85/) <span class="label ref-origin ref-origin-japro">jaPRO</span> <span class="meta-chip">2024-02-06</span>
@@ -1171,7 +1173,7 @@ entry is real; treat the date as approximate.
 
   <section class="baseline-panel platform-panel" id="baseline-panel-basejka" role="tabpanel" aria-labelledby="baseline-tab-basejka" tabindex="0" data-baseline-panel="basejka" markdown="1">
 
-## New since base Jedi Academy (1,000)
+## New since base Jedi Academy (1,001)
 
 ### Administration (37)
 
@@ -1445,7 +1447,7 @@ entry is real; treat the date as approximate.
 - [`fs_restart`](/TaystJK/reference/commands/fs_restart-205ee49/) <span class="label ref-origin ref-origin-eternaljk">EternalJK</span> <span class="status-chip">2019-05-06 · needs review</span>: Restarts the filesystem if no module is currently using files from a pk3
 - [`sv_httpDownloads`](/TaystJK/reference/cvars/sv_httpdownloads-f79d64e/) <span class="label ref-origin ref-origin-jk2mv">JK2MV</span> <span class="meta-chip">2024-03-21</span>: Enable the server&#x27;s JK2MV-derived HTTP auto-download path.
 
-### Gameplay & combat (406)
+### Gameplay & combat (407)
 
 - [Cosmetics custom offsets](/TaystJK/features/cosmetics/) <span class="label ref-origin ref-origin-taystjk">TaystJK</span> <span class="meta-chip">feature</span>: Per-model and per-skin position offsets for hats and capes, described by a JSON file shipped alongside the cosmetic.
 - [`+duck`](/TaystJK/reference/commands/plusminus-duck-1aea248/) <span class="label ref-origin ref-origin-japro">jaPRO</span> <span class="status-chip">2018-09-03 · needs review</span>
@@ -1827,6 +1829,7 @@ entry is real; treat the date as approximate.
 - [`startingWeapons`](/TaystJK/reference/commands/startingweapons-7252a71/) <span class="label ref-origin ref-origin-japro">jaPRO</span> <span class="status-chip">2018-01-01 · needs review</span>
 - [`stylePlayer`](/TaystJK/reference/commands/styleplayer-33ef966/) <span class="label ref-origin ref-origin-japro">jaPRO</span> <span class="status-chip">2018-09-03 · needs review</span>
 - [`t_use`](/TaystJK/reference/commands/t_use-2d01a2e/) <span class="label ref-origin ref-origin-openjk">OpenJK</span> <span class="status-chip">2013-04-08 · needs review</span>
+- [`taystJKcgflags`](/TaystJK/reference/cvars/taystjkcgflags-ed5bbbe/) <span class="label ref-origin ref-origin-taystjk">TaystJK</span> <span class="meta-chip">2026-10-23</span>
 - [`testBSP`](/TaystJK/reference/commands/testbsp-22b895a/) <span class="label ref-origin ref-origin-japro">jaPRO</span> <span class="status-chip">2018-01-01 · needs review</span>
 - [`thedestroyer`](/TaystJK/reference/commands/thedestroyer-eb1d67f/) <span class="label ref-origin ref-origin-openjk">OpenJK</span> <span class="status-chip">2013-04-08 · needs review</span>
 - [`throwflag`](/TaystJK/reference/commands/throwflag-d12a8a7/) <span class="label ref-origin ref-origin-japro">jaPRO</span> <span class="status-chip">2018-01-01 · needs review</span>
