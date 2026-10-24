@@ -75,7 +75,7 @@ sections:
             cta: Behaviour changes
           - title: HUD and movement tools
             url: /features/hud-and-movement/
-            description: Killfeed, team overlays, SnapHUD, PitchHUD, strafe helper, and speedometer.
+            description: Killfeed, team overlay, centre timer, scoreboard, and the strafe helper, speedometer and SnapHUD.
             cta: HUD tools
           - title: Cosmetics
             url: /features/cosmetics/

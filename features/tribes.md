@@ -17,17 +17,44 @@ status: experimental
 <p class="page-lede">A movement style that replaces running with skiing and adds a jetpack, its own HUD and its own weapons. It is experimental, and a server has to support it.</p>
 </div>
 
-Tribes is one of the nineteen [movement styles](/TaystJK/features/movement-styles/); the
-server chooses it. Unlike the others it comes with a substantial amount of client-side
-machinery: a replacement HUD, team markers, a fuel display and its own weapon effects.
+Tribes is one of the nineteen [movement styles](/TaystJK/features/movement-styles/), and the
+server decides whether you can play it. Unlike the others it comes with a lot of client-side
+machinery: a replacement HUD, team markers, a fuel display and its own weapon effects. All of
+that switches on by itself when the server runs Tribes.
 
-The client-side half is bit 22 of `cg_stylePlayer`, labelled "Tribes Clientside (Requires
-assets)"
-([`cg_consolecmds.c`](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/cgame/cg_consolecmds.c#L1431)); turn it on with
+## Setting it up
+
+Nothing extra needs installing. The assets ship in `japro-assets.pk3`: the jetpack and mortar
+effects under `effects/tribes/`, the ski and thrust sounds, the spinfusor disc model and the
+Tribes menu.
+
+Run the client config, `japro_tribes`, to set up the binds the mode expects. Read it first,
+because it rebinds the number keys; [shipped configs](/TaystJK/features/shipped-configs/#tribes)
+describes it.
+
+```text
+exec japro_tribes
+```
+
+Bit 22 of `cg_stylePlayer`, labelled "Tribes Clientside (Requires assets)", is optional. It
+only changes how the concussion rifle's shot looks, drawing it as a glowing spinfusor disc
+with its own sound
+([`cg_weaponinit.c`](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/cgame/cg_weaponinit.c#L189)). Turn it on with
 `stylePlayer 22`.
 
-The assets it uses ship in `japro-assets.pk3`: the jetpack and mortar effects under
-`effects/tribes/`, the ski and thrust sounds, the Tribes menu and the client config.
+Servers running the Docker image's [bundled server configs](/TaystJK/server-hosting/bundled-configs/#game-modes)
+have four Tribes modes, written for TaystJK's bundled jaPRO game module. Load one with
+`rcon exec <mode>`, or let players vote for it with `callvote vstr <mode>`:
+
+| Mode | Plays as |
+|:--|:--|
+| `tribes` | Tribes in FFA. |
+| `tribesctf` | Tribes in CTF. |
+| `tribes1flag` | Tribes in one-flag CTF, which needs a map with a neutral flag and capture zones. |
+| `midair` | `tribesctf` with projectiles also carrying the shooter's sideways movement. |
+
+All four restrict force powers, set the Tribes weapon tweaks, including projectile disruptor
+shots, and give every player a jetpack.
 
 ## Skiing
 
@@ -55,28 +82,28 @@ Skiing and jetpacking together is how you cross a map quickly.
 
 ## IFF markers
 
-In team games the client floats a team-coloured sprite above other players so you can tell
-friend from enemy at speed
-([`cg_players.c`](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/cgame/cg_players.c#L11094)).
+The client floats a coloured marker above other players so you can tell friend from enemy at
+speed
+([`cg_players.c`](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/cgame/cg_players.c#L11094)). In team games your teammates are
+marked as friends; everyone else, including every other player in FFA, is marked as an enemy.
 
-The marker scales with distance using `4 + distance * 0.008`, so a distant player still gets a
-readable icon rather than a dot. Friendly markers show at any range; **enemy markers only
-appear within 7500 units**, so an unmarked player far away is not necessarily a teammate.
-Nothing is drawn on the dead, on NPCs, or on yourself except in mirrors.
+The marker grows with distance, so a far-off player still gets a readable icon rather than a
+dot. Friendly markers show at any range; **enemy markers only appear within 7500 units**, so an
+unmarked player far away is not necessarily a teammate. Nothing is drawn on the dead, on NPCs,
+or on yourself.
 
-This is gated on the server advertising Tribes, not on your own settings.
+This depends on the server running Tribes weapons, not on your own settings.
 
 ## The Tribes HUD
 
-The mode swaps in a different HUD entirely
-([`hud_tribes.c`](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/cgame/hud_tribes.c#L762)):
+When you are playing the Tribes style on a jaPRO server, the client swaps in a different HUD
+entirely ([`cg_draw.c`](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/cgame/cg_draw.c#L1973),
+[`hud_tribes.c`](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/cgame/hud_tribes.c#L762)):
 a health bar, a weapon selector that greys out anything you cannot currently fire, a pack
 display, and the fuel bar above.
 
-The weapon selector's availability test is energy-based rather than counting rounds. A
-weapon is selectable when you hold at least as much ammo as one shot costs
-([`hud_tribes.c`](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/cgame/hud_tribes.c#L183)),
-which is why the display talks in shots rather than in a raw ammo count.
+The weapon selector greys a weapon out when you have less ammo than one shot costs
+([`hud_tribes.c`](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/cgame/hud_tribes.c#L183)).
 
 `invfree` selects the next usable inventory item and is bound by the HUD's prompt
 ([`cg_consolecmds.c`](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/cgame/cg_consolecmds.c#L2456)).
@@ -106,11 +133,10 @@ Set your `model` and you change class. The server confirms with a message such a
 "Spawning as Tribes heavy class", and **it kills you** so you respawn as the new class, so
 do not do it mid-run.
 
-Anything not on the list is medium, so an unusual model never locks you out. It just makes
-you medium. Names other than `tribesheavy` are matched by prefix, so a skin suffix such as
-`tavion/red` still counts. `tribesheavy` is compared over more characters than the name is
-long, so there only a bare `tribesheavy` works and `tribesheavy/default` falls through to
-medium.
+Anything not on the list is medium, so an unusual model never locks you out. Names are
+matched by prefix, so a skin such as `tavion/red` still counts. In current builds
+`tribesheavy` is the exception: it only counts without a skin, and `tribesheavy/default`
+makes you medium.
 
 What the class changes:
 
@@ -126,37 +152,11 @@ does not. None of it applies in racemode: there you have no class at all unless 
 team in a team gametype
 ([`ClientUserinfoChanged`](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/game/g_client.c#L2542)).
 
-## Setting it up
-
-Players run the client config, `japro_tribes`, described on
-[shipped configs](/TaystJK/features/shipped-configs/#tribes):
-
-```text
-exec japro_tribes
-```
-
-Read it first: it rebinds number keys.
-
-Servers running the Docker image's [bundled server configs](/TaystJK/server-hosting/bundled-configs/#game-modes)
-have four Tribes modes. They are written for TaystJK's bundled jaPRO game module. Load one
-with `rcon exec <mode>`, or let players vote for it with `callvote vstr <mode>`:
-
-| Mode | Plays as |
-|:--|:--|
-| `tribes` | Tribes in FFA. |
-| `tribesctf` | Tribes in CTF. |
-| `tribes1flag` | Tribes in one-flag CTF, which needs a map with a neutral flag and capture zones. |
-| `midair` | `tribesctf` with projectiles also carrying the shooter's sideways movement. |
-
-All four restrict force powers, set the Tribes weapon tweaks, including projectile disruptor
-shots, and give every player a jetpack.
-
 ## Expectations
 
-This mode is experimental. It carries more bespoke code than any other
-movement style, some of it carrying the author's own notes about ground detection being
-unreliable while skiing
+This mode is experimental. It has more code of its own than any other movement style, some
+of it with the author's own notes that ground detection is unreliable while skiing
 ([`bg_pmove.c`](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/game/bg_pmove.c#L5454)).
-Treat rough edges as expected rather than as bugs worth reporting. Gameplay problems belong
-to [videoP/jaPRO](https://github.com/videoP/jaPRO) if they also happen without TaystJK;
+Expect rough edges, but do report them. Gameplay problems belong to
+[videoP/jaPRO](https://github.com/videoP/jaPRO) if they also happen without TaystJK;
 [where to report](/TaystJK/where-to-report/#before-you-send-it-elsewhere) explains the check.

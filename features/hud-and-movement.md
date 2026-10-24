@@ -3,7 +3,7 @@ title: "HUD and movement tools"
 layout: reference
 nav_order: 3
 parent: "Features"
-description: "Killfeed, team overlays, the centre timer and team score, SnapHUD, PitchHUD, the strafe helper, the speedometer, and the movement-keys display."
+description: "Killfeed, team overlays, the centre timer and team score, the scoreboard, and the movement tools: strafe helper, speedometer, SnapHUD, PitchHUD and movement keys."
 toc: true
 origin: japro
 ---
@@ -13,8 +13,126 @@ origin: japro
 
 # HUD and movement tools
 
-<p class="page-lede">On-screen tools this client adds for reading the game state and your own movement. Most of them are off by default, and the useful ones are configured by a command rather than by typing a number.</p>
+<p class="page-lede">On-screen tools this client adds: first the HUD elements most players use, then the movement tools racers and defrag players set up. Most are off by default.</p>
 </div>
+
+## The killfeed
+
+A running list of recent kills, derived from ioquake3's obituary code
+([`hud_obituary.c`](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/cgame/hud_obituary.c#L41)).
+`cg_killfeed` turns it on
+([`cg_draw.c`](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/cgame/cg_draw.c#L11554)).
+
+`cg_killfeedX` and `cg_killfeedY` offset it, `cg_killfeedIconSize` and
+`cg_killfeedTextSize` resize the two halves independently, `cg_killfeedAlignment` sets which
+edge it aligns to, `cg_killfeedColors` colours the weapon icons, and `cg_killfeedReverse`
+swaps the killer and victim sides.
+
+## Team overlay
+
+A list of your team with health, position and more, in team gametypes. `cg_drawTeamOverlay`
+selects one of three designs, each as a pair
+([`cg_draw.c`](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/cgame/cg_draw.c#L6911)):
+
+| Value | Design | Highlights you |
+|:--|:--|:--|
+| `1` / `2` | The original overlay | `2` |
+| `3` / `4` | The second style | `4` |
+| `5` / `6` | The third style | `6` |
+
+The odd value of each pair draws every teammate the same; the even one marks your own row.
+
+`cg_drawTeamOverlayX` and `cg_drawTeamOverlayY` place it, and `cg_drawTeamOverlayWeapons`
+adds each player's weapon. `cg_drawTeamOverlayScale` and `cg_drawTeamOverlayMaxHP` apply to
+styles `5` and `6` only. The second sets what counts as a full health bar, since combined
+health and shields can exceed 100. `cg_drawTeamOverlayForce`, on by default, adds a force-point
+column, which only has anything to show on a jaPRO server.
+
+## The centre timer and team score
+
+The stock HUD puts the timer and scores in the top-right corner. TaystJK adds a centred
+arrangement across the top of the screen instead: a Counter-Strike-style timer built from
+three cvars that are meant to be set together
+([`CG_DrawTaystHUD`](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/cgame/cg_draw.c#L3825)).
+
+```text
+cg_drawTimer 7
+cg_drawScores 3
+cg_drawStatus 2
+```
+
+[`cg_drawTimer 7`](/TaystJK/reference/cvars/cg_drawtimer-431f426/) draws the match time in a box at the top centre.
+Values `1` to `6` are the stock corner styles instead, and they follow the FPS counter's
+font when one is enabled
+([`CG_DrawTimer`](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/cgame/cg_draw.c#L5906)).
+
+[`cg_drawScores 3`](/TaystJK/reference/cvars/cg_drawscores-493f7be/) puts the two team scores in boxes either side of
+that timer. Without `cg_drawTimer 7` they still appear, centred on their own. In Duel it
+shows the duel HUD instead
+([`cg_draw.c`](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/cgame/cg_draw.c#L3855)).
+
+[`cg_drawStatus`](/TaystJK/reference/cvars/cg_drawstatus-b5d2624/) `2` or `3` adds flag status to the same row, in CTF
+and CTY only
+([`CG_DrawTeamHUD`](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/cgame/cg_draw.c#L3864)).
+
+`cg_drawTimerMsec` adds milliseconds to any timer style. `cg_drawTimerCountdown` counts
+**down** to the time limit instead of up; it only works with style `7`, and only when there is
+a time limit
+([`cg_draw.c`](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/cgame/cg_draw.c#L5924)).
+A negative `cg_drawTimer` shows absolute client time rather than time since the map loaded.
+
+The quickest way to see it is the shipped preset. It sets `cg_drawTimer 7`, `cg_drawScores 3`
+and the countdown, along with the killfeed, the team overlay, the movement keys and the
+scoreboard options below. It leaves `cg_drawStatus` alone, so add `cg_drawStatus 2` yourself
+for the CTF flag row:
+
+```text
+exec hud_tayst
+```
+
+## The scoreboard
+
+[`cg_scoreDeaths`](/TaystJK/reference/cvars/cg_scoredeaths-67a5132/) adds deaths to the
+scoreboard, shown as `score/deaths`
+([`cg_scoreboard.c`](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/cgame/cg_scoreboard.c#L188)):
+
+| Value | Shows |
+|:--|:--|
+| `0` | Score only. |
+| `1`, the default | Deaths, when the server sends them. JA+ and jaPRO servers do, and so does any server that advertises it through [`taystJKinfo`](/TaystJK/development/feature-flags/#scoreboard-deaths). |
+| `2` | The server's count when it sends one, and otherwise a count the client keeps itself from the kills it sees. |
+| `3` | Always the client's own count. |
+
+Deaths are never shown in CTF or Duel, where the scoreboard has other columns. The client's own
+count only covers kills it saw, so it can be short if you joined mid-match.
+
+`cg_scoreboardTime 1` adds your local clock to the scoreboard
+([`cg_scoreboard.c`](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/cgame/cg_scoreboard.c#L657)).
+
+## Whole-HUD styles
+
+`cg_hudFiles` swaps the underlying HUD layout rather than individual elements
+([`cg_main.c`](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/cgame/cg_main.c#L2612)):
+| Value | HUD |
+|:--|:--|
+| `0` | The stock Jedi Academy HUD. |
+| `1` | A minimal text HUD ([`cg_draw.c`](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/cgame/cg_draw.c#L2052)). |
+| `2` | The Jedi Outcast HUD ([`cg_draw.c`](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/cgame/cg_draw.c#L2118)). |
+| `3` | The Elegance HUD. |
+| `4` | The Tayst HUD, the Quake-style option. |
+| a file name | A HUD menu file of your own, such as `ui/myhud.txt`; if it cannot be found, the stock HUD is used. |
+
+The Elegance and Tayst HUDs ship in the asset pk3. A change takes effect immediately; the cvar
+reloads the HUD when it changes
+([`cg_cvar.c`](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/cgame/cg_cvar.c#L59)).
+
+The other elements on this page draw whichever HUD file you load.
+
+## Movement tools
+
+The rest of this page covers tools for racing and defrag: reading your speed and the angles
+that gain it. They draw on any server, but the physics they assume follow the movement style
+the server runs.
 
 ## Bitmask cvars are configured by a command
 
@@ -129,6 +247,21 @@ moves it. [`cg_pitchHelperX`](/TaystJK/reference/cvars/cg_pitchhelperx-a9d35e3/)
 top-right corner. It is the quickest way to find the coordinates
 [`addCheckpoint`](/TaystJK/features/racing/#your-own-checkpoints) needs.
 
+## Movement keys
+
+Shows which movement inputs you are pressing. This is useful for recording, for spectating, and
+for seeing your own mistakes
+([`CG_DrawMovementKeys`](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/cgame/hud_strafehelper.c#L2271)).
+
+`cg_movementKeys` selects one of four layouts. `1` and `2` are the original display near the
+bottom of the screen, and `2` adds your attack and alt-attack inputs to it. `4` is the newer
+layout in the same place. `3` is the same newer layout drawn small and **fixed at the
+crosshair**. It is the one exception that ignores `cg_movementKeysX` and
+`cg_movementKeysY`, so if your offsets appear to do nothing, that is why.
+
+`cg_movementKeysWalk` adds the walk key, and `cg_movementKeysSize` scales whichever layout
+you chose.
+
 ## When these tools are drawn
 
 The strafe helper, speedometer, movement keys, SnapHUD, PitchHUD, pitch helper and
@@ -146,106 +279,10 @@ disappear with it
 a strafe-helper style, the movement keys, the race timer or race start, the pitch helper or
 `cg_showpos` is on ([`cg_draw.c`](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/cgame/cg_draw.c#L1962)). `cg_snapHud` and
 `cg_pitchHud` are not on that list, so either one turned on by itself draws nothing. Turn
-on one of the others alongside it.
+on one of the others alongside it. The same goes for the strafe helper's accel bar and accel
+zones: they count only when one of the five strafe-helper styles is on too.
 
 On a jaPRO server in racemode, SnapHUD is also hidden for every style except `ocpm`
 ([`showSnapHud`](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/cgame/hud_strafehelper.c#L374)).
 
 If one of them has vanished, check those before its own settings.
-
-## Movement keys
-
-Shows which movement inputs you are pressing. This is useful for recording, for spectating, and
-for seeing your own mistakes
-([`CG_DrawMovementKeys`](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/cgame/hud_strafehelper.c#L2271)).
-
-`cg_movementKeys` selects one of four layouts. `1` and `2` are the original display near the
-bottom of the screen, and `2` adds your attack and alt-attack inputs to it. `4` is the newer
-layout in the same place. `3` is the same newer layout drawn small and **fixed at the
-crosshair**. It is the one exception that ignores `cg_movementKeysX` and
-`cg_movementKeysY`, so if your offsets appear to do nothing, that is why.
-
-`cg_movementKeysWalk` adds the walk key, and `cg_movementKeysSize` scales whichever layout
-you chose.
-
-## The killfeed
-
-A running list of recent kills, derived from ioquake3's obituary code
-([`hud_obituary.c`](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/cgame/hud_obituary.c#L41)).
-`cg_killfeed` turns it on
-([`cg_draw.c`](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/cgame/cg_draw.c#L11554)).
-
-`cg_killfeedX` and `cg_killfeedY` offset it, `cg_killfeedIconSize` and
-`cg_killfeedTextSize` resize the two halves independently, `cg_killfeedAlignment` sets which
-edge it aligns to, `cg_killfeedColors` colours the weapon icons, and `cg_killfeedReverse`
-swaps the killer and victim sides.
-
-## Team overlay
-
-A list of your team with health, position and more, in team gametypes. `cg_drawTeamOverlay`
-selects one of three designs, each as a pair
-([`cg_draw.c`](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/cgame/cg_draw.c#L6911)):
-
-| Value | Design | Highlights you |
-|:--|:--|:--|
-| `1` / `2` | The original overlay | `2` |
-| `3` / `4` | The second style | `4` |
-| `5` / `6` | The third style | `6` |
-
-The odd value of each pair draws every teammate the same; the even one marks your own row.
-
-`cg_drawTeamOverlayX` and `cg_drawTeamOverlayY` place it, and `cg_drawTeamOverlayWeapons`
-adds each player's weapon. `cg_drawTeamOverlayScale` and `cg_drawTeamOverlayMaxHP` apply to
-styles `5` and `6` only. The second sets what counts as a full health bar, since combined
-health and shields can exceed 100. `cg_drawTeamOverlayForce` adds a force-point column and
-needs a jaPRO server to have anything to show.
-
-## The centre timer and team score
-
-The stock HUD puts the timer and scores in the top-right corner. TaystJK adds a centred
-arrangement across the top of the screen instead. The maintainer's changelog calls it a
-Counter-Strike-style timer built from three cvars that are designed to be set together
-([`CG_DrawTaystHUD`](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/cgame/cg_draw.c#L3825)).
-
-```text
-cg_drawTimer 7
-cg_drawScores 3
-cg_drawStatus 2
-```
-
-[`cg_drawTimer 7`](/TaystJK/reference/cvars/cg_drawtimer-431f426/) draws the match time in a box at the top centre.
-Values `1` to `6` are the stock corner styles instead, and they follow the FPS counter's
-font when one is enabled
-([`CG_DrawTimer`](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/cgame/cg_draw.c#L5906)).
-
-[`cg_drawScores 3`](/TaystJK/reference/cvars/cg_drawscores-493f7be/) puts the two team scores in boxes either side of
-that timer. Without `cg_drawTimer 7` they still appear, centred on their own.
-
-[`cg_drawStatus`](/TaystJK/reference/cvars/cg_drawstatus-b5d2624/) `2` or `3` adds flag status to the same row, in CTF
-and CTY only
-([`CG_DrawTeamHUD`](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/cgame/cg_draw.c#L3864)).
-
-Two timer options only make sense here. `cg_drawTimerMsec` adds milliseconds, and
-`cg_drawTimerCountdown` counts **down** to the time limit rather than up, which needs a
-time limit to exist and applies to style `7`
-([`cg_draw.c`](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/cgame/cg_draw.c#L5924)).
-A negative `cg_drawTimer` shows absolute client time rather than time since the map loaded.
-
-The quickest way to see the whole arrangement is to run the shipped preset, which sets these
-along with the killfeed, the team overlay and the movement keys:
-
-```text
-exec hud_tayst
-```
-
-## Whole-HUD styles
-
-`cg_hudFiles` swaps the underlying HUD layout rather than individual elements
-([`cg_main.c`](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/cgame/cg_main.c#L2612)):
-`3` loads the Elegance HUD and `4` loads the Tayst HUD, the Quake-style option. Both ship
-in the asset pk3. The default leaves the stock Jedi Academy HUD in place. It takes effect immediately; the cvar
-reloads the HUD when it changes
-([`cg_cvar.c`](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/cgame/cg_cvar.c#L59)).
-
-This is separate from everything above: the elements on this page draw regardless of which
-HUD file you load.
