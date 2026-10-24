@@ -103,7 +103,7 @@ and looks for it in the server's mod directory, then `taystjk`, then `base`
 A 64-bit Windows client asks for `cgamex86_64.dll` and never tries a `cgamex86.dll` sitting
 beside it; it loads TaystJK's own `cgame` instead, so you stay connected without the mod's
 client-side features. To use a mod's own client libraries, they have to match your build; see
-[running another client-side mod](/TaystJK/install/#mods-that-package-native-libraries-inside-a-pk3).
+[running another client-side mod](/TaystJK/install/mod-compatibility/#mods-that-package-native-libraries-inside-a-pk3).
 
 Reproduce it once and keep:
 
@@ -136,7 +136,7 @@ Then read the console:
   ([`cgame`](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/client/cl_cgameapi.cpp#L1921),
   [`ui`](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/client/cl_uiapi.cpp#L1475)).
   The library loaded but refused the engine's module API version. See
-  [when to use `vm_legacy`](/TaystJK/install/#when-to-use-vm_legacy).
+  [when to use `vm_legacy`](/TaystJK/install/mod-compatibility/#when-to-use-vm_legacy).
 - **Anything else, or a crash with no error**, is not explained by the module search.
   Take a current build first, then check whether the same server and mod fail in another
   client. Report it with what you collected;

@@ -42,7 +42,7 @@ fails if one of them has been edited by hand.
   show a card for each page, and the card's text is a separate copy in
   `_data/navigation.yml`, so change both.
 - **Headings.** Every `##` and `###` becomes a search result and a link target, such as
-  `/TaystJK/install/#when-to-use-vm_legacy`. Renaming one breaks links to the old anchor;
+  `/TaystJK/install/mod-compatibility/#when-to-use-vm_legacy`. Renaming one breaks links to the old anchor;
   `check_generated.py` reports them.
 - **Liquid.** Keep `{% include browse-grid.html section="…" %}` on section pages, and
   `{{ site.data.reference_stats.… }}` wherever a count from the reference appears. Do not

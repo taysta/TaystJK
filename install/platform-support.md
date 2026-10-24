@@ -20,7 +20,7 @@ Each of these is decided when the client is built, so no cvar will turn it on.
 | Feature | Available on | Absent on |
 |:--|:--|:--|
 | EAX environmental audio | 32-bit Windows | 64-bit Windows, Linux, macOS |
-| Discord Rich Presence | Windows (32- and 64-bit), x86-64 Linux and macOS | Apple Silicon macOS, ARM Linux |
+| Discord Rich Presence | Windows (32- and 64-bit), 64-bit Linux, the x86_64 macOS build | arm64 macOS, including the universal app on Apple silicon; 32-bit and ARM Linux; the Windows AddressSanitizer build |
 | Steam playtime and overlay | Windows | Linux, macOS |
 
 ## EAX is 32-bit Windows only
@@ -49,10 +49,10 @@ target
 The macOS and Linux branches both require `Architecture MATCHES "x86_64"`, and Windows is
 covered for both 32- and 64-bit MSVC.
 
-An Apple Silicon build matches none of those branches, so the `DISCORD` define is never set
-and the feature is absent rather than disabled. The same applies to ARM Linux. Running an
-x86-64 build under Rosetta is compiled differently and is not the same thing as an arm64
-build.
+An arm64 build matches none of those branches, so the `DISCORD` define is never set and
+the feature is absent rather than disabled. The universal macOS app is two builds in one
+file, and an Apple silicon Mac runs its arm64 half, so it has no Rich Presence there either.
+The 32-bit Linux build is `i386` and misses the check too, as does ARM Linux.
 
 The Windows AddressSanitizer build does not have it either, for an unrelated reason. See
 [the AddressSanitizer build](/TaystJK/install/builds-and-versioning/#the-addresssanitizer-build).

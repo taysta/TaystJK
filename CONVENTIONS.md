@@ -222,7 +222,7 @@ plausible sentence.
 
 Every `h2`, `h3` and `h4` gets a hover anchor, and kramdown gives each one a stable id from
 its text. When you cross-reference a specific point, link the section rather than the page:
-`/TaystJK/install/#when-to-use-vm_legacy`, not `/TaystJK/install/`.
+`/TaystJK/install/mod-compatibility/#when-to-use-vm_legacy`, not `/TaystJK/install/`.
 
 Renaming a heading changes its id and silently breaks inbound links. If you rename one that
 other pages point at, update them. `check_generated.py` validates internal links, so run it

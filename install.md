@@ -11,12 +11,8 @@ toc: true
 
 # Install TaystJK
 
-<p class="page-lede">TaystJK replaces the multiplayer executable, not the retail game data. Keep the four Jedi Academy asset archives and place TaystJK beside them, or deliberately separate from them.</p>
+<p class="page-lede">TaystJK replaces the multiplayer executable, not the game's data. You need the four asset archives from your own copy of Jedi Academy, and TaystJK can sit beside them or in a directory of its own.</p>
 </div>
-
-This section also covers [platform support](/TaystJK/install/platform-support/),
-[builds and versioning](/TaystJK/install/builds-and-versioning/) and
-[mod compatibility](/TaystJK/install/mod-compatibility/).
 
 ## Before you start
 
@@ -29,12 +25,25 @@ assets2.pk3
 assets3.pk3
 ```
 
-Download the build for your operating system from the [latest TaystJK release](https://github.com/taysta/TaystJK/releases/tag/latest). Extract the whole archive; do not copy only the executable, because the renderer and game libraries beside it are also required.
+Download the archive for your system from the [latest release](https://github.com/taysta/TaystJK/releases/latest):
 
-If you also install an older mod, check whether it keeps its native modules inside a
-PK3. TaystJK does not unpack those modules by default; see
-[mods that package native libraries inside a PK3](#mods-that-package-native-libraries-inside-a-pk3)
-before assuming that the mod is incompatible.
+| System | Archive |
+|:--|:--|
+| Windows, 64-bit | `TaystJK-windows-x86_64.zip` |
+| Windows, 32-bit | `TaystJK-windows-x86.zip` |
+| macOS, Apple silicon or Intel | `TaystJK-macos-universal2.tar.gz` |
+| macOS, one architecture only | `TaystJK-macos-arm64.tar.gz` or `TaystJK-macos-x86_64.tar.gz` |
+| Linux, 64-bit | `TaystJK-linux-x86_64.tar.gz` |
+| Linux, 32-bit | `TaystJK-linux-x86.tar.gz`, whose executables end in `.i386` |
+
+Extract the whole archive. Do not copy only the executable: the renderer and game libraries
+beside it are needed too.
+
+The release also has a `TaystJK-windows-x86_64-AddressSanitizer.zip` for diagnosing crashes;
+you only need it if someone asks for a sanitizer log. Builds for Windows XP are published
+separately under the [`winxp` release](https://github.com/taysta/TaystJK/releases/tag/winxp).
+[Builds and versioning](/TaystJK/install/builds-and-versioning/) explains the release
+channels.
 
 ## Install for your platform
 
@@ -55,16 +64,22 @@ Choose your operating system to see its prerequisites and installation steps. Yo
 
 ### Install prerequisites
 
-Install the latest supported [Microsoft Visual C++ Redistributable](https://learn.microsoft.com/en-us/cpp/windows/latest-supported-vc-redist?view=msvc-170):
+Use the **64-bit build** unless you have a reason not to. A 32-bit process has at most 2 GB to
+work with, and demanding maps or asset sets can run out of that with any renderer.
 
-- Install the **x64** package for `TaystJK-windows-x86_64`.
-- Install the **x86** package for `TaystJK-windows-x86`.
+Install the latest supported [Microsoft Visual C++ Redistributable](https://learn.microsoft.com/en-us/cpp/windows/latest-supported-vc-redist?view=msvc-170)
+for the build you chose:
 
-The release archive includes the matching SDL 2 and OpenAL DLLs. Keep those files beside the TaystJK executable; do not download replacement DLLs from third-party DLL sites.
+- the **x64** package for `TaystJK-windows-x86_64`
+- the **x86** package for `TaystJK-windows-x86`
 
-Prefer the **64-bit build** for normal play. A 32-bit process has at most 2 GB to work with, and demanding maps or asset sets can exhaust that with any renderer; the 64-bit build has far more headroom.
+The archive already includes the matching SDL 2 and OpenAL DLLs. Keep them beside the
+TaystJK executable, and do not replace them with DLLs from third-party download sites.
 
-The **32-bit Windows build** has one compatibility advantage: its bundled OpenAL Soft library and `EaxMan.dll` can provide EAX environmental audio in software, so EAX-capable sound hardware is not required. TaystJK does not currently ship the `EaxMan64.dll` needed by its 64-bit EAX path, so this feature is available only in the 32-bit build. Choose x86 if you specifically want EAX or require another 32-bit compatibility feature, and keep `OpenAL32.dll` and `EaxMan.dll` beside the executable.
+The 32-bit build has one thing the 64-bit build lacks: EAX environmental audio, done in
+software by its bundled OpenAL Soft and `EaxMan.dll`, so no EAX sound card is needed. Choose
+x86 if you want EAX or need another 32-bit compatibility feature, and keep `OpenAL32.dll` and
+`EaxMan.dll` beside the executable. See [platform support](/TaystJK/install/platform-support/#eax-is-32-bit-windows-only).
 
 ### Install TaystJK
 
@@ -72,14 +87,15 @@ This is the simplest layout when TaystJK is your only modded client.
 
 1. In Steam, right-click **STAR WARS Jedi Knight: Jedi Academy**, then choose **Manage → Browse local files**. Open `GameData`.
 2. Extract the TaystJK Windows archive into `GameData`.
-3. Start the executable included for your architecture, normally `taystjk.x86_64.exe` on 64-bit Windows.
-4. Optionally create a desktop shortcut to that executable.
+3. Start the executable for your build: `taystjk.x86_64.exe`, or `taystjk.x86.exe` for 32-bit.
+4. Optionally create a desktop shortcut to it.
 
-For a non-Steam copy, locate the directory containing `base`, `jamp.exe`, and `jasp.exe`; that is the `GameData` directory.
+For a non-Steam copy, find the directory that holds `base`, `jamp.exe` and `jasp.exe`. That is
+the `GameData` directory.
 
 ### Optional: update automatically
 
-[TaystJK Updater](https://github.com/slash-fr/taystjk-updater) is a third-party launcher by Slash; it is not part of TaystJK. If something goes wrong only when you start the game through the updater, report it on the updater's repository; if it also happens when you start TaystJK directly, it is ours. Each time you start it, it checks the `latest` TaystJK release, downloads and installs a newer Windows build if there is one, and then launches the game. It also keeps itself up to date.
+[TaystJK Updater](https://github.com/slash-fr/taystjk-updater) is a third-party launcher by Slash; it is not part of TaystJK. If something goes wrong only when you start the game through the updater, report it on the updater's repository; if it also happens when you start TaystJK directly, it is ours. Each time you start it, it checks the `latest-build` TaystJK release, downloads and installs a newer Windows build if there is one, and then launches the game. It also keeps itself up to date.
 
 <figure class="media-figure">
   <video controls muted playsinline preload="none" width="1280" height="720" poster="{{ '/assets/media/taystjk-updater-demo-poster.jpg' | relative_url }}">
@@ -109,35 +125,50 @@ The updater's [advanced usage notes](https://github.com/slash-fr/taystjk-updater
 
 ### Install prerequisites
 
-Current TaystJK releases bundle SDL 2 inside the app, along with the non-system image and compression libraries. No Homebrew package is required for the current prebuilt app. If an older archive reports a missing SDL library, replace it with the current release; `brew install sdl2` is only relevant to an older system-linked build or a source build configured with `UseInternalSDL2=OFF`.
+Take `TaystJK-macos-universal2.tar.gz`, which runs natively on both Apple silicon and Intel
+Macs. The `arm64` and `x86_64` archives each run on one of them.
+
+Nothing else needs installing. The app bundles SDL 2 and the image and compression
+libraries it uses, so no Homebrew package is required.
+
+Copy the four `assets*.pk3` files from any install of the game. If you own it on Steam and
+have no copy to hand, [SteamCMD](https://developer.valvesoftware.com/wiki/SteamCMD), which
+runs on macOS, can download the Windows release:
+
+```sh
+steamcmd +@sSteamCmdForcePlatformType windows +login <your-steam-name> +app_update 6020 validate +quit
+```
+
+Only the PK3s in `GameData/base` are needed from that download.
 
 ### Install TaystJK
 
 This is the simplest layout when TaystJK is your only modded client.
 
-1. Extract the TaystJK archive and copy its `.app` bundle to a directory you control.
-2. Put the retail `base` directory beside the app, or point the app at an existing Jedi Academy installation with `fs_cdPath` as described below.
+1. Extract the TaystJK archive and copy its `.app` bundle to a directory you own.
+2. Create a `base` directory beside the app and put the four asset files in it, or point the
+   app at an existing copy with `fs_cdPath`, as [several modded clients](#installing-several-modded-clients)
+   shows.
 3. Launch the app. Release builds are portable, so configs, screenshots and downloads are
-   written beside the app, in the directory that holds it, rather than under
+   written beside the app, in the directory that holds it, not under
    `~/Library/Application Support`
    ([`sys_main.cpp`](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/shared/sys/sys_main.cpp#L700));
    see [builds and versioning](/TaystJK/install/builds-and-versioning/#every-published-build-is-portable).
 
-The [release workflow](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/.github/workflows/build.yml#L433) ad-hoc signs the universal app before packaging, so a normal installation does not need another `codesign` command. If macOS quarantines the downloaded app and refuses to open it, clear that attribute from the extracted bundle:
+The [release workflow](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/.github/workflows/build.yml#L433)
+ad-hoc signs the app, so it does not need signing again. If macOS refuses to open it because
+it was downloaded, clear the quarantine attribute from the extracted app:
 
-```bash
+```sh
 xattr -dr com.apple.quarantine "/path/to/taystjk.app"
 ```
 
-Run this without `sudo` when the app is in a directory you own. Use `sudo` only if `xattr` reports a permissions error and you have confirmed the path is the intended TaystJK bundle. Quarantine alone is not a reason to re-sign the app. You can verify the packaged signature with:
+You do not need `sudo` for an app in a directory you own. An update is a fresh download, so
+you have to do this again after each one.
 
-```bash
-codesign --verify --deep --strict "/path/to/taystjk.app"
-```
-
-If verification fails, re-extract a fresh copy of the official archive rather than blindly signing the damaged copy. The separate `moveandsign.sh` workflow described in the [debugging guide](/TaystJK/development/debugging/#move-and-sign-the-installed-build) is for locally built development binaries.
-
-On Apple silicon, use the universal or native arm64 release. Intel Macs need the x86_64 release.
+If the app still will not open, re-extract it from the archive instead of signing it
+yourself. The `moveandsign.sh` script in the [debugging guide](/TaystJK/development/debugging/#move-and-sign-the-installed-build)
+is for builds you compiled, not for releases.
   </section>
   <section class="platform-panel" id="platform-panel-linux" role="tabpanel" aria-labelledby="platform-tab-linux" tabindex="0" data-platform-panel="linux" markdown="1">
 ## Linux
@@ -146,14 +177,14 @@ On Apple silicon, use the universal or native arm64 release. Intel Macs need the
 
 The Linux client uses system-provided SDL 2, OpenGL, JPEG, PNG, zlib, and C++ runtime libraries. For the 64-bit release on Ubuntu 22.04, install them with:
 
-```bash
+```sh
 sudo apt update
 sudo apt install libsdl2-2.0-0 libgl1 libjpeg-turbo8 libpng16-16 zlib1g libstdc++6
 ```
 
 Ubuntu 24.04 names the PNG package `libpng16-16t64`. Other distributions provide the same libraries under their own package names; for example:
 
-```bash
+```sh
 # Fedora
 sudo dnf install SDL2 libglvnd-glx libjpeg-turbo libpng zlib libstdc++
 
@@ -161,15 +192,17 @@ sudo dnf install SDL2 libglvnd-glx libjpeg-turbo libpng zlib libstdc++
 sudo pacman -S sdl2 libglvnd libjpeg-turbo libpng zlib
 ```
 
-The 32-bit TaystJK build needs 32-bit versions of the same libraries. Prefer the x86_64 release unless you specifically need 32-bit compatibility. TaystJK's [Linux release job](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/.github/workflows/build.yml#L158) records the libraries against which the official archive is built.
+The 32-bit build needs 32-bit versions of the same libraries, and its executables are named
+`taystjk.i386` and `taystjkded.i386`. Prefer the x86_64 release unless you specifically need
+32-bit compatibility. TaystJK's [Linux release job](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/.github/workflows/build.yml#L158) records the libraries the official archive is built against.
 
 If the loader still reports a missing library, run:
 
-```bash
+```sh
 ldd ./taystjk.x86_64 | grep "not found"
 ```
 
-Install the missing library from your distribution's package manager rather than copying a loose `.so` file beside the executable.
+Install the missing library from your distribution's package manager instead of copying a loose `.so` file beside the executable.
 
 ### Install TaystJK
 
@@ -180,10 +213,22 @@ This is the simplest layout when TaystJK is your only modded client.
 3. Make the client executable if necessary: `chmod +x taystjk.x86_64`.
 4. Launch `./taystjk.x86_64`.
 
-If the retail files are only available through Steam, SteamCMD can download app `6020` after setting `@sSteamCmdForcePlatformType windows`; only the platform-neutral PK3 assets are needed from that download.
+If you only have the game on Steam, [SteamCMD](https://developer.valvesoftware.com/wiki/SteamCMD)
+can download its Windows release, app `6020`, after you set
+`@sSteamCmdForcePlatformType windows`. Only the PK3s in `GameData/base` are needed from it.
   </section>
 
 </section>
+
+## First-launch checks
+
+- Open the console with <kbd>Shift</kbd> + <kbd>~</kbd> and run `version` to confirm that TaystJK is running.
+- If the console says it cannot find `default.cfg`, TaystJK cannot see `base/assets0.pk3`. Check where you extracted it, or your `fs_cdPath`.
+- If the client cannot load a renderer or library, re-extract the complete release, check it matches your system's architecture, and recheck the prerequisites above.
+- If settings or downloaded PK3s turn up somewhere unexpected, run `path` in the console and look at `fs_homepath`, `fs_basepath` and `fs_game`.
+
+[Troubleshooting](/TaystJK/troubleshooting/#the-game-will-not-start) covers the startup
+errors people hit most often.
 
 ## Installing several modded clients
 
@@ -218,13 +263,21 @@ On Windows, put this beside the TaystJK executable as `run-taystjk.bat`:
 start "" taystjk.x86_64.exe +set fs_cdPath "../JediAcademy"
 ```
 
-Use the executable name that actually appears in your release archive. On Linux, the equivalent launch command is:
+On Linux, the equivalent launch command is:
 
-```bash
+```sh
 ./taystjk.x86_64 +set fs_cdPath ../JediAcademy
 ```
 
+On macOS, pass the same option to the app:
+
+```sh
+open /path/to/taystjk.app --args +set fs_cdPath /path/to/JediAcademy
+```
+
 `fs_cdPath` supplies the shared retail assets while TaystJK keeps its own executable, libraries, mod directory, and user files separate.
+
+This layout is adapted from the longer [multiple modded clients guide on JKHub](https://jkhub.org/tutorials/errors-problems/how-to-install-multiple-modded-clients-on-the-same-system-r229/).
 
 ### Simpler alternative: copy `base`
 
@@ -232,102 +285,13 @@ Copy the complete retail `base` directory into each client's directory. This use
 
 Put PK3s that should affect every client in that client's `base` directory. Put TaystJK-only content in `taystjk/`, beside `japro-assets.pk3`.
 
-## Run TaystJK with another client-side mod
+## Using another mod's client files
 
-The TaystJK executable is the engine. The game, client-game, and UI modules are separate native libraries:
-
-| Module | Windows example | Linux example | Purpose |
-|:--|:--|:--|:--|
-| Game | `jampgamex86_64.dll` | `jampgamex86_64.so` | Server-side game rules; also used by a locally hosted game. |
-| Client game | `cgamex86_64.dll` | `cgamex86_64.so` | Client-side prediction, HUD, and world presentation. |
-| UI | `uix86_64.dll` | `uix86_64.so` | Menus and other UI behavior. |
-
-macOS uses the equivalent `.dylib` files. TaystJK does not currently execute QVM bytecode; both its current module API and the older `dllEntry`/`vmMain` API load native libraries. A module must match the operating system and CPU architecture of the TaystJK executable.
-
-### Mods that package native libraries inside a PK3
-
-Many older mods put `cgame`, `ui`, or `jampgame` native libraries inside a PK3. TaystJK
-still mounts the PK3 and reads its assets, but it does not unpack and execute those
-libraries by default: [`com_unpackLibraries`](/TaystJK/reference/cvars/com_unpacklibraries-27a5b09/)
-defaults to `0`, and both module loaders only try PK3 unpacking when it is enabled
-([registration](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/shared/sys/sys_main.cpp#L179),
-[legacy loader](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/shared/sys/sys_main.cpp#L493),
-[OpenJK-style loader](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/shared/sys/sys_main.cpp#L575)).
-This can make an old mod's assets appear while its custom HUD, menus, or game code does
-not load.
-
-The preferred fix is to extract the native libraries from the mod's PK3 and place them
-beside that PK3 in the mod directory. Keep the PK3 because the mod may still need its
-maps, menus, shaders, and other assets. For a 32-bit Windows mod, the result commonly
-looks like this:
-
-```text
-japlus/
-├── mod-assets.pk3
-├── cgamex86.dll
-├── uix86.dll
-└── jampgamex86.dll
-```
-
-Only extract files from a mod you trust. Native modules are executable code, not passive
-assets. The names and architecture must match the TaystJK build: an `x86.dll` from an old
-mod cannot be loaded by the 64-bit client. Use the 32-bit Windows build for a mod that
-provides only 32-bit Windows modules, or obtain modules built for your platform and
-architecture.
-
-On Windows, you can instead opt back into the old unpacking behavior for a trusted mod by
-setting the cvar at startup:
-
-```text
-taystjk.x86.exe +set fs_game japlus +set fs_forcegame japlus +set com_unpackLibraries 1
-```
-
-`com_unpackLibraries` is an initialization cvar, so put it on the command line rather
-than changing it after launch. This fallback is implemented on Windows. It does not
-extract ordinary `.so` or `.dylib` modules on Linux or macOS, so install those as loose
-native libraries
-([Windows unpacker](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/shared/sys/sys_win32.cpp#L603),
-[Unix behavior](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/shared/sys/sys_unix.cpp#L566)).
-
-### What `fs_forcegame` does
-
-On a normal client, `fs_forcegame` defaults to `taystjk`. This keeps TaystJK's directory at the highest filesystem priority when a server supplies a different `fs_game`, and keeps configs, demos, screenshots, and other generated files under `taystjk/`. A server cannot change `fs_forcegame`.
-
-The default is therefore appropriate when you want TaystJK's client-side files and settings while joining servers that run JA+, JA++, jaPRO, or another server-side mod. You can state it explicitly in a shortcut or launch script:
-
-```text
-taystjk.x86_64.exe +set fs_forcegame taystjk
-```
-
-Use the executable name for your platform. Do not add `fs_game` merely to join a server; the server sends its own game directory during connection.
-
-Native libraries are a separate concern: when a matching loose library exists in the server-selected `fs_game` directory, the engine tries that library before the copy in `taystjk/`. Keep other mods' native client libraries out of a clean TaystJK installation unless you intend to load them.
-
-To deliberately use another mod's client-side libraries and assets, install them in that mod's directory and select it at startup. For example, JA++ uses `japlus/` for compatibility with JA+:
-
-```text
-taystjk.x86_64.exe +set fs_game japlus +set fs_forcegame japlus
-```
-
-Setting both values loads the mod from the beginning, including a custom UI, and prevents a later server-provided `fs_game` from changing the directory used for files and generated output. To return to the normal TaystJK client setup, remove the `fs_game japlus` argument and either remove the `fs_forcegame` argument or set it back to `taystjk`.
-
-### When to use `vm_legacy`
-
-You should not need it. For each native module, TaystJK looks for the newer OpenJK-style `GetModuleAPI` entry point and, when the library does not export one, loads it through the older `dllEntry`/`vmMain` interface instead ([`sys_main.cpp`](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/shared/sys/sys_main.cpp#L628), [`cl_uiapi.cpp`](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/client/cl_uiapi.cpp#L1485)). Older mods such as JA+ load this way with no setting. UI libraries built for other OpenJK-based clients load through `GetModuleAPI`: the engine only asks a UI library for cvar help when the library says it provides it, and otherwise uses its own descriptions ([`cl_uiapi.cpp`](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/client/cl_uiapi.cpp#L1478)).
-
-`vm_legacy` forces the older interface for selected module slots, on a library that exports both. That matters in one case: the library's `GetModuleAPI` rejects the engine's API version, and the client stops with `GetGameAPI failed on` followed by the library name ([`cl_uiapi.cpp`](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/codemp/client/cl_uiapi.cpp#L1475)). It still loads a native library; it does not enable QVM support.
-
-`vm_legacy` is a bitmask:
-
-| Bit | Value | Module |
-|:--|:--|:--|
-| 0 | `1` | Game (`jampgame`), relevant to a local or dedicated server. |
-| 1 | `2` | Client game (`cgame`). |
-| 2 | `4` | UI (`ui`). |
-
-Add values to force more than one module, so `6` forces both `cgame` and UI. Put it on the command line, for example `+set vm_legacy 4` for the UI library: it is read when a module loads, and changing it afterwards does not convert a module that is already running.
-
-If the console then reports `VM_CreateLegacy: ... succeeded`, the older interface loaded. If it reports `failed`, the library has no older interface; remove the setting and check that the mod build matches your platform.
+TaystJK plays on modded servers with its own client-side code, so you normally install nothing
+else. If you want a mod's own HUD or menus, or an older mod's files do not seem to load,
+[mod compatibility](/TaystJK/install/mod-compatibility/#loading-another-mods-client-modules)
+explains how the client picks its modules and what to do about mods that pack them inside a
+PK3.
 
 ## Steam playtime and overlay
 
@@ -350,11 +314,11 @@ Jedi Academy. Put both in `GameData`, beside the executable:
 
 `6020` is Jedi Academy's Steam app ID.
 
-**Mind the architecture.** The
+Mind the architecture. The
 [Steam Integration Tools](https://jkhub.org/files/file/3549-steam-integration-tools/)
-package on JKHub is the usual source for these, but it provides the **32-bit**
-`steam_api.dll` only. If you run the 64-bit build, as most people do, that package
-alone will not work; you need `steam_api64.dll`, which comes from the Steamworks SDK.
+package on JKHub is the usual source for these, but it provides the 32-bit `steam_api.dll`
+only. If you run the 64-bit build, as most people do, that package alone will not work; you
+need `steam_api64.dll`, which comes from the Steamworks SDK.
 
 If the file is missing the client says so at startup in red, and otherwise runs normally:
 
@@ -365,25 +329,15 @@ Steam integration failed: Couldn't find steam_api64.dll
 The cvar is latched, so a change needs a restart. Set `com_steamIntegration 0` to stop the
 client looking at all.
 
-Why you have to supply these: the Steamworks SDK's terms do not fit TaystJK's GPLv2
-licence, so the library cannot be bundled. The client loads it at runtime if it finds it,
-which keeps the licences apart
+You have to supply these yourself because the Steamworks SDK's terms do not fit TaystJK's
+GPLv2 licence, so the library cannot be bundled. The client loads it at runtime if it finds
+it, which keeps the licences apart
 ([`sys_win32.cpp`](https://github.com/taysta/TaystJK/blame/f999cbc0912773164962d8be37737a31fe9ade8d/shared/sys/sys_win32.cpp#L714)).
-
-## First-launch checks
-
-- Open the console with <kbd>Shift</kbd> + <kbd>~</kbd> and run `version` to confirm that TaystJK is running.
-- If the console reports that it cannot find `default.cfg`, TaystJK cannot see `base/assets0.pk3`. Recheck the extraction directory or `fs_cdPath`.
-- If the client cannot load a renderer or library, re-extract the complete release, confirm its architecture, and revisit the platform prerequisites above.
-- If settings or downloaded PK3s appear in an unexpected place, run `path` in the console and inspect `fs_homepath`, `fs_basepath`, and `fs_game`.
-
-This layout is adapted from the longer [multiple modded clients guide on JKHub](https://jkhub.org/tutorials/errors-problems/how-to-install-multiple-modded-clients-on-the-same-system-r229/).
 
 ## Next steps
 
 - [What this client adds](/TaystJK/features/): the HUD tools, movement styles and cosmetics
-- [Something is wrong](/TaystJK/troubleshooting/): listed by symptom, including the macOS
-  and modded-server cases above
+- [Something is wrong](/TaystJK/troubleshooting/): problems listed by what you see
 - [Host a dedicated server](/TaystJK/server-hosting/)
 - [Search cvars and commands](/TaystJK/reference/)
 - [Compile TaystJK from source](/TaystJK/development/compiling/)

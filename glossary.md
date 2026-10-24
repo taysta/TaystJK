@@ -96,7 +96,7 @@ own is `taystjk`, which is where `japro-assets.pk3` is installed.
 
 **`fs_game` / `fs_forcegame`:** `fs_game` selects the mod directory and a server can set
 it. `fs_forcegame` is a client-side override that a server cannot change. See
-[what `fs_forcegame` does](/TaystJK/install/#what-fs_forcegame-does).
+[what `fs_forcegame` does](/TaystJK/install/mod-compatibility/#what-fs_forcegame-does).
 
 **homepath, basepath, cdpath:** the three roots the filesystem searches. `fs_basepath` is
 the installation directory, `fs_homepath` is where your own generated files are written

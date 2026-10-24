@@ -30,7 +30,7 @@ So xdocs do not replace a good registration description; they are the longer for
 somebody who is already in the console trying to work the cvar out. Write both.
 
 **Because xdocs live in the UI module, they travel with it.** Load another mod's `ui`
-library, such as JA+'s, as [install](/TaystJK/install/#run-taystjk-with-another-client-side-mod)
+library, such as JA+'s, as [install](/TaystJK/install/mod-compatibility/#loading-another-mods-client-modules)
 describes. That module answers the engine instead, so TaystJK's in-game help is gone
 until you switch back.
 
