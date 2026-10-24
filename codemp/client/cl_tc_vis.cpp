@@ -22,9 +22,23 @@ typedef struct {
 	vec3_t maxs;
 } visFace_t;
 
+typedef struct {
+	int cluster;
+	int area;
+} visLeaf_t;
+
 typedef struct visBrushNode_s {
 	int numFaces;
 	visFace_t *faces;
+
+	// the non-solid world leafs the brush's faces touch, for pvs/areamask culling
+	int numVisLeafs;
+	visLeaf_t *visLeafs;
+	qboolean alwaysVisible;
+
+	// bounds of the drawable faces
+	vec3_t mins;
+	vec3_t maxs;
 
 	// This is a linked list.
 	// Why? I dont know.
@@ -43,7 +57,20 @@ static int winding_cmp(const void *a, const void *b);
 static void add_vert_to_face(visFace_t *face, vec3_t vert, vec4_t color, vec2_t tex_coords);
 static float *get_uv_coords(vec2_t uv, vec3_t vert, vec3_t normal);
 static void free_vis_brushes(visBrushNode_t *brushes);
-static void draw(visBrushNode_t *brush, qhandle_t shader, visBrushType_t type);
+static void find_vis_leafs(visBrushNode_t *node);
+
+typedef struct {
+	const float *origin;
+	cplane_t frustum[4];
+	const byte *pvs; // NULL when everything is potentially visible
+	const byte *areamask;
+} visView_t;
+
+static void setup_view(const refdef_t *rd, visView_t *view);
+static qboolean outside_frustum(const cplane_t frustum[4], const vec3_t mins, const vec3_t maxs);
+static float dist_sq_to_box(const vec3_t p, const vec3_t mins, const vec3_t maxs);
+static qboolean brush_visible(const visBrushNode_t *brush, const visView_t *view);
+static void draw(visBrushNode_t *brush, qhandle_t shader, visBrushType_t type, const visView_t *view);
 
 
 static visBrushNode_t *trigger_head = NULL;
@@ -104,44 +131,22 @@ void tc_vis_init(void) {
 	add_slicks();
 }
 
-/*
-static vec3_t g_pvsLocation;
-static int g_pvsArea;
-static byte* g_pvsMask;
-static void SetPVSLocation(const vec3_t p)
-{
-	int leafnum, cluster;
-
-	VectorCopy(p, g_pvsLocation);
-	leafnum = CM_PointLeafnum(p);
-	cluster = CM_LeafCluster(leafnum);
-	g_pvsArea = CM_LeafArea(leafnum);
-	g_pvsMask = CM_ClusterPVS(cluster);
-}
-
-static qboolean InPVS(const vec3_t p)
-{
-	int leafnum = CM_PointLeafnum(p);
-	int cluster = CM_LeafCluster(leafnum);
-	int area = CM_LeafArea(leafnum);
-
-	if (g_pvsMask && (!(g_pvsMask[cluster >> 3] & (1 << (cluster & 7)))))
-		return qfalse;
-	if (!CM_AreasConnected(g_pvsArea, area))
-		return qfalse;
-	return qtrue;
-} */
-
 void tc_vis_render(void) {
-	//SetPVSLocation(theFxHelper.refdef->vieworg);
+	const refdef_t *rd = theFxHelper.refdef;
+	if (!rd)
+		return;
+
+	visView_t view;
+	setup_view(rd, &view);
+
 	if (triggers_draw->integer) {
-		draw(trigger_head, trigger_shader, TRIGGER_BRUSH);
+		draw(trigger_head, trigger_shader, TRIGGER_BRUSH, &view);
 	}
 	if (clips_draw->integer) {
-		draw(clip_head, clip_shader, CLIP_BRUSH);
+		draw(clip_head, clip_shader, CLIP_BRUSH, &view);
 	}
 	if (slicks_draw->integer) {
-		draw(slick_head, slick_shader, SLICK_BRUSH);
+		draw(slick_head, slick_shader, SLICK_BRUSH, &view);
 	}
 }
 
@@ -289,6 +294,8 @@ static void gen_visible_brush(int brushnum, vec3_t origin, visBrushType_t type, 
 		qsort(face->verts, face->numVerts, sizeof(face->verts[0]), winding_cmp);
 	}
 
+	find_vis_leafs(node);
+
 	visBrushNode_t **head = NULL;
 	switch (type)
 	{
@@ -412,35 +419,171 @@ static void free_vis_brushes(visBrushNode_t *brushes) {
 		for (int i = 0; i < brushes->numFaces; i++)
 			free(brushes->faces[i].verts);
 		free(brushes->faces);
+		free(brushes->visLeafs);
 		free(brushes);
 		brushes = next;
 	}
 }
 
-static void draw(visBrushNode_t *brush, qhandle_t shader, visBrushType_t type) {
-	if (!theFxHelper.refdef)
-		return;
-	vec3_t viewPos;
-	VectorCopy(theFxHelper.refdef->vieworg, viewPos);
+// collect the non-solid leafs around the brush once, so drawing only has to test pvs and areamask bits.
+// a box rather than a point, since brush edges often sit inside structural brushes where a point would land in solid
+static void find_vis_leafs(visBrushNode_t *node) {
+	// covers the slick extrusion in draw and the anti z-fighting offset above
+	const float pad = 4.0f;
+	ClearBounds(node->mins, node->maxs);
+	for (int i = 0; i < node->numFaces; i++) {
+		if (node->faces[i].numVerts < 3)
+			continue;
+		AddPointToBounds(node->faces[i].mins, node->mins, node->maxs);
+		AddPointToBounds(node->faces[i].maxs, node->mins, node->maxs);
+	}
 
-	while (brush) {
-		//don't do pvs optimization just check distance as well this gives better performance and results since pvs is expensive and oftentimes the edges are within structural brushes making it not reliable
-		if (DistanceSquared(viewPos, brush->faces[0].verts[0].xyz) < 8192 * 8192) {
-			for (int i = 0; i < brush->numFaces; ++i) {
-				if (type == SLICK_BRUSH) { // walk slightly along normal to make more visible
-					static polyVert_t extruded[800];
-					memcpy(extruded, brush->faces[i].verts, Q_min(sizeof(polyVert_t) * 800, sizeof(polyVert_t) * brush->faces[i].numVerts));
-					for (int j = 0; j < brush->faces[i].numVerts && j < 800; j++)
-					{
-						extruded[j].xyz[2] += 3.0f;
-					}
-					re->AddPolyToScene(shader, brush->faces[i].numVerts, extruded, 1);
+	node->numVisLeafs = 0;
+	node->visLeafs = NULL;
+	node->alwaysVisible = qfalse;
+	if (node->mins[0] > node->maxs[0]) // no drawable faces
+		return;
+
+	vec3_t mins, maxs;
+	for (int i = 0; i < 3; i++) {
+		mins[i] = node->mins[i] - pad;
+		maxs[i] = node->maxs[i] + pad;
+	}
+
+	static int leafs[1024];
+	int lastLeaf;
+	int count = CM_BoxLeafnums(mins, maxs, leafs, ARRAY_LEN(leafs), &lastLeaf);
+	if (count >= (int)ARRAY_LEN(leafs)) { // may have been truncated
+		node->alwaysVisible = qtrue;
+		return;
+	}
+
+	node->visLeafs = (visLeaf_t *)malloc(count * sizeof(visLeaf_t));
+	for (int i = 0; i < count; i++) {
+		const cLeaf_t *leaf = &cmg.leafs[leafs[i]];
+		if (leaf->cluster < 0 || leaf->area < 0) // solid
+			continue;
+
+		int j;
+		for (j = 0; j < node->numVisLeafs; j++) {
+			if (node->visLeafs[j].cluster == leaf->cluster && node->visLeafs[j].area == leaf->area)
+				break;
+		}
+		if (j == node->numVisLeafs) {
+			node->visLeafs[j].cluster = leaf->cluster;
+			node->visLeafs[j].area = leaf->area;
+			node->numVisLeafs++;
+		}
+	}
+
+	// entirely in solid, which shouldn't happen; keep drawing it like before rather than guess
+	if (!node->numVisLeafs)
+		node->alwaysVisible = qtrue;
+}
+
+static void setup_view(const refdef_t *rd, visView_t *view) {
+	view->origin = rd->vieworg;
+
+	// side planes of the view, built like the renderer's R_SetupFrustum; points inside satisfy DotProduct(p, normal) >= dist
+	float ang = DEG2RAD(rd->fov_x * 0.5f);
+	float xs = sinf(ang), xc = cosf(ang);
+	VectorScale(rd->viewaxis[0], xs, view->frustum[0].normal);
+	VectorMA(view->frustum[0].normal, xc, rd->viewaxis[1], view->frustum[0].normal);
+	VectorScale(rd->viewaxis[0], xs, view->frustum[1].normal);
+	VectorMA(view->frustum[1].normal, -xc, rd->viewaxis[1], view->frustum[1].normal);
+
+	ang = DEG2RAD(rd->fov_y * 0.5f);
+	float ys = sinf(ang), yc = cosf(ang);
+	VectorScale(rd->viewaxis[0], ys, view->frustum[2].normal);
+	VectorMA(view->frustum[2].normal, yc, rd->viewaxis[2], view->frustum[2].normal);
+	VectorScale(rd->viewaxis[0], ys, view->frustum[3].normal);
+	VectorMA(view->frustum[3].normal, -yc, rd->viewaxis[2], view->frustum[3].normal);
+
+	for (int i = 0; i < 4; i++)
+		view->frustum[i].dist = DotProduct(rd->vieworg, view->frustum[i].normal);
+
+	// like the renderer's R_MarkLeaves, a view outside the world (cluster -1) sees everything
+	int cluster = CM_LeafCluster(CM_PointLeafnum(rd->vieworg));
+	view->pvs = (cluster >= 0 && cmg.vised) ? CM_ClusterPVS(cluster) : NULL;
+	// set bits are areas closed off by doors; the cgame copies the snapshot's mask after adding effects, so it is a frame old
+	view->areamask = rd->areamask;
+}
+
+static qboolean outside_frustum(const cplane_t frustum[4], const vec3_t mins, const vec3_t maxs) {
+	for (int i = 0; i < 4; i++) {
+		// the box corner furthest along the plane normal; if even that is behind the plane, the whole box is
+		vec3_t corner;
+		for (int j = 0; j < 3; j++)
+			corner[j] = frustum[i].normal[j] >= 0 ? maxs[j] : mins[j];
+		if (DotProduct(corner, frustum[i].normal) < frustum[i].dist)
+			return qtrue;
+	}
+	return qfalse;
+}
+
+static float dist_sq_to_box(const vec3_t p, const vec3_t mins, const vec3_t maxs) {
+	float d = 0.0f;
+	for (int i = 0; i < 3; i++) {
+		const float c = Com_Clamp(mins[i], maxs[i], p[i]);
+		d += (p[i] - c) * (p[i] - c);
+	}
+	return d;
+}
+
+static qboolean brush_visible(const visBrushNode_t *brush, const visView_t *view) {
+	if (brush->alwaysVisible || !view->pvs)
+		return qtrue;
+
+	for (int i = 0; i < brush->numVisLeafs; i++) {
+		const int cluster = brush->visLeafs[i].cluster;
+		const int area = brush->visLeafs[i].area;
+		if (!(view->pvs[cluster >> 3] & (1 << (cluster & 7))))
+			continue;
+		if (view->areamask[area >> 3] & (1 << (area & 7)))
+			continue;
+		return qtrue;
+	}
+	return qfalse;
+}
+
+static void draw(visBrushNode_t *brush, qhandle_t shader, visBrushType_t type, const visView_t *view) {
+	// covers the slick extrusion below and the anti z-fighting offset in gen_visible_brush
+	const vec3_t pad = { 4.0f, 4.0f, 4.0f };
+
+	for (; brush; brush = brush->next) {
+		// measured to the nearest point of the brush, so long brushes passing by the view aren't dropped for a far corner
+		if (dist_sq_to_box(view->origin, brush->mins, brush->maxs) >= 8192 * 8192)
+			continue;
+
+		// behind walls or doors; faces there would still eat into the renderer's poly budget (600 on upstream renderers)
+		if (!brush_visible(brush, view))
+			continue;
+
+		for (int i = 0; i < brush->numFaces; ++i) {
+			visFace_t *face = &brush->faces[i];
+			// slick brushes keep a face per side but only walkable ones get verts, and every AddPolyToScene call uses a poly slot
+			if (face->numVerts < 3)
+				continue;
+
+			// off-screen
+			vec3_t mins, maxs;
+			VectorSubtract(face->mins, pad, mins);
+			VectorAdd(face->maxs, pad, maxs);
+			if (outside_frustum(view->frustum, mins, maxs))
+				continue;
+
+			if (type == SLICK_BRUSH) { // walk slightly along normal to make more visible
+				static polyVert_t extruded[800];
+				memcpy(extruded, face->verts, Q_min(sizeof(polyVert_t) * 800, sizeof(polyVert_t) * face->numVerts));
+				for (int j = 0; j < face->numVerts && j < 800; j++)
+				{
+					extruded[j].xyz[2] += 3.0f;
 				}
-				else {
-					re->AddPolyToScene(shader, brush->faces[i].numVerts, brush->faces[i].verts, 1);
-				}
+				re->AddPolyToScene(shader, face->numVerts, extruded, 1);
+			}
+			else {
+				re->AddPolyToScene(shader, face->numVerts, face->verts, 1);
 			}
 		}
-		brush = brush->next;
 	}
 }
