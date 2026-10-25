@@ -511,6 +511,7 @@ if(BuildMPRdVanilla OR BuildMPRdVulkan OR BuildMPRend2)
 					CMAKE_ARGS
 					${TurboSimdArgs}
 					-DENABLE_SHARED=0
+					-DCMAKE_POSITION_INDEPENDENT_CODE=ON
 					-DWITH_ARITH_DEC=0
 					-DWITH_ARITH_ENC=0
 					-DWITH_TURBOJPEG=0
