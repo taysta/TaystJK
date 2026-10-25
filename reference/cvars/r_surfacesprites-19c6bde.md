@@ -37,8 +37,8 @@ Controls `r_surfaceSprites` in the renderer module. Consult the cited behavior r
 
 | Value | Meaning | Evidence |
 |:--|:--|:--|
-| `0` | Disabled. | [codemp/rd-vanilla/tr_shade.cpp:1905](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/rd-vanilla/tr_shade.cpp#L1905) |
-| `1` | Enabled. | [codemp/rd-vanilla/tr_shade.cpp:1905](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/rd-vanilla/tr_shade.cpp#L1905) |
+| `0` | Disabled. | [codemp/rd-vanilla/tr_shade.cpp:1905](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/rd-vanilla/tr_shade.cpp#L1905) |
+| `1` | Enabled. | [codemp/rd-vanilla/tr_shade.cpp:1905](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/rd-vanilla/tr_shade.cpp#L1905) |
 
 ## Flags
 
@@ -90,14 +90,14 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 ## Evidence
 
-- registration: [codemp/rd-dedicated/tr_init.cpp:393](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/rd-dedicated/tr_init.cpp#L393) (Cvar_Get)
-- registration: [codemp/rd-rend2/tr_init.cpp:1693](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/rd-rend2/tr_init.cpp#L1693) (Cvar_Get)
-- registration: [codemp/rd-vanilla/tr_init.cpp:1702](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/rd-vanilla/tr_init.cpp#L1702) (Cvar_Get)
-- registration: [codemp/rd-vulkan/tr_init.cpp:860](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/rd-vulkan/tr_init.cpp#L860) (Cvar_Get)
-- behavior: [codemp/rd-vanilla/tr_shade.cpp:1905](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/rd-vanilla/tr_shade.cpp#L1905)
-- behavior: [codemp/rd-vanilla/tr_surfacesprites.cpp:304](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/rd-vanilla/tr_surfacesprites.cpp#L304)
-- behavior: [codemp/rd-vulkan/tr_surfacesprites.cpp:304](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/rd-vulkan/tr_surfacesprites.cpp#L304)
-- behavior: [codemp/rd-vulkan/tr_world.cpp:378](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/rd-vulkan/tr_world.cpp#L378)
-- behavior: [codemp/rd-vulkan/vk_shade_geometry.cpp:2212](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/rd-vulkan/vk_shade_geometry.cpp#L2212)
+- registration: [codemp/rd-dedicated/tr_init.cpp:393](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/rd-dedicated/tr_init.cpp#L393) (Cvar_Get)
+- registration: [codemp/rd-rend2/tr_init.cpp:1693](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/rd-rend2/tr_init.cpp#L1693) (Cvar_Get)
+- registration: [codemp/rd-vanilla/tr_init.cpp:1702](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/rd-vanilla/tr_init.cpp#L1702) (Cvar_Get)
+- registration: [codemp/rd-vulkan/tr_init.cpp:860](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/rd-vulkan/tr_init.cpp#L860) (Cvar_Get)
+- behavior: [codemp/rd-vanilla/tr_shade.cpp:1905](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/rd-vanilla/tr_shade.cpp#L1905)
+- behavior: [codemp/rd-vanilla/tr_surfacesprites.cpp:304](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/rd-vanilla/tr_surfacesprites.cpp#L304)
+- behavior: [codemp/rd-vulkan/tr_surfacesprites.cpp:304](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/rd-vulkan/tr_surfacesprites.cpp#L304)
+- behavior: [codemp/rd-vulkan/tr_world.cpp:378](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/rd-vulkan/tr_world.cpp#L378)
+- behavior: [codemp/rd-vulkan/vk_shade_geometry.cpp:2212](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/rd-vulkan/vk_shade_geometry.cpp#L2212)
 
-<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/76943f046bbbdc23d67323b838cb1c4c1e3fba0e"><code>76943f046bbb</code></a> on 2026-10-23. Anything merged after that is not reflected here.</p>
+<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/21044fb29768df0061bc4897bbb97d82304a1fe3"><code>21044fb29768</code></a> on 2026-10-25. Anything merged after that is not reflected here.</p>

@@ -31,15 +31,15 @@ Draw each player's current weapon on the team overlay
 | Derivation | `documented` |
 | Confidence | `medium` |
 | Added | 2022-05-12 in [`d6c87b2e6`](https://github.com/taysta/TaystJK/commit/d6c87b2e66e925c9dd76a528f7830560343b011b) <span class="status-chip">needs review</span> ([how to compare this against your build](/TaystJK/features/whats-new/#how-to-tell-what-your-build-has)) |
-| In-game xdocs | Yes: [codemp/ui/ui_xdocs.h:149](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/ui/ui_xdocs.h#L149) |
+| In-game xdocs | Yes: [codemp/ui/ui_xdocs.h:149](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/ui/ui_xdocs.h#L149) |
 | In-game menu | No |
 
 ## Values
 
 | Value | Meaning | Evidence |
 |:--|:--|:--|
-| `0` | Weapon icons are not drawn | [codemp/ui/ui_xdocs.h:149](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/ui/ui_xdocs.h#L149) |
-| `1` | Weapon icons are drawn | [codemp/ui/ui_xdocs.h:149](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/ui/ui_xdocs.h#L149) |
+| `0` | Weapon icons are not drawn | [codemp/ui/ui_xdocs.h:149](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/ui/ui_xdocs.h#L149) |
+| `1` | Weapon icons are drawn | [codemp/ui/ui_xdocs.h:149](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/ui/ui_xdocs.h#L149) |
 
 ## Flags
 
@@ -75,12 +75,12 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 ## Evidence
 
-- registration: [codemp/cgame/cg_xcvar.h:56](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/cgame/cg_xcvar.h#L56) (XCVAR_DEF)
-- behavior: [codemp/cgame/cg_draw.c:6706](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/cgame/cg_draw.c#L6706)
-- behavior: [codemp/cgame/cg_draw.c:6165](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/cgame/cg_draw.c#L6165)
-- behavior: [codemp/cgame/cg_draw.c:6257](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/cgame/cg_draw.c#L6257)
-- behavior: [codemp/cgame/cg_draw.c:6513](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/cgame/cg_draw.c#L6513)
-- behavior: [codemp/ui/ui_xdocs.h:149](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/ui/ui_xdocs.h#L149)
-- documentation: [codemp/ui/ui_xdocs.h:149](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/ui/ui_xdocs.h#L149)
+- registration: [codemp/cgame/cg_xcvar.h:56](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/cgame/cg_xcvar.h#L56) (XCVAR_DEF)
+- behavior: [codemp/cgame/cg_draw.c:6706](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/cgame/cg_draw.c#L6706)
+- behavior: [codemp/cgame/cg_draw.c:6165](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/cgame/cg_draw.c#L6165)
+- behavior: [codemp/cgame/cg_draw.c:6257](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/cgame/cg_draw.c#L6257)
+- behavior: [codemp/cgame/cg_draw.c:6513](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/cgame/cg_draw.c#L6513)
+- behavior: [codemp/ui/ui_xdocs.h:149](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/ui/ui_xdocs.h#L149)
+- documentation: [codemp/ui/ui_xdocs.h:149](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/ui/ui_xdocs.h#L149)
 
-<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/76943f046bbbdc23d67323b838cb1c4c1e3fba0e"><code>76943f046bbb</code></a> on 2026-10-23. Anything merged after that is not reflected here.</p>
+<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/21044fb29768df0061bc4897bbb97d82304a1fe3"><code>21044fb29768</code></a> on 2026-10-25. Anything merged after that is not reflected here.</p>

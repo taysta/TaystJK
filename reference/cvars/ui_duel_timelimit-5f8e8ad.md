@@ -33,7 +33,7 @@ Controls `ui_duel_timelimit` in the ui module. Consult the cited behavior reads 
 | Confidence | `medium` |
 | Added | 2015-04-24 in [`3a5f856a0`](https://github.com/taysta/TaystJK/commit/3a5f856a0bb455686515e55ba6068a9b72a82c28) <span class="status-chip">needs review</span> ([how to compare this against your build](/TaystJK/features/whats-new/#how-to-tell-what-your-build-has)) |
 | In-game xdocs | No |
-| In-game menu | Yes: [ingame_callvote.menu:692](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/assets/japro/ui/jamp/ingame_callvote.menu#L692), [ingame_callvote_japro.menu:738](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/assets/japro/ui/jamp/ingame_callvote_japro.menu#L738) |
+| In-game menu | Yes: [ingame_callvote.menu:692](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/assets/japro/ui/jamp/ingame_callvote.menu#L692), [ingame_callvote_japro.menu:738](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/assets/japro/ui/jamp/ingame_callvote_japro.menu#L738) |
 
 ## Values
 
@@ -67,7 +67,7 @@ Authored dates come from the exact registration's first content commit, PR dates
 
 ## Evidence
 
-- registration: [codemp/ui/ui_xcvar.h:150](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/ui/ui_xcvar.h#L150) (XCVAR_DEF)
-- behavior: [codemp/ui/ui_main.c:7798](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/ui/ui_main.c#L7798)
+- registration: [codemp/ui/ui_xcvar.h:150](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/ui/ui_xcvar.h#L150) (XCVAR_DEF)
+- behavior: [codemp/ui/ui_main.c:7798](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/ui/ui_main.c#L7798)
 
-<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/76943f046bbbdc23d67323b838cb1c4c1e3fba0e"><code>76943f046bbb</code></a> on 2026-10-23. Anything merged after that is not reflected here.</p>
+<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/21044fb29768df0061bc4897bbb97d82304a1fe3"><code>21044fb29768</code></a> on 2026-10-25. Anything merged after that is not reflected here.</p>

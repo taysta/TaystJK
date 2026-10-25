@@ -30,14 +30,14 @@ Disable/enable rendering in HDR
 | Confidence | `high` |
 | Added | 2021-05-25 in [`c4a9c87ef`](https://github.com/taysta/TaystJK/commit/c4a9c87ef0e3171c80fd8c4e24df94e0fa1bcbe4) ([how to compare this against your build](/TaystJK/features/whats-new/#how-to-tell-what-your-build-has)) |
 | In-game xdocs | No |
-| In-game menu | Yes: [ingame_setup.menu:1840](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/assets/japro/ui/jamp/ingame_setup.menu#L1840), [setup.menu:1630](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/assets/japro/ui/jamp/setup.menu#L1630) |
+| In-game menu | Yes: [ingame_setup.menu:1840](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/assets/japro/ui/jamp/ingame_setup.menu#L1840), [setup.menu:1630](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/assets/japro/ui/jamp/setup.menu#L1630) |
 
 ## Values
 
 | Value | Meaning | Evidence |
 |:--|:--|:--|
-| `0` | Disabled. | [codemp/rd-vulkan/vk_instance.cpp:365](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/rd-vulkan/vk_instance.cpp#L365) |
-| `1` | Enabled. | [codemp/rd-vulkan/vk_instance.cpp:365](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/rd-vulkan/vk_instance.cpp#L365) |
+| `0` | Disabled. | [codemp/rd-vulkan/vk_instance.cpp:365](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/rd-vulkan/vk_instance.cpp#L365) |
+| `1` | Enabled. | [codemp/rd-vulkan/vk_instance.cpp:365](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/rd-vulkan/vk_instance.cpp#L365) |
 
 ## Flags
 
@@ -93,12 +93,12 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 ## Evidence
 
-- registration: [codemp/rd-rend2/tr_init.cpp:1539](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/rd-rend2/tr_init.cpp#L1539) (Cvar_Get)
-- registration: [codemp/rd-vulkan/tr_init.cpp:927](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/rd-vulkan/tr_init.cpp#L927) (Cvar_Get)
-- behavior: [codemp/rd-vulkan/vk_instance.cpp:365](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/rd-vulkan/vk_instance.cpp#L365)
-- behavior: [shared/rd-rend2/tr_backend.cpp:2063](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/shared/rd-rend2/tr_backend.cpp#L2063)
-- behavior: [shared/rd-rend2/tr_backend.cpp:3030](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/shared/rd-rend2/tr_backend.cpp#L3030)
-- behavior: [shared/rd-rend2/tr_backend.cpp:3218](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/shared/rd-rend2/tr_backend.cpp#L3218)
-- behavior: [shared/rd-rend2/tr_bsp.cpp:922](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/shared/rd-rend2/tr_bsp.cpp#L922)
+- registration: [codemp/rd-rend2/tr_init.cpp:1539](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/rd-rend2/tr_init.cpp#L1539) (Cvar_Get)
+- registration: [codemp/rd-vulkan/tr_init.cpp:927](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/rd-vulkan/tr_init.cpp#L927) (Cvar_Get)
+- behavior: [codemp/rd-vulkan/vk_instance.cpp:365](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/rd-vulkan/vk_instance.cpp#L365)
+- behavior: [shared/rd-rend2/tr_backend.cpp:2063](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/shared/rd-rend2/tr_backend.cpp#L2063)
+- behavior: [shared/rd-rend2/tr_backend.cpp:3030](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/shared/rd-rend2/tr_backend.cpp#L3030)
+- behavior: [shared/rd-rend2/tr_backend.cpp:3218](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/shared/rd-rend2/tr_backend.cpp#L3218)
+- behavior: [shared/rd-rend2/tr_bsp.cpp:922](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/shared/rd-rend2/tr_bsp.cpp#L922)
 
-<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/76943f046bbbdc23d67323b838cb1c4c1e3fba0e"><code>76943f046bbb</code></a> on 2026-10-23. Anything merged after that is not reflected here.</p>
+<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/21044fb29768df0061bc4897bbb97d82304a1fe3"><code>21044fb29768</code></a> on 2026-10-25. Anything merged after that is not reflected here.</p>

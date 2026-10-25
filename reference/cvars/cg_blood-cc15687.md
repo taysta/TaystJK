@@ -31,16 +31,16 @@ JAPRO - Clientside - re add cg_blood
 | Derivation | `documented` |
 | Confidence | `medium` |
 | Added | 2018-09-03 in [`bdcd618c6`](https://github.com/taysta/TaystJK/commit/bdcd618c67713b86946b720d791c382d3908d97c) <span class="status-chip">needs review</span> ([how to compare this against your build](/TaystJK/features/whats-new/#how-to-tell-what-your-build-has)) |
-| In-game xdocs | Yes: [codemp/ui/ui_xdocs.h:467](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/ui/ui_xdocs.h#L467) |
-| In-game menu | Yes: [ingame_setup.menu:3007](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/assets/japro/ui/jamp/ingame_setup.menu#L3007) |
+| In-game xdocs | Yes: [codemp/ui/ui_xdocs.h:467](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/ui/ui_xdocs.h#L467) |
+| In-game menu | Yes: [ingame_setup.menu:3007](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/assets/japro/ui/jamp/ingame_setup.menu#L3007) |
 
 ## Values
 
 | Value | Meaning | Evidence |
 |:--|:--|:--|
-| `0` | No blood and no gibs | [codemp/ui/ui_xdocs.h:468](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/ui/ui_xdocs.h#L468) |
-| `1` | Only show blood | [codemp/ui/ui_xdocs.h:468](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/ui/ui_xdocs.h#L468) |
-| `2` | Show blood and gibs | [codemp/ui/ui_xdocs.h:469](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/ui/ui_xdocs.h#L469) |
+| `0` | No blood and no gibs | [codemp/ui/ui_xdocs.h:468](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/ui/ui_xdocs.h#L468) |
+| `1` | Only show blood | [codemp/ui/ui_xdocs.h:468](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/ui/ui_xdocs.h#L468) |
+| `2` | Show blood and gibs | [codemp/ui/ui_xdocs.h:469](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/ui/ui_xdocs.h#L469) |
 
 ## Flags
 
@@ -78,12 +78,12 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 ## Evidence
 
-- registration: [codemp/cgame/cg_xcvar.h:134](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/cgame/cg_xcvar.h#L134) (XCVAR_DEF)
-- behavior: [codemp/cgame/cg_effects.c:1354](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/cgame/cg_effects.c#L1354)
-- behavior: [codemp/cgame/cg_effects.c:1278](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/cgame/cg_effects.c#L1278)
-- behavior: [codemp/cgame/cg_effects.c:1339](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/cgame/cg_effects.c#L1339)
-- behavior: [codemp/cgame/cg_event.c:3999](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/cgame/cg_event.c#L3999)
-- behavior: [codemp/cgame/cg_main.c:1610](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/cgame/cg_main.c#L1610)
-- documentation: [codemp/ui/ui_xdocs.h:467](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/ui/ui_xdocs.h#L467)
+- registration: [codemp/cgame/cg_xcvar.h:134](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/cgame/cg_xcvar.h#L134) (XCVAR_DEF)
+- behavior: [codemp/cgame/cg_effects.c:1354](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/cgame/cg_effects.c#L1354)
+- behavior: [codemp/cgame/cg_effects.c:1278](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/cgame/cg_effects.c#L1278)
+- behavior: [codemp/cgame/cg_effects.c:1339](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/cgame/cg_effects.c#L1339)
+- behavior: [codemp/cgame/cg_event.c:3999](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/cgame/cg_event.c#L3999)
+- behavior: [codemp/cgame/cg_main.c:1610](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/cgame/cg_main.c#L1610)
+- documentation: [codemp/ui/ui_xdocs.h:467](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/ui/ui_xdocs.h#L467)
 
-<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/76943f046bbbdc23d67323b838cb1c4c1e3fba0e"><code>76943f046bbb</code></a> on 2026-10-23. Anything merged after that is not reflected here.</p>
+<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/21044fb29768df0061bc4897bbb97d82304a1fe3"><code>21044fb29768</code></a> on 2026-10-25. Anything merged after that is not reflected here.</p>

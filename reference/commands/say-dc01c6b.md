@@ -68,12 +68,12 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 ## Evidence
 
-- registration: [codemp/cgame/cg_consolecmds.c:2491](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/cgame/cg_consolecmds.c#L2491) (cgame command table)
-- registration: [codemp/cgame/cg_consolecmds.c:2588](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/cgame/cg_consolecmds.c#L2588) (forwarded client command table)
-- registration: [codemp/game/g_cmds.c:9042](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/game/g_cmds.c#L9042) (game command table)
-- registration: [codemp/game/g_svcmds.c:1713](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/game/g_svcmds.c#L1713) (game-console command table)
-- handler: [codemp/cgame/cg_consolecmds.c:2311](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/cgame/cg_consolecmds.c#L2311)
-- handler: [codemp/game/g_cmds.c:2322](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/game/g_cmds.c#L2322)
-- handler: [codemp/game/g_svcmds.c:817](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/game/g_svcmds.c#L817)
+- registration: [codemp/cgame/cg_consolecmds.c:2491](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/cgame/cg_consolecmds.c#L2491) (cgame command table)
+- registration: [codemp/cgame/cg_consolecmds.c:2588](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/cgame/cg_consolecmds.c#L2588) (forwarded client command table)
+- registration: [codemp/game/g_cmds.c:9042](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/game/g_cmds.c#L9042) (game command table)
+- registration: [codemp/game/g_svcmds.c:1713](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/game/g_svcmds.c#L1713) (game-console command table)
+- handler: [codemp/cgame/cg_consolecmds.c:2311](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/cgame/cg_consolecmds.c#L2311)
+- handler: [codemp/game/g_cmds.c:2322](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/game/g_cmds.c#L2322)
+- handler: [codemp/game/g_svcmds.c:817](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/game/g_svcmds.c#L817)
 
-<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/76943f046bbbdc23d67323b838cb1c4c1e3fba0e"><code>76943f046bbb</code></a> on 2026-10-23. Anything merged after that is not reflected here.</p>
+<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/21044fb29768df0061bc4897bbb97d82304a1fe3"><code>21044fb29768</code></a> on 2026-10-25. Anything merged after that is not reflected here.</p>

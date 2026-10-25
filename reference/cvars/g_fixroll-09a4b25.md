@@ -38,9 +38,9 @@ description: "1=JA+ style base roll. //2=Chainable roll. //3=JK2 style roll."
 
 | Value | Meaning | Evidence |
 |:--|:--|:--|
-| `1` | JA+ style base roll. //. | [docs/japro_docs.md:50](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/docs/japro_docs.md#L50) |
-| `2` | Chainable roll. //. | [docs/japro_docs.md:50](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/docs/japro_docs.md#L50) |
-| `3` | JK2 style roll. | [docs/japro_docs.md:50](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/docs/japro_docs.md#L50) |
+| `1` | JA+ style base roll. //. | [docs/japro_docs.md:50](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/docs/japro_docs.md#L50) |
+| `2` | Chainable roll. //. | [docs/japro_docs.md:50](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/docs/japro_docs.md#L50) |
+| `3` | JK2 style roll. | [docs/japro_docs.md:50](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/docs/japro_docs.md#L50) |
 
 ## Flags
 
@@ -77,12 +77,12 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 ## Evidence
 
-- registration: [codemp/game/g_xcvar.h:231](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/game/g_xcvar.h#L231) (XCVAR_DEF)
-- behavior: [codemp/game/bg_pmove.c:8347](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/game/bg_pmove.c#L8347)
-- behavior: [codemp/game/bg_pmove.c:8351](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/game/bg_pmove.c#L8351)
-- behavior: [codemp/game/bg_pmove.c:11918](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/game/bg_pmove.c#L11918)
-- behavior: [codemp/game/bg_pmove.c:12216](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/game/bg_pmove.c#L12216)
-- behavior: [codemp/game/bg_pmove.c:12263](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/game/bg_pmove.c#L12263)
-- documentation: [docs/japro_docs.md:50](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/docs/japro_docs.md#L50)
+- registration: [codemp/game/g_xcvar.h:231](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/game/g_xcvar.h#L231) (XCVAR_DEF)
+- behavior: [codemp/game/bg_pmove.c:8347](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/game/bg_pmove.c#L8347)
+- behavior: [codemp/game/bg_pmove.c:8351](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/game/bg_pmove.c#L8351)
+- behavior: [codemp/game/bg_pmove.c:11918](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/game/bg_pmove.c#L11918)
+- behavior: [codemp/game/bg_pmove.c:12216](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/game/bg_pmove.c#L12216)
+- behavior: [codemp/game/bg_pmove.c:12263](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/game/bg_pmove.c#L12263)
+- documentation: [docs/japro_docs.md:50](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/docs/japro_docs.md#L50)
 
-<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/76943f046bbbdc23d67323b838cb1c4c1e3fba0e"><code>76943f046bbb</code></a> on 2026-10-23. Anything merged after that is not reflected here.</p>
+<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/21044fb29768df0061bc4897bbb97d82304a1fe3"><code>21044fb29768</code></a> on 2026-10-25. Anything merged after that is not reflected here.</p>

@@ -38,11 +38,11 @@ Controls `r_dlightMode` in the renderer module. Consult the cited behavior reads
 
 | Value | Meaning | Evidence |
 |:--|:--|:--|
-| `2` | Selects the code path tested for value 2. | [codemp/rd-vulkan/tr_light.cpp:331](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/rd-vulkan/tr_light.cpp#L331) |
+| `2` | Selects the code path tested for value 2. | [codemp/rd-vulkan/tr_light.cpp:331](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/rd-vulkan/tr_light.cpp#L331) |
 
 ## Enforced ranges
 
-- `0` through `2` (integer; Cvar_CheckRange). Evidence: [codemp/rd-vulkan/tr_init.cpp:948](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/rd-vulkan/tr_init.cpp#L948)
+- `0` through `2` (integer; Cvar_CheckRange). Evidence: [codemp/rd-vulkan/tr_init.cpp:948](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/rd-vulkan/tr_init.cpp#L948)
 
 ## Flags
 
@@ -96,12 +96,12 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 ## Evidence
 
-- registration: [codemp/rd-rend2/tr_init.cpp:1569](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/rd-rend2/tr_init.cpp#L1569) (Cvar_Get)
-- registration: [codemp/rd-vulkan/tr_init.cpp:947](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/rd-vulkan/tr_init.cpp#L947) (Cvar_Get); condition `defined(USE_PMLIGHT)`
-- behavior: [codemp/rd-vulkan/tr_light.cpp:331](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/rd-vulkan/tr_light.cpp#L331)
-- behavior: [codemp/rd-vulkan/tr_light.cpp:350](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/rd-vulkan/tr_light.cpp#L350)
-- behavior: [codemp/rd-vulkan/tr_light.cpp:396](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/rd-vulkan/tr_light.cpp#L396)
-- behavior: [codemp/rd-vulkan/tr_mesh.cpp:342](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/rd-vulkan/tr_mesh.cpp#L342)
-- behavior: [codemp/rd-vulkan/tr_shadows.cpp:143](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/rd-vulkan/tr_shadows.cpp#L143)
+- registration: [codemp/rd-rend2/tr_init.cpp:1569](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/rd-rend2/tr_init.cpp#L1569) (Cvar_Get)
+- registration: [codemp/rd-vulkan/tr_init.cpp:947](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/rd-vulkan/tr_init.cpp#L947) (Cvar_Get); condition `defined(USE_PMLIGHT)`
+- behavior: [codemp/rd-vulkan/tr_light.cpp:331](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/rd-vulkan/tr_light.cpp#L331)
+- behavior: [codemp/rd-vulkan/tr_light.cpp:350](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/rd-vulkan/tr_light.cpp#L350)
+- behavior: [codemp/rd-vulkan/tr_light.cpp:396](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/rd-vulkan/tr_light.cpp#L396)
+- behavior: [codemp/rd-vulkan/tr_mesh.cpp:342](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/rd-vulkan/tr_mesh.cpp#L342)
+- behavior: [codemp/rd-vulkan/tr_shadows.cpp:143](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/rd-vulkan/tr_shadows.cpp#L143)
 
-<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/76943f046bbbdc23d67323b838cb1c4c1e3fba0e"><code>76943f046bbb</code></a> on 2026-10-23. Anything merged after that is not reflected here.</p>
+<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/21044fb29768df0061bc4897bbb97d82304a1fe3"><code>21044fb29768</code></a> on 2026-10-25. Anything merged after that is not reflected here.</p>

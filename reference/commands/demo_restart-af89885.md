@@ -39,7 +39,7 @@ Origin: <span class="label ref-origin ref-origin-newjk">NewJK / NewMod</span>
 
 - Ultimate-origin introduction: [`4e0ab9f26795`](https://github.com/jkanewmod/NewJK/commit/4e0ab9f26795b5583a9d7974f9279d04eec90fb9) in <span class="label ref-origin ref-origin-newjk">NewJK / NewMod</span> (content authored `2018-09-14`, integrated `2018-09-14`)
 - TaystJK integration evidence: [`94672e48ece0`](https://github.com/taysta/TaystJK/commit/94672e48ece0771144723030e011e2443c68a435)
-- Upstream registration evidence: [codemp/client/cl_main.cpp:3316](https://github.com/jkanewmod/NewJK/blame/b3679ca8cd29e718d35a21bd12a1caba5b547506/codemp/client/cl_main.cpp#L3316)
+- Upstream registration evidence: [codemp/client/cl_main.cpp:3316](https://github.com/jkanewmod/NewJK/blame/40e10bbd5efee7a57db8f41b4f54cf4ce2e166d3/codemp/client/cl_main.cpp#L3316)
 - Attribution method: `earliest-authored-project-introduction`
 - Attribution confidence: `high`
 
@@ -68,7 +68,7 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 ## Evidence
 
-- registration: [codemp/client/cl_main.cpp:3479](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/client/cl_main.cpp#L3479) (Cmd_AddCommand)
-- handler: [codemp/client/cl_main.cpp:633](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/client/cl_main.cpp#L633)
+- registration: [codemp/client/cl_main.cpp:3479](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/client/cl_main.cpp#L3479) (Cmd_AddCommand)
+- handler: [codemp/client/cl_main.cpp:633](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/client/cl_main.cpp#L633)
 
-<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/76943f046bbbdc23d67323b838cb1c4c1e3fba0e"><code>76943f046bbb</code></a> on 2026-10-23. Anything merged after that is not reflected here.</p>
+<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/21044fb29768df0061bc4897bbb97d82304a1fe3"><code>21044fb29768</code></a> on 2026-10-25. Anything merged after that is not reflected here.</p>

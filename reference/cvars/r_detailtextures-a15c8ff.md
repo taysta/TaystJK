@@ -37,8 +37,8 @@ Controls `r_detailTextures` in the renderer module. Consult the cited behavior r
 
 | Value | Meaning | Evidence |
 |:--|:--|:--|
-| `0` | Disabled. | [codemp/rd-dedicated/tr_shader.cpp:2699](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/rd-dedicated/tr_shader.cpp#L2699) |
-| `1` | Enabled. | [codemp/rd-dedicated/tr_shader.cpp:2699](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/rd-dedicated/tr_shader.cpp#L2699) |
+| `0` | Disabled. | [codemp/rd-dedicated/tr_shader.cpp:2699](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/rd-dedicated/tr_shader.cpp#L2699) |
+| `1` | Enabled. | [codemp/rd-dedicated/tr_shader.cpp:2699](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/rd-dedicated/tr_shader.cpp#L2699) |
 
 ## Flags
 
@@ -85,14 +85,14 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 ## Evidence
 
-- registration: [codemp/rd-dedicated/tr_init.cpp:336](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/rd-dedicated/tr_init.cpp#L336) (Cvar_Get)
-- registration: [codemp/rd-rend2/tr_init.cpp:1525](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/rd-rend2/tr_init.cpp#L1525) (Cvar_Get)
-- registration: [codemp/rd-vanilla/tr_init.cpp:1655](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/rd-vanilla/tr_init.cpp#L1655) (Cvar_Get)
-- registration: [codemp/rd-vulkan/tr_init.cpp:807](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/rd-vulkan/tr_init.cpp#L807) (Cvar_Get)
-- behavior: [codemp/rd-dedicated/tr_shader.cpp:2699](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/rd-dedicated/tr_shader.cpp#L2699)
-- behavior: [codemp/rd-vanilla/tr_shader.cpp:2978](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/rd-vanilla/tr_shader.cpp#L2978)
-- behavior: [codemp/rd-vulkan/tr_shader.cpp:4160](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/rd-vulkan/tr_shader.cpp#L4160)
-- behavior: [shared/rd-rend2/tr_shader.cpp:4180](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/shared/rd-rend2/tr_shader.cpp#L4180)
-- behavior: [codemp/ui/ui_main.c:6228](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/ui/ui_main.c#L6228)
+- registration: [codemp/rd-dedicated/tr_init.cpp:336](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/rd-dedicated/tr_init.cpp#L336) (Cvar_Get)
+- registration: [codemp/rd-rend2/tr_init.cpp:1525](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/rd-rend2/tr_init.cpp#L1525) (Cvar_Get)
+- registration: [codemp/rd-vanilla/tr_init.cpp:1655](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/rd-vanilla/tr_init.cpp#L1655) (Cvar_Get)
+- registration: [codemp/rd-vulkan/tr_init.cpp:807](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/rd-vulkan/tr_init.cpp#L807) (Cvar_Get)
+- behavior: [codemp/rd-dedicated/tr_shader.cpp:2699](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/rd-dedicated/tr_shader.cpp#L2699)
+- behavior: [codemp/rd-vanilla/tr_shader.cpp:2978](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/rd-vanilla/tr_shader.cpp#L2978)
+- behavior: [codemp/rd-vulkan/tr_shader.cpp:4160](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/rd-vulkan/tr_shader.cpp#L4160)
+- behavior: [shared/rd-rend2/tr_shader.cpp:4180](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/shared/rd-rend2/tr_shader.cpp#L4180)
+- behavior: [codemp/ui/ui_main.c:6228](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/ui/ui_main.c#L6228)
 
-<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/76943f046bbbdc23d67323b838cb1c4c1e3fba0e"><code>76943f046bbb</code></a> on 2026-10-23. Anything merged after that is not reflected here.</p>
+<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/21044fb29768df0061bc4897bbb97d82304a1fe3"><code>21044fb29768</code></a> on 2026-10-25. Anything merged after that is not reflected here.</p>

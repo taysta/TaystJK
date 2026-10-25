@@ -39,7 +39,7 @@ Origin: <span class="label ref-origin ref-origin-newjk">NewJK / NewMod</span>
 
 - Ultimate-origin introduction: [`c3f27b42e4f3`](https://github.com/jkanewmod/NewJK/commit/c3f27b42e4f34443b36c9a1c19614dfeba21beb4) in <span class="label ref-origin ref-origin-newjk">NewJK / NewMod</span> (content authored `2016-05-29`, integrated `2016-05-29`)
 - TaystJK integration evidence: [`1dd571383a0d`](https://github.com/taysta/TaystJK/commit/1dd571383a0d16520e69ce209f8a2d21b2943a62)
-- Upstream registration evidence: [codemp/qcommon/common.cpp:1221](https://github.com/jkanewmod/NewJK/blame/b3679ca8cd29e718d35a21bd12a1caba5b547506/codemp/qcommon/common.cpp#L1221)
+- Upstream registration evidence: [codemp/qcommon/common.cpp:1221](https://github.com/jkanewmod/NewJK/blame/40e10bbd5efee7a57db8f41b4f54cf4ce2e166d3/codemp/qcommon/common.cpp#L1221)
 - Attribution method: `earliest-authored-project-introduction`
 - Attribution confidence: `high`
 - Notes: Dated commit evidence identifies later registration changes relative to the origin snapshot.
@@ -64,7 +64,7 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 ## Evidence
 
-- registration: [codemp/qcommon/common.cpp:1410](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/qcommon/common.cpp#L1410) (Cmd_AddCommand); condition `defined(_WIN32)`
-- handler: [codemp/qcommon/common.cpp:527](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/qcommon/common.cpp#L527)
+- registration: [codemp/qcommon/common.cpp:1408](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/qcommon/common.cpp#L1408) (Cmd_AddCommand); condition `defined(_WIN32)`
+- handler: [codemp/qcommon/common.cpp:525](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/qcommon/common.cpp#L525)
 
-<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/76943f046bbbdc23d67323b838cb1c4c1e3fba0e"><code>76943f046bbb</code></a> on 2026-10-23. Anything merged after that is not reflected here.</p>
+<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/21044fb29768df0061bc4897bbb97d82304a1fe3"><code>21044fb29768</code></a> on 2026-10-25. Anything merged after that is not reflected here.</p>

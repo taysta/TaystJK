@@ -38,8 +38,8 @@ description: "1 <=> sv_snapsMax"
 
 | Value | Meaning | Evidence |
 |:--|:--|:--|
-| `0` | Disabled. | [codemp/server/sv_client.cpp:1227](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/server/sv_client.cpp#L1227) |
-| `1` | Enabled. | [codemp/server/sv_client.cpp:1227](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/server/sv_client.cpp#L1227) |
+| `0` | Disabled. | [codemp/server/sv_client.cpp:1227](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/server/sv_client.cpp#L1227) |
+| `1` | Enabled. | [codemp/server/sv_client.cpp:1227](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/server/sv_client.cpp#L1227) |
 
 ## Flags
 
@@ -80,11 +80,11 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 ## Evidence
 
-- registration: [codemp/server/sv_init.cpp:1010](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/server/sv_init.cpp#L1010) (Cvar_Get)
-- behavior: [codemp/server/sv_client.cpp:1227](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/server/sv_client.cpp#L1227)
-- behavior: [codemp/server/sv_main.cpp:1137](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/server/sv_main.cpp#L1137)
-- behavior: [codemp/server/sv_client.cpp:1226](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/server/sv_client.cpp#L1226)
-- behavior: [codemp/server/sv_main.cpp:1110](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/server/sv_main.cpp#L1110)
-- behavior: [codemp/server/sv_main.cpp:1115](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/server/sv_main.cpp#L1115)
+- registration: [codemp/server/sv_init.cpp:1010](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/server/sv_init.cpp#L1010) (Cvar_Get)
+- behavior: [codemp/server/sv_client.cpp:1227](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/server/sv_client.cpp#L1227)
+- behavior: [codemp/server/sv_main.cpp:1137](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/server/sv_main.cpp#L1137)
+- behavior: [codemp/server/sv_client.cpp:1226](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/server/sv_client.cpp#L1226)
+- behavior: [codemp/server/sv_main.cpp:1110](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/server/sv_main.cpp#L1110)
+- behavior: [codemp/server/sv_main.cpp:1115](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/server/sv_main.cpp#L1115)
 
-<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/76943f046bbbdc23d67323b838cb1c4c1e3fba0e"><code>76943f046bbb</code></a> on 2026-10-23. Anything merged after that is not reflected here.</p>
+<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/21044fb29768df0061bc4897bbb97d82304a1fe3"><code>21044fb29768</code></a> on 2026-10-25. Anything merged after that is not reflected here.</p>

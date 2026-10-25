@@ -40,8 +40,8 @@ Not a cvar, dont change it
 
 | Value | Meaning | Evidence |
 |:--|:--|:--|
-| `0` | Disabled. | [codemp/cgame/cg_effects.c:676](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/cgame/cg_effects.c#L676) |
-| `1` | Enabled. | [codemp/cgame/cg_effects.c:676](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/cgame/cg_effects.c#L676) |
+| `0` | Disabled. | [codemp/cgame/cg_effects.c:676](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/cgame/cg_effects.c#L676) |
+| `1` | Enabled. | [codemp/cgame/cg_effects.c:676](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/cgame/cg_effects.c#L676) |
 
 ## Flags
 
@@ -115,11 +115,11 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 ## Evidence
 
-- registration: [codemp/game/g_xcvar.h:297](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/game/g_xcvar.h#L297) (XCVAR_DEF)
-- behavior: [codemp/cgame/cg_effects.c:676](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/cgame/cg_effects.c#L676)
-- behavior: [codemp/cgame/cg_event.c:2837](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/cgame/cg_event.c#L2837)
-- behavior: [codemp/cgame/cg_event.c:2875](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/cgame/cg_event.c#L2875)
-- behavior: [codemp/cgame/cg_event.c:3341](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/cgame/cg_event.c#L3341)
-- behavior: [codemp/cgame/cg_weapons.c:2652](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/cgame/cg_weapons.c#L2652)
+- registration: [codemp/game/g_xcvar.h:297](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/game/g_xcvar.h#L297) (XCVAR_DEF)
+- behavior: [codemp/cgame/cg_effects.c:676](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/cgame/cg_effects.c#L676)
+- behavior: [codemp/cgame/cg_event.c:2837](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/cgame/cg_event.c#L2837)
+- behavior: [codemp/cgame/cg_event.c:2875](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/cgame/cg_event.c#L2875)
+- behavior: [codemp/cgame/cg_event.c:3341](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/cgame/cg_event.c#L3341)
+- behavior: [codemp/cgame/cg_weapons.c:2649](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/cgame/cg_weapons.c#L2649)
 
-<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/76943f046bbbdc23d67323b838cb1c4c1e3fba0e"><code>76943f046bbb</code></a> on 2026-10-23. Anything merged after that is not reflected here.</p>
+<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/21044fb29768df0061bc4897bbb97d82304a1fe3"><code>21044fb29768</code></a> on 2026-10-25. Anything merged after that is not reflected here.</p>

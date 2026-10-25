@@ -36,9 +36,9 @@ Controls fog rendering. The Vulkan registration documents 0 as disabled, 1 as so
 
 | Value | Meaning | Evidence |
 |:--|:--|:--|
-| `0` | Disable fog. | [codemp/rd-vulkan/tr_init.cpp:871](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/rd-vulkan/tr_init.cpp#L871) |
-| `1` | Use software fog. | [codemp/rd-vulkan/tr_init.cpp:871](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/rd-vulkan/tr_init.cpp#L871) |
-| `2` | Use hardware fog. | [codemp/rd-vulkan/tr_init.cpp:871](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/rd-vulkan/tr_init.cpp#L871) |
+| `0` | Disable fog. | [codemp/rd-vulkan/tr_init.cpp:871](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/rd-vulkan/tr_init.cpp#L871) |
+| `1` | Use software fog. | [codemp/rd-vulkan/tr_init.cpp:871](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/rd-vulkan/tr_init.cpp#L871) |
+| `2` | Use hardware fog. | [codemp/rd-vulkan/tr_init.cpp:871](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/rd-vulkan/tr_init.cpp#L871) |
 
 ## Flags
 
@@ -94,14 +94,14 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 ## Evidence
 
-- registration: [codemp/rd-dedicated/tr_init.cpp:404](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/rd-dedicated/tr_init.cpp#L404) (Cvar_Get)
-- registration: [codemp/rd-rend2/tr_init.cpp:1653](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/rd-rend2/tr_init.cpp#L1653) (Cvar_Get)
-- registration: [codemp/rd-vanilla/tr_init.cpp:1713](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/rd-vanilla/tr_init.cpp#L1713) (Cvar_Get)
-- registration: [codemp/rd-vulkan/tr_init.cpp:871](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/rd-vulkan/tr_init.cpp#L871) (Cvar_Get)
-- behavior: [codemp/rd-vanilla/tr_quicksprite.cpp:87](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/rd-vanilla/tr_quicksprite.cpp#L87)
-- behavior: [codemp/rd-vanilla/tr_quicksprite.cpp:130](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/rd-vanilla/tr_quicksprite.cpp#L130)
-- behavior: [codemp/rd-vanilla/tr_shade.cpp:648](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/rd-vanilla/tr_shade.cpp#L648)
-- behavior: [codemp/rd-vanilla/tr_shade.cpp:1000](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/rd-vanilla/tr_shade.cpp#L1000)
-- behavior: [codemp/rd-vanilla/tr_shade.cpp:1882](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/rd-vanilla/tr_shade.cpp#L1882)
+- registration: [codemp/rd-dedicated/tr_init.cpp:404](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/rd-dedicated/tr_init.cpp#L404) (Cvar_Get)
+- registration: [codemp/rd-rend2/tr_init.cpp:1653](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/rd-rend2/tr_init.cpp#L1653) (Cvar_Get)
+- registration: [codemp/rd-vanilla/tr_init.cpp:1713](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/rd-vanilla/tr_init.cpp#L1713) (Cvar_Get)
+- registration: [codemp/rd-vulkan/tr_init.cpp:871](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/rd-vulkan/tr_init.cpp#L871) (Cvar_Get)
+- behavior: [codemp/rd-vanilla/tr_quicksprite.cpp:87](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/rd-vanilla/tr_quicksprite.cpp#L87)
+- behavior: [codemp/rd-vanilla/tr_quicksprite.cpp:130](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/rd-vanilla/tr_quicksprite.cpp#L130)
+- behavior: [codemp/rd-vanilla/tr_shade.cpp:648](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/rd-vanilla/tr_shade.cpp#L648)
+- behavior: [codemp/rd-vanilla/tr_shade.cpp:1000](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/rd-vanilla/tr_shade.cpp#L1000)
+- behavior: [codemp/rd-vanilla/tr_shade.cpp:1882](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/rd-vanilla/tr_shade.cpp#L1882)
 
-<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/76943f046bbbdc23d67323b838cb1c4c1e3fba0e"><code>76943f046bbb</code></a> on 2026-10-23. Anything merged after that is not reflected here.</p>
+<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/21044fb29768df0061bc4897bbb97d82304a1fe3"><code>21044fb29768</code></a> on 2026-10-25. Anything merged after that is not reflected here.</p>

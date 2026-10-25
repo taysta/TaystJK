@@ -39,8 +39,8 @@ Controls `taystJKcgflags` in the cgame module. Consult the cited behavior reads 
 
 | Value | Meaning | Evidence |
 |:--|:--|:--|
-| `0` | Disabled. | [codemp/cgame/cg_cvar.c:293](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/cgame/cg_cvar.c#L293) |
-| `1` | Enabled. | [codemp/cgame/cg_cvar.c:293](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/cgame/cg_cvar.c#L293) |
+| `0` | Disabled. | [codemp/cgame/cg_cvar.c:293](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/cgame/cg_cvar.c#L293) |
+| `1` | Enabled. | [codemp/cgame/cg_cvar.c:293](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/cgame/cg_cvar.c#L293) |
 
 ## Flags
 
@@ -53,7 +53,7 @@ Origin: <span class="label ref-origin ref-origin-taystjk">TaystJK</span>
 
 - Ultimate-origin introduction: [`76943f046bbb`](https://github.com/taysta/TaystJK/commit/76943f046bbbdc23d67323b838cb1c4c1e3fba0e) in <span class="label ref-origin ref-origin-taystjk">TaystJK</span> (content authored `2026-10-23`, PR opened `2026-10-23`, integrated `2026-10-23`)
 - Origin pull request: [#414](https://github.com/taysta/TaystJK/pull/414)
-- Upstream registration evidence: [codemp/cgame/cg_xcvar.h:457](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/cgame/cg_xcvar.h#L457)
+- Upstream registration evidence: [codemp/cgame/cg_xcvar.h:457](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/cgame/cg_xcvar.h#L457)
 - Attribution method: `squash-feature-group-explicit-credit`
 - Attribution confidence: `high`
 - Notes: The identifier's single-prefix squash feature group explicitly credits taystjk.
@@ -68,9 +68,9 @@ Authored dates come from the exact registration's first content commit, PR dates
 
 ## Evidence
 
-- registration: [codemp/cgame/cg_xcvar.h:457](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/cgame/cg_xcvar.h#L457) (XCVAR_DEF)
-- behavior: [codemp/cgame/cg_cvar.c:293](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/cgame/cg_cvar.c#L293)
-- behavior: [codemp/cgame/cg_cvar.c:294](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/cgame/cg_cvar.c#L294)
-- behavior: [codemp/cgame/cg_main.c:3339](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/cgame/cg_main.c#L3339)
+- registration: [codemp/cgame/cg_xcvar.h:457](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/cgame/cg_xcvar.h#L457) (XCVAR_DEF)
+- behavior: [codemp/cgame/cg_cvar.c:293](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/cgame/cg_cvar.c#L293)
+- behavior: [codemp/cgame/cg_cvar.c:294](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/cgame/cg_cvar.c#L294)
+- behavior: [codemp/cgame/cg_main.c:3339](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/cgame/cg_main.c#L3339)
 
-<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/76943f046bbbdc23d67323b838cb1c4c1e3fba0e"><code>76943f046bbb</code></a> on 2026-10-23. Anything merged after that is not reflected here.</p>
+<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/21044fb29768df0061bc4897bbb97d82304a1fe3"><code>21044fb29768</code></a> on 2026-10-25. Anything merged after that is not reflected here.</p>

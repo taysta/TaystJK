@@ -38,7 +38,7 @@ Controls `g_allowVote` in the game module. Consult the cited behavior reads befo
 
 ## Bits
 
-Use [`toggleVote`](/TaystJK/reference/commands/togglevote-397b6ff/) to toggle one option at a time; see the command page for syntax. The value column is that bit on its own. [The labels come from the source table](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/game/g_svcmds.c#L1416).
+Use [`toggleVote`](/TaystJK/reference/commands/togglevote-397b6ff/) to toggle one option at a time; see the command page for syntax. The value column is that bit on its own. [The labels come from the source table](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/game/g_svcmds.c#L1416).
 
 | Bit | Value | Meaning | Read by |
 |:--|:--|:--|:--|
@@ -86,11 +86,11 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 ## Evidence
 
-- registration: [codemp/game/g_xcvar.h:71](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/game/g_xcvar.h#L71) (XCVAR_DEF)
-- behavior: [codemp/game/g_cmds.c:3110](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/game/g_cmds.c#L3110)
-- behavior: [codemp/game/g_cmds.c:3252](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/game/g_cmds.c#L3252)
-- behavior: [codemp/game/g_cmds.c:3280](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/game/g_cmds.c#L3280)
-- behavior: [codemp/game/g_svcmds.c:1440](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/game/g_svcmds.c#L1440)
-- behavior: [codemp/game/g_cmds.c:3141](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/game/g_cmds.c#L3141)
+- registration: [codemp/game/g_xcvar.h:71](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/game/g_xcvar.h#L71) (XCVAR_DEF)
+- behavior: [codemp/game/g_cmds.c:3110](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/game/g_cmds.c#L3110)
+- behavior: [codemp/game/g_cmds.c:3252](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/game/g_cmds.c#L3252)
+- behavior: [codemp/game/g_cmds.c:3280](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/game/g_cmds.c#L3280)
+- behavior: [codemp/game/g_svcmds.c:1440](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/game/g_svcmds.c#L1440)
+- behavior: [codemp/game/g_cmds.c:3141](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/game/g_cmds.c#L3141)
 
-<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/76943f046bbbdc23d67323b838cb1c4c1e3fba0e"><code>76943f046bbb</code></a> on 2026-10-23. Anything merged after that is not reflected here.</p>
+<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/21044fb29768df0061bc4897bbb97d82304a1fe3"><code>21044fb29768</code></a> on 2026-10-25. Anything merged after that is not reflected here.</p>

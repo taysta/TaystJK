@@ -37,8 +37,8 @@ Controls `com_validateZone` in the engine-shared module. Consult the cited behav
 
 | Value | Meaning | Evidence |
 |:--|:--|:--|
-| `0` | Disabled. | [codemp/qcommon/z_memman_pc.cpp:103](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/qcommon/z_memman_pc.cpp#L103) |
-| `1` | Enabled. | [codemp/qcommon/z_memman_pc.cpp:103](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/qcommon/z_memman_pc.cpp#L103) |
+| `0` | Disabled. | [codemp/qcommon/z_memman_pc.cpp:103](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/qcommon/z_memman_pc.cpp#L103) |
+| `1` | Enabled. | [codemp/qcommon/z_memman_pc.cpp:103](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/qcommon/z_memman_pc.cpp#L103) |
 
 ## Flags
 
@@ -64,7 +64,7 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 ## Evidence
 
-- registration: [codemp/qcommon/z_memman_pc.cpp:616](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/qcommon/z_memman_pc.cpp#L616) (Cvar_Get)
-- behavior: [codemp/qcommon/z_memman_pc.cpp:103](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/qcommon/z_memman_pc.cpp#L103)
+- registration: [codemp/qcommon/z_memman_pc.cpp:616](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/qcommon/z_memman_pc.cpp#L616) (Cvar_Get)
+- behavior: [codemp/qcommon/z_memman_pc.cpp:103](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/qcommon/z_memman_pc.cpp#L103)
 
-<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/76943f046bbbdc23d67323b838cb1c4c1e3fba0e"><code>76943f046bbb</code></a> on 2026-10-23. Anything merged after that is not reflected here.</p>
+<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/21044fb29768df0061bc4897bbb97d82304a1fe3"><code>21044fb29768</code></a> on 2026-10-25. Anything merged after that is not reflected here.</p>

@@ -39,8 +39,8 @@ Controls `ui_freeSaber` in the ui module. Consult the cited behavior reads befor
 
 | Value | Meaning | Evidence |
 |:--|:--|:--|
-| `0` | Disabled. | [codemp/ui/ui_force.c:637](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/ui/ui_force.c#L637) |
-| `1` | Enabled. | [codemp/ui/ui_force.c:637](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/ui/ui_force.c#L637) |
+| `0` | Disabled. | [codemp/ui/ui_force.c:637](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/ui/ui_force.c#L637) |
+| `1` | Enabled. | [codemp/ui/ui_force.c:637](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/ui/ui_force.c#L637) |
 
 ## Flags
 
@@ -72,11 +72,11 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 ## Evidence
 
-- registration: [codemp/ui/ui_xcvar.h:89](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/ui/ui_xcvar.h#L89) (XCVAR_DEF)
-- behavior: [codemp/ui/ui_force.c:637](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/ui/ui_force.c#L637)
-- behavior: [codemp/ui/ui_force.c:641](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/ui/ui_force.c#L641)
-- behavior: [codemp/ui/ui_force.c:762](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/ui/ui_force.c#L762)
-- behavior: [codemp/ui/ui_force.c:766](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/ui/ui_force.c#L766)
-- behavior: [codemp/ui/ui_force.c:1049](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/ui/ui_force.c#L1049)
+- registration: [codemp/ui/ui_xcvar.h:89](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/ui/ui_xcvar.h#L89) (XCVAR_DEF)
+- behavior: [codemp/ui/ui_force.c:637](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/ui/ui_force.c#L637)
+- behavior: [codemp/ui/ui_force.c:641](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/ui/ui_force.c#L641)
+- behavior: [codemp/ui/ui_force.c:762](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/ui/ui_force.c#L762)
+- behavior: [codemp/ui/ui_force.c:766](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/ui/ui_force.c#L766)
+- behavior: [codemp/ui/ui_force.c:1049](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/ui/ui_force.c#L1049)
 
-<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/76943f046bbbdc23d67323b838cb1c4c1e3fba0e"><code>76943f046bbb</code></a> on 2026-10-23. Anything merged after that is not reflected here.</p>
+<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/21044fb29768df0061bc4897bbb97d82304a1fe3"><code>21044fb29768</code></a> on 2026-10-25. Anything merged after that is not reflected here.</p>

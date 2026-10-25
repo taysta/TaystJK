@@ -37,8 +37,8 @@ Controls `cg_weaponCycleAmmo` in the cgame module. Consult the cited behavior re
 
 | Value | Meaning | Evidence |
 |:--|:--|:--|
-| `0` | Disabled. | [codemp/cgame/cg_weapons.c:1353](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/cgame/cg_weapons.c#L1353) |
-| `1` | Enabled. | [codemp/cgame/cg_weapons.c:1353](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/cgame/cg_weapons.c#L1353) |
+| `0` | Disabled. | [codemp/cgame/cg_weapons.c:1350](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/cgame/cg_weapons.c#L1350) |
+| `1` | Enabled. | [codemp/cgame/cg_weapons.c:1350](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/cgame/cg_weapons.c#L1350) |
 
 ## Flags
 
@@ -73,10 +73,10 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 ## Evidence
 
-- registration: [codemp/cgame/cg_xcvar.h:60](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/cgame/cg_xcvar.h#L60) (XCVAR_DEF)
-- behavior: [codemp/cgame/cg_weapons.c:1353](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/cgame/cg_weapons.c#L1353)
-- behavior: [codemp/cgame/cg_weapons.c:1394](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/cgame/cg_weapons.c#L1394)
-- behavior: [codemp/cgame/cg_weapons.c:1478](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/cgame/cg_weapons.c#L1478)
-- behavior: [codemp/cgame/hud_tribes.c:262](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/cgame/hud_tribes.c#L262)
+- registration: [codemp/cgame/cg_xcvar.h:60](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/cgame/cg_xcvar.h#L60) (XCVAR_DEF)
+- behavior: [codemp/cgame/cg_weapons.c:1350](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/cgame/cg_weapons.c#L1350)
+- behavior: [codemp/cgame/cg_weapons.c:1391](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/cgame/cg_weapons.c#L1391)
+- behavior: [codemp/cgame/cg_weapons.c:1475](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/cgame/cg_weapons.c#L1475)
+- behavior: [codemp/cgame/hud_tribes.c:262](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/cgame/hud_tribes.c#L262)
 
-<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/76943f046bbbdc23d67323b838cb1c4c1e3fba0e"><code>76943f046bbb</code></a> on 2026-10-23. Anything merged after that is not reflected here.</p>
+<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/21044fb29768df0061bc4897bbb97d82304a1fe3"><code>21044fb29768</code></a> on 2026-10-25. Anything merged after that is not reflected here.</p>

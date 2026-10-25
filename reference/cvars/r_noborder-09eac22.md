@@ -32,14 +32,14 @@ Controls `r_noborder` in the renderer module. Consult the cited behavior reads b
 | Confidence | `medium` |
 | Added | 2013-05-11 in [`f203e799b`](https://github.com/taysta/TaystJK/commit/f203e799b14c0716833793eed611c272111c3cb6) <span class="status-chip">needs review</span> ([how to compare this against your build](/TaystJK/features/whats-new/#how-to-tell-what-your-build-has)) |
 | In-game xdocs | No |
-| In-game menu | Yes: [ingame_setup.menu:1261](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/assets/japro/ui/jamp/ingame_setup.menu#L1261) |
+| In-game menu | Yes: [ingame_setup.menu:1261](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/assets/japro/ui/jamp/ingame_setup.menu#L1261) |
 
 ## Values
 
 | Value | Meaning | Evidence |
 |:--|:--|:--|
-| `0` | Disabled. | [shared/sdl/sdl_window.cpp:822](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/shared/sdl/sdl_window.cpp#L822) |
-| `1` | Enabled. | [shared/sdl/sdl_window.cpp:822](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/shared/sdl/sdl_window.cpp#L822) |
+| `0` | Disabled. | [shared/sdl/sdl_window.cpp:822](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/shared/sdl/sdl_window.cpp#L822) |
+| `1` | Enabled. | [shared/sdl/sdl_window.cpp:822](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/shared/sdl/sdl_window.cpp#L822) |
 
 ## Flags
 
@@ -95,10 +95,10 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 ## Evidence
 
-- registration: [codemp/rd-dedicated/tr_init.cpp:347](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/rd-dedicated/tr_init.cpp#L347) (Cvar_Get)
-- registration: [shared/sdl/sdl_window.cpp:799](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/shared/sdl/sdl_window.cpp#L799) (Cvar_Get)
-- behavior: [shared/sdl/sdl_window.cpp:822](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/shared/sdl/sdl_window.cpp#L822)
-- behavior: [codemp/rd-rend2/tr_init.cpp:1293](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/rd-rend2/tr_init.cpp#L1293)
-- behavior: [codemp/rd-vanilla/tr_init.cpp:1458](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/rd-vanilla/tr_init.cpp#L1458)
+- registration: [codemp/rd-dedicated/tr_init.cpp:347](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/rd-dedicated/tr_init.cpp#L347) (Cvar_Get)
+- registration: [shared/sdl/sdl_window.cpp:799](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/shared/sdl/sdl_window.cpp#L799) (Cvar_Get)
+- behavior: [shared/sdl/sdl_window.cpp:822](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/shared/sdl/sdl_window.cpp#L822)
+- behavior: [codemp/rd-rend2/tr_init.cpp:1293](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/rd-rend2/tr_init.cpp#L1293)
+- behavior: [codemp/rd-vanilla/tr_init.cpp:1458](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/rd-vanilla/tr_init.cpp#L1458)
 
-<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/76943f046bbbdc23d67323b838cb1c4c1e3fba0e"><code>76943f046bbb</code></a> on 2026-10-23. Anything merged after that is not reflected here.</p>
+<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/21044fb29768df0061bc4897bbb97d82304a1fe3"><code>21044fb29768</code></a> on 2026-10-25. Anything merged after that is not reflected here.</p>

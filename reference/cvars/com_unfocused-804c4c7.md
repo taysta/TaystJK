@@ -39,8 +39,8 @@ Controls `com_unfocused` in the engine-shared module. Consult the cited behavior
 
 | Value | Meaning | Evidence |
 |:--|:--|:--|
-| `0` | Disabled. | [codemp/client/cl_input.cpp:1264](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/client/cl_input.cpp#L1264) |
-| `1` | Enabled. | [codemp/client/cl_input.cpp:1264](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/client/cl_input.cpp#L1264) |
+| `0` | Disabled. | [codemp/client/cl_input.cpp:1264](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/client/cl_input.cpp#L1264) |
+| `1` | Enabled. | [codemp/client/cl_input.cpp:1264](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/client/cl_input.cpp#L1264) |
 
 ## Flags
 
@@ -88,11 +88,11 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 ## Evidence
 
-- registration: [shared/sys/sys_main.cpp:169](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/shared/sys/sys_main.cpp#L169) (Cvar_Get)
-- behavior: [codemp/client/cl_input.cpp:1264](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/client/cl_input.cpp#L1264)
-- behavior: [codemp/client/snd_dma.cpp:1581](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/client/snd_dma.cpp#L1581)
-- behavior: [codemp/qcommon/common.cpp:1757](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/qcommon/common.cpp#L1757)
-- behavior: [shared/sdl/sdl_input.cpp:845](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/shared/sdl/sdl_input.cpp#L845)
-- behavior: [shared/sdl/sdl_input.cpp:665](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/shared/sdl/sdl_input.cpp#L665)
+- registration: [shared/sys/sys_main.cpp:169](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/shared/sys/sys_main.cpp#L169) (Cvar_Get)
+- behavior: [codemp/client/cl_input.cpp:1264](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/client/cl_input.cpp#L1264)
+- behavior: [codemp/client/snd_dma.cpp:1581](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/client/snd_dma.cpp#L1581)
+- behavior: [codemp/qcommon/common.cpp:1755](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/qcommon/common.cpp#L1755)
+- behavior: [shared/sdl/sdl_input.cpp:845](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/shared/sdl/sdl_input.cpp#L845)
+- behavior: [shared/sdl/sdl_input.cpp:665](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/shared/sdl/sdl_input.cpp#L665)
 
-<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/76943f046bbbdc23d67323b838cb1c4c1e3fba0e"><code>76943f046bbb</code></a> on 2026-10-23. Anything merged after that is not reflected here.</p>
+<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/21044fb29768df0061bc4897bbb97d82304a1fe3"><code>21044fb29768</code></a> on 2026-10-25. Anything merged after that is not reflected here.</p>

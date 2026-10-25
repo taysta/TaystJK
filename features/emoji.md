@@ -15,7 +15,7 @@ description: "Every chat emoji TaystJK ships, and the text you type to send each
 
 <p class="page-lede">TaystJK ships 186 chat emoji. Type the text under an image to send it. They are drawn in the chat box only when <code>cg_chatBoxEmojis</code> is on.</p>
 
-<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/76943f046bbbdc23d67323b838cb1c4c1e3fba0e"><code>76943f046bbb</code></a> on 2026-10-23. Anything merged after that is not reflected here.</p>
+<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/21044fb29768df0061bc4897bbb97d82304a1fe3"><code>21044fb29768</code></a> on 2026-10-25. Anything merged after that is not reflected here.</p>
 </div>
 
 The client builds this list by reading the files in `gfx/emoji`, so a server or a

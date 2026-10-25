@@ -39,8 +39,8 @@ Controls `sv_paused` in the engine-shared module. Consult the cited behavior rea
 
 | Value | Meaning | Evidence |
 |:--|:--|:--|
-| `0` | Disabled. | [codemp/client/cl_cgame.cpp:964](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/client/cl_cgame.cpp#L964) |
-| `1` | Enabled. | [codemp/client/cl_cgame.cpp:964](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/client/cl_cgame.cpp#L964) |
+| `0` | Disabled. | [codemp/client/cl_cgame.cpp:964](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/client/cl_cgame.cpp#L964) |
+| `1` | Enabled. | [codemp/client/cl_cgame.cpp:964](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/client/cl_cgame.cpp#L964) |
 
 ## Flags
 
@@ -69,11 +69,11 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 ## Evidence
 
-- registration: [codemp/qcommon/common.cpp:1479](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/qcommon/common.cpp#L1479) (Cvar_Get)
-- behavior: [codemp/client/cl_cgame.cpp:964](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/client/cl_cgame.cpp#L964)
-- behavior: [codemp/client/cl_input.cpp:1690](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/client/cl_input.cpp#L1690)
-- behavior: [codemp/client/cl_main.cpp:2308](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/client/cl_main.cpp#L2308)
-- behavior: [codemp/server/sv_main.cpp:1008](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/server/sv_main.cpp#L1008)
-- behavior: [codemp/server/sv_main.cpp:1013](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/server/sv_main.cpp#L1013)
+- registration: [codemp/qcommon/common.cpp:1477](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/qcommon/common.cpp#L1477) (Cvar_Get)
+- behavior: [codemp/client/cl_cgame.cpp:964](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/client/cl_cgame.cpp#L964)
+- behavior: [codemp/client/cl_input.cpp:1690](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/client/cl_input.cpp#L1690)
+- behavior: [codemp/client/cl_main.cpp:2308](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/client/cl_main.cpp#L2308)
+- behavior: [codemp/server/sv_main.cpp:1008](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/server/sv_main.cpp#L1008)
+- behavior: [codemp/server/sv_main.cpp:1013](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/server/sv_main.cpp#L1013)
 
-<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/76943f046bbbdc23d67323b838cb1c4c1e3fba0e"><code>76943f046bbb</code></a> on 2026-10-23. Anything merged after that is not reflected here.</p>
+<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/21044fb29768df0061bc4897bbb97d82304a1fe3"><code>21044fb29768</code></a> on 2026-10-25. Anything merged after that is not reflected here.</p>
