@@ -38,8 +38,8 @@ Fixed skyportal issue
 
 | Value | Meaning | Evidence |
 |:--|:--|:--|
-| `0` | Disabled. | [codemp/cgame/cg_view.c:1424](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/cgame/cg_view.c#L1424) |
-| `1` | Enabled. | [codemp/cgame/cg_view.c:1424](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/cgame/cg_view.c#L1424) |
+| `0` | Disabled. | [codemp/cgame/cg_view.c:1424](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/cgame/cg_view.c#L1424) |
+| `1` | Enabled. | [codemp/cgame/cg_view.c:1424](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/cgame/cg_view.c#L1424) |
 
 ## Flags
 
@@ -88,9 +88,8 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 ## Evidence
 
-- registration: [codemp/cgame/cg_xcvar.h:306](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/cgame/cg_xcvar.h#L306) (XCVAR_DEF)
-- behavior: [codemp/cgame/cg_view.c:1424](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/cgame/cg_view.c#L1424)
-- behavior: [codemp/cgame/cg_view.c:2002](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/cgame/cg_view.c#L2002)
-- behavior: [codemp/cgame/cg_weapons.c:887](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/cgame/cg_weapons.c#L887)
+- registration: [codemp/cgame/cg_xcvar.h:306](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/cgame/cg_xcvar.h#L306) (XCVAR_DEF)
+- behavior: [codemp/cgame/cg_view.c:1424](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/cgame/cg_view.c#L1424)
+- behavior: [codemp/cgame/cg_view.c:2002](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/cgame/cg_view.c#L2002)
 
-<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/76943f046bbbdc23d67323b838cb1c4c1e3fba0e"><code>76943f046bbb</code></a> on 2026-10-23. Anything merged after that is not reflected here.</p>
+<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/21044fb29768df0061bc4897bbb97d82304a1fe3"><code>21044fb29768</code></a> on 2026-10-25. Anything merged after that is not reflected here.</p>

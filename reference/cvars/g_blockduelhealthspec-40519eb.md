@@ -38,8 +38,8 @@ Don't show duelers health to people in spectate.
 
 | Value | Meaning | Evidence |
 |:--|:--|:--|
-| `0` | Disabled. | [codemp/game/g_active.c:6161](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/game/g_active.c#L6161) |
-| `1` | Enabled. | [codemp/game/g_active.c:6161](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/game/g_active.c#L6161) |
+| `0` | Disabled. | [codemp/game/g_active.c:6161](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/game/g_active.c#L6161) |
+| `1` | Enabled. | [codemp/game/g_active.c:6161](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/game/g_active.c#L6161) |
 
 ## Flags
 
@@ -68,8 +68,8 @@ Authored dates come from the exact registration's first content commit, PR dates
 
 ## Evidence
 
-- registration: [codemp/game/g_xcvar.h:285](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/game/g_xcvar.h#L285) (XCVAR_DEF)
-- behavior: [codemp/game/g_active.c:6161](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/game/g_active.c#L6161)
-- documentation: [docs/japro_docs.md:98](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/docs/japro_docs.md#L98)
+- registration: [codemp/game/g_xcvar.h:285](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/game/g_xcvar.h#L285) (XCVAR_DEF)
+- behavior: [codemp/game/g_active.c:6161](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/game/g_active.c#L6161)
+- documentation: [docs/japro_docs.md:98](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/docs/japro_docs.md#L98)
 
-<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/76943f046bbbdc23d67323b838cb1c4c1e3fba0e"><code>76943f046bbb</code></a> on 2026-10-23. Anything merged after that is not reflected here.</p>
+<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/21044fb29768df0061bc4897bbb97d82304a1fe3"><code>21044fb29768</code></a> on 2026-10-25. Anything merged after that is not reflected here.</p>

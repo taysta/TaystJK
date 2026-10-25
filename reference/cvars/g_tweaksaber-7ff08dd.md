@@ -39,7 +39,7 @@ Configured with /tweakSaber command.
 
 ## Bits
 
-Use [`tweakSaber`](/TaystJK/reference/commands/tweaksaber-e5f1b57/) to toggle one option at a time; see the command page for syntax. The value column is that bit on its own. [The labels come from the source table](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/game/g_svcmds.c#L915).
+Use [`tweakSaber`](/TaystJK/reference/commands/tweaksaber-e5f1b57/) to toggle one option at a time; see the command page for syntax. The value column is that bit on its own. [The labels come from the source table](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/game/g_svcmds.c#L915).
 
 | Bit | Value | Meaning | Read by |
 |:--|:--|:--|:--|
@@ -47,14 +47,14 @@ Use [`tweakSaber`](/TaystJK/reference/commands/tweaksaber-e5f1b57/) to toggle on
 | 1 | `2` | JK2 1.02 style damage system | — |
 | 2 | `4` | Reduced saberblock for MP damages | — |
 | 3 | `8` | Reduce saberdrops for MP damages | — |
-| 4 | `16` | Allow rollcancel for saber swings | [codemp/game/g_local.h:277](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/game/g_local.h#L277) |
-| 5 | `32` | JK2 1.02 style swings | [codemp/game/g_local.h:278](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/game/g_local.h#L278) |
-| 6 | `64` | Fixed saberswitch | [codemp/game/g_local.h:279](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/game/g_local.h#L279) |
-| 7 | `128` | No aim backslash | [codemp/game/g_local.h:280](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/game/g_local.h#L280) |
-| 8 | `256` | JK2 red DFA | [codemp/game/g_local.h:281](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/game/g_local.h#L281) |
+| 4 | `16` | Allow rollcancel for saber swings | [codemp/game/g_local.h:277](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/game/g_local.h#L277) |
+| 5 | `32` | JK2 1.02 style swings | [codemp/game/g_local.h:278](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/game/g_local.h#L278) |
+| 6 | `64` | Fixed saberswitch | [codemp/game/g_local.h:279](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/game/g_local.h#L279) |
+| 7 | `128` | No aim backslash | [codemp/game/g_local.h:280](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/game/g_local.h#L280) |
+| 8 | `256` | JK2 red DFA | [codemp/game/g_local.h:281](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/game/g_local.h#L281) |
 | 9 | `512` | Fix yellow DFA | — |
 | 10 | `1024` | Spin red DFA | — |
-| 11 | `2048` | Spin backslash | [codemp/game/g_local.h:284](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/game/g_local.h#L284) |
+| 11 | `2048` | Spin backslash | [codemp/game/g_local.h:284](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/game/g_local.h#L284) |
 | 12 | `4096` | JK2 lunge | — |
 | 13 | `8192` | Remove red DFA Boost | — |
 | 14 | `16384` | Make red DFA cost 0 forcepoints | — |
@@ -113,12 +113,12 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 ## Evidence
 
-- registration: [codemp/game/g_xcvar.h:193](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/game/g_xcvar.h#L193) (XCVAR_DEF)
-- behavior: [codemp/game/ai_main.c:8387](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/game/ai_main.c#L8387)
-- behavior: [codemp/game/bg_panimate.c:2851](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/game/bg_panimate.c#L2851)
-- behavior: [codemp/game/bg_pmove.c:4480](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/game/bg_pmove.c#L4480)
-- behavior: [codemp/game/bg_pmove.c:6270](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/game/bg_pmove.c#L6270)
-- behavior: [codemp/game/bg_pmove.c:9101](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/game/bg_pmove.c#L9101)
-- documentation: [docs/japro_docs.md:13](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/docs/japro_docs.md#L13)
+- registration: [codemp/game/g_xcvar.h:193](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/game/g_xcvar.h#L193) (XCVAR_DEF)
+- behavior: [codemp/game/ai_main.c:8387](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/game/ai_main.c#L8387)
+- behavior: [codemp/game/bg_panimate.c:2851](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/game/bg_panimate.c#L2851)
+- behavior: [codemp/game/bg_pmove.c:4480](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/game/bg_pmove.c#L4480)
+- behavior: [codemp/game/bg_pmove.c:6270](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/game/bg_pmove.c#L6270)
+- behavior: [codemp/game/bg_pmove.c:9101](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/game/bg_pmove.c#L9101)
+- documentation: [docs/japro_docs.md:13](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/docs/japro_docs.md#L13)
 
-<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/76943f046bbbdc23d67323b838cb1c4c1e3fba0e"><code>76943f046bbb</code></a> on 2026-10-23. Anything merged after that is not reflected here.</p>
+<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/21044fb29768df0061bc4897bbb97d82304a1fe3"><code>21044fb29768</code></a> on 2026-10-25. Anything merged after that is not reflected here.</p>

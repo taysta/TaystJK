@@ -38,8 +38,8 @@ Controls `g_duelStartArmor` in the game module. Consult the cited behavior reads
 
 | Value | Meaning | Evidence |
 |:--|:--|:--|
-| `0` | Disabled. | [codemp/game/g_client.c:4639](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/game/g_client.c#L4639) |
-| `1` | Enabled. | [codemp/game/g_client.c:4639](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/game/g_client.c#L4639) |
+| `0` | Disabled. | [codemp/game/g_client.c:4639](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/game/g_client.c#L4639) |
+| `1` | Enabled. | [codemp/game/g_client.c:4639](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/game/g_client.c#L4639) |
 
 ## Flags
 
@@ -76,11 +76,11 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 ## Evidence
 
-- registration: [codemp/game/g_xcvar.h:253](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/game/g_xcvar.h#L253) (XCVAR_DEF)
-- behavior: [codemp/game/g_client.c:4639](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/game/g_client.c#L4639)
-- behavior: [codemp/game/g_cmds.c:8319](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/game/g_cmds.c#L8319)
-- behavior: [codemp/game/g_cmds.c:4382](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/game/g_cmds.c#L4382)
-- behavior: [codemp/game/g_cmds.c:4383](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/game/g_cmds.c#L4383)
-- behavior: [codemp/game/g_client.c:4640](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/game/g_client.c#L4640)
+- registration: [codemp/game/g_xcvar.h:253](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/game/g_xcvar.h#L253) (XCVAR_DEF)
+- behavior: [codemp/game/g_client.c:4639](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/game/g_client.c#L4639)
+- behavior: [codemp/game/g_cmds.c:8319](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/game/g_cmds.c#L8319)
+- behavior: [codemp/game/g_cmds.c:4382](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/game/g_cmds.c#L4382)
+- behavior: [codemp/game/g_cmds.c:4383](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/game/g_cmds.c#L4383)
+- behavior: [codemp/game/g_client.c:4640](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/game/g_client.c#L4640)
 
-<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/76943f046bbbdc23d67323b838cb1c4c1e3fba0e"><code>76943f046bbb</code></a> on 2026-10-23. Anything merged after that is not reflected here.</p>
+<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/21044fb29768df0061bc4897bbb97d82304a1fe3"><code>21044fb29768</code></a> on 2026-10-25. Anything merged after that is not reflected here.</p>

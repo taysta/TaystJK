@@ -76,10 +76,10 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 ## Evidence
 
-- registration: [codemp/rd-dedicated/tr_init.cpp:399](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/rd-dedicated/tr_init.cpp#L399) (Cvar_Get)
-- registration: [codemp/rd-vanilla/tr_init.cpp:1708](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/rd-vanilla/tr_init.cpp#L1708) (Cvar_Get)
-- registration: [codemp/rd-vulkan/tr_init.cpp:866](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/rd-vulkan/tr_init.cpp#L866) (Cvar_Get)
-- behavior: [codemp/rd-vanilla/tr_surfacesprites.cpp:291](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/rd-vanilla/tr_surfacesprites.cpp#L291)
-- behavior: [codemp/rd-vulkan/tr_surfacesprites.cpp:291](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/rd-vulkan/tr_surfacesprites.cpp#L291)
+- registration: [codemp/rd-dedicated/tr_init.cpp:399](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/rd-dedicated/tr_init.cpp#L399) (Cvar_Get)
+- registration: [codemp/rd-vanilla/tr_init.cpp:1708](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/rd-vanilla/tr_init.cpp#L1708) (Cvar_Get)
+- registration: [codemp/rd-vulkan/tr_init.cpp:866](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/rd-vulkan/tr_init.cpp#L866) (Cvar_Get)
+- behavior: [codemp/rd-vanilla/tr_surfacesprites.cpp:291](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/rd-vanilla/tr_surfacesprites.cpp#L291)
+- behavior: [codemp/rd-vulkan/tr_surfacesprites.cpp:291](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/rd-vulkan/tr_surfacesprites.cpp#L291)
 
-<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/76943f046bbbdc23d67323b838cb1c4c1e3fba0e"><code>76943f046bbb</code></a> on 2026-10-23. Anything merged after that is not reflected here.</p>
+<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/21044fb29768df0061bc4897bbb97d82304a1fe3"><code>21044fb29768</code></a> on 2026-10-25. Anything merged after that is not reflected here.</p>

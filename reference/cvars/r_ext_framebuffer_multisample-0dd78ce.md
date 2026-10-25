@@ -56,9 +56,9 @@ Origin: <span class="label ref-origin ref-origin-openjk">OpenJK</span>
 
 ## Evidence
 
-- registration: [shared/rd-rend2/tr_fbo.cpp:422](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/shared/rd-rend2/tr_fbo.cpp#L422) (implicit Cvar_SetValue)
-- behavior: [shared/rd-rend2/tr_fbo.cpp:412](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/shared/rd-rend2/tr_fbo.cpp#L412)
-- behavior: [shared/rd-rend2/tr_fbo.cpp:420](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/shared/rd-rend2/tr_fbo.cpp#L420)
-- behavior: [shared/rd-rend2/tr_fbo.cpp:414](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/shared/rd-rend2/tr_fbo.cpp#L414)
+- registration: [shared/rd-rend2/tr_fbo.cpp:422](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/shared/rd-rend2/tr_fbo.cpp#L422) (implicit Cvar_SetValue)
+- behavior: [shared/rd-rend2/tr_fbo.cpp:412](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/shared/rd-rend2/tr_fbo.cpp#L412)
+- behavior: [shared/rd-rend2/tr_fbo.cpp:420](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/shared/rd-rend2/tr_fbo.cpp#L420)
+- behavior: [shared/rd-rend2/tr_fbo.cpp:414](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/shared/rd-rend2/tr_fbo.cpp#L414)
 
-<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/76943f046bbbdc23d67323b838cb1c4c1e3fba0e"><code>76943f046bbb</code></a> on 2026-10-23. Anything merged after that is not reflected here.</p>
+<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/21044fb29768df0061bc4897bbb97d82304a1fe3"><code>21044fb29768</code></a> on 2026-10-25. Anything merged after that is not reflected here.</p>

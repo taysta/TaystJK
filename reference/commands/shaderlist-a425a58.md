@@ -68,9 +68,9 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 ## Evidence
 
-- registration: [codemp/rd-rend2/tr_init.cpp:1453](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/rd-rend2/tr_init.cpp#L1453) (renderer command table)
-- registration: [codemp/rd-vanilla/tr_init.cpp:1592](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/rd-vanilla/tr_init.cpp#L1592) (renderer command table)
-- registration: [codemp/rd-vulkan/tr_init.cpp:744](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/rd-vulkan/tr_init.cpp#L744) (renderer command table)
-- handler: [codemp/rd-vanilla/tr_shader.cpp:3802](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/rd-vanilla/tr_shader.cpp#L3802)
+- registration: [codemp/rd-rend2/tr_init.cpp:1453](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/rd-rend2/tr_init.cpp#L1453) (renderer command table)
+- registration: [codemp/rd-vanilla/tr_init.cpp:1592](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/rd-vanilla/tr_init.cpp#L1592) (renderer command table)
+- registration: [codemp/rd-vulkan/tr_init.cpp:744](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/rd-vulkan/tr_init.cpp#L744) (renderer command table)
+- handler: [codemp/rd-vanilla/tr_shader.cpp:3802](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/rd-vanilla/tr_shader.cpp#L3802)
 
-<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/76943f046bbbdc23d67323b838cb1c4c1e3fba0e"><code>76943f046bbb</code></a> on 2026-10-23. Anything merged after that is not reflected here.</p>
+<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/21044fb29768df0061bc4897bbb97d82304a1fe3"><code>21044fb29768</code></a> on 2026-10-25. Anything merged after that is not reflected here.</p>

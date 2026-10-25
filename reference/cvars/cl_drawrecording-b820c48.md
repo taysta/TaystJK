@@ -31,15 +31,15 @@ Controls `cl_drawRecording` in the engine-client module. Consult the cited behav
 | Confidence | `medium` |
 | Added | 2017-08-31 in [`913e3cc57`](https://github.com/taysta/TaystJK/commit/913e3cc57ec761400db576456e91d71e70a2485f) <span class="status-chip">needs review</span> ([how to compare this against your build](/TaystJK/features/whats-new/#how-to-tell-what-your-build-has)) |
 | In-game xdocs | No |
-| In-game menu | Yes: [ingame_setup.menu:5063](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/assets/japro/ui/jamp/ingame_setup.menu#L5063) |
+| In-game menu | Yes: [ingame_setup.menu:5063](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/assets/japro/ui/jamp/ingame_setup.menu#L5063) |
 
 ## Values
 
 | Value | Meaning | Evidence |
 |:--|:--|:--|
-| `1` | Selects the code path tested for value 1. | [codemp/client/cl_scrn.cpp:404](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/client/cl_scrn.cpp#L404) |
-| `2` | Selects the code path tested for value 2. | [codemp/client/cl_scrn.cpp:406](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/client/cl_scrn.cpp#L406) |
-| `3` | Selects the code path tested for value 3. | [codemp/client/cl_scrn.cpp:408](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/client/cl_scrn.cpp#L408) |
+| `1` | Selects the code path tested for value 1. | [codemp/client/cl_scrn.cpp:404](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/client/cl_scrn.cpp#L404) |
+| `2` | Selects the code path tested for value 2. | [codemp/client/cl_scrn.cpp:406](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/client/cl_scrn.cpp#L406) |
+| `3` | Selects the code path tested for value 3. | [codemp/client/cl_scrn.cpp:408](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/client/cl_scrn.cpp#L408) |
 
 ## Flags
 
@@ -83,11 +83,11 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 ## Evidence
 
-- registration: [codemp/client/cl_main.cpp:3397](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/client/cl_main.cpp#L3397) (Cvar_Get)
-- behavior: [codemp/client/cl_scrn.cpp:399](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/client/cl_scrn.cpp#L399)
-- behavior: [codemp/client/cl_scrn.cpp:404](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/client/cl_scrn.cpp#L404)
-- behavior: [codemp/client/cl_scrn.cpp:406](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/client/cl_scrn.cpp#L406)
-- behavior: [codemp/client/cl_scrn.cpp:408](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/client/cl_scrn.cpp#L408)
-- behavior: [codemp/client/cl_scrn.cpp:410](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/client/cl_scrn.cpp#L410)
+- registration: [codemp/client/cl_main.cpp:3397](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/client/cl_main.cpp#L3397) (Cvar_Get)
+- behavior: [codemp/client/cl_scrn.cpp:399](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/client/cl_scrn.cpp#L399)
+- behavior: [codemp/client/cl_scrn.cpp:404](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/client/cl_scrn.cpp#L404)
+- behavior: [codemp/client/cl_scrn.cpp:406](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/client/cl_scrn.cpp#L406)
+- behavior: [codemp/client/cl_scrn.cpp:408](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/client/cl_scrn.cpp#L408)
+- behavior: [codemp/client/cl_scrn.cpp:410](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/client/cl_scrn.cpp#L410)
 
-<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/76943f046bbbdc23d67323b838cb1c4c1e3fba0e"><code>76943f046bbb</code></a> on 2026-10-23. Anything merged after that is not reflected here.</p>
+<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/21044fb29768df0061bc4897bbb97d82304a1fe3"><code>21044fb29768</code></a> on 2026-10-25. Anything merged after that is not reflected here.</p>

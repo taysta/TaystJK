@@ -39,7 +39,7 @@ Origin: <span class="label ref-origin ref-origin-newjk">NewJK / NewMod</span>
 
 - Ultimate-origin introduction: [`0954d89c63db`](https://github.com/jkanewmod/NewJK/commit/0954d89c63db6e154452770c50c358667e29373c) in <span class="label ref-origin ref-origin-newjk">NewJK / NewMod</span> (content authored `2021-05-21`, integrated `2021-05-21`)
 - TaystJK integration evidence: [`1dd571383a0d`](https://github.com/taysta/TaystJK/commit/1dd571383a0d16520e69ce209f8a2d21b2943a62)
-- Upstream registration evidence: [codemp/qcommon/cmd.cpp:1186](https://github.com/jkanewmod/NewJK/blame/b3679ca8cd29e718d35a21bd12a1caba5b547506/codemp/qcommon/cmd.cpp#L1186)
+- Upstream registration evidence: [codemp/qcommon/cmd.cpp:1186](https://github.com/jkanewmod/NewJK/blame/40e10bbd5efee7a57db8f41b4f54cf4ce2e166d3/codemp/qcommon/cmd.cpp#L1186)
 - Attribution method: `earliest-authored-project-introduction`
 - Attribution confidence: `high`
 
@@ -55,7 +55,7 @@ Authored dates come from the exact registration's first content commit, PR dates
 
 ## Evidence
 
-- registration: [codemp/qcommon/cmd.cpp:1218](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/qcommon/cmd.cpp#L1218) (Cmd_AddCommand)
-- handler: [codemp/qcommon/cmd.cpp:82](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/qcommon/cmd.cpp#L82)
+- registration: [codemp/qcommon/cmd.cpp:1218](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/qcommon/cmd.cpp#L1218) (Cmd_AddCommand)
+- handler: [codemp/qcommon/cmd.cpp:82](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/qcommon/cmd.cpp#L82)
 
-<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/76943f046bbbdc23d67323b838cb1c4c1e3fba0e"><code>76943f046bbb</code></a> on 2026-10-23. Anything merged after that is not reflected here.</p>
+<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/21044fb29768df0061bc4897bbb97d82304a1fe3"><code>21044fb29768</code></a> on 2026-10-25. Anything merged after that is not reflected here.</p>

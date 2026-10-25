@@ -38,8 +38,8 @@ Controls `com_optvehtrace` in the cgame module. Consult the cited behavior reads
 
 | Value | Meaning | Evidence |
 |:--|:--|:--|
-| `0` | Disabled. | [codemp/cgame/cg_players.c:7100](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/cgame/cg_players.c#L7100) |
-| `1` | Enabled. | [codemp/cgame/cg_players.c:7100](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/cgame/cg_players.c#L7100) |
+| `0` | Disabled. | [codemp/cgame/cg_players.c:7100](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/cgame/cg_players.c#L7100) |
+| `1` | Enabled. | [codemp/cgame/cg_players.c:7100](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/cgame/cg_players.c#L7100) |
 
 ## Flags
 
@@ -73,12 +73,12 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 ## Evidence
 
-- registration: [codemp/cgame/cg_xcvar.h:375](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/cgame/cg_xcvar.h#L375) (XCVAR_DEF)
-- registration: [codemp/game/g_xcvar.h:37](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/game/g_xcvar.h#L37) (XCVAR_DEF)
-- registration: [codemp/qcommon/common.cpp:1476](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/qcommon/common.cpp#L1476) (Cvar_Get)
-- behavior: [codemp/cgame/cg_players.c:7100](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/cgame/cg_players.c#L7100)
-- behavior: [codemp/game/w_saber.c:2381](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/game/w_saber.c#L2381)
-- behavior: [codemp/server/sv_world.cpp:759](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/server/sv_world.cpp#L759)
-- behavior: [codemp/server/sv_world.cpp:758](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/server/sv_world.cpp#L758)
+- registration: [codemp/cgame/cg_xcvar.h:375](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/cgame/cg_xcvar.h#L375) (XCVAR_DEF)
+- registration: [codemp/game/g_xcvar.h:37](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/game/g_xcvar.h#L37) (XCVAR_DEF)
+- registration: [codemp/qcommon/common.cpp:1474](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/qcommon/common.cpp#L1474) (Cvar_Get)
+- behavior: [codemp/cgame/cg_players.c:7100](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/cgame/cg_players.c#L7100)
+- behavior: [codemp/game/w_saber.c:2381](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/game/w_saber.c#L2381)
+- behavior: [codemp/server/sv_world.cpp:759](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/server/sv_world.cpp#L759)
+- behavior: [codemp/server/sv_world.cpp:758](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/server/sv_world.cpp#L758)
 
-<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/76943f046bbbdc23d67323b838cb1c4c1e3fba0e"><code>76943f046bbb</code></a> on 2026-10-23. Anything merged after that is not reflected here.</p>
+<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/21044fb29768df0061bc4897bbb97d82304a1fe3"><code>21044fb29768</code></a> on 2026-10-25. Anything merged after that is not reflected here.</p>

@@ -37,8 +37,8 @@ Controls `g_filterBan` in the game module. Consult the cited behavior reads befo
 
 | Value | Meaning | Evidence |
 |:--|:--|:--|
-| `0` | Disabled. | [codemp/game/g_svcmds.c:178](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/game/g_svcmds.c#L178) |
-| `1` | Enabled. | [codemp/game/g_svcmds.c:178](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/game/g_svcmds.c#L178) |
+| `0` | Disabled. | [codemp/game/g_svcmds.c:178](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/game/g_svcmds.c#L178) |
+| `1` | Enabled. | [codemp/game/g_svcmds.c:178](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/game/g_svcmds.c#L178) |
 
 ## Flags
 
@@ -64,9 +64,9 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 ## Evidence
 
-- registration: [codemp/game/g_xcvar.h:94](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/game/g_xcvar.h#L94) (XCVAR_DEF)
-- behavior: [codemp/game/g_svcmds.c:178](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/game/g_svcmds.c#L178)
-- behavior: [codemp/game/g_svcmds.c:181](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/game/g_svcmds.c#L181)
-- behavior: [codemp/game/g_svcmds.c:47](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/game/g_svcmds.c#L47)
+- registration: [codemp/game/g_xcvar.h:94](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/game/g_xcvar.h#L94) (XCVAR_DEF)
+- behavior: [codemp/game/g_svcmds.c:178](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/game/g_svcmds.c#L178)
+- behavior: [codemp/game/g_svcmds.c:181](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/game/g_svcmds.c#L181)
+- behavior: [codemp/game/g_svcmds.c:47](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/game/g_svcmds.c#L47)
 
-<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/76943f046bbbdc23d67323b838cb1c4c1e3fba0e"><code>76943f046bbb</code></a> on 2026-10-23. Anything merged after that is not reflected here.</p>
+<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/21044fb29768df0061bc4897bbb97d82304a1fe3"><code>21044fb29768</code></a> on 2026-10-25. Anything merged after that is not reflected here.</p>

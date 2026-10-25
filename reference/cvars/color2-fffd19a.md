@@ -61,11 +61,11 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 ## Evidence
 
-- registration: [codemp/client/cl_main.cpp:3426](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/client/cl_main.cpp#L3426) (Cvar_Get)
-- behavior: [codemp/cgame/cg_consolecmds.c:919](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/cgame/cg_consolecmds.c#L919)
-- behavior: [codemp/cgame/cg_consolecmds.c:1815](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/cgame/cg_consolecmds.c#L1815)
-- behavior: [codemp/cgame/cg_consolecmds.c:1816](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/cgame/cg_consolecmds.c#L1816)
-- behavior: [codemp/cgame/cg_draw.c:3908](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/cgame/cg_draw.c#L3908)
-- behavior: [codemp/cgame/cg_draw.c:4055](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/cgame/cg_draw.c#L4055)
+- registration: [codemp/client/cl_main.cpp:3426](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/client/cl_main.cpp#L3426) (Cvar_Get)
+- behavior: [codemp/cgame/cg_consolecmds.c:919](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/cgame/cg_consolecmds.c#L919)
+- behavior: [codemp/cgame/cg_consolecmds.c:1815](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/cgame/cg_consolecmds.c#L1815)
+- behavior: [codemp/cgame/cg_consolecmds.c:1816](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/cgame/cg_consolecmds.c#L1816)
+- behavior: [codemp/cgame/cg_draw.c:3908](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/cgame/cg_draw.c#L3908)
+- behavior: [codemp/cgame/cg_draw.c:4055](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/cgame/cg_draw.c#L4055)
 
-<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/76943f046bbbdc23d67323b838cb1c4c1e3fba0e"><code>76943f046bbb</code></a> on 2026-10-23. Anything merged after that is not reflected here.</p>
+<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/21044fb29768df0061bc4897bbb97d82304a1fe3"><code>21044fb29768</code></a> on 2026-10-25. Anything merged after that is not reflected here.</p>

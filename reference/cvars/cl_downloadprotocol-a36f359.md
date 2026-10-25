@@ -41,8 +41,8 @@ Reports the protocol selected for the active file download. The client sets this
 
 | Value | Meaning | Evidence |
 |:--|:--|:--|
-| `HTTP` | Download from the server's advertised HTTP endpoint. | [codemp/client/cl_main.cpp:1547](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/client/cl_main.cpp#L1547) |
-| `UDP` | Use the legacy in-protocol UDP download path. | [codemp/client/cl_main.cpp:1549](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/client/cl_main.cpp#L1549) |
+| `HTTP` | Download from the server's advertised HTTP endpoint. | [codemp/client/cl_main.cpp:1547](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/client/cl_main.cpp#L1547) |
+| `UDP` | Use the legacy in-protocol UDP download path. | [codemp/client/cl_main.cpp:1549](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/client/cl_main.cpp#L1549) |
 
 ## Flags
 
@@ -73,9 +73,9 @@ Authored dates come from the exact registration's first content commit, PR dates
 
 ## Evidence
 
-- registration: [codemp/client/cl_main.cpp:3413](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/client/cl_main.cpp#L3413) (Cvar_Get)
-- behavior: [codemp/client/cl_main.cpp:1559](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/client/cl_main.cpp#L1559)
-- behavior: [codemp/client/cl_main.cpp:1549](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/client/cl_main.cpp#L1549)
-- behavior: [codemp/client/cl_main.cpp:1551](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/client/cl_main.cpp#L1551)
+- registration: [codemp/client/cl_main.cpp:3413](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/client/cl_main.cpp#L3413) (Cvar_Get)
+- behavior: [codemp/client/cl_main.cpp:1559](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/client/cl_main.cpp#L1559)
+- behavior: [codemp/client/cl_main.cpp:1549](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/client/cl_main.cpp#L1549)
+- behavior: [codemp/client/cl_main.cpp:1551](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/client/cl_main.cpp#L1551)
 
-<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/76943f046bbbdc23d67323b838cb1c4c1e3fba0e"><code>76943f046bbb</code></a> on 2026-10-23. Anything merged after that is not reflected here.</p>
+<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/21044fb29768df0061bc4897bbb97d82304a1fe3"><code>21044fb29768</code></a> on 2026-10-25. Anything merged after that is not reflected here.</p>

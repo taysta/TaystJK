@@ -41,7 +41,7 @@ No discrete value list is enforced or documented in the inspected source.
 
 ## Enforced ranges
 
-- `0.01f` through `2` (numeric; Cvar_CheckRange). Evidence: [codemp/rd-vulkan/tr_init.cpp:944](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/rd-vulkan/tr_init.cpp#L944)
+- `0.01f` through `2` (numeric; Cvar_CheckRange). Evidence: [codemp/rd-vulkan/tr_init.cpp:944](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/rd-vulkan/tr_init.cpp#L944)
 
 ## Flags
 
@@ -79,8 +79,8 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 ## Evidence
 
-- registration: [codemp/rd-vulkan/tr_init.cpp:943](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/rd-vulkan/tr_init.cpp#L943) (Cvar_Get)
-- behavior: [codemp/rd-vulkan/vk_pipelines.cpp:1523](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/rd-vulkan/vk_pipelines.cpp#L1523)
-- behavior: [codemp/rd-vulkan/tr_init.cpp:944](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/rd-vulkan/tr_init.cpp#L944)
+- registration: [codemp/rd-vulkan/tr_init.cpp:943](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/rd-vulkan/tr_init.cpp#L943) (Cvar_Get)
+- behavior: [codemp/rd-vulkan/vk_pipelines.cpp:1523](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/rd-vulkan/vk_pipelines.cpp#L1523)
+- behavior: [codemp/rd-vulkan/tr_init.cpp:944](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/rd-vulkan/tr_init.cpp#L944)
 
-<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/76943f046bbbdc23d67323b838cb1c4c1e3fba0e"><code>76943f046bbb</code></a> on 2026-10-23. Anything merged after that is not reflected here.</p>
+<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/21044fb29768df0061bc4897bbb97d82304a1fe3"><code>21044fb29768</code></a> on 2026-10-25. Anything merged after that is not reflected here.</p>

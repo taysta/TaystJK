@@ -37,7 +37,7 @@ Controls `g_forceDodge` in the game module. Consult the cited behavior reads bef
 
 | Value | Meaning | Evidence |
 |:--|:--|:--|
-| `2` | Selects the code path tested for value 2. | [codemp/game/w_force.c:6238](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/game/w_force.c#L6238) |
+| `2` | Selects the code path tested for value 2. | [codemp/game/w_force.c:6238](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/game/w_force.c#L6238) |
 
 ## Flags
 
@@ -63,11 +63,11 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 ## Evidence
 
-- registration: [codemp/game/g_xcvar.h:99](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/game/g_xcvar.h#L99) (XCVAR_DEF)
-- behavior: [codemp/game/w_force.c:6238](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/game/w_force.c#L6238)
-- behavior: [codemp/game/w_force.c:6256](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/game/w_force.c#L6256)
-- behavior: [codemp/game/w_force.c:6264](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/game/w_force.c#L6264)
-- behavior: [codemp/game/w_force.c:6272](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/game/w_force.c#L6272)
-- behavior: [codemp/game/w_force.c:6341](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/game/w_force.c#L6341)
+- registration: [codemp/game/g_xcvar.h:99](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/game/g_xcvar.h#L99) (XCVAR_DEF)
+- behavior: [codemp/game/w_force.c:6238](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/game/w_force.c#L6238)
+- behavior: [codemp/game/w_force.c:6256](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/game/w_force.c#L6256)
+- behavior: [codemp/game/w_force.c:6264](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/game/w_force.c#L6264)
+- behavior: [codemp/game/w_force.c:6272](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/game/w_force.c#L6272)
+- behavior: [codemp/game/w_force.c:6341](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/game/w_force.c#L6341)
 
-<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/76943f046bbbdc23d67323b838cb1c4c1e3fba0e"><code>76943f046bbb</code></a> on 2026-10-23. Anything merged after that is not reflected here.</p>
+<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/21044fb29768df0061bc4897bbb97d82304a1fe3"><code>21044fb29768</code></a> on 2026-10-25. Anything merged after that is not reflected here.</p>

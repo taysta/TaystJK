@@ -41,7 +41,7 @@ No discrete value list is enforced or documented in the inspected source.
 
 ## Enforced ranges
 
-- `16` through `128` (numeric; Cvar_CheckRange). Evidence: [codemp/rd-rend2/tr_init.cpp:1586](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/rd-rend2/tr_init.cpp#L1586)
+- `16` through `128` (numeric; Cvar_CheckRange). Evidence: [codemp/rd-rend2/tr_init.cpp:1586](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/rd-rend2/tr_init.cpp#L1586)
 
 ## Flags
 
@@ -73,8 +73,8 @@ Authored dates come from the exact registration's first content commit, PR dates
 
 ## Evidence
 
-- registration: [codemp/rd-rend2/tr_init.cpp:1585](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/rd-rend2/tr_init.cpp#L1585) (Cvar_Get)
-- behavior: [shared/rd-rend2/tr_glsl.cpp:383](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/shared/rd-rend2/tr_glsl.cpp#L383)
-- behavior: [codemp/rd-rend2/tr_init.cpp:1586](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/rd-rend2/tr_init.cpp#L1586)
+- registration: [codemp/rd-rend2/tr_init.cpp:1585](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/rd-rend2/tr_init.cpp#L1585) (Cvar_Get)
+- behavior: [shared/rd-rend2/tr_glsl.cpp:383](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/shared/rd-rend2/tr_glsl.cpp#L383)
+- behavior: [codemp/rd-rend2/tr_init.cpp:1586](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/rd-rend2/tr_init.cpp#L1586)
 
-<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/76943f046bbbdc23d67323b838cb1c4c1e3fba0e"><code>76943f046bbb</code></a> on 2026-10-23. Anything merged after that is not reflected here.</p>
+<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/21044fb29768df0061bc4897bbb97d82304a1fe3"><code>21044fb29768</code></a> on 2026-10-25. Anything merged after that is not reflected here.</p>

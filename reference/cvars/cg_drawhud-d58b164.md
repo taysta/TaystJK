@@ -37,8 +37,8 @@ Controls `cg_drawHud` in the cgame module. Consult the cited behavior reads befo
 
 | Value | Meaning | Evidence |
 |:--|:--|:--|
-| `0` | Disabled. | [codemp/cgame/cg_weapons.c:996](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/cgame/cg_weapons.c#L996) |
-| `1` | Enabled. | [codemp/cgame/cg_weapons.c:996](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/cgame/cg_weapons.c#L996) |
+| `0` | Disabled. | [codemp/cgame/cg_weapons.c:993](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/cgame/cg_weapons.c#L993) |
+| `1` | Enabled. | [codemp/cgame/cg_weapons.c:993](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/cgame/cg_weapons.c#L993) |
 
 ## Flags
 
@@ -68,11 +68,11 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 ## Evidence
 
-- registration: [codemp/cgame/cg_xcvar.h:191](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/cgame/cg_xcvar.h#L191) (XCVAR_DEF)
-- behavior: [codemp/cgame/cg_weapons.c:996](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/cgame/cg_weapons.c#L996)
-- behavior: [codemp/cgame/cg_draw.c:1972](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/cgame/cg_draw.c#L1972)
-- behavior: [codemp/cgame/cg_draw.c:1949](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/cgame/cg_draw.c#L1949)
-- behavior: [codemp/cgame/cg_draw.c:1953](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/cgame/cg_draw.c#L1953)
-- behavior: [codemp/cgame/cg_draw.c:3704](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/cgame/cg_draw.c#L3704)
+- registration: [codemp/cgame/cg_xcvar.h:191](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/cgame/cg_xcvar.h#L191) (XCVAR_DEF)
+- behavior: [codemp/cgame/cg_weapons.c:993](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/cgame/cg_weapons.c#L993)
+- behavior: [codemp/cgame/cg_draw.c:1972](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/cgame/cg_draw.c#L1972)
+- behavior: [codemp/cgame/cg_draw.c:1949](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/cgame/cg_draw.c#L1949)
+- behavior: [codemp/cgame/cg_draw.c:1953](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/cgame/cg_draw.c#L1953)
+- behavior: [codemp/cgame/cg_draw.c:3704](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/cgame/cg_draw.c#L3704)
 
-<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/76943f046bbbdc23d67323b838cb1c4c1e3fba0e"><code>76943f046bbb</code></a> on 2026-10-23. Anything merged after that is not reflected here.</p>
+<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/21044fb29768df0061bc4897bbb97d82304a1fe3"><code>21044fb29768</code></a> on 2026-10-25. Anything merged after that is not reflected here.</p>

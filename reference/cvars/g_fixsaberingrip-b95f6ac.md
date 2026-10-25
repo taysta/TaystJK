@@ -38,9 +38,9 @@ description: "1=Grip does not turn off lightsaber. 2=Same as 1 and also target c
 
 | Value | Meaning | Evidence |
 |:--|:--|:--|
-| `1` | Grip does not turn off lightsaber. | [docs/japro_docs.md:30](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/docs/japro_docs.md#L30) |
-| `2` | Same as 1 and also target can toggle lightsaber in grip. | [docs/japro_docs.md:30](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/docs/japro_docs.md#L30) |
-| `3` | Same as 2 and also target can switch saberstyle in grip. | [docs/japro_docs.md:30](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/docs/japro_docs.md#L30) |
+| `1` | Grip does not turn off lightsaber. | [docs/japro_docs.md:30](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/docs/japro_docs.md#L30) |
+| `2` | Same as 1 and also target can toggle lightsaber in grip. | [docs/japro_docs.md:30](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/docs/japro_docs.md#L30) |
+| `3` | Same as 2 and also target can switch saberstyle in grip. | [docs/japro_docs.md:30](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/docs/japro_docs.md#L30) |
 
 ## Flags
 
@@ -78,12 +78,12 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 ## Evidence
 
-- registration: [codemp/game/g_xcvar.h:210](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/game/g_xcvar.h#L210) (XCVAR_DEF)
-- behavior: [codemp/game/g_cmds.c:3823](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/game/g_cmds.c#L3823)
-- behavior: [codemp/game/g_cmds.c:8543](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/game/g_cmds.c#L8543)
-- behavior: [codemp/game/g_cmds.c:8545](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/game/g_cmds.c#L8545)
-- behavior: [codemp/game/g_cmds.c:8547](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/game/g_cmds.c#L8547)
-- behavior: [codemp/game/w_force.c:5925](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/game/w_force.c#L5925)
-- documentation: [docs/japro_docs.md:30](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/docs/japro_docs.md#L30)
+- registration: [codemp/game/g_xcvar.h:210](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/game/g_xcvar.h#L210) (XCVAR_DEF)
+- behavior: [codemp/game/g_cmds.c:3823](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/game/g_cmds.c#L3823)
+- behavior: [codemp/game/g_cmds.c:8543](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/game/g_cmds.c#L8543)
+- behavior: [codemp/game/g_cmds.c:8545](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/game/g_cmds.c#L8545)
+- behavior: [codemp/game/g_cmds.c:8547](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/game/g_cmds.c#L8547)
+- behavior: [codemp/game/w_force.c:5925](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/game/w_force.c#L5925)
+- documentation: [docs/japro_docs.md:30](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/docs/japro_docs.md#L30)
 
-<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/76943f046bbbdc23d67323b838cb1c4c1e3fba0e"><code>76943f046bbb</code></a> on 2026-10-23. Anything merged after that is not reflected here.</p>
+<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/21044fb29768df0061bc4897bbb97d82304a1fe3"><code>21044fb29768</code></a> on 2026-10-25. Anything merged after that is not reflected here.</p>

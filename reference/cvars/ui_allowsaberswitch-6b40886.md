@@ -40,8 +40,8 @@ Menu-only state the UI keeps while reading server info. `UI_UpdateCurrentServerI
 
 | Value | Meaning | Evidence |
 |:--|:--|:--|
-| `0` | Disabled. | [codemp/ui/ui_main.c:6809](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/ui/ui_main.c#L6809) |
-| `1` | Enabled. | [codemp/ui/ui_main.c:6809](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/ui/ui_main.c#L6809) |
+| `0` | Disabled. | [codemp/ui/ui_main.c:6809](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/ui/ui_main.c#L6809) |
+| `1` | Enabled. | [codemp/ui/ui_main.c:6809](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/ui/ui_main.c#L6809) |
 
 ## Flags
 
@@ -79,10 +79,10 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 ## Evidence
 
-- registration: [codemp/ui/ui_xcvar.h:160](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/ui/ui_xcvar.h#L160) (XCVAR_DEF)
-- behavior: [codemp/ui/ui_main.c:6809](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/ui/ui_main.c#L6809)
-- behavior: [codemp/ui/ui_main.c:632](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/ui/ui_main.c#L632)
-- behavior: [codemp/ui/ui_main.c:648](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/ui/ui_main.c#L648)
-- behavior: [codemp/ui/ui_main.c:665](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/ui/ui_main.c#L665)
+- registration: [codemp/ui/ui_xcvar.h:160](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/ui/ui_xcvar.h#L160) (XCVAR_DEF)
+- behavior: [codemp/ui/ui_main.c:6809](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/ui/ui_main.c#L6809)
+- behavior: [codemp/ui/ui_main.c:632](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/ui/ui_main.c#L632)
+- behavior: [codemp/ui/ui_main.c:648](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/ui/ui_main.c#L648)
+- behavior: [codemp/ui/ui_main.c:665](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/ui/ui_main.c#L665)
 
-<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/76943f046bbbdc23d67323b838cb1c4c1e3fba0e"><code>76943f046bbb</code></a> on 2026-10-23. Anything merged after that is not reflected here.</p>
+<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/21044fb29768df0061bc4897bbb97d82304a1fe3"><code>21044fb29768</code></a> on 2026-10-25. Anything merged after that is not reflected here.</p>

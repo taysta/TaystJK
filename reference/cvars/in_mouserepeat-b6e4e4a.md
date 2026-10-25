@@ -37,7 +37,7 @@ Controls `in_mouserepeat` in the engine-shared module. Consult the cited behavio
 
 | Value | Meaning | Evidence |
 |:--|:--|:--|
-| `2` | Selects the code path tested for value 2. | [shared/sdl/sdl_input.cpp:988](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/shared/sdl/sdl_input.cpp#L988) |
+| `2` | Selects the code path tested for value 2. | [shared/sdl/sdl_input.cpp:988](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/shared/sdl/sdl_input.cpp#L988) |
 
 ## Flags
 
@@ -76,8 +76,8 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 ## Evidence
 
-- registration: [shared/sdl/sdl_input.cpp:646](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/shared/sdl/sdl_input.cpp#L646) (Cvar_Get)
-- behavior: [shared/sdl/sdl_input.cpp:985](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/shared/sdl/sdl_input.cpp#L985)
-- behavior: [shared/sdl/sdl_input.cpp:988](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/shared/sdl/sdl_input.cpp#L988)
+- registration: [shared/sdl/sdl_input.cpp:646](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/shared/sdl/sdl_input.cpp#L646) (Cvar_Get)
+- behavior: [shared/sdl/sdl_input.cpp:985](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/shared/sdl/sdl_input.cpp#L985)
+- behavior: [shared/sdl/sdl_input.cpp:988](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/shared/sdl/sdl_input.cpp#L988)
 
-<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/76943f046bbbdc23d67323b838cb1c4c1e3fba0e"><code>76943f046bbb</code></a> on 2026-10-23. Anything merged after that is not reflected here.</p>
+<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/21044fb29768df0061bc4897bbb97d82304a1fe3"><code>21044fb29768</code></a> on 2026-10-25. Anything merged after that is not reflected here.</p>

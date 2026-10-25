@@ -38,7 +38,7 @@ Controls `g_duelStartHealth` in the game module. Consult the cited behavior read
 
 | Value | Meaning | Evidence |
 |:--|:--|:--|
-| `100` | Selects the code path tested for value 100. | [codemp/game/g_cmds.c:8321](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/game/g_cmds.c#L8321) |
+| `100` | Selects the code path tested for value 100. | [codemp/game/g_cmds.c:8321](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/game/g_cmds.c#L8321) |
 
 ## Flags
 
@@ -76,11 +76,11 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 ## Evidence
 
-- registration: [codemp/game/g_xcvar.h:252](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/game/g_xcvar.h#L252) (XCVAR_DEF)
-- behavior: [codemp/game/g_cmds.c:8321](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/game/g_cmds.c#L8321)
-- behavior: [codemp/game/g_cmds.c:4380](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/game/g_cmds.c#L4380)
-- behavior: [codemp/game/g_cmds.c:4386](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/game/g_cmds.c#L4386)
-- behavior: [codemp/game/g_cmds.c:4387](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/game/g_cmds.c#L4387)
-- behavior: [codemp/game/g_cmds.c:4390](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/game/g_cmds.c#L4390)
+- registration: [codemp/game/g_xcvar.h:252](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/game/g_xcvar.h#L252) (XCVAR_DEF)
+- behavior: [codemp/game/g_cmds.c:8321](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/game/g_cmds.c#L8321)
+- behavior: [codemp/game/g_cmds.c:4380](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/game/g_cmds.c#L4380)
+- behavior: [codemp/game/g_cmds.c:4386](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/game/g_cmds.c#L4386)
+- behavior: [codemp/game/g_cmds.c:4387](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/game/g_cmds.c#L4387)
+- behavior: [codemp/game/g_cmds.c:4390](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/game/g_cmds.c#L4390)
 
-<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/76943f046bbbdc23d67323b838cb1c4c1e3fba0e"><code>76943f046bbb</code></a> on 2026-10-23. Anything merged after that is not reflected here.</p>
+<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/21044fb29768df0061bc4897bbb97d82304a1fe3"><code>21044fb29768</code></a> on 2026-10-25. Anything merged after that is not reflected here.</p>

@@ -37,7 +37,7 @@ Controls `sv_killserver` in the engine-server module. Consult the cited behavior
 
 | Value | Meaning | Evidence |
 |:--|:--|:--|
-| `2` | Selects the code path tested for value 2. | [codemp/server/sv_init.cpp:1183](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/server/sv_init.cpp#L1183) |
+| `2` | Selects the code path tested for value 2. | [codemp/server/sv_init.cpp:1183](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/server/sv_init.cpp#L1183) |
 
 ## Flags
 
@@ -67,11 +67,11 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 ## Evidence
 
-- registration: [codemp/server/sv_init.cpp:1030](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/server/sv_init.cpp#L1030) (Cvar_Get)
-- behavior: [codemp/server/sv_init.cpp:286](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/server/sv_init.cpp#L286)
-- behavior: [codemp/server/sv_init.cpp:1183](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/server/sv_init.cpp#L1183)
-- behavior: [codemp/server/sv_main.cpp:1191](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/server/sv_main.cpp#L1191)
-- behavior: [codemp/ui/ui_main.c:979](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/ui/ui_main.c#L979)
-- behavior: [codemp/ui/ui_main.c:1014](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/ui/ui_main.c#L1014)
+- registration: [codemp/server/sv_init.cpp:1030](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/server/sv_init.cpp#L1030) (Cvar_Get)
+- behavior: [codemp/server/sv_init.cpp:286](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/server/sv_init.cpp#L286)
+- behavior: [codemp/server/sv_init.cpp:1183](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/server/sv_init.cpp#L1183)
+- behavior: [codemp/server/sv_main.cpp:1191](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/server/sv_main.cpp#L1191)
+- behavior: [codemp/ui/ui_main.c:979](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/ui/ui_main.c#L979)
+- behavior: [codemp/ui/ui_main.c:1014](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/ui/ui_main.c#L1014)
 
-<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/76943f046bbbdc23d67323b838cb1c4c1e3fba0e"><code>76943f046bbb</code></a> on 2026-10-23. Anything merged after that is not reflected here.</p>
+<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/21044fb29768df0061bc4897bbb97d82304a1fe3"><code>21044fb29768</code></a> on 2026-10-25. Anything merged after that is not reflected here.</p>

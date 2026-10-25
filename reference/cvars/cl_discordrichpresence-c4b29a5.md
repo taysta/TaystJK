@@ -38,8 +38,8 @@ Allow/disallow sharing current game information on Discord profile status
 
 | Value | Meaning | Evidence |
 |:--|:--|:--|
-| `0` | Disabled. | [codemp/client/cl_discordrpc.cpp:152](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/client/cl_discordrpc.cpp#L152) |
-| `1` | Enabled. | [codemp/client/cl_discordrpc.cpp:152](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/client/cl_discordrpc.cpp#L152) |
+| `0` | Disabled. | [codemp/client/cl_discordrpc.cpp:152](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/client/cl_discordrpc.cpp#L152) |
+| `1` | Enabled. | [codemp/client/cl_discordrpc.cpp:152](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/client/cl_discordrpc.cpp#L152) |
 
 ## Flags
 
@@ -80,11 +80,11 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 ## Evidence
 
-- registration: [codemp/client/cl_main.cpp:3463](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/client/cl_main.cpp#L3463) (Cvar_Get); condition `defined(DISCORD) && !defined(_DEBUG)`
-- behavior: [codemp/client/cl_discordrpc.cpp:152](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/client/cl_discordrpc.cpp#L152)
-- behavior: [codemp/client/cl_discordrpc.cpp:225](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/client/cl_discordrpc.cpp#L225)
-- behavior: [codemp/client/cl_discordrpc.cpp:246](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/client/cl_discordrpc.cpp#L246)
-- behavior: [codemp/client/cl_discordrpc.cpp:474](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/client/cl_discordrpc.cpp#L474)
-- behavior: [codemp/client/cl_discordrpc.cpp:485](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/client/cl_discordrpc.cpp#L485)
+- registration: [codemp/client/cl_main.cpp:3463](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/client/cl_main.cpp#L3463) (Cvar_Get); condition `defined(DISCORD) && !defined(_DEBUG)`
+- behavior: [codemp/client/cl_discordrpc.cpp:152](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/client/cl_discordrpc.cpp#L152)
+- behavior: [codemp/client/cl_discordrpc.cpp:225](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/client/cl_discordrpc.cpp#L225)
+- behavior: [codemp/client/cl_discordrpc.cpp:246](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/client/cl_discordrpc.cpp#L246)
+- behavior: [codemp/client/cl_discordrpc.cpp:474](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/client/cl_discordrpc.cpp#L474)
+- behavior: [codemp/client/cl_discordrpc.cpp:485](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/client/cl_discordrpc.cpp#L485)
 
-<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/76943f046bbbdc23d67323b838cb1c4c1e3fba0e"><code>76943f046bbb</code></a> on 2026-10-23. Anything merged after that is not reflected here.</p>
+<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/21044fb29768df0061bc4897bbb97d82304a1fe3"><code>21044fb29768</code></a> on 2026-10-25. Anything merged after that is not reflected here.</p>

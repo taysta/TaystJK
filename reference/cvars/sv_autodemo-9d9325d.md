@@ -38,8 +38,8 @@ Automatically take server-side demos
 
 | Value | Meaning | Evidence |
 |:--|:--|:--|
-| `1` | Selects the code path tested for value 1. | [codemp/server/sv_ccmds.cpp:2040](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/server/sv_ccmds.cpp#L2040) |
-| `2` | Selects the code path tested for value 2. | [codemp/server/sv_ccmds.cpp:1919](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/server/sv_ccmds.cpp#L1919) |
+| `1` | Selects the code path tested for value 1. | [codemp/server/sv_ccmds.cpp:2040](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/server/sv_ccmds.cpp#L2040) |
+| `2` | Selects the code path tested for value 2. | [codemp/server/sv_ccmds.cpp:1919](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/server/sv_ccmds.cpp#L1919) |
 
 ## Flags
 
@@ -82,11 +82,11 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 ## Evidence
 
-- registration: [codemp/server/sv_init.cpp:1038](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/server/sv_init.cpp#L1038) (Cvar_Get); condition `defined(DEDICATED)`
-- behavior: [codemp/server/sv_ccmds.cpp:1656](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/server/sv_ccmds.cpp#L1656)
-- behavior: [codemp/server/sv_ccmds.cpp:1919](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/server/sv_ccmds.cpp#L1919)
-- behavior: [codemp/server/sv_ccmds.cpp:2012](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/server/sv_ccmds.cpp#L2012)
-- behavior: [codemp/server/sv_ccmds.cpp:2013](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/server/sv_ccmds.cpp#L2013)
-- behavior: [codemp/server/sv_ccmds.cpp:2040](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/server/sv_ccmds.cpp#L2040)
+- registration: [codemp/server/sv_init.cpp:1038](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/server/sv_init.cpp#L1038) (Cvar_Get); condition `defined(DEDICATED)`
+- behavior: [codemp/server/sv_ccmds.cpp:1656](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/server/sv_ccmds.cpp#L1656)
+- behavior: [codemp/server/sv_ccmds.cpp:1919](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/server/sv_ccmds.cpp#L1919)
+- behavior: [codemp/server/sv_ccmds.cpp:2012](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/server/sv_ccmds.cpp#L2012)
+- behavior: [codemp/server/sv_ccmds.cpp:2013](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/server/sv_ccmds.cpp#L2013)
+- behavior: [codemp/server/sv_ccmds.cpp:2040](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/server/sv_ccmds.cpp#L2040)
 
-<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/76943f046bbbdc23d67323b838cb1c4c1e3fba0e"><code>76943f046bbb</code></a> on 2026-10-23. Anything merged after that is not reflected here.</p>
+<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/21044fb29768df0061bc4897bbb97d82304a1fe3"><code>21044fb29768</code></a> on 2026-10-25. Anything merged after that is not reflected here.</p>

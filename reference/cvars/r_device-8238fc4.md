@@ -36,13 +36,13 @@ Select physical device to render: 0+ - use explicit device index. -1 - first dis
 
 | Value | Meaning | Evidence |
 |:--|:--|:--|
-| `0+` | Use explicit device index. | [codemp/rd-vulkan/tr_init.cpp:912](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/rd-vulkan/tr_init.cpp#L912) |
-| `-1` | First discrete GPU. | [codemp/rd-vulkan/tr_init.cpp:912](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/rd-vulkan/tr_init.cpp#L912) |
-| `-2` | First integrated GPU. | [codemp/rd-vulkan/tr_init.cpp:912](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/rd-vulkan/tr_init.cpp#L912) |
+| `0+` | Use explicit device index. | [codemp/rd-vulkan/tr_init.cpp:912](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/rd-vulkan/tr_init.cpp#L912) |
+| `-1` | First discrete GPU. | [codemp/rd-vulkan/tr_init.cpp:912](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/rd-vulkan/tr_init.cpp#L912) |
+| `-2` | First integrated GPU. | [codemp/rd-vulkan/tr_init.cpp:912](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/rd-vulkan/tr_init.cpp#L912) |
 
 ## Enforced ranges
 
-- `-2` through `8` (integer; Cvar_CheckRange). Evidence: [codemp/rd-vulkan/tr_init.cpp:916](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/rd-vulkan/tr_init.cpp#L916)
+- `-2` through `8` (integer; Cvar_CheckRange). Evidence: [codemp/rd-vulkan/tr_init.cpp:916](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/rd-vulkan/tr_init.cpp#L916)
 
 ## Flags
 
@@ -71,9 +71,9 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 ## Evidence
 
-- registration: [codemp/rd-vulkan/tr_init.cpp:912](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/rd-vulkan/tr_init.cpp#L912) (Cvar_Get)
-- behavior: [codemp/rd-vulkan/vk_instance.cpp:946](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/rd-vulkan/vk_instance.cpp#L946)
-- behavior: [codemp/rd-vulkan/tr_init.cpp:917](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/rd-vulkan/tr_init.cpp#L917)
-- behavior: [codemp/rd-vulkan/tr_init.cpp:916](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/rd-vulkan/tr_init.cpp#L916)
+- registration: [codemp/rd-vulkan/tr_init.cpp:912](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/rd-vulkan/tr_init.cpp#L912) (Cvar_Get)
+- behavior: [codemp/rd-vulkan/vk_instance.cpp:946](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/rd-vulkan/vk_instance.cpp#L946)
+- behavior: [codemp/rd-vulkan/tr_init.cpp:917](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/rd-vulkan/tr_init.cpp#L917)
+- behavior: [codemp/rd-vulkan/tr_init.cpp:916](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/rd-vulkan/tr_init.cpp#L916)
 
-<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/76943f046bbbdc23d67323b838cb1c4c1e3fba0e"><code>76943f046bbb</code></a> on 2026-10-23. Anything merged after that is not reflected here.</p>
+<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/21044fb29768df0061bc4897bbb97d82304a1fe3"><code>21044fb29768</code></a> on 2026-10-25. Anything merged after that is not reflected here.</p>

@@ -38,7 +38,7 @@ No discrete value list is enforced or documented in the inspected source.
 
 ## Enforced ranges
 
-- `1` through `255` (integer; manual clamp, not enforced on every path). Evidence: [codemp/cgame/cg_players.c:13229](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/cgame/cg_players.c#L13229)
+- `1` through `255` (integer; manual clamp, not enforced on every path). Evidence: [codemp/cgame/cg_players.c:13229](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/cgame/cg_players.c#L13229)
 
 ## Flags
 
@@ -50,7 +50,7 @@ Origin: <span class="label ref-origin ref-origin-taystjk">TaystJK</span>
 
 - Ultimate-origin introduction: [`1158d82810c4`](https://github.com/taysta/TaystJK/commit/1158d82810c44a055f16d59d89240469b0cfeb66) in <span class="label ref-origin ref-origin-taystjk">TaystJK</span> (content authored `2026-09-27`, PR opened `2026-09-27`, integrated `2026-09-28`)
 - Origin pull request: [#396](https://github.com/taysta/TaystJK/pull/396)
-- Upstream registration evidence: [codemp/cgame/cg_xcvar.h:196](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/cgame/cg_xcvar.h#L196)
+- Upstream registration evidence: [codemp/cgame/cg_xcvar.h:196](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/cgame/cg_xcvar.h#L196)
 - Attribution method: `earliest-authored-project-introduction`
 - Attribution confidence: `high`
 
@@ -64,7 +64,7 @@ Authored dates come from the exact registration's first content commit, PR dates
 
 ## Evidence
 
-- registration: [codemp/cgame/cg_xcvar.h:196](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/cgame/cg_xcvar.h#L196) (XCVAR_DEF)
-- behavior: [codemp/cgame/cg_players.c:13229](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/cgame/cg_players.c#L13229)
+- registration: [codemp/cgame/cg_xcvar.h:196](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/cgame/cg_xcvar.h#L196) (XCVAR_DEF)
+- behavior: [codemp/cgame/cg_players.c:13229](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/cgame/cg_players.c#L13229)
 
-<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/76943f046bbbdc23d67323b838cb1c4c1e3fba0e"><code>76943f046bbb</code></a> on 2026-10-23. Anything merged after that is not reflected here.</p>
+<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/21044fb29768df0061bc4897bbb97d82304a1fe3"><code>21044fb29768</code></a> on 2026-10-25. Anything merged after that is not reflected here.</p>

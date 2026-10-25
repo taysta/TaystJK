@@ -31,7 +31,7 @@ Maximum frames per second
 | Confidence | `high` |
 | Added | 2013-04-08 in [`14cea1563`](https://github.com/taysta/TaystJK/commit/14cea1563762076974bee277afadbd5bf234c494) ([how to compare this against your build](/TaystJK/features/whats-new/#how-to-tell-what-your-build-has)) |
 | In-game xdocs | No |
-| In-game menu | Yes: [ingame_setup.menu:1543](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/assets/japro/ui/jamp/ingame_setup.menu#L1543) |
+| In-game menu | Yes: [ingame_setup.menu:1543](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/assets/japro/ui/jamp/ingame_setup.menu#L1543) |
 
 ## Values
 
@@ -77,13 +77,13 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 ## Evidence
 
-- registration: [codemp/cgame/cg_xcvar.h:197](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/cgame/cg_xcvar.h#L197) (XCVAR_DEF)
-- registration: [shared/sys/sys_main.cpp:172](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/shared/sys/sys_main.cpp#L172) (Cvar_Get); condition `defined(_JK2EXE)`
-- registration: [shared/sys/sys_main.cpp:174](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/shared/sys/sys_main.cpp#L174) (Cvar_Get); condition `else(defined(_JK2EXE))`
-- behavior: [codemp/qcommon/common.cpp:1759](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/qcommon/common.cpp#L1759)
-- behavior: [codemp/cgame/cg_view.c:2627](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/cgame/cg_view.c#L2627)
-- behavior: [codemp/qcommon/common.cpp:1760](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/qcommon/common.cpp#L1760)
-- behavior: [codemp/cgame/hud_strafehelper.c:862](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/cgame/hud_strafehelper.c#L862)
-- behavior: [codemp/cgame/hud_strafehelper.c:2549](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/cgame/hud_strafehelper.c#L2549)
+- registration: [codemp/cgame/cg_xcvar.h:197](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/cgame/cg_xcvar.h#L197) (XCVAR_DEF)
+- registration: [shared/sys/sys_main.cpp:172](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/shared/sys/sys_main.cpp#L172) (Cvar_Get); condition `defined(_JK2EXE)`
+- registration: [shared/sys/sys_main.cpp:174](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/shared/sys/sys_main.cpp#L174) (Cvar_Get); condition `else(defined(_JK2EXE))`
+- behavior: [codemp/qcommon/common.cpp:1757](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/qcommon/common.cpp#L1757)
+- behavior: [codemp/cgame/cg_view.c:2627](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/cgame/cg_view.c#L2627)
+- behavior: [codemp/qcommon/common.cpp:1758](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/qcommon/common.cpp#L1758)
+- behavior: [codemp/cgame/hud_strafehelper.c:862](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/cgame/hud_strafehelper.c#L862)
+- behavior: [codemp/cgame/hud_strafehelper.c:2549](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/cgame/hud_strafehelper.c#L2549)
 
-<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/76943f046bbbdc23d67323b838cb1c4c1e3fba0e"><code>76943f046bbb</code></a> on 2026-10-23. Anything merged after that is not reflected here.</p>
+<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/21044fb29768df0061bc4897bbb97d82304a1fe3"><code>21044fb29768</code></a> on 2026-10-25. Anything merged after that is not reflected here.</p>

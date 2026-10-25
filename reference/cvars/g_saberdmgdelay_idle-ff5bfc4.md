@@ -37,7 +37,7 @@ Controls `g_saberDmgDelay_Idle` in the game module. Consult the cited behavior r
 
 | Value | Meaning | Evidence |
 |:--|:--|:--|
-| `350` | Selects the code path tested for value 350. | [codemp/game/g_cmds.c:8327](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/game/g_cmds.c#L8327) |
+| `350` | Selects the code path tested for value 350. | [codemp/game/g_cmds.c:8327](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/game/g_cmds.c#L8327) |
 
 ## Flags
 
@@ -65,11 +65,11 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 ## Evidence
 
-- registration: [codemp/game/g_xcvar.h:137](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/game/g_xcvar.h#L137) (XCVAR_DEF)
-- behavior: [codemp/game/g_cmds.c:8327](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/game/g_cmds.c#L8327)
-- behavior: [codemp/game/w_saber.c:4892](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/game/w_saber.c#L4892)
-- behavior: [codemp/game/w_saber.c:4915](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/game/w_saber.c#L4915)
-- behavior: [codemp/game/w_saber.c:5178](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/game/w_saber.c#L5178)
-- behavior: [codemp/game/w_saber.c:5182](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/game/w_saber.c#L5182)
+- registration: [codemp/game/g_xcvar.h:137](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/game/g_xcvar.h#L137) (XCVAR_DEF)
+- behavior: [codemp/game/g_cmds.c:8327](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/game/g_cmds.c#L8327)
+- behavior: [codemp/game/w_saber.c:4892](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/game/w_saber.c#L4892)
+- behavior: [codemp/game/w_saber.c:4915](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/game/w_saber.c#L4915)
+- behavior: [codemp/game/w_saber.c:5178](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/game/w_saber.c#L5178)
+- behavior: [codemp/game/w_saber.c:5182](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/game/w_saber.c#L5182)
 
-<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/76943f046bbbdc23d67323b838cb1c4c1e3fba0e"><code>76943f046bbb</code></a> on 2026-10-23. Anything merged after that is not reflected here.</p>
+<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/21044fb29768df0061bc4897bbb97d82304a1fe3"><code>21044fb29768</code></a> on 2026-10-25. Anything merged after that is not reflected here.</p>

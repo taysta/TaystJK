@@ -68,11 +68,11 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 ## Evidence
 
-- registration: [codemp/qcommon/files.cpp:3909](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/qcommon/files.cpp#L3909) (Cvar_Get)
-- behavior: [codemp/qcommon/files.cpp:1765](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/qcommon/files.cpp#L1765)
-- behavior: [codemp/qcommon/files.cpp:1786](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/qcommon/files.cpp#L1786)
-- behavior: [codemp/qcommon/files.cpp:1790](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/qcommon/files.cpp#L1790)
-- behavior: [codemp/ui/ui_main.c:11576](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/ui/ui_main.c#L11576)
-- behavior: [codemp/qcommon/files.cpp:550](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/qcommon/files.cpp#L550)
+- registration: [codemp/qcommon/files.cpp:3909](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/qcommon/files.cpp#L3909) (Cvar_Get)
+- behavior: [codemp/qcommon/files.cpp:1765](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/qcommon/files.cpp#L1765)
+- behavior: [codemp/qcommon/files.cpp:1786](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/qcommon/files.cpp#L1786)
+- behavior: [codemp/qcommon/files.cpp:1790](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/qcommon/files.cpp#L1790)
+- behavior: [codemp/ui/ui_main.c:11576](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/ui/ui_main.c#L11576)
+- behavior: [codemp/qcommon/files.cpp:550](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/qcommon/files.cpp#L550)
 
-<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/76943f046bbbdc23d67323b838cb1c4c1e3fba0e"><code>76943f046bbb</code></a> on 2026-10-23. Anything merged after that is not reflected here.</p>
+<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/21044fb29768df0061bc4897bbb97d82304a1fe3"><code>21044fb29768</code></a> on 2026-10-25. Anything merged after that is not reflected here.</p>

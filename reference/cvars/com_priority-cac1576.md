@@ -38,10 +38,10 @@ Duno, -1 = do nothing, 1 = low priority, 2 = normal priority, 3 = high priority?
 
 | Value | Meaning | Evidence |
 |:--|:--|:--|
-| `-1` | Do nothing. | [codemp/qcommon/common.cpp:1496](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/qcommon/common.cpp#L1496) |
-| `1` | Low priority. | [codemp/qcommon/common.cpp:1496](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/qcommon/common.cpp#L1496) |
-| `2` | Normal priority. | [codemp/qcommon/common.cpp:1496](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/qcommon/common.cpp#L1496) |
-| `3` | High priority? i guess??. | [codemp/qcommon/common.cpp:1496](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/qcommon/common.cpp#L1496) |
+| `-1` | Do nothing. | [codemp/qcommon/common.cpp:1494](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/qcommon/common.cpp#L1494) |
+| `1` | Low priority. | [codemp/qcommon/common.cpp:1494](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/qcommon/common.cpp#L1494) |
+| `2` | Normal priority. | [codemp/qcommon/common.cpp:1494](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/qcommon/common.cpp#L1494) |
+| `3` | High priority? i guess??. | [codemp/qcommon/common.cpp:1494](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/qcommon/common.cpp#L1494) |
 
 ## Flags
 
@@ -80,11 +80,11 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 ## Evidence
 
-- registration: [codemp/qcommon/common.cpp:1496](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/qcommon/common.cpp#L1496) (Cvar_Get); condition `defined(_WIN32)`
-- behavior: [shared/sys/sys_win32.cpp:256](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/shared/sys/sys_win32.cpp#L256)
-- behavior: [shared/sys/sys_win32.cpp:261](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/shared/sys/sys_win32.cpp#L261)
-- behavior: [shared/sys/sys_win32.cpp:264](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/shared/sys/sys_win32.cpp#L264)
-- behavior: [shared/sys/sys_win32.cpp:267](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/shared/sys/sys_win32.cpp#L267)
-- behavior: [shared/sys/sys_win32.cpp:270](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/shared/sys/sys_win32.cpp#L270)
+- registration: [codemp/qcommon/common.cpp:1494](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/qcommon/common.cpp#L1494) (Cvar_Get); condition `defined(_WIN32)`
+- behavior: [shared/sys/sys_win32.cpp:256](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/shared/sys/sys_win32.cpp#L256)
+- behavior: [shared/sys/sys_win32.cpp:261](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/shared/sys/sys_win32.cpp#L261)
+- behavior: [shared/sys/sys_win32.cpp:264](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/shared/sys/sys_win32.cpp#L264)
+- behavior: [shared/sys/sys_win32.cpp:267](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/shared/sys/sys_win32.cpp#L267)
+- behavior: [shared/sys/sys_win32.cpp:270](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/shared/sys/sys_win32.cpp#L270)
 
-<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/76943f046bbbdc23d67323b838cb1c4c1e3fba0e"><code>76943f046bbb</code></a> on 2026-10-23. Anything merged after that is not reflected here.</p>
+<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/21044fb29768df0061bc4897bbb97d82304a1fe3"><code>21044fb29768</code></a> on 2026-10-25. Anything merged after that is not reflected here.</p>

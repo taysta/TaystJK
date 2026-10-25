@@ -38,7 +38,7 @@ Controls `cp_cosmetics` in the cgame module. Consult the cited behavior reads be
 
 ## Bits
 
-Use [`cosmetics`](/TaystJK/reference/commands/cosmetics-01c96cf/) to toggle one option at a time; see the command page for syntax. The value column is that bit on its own. [The labels come from the source table](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/cgame/cg_consolecmds.c#L1591).
+Use [`cosmetics`](/TaystJK/reference/commands/cosmetics-01c96cf/) to toggle one option at a time; see the command page for syntax. The value column is that bit on its own. [The labels come from the source table](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/cgame/cg_consolecmds.c#L1591).
 
 | Bit | Value | Meaning | Read by |
 |:--|:--|:--|:--|
@@ -114,11 +114,11 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 ## Evidence
 
-- registration: [codemp/cgame/cg_xcvar.h:208](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/cgame/cg_xcvar.h#L208) (XCVAR_DEF)
-- behavior: [codemp/cgame/cg_consolecmds.c:1639](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/cgame/cg_consolecmds.c#L1639)
-- behavior: [codemp/cgame/cg_consolecmds.c:1720](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/cgame/cg_consolecmds.c#L1720)
-- behavior: [codemp/cgame/cg_consolecmds.c:1731](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/cgame/cg_consolecmds.c#L1731)
-- behavior: [codemp/cgame/cg_consolecmds.c:1741](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/cgame/cg_consolecmds.c#L1741)
-- behavior: [codemp/cgame/cg_consolecmds.c:1746](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/cgame/cg_consolecmds.c#L1746)
+- registration: [codemp/cgame/cg_xcvar.h:208](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/cgame/cg_xcvar.h#L208) (XCVAR_DEF)
+- behavior: [codemp/cgame/cg_consolecmds.c:1639](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/cgame/cg_consolecmds.c#L1639)
+- behavior: [codemp/cgame/cg_consolecmds.c:1720](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/cgame/cg_consolecmds.c#L1720)
+- behavior: [codemp/cgame/cg_consolecmds.c:1731](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/cgame/cg_consolecmds.c#L1731)
+- behavior: [codemp/cgame/cg_consolecmds.c:1741](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/cgame/cg_consolecmds.c#L1741)
+- behavior: [codemp/cgame/cg_consolecmds.c:1746](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/cgame/cg_consolecmds.c#L1746)
 
-<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/76943f046bbbdc23d67323b838cb1c4c1e3fba0e"><code>76943f046bbb</code></a> on 2026-10-23. Anything merged after that is not reflected here.</p>
+<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/21044fb29768df0061bc4897bbb97d82304a1fe3"><code>21044fb29768</code></a> on 2026-10-25. Anything merged after that is not reflected here.</p>

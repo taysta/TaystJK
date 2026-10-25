@@ -38,8 +38,8 @@ description: "1=Fixed slide physics for NPCS. 2=Fixed slide physics for NPCs and
 
 | Value | Meaning | Evidence |
 |:--|:--|:--|
-| `1` | Fixed slide physics for NPCS. | [docs/japro_docs.md:56](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/docs/japro_docs.md#L56) |
-| `2` | Fixed slide physics for NPCs and players. | [docs/japro_docs.md:56](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/docs/japro_docs.md#L56) |
+| `1` | Fixed slide physics for NPCS. | [docs/japro_docs.md:56](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/docs/japro_docs.md#L56) |
+| `2` | Fixed slide physics for NPCs and players. | [docs/japro_docs.md:56](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/docs/japro_docs.md#L56) |
 
 ## Flags
 
@@ -76,12 +76,12 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 ## Evidence
 
-- registration: [codemp/game/g_xcvar.h:240](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/game/g_xcvar.h#L240) (XCVAR_DEF)
-- behavior: [codemp/game/bg_pmove.c:6096](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/game/bg_pmove.c#L6096)
-- behavior: [codemp/game/bg_pmove.c:6098](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/game/bg_pmove.c#L6098)
-- behavior: [codemp/game/g_cmds.c:8518](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/game/g_cmds.c#L8518)
-- behavior: [codemp/game/g_cmds.c:8520](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/game/g_cmds.c#L8520)
-- behavior: [codemp/game/g_trigger.c:2460](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/game/g_trigger.c#L2460)
-- documentation: [docs/japro_docs.md:56](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/docs/japro_docs.md#L56)
+- registration: [codemp/game/g_xcvar.h:240](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/game/g_xcvar.h#L240) (XCVAR_DEF)
+- behavior: [codemp/game/bg_pmove.c:6096](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/game/bg_pmove.c#L6096)
+- behavior: [codemp/game/bg_pmove.c:6098](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/game/bg_pmove.c#L6098)
+- behavior: [codemp/game/g_cmds.c:8518](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/game/g_cmds.c#L8518)
+- behavior: [codemp/game/g_cmds.c:8520](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/game/g_cmds.c#L8520)
+- behavior: [codemp/game/g_trigger.c:2460](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/game/g_trigger.c#L2460)
+- documentation: [docs/japro_docs.md:56](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/docs/japro_docs.md#L56)
 
-<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/76943f046bbbdc23d67323b838cb1c4c1e3fba0e"><code>76943f046bbb</code></a> on 2026-10-23. Anything merged after that is not reflected here.</p>
+<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/21044fb29768df0061bc4897bbb97d82304a1fe3"><code>21044fb29768</code></a> on 2026-10-25. Anything merged after that is not reflected here.</p>

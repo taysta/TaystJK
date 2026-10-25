@@ -47,7 +47,7 @@ Origin: <span class="label ref-origin ref-origin-newjk">NewJK / NewMod</span>
 
 - Ultimate-origin introduction: [`f993b7c81891`](https://github.com/jkanewmod/NewJK/commit/f993b7c81891704b9798e079a9e89b42ea649ebf) in <span class="label ref-origin ref-origin-newjk">NewJK / NewMod</span> (content authored `2017-05-21`, integrated `2017-05-21`)
 - TaystJK integration evidence: [`fae0fd307416`](https://github.com/taysta/TaystJK/commit/fae0fd30741627a4c90fec92d4ba5c07c826410a)
-- Upstream registration evidence: [codemp/qcommon/files.cpp:3625](https://github.com/jkanewmod/NewJK/blame/b3679ca8cd29e718d35a21bd12a1caba5b547506/codemp/qcommon/files.cpp#L3625)
+- Upstream registration evidence: [codemp/qcommon/files.cpp:3625](https://github.com/jkanewmod/NewJK/blame/40e10bbd5efee7a57db8f41b4f54cf4ce2e166d3/codemp/qcommon/files.cpp#L3625)
 - Attribution method: `earliest-authored-project-introduction`
 - Attribution confidence: `high`
 
@@ -65,10 +65,10 @@ Authored dates come from the exact registration's first content commit, PR dates
 
 ## Evidence
 
-- registration: [codemp/qcommon/files.cpp:3922](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/qcommon/files.cpp#L3922) (Cvar_Get)
-- behavior: [shared/sys/sys_win32.cpp:176](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/shared/sys/sys_win32.cpp#L176)
-- behavior: [shared/sys/sys_win32.cpp:172](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/shared/sys/sys_win32.cpp#L172)
-- behavior: [shared/sys/sys_win32.cpp:174](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/shared/sys/sys_win32.cpp#L174)
-- behavior: [shared/sys/sys_win32.cpp:187](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/shared/sys/sys_win32.cpp#L187)
+- registration: [codemp/qcommon/files.cpp:3921](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/qcommon/files.cpp#L3921) (Cvar_Get)
+- behavior: [shared/sys/sys_win32.cpp:176](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/shared/sys/sys_win32.cpp#L176)
+- behavior: [shared/sys/sys_win32.cpp:172](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/shared/sys/sys_win32.cpp#L172)
+- behavior: [shared/sys/sys_win32.cpp:174](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/shared/sys/sys_win32.cpp#L174)
+- behavior: [shared/sys/sys_win32.cpp:187](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/shared/sys/sys_win32.cpp#L187)
 
-<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/76943f046bbbdc23d67323b838cb1c4c1e3fba0e"><code>76943f046bbb</code></a> on 2026-10-23. Anything merged after that is not reflected here.</p>
+<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/21044fb29768df0061bc4897bbb97d82304a1fe3"><code>21044fb29768</code></a> on 2026-10-25. Anything merged after that is not reflected here.</p>

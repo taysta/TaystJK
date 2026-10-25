@@ -38,9 +38,9 @@ Controls `dmflags` in the game module. Consult the cited behavior reads before r
 
 | Value | Meaning | Evidence |
 |:--|:--|:--|
-| `256` | Match JA+ I guess. | [codemp/game/bg_public.h:1380](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/game/bg_public.h#L1380) |
-| `8` | Enables the `DF_NO_FALLING` code path. | [codemp/game/bg_public.h:1377](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/game/bg_public.h#L1377) |
-| `32` | Enables the `DF_NO_FOOTSTEPS` code path. | [codemp/game/bg_public.h:1379](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/game/bg_public.h#L1379) |
+| `256` | Match JA+ I guess. | [codemp/game/bg_public.h:1380](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/game/bg_public.h#L1380) |
+| `8` | Enables the `DF_NO_FALLING` code path. | [codemp/game/bg_public.h:1377](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/game/bg_public.h#L1377) |
+| `32` | Enables the `DF_NO_FOOTSTEPS` code path. | [codemp/game/bg_public.h:1379](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/game/bg_public.h#L1379) |
 
 ## Flags
 
@@ -78,12 +78,12 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 ## Evidence
 
-- registration: [codemp/game/g_xcvar.h:63](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/game/g_xcvar.h#L63) (XCVAR_DEF)
-- registration: [codemp/server/sv_init.cpp:962](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/server/sv_init.cpp#L962) (Cvar_Get)
-- behavior: [codemp/game/g_active.c:1931](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/game/g_active.c#L1931)
-- behavior: [codemp/game/g_cmds.c:8278](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/game/g_cmds.c#L8278)
-- behavior: [codemp/game/bg_pmove.c:7278](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/game/bg_pmove.c#L7278)
-- behavior: [codemp/game/g_active.c:4914](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/game/g_active.c#L4914)
-- behavior: [codemp/cgame/cg_view.c:1319](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/cgame/cg_view.c#L1319)
+- registration: [codemp/game/g_xcvar.h:63](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/game/g_xcvar.h#L63) (XCVAR_DEF)
+- registration: [codemp/server/sv_init.cpp:962](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/server/sv_init.cpp#L962) (Cvar_Get)
+- behavior: [codemp/game/g_active.c:1931](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/game/g_active.c#L1931)
+- behavior: [codemp/game/g_cmds.c:8278](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/game/g_cmds.c#L8278)
+- behavior: [codemp/game/bg_pmove.c:7278](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/game/bg_pmove.c#L7278)
+- behavior: [codemp/game/g_active.c:4914](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/game/g_active.c#L4914)
+- behavior: [codemp/cgame/cg_view.c:1319](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/cgame/cg_view.c#L1319)
 
-<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/76943f046bbbdc23d67323b838cb1c4c1e3fba0e"><code>76943f046bbb</code></a> on 2026-10-23. Anything merged after that is not reflected here.</p>
+<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/21044fb29768df0061bc4897bbb97d82304a1fe3"><code>21044fb29768</code></a> on 2026-10-25. Anything merged after that is not reflected here.</p>

@@ -76,11 +76,11 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 ## Evidence
 
-- registration: [codemp/rd-rend2/tr_init.cpp:1581](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/rd-rend2/tr_init.cpp#L1581) (Cvar_Get)
-- behavior: [shared/rd-rend2/tr_glsl.cpp:1904](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/shared/rd-rend2/tr_glsl.cpp#L1904)
-- behavior: [shared/rd-rend2/tr_glsl.cpp:1909](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/shared/rd-rend2/tr_glsl.cpp#L1909)
-- behavior: [shared/rd-rend2/tr_glsl.cpp:1911](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/shared/rd-rend2/tr_glsl.cpp#L1911)
-- behavior: [shared/rd-rend2/tr_image.cpp:3611](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/shared/rd-rend2/tr_image.cpp#L3611)
-- behavior: [shared/rd-rend2/tr_main.cpp:2916](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/shared/rd-rend2/tr_main.cpp#L2916)
+- registration: [codemp/rd-rend2/tr_init.cpp:1581](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/rd-rend2/tr_init.cpp#L1581) (Cvar_Get)
+- behavior: [shared/rd-rend2/tr_glsl.cpp:1904](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/shared/rd-rend2/tr_glsl.cpp#L1904)
+- behavior: [shared/rd-rend2/tr_glsl.cpp:1909](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/shared/rd-rend2/tr_glsl.cpp#L1909)
+- behavior: [shared/rd-rend2/tr_glsl.cpp:1911](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/shared/rd-rend2/tr_glsl.cpp#L1911)
+- behavior: [shared/rd-rend2/tr_image.cpp:3611](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/shared/rd-rend2/tr_image.cpp#L3611)
+- behavior: [shared/rd-rend2/tr_main.cpp:2916](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/shared/rd-rend2/tr_main.cpp#L2916)
 
-<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/76943f046bbbdc23d67323b838cb1c4c1e3fba0e"><code>76943f046bbb</code></a> on 2026-10-23. Anything merged after that is not reflected here.</p>
+<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/21044fb29768df0061bc4897bbb97d82304a1fe3"><code>21044fb29768</code></a> on 2026-10-25. Anything merged after that is not reflected here.</p>

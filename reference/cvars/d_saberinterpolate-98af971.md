@@ -37,8 +37,8 @@ Controls `d_saberInterpolate` in the game module. Consult the cited behavior rea
 
 | Value | Meaning | Evidence |
 |:--|:--|:--|
-| `0` | Disabled. | [codemp/game/w_saber.c:9416](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/game/w_saber.c#L9416) |
-| `1` | Enabled. | [codemp/game/w_saber.c:9416](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/game/w_saber.c#L9416) |
+| `0` | Disabled. | [codemp/game/w_saber.c:9416](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/game/w_saber.c#L9416) |
+| `1` | Enabled. | [codemp/game/w_saber.c:9416](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/game/w_saber.c#L9416) |
 
 ## Flags
 
@@ -65,10 +65,10 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 ## Evidence
 
-- registration: [codemp/game/g_xcvar.h:56](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/game/g_xcvar.h#L56) (XCVAR_DEF)
-- behavior: [codemp/game/w_saber.c:9416](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/game/w_saber.c#L9416)
-- behavior: [codemp/game/w_saber.c:9422](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/game/w_saber.c#L9422)
-- behavior: [codemp/game/g_cmds.c:8317](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/game/g_cmds.c#L8317)
-- behavior: [codemp/game/w_saber.c:9566](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/game/w_saber.c#L9566)
+- registration: [codemp/game/g_xcvar.h:56](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/game/g_xcvar.h#L56) (XCVAR_DEF)
+- behavior: [codemp/game/w_saber.c:9416](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/game/w_saber.c#L9416)
+- behavior: [codemp/game/w_saber.c:9422](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/game/w_saber.c#L9422)
+- behavior: [codemp/game/g_cmds.c:8317](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/game/g_cmds.c#L8317)
+- behavior: [codemp/game/w_saber.c:9566](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/game/w_saber.c#L9566)
 
-<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/76943f046bbbdc23d67323b838cb1c4c1e3fba0e"><code>76943f046bbb</code></a> on 2026-10-23. Anything merged after that is not reflected here.</p>
+<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/21044fb29768df0061bc4897bbb97d82304a1fe3"><code>21044fb29768</code></a> on 2026-10-25. Anything merged after that is not reflected here.</p>

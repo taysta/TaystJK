@@ -81,9 +81,9 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 ## Evidence
 
-- registration: [codemp/qcommon/common.cpp:1452](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/qcommon/common.cpp#L1452) (Cvar_Get); condition `!defined(DEDICATED) && defined(_WIN64)`
-- registration: [codemp/qcommon/common.cpp:1454](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/qcommon/common.cpp#L1454) (Cvar_Get); condition `!defined(DEDICATED) && else(defined(_WIN64))`
-- behavior: [shared/sys/sys_win32.cpp:740](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/shared/sys/sys_win32.cpp#L740)
-- behavior: [shared/sys/sys_win32.cpp:742](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/shared/sys/sys_win32.cpp#L742)
+- registration: [codemp/qcommon/common.cpp:1450](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/qcommon/common.cpp#L1450) (Cvar_Get); condition `!defined(DEDICATED) && defined(_WIN64)`
+- registration: [codemp/qcommon/common.cpp:1452](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/qcommon/common.cpp#L1452) (Cvar_Get); condition `!defined(DEDICATED) && else(defined(_WIN64))`
+- behavior: [shared/sys/sys_win32.cpp:740](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/shared/sys/sys_win32.cpp#L740)
+- behavior: [shared/sys/sys_win32.cpp:742](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/shared/sys/sys_win32.cpp#L742)
 
-<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/76943f046bbbdc23d67323b838cb1c4c1e3fba0e"><code>76943f046bbb</code></a> on 2026-10-23. Anything merged after that is not reflected here.</p>
+<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/21044fb29768df0061bc4897bbb97d82304a1fe3"><code>21044fb29768</code></a> on 2026-10-25. Anything merged after that is not reflected here.</p>
