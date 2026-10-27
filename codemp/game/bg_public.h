@@ -555,6 +555,7 @@ extern int bgForcePowerCost[NUM_FORCE_POWERS][NUM_FORCE_POWER_LEVELS];
 #define TAYSTJK_INFO_FIXROLL_2	            (1<<5) // enable rolling while using force grip + chaining rolls
 #define TAYSTJK_INFO_FIXROLL_3	            (1<<6) // jk2 roll
 #define TAYSTJK_INFO_SCORE_DEATHS           (1<<7) // server sends a 15th per-client scoreboard int (deaths)
+#define TAYSTJK_INFO_NO_HEADSLIDE           (1<<8) // standing on a player keeps ground friction (JA+'s jp_slideOnPlayer 0)
 
 // TaystJK cgame capabilities advertised to the game through userinfo.
 // Third-party cgame forks MUST use their own userinfo cvar and bit namespace.
