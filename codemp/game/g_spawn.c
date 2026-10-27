@@ -294,6 +294,7 @@ void SP_target_scriptrunner( gentity_t *self );
 void SP_target_interest (gentity_t *self);
 void SP_target_activate (gentity_t *self);
 void SP_target_deactivate (gentity_t *self);
+void SP_target_runtimewarp( gentity_t *self );
 void SP_target_level_change( gentity_t *self );
 void SP_target_play_music( gentity_t *self );
 void SP_target_push (gentity_t *ent);
@@ -682,6 +683,7 @@ spawn_t	spawns[] = {
 
 	{"target_restrict",					qtrue,	SP_target_restrict},//JAPRO Onlybhop
 
+	{ "target_runtimewarp",				qfalse,	SP_target_runtimewarp },
 	{ "target_score",					qtrue,	SP_target_score },
 	{ "target_screenshake",				qtrue,	SP_target_screenshake },
 	{ "target_scriptrunner",			qfalse,	SP_target_scriptrunner },
@@ -941,6 +943,45 @@ Spawn an entity and fill in all of the level fields from
 level.spawnVars[], then call the class specfic spawn function
 ===================
 */
+static qboolean G_SpawnClassAddsGlobalWorldEffect( const char *classname ) {
+	if ( !classname ) {
+		return qfalse;
+	}
+
+	return !Q_stricmp( classname, "fx_rain" )
+		|| !Q_stricmp( classname, "fx_snow" )
+		|| !Q_stricmp( classname, "fx_spacedust" )
+		|| !Q_stricmp( classname, "fx_wind" );
+}
+
+static qboolean G_RuntimeBSPCanSpawnNormalEntity( void ) {
+	int i;
+
+	if ( level.num_entities <= ENTITYNUM_MAX_NORMAL ) {
+		return qtrue;
+	}
+
+	for ( i = MAX_CLIENTS; i < level.num_entities; i++ ) {
+		if ( !g_entities[i].inuse ) {
+			return qtrue;
+		}
+	}
+
+	return qfalse;
+}
+
+static qboolean G_RuntimeBSPSkipNormalEntityAtLimit( const char *classname ) {
+	if ( !G_RuntimeBSPCanSpawnNormalEntity() ) {
+		if ( g_debugBSPInstances.integer ) {
+			trap->Print( va( "BSPDEBUG game skipped runtime BSP entity '%s': normal entity limit reached\n",
+				classname ? classname : "" ) );
+		}
+		return qtrue;
+	}
+
+	return qfalse;
+}
+
 void G_SpawnGEntityFromSpawnVars( qboolean inSubBSP ) {
 	int			i;
 	gentity_t	*ent;
@@ -951,15 +992,33 @@ void G_SpawnGEntityFromSpawnVars( qboolean inSubBSP ) {
 	if (!value) {
 		return;	// Dont even bother spawning an ent without a classname
 	}
+	if ( inSubBSP && !Q_stricmp( value, "misc_bsp" ) ) {
+		if ( g_debugBSPInstances.integer ) {
+			trap->Print( "BSPDEBUG game skipped nested misc_bsp while spawning runtime BSP entities\n" );
+		}
+		return;
+	}
+	if ( inSubBSP && G_SpawnClassAddsGlobalWorldEffect( value ) ) {
+		if ( g_debugBSPInstances.integer ) {
+			trap->Print( va( "BSPDEBUG game skipped runtime BSP global world effect '%s'\n", value ) );
+		}
+		return;
+	}
 	if (G_IsLogicalEntity(value)) {
 		// Check if the entity wants to be nonlogical anyway
 		G_SpawnInt("nological", "0", &i);
 		if (i) {				// Despite it being a logical entity, it wants to be nonlogical
+			if ( inSubBSP && G_RuntimeBSPSkipNormalEntityAtLimit( value ) ) {
+				return;
+			}
 			ent = G_Spawn(qtrue);	// possibly because it wants to use icarus for example
 		}
 		else {
 			G_SpawnString("script_targetname", NULL, &value); //Always make entities with script_targetnames non logical (???)
 			if (value) {
+				if ( inSubBSP && G_RuntimeBSPSkipNormalEntityAtLimit( value ) ) {
+					return;
+				}
 				ent = G_Spawn(qtrue);
 			}
 			else {
@@ -969,12 +1028,20 @@ void G_SpawnGEntityFromSpawnVars( qboolean inSubBSP ) {
 		}
 	}
 	else {
+		if ( inSubBSP && G_RuntimeBSPSkipNormalEntityAtLimit( value ) ) {
+			return;
+		}
+
 		// Get the next free normal entity
 		ent = G_Spawn(qtrue);
 	}
 
 	for ( i = 0 ; i < level.numSpawnVars ; i++ ) {
 		G_ParseField( level.spawnVars[i][0], level.spawnVars[i][1], ent );
+	}
+
+	if ( inSubBSP ) {
+		G_SetRuntimeBSPInstance( ent, level.mNumBSPInstances );
 	}
 
 	// check for "notsingle" flag
@@ -1607,7 +1674,6 @@ void G_PrecacheSoundsets( void )
 {
 	gentity_t	*ent = NULL;
 	int i;
-	int countedSets = 0;
 
 	for ( i = 0; i < MAX_GENTITIES; i++ )
 	{
@@ -1615,13 +1681,7 @@ void G_PrecacheSoundsets( void )
 
 		if (ent->inuse && ent->soundSet && ent->soundSet[0])
 		{
-			if (countedSets >= MAX_AMBIENT_SETS)
-			{
-				Com_Error(ERR_DROP, "MAX_AMBIENT_SETS was exceeded! (too many soundsets)\n");
-			}
-
 			ent->s.soundSetIndex = G_SoundSetIndex(ent->soundSet);
-			countedSets++;
 		}
 	}
 }
@@ -1659,7 +1719,7 @@ void G_SpawnEntitiesFromString( qboolean inSubBSP ) {
 	// the worldspawn is not an actual entity, but it still
 	// has a "spawn" function to perform any global setup
 	// needed by a level (setting configstrings or cvars, etc)
-	if ( !G_ParseSpawnVars(qfalse) ) {
+	if ( !G_ParseSpawnVars(inSubBSP) ) {
 		trap->Error( ERR_DROP, "SpawnEntities: no entities" );
 	}
 

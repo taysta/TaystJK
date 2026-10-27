@@ -4057,6 +4057,81 @@ const char *FS_LoadedPakChecksums( void ) {
 
 /*
 =====================
+FS_PakInfoForFile
+
+Finds the highest-priority downloadable pk3 that contains qpath.
+pakName is returned as gamedir/basename, matching sv_referencedPakNames.
+=====================
+*/
+qboolean FS_PakInfoForFile( const char *qpath, char *pakName, int pakNameSize, int *checksum ) {
+	char filename[MAX_QPATH];
+	searchpath_t *search;
+
+	if ( pakName && pakNameSize > 0 ) {
+		pakName[0] = 0;
+	}
+	if ( checksum ) {
+		*checksum = 0;
+	}
+
+	if ( !qpath || !qpath[0] ) {
+		return qfalse;
+	}
+
+	if ( qpath[0] == '/' || qpath[0] == '\\' ) {
+		qpath++;
+	}
+
+	if ( strstr( qpath, ".." ) || strstr( qpath, "::" ) ) {
+		return qfalse;
+	}
+
+	Q_strncpyz( filename, qpath, sizeof( filename ) );
+
+	for ( search = fs_searchpaths; search; search = search->next ) {
+		pack_t *pak;
+		fileInPack_t *pakFile;
+		int hash;
+		char name[MAX_OSPATH];
+
+		if ( !search->pack ) {
+			continue;
+		}
+
+		if ( !FS_PakIsPure( search->pack ) ) {
+			continue;
+		}
+
+		hash = FS_HashFileName( filename, search->pack->hashSize );
+		if ( !search->pack->hashTable[hash] ) {
+			continue;
+		}
+
+		pak = search->pack;
+		pakFile = pak->hashTable[hash];
+		do {
+			if ( !FS_FilenameCompare( pakFile->name, filename ) ) {
+				Com_sprintf( name, sizeof( name ), "%s/%s", pak->pakGamename, pak->pakBasename );
+				if ( pak->noref || FS_idPak( name, BASEGAME ) ) {
+					return qfalse;
+				}
+
+				if ( pakName && pakNameSize > 0 ) {
+					Q_strncpyz( pakName, name, pakNameSize );
+				}
+				if ( checksum ) {
+					*checksum = pak->checksum;
+				}
+				return qtrue;
+			}
+			pakFile = pakFile->next;
+		} while ( pakFile );
+	}
+
+	return qfalse;
+}
+/*
+=====================
 FS_LoadedPakNames
 
 Returns a space separated string containing the names of all loaded pk3 files.

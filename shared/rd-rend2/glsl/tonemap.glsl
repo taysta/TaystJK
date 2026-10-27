@@ -217,5 +217,10 @@ void main()
 		color.rgb = LinearTosRGB(color.rgb);
 	#endif
 
+	// u_Color.a is 1.0 outside rend2's experimental tonemap-gamma mode.
+	// Apply this after the sRGB transform to match the legacy display ramp.
+	if (u_Color.a != 1.0)
+		color.rgb = pow(max(color.rgb, vec3(0.0)), vec3(u_Color.a));
+
 	out_Color = clamp(color, 0.0, 1.0);
 }

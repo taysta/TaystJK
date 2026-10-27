@@ -317,6 +317,7 @@ gentity_t *CreateMissile( vec3_t org, vec3_t dir, float vel, int life,
 	missile->r.svFlags = SVF_USE_CURRENT_ORIGIN;
 	missile->parent = owner;
 	missile->r.ownerNum = owner->s.number;
+	G_SetRuntimeBSPInstance( missile, owner->runtimeBSPInstance );
 
 	//japro - do this so clients can know who the missile belongs to.. so they can hide it if its from another dimension
 	missile->s.owner = owner->s.number;
@@ -364,6 +365,7 @@ gentity_t *CreateMissileNew( vec3_t org, vec3_t dir, float vel, int life, gentit
 	missile->r.svFlags = SVF_USE_CURRENT_ORIGIN;
 	missile->parent = owner;
 	missile->r.ownerNum = owner->s.number;
+	G_SetRuntimeBSPInstance( missile, owner->runtimeBSPInstance );
 
 	//japro - do this so clients can know who the missile belongs to.. so they can hide it if its from another dimension
 	missile->s.owner = owner->s.number;
@@ -1424,6 +1426,7 @@ gentity_t *fire_grapple(gentity_t *self, vec3_t start, vec3_t dir) {
 	hook->r.svFlags = SVF_USE_CURRENT_ORIGIN;
 	hook->s.weapon = WP_BRYAR_PISTOL;//WP_GRAPPLING_HOOK;
 	hook->r.ownerNum = self->s.number;
+	G_SetRuntimeBSPInstance( hook, self->runtimeBSPInstance );
 	hook->methodOfDeath = MOD_STUN_BATON;//MOD_GRAPPLE
 	hook->clipmask = MASK_SHOT;
 	hook->parent = self;

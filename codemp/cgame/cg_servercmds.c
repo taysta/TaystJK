@@ -127,33 +127,53 @@ static void CG_ParseTeamInfo( void ) {
 	}
 }
 
+// The server splits a long unlock list across several "cosmetics" commands (see ClientBegin), and resends the whole list on every ClientBegin.
+// So each command must add to cosmeticUnlocks rather than replace it, and an entry that is already present is skipped.
+static void CG_AddCosmeticUnlock( const CosmeticUnlocks_t *entry ) {
+	int i;
+
+	for (i = 0; i < MAX_COSMETIC_UNLOCKS && cosmeticUnlocks[i].active; i++) {
+		if (cosmeticUnlocks[i].bitvalue == entry->bitvalue && cosmeticUnlocks[i].style == entry->style &&
+			cosmeticUnlocks[i].duration == entry->duration && !strcmp(cosmeticUnlocks[i].mapname, entry->mapname))
+			return;
+	}
+	if (i < MAX_COSMETIC_UNLOCKS)
+		cosmeticUnlocks[i] = *entry;
+}
+
 static void CG_ParseCosmetics ( void ) { //Parse server cosmetics info for client use
 	//Go through the CG_Argv( 1 ) ?
 	//Build cosmetics array for use in CG_Cosmetics_f
 	char*	pch;
 	char buf[4096] = {0};//eh
-	int args = 1, row = 0;//, i;
+	int args = 1;
+	CosmeticUnlocks_t entry;
 
 	Q_strncpyz(buf, CG_Argv(1), sizeof(buf));
 
-	//Clear cosmetics
-	memset(&cosmeticUnlocks, 0, sizeof(cosmeticUnlocks)); //is this bad
+	//An empty list means the server has no unlock requirements (g_validateCosmetics 0), so clear what we have
+	if (!buf[0]) {
+		memset(&cosmeticUnlocks, 0, sizeof(cosmeticUnlocks));
+		return;
+	}
 
+	memset(&entry, 0, sizeof(entry));
 	pch = strtok ( buf,":\n\t");  //loda fixme why is this broken
-	while (pch != NULL && row < MAX_COSMETIC_UNLOCKS)
+	while (pch != NULL)
 	{
 		if ((args % 4) == 1) {
-			cosmeticUnlocks[row].bitvalue = atoi(pch);
-			cosmeticUnlocks[row].active = qtrue;
+			entry.bitvalue = atoi(pch);
+			entry.active = qtrue;
 		}
 		else if ((args % 4) == 2)
-			Q_strncpyz(cosmeticUnlocks[row].mapname, pch, sizeof(cosmeticUnlocks[row].mapname));
+			Q_strncpyz(entry.mapname, pch, sizeof(entry.mapname));
 		else if ((args % 4) == 3)
-			cosmeticUnlocks[row].style = atoi(pch);
+			entry.style = atoi(pch);
 		else if ((args % 4) == 0) {
-			cosmeticUnlocks[row].duration = atoi(pch);
-			//trap->Print("Cosmetic unlock added: %i, %s, %i, %i\n", cosmeticUnlocks[row].bitvalue, cosmeticUnlocks[row].mapname, cosmeticUnlocks[row].style, cosmeticUnlocks[row].duration);
-			row++;
+			entry.duration = atoi(pch);
+			//trap->Print("Cosmetic unlock added: %i, %s, %i, %i\n", entry.bitvalue, entry.mapname, entry.style, entry.duration);
+			CG_AddCosmeticUnlock(&entry);
+			memset(&entry, 0, sizeof(entry));
 		}
 		pch = strtok (NULL, ":\n\t");
 		args++;

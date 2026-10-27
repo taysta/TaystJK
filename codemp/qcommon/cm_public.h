@@ -27,6 +27,12 @@ along with this program; if not, see <http://www.gnu.org/licenses/>.
 #include "qfiles.h"
 
 void		CM_LoadMap( const char *name, qboolean clientload, int *checksum);
+int			CM_LoadSubBSP( const char *name, qboolean clientload );
+qboolean	CM_BeginAsyncReadSubBSP( const char *name );
+int			CM_AsyncReadSubBSPStatus( const char *name );
+int			CM_FindSubBSP( int modelIndex );
+int			CM_SubBSPModelIndex( int bspIndex );
+char		*CM_SubBSPEntityString( int bspIndex );
 
 void		CM_ClearMap( void );
 clipHandle_t CM_InlineModel( int index );		// 0 = world, 1 + are bmodels
@@ -45,22 +51,30 @@ void		CM_BoxTrace ( trace_t *results, const vec3_t start, const vec3_t end, cons
 void		CM_TransformedBoxTrace( trace_t *results, const vec3_t start, const vec3_t end, const vec3_t mins, const vec3_t maxs, clipHandle_t model, int brushmask, const vec3_t origin, const vec3_t angles, int capsule );
 
 byte		*CM_ClusterPVS (int cluster);
+byte		*CM_ClusterPVSForBSP( int bspIndex, int cluster );
 
 int			CM_PointLeafnum( const vec3_t p );
+int			CM_PointLeafnumForBSP( int bspIndex, const vec3_t p );
 
 // only returns non-solid leafs
 // overflow if return listsize and if *lastLeaf != list[listsize-1]
 int			CM_BoxLeafnums( const vec3_t mins, const vec3_t maxs, int *boxList,
 		 					int listsize, int *lastLeaf );
+int			CM_BoxLeafnumsForBSP( int bspIndex, const vec3_t mins, const vec3_t maxs, int *boxList,
+					int listsize, int *lastLeaf );
 //rwwRMG - changed to boxList to not conflict with list type
 
 int			CM_LeafCluster (int leafnum);
 int			CM_LeafArea (int leafnum);
+int			CM_LeafClusterForBSP( int bspIndex, int leafnum );
+int			CM_LeafAreaForBSP( int bspIndex, int leafnum );
 
 void		CM_AdjustAreaPortalState( int area1, int area2, qboolean open );
 qboolean	CM_AreasConnected( int area1, int area2 );
+qboolean	CM_AreasConnectedForBSP( int bspIndex, int area1, int area2 );
 
 int			CM_WriteAreaBits( byte *buffer, int area );
+int			CM_WriteAreaBitsForBSP( int bspIndex, byte *buffer, int area );
 
 //rwwRMG - added:
 bool		CM_GenericBoxCollide(const vec3pair_t abounds, const vec3pair_t bbounds);

@@ -890,7 +890,7 @@ void R_Register( void )
 	r_logFile							= ri.Cvar_Get( "r_logFile",							"0",						CVAR_CHEAT, "" );
 	r_debugSurface						= ri.Cvar_Get( "r_debugSurface",					"0",						CVAR_CHEAT, "" );
 	r_nobind							= ri.Cvar_Get( "r_nobind",							"0",						CVAR_CHEAT, "" );
-	r_showtris							= ri.Cvar_Get( "r_showtris",						"0",						CVAR_NONE, "" );
+	r_showtris							= ri.Cvar_Get( "r_showtris",						"0",						CVAR_NONE, "Wireframe tris: 1 = all, 2 = world only (skip 2D text)" );
 	r_showsky							= ri.Cvar_Get( "r_showsky",							"0",						CVAR_CHEAT, "" );
 	r_shownormals						= ri.Cvar_Get( "r_shownormals",						"0",						CVAR_CHEAT, "" );
 	r_clear								= ri.Cvar_Get( "r_clear",							"0",						CVAR_CHEAT, "" );
@@ -972,7 +972,7 @@ void R_Register( void )
 		" 4 - linear filtering, preserve aspect ratio (black bars on sides)\n");
 	ri.Cvar_CheckRange(r_renderScale, 0, 4, qtrue);
 	r_ignorehwgamma						= ri.Cvar_Get("r_ignorehwgamma",					"0",						CVAR_ARCHIVE_ND | CVAR_LATCH, "Overrides hardware gamma capabilities");
-	ri.Cvar_CheckRange(r_ignorehwgamma, 0, 1, qtrue);
+	ri.Cvar_CheckRange(r_ignorehwgamma, 0, 2, qtrue); //2 is rend2's tonemap gamma, which Vulkan treats like 1
 
 
 /*

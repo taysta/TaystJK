@@ -2071,6 +2071,7 @@ void S_AddAmbientLoopingSound( const vec3_t origin, unsigned char volume, sfxHan
 	loopSounds[numLoopSounds].doppler = qfalse;
 	loopSounds[numLoopSounds].dopplerScale = 1.0;
 	loopSounds[numLoopSounds].sfx = sfx;
+	loopSounds[numLoopSounds].entnum = ENTITYNUM_NONE;	// ambient loops have no owning entity
 	assert(!sfx->pMP3StreamHeader);
 
 	//TODO: Calculate the distance falloff
@@ -2136,6 +2137,7 @@ void S_AddLoopSounds (void)
 		ch->rightvol = right_total;
 		ch->loopSound = qtrue;	// remove next frame
 		ch->thesfx = loop->sfx;
+		ch->entnum = loop->entnum;	// keys the persistent doppler-loop cursor in the mixer
 
 		ch->doppler = loop->doppler;
 		ch->dopplerScale = loop->dopplerScale;

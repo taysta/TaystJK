@@ -278,6 +278,8 @@ CG_CalcTargetThirdPersonViewLocation
 */
 static void CG_CalcIdealThirdPersonViewTarget(void)
 {
+	float viewHeight = cg.predictedPlayerState.viewheight;
+
 	// Initialize IdealTarget
 	if (gCGHasFallVector)
 	{
@@ -290,7 +292,15 @@ static void CG_CalcIdealThirdPersonViewTarget(void)
 
 	// Add in the new viewheight
 	//cam.focus[2] += cg.snap->ps.viewheight; //36 = standing, 12 = crouching.
-	cam.focus[2] += cg.predictedPlayerState.viewheight;//Proper prediction
+	if ( cg.snap && cg.snap->ps.m_iVehicleNum )
+	{
+		centity_t *veh = &cg_entities[cg.snap->ps.m_iVehicleNum];
+		if ( veh->m_pVehicle && veh->m_pVehicle->m_pVehicleInfo )
+		{
+			viewHeight *= BG_VehicleInstanceScale( veh->m_pVehicle, veh->currentState.iModelScale );
+		}
+	}
+	cam.focus[2] += viewHeight;//Vehicle rider height follows the replicated vehicle scale
 
 	// Add in a vertical offset from the viewpoint, which puts the actual target above the head, regardless of angle.
 //	VectorMA(cam.focus, thirdPersonVertOffset, cameraup, cam.target.ideal);
@@ -345,6 +355,7 @@ static void CG_CalcIdealThirdPersonViewTarget(void)
 				{
 					vertOffset = veh->m_pVehicle->m_pVehicleInfo->cameraVertOffset;
 				}
+				vertOffset *= BG_VehicleInstanceScale( veh->m_pVehicle, veh->currentState.iModelScale );
 			}
 			else if ( veh->m_pVehicle
 				&& veh->m_pVehicle->m_pVehicleInfo
@@ -420,6 +431,7 @@ static void CG_CalcIdealThirdPersonViewLocation(void)
 			veh->m_pVehicle->m_pVehicleInfo->cameraOverride)
 		{ //override the range with what the vehicle wants it to be
 			newThirdPersonRange = veh->m_pVehicle->m_pVehicleInfo->cameraRange;
+			newThirdPersonRange *= BG_VehicleInstanceScale( veh->m_pVehicle, veh->currentState.iModelScale );
             if (cg_vehicleRange.value) {
                 newThirdPersonRange += cg_vehicleRange.value;
             }
@@ -720,6 +732,7 @@ CG_OffsetThirdPersonView
 ===============
 */
 extern qboolean BG_UnrestrainedPitchRoll( playerState_t *ps, Vehicle_t *pVeh );
+static float cgPodCamRoll = 0.0f;	// smoothed camera bank for pod vehicles (see below)
 static void CG_OffsetThirdPersonView( void )
 {
 	vec3_t	target, location, diff;
@@ -734,6 +747,7 @@ static void CG_OffsetThirdPersonView( void )
 			veh->m_pVehicle->m_pVehicleInfo->cameraOverride)
 		{ //override the range with what the vehicle wants it to be
 			thirdPersonHorzOffset = veh->m_pVehicle->m_pVehicleInfo->cameraHorzOffset;
+			thirdPersonHorzOffset *= BG_VehicleInstanceScale( veh->m_pVehicle, veh->currentState.iModelScale );
 			if ( veh->playerState->hackingTime )
 			{
 				thirdPersonHorzOffset += (((float)veh->playerState->hackingTime)/MAX_STRAFE_TIME) * -80.0f;
@@ -918,16 +932,26 @@ static void CG_OffsetThirdPersonView( void )
 	{//must be hitting something, need some value to calc angles, so use cam forward
 		VectorCopy( cam.fwd, diff );
 	}
-	/*if ( 0 && cg.predictedPlayerState.m_iVehicleNum //in a vehicle
-		&& BG_UnrestrainedPitchRoll( &cg.predictedPlayerState, cg_entities[cg.predictedPlayerState.m_iVehicleNum].m_pVehicle ) )//can roll/pitch without restriction
-	{//FIXME: this causes camera jerkiness, need to blend the roll?
-		float sav_Roll = cg.refdef.viewangles[ROLL];
-		vectoangles(diff, cg.refdef.viewangles);
-		cg.refdef.viewangles[ROLL] = sav_Roll;
-	}
-	else*/
 	{
 		vectoangles(diff, cg.refdef.viewangles);
+	}
+
+	// PODRACER: lean the camera into the turn with the pod (vectoangles above zeroed ROLL).
+	// We blend toward the vehicle's banked m_vOrientation[ROLL] rather than snapping to it -
+	// snapping is what made the original attempt (disabled above) jerky. Gated on pod physics.
+	if ( cg.predictedPlayerState.m_iVehicleNum )
+	{
+		centity_t *podCent = &cg_entities[cg.predictedPlayerState.m_iVehicleNum];
+		if ( BG_PodRacerPhysics( podCent->m_pVehicle ) )
+		{
+			float targetRoll = podCent->m_pVehicle->m_vOrientation[ROLL] * POD_CAM_BANK;
+			// frame-rate independent smoothing toward the target roll
+			float lerp = cg.frametime * 0.008f;
+			if ( lerp > 1.0f ) lerp = 1.0f;
+			if ( lerp < 0.0f ) lerp = 0.0f;
+			cgPodCamRoll += ( targetRoll - cgPodCamRoll ) * lerp;
+			cg.refdef.viewangles[ROLL] = cgPodCamRoll;
+		}
 	}
 
 	// Temp: just move the camera to the side a bit
@@ -1235,15 +1259,20 @@ static void CG_OffsetFighterView( void )
 	centity_t *veh = &cg_entities[cg.predictedPlayerState.m_iVehicleNum];
 
 	AngleVectors( cg.refdef.viewangles, vehFwd, vehRight, vehUp );
-
 	if ( veh->m_pVehicle &&
 		veh->m_pVehicle->m_pVehicleInfo->cameraOverride )
 	{ //override the horizontal offset with what the vehicle wants it to be
+		const float vehicleScale = BG_VehicleInstanceScale( veh->m_pVehicle,
+			veh->currentState.iModelScale );
+
 		horzOffset = veh->m_pVehicle->m_pVehicleInfo->cameraHorzOffset;
 		vertOffset = veh->m_pVehicle->m_pVehicleInfo->cameraVertOffset;
 		//NOTE: no yaw offset?
 		pitchOffset = veh->m_pVehicle->m_pVehicleInfo->cameraPitchOffset;
 		range = veh->m_pVehicle->m_pVehicleInfo->cameraRange;
+		horzOffset *= vehicleScale;
+		vertOffset *= vehicleScale;
+		range *= vehicleScale;
 		if ( veh->playerState->hackingTime )
 		{
 			horzOffset += (((float)veh->playerState->hackingTime)/MAX_STRAFE_TIME) * -80.0f;
@@ -1263,8 +1292,33 @@ static void CG_OffsetFighterView( void )
 	}
 
 	// Set camera viewing direction.
-	cg.refdef.viewangles[YAW] += yawOffset;
-	cg.refdef.viewangles[PITCH] += pitchOffset;
+	if ( veh->m_pVehicle && BG_ShrikePhysics( veh->m_pVehicle ) )
+	{//Tribes 2 physics: apply the offsets as rotations around the ship's local axes.
+	 //Adding to raw Euler components tilts the camera the wrong way (and pops) when
+	 //the orientation representation flips (roll ~180) as the ship loops past vertical.
+		vec3_t fwd, right, tmp;
+
+		VectorCopy( vehFwd, fwd );
+		VectorCopy( vehRight, right );
+		if ( pitchOffset )
+		{//quake pitch+ looks down; RotatePointAroundVector is right-handed (nose-up around the right axis)
+			RotatePointAroundVector( tmp, vehRight, fwd, -pitchOffset );
+			VectorCopy( tmp, fwd );
+		}
+		if ( yawOffset )
+		{
+			RotatePointAroundVector( tmp, vehUp, fwd, yawOffset );
+			VectorCopy( tmp, fwd );
+			RotatePointAroundVector( tmp, vehUp, right, yawOffset );
+			VectorCopy( tmp, right );
+		}
+		BG_ShrikeAxisToAngles( fwd, right, cg.refdef.viewangles );
+	}
+	else
+	{
+		cg.refdef.viewangles[YAW] += yawOffset;
+		cg.refdef.viewangles[PITCH] += pitchOffset;
+	}
 
 	//Now bring the cam back from that pos and angles at range
 	AngleVectors( cg.refdef.viewangles, backDir, NULL, NULL );
@@ -1770,7 +1824,18 @@ static int CG_CalcViewValues( void ) {
 		if ( cg.predictedPlayerState.m_iVehicleNum //in a vehicle
 			&& BG_UnrestrainedPitchRoll( &cg.predictedPlayerState, cg_entities[cg.predictedPlayerState.m_iVehicleNum].m_pVehicle ) )//can roll/pitch without restriction
 		{//use the vehicle's viewangles to render view!
-			VectorCopy( cg.predictedVehicleState.viewangles, cg.refdef.viewangles );
+			if ( cg_entities[cg.predictedPlayerState.m_iVehicleNum].m_pVehicle
+				&& BG_ShrikePhysics( cg_entities[cg.predictedPlayerState.m_iVehicleNum].m_pVehicle ) )
+			{//Tribes 2 physics: render straight from the simulated ship orientation.
+			 //The vehicle's viewangles are rebuilt from cmd.angles + delta_angles in its
+			 //own pmove, which picks up one command's worth of raw mouse delta and
+			 //jitters the ship-locked camera.
+				VectorCopy( cg.predictedVehicleState.vehOrientation, cg.refdef.viewangles );
+			}
+			else
+			{
+				VectorCopy( cg.predictedVehicleState.viewangles, cg.refdef.viewangles );
+			}
 		}
 #endif// VEH_CONTROL_SCHEME_4
 		else
@@ -3102,6 +3167,7 @@ void CG_DrawActiveFrame( int serverTime, stereoFrame_t stereoView, qboolean demo
 
 	// update audio positions
 	trap->S_Respatialize( cg.snap->ps.clientNum, cg.refdef.vieworg, cg.refdef.viewaxis, inwater );
+	CG_PodPitchListenerUpdate( cg.refdef.vieworg );	// cache exactly what the engine's doppler math will use next frame
 
 	// make sure the lagometerSample and frame timing isn't done twice when in stereo
 	if ( stereoView != STEREO_RIGHT ) {
@@ -3126,6 +3192,38 @@ void CG_DrawActiveFrame( int serverTime, stereoFrame_t stereoView, qboolean demo
 		}
 		if (cg_timescaleFadeSpeed.value) {
 			trap->Cvar_Set("timescale", va("%f", timescale.value));
+		}
+	}
+
+	// feed the elevation helper renderer effect: while airborne, pass the jump-start Z and the
+	// reachable apex Z (jump start + max jump height for the current force-jump level) so rend2 can
+	// color surfaces below the line and the reachable fallback zone above it. forceJumpZStart is 0
+	// when grounded and -65536 after a teleport; use a large sentinel (>=999999) to disable otherwise.
+	{
+		char elevationHelperEnabled[8];
+
+		trap->Cvar_VariableStringBuffer( "r_elevationHelper", elevationHelperEnabled, sizeof( elevationHelperEnabled ) );
+		if ( atoi( elevationHelperEnabled ) )
+		{
+			extern float forceJumpHeightMax[];	// codemp/game/bg_pmove.c, [NUM_FORCE_POWER_LEVELS]
+			const playerState_t *jsPs = &cg.predictedPlayerState;
+			float jumpZ = jsPs->fd.forceJumpZStart;
+
+			if ( jsPs->groundEntityNum == ENTITYNUM_NONE && jumpZ != 0.0f && jumpZ > -65000.0f )
+			{
+				int jl = jsPs->fd.forcePowerLevel[FP_LEVITATION];
+				if ( jl < 0 )
+					jl = 0;
+				else if ( jl >= NUM_FORCE_POWER_LEVELS )
+					jl = NUM_FORCE_POWER_LEVELS - 1;
+				trap->Cvar_Set( "r_elevationHelperZ", va( "%.1f", jumpZ ) );
+				trap->Cvar_Set( "r_elevationHelperApexZ", va( "%.1f", jumpZ + forceJumpHeightMax[jl] ) );
+			}
+			else
+			{
+				trap->Cvar_Set( "r_elevationHelperZ", "1000000" );
+				trap->Cvar_Set( "r_elevationHelperApexZ", "1000000" );
+			}
 		}
 	}
 

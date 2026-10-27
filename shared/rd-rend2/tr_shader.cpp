@@ -2524,6 +2524,12 @@ infoParm_t	infoParms[] = {
 	/* Game surface flags */
 	{ "sky",			CONTENTS_ALL,						SURF_SKY,			CONTENTS_NONE },		// emit light from an environment map
 	{ "slick",			CONTENTS_ALL,						SURF_SLICK,			CONTENTS_NONE },		//
+	{ "pod_fast",		CONTENTS_ALL,						SURF_POD_FAST,		CONTENTS_NONE },
+	{ "pod_slow",		CONTENTS_ALL,						SURF_POD_SLOW,		CONTENTS_NONE },
+	{ "pod_swst",		CONTENTS_ALL,						SURF_POD_SWST,		CONTENTS_NONE },
+	{ "pod_slip",		CONTENTS_ALL,						SURF_POD_SLIP,		CONTENTS_NONE },
+	{ "pod_soft",		CONTENTS_ALL,						SURF_POD_SOFT,		CONTENTS_NONE },
+	{ "pod_lava",		CONTENTS_ALL,						SURF_POD_LAVA,		CONTENTS_NONE },
 
 	{ "nodamage",		CONTENTS_ALL,						SURF_NODAMAGE,		CONTENTS_NONE },		//
 	{ "noimpact",		CONTENTS_ALL,						SURF_NOIMPACT,		CONTENTS_NONE },		// don't make impact explosions or marks

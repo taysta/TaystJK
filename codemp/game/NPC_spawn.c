@@ -1408,6 +1408,7 @@ gentity_t *NPC_Spawn_Do( gentity_t *ent )
 	}
 
 	newent->fullName = ent->fullName;
+	G_SetRuntimeBSPInstance( newent, ent->runtimeBSPInstance );
 
 	newent->NPC = New_NPC_t(newent->s.number);
 	if ( newent->NPC == NULL )
@@ -1431,6 +1432,7 @@ gentity_t *NPC_Spawn_Do( gentity_t *ent )
 
 	newent->NPC->tempGoal->classname = "NPC_goal";
 	newent->NPC->tempGoal->parent = newent;
+	G_SetRuntimeBSPInstance( newent->NPC->tempGoal, ent->runtimeBSPInstance );
 	newent->NPC->tempGoal->r.svFlags |= SVF_NOCLIENT;
 
 	if ( newent->client == NULL )
@@ -2058,6 +2060,8 @@ void SP_NPC_spawner( gentity_t *self)
 }
 
 extern void G_VehicleSpawn( gentity_t *self );
+extern void G_VehicleSetScale( gentity_t *vehEnt, float scale );
+extern void G_VehicleDropToFloor( gentity_t *vehEnt );
 /*QUAKED NPC_Vehicle (1 0 0) (-16 -16 -24) (16 16 32) NO_PILOT_DIE SUSPENDED x x DROPTOFLOOR CINEMATIC NOTSOLID STARTINSOLID SHY
 NO_PILOT_DIE - die after certain amount of time of not having a pilot
 SUSPENDED - Fighters: Don't drop until someone gets in it (this only works as long as no-nw has *ever* ridden the vehicle, to simulate ships that are suspended-docked) - note: ships inside trigger_spaces do not drop when unoccupied
@@ -3995,14 +3999,15 @@ gentity_t *NPC_SpawnType( gentity_t *ent, char *npc_type, char *targetname, qboo
 	AngleVectors(ent->client->ps.viewangles, forward, NULL, NULL);
 	VectorNormalize(forward);
 	VectorMA(ent->r.currentOrigin, 64, forward, end);
-	trap->Trace(&trace, ent->r.currentOrigin, NULL, NULL, end, 0, MASK_SOLID, qfalse, 0, 0);
+	trap->Trace(&trace, ent->r.currentOrigin, NULL, NULL, end, ent->s.number, MASK_SOLID, qfalse, 0, 0);
 	VectorCopy(trace.endpos, end);
 	end[2] -= 24;
-	trap->Trace(&trace, trace.endpos, NULL, NULL, end, 0, MASK_SOLID, qfalse, 0, 0);
+	trap->Trace(&trace, trace.endpos, NULL, NULL, end, ent->s.number, MASK_SOLID, qfalse, 0, 0);
 	VectorCopy(trace.endpos, end);
 	end[2] += 24;
 	G_SetOrigin(NPCspawner, end);
 	VectorCopy(NPCspawner->r.currentOrigin, NPCspawner->s.origin);
+	G_SetRuntimeBSPInstance( NPCspawner, ent->runtimeBSPInstance );
 	//set the yaw so that they face away from player
 	NPCspawner->s.angles[1] = ent->client->ps.viewangles[1];
 
@@ -4115,21 +4120,54 @@ void NPC_Spawn_f( gentity_t *ent )
 {
 	char	npc_type[1024];
 	char	targetname[1024];
+	char	arg[1024];
 	qboolean	isVehicle = qfalse;
+	qboolean	hasScale = qfalse;
+	float	spawnScale = 1.0f;
 	int i = 0;
 
+	targetname[0] = '\0';
 	trap->Argv(2, npc_type, 1024);
 	if ( Q_stricmp( "vehicle", npc_type ) == 0 )
 	{
 		isVehicle = qtrue;
 		trap->Argv(3, npc_type, 1024);
-		trap->Argv(4, targetname, 1024);
+		for ( i = 4; i < trap->Argc(); i++ )
+		{
+			trap->Argv( i, arg, sizeof( arg ) );
+			if ( !Q_stricmp( arg, "scale" ) || !Q_stricmp( arg, "s" ) )
+			{
+				if ( hasScale || ++i >= trap->Argc() )
+				{
+					Com_Printf( S_COLOR_RED "Usage: npc spawn vehicle <vehicle> [targetname] scale <0.01-10.23>\n" );
+					return;
+				}
+				trap->Argv( i, arg, sizeof( arg ) );
+				spawnScale = atof( arg );
+				if ( spawnScale < 0.01f || spawnScale > 10.23f )
+				{
+					Com_Printf( S_COLOR_RED "NPC spawn scale must be between 0.01 and 10.23\n" );
+					return;
+				}
+				hasScale = qtrue;
+			}
+			else if ( !targetname[0] )
+			{
+				Q_strncpyz( targetname, arg, sizeof( targetname ) );
+			}
+			else
+			{
+				Com_Printf( S_COLOR_RED "Usage: npc spawn vehicle <vehicle> [targetname] scale <0.01-10.23>\n" );
+				return;
+			}
+		}
 	}
 	else
 	{
 		trap->Argv(3, targetname, 1024);
 	}
 
+	i = 0;
 	while (npc_type[i]) {
 		npc_type[i] = tolower(npc_type[i]);
 		i++;
@@ -4142,7 +4180,21 @@ void NPC_Spawn_f( gentity_t *ent )
 	if (Q_stricmp("saber_droid_training", npc_type) == 0) 
 		return;
 
-	NPC_SpawnType( ent, npc_type, targetname, isVehicle );
+	{
+		gentity_t *spawned = NPC_SpawnType( ent, npc_type, targetname, isVehicle );
+		if ( isVehicle && spawned && spawned->m_pVehicle )
+		{
+			if ( hasScale )
+			{
+				G_VehicleSetScale( spawned, spawnScale );
+				G_VehicleDropToFloor( spawned );
+			}
+			else
+			{
+				G_VehicleSetScale( spawned, spawned->m_pVehicle->m_pVehicleInfo->scale );
+			}
+		}
+	}
 }
 
 /*

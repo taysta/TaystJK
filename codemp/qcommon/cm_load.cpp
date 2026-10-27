@@ -25,6 +25,13 @@ along with this program; if not, see <http://www.gnu.org/licenses/>.
 #include "cm_local.h"
 #include "qcommon/qfiles.h"
 
+#ifndef BSPC
+#include <cstdlib>
+#include <mutex>
+#include <string>
+#include <thread>
+#endif
+
 #ifdef BSPC
 
 #include "../bspc/l_qfiles.h"
@@ -79,6 +86,211 @@ void	CM_FloodAreaConnections (clipMap_t &cm);
 //rwwRMG - added:
 clipMap_t	SubBSP[MAX_SUB_BSP];
 int			NumSubBSP, TotalSubModels;
+
+#ifndef BSPC
+enum {
+	CM_ASYNC_BSP_NONE = 0,
+	CM_ASYNC_BSP_PENDING = 1,
+	CM_ASYNC_BSP_READY = 2,
+	CM_ASYNC_BSP_FAILED = 3
+};
+
+typedef struct asyncSubBSPRead_s {
+	char	name[MAX_OSPATH];
+	void	*buffer;
+	int		len;
+	int		status;
+	int		startTime;
+	int		endTime;
+	qboolean preparedHeader;
+	int		checksum;
+	dheader_t header;
+} asyncSubBSPRead_t;
+
+static std::mutex cm_asyncSubBSPLock;
+static asyncSubBSPRead_t cm_asyncSubBSPReads[4];
+
+static int CM_AsyncReadSubBSPFindSlot( const char *name ) {
+	int i;
+
+	for ( i = 0; i < ARRAY_LEN( cm_asyncSubBSPReads ); i++ ) {
+		if ( cm_asyncSubBSPReads[i].name[0] && !Q_stricmp( cm_asyncSubBSPReads[i].name, name ) ) {
+			return i;
+		}
+	}
+
+	return -1;
+}
+
+static void CM_AsyncReadSubBSPWorker( int slot, std::string name ) {
+	fileHandle_t h = 0;
+	int len;
+	void *buffer = NULL;
+	int status = CM_ASYNC_BSP_FAILED;
+	int endTime;
+	qboolean preparedHeader = qfalse;
+	int checksum = 0;
+	dheader_t header;
+
+	Com_Memset( &header, 0, sizeof( header ) );
+
+	len = FS_FOpenFileRead( name.c_str(), &h, qfalse );
+	if ( h && len > 0 ) {
+		buffer = std::malloc( len );
+		if ( buffer ) {
+			FS_Read( buffer, len, h );
+			status = CM_ASYNC_BSP_READY;
+			if ( len >= sizeof( dheader_t ) ) {
+				checksum = LittleLong( Com_BlockChecksum( buffer, len ) );
+				header = *(dheader_t *)buffer;
+				for ( size_t i = 0; i < sizeof( dheader_t ) / 4; i++ ) {
+					( (int *)&header )[i] = LittleLong( ( (int *)&header )[i] );
+				}
+				preparedHeader = qtrue;
+			}
+		}
+		FS_FCloseFile( h );
+	}
+
+	endTime = Sys_Milliseconds();
+	{
+		std::lock_guard<std::mutex> lock( cm_asyncSubBSPLock );
+		if ( slot >= 0 && slot < ARRAY_LEN( cm_asyncSubBSPReads )
+			&& !Q_stricmp( cm_asyncSubBSPReads[slot].name, name.c_str() ) ) {
+			cm_asyncSubBSPReads[slot].buffer = buffer;
+			cm_asyncSubBSPReads[slot].len = status == CM_ASYNC_BSP_READY ? len : -1;
+			cm_asyncSubBSPReads[slot].status = status;
+			cm_asyncSubBSPReads[slot].endTime = endTime;
+			cm_asyncSubBSPReads[slot].preparedHeader = preparedHeader;
+			cm_asyncSubBSPReads[slot].checksum = checksum;
+			cm_asyncSubBSPReads[slot].header = header;
+			buffer = NULL;
+		}
+	}
+
+	if ( buffer ) {
+		std::free( buffer );
+	}
+}
+
+qboolean CM_BeginAsyncReadSubBSP( const char *name ) {
+	int i;
+	int slot = -1;
+	std::string threadName;
+
+	if ( !name || !name[0] ) {
+		return qfalse;
+	}
+
+	{
+		std::lock_guard<std::mutex> lock( cm_asyncSubBSPLock );
+
+		i = CM_AsyncReadSubBSPFindSlot( name );
+		if ( i >= 0 ) {
+			return cm_asyncSubBSPReads[i].status != CM_ASYNC_BSP_FAILED ? qtrue : qfalse;
+		}
+
+		for ( i = 0; i < ARRAY_LEN( cm_asyncSubBSPReads ); i++ ) {
+			if ( !cm_asyncSubBSPReads[i].name[0] || cm_asyncSubBSPReads[i].status == CM_ASYNC_BSP_FAILED ) {
+				if ( cm_asyncSubBSPReads[i].buffer ) {
+					std::free( cm_asyncSubBSPReads[i].buffer );
+				}
+				slot = i;
+				break;
+			}
+		}
+		if ( slot < 0 ) {
+			return qfalse;
+		}
+
+		Com_Memset( &cm_asyncSubBSPReads[slot], 0, sizeof( cm_asyncSubBSPReads[slot] ) );
+		Q_strncpyz( cm_asyncSubBSPReads[slot].name, name, sizeof( cm_asyncSubBSPReads[slot].name ) );
+		cm_asyncSubBSPReads[slot].status = CM_ASYNC_BSP_PENDING;
+		cm_asyncSubBSPReads[slot].startTime = Sys_Milliseconds();
+		threadName = cm_asyncSubBSPReads[slot].name;
+	}
+
+	try {
+		std::thread( CM_AsyncReadSubBSPWorker, slot, threadName ).detach();
+	}
+	catch ( ... ) {
+		std::lock_guard<std::mutex> lock( cm_asyncSubBSPLock );
+		cm_asyncSubBSPReads[slot].status = CM_ASYNC_BSP_FAILED;
+		cm_asyncSubBSPReads[slot].endTime = Sys_Milliseconds();
+		return qfalse;
+	}
+
+	return qtrue;
+}
+
+int CM_AsyncReadSubBSPStatus( const char *name ) {
+	int slot;
+
+	if ( !name || !name[0] ) {
+		return CM_ASYNC_BSP_NONE;
+	}
+
+	std::lock_guard<std::mutex> lock( cm_asyncSubBSPLock );
+	slot = CM_AsyncReadSubBSPFindSlot( name );
+	if ( slot < 0 ) {
+		return CM_ASYNC_BSP_NONE;
+	}
+
+	return cm_asyncSubBSPReads[slot].status;
+}
+
+static qboolean CM_TakeAsyncReadSubBSP( const char *name, void **buffer, int *len, int *elapsed, int *checksum, dheader_t *header, qboolean *preparedHeader ) {
+	int slot;
+
+	if ( buffer ) {
+		*buffer = NULL;
+	}
+	if ( len ) {
+		*len = 0;
+	}
+	if ( elapsed ) {
+		*elapsed = 0;
+	}
+	if ( checksum ) {
+		*checksum = 0;
+	}
+	if ( header ) {
+		Com_Memset( header, 0, sizeof( *header ) );
+	}
+	if ( preparedHeader ) {
+		*preparedHeader = qfalse;
+	}
+	if ( !name || !name[0] || !buffer || !len ) {
+		return qfalse;
+	}
+
+	std::lock_guard<std::mutex> lock( cm_asyncSubBSPLock );
+	slot = CM_AsyncReadSubBSPFindSlot( name );
+	if ( slot < 0 || cm_asyncSubBSPReads[slot].status != CM_ASYNC_BSP_READY || !cm_asyncSubBSPReads[slot].buffer ) {
+		return qfalse;
+	}
+
+	*buffer = cm_asyncSubBSPReads[slot].buffer;
+	*len = cm_asyncSubBSPReads[slot].len;
+	if ( elapsed ) {
+		*elapsed = cm_asyncSubBSPReads[slot].endTime - cm_asyncSubBSPReads[slot].startTime;
+	}
+	if ( checksum ) {
+		*checksum = cm_asyncSubBSPReads[slot].checksum;
+	}
+	if ( header ) {
+		*header = cm_asyncSubBSPReads[slot].header;
+	}
+	if ( preparedHeader ) {
+		*preparedHeader = cm_asyncSubBSPReads[slot].preparedHeader;
+	}
+	cm_asyncSubBSPReads[slot].buffer = NULL;
+	cm_asyncSubBSPReads[slot].len = 0;
+	cm_asyncSubBSPReads[slot].status = CM_ASYNC_BSP_NONE;
+	cm_asyncSubBSPReads[slot].name[0] = 0;
+	return qtrue;
+}
+#endif
 
 /*
 ===============================================================================
@@ -625,6 +837,16 @@ static void CM_LoadMap_Actual( const char *name, qboolean clientload, int *check
 	static unsigned	last_checksum;
 	char			origName[MAX_OSPATH];
 	void			*newBuff = 0;
+	qboolean		asyncDiskImage = qfalse;
+	int				iBSPLen = 0;
+#ifndef BSPC
+	const qboolean	timingBSP = ( clientload || &cm != &cmg ) ? qtrue : qfalse;
+	int				timingStart = Sys_Milliseconds();
+	int				timingPhase = timingStart;
+	qboolean		asyncPreparedHeader = qfalse;
+	int				asyncChecksum = 0;
+	dheader_t		asyncHeader;
+#endif
 
 	if ( !name || !name[0] ) {
 		Com_Error( ERR_DROP, "CM_LoadMap: NULL name" );
@@ -677,15 +899,28 @@ static void CM_LoadMap_Actual( const char *name, qboolean clientload, int *check
 				gpvCachedMapDiskImage = NULL;
 	}
 
+	buf = NULL;
 #ifndef BSPC
+	timingPhase = Sys_Milliseconds();
 	//
 	// load the file into a buffer that we either discard as usual at the bottom, or if we've got enough memory
 	//	then keep it long enough to save the renderer re-loading it (if not dedicated server),
 	//	then discard it after that...
 	//
-	buf = NULL;
+	{
+		int asyncElapsed = 0;
+		if ( CM_TakeAsyncReadSubBSP( name, &newBuff, &iBSPLen, &asyncElapsed, &asyncChecksum, &asyncHeader, &asyncPreparedHeader ) ) {
+			buf = (int*) newBuff;
+			asyncDiskImage = qtrue;
+			Com_Printf( "BSPTIME qcommon CM_LoadMap asyncDiskImage name='%s' bytes=%i asyncMs=%i prepared=%i\n",
+				name, iBSPLen, asyncElapsed, asyncPreparedHeader );
+		}
+	}
+
+	if ( !buf )
+	{
 	fileHandle_t h;
-	const int iBSPLen = FS_FOpenFileRead( name, &h, qfalse );
+	iBSPLen = FS_FOpenFileRead( name, &h, qfalse );
 	if (h)
 	{
 		newBuff = Z_Malloc( iBSPLen, TAG_BSP_DISKIMAGE );
@@ -702,21 +937,52 @@ static void CM_LoadMap_Actual( const char *name, qboolean clientload, int *check
 		// carry on as before...
 		//
 	}
+	}
+	if ( timingBSP ) {
+		const int now = Sys_Milliseconds();
+		Com_Printf( "BSPTIME qcommon CM_LoadMap DiskImageReady name='%s' source=%s bytes=%i ms=%i total=%i\n",
+			name, asyncDiskImage ? "async" : "sync", iBSPLen, now - timingPhase, now - timingStart );
+		timingPhase = now;
+	}
 #else
-	const int iBSPLen = LoadQuakeFile((quakefile_t *) name, (void **)&buf);
+	iBSPLen = LoadQuakeFile((quakefile_t *) name, (void **)&buf);
 #endif
 
 	if ( !buf ) {
 		Com_Error (ERR_DROP, "Couldn't load %s", name);
 	}
 
-	last_checksum = LittleLong (Com_BlockChecksum (buf, iBSPLen));
+#ifndef BSPC
+	if ( asyncDiskImage && asyncPreparedHeader ) {
+		last_checksum = asyncChecksum;
+	}
+	else
+#endif
+	{
+		last_checksum = LittleLong (Com_BlockChecksum (buf, iBSPLen));
+	}
 	if ( checksum )
 		*checksum = last_checksum;
+#ifndef BSPC
+	if ( timingBSP ) {
+		const int now = Sys_Milliseconds();
+		Com_Printf( "BSPTIME qcommon CM_LoadMap Checksum name='%s' source=%s ms=%i total=%i\n",
+			name, ( asyncDiskImage && asyncPreparedHeader ) ? "async" : "sync", now - timingPhase, now - timingStart );
+		timingPhase = now;
+	}
+#endif
 
-	header = *(dheader_t *)buf;
-	for (size_t i=0 ; i<sizeof(dheader_t)/4 ; i++) {
-		((int *)&header)[i] = LittleLong ( ((int *)&header)[i]);
+#ifndef BSPC
+	if ( asyncDiskImage && asyncPreparedHeader ) {
+		header = asyncHeader;
+	}
+	else
+#endif
+	{
+		header = *(dheader_t *)buf;
+		for (size_t i=0 ; i<sizeof(dheader_t)/4 ; i++) {
+			((int *)&header)[i] = LittleLong ( ((int *)&header)[i]);
+		}
 	}
 
 	if ( header.version != BSP_VERSION ) {
@@ -726,22 +992,102 @@ static void CM_LoadMap_Actual( const char *name, qboolean clientload, int *check
 		Com_Error (ERR_DROP, "CM_LoadMap: %s has wrong version number (%i should be %i)"
 		, name, header.version, BSP_VERSION );
 	}
+#ifndef BSPC
+	if ( timingBSP ) {
+		const int now = Sys_Milliseconds();
+		Com_Printf( "BSPTIME qcommon CM_LoadMap Header name='%s' ms=%i total=%i\n",
+			name, now - timingPhase, now - timingStart );
+		timingPhase = now;
+	}
+#endif
 
 	cmod_base = (byte *)buf;
 
 	// load into heap
 	CMod_LoadShaders( &header.lumps[LUMP_SHADERS], cm );
+#ifndef BSPC
+	if ( timingBSP ) {
+		const int now = Sys_Milliseconds();
+		Com_Printf( "BSPTIME qcommon CM_LoadMap Shaders name='%s' count=%i ms=%i total=%i\n",
+			name, cm.numShaders, now - timingPhase, now - timingStart );
+		timingPhase = now;
+	}
+#endif
 	CMod_LoadLeafs (&header.lumps[LUMP_LEAFS], cm);
 	CMod_LoadLeafBrushes (&header.lumps[LUMP_LEAFBRUSHES], cm);
 	CMod_LoadLeafSurfaces (&header.lumps[LUMP_LEAFSURFACES], cm);
+#ifndef BSPC
+	if ( timingBSP ) {
+		const int now = Sys_Milliseconds();
+		Com_Printf( "BSPTIME qcommon CM_LoadMap Leafs name='%s' leafs=%i leafBrushes=%i leafSurfaces=%i ms=%i total=%i\n",
+			name, cm.numLeafs, cm.numLeafBrushes, cm.numLeafSurfaces, now - timingPhase, now - timingStart );
+		timingPhase = now;
+	}
+#endif
 	CMod_LoadPlanes (&header.lumps[LUMP_PLANES], cm);
+#ifndef BSPC
+	if ( timingBSP ) {
+		const int now = Sys_Milliseconds();
+		Com_Printf( "BSPTIME qcommon CM_LoadMap Planes name='%s' count=%i ms=%i total=%i\n",
+			name, cm.numPlanes, now - timingPhase, now - timingStart );
+		timingPhase = now;
+	}
+#endif
 	CMod_LoadBrushSides (&header.lumps[LUMP_BRUSHSIDES], cm);
 	CMod_LoadBrushes (&header.lumps[LUMP_BRUSHES], cm);
+#ifndef BSPC
+	if ( timingBSP ) {
+		const int now = Sys_Milliseconds();
+		Com_Printf( "BSPTIME qcommon CM_LoadMap Brushes name='%s' brushes=%i brushSides=%i ms=%i total=%i\n",
+			name, cm.numBrushes, cm.numBrushSides, now - timingPhase, now - timingStart );
+		timingPhase = now;
+	}
+#endif
 	CMod_LoadSubmodels (&header.lumps[LUMP_MODELS], cm);
+#ifndef BSPC
+	if ( timingBSP ) {
+		const int now = Sys_Milliseconds();
+		Com_Printf( "BSPTIME qcommon CM_LoadMap Submodels name='%s' count=%i ms=%i total=%i\n",
+			name, cm.numSubModels, now - timingPhase, now - timingStart );
+		timingPhase = now;
+	}
+#endif
 	CMod_LoadNodes (&header.lumps[LUMP_NODES], cm);
+#ifndef BSPC
+	if ( timingBSP ) {
+		const int now = Sys_Milliseconds();
+		Com_Printf( "BSPTIME qcommon CM_LoadMap Nodes name='%s' count=%i ms=%i total=%i\n",
+			name, cm.numNodes, now - timingPhase, now - timingStart );
+		timingPhase = now;
+	}
+#endif
 	CMod_LoadEntityString (&header.lumps[LUMP_ENTITIES], cm, name);
+#ifndef BSPC
+	if ( timingBSP ) {
+		const int now = Sys_Milliseconds();
+		Com_Printf( "BSPTIME qcommon CM_LoadMap EntityString name='%s' bytes=%i ms=%i total=%i\n",
+			name, cm.numEntityChars, now - timingPhase, now - timingStart );
+		timingPhase = now;
+	}
+#endif
 	CMod_LoadVisibility( &header.lumps[LUMP_VISIBILITY], cm );
+#ifndef BSPC
+	if ( timingBSP ) {
+		const int now = Sys_Milliseconds();
+		Com_Printf( "BSPTIME qcommon CM_LoadMap Visibility name='%s' vised=%i clusters=%i ms=%i total=%i\n",
+			name, cm.vised, cm.numClusters, now - timingPhase, now - timingStart );
+		timingPhase = now;
+	}
+#endif
 	CMod_LoadPatches( &header.lumps[LUMP_SURFACES], &header.lumps[LUMP_DRAWVERTS], cm );
+#ifndef BSPC
+	if ( timingBSP ) {
+		const int now = Sys_Milliseconds();
+		Com_Printf( "BSPTIME qcommon CM_LoadMap Patches name='%s' surfaces=%i ms=%i total=%i\n",
+			name, cm.numSurfaces, now - timingPhase, now - timingStart );
+		timingPhase = now;
+	}
+#endif
 
 	TotalSubModels += cm.numSubModels;
 
@@ -758,7 +1104,11 @@ static void CM_LoadMap_Actual( const char *name, qboolean clientload, int *check
 	//	map data will have been Little-Long'd, but some hasn't).
 	//
 	// For sub BSPs, always free immediately since caching only applies to main maps
-	if ( newBuff && newBuff != gpvCachedMapDiskImage )
+	if ( asyncDiskImage && newBuff )
+	{
+		std::free( newBuff );
+	}
+	else if ( newBuff && newBuff != gpvCachedMapDiskImage )
 	{
 		Z_Free(newBuff);
 	}
@@ -882,6 +1232,15 @@ CM_InlineModel
 */
 clipHandle_t	CM_InlineModel( int index ) {
 	if ( index < 0 || index >= TotalSubModels ) {
+		int count = cmg.numSubModels;
+
+		Com_Printf( "CM_InlineModel debug: requested=%i total=%i main='%s' mainModels=%i subBSPs=%i\n",
+			index, TotalSubModels, cmg.name, cmg.numSubModels, NumSubBSP );
+		for ( int i = 0; i < NumSubBSP; i++ ) {
+			Com_Printf( "CM_InlineModel debug: sub[%i] base=%i name='%s' models=%i\n",
+				i, count, SubBSP[i].name, SubBSP[i].numSubModels );
+			count += SubBSP[i].numSubModels;
+		}
 		Com_Error( ERR_DROP, "CM_InlineModel: bad number: %d >= %d (may need to re-BSP map?)", index, TotalSubModels );
 	}
 	return index;
@@ -1068,6 +1427,25 @@ int CM_FindSubBSP(int modelIndex)
 		}
 	}
 	return -1;
+}
+
+int CM_SubBSPModelIndex( int bspIndex )
+{
+	int i;
+	int count;
+
+	if ( bspIndex < 0 || bspIndex >= NumSubBSP )
+	{
+		return -1;
+	}
+
+	count = cmg.numSubModels;
+	for ( i = 0; i < bspIndex; i++ )
+	{
+		count += SubBSP[i].numSubModels;
+	}
+
+	return count;
 }
 
 void CM_GetWorldBounds ( vec3_t mins, vec3_t maxs )

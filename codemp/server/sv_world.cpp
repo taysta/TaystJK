@@ -24,6 +24,8 @@ along with this program; if not, see <http://www.gnu.org/licenses/>.
 // world.c -- world query functions
 
 #include "server.h"
+#include "server/sv_dynbsp.h"
+#include "server/sv_dimension.h"
 #include "ghoul2/ghoul2_shared.h"
 #include "qcommon/cm_public.h"
 
@@ -206,6 +208,152 @@ SV_LinkEntity
 ===============
 */
 #define MAX_TOTAL_ENT_LEAFS		128
+static int SV_RuntimeBSPInstanceForEntity( sharedEntity_t *ent ) {
+	svEntity_t *svEnt;
+	int entNum;
+	int visited[32];
+	int numVisited = 0;
+
+	if ( !ent ) {
+		return -1;
+	}
+
+	while ( ent ) {
+		int i;
+
+		entNum = SV_NumForGentity( ent );
+		if ( entNum < 0 || entNum >= sv.num_entities ) {
+			return -1;
+		}
+
+		for ( i = 0; i < numVisited; i++ ) {
+			if ( visited[i] == entNum ) {
+				if ( com_developer && com_developer->integer ) {
+					Com_Printf( "SV_RuntimeBSPInstanceForEntity: owner cycle at ent %i owner %i\n",
+						entNum, ent->r.ownerNum );
+				}
+				return -1;
+			}
+		}
+
+		if ( numVisited == ARRAY_LEN( visited ) ) {
+			if ( com_developer && com_developer->integer ) {
+				Com_Printf( "SV_RuntimeBSPInstanceForEntity: owner chain exceeded %i entities\n",
+					ARRAY_LEN( visited ) );
+			}
+			return -1;
+		}
+		visited[numVisited++] = entNum;
+
+		if ( entNum < sv_maxclients->integer && svs.clients[entNum].runtimeMapName[0] ) {
+			sharedEntity_t *holder = SV_DynBSPInstanceForMap( svs.clients[entNum].runtimeMapName );
+
+			if ( holder ) {
+				return SV_RuntimeBSPInstanceForGentity( holder );
+			}
+		}
+
+		svEnt = SV_SvEntityForGentity( ent );
+		if ( svEnt && svEnt->runtimeBSPInstance >= 0 ) {
+			return svEnt->runtimeBSPInstance;
+		}
+
+		if ( ent->r.ownerNum < 0 || ent->r.ownerNum >= sv.num_entities || ent->r.ownerNum == entNum ) {
+			return -1;
+		}
+
+		ent = SV_GentityNum( ent->r.ownerNum );
+	}
+
+	return -1;
+}
+
+static int SV_RuntimeBSPCollisionModelForInstance( int runtimeBSPInstance, int *bspIndex ) {
+	sharedEntity_t *holder;
+	int subBSPIndex;
+
+	if ( bspIndex ) {
+		*bspIndex = -1;
+	}
+
+	holder = SV_DynBSPHolderForInstance( runtimeBSPInstance );
+	if ( !holder ) {
+		return -1;
+	}
+
+	subBSPIndex = CM_FindSubBSP( holder->s.modelindex );
+	if ( subBSPIndex < 0 ) {
+		return -1;
+	}
+
+	if ( bspIndex ) {
+		*bspIndex = subBSPIndex;
+	}
+	return CM_SubBSPModelIndex( subBSPIndex );
+}
+
+static int SV_CollisionModelForPassEntity( int passEntityNum, int *bspIndex ) {
+	sharedEntity_t *passEnt;
+	int runtimeBSPInstance;
+	int clientBSPIndex;
+
+	if ( bspIndex ) {
+		*bspIndex = -1;
+	}
+
+	if ( passEntityNum < 0 || passEntityNum >= sv.num_entities ) {
+		return -1;
+	}
+
+	if ( passEntityNum < sv_maxclients->integer ) {
+		clientBSPIndex = SV_DynBSPClientCollisionBSPIndex( &svs.clients[passEntityNum] );
+		if ( clientBSPIndex >= 0 ) {
+			if ( bspIndex ) {
+				*bspIndex = clientBSPIndex;
+			}
+			return CM_SubBSPModelIndex( clientBSPIndex );
+		}
+	}
+
+	passEnt = SV_GentityNum( passEntityNum );
+	runtimeBSPInstance = SV_RuntimeBSPInstanceForEntity( passEnt );
+	if ( runtimeBSPInstance < 0 ) {
+		return -1;
+	}
+
+	return SV_RuntimeBSPCollisionModelForInstance( runtimeBSPInstance, bspIndex );
+}
+
+static void SV_WorldToRuntimeBSPPoint( sharedEntity_t *holder, const vec3_t in, vec3_t out ) {
+	vec3_t local;
+	vec3_t forward, right, up;
+
+	VectorSubtract( in, holder->r.currentOrigin, local );
+	AngleVectors( holder->r.currentAngles, forward, right, up );
+
+	out[0] = DotProduct( local, forward );
+	out[1] = -DotProduct( local, right );
+	out[2] = DotProduct( local, up );
+}
+
+static void SV_WorldBoundsToRuntimeBSPBounds( sharedEntity_t *holder, const vec3_t mins, const vec3_t maxs, vec3_t outMins, vec3_t outMaxs ) {
+	int i;
+
+	ClearBounds( outMins, outMaxs );
+
+	for ( i = 0; i < 8; i++ ) {
+		vec3_t corner;
+		vec3_t localCorner;
+
+		corner[0] = ( i & 1 ) ? maxs[0] : mins[0];
+		corner[1] = ( i & 2 ) ? maxs[1] : mins[1];
+		corner[2] = ( i & 4 ) ? maxs[2] : mins[2];
+
+		SV_WorldToRuntimeBSPPoint( holder, corner, localCorner );
+		AddPointToBounds( localCorner, outMins, outMaxs );
+	}
+}
+
 void SV_LinkEntity( sharedEntity_t *gEnt ) {
 	worldSector_t	*node;
 	int			leafs[MAX_TOTAL_ENT_LEAFS];
@@ -216,6 +364,10 @@ void SV_LinkEntity( sharedEntity_t *gEnt ) {
 	int			lastLeaf;
 	float		*origin, *angles;
 	svEntity_t	*ent;
+	int			subBSPIndex = -1;
+	sharedEntity_t	*runtimeBSPHolder = NULL;
+	int			runtimeBSPInstance;
+	vec3_t		linkMins, linkMaxs;
 
 	ent = SV_SvEntityForGentity( gEnt );
 
@@ -294,10 +446,29 @@ void SV_LinkEntity( sharedEntity_t *gEnt ) {
 	ent->lastCluster = 0;
 	ent->areanum = -1;
 	ent->areanum2 = -1;
+	runtimeBSPInstance = ent->runtimeBSPInstance;
+
+	VectorCopy( gEnt->r.absmin, linkMins );
+	VectorCopy( gEnt->r.absmax, linkMaxs );
+	if ( runtimeBSPInstance >= 0 ) {
+		if ( !runtimeBSPHolder ) {
+			runtimeBSPHolder = SV_DynBSPHolderForInstance( runtimeBSPInstance );
+		}
+		if ( runtimeBSPHolder ) {
+			subBSPIndex = CM_FindSubBSP( runtimeBSPHolder->s.modelindex );
+			if ( subBSPIndex >= 0 && SV_DynBSPIsInstanceEntity( gEnt ) ) {
+				SV_WorldBoundsToRuntimeBSPBounds( runtimeBSPHolder, gEnt->r.absmin, gEnt->r.absmax, linkMins, linkMaxs );
+			}
+		}
+	}
 
 	//get all leafs, including solids
-	num_leafs = CM_BoxLeafnums( gEnt->r.absmin, gEnt->r.absmax,
-		leafs, MAX_TOTAL_ENT_LEAFS, &lastLeaf );
+	if ( subBSPIndex >= 0 ) {
+		num_leafs = CM_BoxLeafnumsForBSP( subBSPIndex, linkMins, linkMaxs, leafs, MAX_TOTAL_ENT_LEAFS, &lastLeaf );
+	}
+	else {
+		num_leafs = CM_BoxLeafnums( linkMins, linkMaxs, leafs, MAX_TOTAL_ENT_LEAFS, &lastLeaf );
+	}
 
 	// if none of the leafs were inside the map, the
 	// entity is outside the world and can be considered unlinked
@@ -307,7 +478,7 @@ void SV_LinkEntity( sharedEntity_t *gEnt ) {
 
 	// set areas, even from clusters that don't fit in the entity array
 	for (i=0 ; i<num_leafs ; i++) {
-		area = CM_LeafArea (leafs[i]);
+		area = subBSPIndex >= 0 ? CM_LeafAreaForBSP( subBSPIndex, leafs[i] ) : CM_LeafArea( leafs[i] );
 		if (area != -1) {
 			// doors may legally straggle two areas,
 			// but nothing should evern need more than that
@@ -327,7 +498,7 @@ void SV_LinkEntity( sharedEntity_t *gEnt ) {
 	// store as many explicit clusters as we can
 	ent->numClusters = 0;
 	for (i=0 ; i < num_leafs ; i++) {
-		cluster = CM_LeafCluster( leafs[i] );
+		cluster = subBSPIndex >= 0 ? CM_LeafClusterForBSP( subBSPIndex, leafs[i] ) : CM_LeafCluster( leafs[i] );
 		if ( cluster != -1 ) {
 			ent->clusternums[ent->numClusters++] = cluster;
 			if ( ent->numClusters == MAX_ENT_CLUSTERS ) {
@@ -338,7 +509,7 @@ void SV_LinkEntity( sharedEntity_t *gEnt ) {
 
 	// store off a last cluster if we need to
 	if ( i != num_leafs ) {
-		ent->lastCluster = CM_LeafCluster( lastLeaf );
+		ent->lastCluster = subBSPIndex >= 0 ? CM_LeafClusterForBSP( subBSPIndex, lastLeaf ) : CM_LeafCluster( lastLeaf );
 	}
 
 	gEnt->r.linkcount++;
@@ -538,28 +709,36 @@ static float VectorDistance(vec3_t p1, vec3_t p2)
 static void SV_ClipMoveToEntities( moveclip_t *clip ) {
 	static int	touchlist[MAX_GENTITIES];
 	int			i, num;
+	sharedEntity_t *passEnt = NULL;
 	sharedEntity_t *touch;
 	int			passOwnerNum;
 	trace_t		trace, oldTrace= {0};
 	clipHandle_t	clipHandle;
 	float		*origin, *angles;
 	int			thisOwnerShared = 1;
+	svDimensionView_t passView;
 
 	num = SV_AreaEntities( clip->boxmins, clip->boxmaxs, touchlist, MAX_GENTITIES);
 
 	if ( clip->passEntityNum != ENTITYNUM_NONE ) {
-		passOwnerNum = ( SV_GentityNum( clip->passEntityNum ) )->r.ownerNum;
-		if ( passOwnerNum == ENTITYNUM_NONE ) {
+		if ( clip->passEntityNum >= 0 && clip->passEntityNum < sv.num_entities ) {
+			passEnt = SV_GentityNum( clip->passEntityNum );
+			passOwnerNum = passEnt->r.ownerNum;
+			if ( passOwnerNum == ENTITYNUM_NONE ) {
+				passOwnerNum = -1;
+			}
+			if ( passEnt->r.svFlags & SVF_OWNERNOTSHARED ) {
+				thisOwnerShared = 0;
+			}
+		}
+		else {
 			passOwnerNum = -1;
 		}
 	} else {
 		passOwnerNum = -1;
 	}
 
-	if ( SV_GentityNum(clip->passEntityNum)->r.svFlags & SVF_OWNERNOTSHARED )
-	{
-		thisOwnerShared = 0;
-	}
+	SV_BeginEntityDimension( passEnt, &passView );
 
 	for ( i=0 ; i<num ; i++ ) {
 		if ( clip->trace.allsolid ) {
@@ -611,7 +790,12 @@ static void SV_ClipMoveToEntities( moveclip_t *clip ) {
 			continue;
 		}
 
-		if (DuelCull(SV_GentityNum(clip->passEntityNum), touch)) {
+		if ( SV_DimensionIsolationEnabled() ) {
+			if ( passEnt && !SV_ViewCanInteract( &passView, touch, SVISO_TRACE ) ) {
+				continue;
+			}
+		}
+		else if ( passEnt && DuelCull( passEnt, touch ) ) {
 			continue;
 		}
 
@@ -825,6 +1009,7 @@ Ghoul2 Insert End
 */
 	moveclip_t	clip;
 	int			i;
+	int			passBSPModelIndex = -1;
 
 	if ( !mins ) {
 		mins = vec3_origin;
@@ -835,8 +1020,10 @@ Ghoul2 Insert End
 
 	Com_Memset ( &clip, 0, sizeof ( moveclip_t ) );
 
+	passBSPModelIndex = SV_CollisionModelForPassEntity( passEntityNum, NULL );
+
 	// clip to world
-	CM_BoxTrace( &clip.trace, start, end, mins, maxs, 0, contentmask, capsule );
+	CM_BoxTrace( &clip.trace, start, end, mins, maxs, passBSPModelIndex >= 0 ? passBSPModelIndex : 0, contentmask, capsule );
 	clip.trace.entityNum = clip.trace.fraction != 1.0 ? ENTITYNUM_WORLD : ENTITYNUM_NONE;
 	if ( clip.trace.fraction == 0 ) {
 		*results = clip.trace;
@@ -889,13 +1076,29 @@ SV_PointContents
 */
 int SV_PointContents( const vec3_t p, int passEntityNum ) {
 	int			touch[MAX_GENTITIES];
+	sharedEntity_t *passEnt = NULL;
 	sharedEntity_t *hit;
 	int			i, num;
 	int			contents, c2;
 	clipHandle_t	clipHandle;
+	int			passBSPIndex = -1;
+	int			passBSPModelIndex = -1;
+
+	svDimensionView_t passView;
+
+	if ( passEntityNum >= 0 && passEntityNum < sv.num_entities ) {
+		passEnt = SV_GentityNum( passEntityNum );
+		passBSPModelIndex = SV_CollisionModelForPassEntity( passEntityNum, &passBSPIndex );
+	}
 
 	// get base contents from world
-	contents = CM_PointContents( p, 0 );
+	contents = CM_PointContents( p, passBSPModelIndex >= 0 ? passBSPModelIndex : 0 );
+
+	if ( passBSPIndex >= 0 ) {
+		return contents;
+	}
+
+	SV_BeginEntityDimension( passEnt, &passView );
 
 	// or in contents from all the other entities
 	num = SV_AreaEntities( p, p, touch, MAX_GENTITIES );
@@ -905,6 +1108,11 @@ int SV_PointContents( const vec3_t p, int passEntityNum ) {
 			continue;
 		}
 		hit = SV_GentityNum( touch[i] );
+
+		if ( passEnt && !SV_ViewCanInteract( &passView, hit, SVISO_POINT_CONTENTS ) ) {
+			continue;
+		}
+
 		// might intersect, so do an exact clip
 		clipHandle = SV_ClipHandleForEntity( hit );
 

@@ -49,6 +49,7 @@ typedef struct svEntity_s {
 	int			clusternums[MAX_ENT_CLUSTERS];
 	int			lastCluster;		// if all the clusters don't fit in clusternums
 	int			areanum, areanum2;
+	int			runtimeBSPInstance;	// -1 = parent map, otherwise entityShared_t::runtimeBSPInstance
 	int			snapshotCounter;	// used to prevent double adding from portal views
 } svEntity_t;
 
@@ -65,6 +66,8 @@ typedef struct server_s {
 	int				restartedServerId;	// serverId before a map_restart
 	int				checksumFeed;		//
 	int				snapshotCounter;	// incremented for each snapshot built
+	int				bspModelsGeneration;	// bumped when CS_BSP_MODELS changes after server start
+	int				firstRuntimeBSPModelConfigstring;
 	int				timeResidual;		// <= 1000 / sv_frame->value
 	int				nextFrameTime;		// when time > nextFrameTime, process world
 	char			*configstrings[MAX_CONFIGSTRINGS];
@@ -172,6 +175,11 @@ typedef struct client_s {
 	char			lastClientCommandString[MAX_STRING_CHARS];
 	sharedEntity_t	*gentity;			// SV_GentityNum(clientnum)
 	char			name[MAX_NAME_LENGTH];			// extracted from userinfo, high bits masked
+	char			runtimeMapName[MAX_QPATH];		// diagnostic per-client active map override
+	int				runtimeMapServerId;				// serverId sent with runtimeMapName gamestate
+	int				runtimeMapBSPIndex;				// server collision sub-BSP for runtimeMapName
+	qboolean		skipClientBeginForRuntimeMap;	// one-shot gamestate reload without game ClientBegin
+	char			spectatorRuntimeMapName[MAX_QPATH];	// diagnostic projected spectator freecam map
 
 	// downloading
 	char			downloadName[MAX_QPATH]; // if not empty string, we are downloading
@@ -207,6 +215,8 @@ typedef struct client_s {
 
 	int				oldServerTime;
 	qboolean		csUpdated[MAX_CONFIGSTRINGS];
+	int				loadedBSPModelsGeneration;
+	int				sendBSPModelsGeneration;
 
 #ifdef DEDICATED
 	demoInfo_t		demo;
@@ -217,6 +227,9 @@ typedef struct client_s {
 	qboolean		jpPlugin;
 #endif
 } client_t;
+
+qboolean SV_SetClientMap( client_t *client, const char *mapName );
+void SV_ClientMapMoveClientToSpawn( client_t *client, int bspIndex );
 
 //=============================================================================
 
@@ -332,6 +345,7 @@ extern	cvar_t	*sv_demoWriteMeta;
 #endif
 
 extern	cvar_t	*sv_snapShotDuelCull;
+extern	cvar_t	*sv_engineDimensions;
 
 extern	cvar_t	*sv_pingFix;
 extern	cvar_t	*sv_hibernateTime;
@@ -420,6 +434,7 @@ void SV_GetChallenge( const netadr_t *from );
 
 void SV_DirectConnect( const netadr_t *from );
 
+void SV_SendClientGameState( client_t *client );
 void SV_SendClientMapChange( client_t *client );
 void SV_ExecuteClientMessage( client_t *cl, msg_t *msg );
 void SV_UserinfoChanged( client_t *cl );
@@ -465,6 +480,9 @@ sharedEntity_t *SV_GentityNum( int num );
 playerState_t *SV_GameClientNum( int num );
 svEntity_t	*SV_SvEntityForGentity( sharedEntity_t *gEnt );
 sharedEntity_t *SV_GEntityForSvEntity( svEntity_t *svEnt );
+int			SV_RuntimeBSPInstanceForGentity( sharedEntity_t *gEnt );
+void		SV_SetRuntimeBSPInstanceForGentity( sharedEntity_t *gEnt, int runtimeBSPInstance );
+void		SV_SetRuntimeBSPInstanceForEntityNum( int entityNum, int runtimeBSPInstance );
 void		SV_InitGameProgs ( void );
 void		SV_ShutdownGameProgs ( void );
 qboolean	SV_inPVS (const vec3_t p1, const vec3_t p2);

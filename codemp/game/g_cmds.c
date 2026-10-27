@@ -24,6 +24,7 @@ along with this program; if not, see <http://www.gnu.org/licenses/>.
 
 #include "g_local.h"
 #include "bg_saga.h"
+#include "g_dynbsp.h"
 
 #include "ui/menudef.h"			// for the voice chats
 
@@ -696,7 +697,8 @@ QINLINE void DeletePlayerProjectiles(gentity_t *ent) {
 	}
 }
 
-void G_UpdatePlaytime(int null, char *username, int seconds );
+struct sqlite3;
+void G_UpdatePlaytime(struct sqlite3 *db, char *username, int seconds );
 static QINLINE void ResetSpecificPlayerTimers(gentity_t* ent, qboolean print) {
 	qboolean wasReset = qfalse;;
 
@@ -806,6 +808,27 @@ argv(0) noclip
 ==================
 */
 
+static void Noclip_Toggle(gentity_t *ent, qboolean resetTimers) {
+	gclient_t *client = ent->client;
+	qboolean raceExit = client->sess.raceMode && client->noclip;
+	vec3_t velocity;
+
+	if (raceExit)
+		VectorCopy(client->ps.velocity, velocity);
+
+	trap->SendServerCommand(ent-g_entities, va("print \"%s\n\"", client->noclip ? "noclip OFF" : "noclip ON"));
+	client->noclip = !client->noclip;
+	if (!client->pers.practice && (raceExit || (resetTimers && !sv_cheats.integer)))
+		ResetPlayerTimers(ent, qtrue);
+
+	if (raceExit) {
+		// Keep flight smooth, but require a normal grounded stop before another race.
+		VectorCopy(velocity, client->ps.velocity);
+		client->raceNeedsGroundStop = qtrue;
+		client->ps.groundEntityNum = ENTITYNUM_NONE; // Noclip leaves stale ground contact.
+	}
+}
+
 void Cmd_Noclip_f( gentity_t *ent ) {
 	int allowed;
 	if (ent->client && ent->client->ps.duelInProgress && ent->client->pers.lastUserName[0]) {
@@ -831,39 +854,23 @@ void Cmd_Noclip_f( gentity_t *ent ) {
 			target = &g_entities[clientid];
 			if (!target->client || target->client->ps.m_iVehicleNum)
 				return;
-			trap->SendServerCommand(target-g_entities, va("print \"%s\n\"", target->client->noclip ? "noclip OFF" : "noclip ON"));
-			if (target->client->sess.raceMode && target->client->noclip && !target->client->pers.practice)
-				AmTeleportPlayer( target, target->client->ps.origin, target->client->ps.viewangles, qtrue, qtrue, qfalse ); //Good
-			target->client->noclip = !target->client->noclip;
-			if (!sv_cheats.integer && !target->client->pers.practice)
-				ResetPlayerTimers(target, qtrue);
+			Noclip_Toggle(target, qtrue);
 			return;
 		}
 		if (trap->Argc() == 1) {
 			if (ent->client->ps.m_iVehicleNum)
 				return;
-			trap->SendServerCommand(ent-g_entities, va("print \"%s\n\"", ent->client->noclip ? "noclip OFF" : "noclip ON"));
-			if (ent->client->sess.raceMode && ent->client->noclip && !ent->client->pers.practice)
-				AmTeleportPlayer( ent, ent->client->ps.origin, ent->client->ps.viewangles, qtrue, qtrue, qfalse ); //Good
-			ent->client->noclip = !ent->client->noclip;
-			if (!sv_cheats.integer && !ent->client->pers.practice)
-				ResetPlayerTimers(ent, qtrue);
+			Noclip_Toggle(ent, qtrue);
 			return;
 		}
 	}
 	else if (allowed == 2) { //Race only
 		if (ent->client->ps.m_iVehicleNum)
 			return;
-		trap->SendServerCommand(ent-g_entities, va("print \"%s\n\"", ent->client->noclip ? "noclip OFF" : "noclip ON"));
-		if (ent->client->sess.raceMode && ent->client->noclip && !ent->client->pers.practice)
-			AmTeleportPlayer( ent, ent->client->ps.origin, ent->client->ps.viewangles, qtrue, qtrue, qfalse ); //Good
-		ent->client->noclip = !ent->client->noclip;
-		if (!sv_cheats.integer && !ent->client->pers.practice)
-			ResetPlayerTimers(ent, qtrue);
+		Noclip_Toggle(ent, qtrue);
 	}
 	else if (allowed) { //Cheats enabled only
-		trap->SendServerCommand(ent-g_entities, va("print \"%s\n\"", ent->client->noclip ? "noclip OFF" : "noclip ON"));
-		ent->client->noclip = !ent->client->noclip;
+		Noclip_Toggle(ent, qfalse);
 	}
 }
 
@@ -1493,6 +1500,10 @@ void SetTeam( gentity_t *ent, char *s, qboolean forcedToJoin ) {//JAPRO - Modifi
 	client->sess.sessionTeam = (team_t)team;
 	client->sess.spectatorState = specState;
 	client->sess.spectatorClient = specClient;
+	if ( team == TEAM_SPECTATOR && !G_RuntimeWarpClearClientActiveMap( clientNum ) )
+	{
+		trap->SendServerCommand( clientNum, "print \"Failed to clear runtime map for spectator.\n\"" );
+	}
 
 	client->sess.teamLeader = qfalse;
 	if ( team == TEAM_RED || team == TEAM_BLUE ) {
@@ -2837,55 +2848,81 @@ int compcstr(const void * a, const void * b) {
 	return strcmp(aa, bb);
 }
 
+#define AM_MAPLIST_MAX_MAPS 2048
+#define AM_MAPLIST_BUFSIZE 65536
+#define AM_MAPLIST_COLUMNS 5
+
 void Cmd_AmMapList_f(gentity_t *ent)
 {
-	char				unsortedMaps[4096], buf[512] = {0};
+	char				unsortedMaps[AM_MAPLIST_BUFSIZE], buf[512] = {0};
+	char				filter[MAX_TOKEN_CHARS] = {0};
 	char*				mapname;
-	char*				sortedMaps[512];
+	char*				sortedMaps[AM_MAPLIST_MAX_MAPS];
 	int					i, len, numMaps;
-	unsigned int		count = 0, baseMapCount = 0;
-	const unsigned int limit = 192, MAX_MAPS = 512;
+	unsigned int		listedMapCount = 0;
+	char				currentSection = '\0';
+	const char			*currentSectionColor = S_COLOR_YELLOW;
+	unsigned int		sectionCount = 0;
 
-	if (!G_AdminAllowed(ent, JAPRO_ACCOUNTFLAG_A_LISTMAPS, qfalse, qfalse, "amListMaps"))
-		return;
+	if ( trap->Argc() >= 2 )
+	{
+		trap->Argv( 1, filter, sizeof( filter ) );
+	}
 
 	numMaps = trap->FS_GetFileList( "maps", ".bsp", unsortedMaps, sizeof(unsortedMaps) );
 	if (numMaps) {
-		if (numMaps > MAX_MAPS)
-			numMaps = MAX_MAPS;
+		if (numMaps > AM_MAPLIST_MAX_MAPS)
+			numMaps = AM_MAPLIST_MAX_MAPS;
 		mapname = unsortedMaps;
 		for (i = 0; i < numMaps; i++) {
 			len = strlen(mapname);
-			if (!Q_stricmp(mapname + len - 4, ".bsp"))
+			if (len > 4 && !Q_stricmp(mapname + len - 4, ".bsp"))
 				mapname[len-4] = '\0';
 			sortedMaps[i] = mapname;//String_Alloc(mapname);
 			mapname += len + 1;
 		}
 
 		qsort(sortedMaps, numMaps, sizeof(sortedMaps[0]), compcstr);
-		Q_strncpyz(buf, "   ", sizeof(buf));
+		buf[0] = '\0';
 
 		for (i = 0; i < numMaps; i++) {
 			char *tmpMsg = NULL;
+			char section;
 
 			if (IsBaseMap(sortedMaps[i])) { //Ideally this could be done before the qsort, but that likes to crash it since it changes the array size or something
-				baseMapCount++;
 				continue;
 			}
-			tmpMsg = va( " %s%-32s    ", ((i%2) ? S_COLOR_GREEN : S_COLOR_YELLOW), sortedMaps[i]);
-			if (count >= limit) {
-				tmpMsg = va("\n   %s", tmpMsg);
-				count = 0;
+			if ( filter[0] && !Q_stristr( sortedMaps[i], filter ) )
+			{
+				continue;
 			}
+
+			section = sortedMaps[i][0];
+			if ( section >= 'a' && section <= 'z' )
+			{
+				section -= 'a' - 'A';
+			}
+			else if ( section < 'A' || section > 'Z' )
+			{
+				section = '#';
+			}
+			if ( section != currentSection )
+			{
+				currentSectionColor = ( sectionCount++ % 2 ) ? S_COLOR_GREEN : S_COLOR_YELLOW;
+				currentSection = section;
+			}
+
+			tmpMsg = va( "%s%-32s%s", currentSectionColor, sortedMaps[i], ((listedMapCount + 1) % AM_MAPLIST_COLUMNS) ? "\t" : "\n" );
+
 			if (strlen(buf) + strlen(tmpMsg) >= sizeof(buf)) {
 				trap->SendServerCommand(ent-g_entities, va("print \"%s\"", buf));
 				buf[0] = '\0';
 			}
-			count += strlen( tmpMsg );
 			Q_strcat( buf, sizeof( buf ), tmpMsg );
+			listedMapCount++;
 		}
 		trap->SendServerCommand( ent-g_entities, va( "print \"%s\n\"", buf ) );
-		trap->SendServerCommand(ent-g_entities, va("print \"^5%i maps listed\n\"", numMaps - baseMapCount));
+		trap->SendServerCommand(ent-g_entities, va("print \"^5%i maps listed%s\n\"", listedMapCount, filter[0] ? " matching filter" : ""));
 	}
 }
 
@@ -5512,21 +5549,20 @@ void Cmd_Ammap_f(gentity_t *ent)
 		gtype = atoi(gametype);
 
 		{
-			char				unsortedMaps[4096];
+			char				unsortedMaps[AM_MAPLIST_BUFSIZE];
 			char*				possibleMapName;
 			int					numMaps;
-			const unsigned int  MAX_MAPS = 512;
 			qboolean found = qfalse;
 
 			numMaps = trap->FS_GetFileList( "maps", ".bsp", unsortedMaps, sizeof(unsortedMaps) );
 			if (numMaps) {
 				int len, i;
-				if (numMaps > MAX_MAPS)
-					numMaps = MAX_MAPS;
+				if (numMaps > AM_MAPLIST_MAX_MAPS)
+					numMaps = AM_MAPLIST_MAX_MAPS;
 				possibleMapName = unsortedMaps;
 				for (i = 0; i < numMaps; i++) {
 					len = strlen(possibleMapName);
-					if (!Q_stricmp(possibleMapName + len - 4, ".bsp"))
+					if (len > 4 && !Q_stricmp(possibleMapName + len - 4, ".bsp"))
 						possibleMapName[len-4] = '\0';
 					if (!Q_stricmp(mapname, possibleMapName)) {
 						found = qtrue;
@@ -5776,6 +5812,7 @@ void Cmd_Aminfo_f(gentity_t *ent)
 		Q_strcat(buf, sizeof(buf), "haste ");
 		Q_strcat(buf, sizeof(buf), "hide ");
 		Q_strcat(buf, sizeof(buf), "practice ");
+		Q_strcat(buf, sizeof(buf), "maxforce ");
 		Q_strcat(buf, sizeof(buf), "launch ");
 		Q_strcat(buf, sizeof(buf), "ysal ");
 		Q_strcat(buf, sizeof(buf), "warpList ");
@@ -7208,6 +7245,49 @@ static void Cmd_Launch_f(gentity_t *ent)
 	ent->client->pers.stats.coopStarted = qtrue;
 }
 
+static void Cmd_MaxForce_f(gentity_t *ent)
+{
+	char arg[8];
+	int maxForce;
+
+	if (!ent->client)
+		return;
+
+	if (!ent->client->pers.practice) {
+		trap->SendServerCommand(ent - g_entities, "print \"You must be in practice mode to use this command.\n\"");
+		return;
+	}
+
+	if (trap->Argc() < 2) {
+		if (ent->client->pers.practiceMaxForce > 0)
+			trap->SendServerCommand(ent - g_entities, va("print \"Max force is set to %i. Use /maxforce 0 to disable.\n\"", ent->client->pers.practiceMaxForce));
+		else
+			trap->SendServerCommand(ent - g_entities, "print \"Max force is not limited (full 100). Use /maxforce <1-100> to limit.\n\"");
+		return;
+	}
+
+	trap->Argv(1, arg, sizeof(arg));
+	maxForce = atoi(arg);
+
+	if (maxForce < 0 || maxForce > 100) {
+		trap->SendServerCommand(ent - g_entities, "print \"Usage: /maxforce <0-100> (0 = no limit)\n\"");
+		return;
+	}
+
+	ent->client->pers.practiceMaxForce = maxForce;
+
+	if (maxForce > 0) {
+		ent->client->ps.fd.forcePowerMax = maxForce;
+		if (ent->client->ps.fd.forcePower > maxForce)
+			ent->client->ps.fd.forcePower = maxForce;
+		trap->SendServerCommand(ent - g_entities, va("print \"Max force set to %i.\n\"", maxForce));
+	}
+	else {
+		ent->client->ps.fd.forcePowerMax = 100;
+		trap->SendServerCommand(ent - g_entities, "print \"Max force limit disabled (full 100).\n\"");
+	}
+}
+
 static void Cmd_Practice_f(gentity_t *ent)
 {
 	if (!ent->client)
@@ -7230,8 +7310,14 @@ static void Cmd_Practice_f(gentity_t *ent)
 
 	ent->client->pers.practice = (qboolean)!ent->client->pers.practice; //toggle it
 	ent->client->pers.haste = qfalse;
+	ent->client->pers.telemarkExact.valid = qfalse; //An exact mark only means something inside one practice session
 
 	if (ent->client->pers.practice) {
+		if (ent->client->pers.practiceMaxForce > 0) {
+			ent->client->ps.fd.forcePowerMax = ent->client->pers.practiceMaxForce;
+			if (ent->client->ps.fd.forcePower > ent->client->pers.practiceMaxForce)
+				ent->client->ps.fd.forcePower = ent->client->pers.practiceMaxForce;
+		}
 		if (ent->client->pers.stats.startTime || ent->client->pers.stats.startTimeFlag) {
 			trap->SendServerCommand(ent-g_entities, "print \"Practice mode enabled: timer reset.\n\"");
 			ResetPlayerTimers(ent, qtrue);
@@ -7243,6 +7329,7 @@ static void Cmd_Practice_f(gentity_t *ent)
 	}
 	else {
 		ent->client->ps.powerups[PW_YSALAMIRI] = 0;
+		ent->client->ps.fd.forcePowerMax = 100;
 		if (ent->client->pers.stats.startTime || ent->client->pers.stats.startTimeFlag) {
 			trap->SendServerCommand(ent-g_entities, "print \"Practice mode disabled: timer reset.\n\"");
 			ResetPlayerTimers(ent, qtrue);
@@ -7254,9 +7341,54 @@ static void Cmd_Practice_f(gentity_t *ent)
 	}
 }
 
+static qboolean Cmd_AmteleMatchTargetRuntimeMap( gentity_t *teleporter, gentity_t *target )
+{
+	int teleporterNum;
+	int targetNum;
+	const char *targetMap;
+
+	if ( !teleporter || !teleporter->client || !target || !target->client )
+	{
+		return qfalse;
+	}
+
+	teleporterNum = teleporter - g_entities;
+	targetNum = target - g_entities;
+	targetMap = G_RuntimeWarpClientMapName( targetNum );
+
+	if ( targetMap[0] )
+	{
+		if ( !G_SetClientMap( teleporterNum, targetMap ) )
+		{
+			trap->SendServerCommand( teleporterNum, va( "print \"Failed to enter target map %s.\n\"", targetMap ) );
+			return qfalse;
+		}
+
+		G_RuntimeWarpSetClientMap( teleporterNum, targetMap );
+		G_SetRuntimeBSPInstance( teleporter, G_GetClientRuntimeBSPInstance( teleporterNum ) );
+		return qtrue;
+	}
+
+	if ( !G_RuntimeWarpClientInMainMap( teleporterNum ) )
+	{
+		if ( !G_SetClientMap( teleporterNum, "clear" ) )
+		{
+			trap->SendServerCommand( teleporterNum, "print \"Failed to return to the main map.\n\"" );
+			return qfalse;
+		}
+
+		G_RuntimeWarpClearClientMap( teleporterNum );
+		G_SetRuntimeBSPInstance( teleporter, -1 );
+	}
+
+	return qtrue;
+}
+
 //[JAPRO - Serverside - All - Amtelemark Function - Start]
 void Cmd_Amtelemark_f(gentity_t *ent)
 {
+		qboolean exact = qfalse;
+
 		if (!ent->client)
 			return;
 
@@ -7278,7 +7410,32 @@ void Cmd_Amtelemark_f(gentity_t *ent)
 		}
 		*/
 
-		if ((ent->client->ps.stats[STAT_RESTRICTIONS] & JAPRO_RESTRICT_ALLOWTELES) && ent->client->sess.sessionTeam != TEAM_SPECTATOR) {
+		if (trap->Argc() > 2) {
+			trap->SendServerCommand(ent - g_entities, "print \"Usage: /amTelemark or /amTelemark exact\n\"");
+			return;
+		}
+		if (trap->Argc() == 2) {
+			char arg[8];
+			trap->Argv(1, arg, sizeof(arg));
+			if (Q_stricmp(arg, "exact")) {
+				trap->SendServerCommand(ent - g_entities, "print \"Usage: /amTelemark or /amTelemark exact\n\"");
+				return;
+			}
+			exact = qtrue;
+		}
+
+		if (exact) {
+			if (!ent->client->sess.raceMode || !ent->client->pers.practice) {
+				trap->SendServerCommand(ent - g_entities, "print \"/amTelemark exact is only available in practice mode.\n\"");
+				return;
+			}
+			if (ent->client->sess.sessionTeam == TEAM_SPECTATOR || ent->health <= 0 || ent->client->ps.m_iVehicleNum) {
+				trap->SendServerCommand(ent - g_entities, "print \"You must be alive and ingame to use /amTelemark exact.\n\"");
+				return;
+			}
+		}
+
+		if (!exact && (ent->client->ps.stats[STAT_RESTRICTIONS] & JAPRO_RESTRICT_ALLOWTELES) && ent->client->sess.sessionTeam != TEAM_SPECTATOR) {
 			if (ent->client->ps.groundEntityNum == ENTITYNUM_NONE || ent->client->ps.velocity[2] != 0) { //so they can't accidentally teleport midair
 				trap->SendServerCommand(ent - g_entities, "print \"You must be on the ground to telemark midrun!\n\"");
 				return;
@@ -7291,14 +7448,93 @@ void Cmd_Amtelemark_f(gentity_t *ent)
 			ent->client->pers.telemarkOrigin[2] += 58;
 		ent->client->pers.telemarkAngle = ent->client->ps.viewangles[YAW];
 		ent->client->pers.telemarkPitchAngle = ent->client->ps.viewangles[PITCH];
-		trap->SendServerCommand( ent-g_entities, va("print \"Teleport Marker: ^3<%i, %i, %i> %i, %i\n\"",
+
+		if (exact) {
+			telemarkExact_t *mark = &ent->client->pers.telemarkExact;
+			stats_t *stats = &ent->client->pers.stats;
+
+			memset(mark, 0, sizeof(*mark));
+			mark->valid = qtrue;
+			VectorCopy(ent->client->ps.origin, mark->origin);
+			VectorCopy(ent->client->ps.velocity, mark->velocity);
+			VectorCopy(ent->client->ps.viewangles, mark->viewAngles);
+			mark->forcePower = ent->client->ps.fd.forcePower;
+			if (stats->startTime) {
+				mark->timerElapsed = trap->Milliseconds() - stats->startTime;
+				mark->levelTimeElapsed = level.time - stats->startLevelTime;
+				mark->startLag = ent->client->pers.startLag;
+				mark->displacement = stats->displacement;
+				mark->displacementSamples = stats->displacementSamples;
+				mark->topSpeed = stats->topSpeed;
+				mark->checkpoints = stats->checkpoints;
+				mark->checkpointCount = stats->checkpointCount;
+				Q_strncpyz(mark->checkpointTimes, stats->checkpointTimes, sizeof(mark->checkpointTimes));
+			}
+		}
+		else {
+			ent->client->pers.telemarkExact.valid = qfalse; //The exact state belongs to the previous mark
+		}
+
+		trap->SendServerCommand( ent-g_entities, va("print \"Teleport Marker%s: ^3<%i, %i, %i> %i, %i\n\"", exact ? " (exact)" : "",
 			(int)ent->client->pers.telemarkOrigin[0], (int)ent->client->pers.telemarkOrigin[1], (int)ent->client->pers.telemarkOrigin[2], (int)ent->client->pers.telemarkAngle, (int)ent->client->pers.telemarkPitchAngle ));
+}
+
+// Practice mode only: put the player back exactly as they were at "amtelemark exact" (velocity, view, force, running timer).
+// Returns qfalse when there is nothing to restore, so the caller does the normal telemark teleport.
+static qboolean Telemark_RestoreExact(gentity_t *ent)
+{
+	telemarkExact_t *mark = &ent->client->pers.telemarkExact;
+	stats_t *stats = &ent->client->pers.stats;
+
+	if (!mark->valid || !ent->client->sess.raceMode || !ent->client->pers.practice)
+		return qfalse;
+	if (ent->client->sess.sessionTeam == TEAM_SPECTATOR || ent->health <= 0 || ent->client->ps.m_iVehicleNum)
+		return qfalse;
+
+	if (BG_InRoll(&ent->client->ps, ent->s.legsAnim))
+		G_SetAnim(ent, &ent->client->pers.cmd, SETANIM_BOTH, BOTH_UNCROUCH1, SETANIM_FLAG_RESTART|SETANIM_FLAG_OVERRIDE|SETANIM_FLAG_HOLD, 0);
+
+	trap->UnlinkEntity((sharedEntity_t *)ent);
+
+	VectorCopy(mark->origin, ent->client->ps.origin);
+	VectorCopy(mark->velocity, ent->client->ps.velocity);
+	ent->client->ps.eFlags ^= EF_TELEPORT_BIT;
+	ent->client->ps.fd.forceJumpZStart = -65536;
+	G_ResetTrail(ent);
+	SetClientViewAngle(ent, mark->viewAngles);
+	ent->client->ps.fd.forcePower = mark->forcePower < ent->client->ps.fd.forcePowerMax ? mark->forcePower : ent->client->ps.fd.forcePowerMax;
+
+	if (mark->timerElapsed) {
+		stats->startTime = trap->Milliseconds() - mark->timerElapsed;
+		stats->startLevelTime = level.time - mark->levelTimeElapsed;
+		ent->client->pers.startLag = mark->startLag;
+		stats->displacement = mark->displacement;
+		stats->displacementSamples = mark->displacementSamples;
+		stats->topSpeed = mark->topSpeed;
+		stats->checkpoints = mark->checkpoints;
+		stats->checkpointCount = mark->checkpointCount;
+		Q_strncpyz(stats->checkpointTimes, mark->checkpointTimes, sizeof(stats->checkpointTimes));
+		stats->lastCheckpointTime = 0;
+		ent->client->ps.duelTime = level.time - mark->levelTimeElapsed;
+	}
+	else { //Timer was not running at the mark, so drop any run started since
+		stats->startTime = 0;
+		stats->startLevelTime = 0;
+		ent->client->ps.duelTime = 0;
+	}
+
+	BG_PlayerStateToEntityState(&ent->client->ps, &ent->s, qtrue);
+	VectorCopy(ent->client->ps.origin, ent->r.currentOrigin);
+	trap->LinkEntity((sharedEntity_t *)ent);
+	return qtrue;
 }
 //[JAPRO - Serverside - All - Amtelemark Function - End]
 
 void Cmd_RaceTele_f(gentity_t *ent, qboolean useForce)
 {
 	if (useForce || trap->Argc() == 1) {//Amtele to telemark
+		if (Telemark_RestoreExact(ent))
+			return;
 		if (ent->client->pers.telemarkOrigin[0] != 0 || ent->client->pers.telemarkOrigin[1] != 0 || ent->client->pers.telemarkOrigin[2] != 0 || ent->client->pers.telemarkAngle != 0) {
 			vec3_t	angles = {0, 0, 0};
 			angles[YAW] = ent->client->pers.telemarkAngle;
@@ -7329,6 +7565,9 @@ void Cmd_RaceTele_f(gentity_t *ent, qboolean useForce)
 			if (!G_AdminAllowed(ent, JAPRO_ACCOUNTFLAG_A_SEEHIDDEN, qfalse, qfalse, NULL))
 				return;
 		}
+
+		if ( !Cmd_AmteleMatchTargetRuntimeMap( ent, &g_entities[clientid] ) )
+			return;
 
 		origin[0] = g_entities[clientid].client->ps.origin[0];
 		origin[1] = g_entities[clientid].client->ps.origin[1];
@@ -7476,6 +7715,8 @@ void Cmd_Amtele_f(gentity_t *ent)
 
 		if (trap->Argc() == 1)//Amtele to telemark
 		{
+			if (Telemark_RestoreExact(ent))
+				return;
 			if (ent->client->pers.telemarkOrigin[0] != 0 || ent->client->pers.telemarkOrigin[1] != 0 || ent->client->pers.telemarkOrigin[2] != 0 || ent->client->pers.telemarkAngle != 0)
 			{
 				angles[YAW] = ent->client->pers.telemarkAngle;
@@ -7499,6 +7740,9 @@ void Cmd_Amtele_f(gentity_t *ent)
 				if (!G_AdminAllowed(ent, JAPRO_ACCOUNTFLAG_A_SEEHIDDEN, qfalse, qfalse, NULL))
 					return;
 			}
+
+			if ( !Cmd_AmteleMatchTargetRuntimeMap( ent, &g_entities[clientid1] ) )
+				return;
 
 			origin[0] = g_entities[clientid1].client->ps.origin[0];
 			origin[1] = g_entities[clientid1].client->ps.origin[1];
@@ -7530,6 +7774,9 @@ void Cmd_Amtele_f(gentity_t *ent)
 			}
 
 			teleporter = &g_entities[clientid1];
+
+			if ( !Cmd_AmteleMatchTargetRuntimeMap( teleporter, &g_entities[clientid2] ) )
+				return;
 
 			origin[0] = g_entities[clientid2].client->ps.origin[0];
 			origin[1] = g_entities[clientid2].client->ps.origin[1];
@@ -7705,6 +7952,9 @@ void Cmd_Race_f(gentity_t *ent)
 			Cmd_ForceChanged_f(ent);//Make sure their jump level is valid.. if leaving racemode :S
 
 			ent->client->sess.raceMode = qfalse;//Set it false here cuz we are flipping it next
+			if (ent->client->sess.sessionTeam != TEAM_SPECTATOR && ent->health > 0 && ent->client->ps.pm_type != PM_DEAD) {
+				ent->client->pers.raceRespawn = qtrue;
+			}
 			if (ent->client->sess.sessionTeam != TEAM_FREE) {
 				SetTeam(ent, "race", qfalse);
 			}
@@ -7755,7 +8005,13 @@ void Cmd_Race_f(gentity_t *ent)
 			ent->client->pers.tribesClass = 0;
 		}
 
+		if (ent->health > 0 && ent->client->ps.pm_type != PM_DEAD) {
+			ent->client->pers.raceRespawn = qtrue;
+		}
 		G_Kill( ent ); //stop abuse
+		if (ent->client->ps.pm_type != PM_DEAD) {
+			ent->client->pers.raceRespawn = qfalse; // The kill may be blocked while paused.
+		}
 		ent->client->ps.persistant[PERS_SCORE] = 0;
 		ent->client->ps.persistant[PERS_KILLED] = 0;
 		ent->client->pers.stats.kills = 0;
@@ -7765,6 +8021,9 @@ void Cmd_Race_f(gentity_t *ent)
 		ent->client->accuracy_hits = 0;
 		ent->client->ps.fd.suicides = 0;
 		ent->client->pers.enterTime = level.time; //reset scoreboard kills/deaths i guess... and time?
+		if (ent->client->sess.raceMode && ent->client->ps.pm_type == PM_DEAD) {
+			ClientRespawn(ent); // Enter race mode immediately after the full death/reset.
+		}
 	}
 }
 
@@ -8865,6 +9124,310 @@ void Cmd_Nearby_f(gentity_t* ent);
 void Cmd_InvalidateRace_f(gentity_t* ent);
 void Cmd_Haste_f(gentity_t* ent);
 
+typedef struct pendingRuntimeWarp_s
+{
+	qboolean	active;
+	char		mapName[MAX_QPATH];
+	int			requestTime;
+} pendingRuntimeWarp_t;
+
+static pendingRuntimeWarp_t pendingRuntimeWarps[MAX_CLIENTS];
+
+void G_RuntimeWarpClearPending( int clientNum )
+{
+	if ( clientNum < 0 || clientNum >= MAX_CLIENTS )
+	{
+		return;
+	}
+
+	pendingRuntimeWarps[clientNum].active = qfalse;
+	pendingRuntimeWarps[clientNum].mapName[0] = 0;
+	pendingRuntimeWarps[clientNum].requestTime = 0;
+}
+
+static qboolean G_RuntimeWarpCommitReadyMap( gentity_t *ent, const char *bsp, int commandStartTime, qboolean fromPending )
+{
+	vec3_t origin = { 0.0f, 0.0f, 0.0f };
+	int phaseStartTime;
+
+	if ( !ent || !ent->client || !bsp || !bsp[0] )
+	{
+		return qfalse;
+	}
+
+	{
+		char policyReason[MAX_STRING_CHARS];
+
+		phaseStartTime = trap->Milliseconds();
+		if ( !G_DynBSP_MapAllowedByPolicy( bsp, policyReason, sizeof( policyReason ) ) )
+		{
+			trap->SendServerCommand( ent - g_entities, va( "print \"%s\n\"", policyReason[0] ? policyReason : "Runtime map is not allowed." ) );
+			return qfalse;
+		}
+		if ( g_debugBSPInstances.integer )
+		{
+			trap->Print( va( "BSPTIME game rwarp%s Policy map='%s' client=%i ms=%i total=%i\n",
+				fromPending ? " pending" : "", bsp, ent - g_entities,
+				trap->Milliseconds() - phaseStartTime, trap->Milliseconds() - commandStartTime ) );
+		}
+	}
+
+	phaseStartTime = trap->Milliseconds();
+	if ( !G_RuntimeWarpCanAssign( bsp ) )
+	{
+		trap->SendServerCommand( ent - g_entities, "print \"No matching or unused runtime warp slot is available on this map.\n\"" );
+		return qfalse;
+	}
+	if ( g_debugBSPInstances.integer )
+	{
+		trap->Print( va( "BSPTIME game rwarp%s CanAssign map='%s' client=%i ms=%i total=%i\n",
+			fromPending ? " pending" : "", bsp, ent - g_entities,
+			trap->Milliseconds() - phaseStartTime, trap->Milliseconds() - commandStartTime ) );
+	}
+
+	phaseStartTime = trap->Milliseconds();
+	if ( !G_RuntimeRoomEnsureMap( bsp, origin, ent - g_entities ) )
+	{
+		trap->SendServerCommand( ent - g_entities, va( "print \"Failed to load runtime map %s.\n\"", bsp ) );
+		return qfalse;
+	}
+	if ( g_debugBSPInstances.integer )
+	{
+		trap->Print( va( "BSPTIME game rwarp%s RoomEnsure map='%s' client=%i ms=%i total=%i\n",
+			fromPending ? " pending" : "", bsp, ent - g_entities,
+			trap->Milliseconds() - phaseStartTime, trap->Milliseconds() - commandStartTime ) );
+	}
+
+	phaseStartTime = trap->Milliseconds();
+	if ( !G_RuntimeWarpAssignFirst( bsp, ent ) )
+	{
+		return qfalse;
+	}
+	if ( g_debugBSPInstances.integer )
+	{
+		trap->Print( va( "BSPTIME game rwarp%s AssignSlot map='%s' client=%i ms=%i total=%i\n",
+			fromPending ? " pending" : "", bsp, ent - g_entities,
+			trap->Milliseconds() - phaseStartTime, trap->Milliseconds() - commandStartTime ) );
+	}
+
+	if ( !ent->client->sess.raceMode )
+	{
+		trap->SendServerCommand( ent - g_entities, va( "print \"Loaded runtime map %s. Entering runtime maps requires racemode.\n\"", bsp ) );
+		return qtrue;
+	}
+
+	phaseStartTime = trap->Milliseconds();
+	if ( !G_SetClientMap( ent - g_entities, bsp ) )
+	{
+		trap->SendServerCommand( ent - g_entities, va( "print \"Failed to enter map %s.\n\"", bsp ) );
+		return qfalse;
+	}
+
+	G_RuntimeWarpSetClientMap( ent - g_entities, bsp );
+
+	if ( g_debugBSPInstances.integer )
+	{
+		trap->Print( va( "BSPTIME game rwarp%s SetClientMap map='%s' client=%i ms=%i total=%i\n",
+			fromPending ? " pending" : "", bsp, ent - g_entities,
+			trap->Milliseconds() - phaseStartTime, trap->Milliseconds() - commandStartTime ) );
+		trap->Print( va( "BSPTIME game rwarp%s total map='%s' client=%i total=%i\n",
+			fromPending ? " pending" : "", bsp, ent - g_entities, trap->Milliseconds() - commandStartTime ) );
+	}
+
+	return qtrue;
+}
+
+void G_RuntimeWarpProcessPending( void )
+{
+	int clientNum;
+
+	for ( clientNum = 0; clientNum < level.maxclients; clientNum++ )
+	{
+		pendingRuntimeWarp_t *pending = &pendingRuntimeWarps[clientNum];
+		gentity_t *ent;
+		int status;
+		int commandStartTime;
+
+		if ( !pending->active )
+		{
+			continue;
+		}
+
+		ent = &g_entities[clientNum];
+		if ( !ent->client || ent->client->pers.connected != CON_CONNECTED )
+		{
+			G_RuntimeWarpClearPending( clientNum );
+			continue;
+		}
+
+		if ( level.time - pending->requestTime > 30000 )
+		{
+			trap->SendServerCommand( clientNum, va( "print \"Runtime map %s async load timed out.\n\"", pending->mapName ) );
+			G_RuntimeWarpClearPending( clientNum );
+			continue;
+		}
+
+		status = G_RuntimeWarpRuntimeBSPInstanceForMap( pending->mapName ) >= 0 ? 2 : G_AsyncBSPFileReadStatus( pending->mapName );
+		if ( status == 0 || status == 1 )
+		{
+			continue;
+		}
+		if ( status != 2 )
+		{
+			trap->SendServerCommand( clientNum, va( "print \"Async read failed for runtime map %s.\n\"", pending->mapName ) );
+			G_RuntimeWarpClearPending( clientNum );
+			continue;
+		}
+
+		commandStartTime = trap->Milliseconds();
+		if ( g_debugBSPInstances.integer )
+		{
+			trap->Print( va( "BSPTIME game rwarp pending AsyncReady map='%s' client=%i age=%i status=%i\n",
+				pending->mapName, clientNum, level.time - pending->requestTime, status ) );
+		}
+		G_RuntimeWarpCommitReadyMap( ent, pending->mapName, commandStartTime, qtrue );
+		G_RuntimeWarpClearPending( clientNum );
+	}
+}
+
+static void G_RuntimeWarpReturnToMainMap( gentity_t *ent )
+{
+	if ( G_RuntimeWarpClientInMainMap( ent - g_entities ) )
+	{
+		trap->SendServerCommand( ent - g_entities, "print \"Already on the main map.\n\"" );
+		return;
+	}
+
+	if ( !ent->client->sess.raceMode )
+	{
+		G_Kill( ent );
+	}
+
+	if ( !G_SetClientMap( ent - g_entities, "clear" ) )
+	{
+		trap->SendServerCommand( ent - g_entities, "print \"Failed to return to the main map.\n\"" );
+	}
+	else
+	{
+		G_RuntimeWarpClearClientMap( ent - g_entities );
+	}
+}
+
+static void Cmd_RWarp_f( gentity_t *ent )
+{
+	char rawMap[MAX_TOKEN_CHARS];
+	char bsp[MAX_QPATH];
+	int commandStartTime = trap->Milliseconds();
+	int phaseStartTime;
+
+	if ( !ent || !ent->client )
+	{
+		return;
+	}
+
+	G_RuntimeWarpClearPending( ent - g_entities );
+
+	if ( trap->Argc() < 2 )
+	{
+		trap->SendServerCommand( ent - g_entities, "print \"Usage: rwarp <map|clear>\n\"" );
+		return;
+	}
+
+	trap->Argv( 1, rawMap, sizeof( rawMap ) );
+	if ( !Q_stricmp( rawMap, "clear" ) )
+	{
+		G_RuntimeWarpReturnToMainMap( ent );
+		return;
+	}
+
+	if ( !G_DynBSP_NormalizeMapName( rawMap, bsp, sizeof( bsp ) ) )
+	{
+		trap->SendServerCommand( ent - g_entities, "print \"Invalid BSP map name.\n\"" );
+		return;
+	}
+
+	if ( level.rawmapname[0] && !Q_stricmp( bsp, level.rawmapname + 5 ) )
+	{
+		G_RuntimeWarpReturnToMainMap( ent );
+		return;
+	}
+
+	{
+		char policyReason[MAX_STRING_CHARS];
+
+		phaseStartTime = trap->Milliseconds();
+		if ( !G_DynBSP_MapAllowedByPolicy( bsp, policyReason, sizeof( policyReason ) ) )
+		{
+			trap->SendServerCommand( ent - g_entities, va( "print \"%s\n\"", policyReason[0] ? policyReason : "Runtime map is not allowed." ) );
+			return;
+		}
+		if ( g_debugBSPInstances.integer )
+		{
+			trap->Print( va( "BSPTIME game rwarp Policy map='%s' client=%i ms=%i total=%i\n",
+				bsp, ent - g_entities, trap->Milliseconds() - phaseStartTime, trap->Milliseconds() - commandStartTime ) );
+		}
+	}
+
+	phaseStartTime = trap->Milliseconds();
+	if ( !G_RuntimeWarpCanAssign( bsp ) )
+	{
+		trap->SendServerCommand( ent - g_entities, "print \"No matching or unused runtime warp slot is available on this map.\n\"" );
+		return;
+	}
+	if ( g_debugBSPInstances.integer )
+	{
+		trap->Print( va( "BSPTIME game rwarp CanAssign map='%s' client=%i ms=%i total=%i\n",
+			bsp, ent - g_entities, trap->Milliseconds() - phaseStartTime, trap->Milliseconds() - commandStartTime ) );
+	}
+
+	if ( G_RuntimeWarpRuntimeBSPInstanceForMap( bsp ) < 0 )
+	{
+		int asyncStatus;
+
+		phaseStartTime = trap->Milliseconds();
+		asyncStatus = G_AsyncBSPFileReadStatus( bsp );
+		if ( asyncStatus == 0 )
+		{
+			if ( !G_BeginAsyncBSPFileRead( bsp ) )
+			{
+				trap->SendServerCommand( ent - g_entities, va( "print \"Failed to start async read for runtime map %s.\n\"", bsp ) );
+				return;
+			}
+			pendingRuntimeWarps[ent - g_entities].active = qtrue;
+			Q_strncpyz( pendingRuntimeWarps[ent - g_entities].mapName, bsp, sizeof( pendingRuntimeWarps[ent - g_entities].mapName ) );
+			pendingRuntimeWarps[ent - g_entities].requestTime = level.time;
+			trap->SendServerCommand( ent - g_entities, va( "print \"Loading runtime map %s asynchronously...\n\"", bsp ) );
+			if ( g_debugBSPInstances.integer )
+			{
+				trap->Print( va( "BSPTIME game rwarp AsyncReadStart map='%s' client=%i ms=%i total=%i\n",
+					bsp, ent - g_entities, trap->Milliseconds() - phaseStartTime, trap->Milliseconds() - commandStartTime ) );
+			}
+			return;
+		}
+		if ( asyncStatus == 1 )
+		{
+			pendingRuntimeWarps[ent - g_entities].active = qtrue;
+			Q_strncpyz( pendingRuntimeWarps[ent - g_entities].mapName, bsp, sizeof( pendingRuntimeWarps[ent - g_entities].mapName ) );
+			pendingRuntimeWarps[ent - g_entities].requestTime = level.time;
+			trap->SendServerCommand( ent - g_entities, va( "print \"Runtime map %s is still loading asynchronously.\n\"", bsp ) );
+			if ( g_debugBSPInstances.integer )
+			{
+				trap->Print( va( "BSPTIME game rwarp AsyncReadPending map='%s' client=%i ms=%i total=%i\n",
+					bsp, ent - g_entities, trap->Milliseconds() - phaseStartTime, trap->Milliseconds() - commandStartTime ) );
+			}
+			return;
+		}
+		if ( g_debugBSPInstances.integer )
+		{
+			trap->Print( va( "BSPTIME game rwarp AsyncReadStatus map='%s' client=%i status=%i ms=%i total=%i\n",
+				bsp, ent - g_entities, asyncStatus,
+				trap->Milliseconds() - phaseStartTime, trap->Milliseconds() - commandStartTime ) );
+		}
+	}
+
+	G_RuntimeWarpCommitReadyMap( ent, bsp, commandStartTime, qfalse );
+}
+
 /* This array MUST be sorted correctly by alphabetical name field */
 command_t commands[] = {
 	{ "addbot",				Cmd_AddBot_f,				0 },
@@ -9004,6 +9567,9 @@ command_t commands[] = {
 	{ "master",				Cmd_AddMaster_f,			CMD_NOINTERMISSION },
 	{ "masterList",			Cmd_ListMasters_f,			CMD_NOINTERMISSION },
 
+	{ "maxforce",			Cmd_MaxForce_f,				CMD_NOINTERMISSION },
+	{ "mf",					Cmd_MaxForce_f,				CMD_NOINTERMISSION },
+
 	{ "modversion",			Cmd_ModVersion_f,			0 },
 	{ "move",				Cmd_MovementStyle_f,		CMD_NOINTERMISSION},
 
@@ -9036,6 +9602,7 @@ command_t commands[] = {
 	{ "rpopular",			Cmd_DFPopular_f,			CMD_NOINTERMISSION },
 	{ "rrank",				Cmd_DFTopRank_f,			CMD_NOINTERMISSION },
 	{ "rtop",				Cmd_DFTop10_f,				CMD_NOINTERMISSION },
+	{ "rwarp",				Cmd_RWarp_f,				CMD_NOINTERMISSION },
 	{ "rworst",				Cmd_DFTodo_f,				CMD_NOINTERMISSION },
 
 	{ "saber",				Cmd_Saber_f,				CMD_NOINTERMISSION },

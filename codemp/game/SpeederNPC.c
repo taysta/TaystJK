@@ -74,6 +74,632 @@ qboolean Update( Vehicle_t *pVeh, const usercmd_t *pUcmd )
 }
 #endif //_GAME
 
+qboolean BG_PodRacerPhysics( Vehicle_t *pVeh )
+{
+	return ( pVeh && pVeh->m_pVehicleInfo
+		&& pVeh->m_pVehicleInfo->type == VH_SPEEDER
+		&& pVeh->m_pVehicleInfo->podracerPhysics ) ? qtrue : qfalse;
+}
+
+//SWE1R exponential decay multiplier. Frame-rate independent: decelInterval is roughly
+//"how many frames to noticeably decay" - smaller = faster decay. Ported verbatim from
+//swe1r-decomp GetDecelerationFactor (480650). frameTime is in seconds.
+static QINLINE float PodRacer_DecelFactor( float decelInterval, float frameTime )
+{
+	const float k = 33.333336f;
+	return 1.0f - (frameTime * k) / (frameTime * k + decelInterval);
+}
+
+static QINLINE float PodRacer_ClampFloat( float value, float minValue, float maxValue )
+{
+	if ( value < minValue ) return minValue;
+	if ( value > maxValue ) return maxValue;
+	return value;
+}
+
+static QINLINE float PodRacer_EaseTo( float value, float target, float rate, float dt )
+{
+	float step = rate * dt;
+
+	if ( value < target )
+	{
+		value += step;
+		return ( value > target ) ? target : value;
+	}
+	if ( value > target )
+	{
+		value -= step;
+		return ( value < target ) ? target : value;
+	}
+	return value;
+}
+
+#ifdef _GAME
+// SURF_POD_LAVA is deliberately surface-based rather than CONTENTS_LAVA: maps
+// can make a damaging pod track without making the pod swim in a lava volume.
+static void PodRacer_ApplyLavaDamage( Vehicle_t *pVeh, qboolean onLava, int curTime )
+{
+	gentity_t *parent;
+	int elapsed, damage;
+
+	if ( !onLava )
+	{
+		pVeh->m_iPodLavaDamageTime = 0;
+		return;
+	}
+	if ( pVeh->m_iPodLavaDamageTime <= 0 || pVeh->m_iPodLavaDamageTime > curTime )
+	{
+		pVeh->m_iPodLavaDamageTime = curTime;
+		return;
+	}
+
+	// One damage per 50ms is exactly 20 damage per second. Limit catch-up after
+	// a server hitch, rather than delivering a large delayed burst.
+	elapsed = curTime - pVeh->m_iPodLavaDamageTime;
+	damage = elapsed / 50;
+	if ( damage <= 0 )
+	{
+		return;
+	}
+	if ( damage > 20 )
+	{
+		damage = 20;
+		pVeh->m_iPodLavaDamageTime = curTime;
+	}
+	else
+	{
+		pVeh->m_iPodLavaDamageTime += damage * 50;
+	}
+
+	parent = (gentity_t *)pVeh->m_pParentEntity;
+	if ( parent && parent->inuse && parent->takedamage )
+	{
+		G_Damage( parent, NULL, NULL, NULL, parent->r.currentOrigin, damage,
+			DAMAGE_NO_KNOCKBACK, MOD_LAVA );
+	}
+}
+#endif
+
+static QINLINE float PodRacer_WrongRollLoad( Vehicle_t *pVeh, float turnRate )
+{
+	float rollCap, rollLoad, manual, manualLoad;
+
+	if ( !pVeh || turnRate == 0.0f )
+	{
+		return 0.0f;
+	}
+
+	rollCap = ( POD_ROLL_LIMIT > 0.0f ) ? POD_ROLL_LIMIT : pVeh->m_pVehicleInfo->rollLimit;
+	if ( rollCap < 1.0f )
+	{
+		rollCap = 1.0f;
+	}
+
+	rollLoad = 0.0f;
+	if ( ( pVeh->m_vOrientation[ROLL] * turnRate ) > 0.0f )
+	{
+		rollLoad = fabs( pVeh->m_vOrientation[ROLL] ) / rollCap;
+	}
+
+	manual = BG_PodRacerManualRoll( pVeh );
+	manualLoad = 0.0f;
+	if ( ( manual * turnRate ) > 0.0f )
+	{
+		manualLoad = fabs( manual );
+	}
+
+	if ( manualLoad > rollLoad )
+	{
+		rollLoad = manualLoad;
+	}
+
+	if ( rollLoad <= POD_WRONG_ROLL_START )
+	{
+		return 0.0f;
+	}
+
+	rollLoad = ( rollLoad - POD_WRONG_ROLL_START ) / ( 1.0f - POD_WRONG_ROLL_START );
+	return PodRacer_ClampFloat( rollLoad, 0.0f, 1.0f );
+}
+
+static QINLINE float PodRacer_RightRollLoad( Vehicle_t *pVeh, float turnRate )
+{
+	float rollCap, rollLoad;
+
+	if ( !pVeh || turnRate == 0.0f )
+	{
+		return 0.0f;
+	}
+
+	rollCap = ( POD_ROLL_LIMIT > 0.0f ) ? POD_ROLL_LIMIT : pVeh->m_pVehicleInfo->rollLimit;
+	if ( rollCap < 1.0f )
+	{
+		rollCap = 1.0f;
+	}
+
+	rollLoad = 0.0f;
+	if ( ( pVeh->m_vOrientation[ROLL] * turnRate ) < 0.0f )
+	{
+		rollLoad = fabs( pVeh->m_vOrientation[ROLL] ) / rollCap;
+	}
+
+	if ( rollLoad <= POD_WRONG_ROLL_START )
+	{
+		return 0.0f;
+	}
+
+	rollLoad = ( rollLoad - POD_WRONG_ROLL_START ) / ( 1.0f - POD_WRONG_ROLL_START );
+	return PodRacer_ClampFloat( rollLoad, 0.0f, 1.0f );
+}
+
+static QINLINE float PodRacer_AccelFromSpeed( float speed, float maxSpeed, float statAccel )
+{
+	if ( maxSpeed < 1.0f )
+	{
+		return 0.0f;
+	}
+	if ( statAccel < 0.1f )
+	{
+		statAccel = 0.1f;
+	}
+
+	if ( speed >= 0.0f )
+	{
+		if ( speed > maxSpeed - 1.0f )
+		{
+			speed = maxSpeed - 1.0f;
+		}
+		return ( speed * statAccel ) / ( maxSpeed - speed );
+	}
+
+	if ( speed < -maxSpeed + 1.0f )
+	{
+		speed = -maxSpeed + 1.0f;
+	}
+	return ( speed * statAccel ) / ( maxSpeed + speed );
+}
+
+static QINLINE float PodRacer_SpeedFromAccel( float accelThrust, float maxSpeed, float statAccel )
+{
+	if ( maxSpeed < 1.0f )
+	{
+		return 0.0f;
+	}
+	if ( statAccel < 0.1f )
+	{
+		statAccel = 0.1f;
+	}
+
+	if ( accelThrust <= 0.0f )
+	{
+		return ( accelThrust * maxSpeed ) / ( statAccel - accelThrust );
+	}
+
+	return ( accelThrust * maxSpeed ) / ( statAccel + accelThrust );
+}
+
+// Podracer tuning constants (POD_ACCEL_SATURATE / POD_RAMP_SCALE / POD_MAP_SCALE) now
+// live in bg_vehicles.h so the collision-damage path (DoImpact) can share POD_MAP_SCALE.
+
+/*
+===================
+Pod input flood gates
+
+lastActive is the last command time the input was actually engaged: a gap of at most
+continueMs means "still held" (frame-gap tolerance), anything between that and cooldownMs
+is a re-press inside the cooldown and is ignored.  Everything keys off m_ucmd.serverTime -
+never level.time - so a predicting client evaluates the exact computation the server does
+for the same command, and the cgame pod prediction cache rewinds the m_iPod*ActiveTime
+timestamps with the rest of the hidden pod state.
+===================
+*/
+static QINLINE qboolean PodRacer_FloodGate( int lastActive, int curTime, int continueMs, int cooldownMs )
+{
+	int sinceActive = curTime - lastActive;
+	return ( sinceActive > continueMs && sinceActive < cooldownMs ) ? qfalse : qtrue;
+}
+
+qboolean BG_PodRacerDrifting( Vehicle_t *pVeh, float speed )
+{
+	if ( pVeh->m_ucmd.upmove <= 0 || fabs( speed ) < BG_PodRacerDriftMinSpeedForVehicle( pVeh, pVeh->m_pParentEntity->playerState->iModelScale ) )
+	{
+		return qfalse;
+	}
+	return PodRacer_FloodGate( pVeh->m_iPodDriftActiveTime, pVeh->m_ucmd.serverTime,
+		POD_DRIFT_CONTINUE_MS, POD_DRIFT_COOLDOWN_MS );
+}
+
+qboolean BG_PodRacerBraking( Vehicle_t *pVeh )
+{
+	if ( pVeh->m_ucmd.forwardmove >= 0 && !(pVeh->m_ucmd.buttons & BUTTON_WALKING) )
+	{
+		return qfalse;
+	}
+	return PodRacer_FloodGate( pVeh->m_iPodBrakeActiveTime, pVeh->m_ucmd.serverTime,
+		POD_BRAKE_CONTINUE_MS, POD_BRAKE_COOLDOWN_MS );
+}
+
+float BG_PodRacerManualRoll( Vehicle_t *pVeh )
+{
+	int dir;
+	int sinceActive;
+	qboolean allowed;
+
+	if ( pVeh->m_ucmd.rightmove > -POD_ROLL_INPUT_DEADZONE &&
+		pVeh->m_ucmd.rightmove < POD_ROLL_INPUT_DEADZONE )
+	{
+		return 0.0f;
+	}
+
+	dir = ( pVeh->m_ucmd.rightmove > 0 ) ? 1 : -1;
+	sinceActive = pVeh->m_ucmd.serverTime - pVeh->m_iPodRollActiveTime;
+	if ( sinceActive <= POD_ROLL_CONTINUE_MS )
+	{	// input has been continuously engaged: only the SAME direction is a continuation.
+		// An A<->D flip lands here with a tiny gap and must sit out the cooldown, which is
+		// what actually stops spam-rolling back and forth.
+		allowed = ( dir == pVeh->m_iPodRollDir ) ? qtrue : qfalse;
+	}
+	else
+	{	// released: any direction may re-engage once the cooldown has passed
+		allowed = ( sinceActive >= POD_ROLL_COOLDOWN_MS ) ? qtrue : qfalse;
+	}
+	if ( !allowed )
+	{
+		return 0.0f;
+	}
+	return PodRacer_ClampFloat( pVeh->m_ucmd.rightmove / 127.0f, -1.0f, 1.0f );
+}
+
+//MP RULE - ALL PROCESSMOVECOMMANDS FUNCTIONS MUST BE BG-COMPATIBLE!!!
+//If you really need to violate this rule for SP, then use ifdefs.
+//By BG-compatible, I mean no use of game-specific data - ONLY use
+//stuff available in the MP bgEntity (in SP, the bgEntity is #defined
+//as a gentity, but the MP-compatible access restrictions are based
+//on the bgEntity structure in the MP codebase) -rww
+//
+//SWE1R-style movement model for swoop/speeder-type vehicles, gated behind the
+//.veh podracerPhysics flag. Keeps JA's hover + collision (that lives in PM_FlyVehicleMove)
+//untouched; only replaces the scalar speed/turbo math and does a traction blend of
+//the horizontal velocity toward the vehicle's forward vector. Ported from
+//swe1r-decomp ApplyBoost (4787F0), ApplyAcceleration (4783E0), CalculateTraction
+//(478A70) - see D:\Code\Episode 1\swe1r-decomp-master. -TaystJK
+static void PodRacer_ProcessMoveCommands( Vehicle_t *pVeh )
+{
+	playerState_t	*parentPS = pVeh->m_pParentEntity->playerState;
+	vehicleInfo_t	*vInfo = pVeh->m_pVehicleInfo;
+	// FrameTime in seconds. Same 60fps-normalised convention the rest of the
+	// bg vehicle code uses (m_fTimeModifier == 1.0 at 60fps).
+	const float		dt = pVeh->m_fTimeModifier / 60.0f;
+	int				curTime = 0;
+	qboolean		boosting, braking, drifting, surfaceSpeedActive, cancelBoost, onLava;
+	float			pitch;			// throttle input, -1..1
+	float			topSpeed, topBoost, speed, accelThrust;
+	float			statMaxSpeed, statAccel, speedFactor;
+	float			brakeInterval, coastInterval, maxTurnRate;
+	float			targetSpeedMultiplier, targetSkidModifier, targetFastBonus, surfaceScale;
+	float			oldSpeedMultiplier, oldFastBonus;
+	uint32_t		podSurfaceFlags;
+
+#ifdef _GAME
+	curTime = level.time;
+#elif _CGAME
+	curTime = pm->cmd.serverTime;
+#endif
+
+	if ( !parentPS || dt <= 0.0f )
+	{
+		return;
+	}
+
+	// Pod vehicles use their authored .veh gravity (default: 800), not a shared override.
+	parentPS->gravity = vInfo->gravity;
+
+	// ============================================================================
+	// SWE1R SPEED CURVE, WITH JK PREDICTION CONSTRAINTS.
+	// Racer stores accelThrust as engine state, then maps it to speed:
+	//   speed = accelThrust * maxSpeed / ( statAcceleration + accelThrust )
+	// We derive accelThrust from the networked ps->speed each frame, advance it, then
+	// map back to ps->speed. That preserves the Racer asymptote without making hidden
+	// Vehicle_t speed state authoritative under client prediction. -TaystJK
+	// ============================================================================
+
+	// All speeds in final (map-scaled) JKA units.
+	topSpeed = BG_PodRacerTopSpeedForVehicle( pVeh, parentPS->iModelScale );
+	topBoost = BG_PodRacerBoostSpeedForVehicle( pVeh, parentPS->iModelScale );
+	brakeInterval = BG_PodRacerBrakeInterval( vInfo );
+	coastInterval = BG_PodRacerCoastInterval( vInfo );
+	maxTurnRate = BG_PodRacerMaxTurnRate( vInfo );
+	// Surface-effect constants below are authored in JKA units for the stock 1x
+	// map; scale them into this map's speed space and by instance scale.
+	surfaceScale = POD_MAP_SCALE
+		* BG_PodRacerInstanceScale( pVeh, parentPS->iModelScale );
+
+	podSurfaceFlags = pVeh->m_ulPodSurfaceFlags & SURF_POD_MASK;
+	surfaceSpeedActive = ( podSurfaceFlags & ( SURF_POD_FAST | SURF_POD_SLOW | SURF_POD_SWST ) ) ? qtrue : qfalse;
+	cancelBoost = qfalse;
+	onLava = ( podSurfaceFlags & SURF_POD_LAVA ) ? qtrue : qfalse;
+	targetSpeedMultiplier = 1.0f;
+	targetSkidModifier = 1.0f;
+	targetFastBonus = 0.0f;
+
+	// These members begin zeroed on a new vehicle. Their valid ranges do not,
+	// so establish the neutral values before using a predicted vehicle.
+	if ( pVeh->m_fPodSurfaceSpeedMultiplier <= 0.0f )
+	{
+		pVeh->m_fPodSurfaceSpeedMultiplier = 1.0f;
+	}
+	if ( pVeh->m_fPodSurfaceSkidModifier <= 0.0f )
+	{
+		pVeh->m_fPodSurfaceSkidModifier = 1.0f;
+	}
+	oldSpeedMultiplier = pVeh->m_fPodSurfaceSpeedMultiplier;
+	oldFastBonus = pVeh->m_fPodSurfaceFastBonus;
+
+	if ( podSurfaceFlags & SURF_POD_FAST )
+	{
+		targetFastBonus = 2500.0f * surfaceScale;
+	}
+	if ( podSurfaceFlags & SURF_POD_SLOW )
+	{
+		targetSpeedMultiplier = 0.75f;
+		cancelBoost = qtrue;
+	}
+	if ( podSurfaceFlags & SURF_POD_SWST )
+	{
+		targetSpeedMultiplier = 0.10f;
+		cancelBoost = qtrue;
+	}
+	if ( podSurfaceFlags & SURF_POD_SLIP ) targetSkidModifier = 0.20f;
+	// SURF_POD_SOFT remains a separate contact hook for sand/dust FX or a
+	// later custom drag rule; the SWE1R decomp does not establish a multiplier.
+
+	pVeh->m_fPodSurfaceFastBonus = PodRacer_EaseTo( pVeh->m_fPodSurfaceFastBonus,
+		targetFastBonus, 312.5f * surfaceScale, dt );
+	pVeh->m_fPodSurfaceSpeedMultiplier = PodRacer_EaseTo( pVeh->m_fPodSurfaceSpeedMultiplier,
+		targetSpeedMultiplier, 0.5f, dt );
+	pVeh->m_fPodSurfaceSkidModifier = PodRacer_EaseTo( pVeh->m_fPodSurfaceSkidModifier,
+		targetSkidModifier, 0.5f, dt );
+
+	// ps->speed carries last frame's displayed contact effect. Remove it before
+	// advancing the underlying engine curve, then apply this frame's smoothed
+	// effect below. This prevents SURF_POD_FAST from adding 200 every frame.
+	speed = parentPS->speed;
+	if ( pVeh->m_bPodSurfaceSpeedApplied )
+	{
+		speed -= oldFastBonus;
+		speed /= oldSpeedMultiplier;
+	}
+	// flood-gate timestamps are only advanced here; all other checks this frame just read
+	drifting = BG_PodRacerDrifting( pVeh, speed );
+	if ( drifting )
+	{
+		pVeh->m_iPodDriftActiveTime = pVeh->m_ucmd.serverTime;
+	}
+	{
+		float manualRoll = BG_PodRacerManualRoll( pVeh );
+		if ( manualRoll != 0.0f )
+		{
+			pVeh->m_iPodRollActiveTime = pVeh->m_ucmd.serverTime;
+			pVeh->m_iPodRollDir = ( manualRoll > 0.0f ) ? 1 : -1;
+		}
+	}
+
+	// --- boost / brake state (reuse JA's turbo trigger + recharge gate) ---
+	// BRAKE: ep1 podracer brakes on a dedicated input (S / reverse) OR the +speed "walk" button
+	// so you can brake WHILE holding W. ep1 braking decays speed hard (StatAirBrakeInv) and
+	// cancels any active boost.
+	braking = BG_PodRacerBraking( pVeh );
+	if ( braking )
+	{
+		pVeh->m_iPodBrakeActiveTime = pVeh->m_ucmd.serverTime;
+	}
+	if ( !braking && !drifting && pVeh->m_pPilot && (pVeh->m_ucmd.buttons & BUTTON_ALT_ATTACK) && vInfo->turboSpeed )
+	{
+		if ( (parentPS && parentPS->electrifyTime > curTime) ||
+			(pVeh->m_pPilot->playerState &&
+			 (pVeh->m_pPilot->playerState->weapon == WP_MELEE ||
+			 (pVeh->m_pPilot->playerState->weapon == WP_SABER && BG_SabersOff( pVeh->m_pPilot->playerState )))) )
+		{
+			if ( (curTime - pVeh->m_iTurboTime) > vInfo->turboRecharge )
+			{
+				pVeh->m_iTurboTime = curTime + vInfo->turboDuration;
+			}
+		}
+	}
+	// m_iTurboTime is an int timestamp - already networked-equivalent (derived from
+	// curTime), safe under replay. boosting is just a window test. Braking cancels boost (ep1).
+	boosting = ( !braking && !drifting && curTime < pVeh->m_iTurboTime ) ? qtrue : qfalse;
+	if ( cancelBoost )
+	{
+		// The slow/bog surfaces cancel a running turbo and begin its normal
+		// recharge window. This is evaluated identically by server and cgame.
+		pVeh->m_iTurboTime = curTime;
+		boosting = qfalse;
+	}
+
+	if ( parentPS )
+	{
+		if ( boosting )
+			parentPS->eFlags |= EF_JETPACK_ACTIVE;
+		else
+			parentPS->eFlags &= ~EF_JETPACK_ACTIVE;
+	}
+
+	// throttle: -1..1
+	pitch = pVeh->m_ucmd.forwardmove / 127.0f;
+	if ( pitch >  1.0f ) pitch =  1.0f;
+	if ( pitch < -1.0f ) pitch = -1.0f;
+
+	statMaxSpeed = boosting ? topBoost : topSpeed;
+	statAccel = BG_PodRacerAccelerationStat( vInfo );
+	speedFactor = boosting ? 4.0f : 1.5f;
+
+	if ( !boosting && speed > statMaxSpeed )
+	{
+		// Coming down from boost/impulse above the normal asymptote: do not snap to top speed.
+		speed *= PodRacer_DecelFactor( braking ? brakeInterval : coastInterval, dt );
+		if ( speed < statMaxSpeed )
+		{
+			speed = statMaxSpeed;
+		}
+		accelThrust = PodRacer_AccelFromSpeed( speed, statMaxSpeed, statAccel );
+	}
+	else
+	{
+		accelThrust = PodRacer_AccelFromSpeed( speed, statMaxSpeed, statAccel );
+
+		if ( braking )
+		{
+			// S is a brake while still rolling forward, then reverse once the pod has
+			// stopped. Crucially, while already moving backwards S is pure reverse
+			// thrust -- the brake decay no longer runs against it -- building toward
+			// the .veh speedMin floor (scaled like topSpeed). So HOLDING S accelerates
+			// in reverse up to the authored reverse speed instead of decaying to a
+			// crawl. speedMin >= 0 still means "no reverse".
+			if ( pitch < -0.1f && speed <= 1.0f )
+			{
+				float revCap = PodRacer_AccelFromSpeed(
+					BG_PodRacerMinSpeedForVehicle( pVeh, parentPS->iModelScale ),
+					statMaxSpeed, statAccel ) * -pitch;
+				accelThrust += dt * speedFactor * pitch;
+				if ( accelThrust < revCap )
+				{
+					accelThrust = revCap;
+				}
+			}
+			else
+			{
+				accelThrust *= PodRacer_DecelFactor( brakeInterval, dt );
+			}
+		}
+		else if ( drifting )
+		{
+			// Drift is a rotation/slip tool, not a hidden speed charge. Keep the scalar speed
+			// model from climbing while held; PM_PodRacerTraction can still bleed it down.
+			accelThrust *= PodRacer_DecelFactor( coastInterval, dt );
+		}
+		else if ( pitch > 0.1f )
+		{
+			float ceiling;
+			float turnAccelScale = 1.0f;
+			float turnLoad = 0.0f;
+			float wrongRollLoad = PodRacer_WrongRollLoad( pVeh, pVeh->m_fPodTargetTurnRate );
+
+			if ( maxTurnRate > 0.0f )
+			{
+				float turnRateRef = maxTurnRate * ( 1.0f - pitch * POD_THROTTLE_TURN_DAMP );
+				float targetLoad;
+				float currentLoad;
+				if ( turnRateRef < 1.0f )
+				{
+					turnRateRef = 1.0f;
+				}
+				targetLoad = fabs( pVeh->m_fPodTargetTurnRate ) / turnRateRef;
+				currentLoad = fabs( pVeh->m_fPodTurnRate ) / turnRateRef;
+				turnLoad = ( targetLoad > currentLoad ) ? targetLoad : currentLoad;
+				turnLoad = PodRacer_ClampFloat( turnLoad, 0.0f, 1.0f );
+			}
+			if ( wrongRollLoad > 0.0f )
+			{
+				turnLoad += wrongRollLoad * POD_WRONG_ROLL_TURNLOAD_BONUS;
+				turnLoad = PodRacer_ClampFloat( turnLoad, 0.0f, 1.0f );
+			}
+
+			if ( turnLoad > POD_TURN_ACCEL_DAMP_START )
+			{
+				float excess = ( turnLoad - POD_TURN_ACCEL_DAMP_START ) / ( 1.0f - POD_TURN_ACCEL_DAMP_START );
+				excess = PodRacer_ClampFloat( excess, 0.0f, 1.0f );
+				turnAccelScale = 1.0f - ( 1.0f - POD_TURN_ACCEL_MIN_SCALE ) * excess;
+				if ( turnAccelScale < POD_TURN_ACCEL_MIN_SCALE )
+				{
+					turnAccelScale = POD_TURN_ACCEL_MIN_SCALE;
+				}
+			}
+
+			accelThrust += dt * speedFactor * pitch * turnAccelScale;
+			if ( turnLoad > POD_TURN_BLEED_START )
+			{
+				float excess = ( turnLoad - POD_TURN_BLEED_START ) / ( 1.0f - POD_TURN_BLEED_START );
+				excess = PodRacer_ClampFloat( excess, 0.0f, 1.0f );
+				accelThrust *= PodRacer_DecelFactor( POD_TURN_BLEED_INTERVAL, dt * excess );
+			}
+			ceiling = ( pitch < 0.99f ) ? ( pitch / ( 1.0f - pitch ) ) : 10000.0f;
+			if ( accelThrust > ceiling )
+			{
+				accelThrust *= PodRacer_DecelFactor( coastInterval, dt );
+			}
+		}
+		else if ( pitch < -0.1f )
+		{
+			accelThrust += dt * speedFactor * pitch;
+			if ( accelThrust < pitch * 0.5f )
+			{
+				accelThrust *= PodRacer_DecelFactor( 20.0f, dt );
+			}
+		}
+		else
+		{
+			accelThrust *= PodRacer_DecelFactor( coastInterval, dt );
+		}
+
+		speed = PodRacer_SpeedFromAccel( accelThrust, statMaxSpeed, statAccel );
+	}
+
+	// Any steering near the active speed ceiling bleeds speed. Squaring turn load makes
+	// small corrections inexpensive but ramps the cost exponentially with steering strength.
+	// Because this is paid per unit time, completing a 90-degree turn quickly still preserves
+	// more speed than holding a weaker turn through a long arc.
+	if ( speed > 0.0f && statMaxSpeed > 1.0f )
+	{
+		float speedFrac = speed / statMaxSpeed;
+		float turnLoad = 0.0f;
+
+		if ( maxTurnRate > 0.0f )
+		{
+			float targetLoad = fabs( pVeh->m_fPodTargetTurnRate ) / maxTurnRate;
+			float currentLoad = fabs( pVeh->m_fPodTurnRate ) / maxTurnRate;
+			turnLoad = ( targetLoad > currentLoad ) ? targetLoad : currentLoad;
+			turnLoad = PodRacer_ClampFloat( turnLoad, 0.0f, 1.0f );
+		}
+
+		if ( turnLoad > 0.0f && speedFrac > POD_HIGH_SPEED_TURN_BLEED_START )
+		{
+			float speedLoad = ( speedFrac - POD_HIGH_SPEED_TURN_BLEED_START ) /
+				( 1.0f - POD_HIGH_SPEED_TURN_BLEED_START );
+			float bleedLoad;
+
+			speedLoad = PodRacer_ClampFloat( speedLoad, 0.0f, 1.0f );
+			bleedLoad = turnLoad * turnLoad * speedLoad;
+			speed *= PodRacer_DecelFactor( POD_HIGH_SPEED_TURN_BLEED_INTERVAL, dt * bleedLoad );
+			accelThrust = PodRacer_AccelFromSpeed( speed, statMaxSpeed, statAccel );
+		}
+	}
+
+	// clamp only to the boost ceiling / reverse floor. Normal top speed is an asymptote.
+	if ( speed > topBoost ) speed = topBoost;
+	if ( speed < BG_PodRacerMinSpeedForVehicle( pVeh, parentPS->iModelScale ) ) speed = BG_PodRacerMinSpeedForVehicle( pVeh, parentPS->iModelScale );
+
+	if ( parentPS && parentPS->electrifyTime > curTime )
+	{	// keep JA's electrified stagger
+		speed *= (pVeh->m_fTimeModifier / 60.0f);
+	}
+
+	if ( surfaceSpeedActive )
+	{
+		speed *= pVeh->m_fPodSurfaceSpeedMultiplier;
+		speed += pVeh->m_fPodSurfaceFastBonus;
+	}
+	pVeh->m_bPodSurfaceSpeedApplied = surfaceSpeedActive;
+
+#ifdef _GAME
+	PodRacer_ApplyLavaDamage( pVeh, onLava, curTime );
+#endif
+
+	parentPS->speed = speed;
+	pVeh->m_fPodAccel = accelThrust;	// debug mirror only; ps->speed remains authoritative
+	pVeh->m_fPodBoost = boosting ? 1.0f : 0.0f;
+}
+
 //MP RULE - ALL PROCESSMOVECOMMANDS FUNCTIONS MUST BE BG-COMPATIBLE!!!
 //If you really need to violate this rule for SP, then use ifdefs.
 //By BG-compatible, I mean no use of game-specific data - ONLY use
@@ -83,6 +709,13 @@ qboolean Update( Vehicle_t *pVeh, const usercmd_t *pUcmd )
 // ProcessMoveCommands the Vehicle.
 static void ProcessMoveCommands( Vehicle_t *pVeh )
 {
+	// New SWE1R-style swoop physics, opt-in globally or in the .veh (speeders only).
+	if ( BG_PodRacerPhysics( pVeh ) )
+	{
+		PodRacer_ProcessMoveCommands( pVeh );
+		return;
+	}
+
 	/************************************************************************************/
 	/*	BEGIN	Here is where we move the vehicle (forward or back or whatever). BEGIN	*/
 	/************************************************************************************/
@@ -366,6 +999,173 @@ static void ProcessMoveCommands( Vehicle_t *pVeh )
 //and MP. -rww
 // ProcessOrientCommands the Vehicle.
 extern void AnimalProcessOri(Vehicle_t *pVeh);
+
+static void PodRacer_ProcessOrientCommands( Vehicle_t *pVeh, playerState_t *riderPS, playerState_t *parentPS )
+{
+	float dt = pVeh->m_fTimeModifier / 60.0f;
+	float maxTurnRate = BG_PodRacerMaxTurnRate( pVeh->m_pVehicleInfo );
+	float steer, pitch, steerMag, yawError, targetTurnRate, curTurnRate, response;
+	float yawRate;
+	float manual, targetRoll, rollCap, ease, easeRate;
+	float rightRollLoad, wrongRollLoad;
+	qboolean drifting;
+
+	if ( !riderPS || dt <= 0.0f )
+	{
+		return;
+	}
+
+	// JK input bridge: mouse/view yaw is not allowed to directly rotate the pod. Instead
+	// yaw error becomes the SWE1R steering axis, then target/current turn-rate handle the
+	// ship rotation. A/D is reserved for manual tilt below.
+	yawError = AngleSubtract( riderPS->viewangles[YAW], pVeh->m_vOrientation[YAW] );
+	steerMag = fabs( yawError );
+	if ( steerMag <= POD_MOUSE_STEER_DEADZONE )
+	{
+		steer = 0.0f;
+	}
+	else
+	{
+		steerMag = ( steerMag - POD_MOUSE_STEER_DEADZONE ) / ( POD_MOUSE_STEER_RANGE - POD_MOUSE_STEER_DEADZONE );
+		if ( steerMag > 1.0f ) steerMag = 1.0f;
+		steer = ( yawError < 0.0f ) ? -steerMag : steerMag;
+	}
+
+	pitch = pVeh->m_ucmd.forwardmove / 127.0f;
+	pitch = PodRacer_ClampFloat( pitch, -1.0f, 1.0f );
+	drifting = ( parentPS && BG_PodRacerDrifting( pVeh, parentPS->speed ) ) ? qtrue : qfalse;
+
+	// SWE1R target turn rate: signed quadratic steering, then full-throttle damping.
+	steerMag = fabs( steer );
+	if ( steerMag >= 0.05f )
+	{
+		float scaled = steerMag * POD_TURN_STEER_SCALE;
+		// SWE1R does not clamp this before throttle damping; full steering reaches
+		// 1.25x MaxTurnRate because (1.0 * 1.25)^2 * 0.8 = 1.25.
+		targetTurnRate = maxTurnRate * scaled * scaled * 0.8f;
+		if ( steer < 0.0f )
+		{
+			targetTurnRate = -targetTurnRate;
+		}
+
+		if ( pitch > 0.1f || pitch < -0.1f )
+		{
+			targetTurnRate *= ( 1.0f - pitch * POD_THROTTLE_TURN_DAMP );
+		}
+		if ( drifting )
+		{
+			targetTurnRate *= POD_DRIFT_TURN_RATE_SCALE;
+		}
+	}
+	else
+	{
+		targetTurnRate = 0.0f;
+	}
+
+	wrongRollLoad = PodRacer_WrongRollLoad( pVeh, targetTurnRate );
+	if ( wrongRollLoad > 0.0f )
+	{
+		float turnScale = 1.0f - ( 1.0f - POD_WRONG_ROLL_TURN_MIN_SCALE ) * wrongRollLoad;
+		targetTurnRate *= turnScale;
+	}
+	else
+	{
+		rightRollLoad = PodRacer_RightRollLoad( pVeh, targetTurnRate );
+		if ( rightRollLoad > 0.0f )
+		{
+			float turnScale = 1.0f + ( POD_RIGHT_ROLL_TURN_SCALE - 1.0f ) * rightRollLoad;
+			targetTurnRate *= turnScale;
+		}
+	}
+
+	pVeh->m_fPodTargetTurnRate = targetTurnRate;
+
+	curTurnRate = pVeh->m_fPodTurnRate;
+	response = BG_PodRacerTurnResponse( pVeh->m_pVehicleInfo );
+	if ( wrongRollLoad > 0.0f )
+	{
+		float responseScale = 1.0f - ( 1.0f - POD_WRONG_ROLL_RESPONSE_MIN_SCALE ) * wrongRollLoad;
+		response *= responseScale;
+	}
+	if ( drifting )
+	{
+		response *= POD_DRIFT_TURN_RESPONSE_SCALE;
+	}
+	if ( curTurnRate <= targetTurnRate )
+	{
+		if ( curTurnRate < 0.0f )
+		{
+			response *= 5.0f;
+		}
+		curTurnRate += response * dt;
+		if ( curTurnRate > targetTurnRate )
+		{
+			curTurnRate = targetTurnRate;
+		}
+	}
+	else
+	{
+		if ( curTurnRate > 0.0f )
+		{
+			response *= 5.0f;
+		}
+		curTurnRate -= response * dt;
+		if ( curTurnRate < targetTurnRate )
+		{
+			curTurnRate = targetTurnRate;
+		}
+	}
+
+	if ( targetTurnRate < 0.0f && curTurnRate > 0.0f )
+	{
+		curTurnRate = 0.0f;
+	}
+	else if ( targetTurnRate > 0.0f && curTurnRate < 0.0f )
+	{
+		curTurnRate = 0.0f;
+	}
+	if ( targetTurnRate == 0.0f && fabs( curTurnRate ) < 0.01f )
+	{
+		curTurnRate = 0.0f;
+	}
+
+	pVeh->m_fPodTurnRate = curTurnRate;
+	pVeh->m_vOrientation[YAW] = AngleNormalize180( pVeh->m_vOrientation[YAW] + curTurnRate * dt );
+
+	if ( parentPS && parentPS->electrifyTime > pm->cmd.serverTime )
+	{
+		pVeh->m_vOrientation[YAW] += (sin(pm->cmd.serverTime/1000.0f)*3.0f)*pVeh->m_fTimeModifier;
+	}
+
+	yawRate = curTurnRate;
+	targetRoll = 0.0f;
+	if ( maxTurnRate > 0.0f )
+	{
+		targetRoll = -( yawRate / maxTurnRate ) * 70.0f;
+	}
+
+	manual = BG_PodRacerManualRoll( pVeh );
+	targetRoll += manual * POD_MANUAL_ROLL;
+	targetRoll *= pVeh->m_pVehicleInfo->podBankScale;
+
+	rollCap = ( POD_ROLL_LIMIT > 0.0f ) ? POD_ROLL_LIMIT : 45.0f;
+	if ( targetRoll >  rollCap ) targetRoll =  rollCap;
+	if ( targetRoll < -rollCap ) targetRoll = -rollCap;
+
+	if ( fabs( targetRoll ) < fabs( pVeh->m_vOrientation[ROLL] )
+		&& ( targetRoll * pVeh->m_vOrientation[ROLL] ) >= 0.0f )
+	{
+		easeRate = POD_BANK_EASE_OUT;
+	}
+	else
+	{
+		easeRate = POD_BANK_EASE_IN;
+	}
+	ease = easeRate * dt;
+	ease = PodRacer_ClampFloat( ease, 0.0f, 1.0f );
+	pVeh->m_vOrientation[ROLL] += ( targetRoll - pVeh->m_vOrientation[ROLL] ) * ease;
+}
+
 void ProcessOrientCommands( Vehicle_t *pVeh )
 {
 	/********************************************************************************/
@@ -385,6 +1185,12 @@ void ProcessOrientCommands( Vehicle_t *pVeh )
 		riderPS = pVeh->m_pParentEntity->playerState;
 	}
 	parentPS = pVeh->m_pParentEntity->playerState;
+
+	if ( BG_PodRacerPhysics( pVeh ) )
+	{
+		PodRacer_ProcessOrientCommands( pVeh, riderPS, parentPS );
+		return;
+	}
 
 	//pVeh->m_vOrientation[YAW] = 0.0f;//riderPS->viewangles[YAW];
 	angDif = AngleSubtract(pVeh->m_vOrientation[YAW], riderPS->viewangles[YAW]);
@@ -421,10 +1227,85 @@ void ProcessOrientCommands( Vehicle_t *pVeh )
 #ifdef _GAME
 
 extern int PM_AnimLength( int index, animNumber_t anim );
+extern void Vehicle_SetAnim( gentity_t *ent, int setAnimParts, int anim, int setAnimFlags, int iBlend );
 
-// This function makes sure that the vehicle is properly animated.
+/*
+===================
+Pod engine-sway animations (VEHICLE model, not the rider)
+
+Stock speeders have no model animations, so this stays a no-op for them.  Pod-physics
+speeders with a rigged model (engine_l/engine_r bones) map their GLA sway loops onto
+existing anim slots; anything the model's animation.cfg doesn't define is a silent no-op,
+so an unrigged model (e.g. the placeholder swoop) is unaffected.  This is server game
+code only: legsAnim networks to every client, which plays the keyframes locally.
+
+Slot mapping (see the rigged pod's animation.cfg):
+  BOTH_VT_IDLE1      idle hover bob        BOTH_VT_TURBO     boost shudder
+  BOTH_VT_RUN_FWD_L  lean left (turn)      BOTH_VT_WALK_REV  brake flare
+  BOTH_A1_BL_TR      rest pose (engines off / no pilot)
+===================
+*/
 void AnimateVehicle( Vehicle_t *pVeh )
 {
+	gentity_t		*parent = (gentity_t *)pVeh->m_pParentEntity;
+	animNumber_t	anim;
+	int				iBlend = 300;
+	int				iFlags = SETANIM_FLAG_OVERRIDE | SETANIM_FLAG_HOLDLESS;
+	float			turnFrac;
+	float			leanEnter;
+
+	if ( !BG_PodRacerPhysics( pVeh ) || !parent || !parent->client )
+	{
+		return;
+	}
+
+	if ( parent->health <= 0 )
+	{
+		return;
+	}
+
+	if ( !pVeh->m_pPilot )
+	{	// engines off: settle into the rest pose instead of freezing mid-lean
+		if ( parent->client->ps.legsAnim != BOTH_A1_BL_TR )
+		{
+			Vehicle_SetAnim( parent, SETANIM_LEGS, BOTH_A1_BL_TR, iFlags, 400 );
+		}
+		return;
+	}
+
+	turnFrac = pVeh->m_fPodTurnRate / BG_PodRacerMaxTurnRate( pVeh->m_pVehicleInfo );
+
+	// staying in a lean uses a lower threshold than entering one, so the engines don't
+	// flap between lean and idle while holding a borderline turn
+	leanEnter = ( parent->client->ps.legsAnim == BOTH_VT_RUN_FWD_L ||
+		parent->client->ps.legsAnim == BOTH_VT_RUN_FWD_R ) ? 0.20f : 0.35f;
+
+	if ( pVeh->m_fPodBoost > 0.0f )
+	{
+		anim = BOTH_VT_TURBO;
+		iBlend = 100;
+	}
+	else if ( BG_PodRacerBraking( pVeh ) && fabs( parent->client->ps.speed ) >= 20.0f )
+	{
+		anim = BOTH_VT_WALK_REV;
+		iBlend = 200;
+	}
+	else if ( turnFrac > leanEnter )
+	{	// yaw rate positive = turning left
+		anim = BOTH_VT_RUN_FWD_L;
+		iBlend = 250;
+	}
+	else if ( turnFrac < -leanEnter )
+	{
+		anim = BOTH_VT_RUN_FWD_R;
+		iBlend = 250;
+	}
+	else
+	{
+		anim = BOTH_VT_IDLE1;
+	}
+
+	Vehicle_SetAnim( parent, SETANIM_LEGS, anim, iFlags, iBlend );
 }
 
 #endif //_GAME

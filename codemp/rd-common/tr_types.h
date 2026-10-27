@@ -75,6 +75,8 @@ along with this program; if not, see <http://www.gnu.org/licenses/>.
 
 #define RF_FORCEPOST		0x200000 //force it to post-render -rww
 
+#define RF_NOELEVATIONHELPER	0x20000000 //exclude from the r_elevationHelper tint (e.g. your own player model)
+
 // SP renderfx flags, only use in SP!
 #define	RF_CAP_FRAMES		0x400000	// cap the model frames by the maxframes for one shot anims
 #define RF_ALPHA_FADE		0x800000	// hacks blend mode and uses whatever the set alpha is.

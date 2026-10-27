@@ -1995,7 +1995,8 @@ void RB_EndSurface( void ) {
 	//
 	// draw debugging stuff
 	//
-	if ( r_showtris->integer ) {
+	// r_showtris 2 shows tris for world geometry but skips 2D (console/chat/HUD text)
+	if ( r_showtris->integer && !(r_showtris->integer == 2 && backEnd.projection2D) ) {
 		DrawTris (input);
 	}
 	if ( r_shownormals->integer ) {

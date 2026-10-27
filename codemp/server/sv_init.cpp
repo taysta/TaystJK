@@ -23,6 +23,7 @@ along with this program; if not, see <http://www.gnu.org/licenses/>.
 */
 
 #include "server.h"
+#include "server/sv_dynbsp.h"
 #include "ghoul2/G2.h"
 #include "qcommon/cm_public.h"
 #include "qcommon/MiniHeap.h"
@@ -129,6 +130,7 @@ void SV_SetConfigstring (int index, const char *val) {
 	// change the string in sv
 	Z_Free( sv.configstrings[index] );
 	sv.configstrings[index] = CopyString( val );
+	SV_DynBSPConfigstringChanged( index );
 
 	// send it to all the clients if we aren't
 	// spawning a new server
@@ -143,6 +145,9 @@ void SV_SetConfigstring (int index, const char *val) {
 			}
 			// do not always send server info to all clients
 			if ( index == CS_SERVERINFO && client->gentity && (client->gentity->r.svFlags & SVF_NOSERVERINFO) ) {
+				continue;
+			}
+			if ( !SV_DynBSPShouldSendConfigstring( client, index ) ) {
 				continue;
 			}
 
@@ -461,6 +466,7 @@ void SV_SpawnServer( char *server, qboolean killBots, ForceReload_e eForceReload
 	SV_StopAutoRecordDemos();
 #endif
 
+	SV_DynBSPClearAllClientMaps();
 	SV_SendMapChange();
 
 	re->RegisterMedia_LevelLoadBegin(server, eForceReload);
@@ -578,6 +584,9 @@ Ghoul2 Insert End
 
 	// wipe the entire per-level structure
 	SV_ClearServer();
+	for ( i = 0; i < MAX_GENTITIES; i++ ) {
+		sv.svEntities[i].runtimeBSPInstance = -1;
+	}
 	for ( i = 0 ; i < MAX_CONFIGSTRINGS ; i++ ) {
 		sv.configstrings[i] = CopyString("");
 	}
@@ -1061,6 +1070,7 @@ void SV_Init (void) {
 #endif
 
 	sv_snapShotDuelCull = Cvar_Get("sv_snapShotDuelCull", "1", CVAR_NONE, "Snapshot-based duel isolation");
+	sv_engineDimensions = Cvar_Get("sv_engineDimensions", "0", CVAR_ARCHIVE_ND | CVAR_LATCH, "Engine-owned dimension isolation for runtime maps/duels/race; enables /rwarp map isolation. 0 keeps legacy DuelCull/game-side isolation (applies on map change)");
 
 	sv_pingFix = Cvar_Get("sv_pingFix", "1", CVAR_ARCHIVE_ND, "Improved scoreboard client ping calculation");
 	sv_hibernateTime = Cvar_Get("sv_hibernateTime", "0", CVAR_ARCHIVE_ND, "Time after which server will enter hibernation mode");

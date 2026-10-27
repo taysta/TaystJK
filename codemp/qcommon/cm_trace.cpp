@@ -533,7 +533,7 @@ bool CM_PlaneCollision(traceWork_t *tw, cbrushside_t *side)
 CM_TraceThroughBrush
 ================
 */
-void CM_TraceThroughBrush( traceWork_t *tw, trace_t &trace, cbrush_t *brush, bool infoOnly )
+void CM_TraceThroughBrush( traceWork_t *tw, trace_t &trace, clipMap_t *local, cbrush_t *brush, bool infoOnly )
 {
 	int				i;
 	cbrushside_t	*side;
@@ -611,7 +611,7 @@ void CM_TraceThroughBrush( traceWork_t *tw, trace_t &trace, cbrush_t *brush, boo
 			{
 				trace.fraction = tw->enterFrac;
 				trace.plane = *tw->clipplane;
-				trace.surfaceFlags = cmg.shaders[tw->leadside->shaderNum].surfaceFlags;
+				trace.surfaceFlags = local->shaders[tw->leadside->shaderNum].surfaceFlags;
 				trace.contents = brush->contents;
 			}
 		}
@@ -668,7 +668,7 @@ void CM_TraceThroughLeaf( traceWork_t *tw, trace_t &trace, clipMap_t *local, cLe
 			continue;
 		}
 
-		CM_TraceThroughBrush( tw, trace, b, false );
+		CM_TraceThroughBrush( tw, trace, local, b, false );
 
 		if ( !trace.fraction ) {
 			return;
@@ -1027,7 +1027,7 @@ void CM_TraceToLeaf( traceWork_t *tw, trace_t &trace, cLeaf_t *leaf, clipMap_t *
 			continue;
 		}
 
-		CM_TraceThroughBrush( tw, trace, b, false);
+		CM_TraceThroughBrush( tw, trace, local, b, false);
 		if ( !trace.fraction )
 		{
 			return;

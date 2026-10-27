@@ -132,6 +132,10 @@ extern cvar_t	*r_facePlaneCull;
 extern cvar_t	*r_showcluster;
 extern cvar_t	*r_nocurves;
 
+extern cvar_t	*r_elevationHelper;
+extern cvar_t	*r_elevationHelperZ;
+extern cvar_t	*r_elevationHelperApexZ;
+
 extern cvar_t	*r_volumetricFog;
 extern cvar_t	*r_volumetricFogDefaultScale;
 extern cvar_t	*r_volumetricFogSamples;
@@ -1516,6 +1520,8 @@ typedef enum
 	UNIFORM_CHUNK_PARTICLES,
 
 	UNIFORM_BLOOMSTRENGTH,
+
+	UNIFORM_ELEVATIONHELPER,
 
 	UNIFORM_COUNT
 } uniform_t;
@@ -3092,6 +3098,7 @@ void    	R_Init( void );
 void		R_UpdateSubImage( image_t *image, byte *pic, int x, int y, int width, int height );
 
 void		R_SetColorMappings( void );
+qboolean	R_UseTonemapGamma( void );
 void		R_GammaCorrect( byte *buffer, int bufSize );
 void		R_Set2DRatio(void);
 

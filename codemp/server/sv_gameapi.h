@@ -28,6 +28,7 @@ qboolean	GVM_ClientUserinfoChanged			( int clientNum );
 void		GVM_ClientDisconnect				( int clientNum );
 void		GVM_ClientCommand					( int clientNum );
 void		GVM_ClientThink						( int clientNum, usercmd_t *ucmd );
+void		GVM_ClientRuntimeMapChanged			( int clientNum, const char *mapName );
 void		GVM_RunFrame						( int levelTime );
 qboolean	GVM_ConsoleCommand					( void );
 int			GVM_BotAIStartFrame					( int time );

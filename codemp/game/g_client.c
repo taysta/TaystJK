@@ -25,6 +25,7 @@ along with this program; if not, see <http://www.gnu.org/licenses/>.
 #include "g_local.h"
 #include "ghoul2/G2.h"
 #include "bg_saga.h"
+#include "g_dynbsp.h"
 
 // g_client.c -- client functions that don't happen every frame
 
@@ -32,6 +33,8 @@ static vec3_t	playerMins = {-15, -15, DEFAULT_MINS_2};
 static vec3_t	playerMaxs = {15, 15, DEFAULT_MAXS_2};
 
 extern int g_siegeRespawnCheck;
+
+struct sqlite3;
 
 void WP_SaberAddG2Model( gentity_t *saberent, const char *saberModel, qhandle_t saberSkin );
 void WP_SaberRemoveG2Model( gentity_t *saberent );
@@ -634,6 +637,105 @@ Find the spot that we DON'T want to use
 ================
 */
 #define	MAX_SPAWN_POINTS	128
+static qboolean G_SpawnPointIsRuntimeBSP( gentity_t *spot ) {
+	return spot && spot->runtimeBSPInstance >= 0 ? qtrue : qfalse;
+}
+
+static qboolean G_RuntimeSpawnClassAllowed( const char *classname ) {
+	return !Q_stricmp( classname, "info_player_deathmatch" )
+		|| !Q_stricmp( classname, "info_player_start" )
+		|| !Q_stricmp( classname, "info_player_duel" )
+		|| !Q_stricmp( classname, "info_player_duel1" )
+		|| !Q_stricmp( classname, "info_player_duel2" )
+		|| !Q_stricmp( classname, "team_CTF_redplayer" )
+		|| !Q_stricmp( classname, "team_CTF_blueplayer" ) ? qtrue : qfalse;
+}
+
+static int G_RuntimeSpawnRank( gentity_t *spot ) {
+	if ( !spot || !spot->classname ) {
+		return 999;
+	}
+
+	if ( !Q_stricmp( spot->classname, "info_player_deathmatch" ) ) {
+		return ( spot->spawnflags & 1 ) ? 0 : 2;
+	}
+	if ( !Q_stricmp( spot->classname, "info_player_start" ) ) {
+		return ( spot->spawnflags & 1 ) ? 1 : 3;
+	}
+	if ( !Q_stricmp( spot->classname, "info_player_duel" ) ) {
+		return 4;
+	}
+	if ( !Q_stricmp( spot->classname, "info_player_duel1" ) || !Q_stricmp( spot->classname, "info_player_duel2" ) ) {
+		return 5;
+	}
+	if ( !Q_stricmp( spot->classname, "team_CTF_redplayer" ) || !Q_stricmp( spot->classname, "team_CTF_blueplayer" ) ) {
+		return 6;
+	}
+
+	return 999;
+}
+
+gentity_t *SelectRuntimeBSPSpawnPoint( int runtimeBSPInstance, vec3_t origin, vec3_t angles, qboolean isbot ) {
+	gentity_t *spot;
+	gentity_t *best = NULL;
+	gentity_t *bestTelefrag = NULL;
+	int bestRank = 999;
+	int bestTelefragRank = 999;
+
+	if ( runtimeBSPInstance < 0 ) {
+		return NULL;
+	}
+
+	spot = NULL;
+	while ( ( spot = G_Find( spot, FOFS( classname ), "info_player_deathmatch" ) ) != NULL ) {
+		int rank;
+
+		if ( spot->runtimeBSPInstance != runtimeBSPInstance ) {
+			continue;
+		}
+		if ( ( ( spot->flags & FL_NO_BOTS ) && isbot )
+			|| ( ( spot->flags & FL_NO_HUMANS ) && !isbot ) ) {
+			continue;
+		}
+
+		rank = G_RuntimeSpawnRank( spot );
+		if ( SpotWouldTelefrag( spot ) ) {
+			if ( rank < bestTelefragRank ) {
+				bestTelefragRank = rank;
+				bestTelefrag = spot;
+			}
+			continue;
+		}
+
+		if ( rank < bestRank ) {
+			bestRank = rank;
+			best = spot;
+		}
+	}
+
+	if ( !best ) {
+		best = bestTelefrag;
+	}
+	if ( !best ) {
+		if ( g_debugBSPInstances.integer ) {
+			trap->Print( va( "BSPDEBUG game runtime spawn no logical spawnpoints runtime=%i logical=%i entities=%i\n",
+				runtimeBSPInstance, level.num_logicalents, level.num_entities ) );
+		}
+		return NULL;
+	}
+
+	if ( g_debugBSPInstances.integer ) {
+		trap->Print( va( "BSPDEBUG game runtime spawn selected runtime=%i ent=%i logical=%i class='%s' origin=(%.1f %.1f %.1f) angles=(%.1f %.1f %.1f)\n",
+			runtimeBSPInstance, best->s.number, best->isLogical, best->classname ? best->classname : "",
+			best->s.origin[0], best->s.origin[1], best->s.origin[2],
+			best->s.angles[0], best->s.angles[1], best->s.angles[2] ) );
+	}
+	VectorCopy( best->s.origin, origin );
+	origin[2] += 9;
+	VectorCopy( best->s.angles, angles );
+	return best;
+}
+
 gentity_t *SelectNearestDeathmatchSpawnPoint( vec3_t from ) {
 	gentity_t	*spot;
 	vec3_t		delta;
@@ -645,6 +747,9 @@ gentity_t *SelectNearestDeathmatchSpawnPoint( vec3_t from ) {
 	spot = NULL;
 
 	while ((spot = G_Find (spot, FOFS(classname), "info_player_deathmatch")) != NULL) {
+		if ( G_SpawnPointIsRuntimeBSP( spot ) ) {
+			continue;
+		}
 
 		VectorSubtract( spot->s.origin, from, delta );
 		dist = VectorLength( delta );
@@ -676,6 +781,10 @@ gentity_t *SelectRandomDeathmatchSpawnPoint( qboolean isbot ) {
 	spot = NULL;
 
 	while ((spot = G_Find (spot, FOFS(classname), "info_player_deathmatch")) != NULL && count < MAX_SPAWN_POINTS) {
+		if ( G_SpawnPointIsRuntimeBSP( spot ) ) {
+			continue;
+		}
+
 		if ( SpotWouldTelefrag( spot ) ) {
 			continue;
 		}
@@ -692,7 +801,13 @@ gentity_t *SelectRandomDeathmatchSpawnPoint( qboolean isbot ) {
 	}
 
 	if ( !count ) {	// no spots that won't telefrag
-		return G_Find( NULL, FOFS(classname), "info_player_deathmatch");
+		spot = NULL;
+		while ((spot = G_Find( spot, FOFS(classname), "info_player_deathmatch")) != NULL) {
+			if ( !G_SpawnPointIsRuntimeBSP( spot ) ) {
+				return spot;
+			}
+		}
+		return NULL;
 	}
 
 	selection = rand() % count;
@@ -732,6 +847,10 @@ gentity_t *SelectRandomFurthestSpawnPoint ( vec3_t avoidPoint, vec3_t origin, ve
 			classname = "info_player_start_blue";
 		}
 		while ((spot = G_Find (spot, FOFS(classname), classname)) != NULL) {
+			if ( G_SpawnPointIsRuntimeBSP( spot ) ) {
+				continue;
+			}
+
 			if ( SpotWouldTelefrag( spot ) ) {
 				continue;
 			}
@@ -770,6 +889,10 @@ gentity_t *SelectRandomFurthestSpawnPoint ( vec3_t avoidPoint, vec3_t origin, ve
 	if ( !numSpots )
 	{//couldn't find any of the above
 		while ((spot = G_Find (spot, FOFS(classname), "info_player_deathmatch")) != NULL) {
+			if ( G_SpawnPointIsRuntimeBSP( spot ) ) {
+				continue;
+			}
+
 			if ( SpotWouldTelefrag( spot ) ) {
 				continue;
 			}
@@ -804,7 +927,12 @@ gentity_t *SelectRandomFurthestSpawnPoint ( vec3_t avoidPoint, vec3_t origin, ve
 			}
 		}
 		if (!numSpots) {
-			spot = G_Find( NULL, FOFS(classname), "info_player_deathmatch");
+			spot = NULL;
+			while ((spot = G_Find( spot, FOFS(classname), "info_player_deathmatch")) != NULL) {
+				if ( !G_SpawnPointIsRuntimeBSP( spot ) ) {
+					break;
+				}
+			}
 			if (!spot)
 				trap->Error( ERR_DROP, "Couldn't find a spawn point" );
 			VectorCopy (spot->s.origin, origin);
@@ -856,6 +984,10 @@ tryAgain:
 	spot = NULL;
 
 	while ((spot = G_Find (spot, FOFS(classname), spotName)) != NULL) {
+		if ( G_SpawnPointIsRuntimeBSP( spot ) ) {
+			continue;
+		}
+
 		if ( SpotWouldTelefrag( spot ) ) {
 			continue;
 		}
@@ -898,7 +1030,12 @@ tryAgain:
 		}
 
 		//If we got here we found no free duel or DM spots, just try the first DM spot
-		spot = G_Find( NULL, FOFS(classname), "info_player_deathmatch");
+		spot = NULL;
+		while ((spot = G_Find( spot, FOFS(classname), "info_player_deathmatch")) != NULL) {
+			if ( !G_SpawnPointIsRuntimeBSP( spot ) ) {
+				break;
+			}
+		}
 		if (!spot)
 			trap->Error( ERR_DROP, "Couldn't find a spawn point" );
 		VectorCopy (spot->s.origin, origin);
@@ -969,6 +1106,10 @@ gentity_t *SelectInitialSpawnPoint( vec3_t origin, vec3_t angles, team_t team, q
 
 	spot = NULL;
 	while ((spot = G_Find (spot, FOFS(classname), "info_player_deathmatch")) != NULL) {
+		if ( G_SpawnPointIsRuntimeBSP( spot ) ) {
+			continue;
+		}
+
 		if(((spot->flags & FL_NO_BOTS) && isbot) ||
 		   ((spot->flags & FL_NO_HUMANS) && !isbot))
 		{
@@ -2366,6 +2507,25 @@ qboolean ClientUserinfoChanged( int clientNum ) { //I think anything treated as 
 		client->pers.noCartwheel = qtrue;
 	else
 		client->pers.noCartwheel = qfalse;
+
+	// Changing a plugin that affects movement during a run invalidates the run. maxFPS is deliberately not checked, since it is client reported.
+	if (client->pers.stats.startTime > 0 && !client->pers.practice) {
+		const int movementPlugins = JAPRO_PLUGIN_BHOP | JAPRO_PLUGIN_NOROLL | JAPRO_PLUGIN_NOCART;
+		const int changedPlugins = (atoi(s) ^ client->pers.stats.pluginsAtStart) & movementPlugins;
+
+		if (changedPlugins) {
+			char pluginNames[64] = "";
+			if (changedPlugins & JAPRO_PLUGIN_BHOP)
+				Q_strcat(pluginNames, sizeof(pluginNames), "BHOP ");
+			if (changedPlugins & JAPRO_PLUGIN_NOROLL)
+				Q_strcat(pluginNames, sizeof(pluginNames), "NOROLL ");
+			if (changedPlugins & JAPRO_PLUGIN_NOCART)
+				Q_strcat(pluginNames, sizeof(pluginNames), "NOCART ");
+
+			trap->SendServerCommand(ent - g_entities, va("cp \"Timer reset!\n^3Plugin changed: %s\"", pluginNames));
+			ResetPlayerTimers(ent, qfalse);
+		}
+	}
 
 	if (atoi(s) & JAPRO_PLUGIN_CENTERMUZZLE)
 		client->pers.centerMuzzle = qtrue;
@@ -4025,20 +4185,40 @@ void ClientSpawn(gentity_t *ent) {
 			ent->client->ps.fd.saberAnimLevel = ent->client->ps.fd.saberDrawAnimLevel = ent->client->sess.saberLevel = ent->client->ps.fd.forcePowerLevel[FP_SABER_OFFENSE];
 	}
 
+	if ( client->sess.sessionTeam == TEAM_SPECTATOR
+		&& ( !G_RuntimeWarpClientInMainMap( index ) || G_GetClientRuntimeBSPInstance( index ) >= 0 ) )
+	{
+		if ( !G_RuntimeWarpClearClientActiveMap( index ) && g_debugBSPInstances.integer )
+		{
+			trap->Print( va( "BSPDEBUG game spectator clear failed client=%i\n", index ) );
+		}
+	}
+
 	// find a spawn point
 	// do it before setting health back up, so farthest
 	// ranging doesn't count this client
-	if ( client->sess.sessionTeam == TEAM_SPECTATOR ) {
+	if ( client->sess.sessionTeam != TEAM_SPECTATOR ) {
+		int runtimeBSPInstance = G_GetClientRuntimeBSPInstance( ent->s.number );
+
+		if ( runtimeBSPInstance >= 0 ) {
+			spawnPoint = SelectRuntimeBSPSpawnPoint( runtimeBSPInstance, spawn_origin, spawn_angles, !!(ent->r.svFlags & SVF_BOT) );
+			if ( !spawnPoint && g_debugBSPInstances.integer ) {
+				trap->Print( va( "BSPDEBUG game runtime spawn failed client=%i runtime=%i\n",
+					ent->s.number, runtimeBSPInstance ) );
+			}
+		}
+	}
+	if ( !spawnPoint && client->sess.sessionTeam == TEAM_SPECTATOR ) {
 		spawnPoint = SelectSpectatorSpawnPoint (
 						spawn_origin, spawn_angles);
-	} else if (level.gametype == GT_CTF || level.gametype == GT_CTY) {
+	} else if ( !spawnPoint && (level.gametype == GT_CTF || level.gametype == GT_CTY) ) {
 		// all base oriented team games use the CTF spawn points
 		spawnPoint = SelectCTFSpawnPoint ( 
 						client->sess.sessionTeam, 
 						client->pers.teamState.state, 
 						spawn_origin, spawn_angles, !!(ent->r.svFlags & SVF_BOT), client);
 	}
-	else if (level.gametype == GT_SIEGE)
+	else if ( !spawnPoint && level.gametype == GT_SIEGE )
 	{
 		spawnPoint = SelectSiegeSpawnPoint (
 						client->siegeClass,
@@ -4046,7 +4226,7 @@ void ClientSpawn(gentity_t *ent) {
 						client->pers.teamState.state,
 						spawn_origin, spawn_angles, !!(ent->r.svFlags & SVF_BOT));
 	}
-	else {
+	else if ( !spawnPoint ) {
 		if (level.gametype == GT_POWERDUEL)
 		{
 			spawnPoint = SelectDuelSpawnPoint(client->sess.duelTeam, client->ps.origin, spawn_origin, spawn_angles, !!(ent->r.svFlags & SVF_BOT));
@@ -4067,13 +4247,22 @@ void ClientSpawn(gentity_t *ent) {
 					client->ps.origin,
 					spawn_origin, spawn_angles, client->sess.sessionTeam, !!(ent->r.svFlags & SVF_BOT) );
 
-				if (g_duelRespawn.integer && level.gametype == GT_FFA && VectorLength(client->pers.respawnLocation) && !SpotWouldTelefrag3(client->pers.respawnLocation)) {
+				if (!client->pers.raceRespawn && g_duelRespawn.integer && level.gametype == GT_FFA && VectorLength(client->pers.respawnLocation) && !SpotWouldTelefrag3(client->pers.respawnLocation)) {
 					VectorCopy(client->pers.respawnLocation, spawn_origin);
 					spawn_angles[YAW] = client->pers.respawnAngle;
 				}//sad hack
 
 			}
 		}
+	}
+	if (client->pers.raceRespawn) {
+		if (client->sess.sessionTeam != TEAM_SPECTATOR && !SpotWouldTelefrag3(client->pers.respawnLocation)) {
+			VectorCopy(client->pers.respawnLocation, spawn_origin);
+			spawn_angles[YAW] = client->pers.respawnAngle;
+		}
+		// Consume the override even if the saved spot is occupied or we joined spectators.
+		client->pers.raceRespawn = qfalse;
+		VectorClear(client->pers.respawnLocation);
 	}
 	client->pers.teamState.state = TEAM_ACTIVE;
 
@@ -4233,6 +4422,7 @@ void ClientSpawn(gentity_t *ent) {
 	ent->takedamage = qtrue;
 	ent->inuse = qtrue;
 	ent->classname = "player";
+	G_SetRuntimeBSPInstance( ent, client->sess.sessionTeam == TEAM_SPECTATOR ? -1 : G_GetClientRuntimeBSPInstance( index ) );
 	ent->r.contents = CONTENTS_BODY;
 	ent->clipmask = MASK_PLAYERSOLID;
 	ent->die = player_die;
@@ -4584,6 +4774,11 @@ void ClientSpawn(gentity_t *ent) {
 		ent->health = client->ps.stats[STAT_HEALTH] = client->ps.stats[STAT_MAX_HEALTH] = 100;
 		if (client->sess.movementStyle == MV_COOP_JKA)
 			client->ps.fd.forcePowerLevel[FP_LEVITATION] = 1;
+		if (client->pers.practice && client->pers.practiceMaxForce > 0) {
+			client->ps.fd.forcePowerMax = client->pers.practiceMaxForce;
+			if (client->ps.fd.forcePower > client->pers.practiceMaxForce)
+				client->ps.fd.forcePower = client->pers.practiceMaxForce;
+		}
 	}
 	// health will count down towards max_health
 	else if (level.gametype == GT_SIEGE &&
@@ -4839,7 +5034,7 @@ void G_ClearTeamVote( gentity_t *ent, int team ) {
 void G_AddSimpleStat(gentity_t *self, gentity_t *other, int type);
 void G_AddDuel(char *winner, char *loser, int start_time, int type, int winner_hp, int winner_shield);
 
-void G_UpdatePlaytime(int null, char *username, int seconds );
+void G_UpdatePlaytime(struct sqlite3 *db, char *username, int seconds );
 void ClientDisconnect( int clientNum ) {
 	gentity_t	*ent;
 	gentity_t	*tent;
@@ -4854,6 +5049,9 @@ void ClientDisconnect( int clientNum ) {
 	if ( !ent->client || ent->client->pers.connected == CON_DISCONNECTED ) {
 		return;
 	}
+
+	G_RuntimeWarpClearPending( clientNum );
+	G_RuntimeWarpClearClientMap( clientNum );
 
 //JAPRO - Serverside - Stop those pesky reconnect whores - Start
 	if (g_fixKillCredit.integer > 1 && (ent->health > 0) && !(ent->r.svFlags & SVF_BOT) && 0 <= ent->client->ps.otherKiller && ent->client->ps.otherKiller < MAX_CLIENTS && ent->client->ps.otherKillerTime > level.time && ent->client->sess.sessionTeam != TEAM_SPECTATOR)

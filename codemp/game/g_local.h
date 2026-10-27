@@ -361,7 +361,7 @@ extern int dueltypes[MAX_CLIENTS];//JAPRO - Serverside - Fullforce Duels y is th
 #define JAPRO_ACCOUNTFLAG_A_VSTR		(1<<12)
 #define JAPRO_ACCOUNTFLAG_A_SEEIP		(1<<13)
 #define JAPRO_ACCOUNTFLAG_A_RENAME		(1<<14)
-#define JAPRO_ACCOUNTFLAG_A_LISTMAPS	(1<<15)
+#define JAPRO_ACCOUNTFLAG_A_LISTMAPS	(1<<15) // unused; amlistmaps is public
 #define JAPRO_ACCOUNTFLAG_A_WHOIS		(1<<16)
 #define JAPRO_ACCOUNTFLAG_A_LOOKUP		(1<<17)
 #define JAPRO_ACCOUNTFLAG_A_NOFOLLOW	(1<<18)
@@ -472,6 +472,7 @@ struct gentity_s {
 	struct gclient_s	*client;			// NULL if not a client
 
 	gNPC_t		*NPC;//Only allocated if the entity becomes an NPC
+	int			runtimeBSPInstance;	// -1 for main map, otherwise runtime-loaded BSP instance id
 	int			cantHitEnemyCounter;//HACK - Makes them look for another enemy on the same team if the one they're after can't be hit
 
 	qboolean	noLumbar; //see note in cg_local.h
@@ -795,7 +796,27 @@ typedef struct {//JAPRO - Serverside - Stats
 	int courseID;
 	int checkpointCount;
 	char checkpointTimes[MAX_RUN_CHECKPOINT_STRING];
+	int pluginsAtStart; // cp_pluginDisable snapshot at timer start
 } stats_t;
+
+// State captured by "amtelemark exact" (practice mode only) and put back by amtele / the race tele key
+typedef struct telemarkExact_s {
+	qboolean	valid;
+	vec3_t		origin;
+	vec3_t		velocity;
+	vec3_t		viewAngles;
+	int			forcePower;
+	// timerElapsed == 0 means the timer was not running when the mark was made
+	int			timerElapsed;		// trap->Milliseconds() - stats.startTime
+	int			levelTimeElapsed;	// level.time - stats.startLevelTime
+	int			startLag;
+	float		displacement;
+	int			displacementSamples;
+	float		topSpeed;
+	int			checkpoints;
+	int			checkpointCount;
+	char		checkpointTimes[MAX_RUN_CHECKPOINT_STRING];
+} telemarkExact_t;
 
 // client data that stays across multiple respawns, but is cleared
 // on each level change or team change at ClientBegin()
@@ -830,6 +851,7 @@ typedef struct clientPersistant_s {
 	float		telemarkPitchAngle;//JAPRO - Serverside - Admin - Telemark storage
 	vec3_t		respawnLocation;//JAPRO - Serverside - Admin - Telemark storage
 	float		respawnAngle;
+	qboolean	raceRespawn; // Use the saved location for the next /race respawn only.
 	//char		clanpass[MAX_QPATH];//Japro - Serverside Clanpass
 	//int			sayteammod;//0 = normal, 1 = clan, 2 = admin
 	int			lastChatTime;//godchat fuck idk why im doing this
@@ -866,6 +888,7 @@ typedef struct clientPersistant_s {
 	qboolean	backwardsRocket;
 	qboolean	noFollow;
 	qboolean	practice;
+	int			practiceMaxForce; // Max force points while in practice mode (0 = no limit)
 	qboolean	haste;
 	qboolean	validPlugin;
 	qboolean	recordingDemo;//japro autodemo for defrag... :S
@@ -880,8 +903,8 @@ typedef struct clientPersistant_s {
 	unsigned int	unlocks;
 	short		tribesClass;
 	short		activeCapRoute;
-
 	stats_t		stats;
+	telemarkExact_t	telemarkExact;
 } clientPersistant_t;
 
 typedef struct renderInfo_s
@@ -996,6 +1019,8 @@ struct gclient_s {
 
 	int			bodyGrabTime;
 	int			bodyGrabIndex;
+	gentity_t	*runtimeWarpTarget;
+	int			runtimeWarpTouchTime;
 
 	int			pushEffectTime;
 
@@ -1011,6 +1036,8 @@ struct gclient_s {
 	qboolean	readyToExit;		// wishes to leave the intermission
 
 	qboolean	noclip;
+	qboolean	raceNeedsGroundStop; // Noclip momentum must be lost before starting another race.
+	int			raceStartBlockedMessageTime; // Next time a blocked-start centerprint is allowed.
 
 	int			lastCmdTime;		// level.time of last usercmd_t, for EF_CONNECTION
 									// we can't just use pers.lastCommand.time, because
@@ -1335,6 +1362,32 @@ typedef struct Warp_s {
 Warp_t	warpList[72];
 //japro
 
+typedef enum runtimeRoomState_e {
+	RUNTIME_ROOM_EMPTY,
+	RUNTIME_ROOM_ACTIVE,
+	RUNTIME_ROOM_DRAINING,
+	RUNTIME_ROOM_EVICTABLE
+} runtimeRoomState_t;
+
+typedef struct runtimeRoom_s {
+	runtimeRoomState_t	state;
+	char				mapName[MAX_QPATH];
+
+	int					roomIndex;
+	int					subBSPIndex;
+	int					modelIndex;
+	int					metaSlot;
+	int					runtimeBSPInstance;
+	int					holderEntNum;
+
+	int					occupantCount;
+	int					spectatorCount;
+	int					lastUsedTime;
+	int					emptySinceTime;
+
+	qboolean			pinned;
+} runtimeRoom_t;
+
 //japro
 typedef struct Route_s {
 	int				length;
@@ -1479,6 +1532,12 @@ typedef struct level_locals_s {
 	char		*mTargetAdjust;
 
 	char		mTeamFilter[MAX_QPATH];
+	struct {
+		qboolean mapHasRooms;
+		char	clientMapNames[MAX_CLIENTS][MAX_QPATH];
+		int		clientRoomIndex[MAX_CLIENTS];
+		runtimeRoom_t rooms[MAX_RUNTIME_BSP_INSTANCES];
+	} runtimeWarpUsage;
 
 //JAPRO - Serverside - Amlockteam - Start
 	qboolean	isLockedred;
@@ -1576,6 +1635,7 @@ void Cmd_SaberAttackCycle_f(gentity_t *ent);
 int G_ItemUsable(playerState_t *ps, int forcedUse);
 void Cmd_ToggleSaber_f(gentity_t *ent);
 void Cmd_EngageDuel_f(gentity_t *ent, int dueltype);
+void ResetPlayerTimers(gentity_t *ent, qboolean print);
 
 //
 // g_items.c
@@ -1613,6 +1673,12 @@ void ClearRegisteredItems( void );
 void RegisterItem( gitem_t *item );
 void SaveRegisteredItems( void );
 
+
+//
+// g_misc.c
+//
+gentity_t *G_SpawnBSPInstance( const char *bspModel, const vec3_t origin, float yaw, const char *teamFilter );
+void G_SpawnMapBoxFixes( const char *mapName, int runtimeBSPInstance );
 //
 // g_utils.c
 //
@@ -1630,6 +1696,17 @@ void	G_ScaleNetHealth(gentity_t *self);
 void	G_KillBox (gentity_t *ent);
 gentity_t *G_Find (gentity_t *from, int fieldofs, const char *match);
 int		G_RadiusList ( vec3_t origin, float radius,	gentity_t *ignore, qboolean takeDamage, gentity_t *ent_list[MAX_GENTITIES]);
+qboolean	G_DimensionIsolationActive( void );
+qboolean	G_DimensionCanInteract( gentity_t *source, gentity_t *target, svIsolationPurpose_t purpose );
+void	G_DetectGameImportExtensions( void );
+qboolean	G_SetClientMap( int clientNum, const char *mapName );
+int		G_GetClientRuntimeBSPInstance( int clientNum );
+qboolean	G_BeginAsyncBSPFileRead( const char *mapName );
+int		G_AsyncBSPFileReadStatus( const char *mapName );
+qboolean	G_RuntimeWarpCanAssign( const char *mapName );
+qboolean	G_RuntimeWarpAssignFirst( const char *mapName, gentity_t *requester );
+int		G_RuntimeWarpClearTargets( void );
+void	G_SetRuntimeBSPInstance( gentity_t *ent, int runtimeBSPInstance );
 
 void	G_Throw( gentity_t *targ, vec3_t newDir, float push );
 
@@ -1822,6 +1899,8 @@ int TeamLeader( int team );
 team_t PickTeam( int ignoreClientNum );
 void SetClientViewAngle( gentity_t *ent, vec3_t angle );
 gentity_t *SelectSpawnPoint ( vec3_t avoidPoint, vec3_t origin, vec3_t angles, team_t team, qboolean isbot );
+gentity_t *SelectRuntimeBSPSpawnPoint( int runtimeBSPInstance, vec3_t origin, vec3_t angles, qboolean isbot );
+gentity_t *SelectSpectatorSpawnPoint( vec3_t origin, vec3_t angles );
 void MaintainBodyQueue(gentity_t *ent);
 void ClientRespawn (gentity_t *ent);
 void BeginIntermission (void);
@@ -1882,6 +1961,8 @@ void QDECL G_LogPrintf( const char *fmt, ... );
 void QDECL G_SecurityLogPrintf( const char *fmt, ... );
 void SendScoreboardMessageToAllClients( void );
 const char *G_GetStringEdString(char *refSection, char *refName);
+void G_RuntimeWarpProcessPending( void );
+void G_RuntimeWarpClearPending( int clientNum );
 
 //
 // g_client.c
@@ -2089,3 +2170,5 @@ void G_RegisterCvars( void );
 void G_UpdateCvars( void );
 
 extern gameImport_t *trap;
+extern qboolean g_gameImportHasDimensionIsolation;
+extern qboolean g_gameImportHasRuntimeBSP;
