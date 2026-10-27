@@ -2814,7 +2814,7 @@ static void CG_Missile( centity_t *cent ) {
 
 	s1 = &cent->currentState;
 
-	if (cgs.serverMod == SVMOD_JAPLUS && s1->weapon == WP_STUN_BATON && !(cg_stylePlayer.integer & JAPRO_STYLE_OLDGRAPPLELINE))
+	if (JAPLUS_GRAPPLE_LINE && s1->weapon == WP_STUN_BATON && !(cg_stylePlayer.integer & JAPRO_STYLE_OLDGRAPPLELINE))
 	{
 		int			clientNum = (cent->currentState.otherEntityNum == cg.snap->ps.clientNum) ? cg.predictedPlayerState.clientNum : cent->currentState.otherEntityNum;
 		vec3_t		rHandPos;
@@ -2839,7 +2839,7 @@ static void CG_Missile( centity_t *cent ) {
 		return;
 	}
 	else if ((cgs.serverMod == SVMOD_JAPRO && cent->currentState.weapon == WP_BRYAR_PISTOL && cent->currentState.saberInFlight) ||
-			 (cgs.serverMod == SVMOD_JAPLUS && cent->currentState.weapon == WP_STUN_BATON))
+			 (JAPLUS_GRAPPLE_LINE && cent->currentState.weapon == WP_STUN_BATON))
 	{
 		CG_GrappleTrail(cent);
 		return;
