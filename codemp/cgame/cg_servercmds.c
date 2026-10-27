@@ -297,6 +297,13 @@ void CG_ParseServerinfo( void ) {
 		}
 	}
 
+	if (cgs.serverMod != SVMOD_JAPRO && (cgs.taystJKinfo & TAYSTJK_INFO_GRAPPLE_TARZAN))
+	{//other mods with jaPRO's grapple pull at their g_hookStrength too
+		cgs.hookpull = atoi(Info_ValueForKey(info, "g_hookStrength"));
+		if (cgs.hookpull <= 0)
+			cgs.hookpull = 800;
+	}
+
 	//multiversion "support"
 	if (atoi(Info_ValueForKey(info, "protocol")) < 26) {
 		cgs.legacyProtocol = qtrue; //v1.00

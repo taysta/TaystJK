@@ -560,6 +560,7 @@ extern int bgForcePowerCost[NUM_FORCE_POWERS][NUM_FORCE_POWER_LEVELS];
 #define TAYSTJK_INFO_GRAPPLE_JAPLUS         (1<<10) // JA+'s grapple hook: pull with air movement, use lets go
 #define TAYSTJK_INFO_GRAPPLE_SWING          (1<<11) // with GRAPPLE_JAPLUS: letting go of the hook button hangs off the hook and swings like JA+
 #define TAYSTJK_INFO_GRAPPLE_LINE           (1<<12) // draw JA+'s hook line and model for WP_STUN_BATON hook missiles
+#define TAYSTJK_INFO_GRAPPLE_TARZAN         (1<<13) // jaPRO's g_allowGrapple 1 grapple, pulling at g_hookStrength (800 if unset)
 
 // TaystJK cgame capabilities advertised to the game through userinfo.
 // Third-party cgame forks MUST use their own userinfo cvar and bit namespace.

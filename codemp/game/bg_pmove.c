@@ -15606,7 +15606,7 @@ void PmoveSingle (pmove_t *pmove) {
 				PM_GrappleMove();
 			}
 #else
-			else if ((pm->ps->pm_flags & PMF_GRAPPLE) && !(pm->ps->pm_flags & PMF_DUCKED) && !JAPLUS_GRAPPLE && (!((cgs.jcinfo & JAPRO_CINFO_JAPLUSGRAPPLE) || (cgs.taystJKinfo & TAYSTJK_INFO_GRAPPLE)) || IsRacemode(pm->ps)))
+			else if ((pm->ps->pm_flags & PMF_GRAPPLE) && !(pm->ps->pm_flags & PMF_DUCKED) && !JAPLUS_GRAPPLE && (!((cgs.jcinfo & JAPRO_CINFO_JAPLUSGRAPPLE) || (cgs.taystJKinfo & TAYSTJK_INFO_GRAPPLE)) || IsRacemode(pm->ps)) && JAPRO_TARZAN_GRAPPLE)
 				PM_GrappleMoveTarzan();
 			else if ((pm->ps->pm_flags & PMF_GRAPPLE) && !(pm->ps->pm_flags & PMF_DUCKED) && !JAPLUS_GRAPPLE && ((cgs.jcinfo & JAPRO_CINFO_JAPLUSGRAPPLE) || (cgs.taystJKinfo & TAYSTJK_INFO_GRAPPLE)))
 				PM_GrappleMove();
