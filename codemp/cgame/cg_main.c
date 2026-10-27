@@ -1327,7 +1327,7 @@ static void CG_RegisterGraphics( void ) {
 	cgs.effects.mDisruptorDeathSmoke = trap->FX_RegisterEffect("disruptor/death_smoke");
 
 #if _GRAPPLE
-	if (cgs.serverMod >= SVMOD_JAPLUS) {
+	if (cgs.serverMod >= SVMOD_JAPLUS || (cgs.taystJKinfo & TAYSTJK_INFO_GRAPPLE_LINE)) {
 		cgs.effects.grappleHitWall = trap->FX_RegisterEffect("effects/grapple/hit_wall.efx");
 		cgs.effects.grappleHitPlayer = trap->FX_RegisterEffect("effects/grapple/hit_player.efx");
 		cgs.media.grappleModel = trap->R_RegisterModel( "models/items/grapple.md3" );//Grapple model
