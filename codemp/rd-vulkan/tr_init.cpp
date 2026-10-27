@@ -972,7 +972,7 @@ void R_Register( void )
 		" 4 - linear filtering, preserve aspect ratio (black bars on sides)\n");
 	ri.Cvar_CheckRange(r_renderScale, 0, 4, qtrue);
 	r_ignorehwgamma						= ri.Cvar_Get("r_ignorehwgamma",					"0",						CVAR_ARCHIVE_ND | CVAR_LATCH, "Overrides hardware gamma capabilities");
-	ri.Cvar_CheckRange(r_ignorehwgamma, 0, 1, qtrue);
+	ri.Cvar_CheckRange(r_ignorehwgamma, 0, 2, qtrue); //2 is rend2's tonemap gamma, which Vulkan treats like 1
 
 
 /*
