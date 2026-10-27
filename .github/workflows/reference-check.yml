@@ -32,6 +32,8 @@ permissions:
 
 jobs:
   refresh-reference:
+    # Forks would open refresh pull requests and tracking issues against their own copy
+    if: github.repository == 'taysta/TaystJK'
     runs-on: ubuntu-latest
     timeout-minutes: 120
     steps:

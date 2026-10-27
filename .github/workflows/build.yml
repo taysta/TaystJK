@@ -546,6 +546,7 @@ jobs:
       # workflows, so reference-check's release trigger never sees this one. Dispatch
       # is exempt from that rule.
       - name: Trigger reference refresh
+        if: github.repository == 'taysta/TaystJK'
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
