@@ -12405,7 +12405,7 @@ qboolean BG_InRollAnim( entityState_t *cent )
 qboolean BG_InKnockDown( int anim )
 {
 #ifdef _CGAME
-	if ( cgs.serverMod == SVMOD_JAPLUS )
+	if ( JAPLUS_GRABS )
 	{
 		switch ( anim )
 		{
@@ -14150,7 +14150,7 @@ void PmoveSingle (pmove_t *pmove) {
 	pm = pmove;
 
 #ifdef _CGAME
-	if (cgs.serverMod != SVMOD_JAPLUS || pm->ps->weapon != WP_MELEE) {
+	if (!JAPLUS_GRABS || pm->ps->weapon != WP_MELEE) {
 #endif
 		if (pm->cmd.buttons & BUTTON_ATTACK && pm->cmd.buttons & BUTTON_USE_HOLDABLE)
 		{
@@ -14305,7 +14305,7 @@ void PmoveSingle (pmove_t *pmove) {
 #endif
 			PM_SetPMViewAngle(pm->ps, pm->ps->viewangles, &pm->cmd);
 #ifdef _CGAME
-		if (cgs.serverMod == SVMOD_JAPLUS)
+		if (JAPLUS_GRABS)
 		{//JA+ takes away attacks and force powers while grabbing or grabbed
 			pm->cmd.buttons &= ~(BUTTON_ATTACK|BUTTON_ALT_ATTACK|BUTTON_FORCEGRIP|BUTTON_FORCEPOWER|BUTTON_FORCE_LIGHTNING|BUTTON_GRAPPLE);
 		}
@@ -14464,11 +14464,11 @@ void PmoveSingle (pmove_t *pmove) {
 			PM_SetPMViewAngle(pm->ps, pm->ps->viewangles, &pm->cmd);
 			stiffenedUp = qtrue;
 		}
-		if ((pm->ps->legsAnim == BOTH_JUMP_BACKFLIP_ATCKEE_FALL || pm->ps->torsoAnim == BOTH_JUMP_BACKFLIP_ATCKEE_FALL)
-			&& pm->cmd.serverTime < pm->ps->forceHandExtendTime)
-		{//just kicked out of a grab
-			PM_SetPMViewAngle(pm->ps, pm->ps->viewangles, &pm->cmd);
-		}
+	}
+	if (JAPLUS_GRABS && (pm->ps->legsAnim == BOTH_JUMP_BACKFLIP_ATCKEE_FALL || pm->ps->torsoAnim == BOTH_JUMP_BACKFLIP_ATCKEE_FALL)
+		&& pm->cmd.serverTime < pm->ps->forceHandExtendTime)
+	{//just kicked out of a grab
+		PM_SetPMViewAngle(pm->ps, pm->ps->viewangles, &pm->cmd);
 	}
 #endif
 

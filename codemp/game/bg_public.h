@@ -556,6 +556,7 @@ extern int bgForcePowerCost[NUM_FORCE_POWERS][NUM_FORCE_POWER_LEVELS];
 #define TAYSTJK_INFO_FIXROLL_3	            (1<<6) // jk2 roll
 #define TAYSTJK_INFO_SCORE_DEATHS           (1<<7) // server sends a 15th per-client scoreboard int (deaths)
 #define TAYSTJK_INFO_NO_HEADSLIDE           (1<<8) // standing on a player keeps ground friction (JA+'s jp_slideOnPlayer 0)
+#define TAYSTJK_INFO_JAPLUS_GRABS           (1<<9) // JA+'s melee grabs, emotes such as kiss, and their knockdowns
 
 // TaystJK cgame capabilities advertised to the game through userinfo.
 // Third-party cgame forks MUST use their own userinfo cvar and bit namespace.
