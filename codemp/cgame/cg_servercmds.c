@@ -247,6 +247,7 @@ void CG_ParseServerinfo( void ) {
 	cgs.baseGame = qfalse;
 	cgs.jpDuelAlpha = 0;
 	cgs.restricts = 0;
+	cgs.hookpull = 0;
 	cgs.taystJKinfo =  atoi(Info_ValueForKey(info, "taystJKinfo")); // taystjk feature flags
 
 	gamename = Info_ValueForKey(info, "gamename");

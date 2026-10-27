@@ -5679,7 +5679,7 @@ static void PM_GetGrappleAnim( void ) {
 			parts = SETANIM_LEGS;
 		}
 #ifdef _CGAME
-		if (cgs.serverMod == SVMOD_JAPLUS) {//JA+ only moves the legs
+		if (JAPLUS_GRAPPLE) {//JA+ only moves the legs
 			parts = SETANIM_LEGS;
 		}
 #endif
@@ -5719,7 +5719,7 @@ static void PM_GrappleMove( void ) {
 #else
 	int pullSpeed = cgs.hookpull ? cgs.hookpull : 800;
 
-	if (cgs.serverMod == SVMOD_JAPLUS && (pm->cmd.buttons & BUTTON_USE)) {
+	if (JAPLUS_GRAPPLE && (pm->cmd.buttons & BUTTON_USE)) {
 		return;
 	}
 #endif
@@ -15576,7 +15576,7 @@ void PmoveSingle (pmove_t *pmove) {
 			PM_FlyVehicleMove();
 		}
 #ifdef _CGAME
-		else if (cgs.serverMod == SVMOD_JAPLUS && !(pm->ps->pm_flags & PMF_TIME_WATERJUMP)
+		else if (JAPLUS_GRAPPLE && !(pm->ps->pm_flags & PMF_TIME_WATERJUMP)
 			&& ((pm->ps->pm_flags & PMF_GRAPPLE) || (pm->ps->eFlags & EF_GRAPPLE_SWING)))
 		{//JA+ always air moves while pulled in or hanging off the hook
 			if (pm->ps->pm_flags & PMF_GRAPPLE)
@@ -15606,9 +15606,9 @@ void PmoveSingle (pmove_t *pmove) {
 				PM_GrappleMove();
 			}
 #else
-			else if ((pm->ps->pm_flags & PMF_GRAPPLE) && !(pm->ps->pm_flags & PMF_DUCKED) && cgs.serverMod != SVMOD_JAPLUS && (!((cgs.jcinfo & JAPRO_CINFO_JAPLUSGRAPPLE) || (cgs.taystJKinfo & TAYSTJK_INFO_GRAPPLE)) || IsRacemode(pm->ps)))
+			else if ((pm->ps->pm_flags & PMF_GRAPPLE) && !(pm->ps->pm_flags & PMF_DUCKED) && !JAPLUS_GRAPPLE && (!((cgs.jcinfo & JAPRO_CINFO_JAPLUSGRAPPLE) || (cgs.taystJKinfo & TAYSTJK_INFO_GRAPPLE)) || IsRacemode(pm->ps)))
 				PM_GrappleMoveTarzan();
-			else if ((pm->ps->pm_flags & PMF_GRAPPLE) && !(pm->ps->pm_flags & PMF_DUCKED) && cgs.serverMod != SVMOD_JAPLUS && ((cgs.jcinfo & JAPRO_CINFO_JAPLUSGRAPPLE) || (cgs.taystJKinfo & TAYSTJK_INFO_GRAPPLE)))
+			else if ((pm->ps->pm_flags & PMF_GRAPPLE) && !(pm->ps->pm_flags & PMF_DUCKED) && !JAPLUS_GRAPPLE && ((cgs.jcinfo & JAPRO_CINFO_JAPLUSGRAPPLE) || (cgs.taystJKinfo & TAYSTJK_INFO_GRAPPLE)))
 				PM_GrappleMove();
 #endif
 

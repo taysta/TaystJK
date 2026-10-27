@@ -1055,7 +1055,7 @@ static void CG_GrappleDown_f(void) {
 }
 
 static void CG_GrappleUp_f(void) {
-	if (cgs.serverMod == SVMOD_JAPLUS) {
+	if (JAPLUS_GRAPPLE) {
 		trap->SendConsoleCommand("-button12;+use\n");
 		Q_strncpyz(cg.doVstr, "-use\n", sizeof(cg.doVstr));
 		cg.doVstrTime = cg.time;

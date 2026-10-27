@@ -1518,7 +1518,7 @@ void CG_PredictPlayerState( void ) {
 					current - REAL_CMD_BACKUP + 1, current);
 		}
 
-		if (cgs.serverMod == SVMOD_JAPLUS)
+		if (JAPLUS_GRAPPLE)
 			CG_JAPlusPredictHookButtons(cg_pmove.ps, &cg_pmove.cmd);
 
 		Pmove (&cg_pmove);
