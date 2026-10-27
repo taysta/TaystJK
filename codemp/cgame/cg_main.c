@@ -1329,7 +1329,7 @@ static void CG_RegisterGraphics( void ) {
 #if _GRAPPLE
 	if (cgs.serverMod >= SVMOD_JAPLUS) {
 		cgs.effects.grappleHitWall = trap->FX_RegisterEffect("effects/grapple/hit_wall.efx");
-		cgs.effects.grappleHitWall = trap->FX_RegisterEffect("effects/grapple/hit_player.efx");
+		cgs.effects.grappleHitPlayer = trap->FX_RegisterEffect("effects/grapple/hit_player.efx");
 		cgs.media.grappleModel = trap->R_RegisterModel( "models/items/grapple.md3" );//Grapple model
 	}
 #endif
