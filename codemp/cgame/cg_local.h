@@ -120,6 +120,7 @@ along with this program; if not, see <http://www.gnu.org/licenses/>.
 #define JAPLUS_GLA_MOVES(optOut)		(JAPLUS_SERVER_HAS(JAPLUS_CINFO_GLA_ANIMS) && cgs.pluginSet && !(cp_pluginDisable.integer & (optOut)))
 //JA+'s grapple hook, or another mod's that advertises it through taystJKinfo
 #define JAPLUS_GRAPPLE					(cgs.serverMod == SVMOD_JAPLUS || (cgs.taystJKinfo & TAYSTJK_INFO_GRAPPLE_JAPLUS))
+#define JAPLUS_GRAPPLE_SWING			(cgs.serverMod == SVMOD_JAPLUS || ((cgs.taystJKinfo & TAYSTJK_INFO_GRAPPLE_JAPLUS) && (cgs.taystJKinfo & TAYSTJK_INFO_GRAPPLE_SWING)))
 //JA+'s grab and knockdown animations, or another mod's that advertises them through taystJKinfo
 #define JAPLUS_GRABS					(cgs.serverMod == SVMOD_JAPLUS || (cgs.taystJKinfo & TAYSTJK_INFO_JAPLUS_GRABS))
 

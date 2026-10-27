@@ -558,6 +558,7 @@ extern int bgForcePowerCost[NUM_FORCE_POWERS][NUM_FORCE_POWER_LEVELS];
 #define TAYSTJK_INFO_NO_HEADSLIDE           (1<<8) // standing on a player keeps ground friction (JA+'s jp_slideOnPlayer 0)
 #define TAYSTJK_INFO_JAPLUS_GRABS           (1<<9) // JA+'s melee grabs, emotes such as kiss, and their knockdowns
 #define TAYSTJK_INFO_GRAPPLE_JAPLUS         (1<<10) // JA+'s grapple hook: pull with air movement, use lets go
+#define TAYSTJK_INFO_GRAPPLE_SWING          (1<<11) // with GRAPPLE_JAPLUS: letting go of the hook button hangs off the hook and swings like JA+
 
 // TaystJK cgame capabilities advertised to the game through userinfo.
 // Third-party cgame forks MUST use their own userinfo cvar and bit namespace.

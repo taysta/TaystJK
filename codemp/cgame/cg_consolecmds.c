@@ -1055,7 +1055,7 @@ static void CG_GrappleDown_f(void) {
 }
 
 static void CG_GrappleUp_f(void) {
-	if (JAPLUS_GRAPPLE) {
+	if (JAPLUS_GRAPPLE_SWING) {//letting go of the button hangs off the hook, so use lets go
 		trap->SendConsoleCommand("-button12;+use\n");
 		Q_strncpyz(cg.doVstr, "-use\n", sizeof(cg.doVstr));
 		cg.doVstrTime = cg.time;

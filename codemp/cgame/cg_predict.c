@@ -1010,6 +1010,12 @@ static void CG_JAPlusPredictHookButtons( playerState_t *ps, const usercmd_t *cmd
 		ps->eFlags &= ~EF_GRAPPLE_SWING;
 		ps->eFlags2 &= ~EF2_JAPLUS_HOOK_OUT;
 	}
+	else if ( !(cmd->buttons & BUTTON_GRAPPLE) && !JAPLUS_GRAPPLE_SWING )
+	{//without the swing, letting go of the hook button lets go of the hook
+		ps->pm_flags &= ~PMF_GRAPPLE;
+		ps->eFlags &= ~EF_GRAPPLE_SWING;
+		ps->eFlags2 &= ~EF2_JAPLUS_HOOK_OUT;
+	}
 	else if ( !(cmd->buttons & BUTTON_GRAPPLE) )
 	{//an attached hook hangs on when the hook button is let go, or slides down while walking
 		if ( (ps->pm_flags & PMF_GRAPPLE) || (ps->eFlags & EF_GRAPPLE_SWING) )
