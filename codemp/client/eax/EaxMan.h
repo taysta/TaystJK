@@ -3,8 +3,30 @@
 #ifndef __EAXMANH
 #define __EAXMANH
 
+#ifdef _WIN32
 #define COM_NO_WINDOWS_H
 #include <objbase.h>
+#else
+// Just enough of COM to declare the interface; EalMan implements it.
+#include <stdint.h>
+typedef int32_t HRESULT;
+typedef uint32_t DWORD;
+typedef uint32_t ULONG;
+typedef void *LPVOID;
+#define REFIID const GUID &
+#define FAR
+#define __stdcall
+#define PURE = 0
+#define THIS_
+#define THIS void
+#define STDMETHOD(method) virtual HRESULT method
+#define STDMETHOD_(type, method) virtual type method
+#define DECLARE_INTERFACE_(iface, baseiface) struct iface : public baseiface
+#define SUCCEEDED(hr) ((HRESULT)(hr) >= 0)
+#define MAKE_HRESULT(sev, fac, code) ((HRESULT)(((uint32_t)(sev) << 31) | ((uint32_t)(fac) << 16) | ((uint32_t)(code))))
+#define FACILITY_ITF 4
+struct IUnknown {};
+#endif
 #include "eax.h"
 
 #ifdef __cplusplus
@@ -107,7 +129,7 @@ DECLARE_INTERFACE_(IEaxManager, IUnknown)
  STDMETHOD(GetMaterialAttributes) (THIS_ long, LPMATERIALATTRIBUTES) PURE;
  STDMETHOD(GetGeometrySetID) (THIS_ char*, long*) PURE;
  STDMETHOD(GetListenerDynamicAttributes) (THIS_ long, LPEMPOINT, long*, DWORD) PURE;
- STDMETHOD(GetSourceDynamicAttributes) (THIS_ long, LPEMPOINT, long*, float*, long*, float*, float*, LPEMPOINT, DWORD) PURE;
+ STDMETHOD(GetSourceDynamicAttributes) (THIS_ long, LPEMPOINT, int32_t*, float*, int32_t*, float*, float*, LPEMPOINT, DWORD) PURE;
 // STDMETHOD(GetSubSpaceID) (THIS_ long, LPEMPOINT, long *) PURE;
  STDMETHOD(GetEnvironmentName) (THIS_ long, char *szString, long lStrlen) PURE;
 };
