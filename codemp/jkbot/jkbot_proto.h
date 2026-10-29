@@ -24,7 +24,7 @@
 #endif
 
 #define JKB_PROTO_MAGIC			0x31424B4A	// "JKB1"
-#define JKB_PROTO_VERSION		4
+#define JKB_PROTO_VERSION		5
 
 #define JKB_MAX_AGENTS			2
 #define JKB_MAX_CHAT_EVENTS		32
@@ -94,6 +94,15 @@ typedef struct jkb_chat_event_s {
 } jkb_chat_event_t;
 JKB_STATIC_ASSERT( sizeof( jkb_chat_event_t ) == 8, "jkb_chat_event_t size" );
 
+// A demo-state start (P4-DSR-01): where a client is put once the episode's round has begun.
+typedef struct jkb_start_s {
+	int32_t		active;			// 0: the game's own spawn
+	float		origin[3];
+	float		velocity[3];
+	float		angles[2];		// view pitch, yaw (degrees)
+} jkb_start_t;
+JKB_STATIC_ASSERT( sizeof( jkb_start_t ) == 36, "jkb_start_t size" );
+
 typedef struct jkb_agent_setup_s {
 	int32_t		client;			// client slot
 	int32_t		ping_up_ms;
@@ -103,8 +112,9 @@ typedef struct jkb_agent_setup_s {
 	char		model[JKB_NAME_LEN];
 	char		saber1[JKB_NAME_LEN];
 	jkb_chat_event_t	chat[JKB_MAX_CHAT_EVENTS];
+	jkb_start_t	start;
 } jkb_agent_setup_t;
-JKB_STATIC_ASSERT( sizeof( jkb_agent_setup_t ) == 368, "jkb_agent_setup_t size" );
+JKB_STATIC_ASSERT( sizeof( jkb_agent_setup_t ) == 404, "jkb_agent_setup_t size" );
 
 typedef struct jkb_reset_s {
 	uint32_t	engine_seed;
@@ -118,7 +128,7 @@ typedef struct jkb_reset_s {
 	jkb_agent_setup_t	agents[JKB_MAX_AGENTS];
 	jkb_agent_setup_t	bot;	// the stock bot when opponent_kind is JKB_OPPONENT_STOCK_BOT
 } jkb_reset_t;
-JKB_STATIC_ASSERT( sizeof( jkb_reset_t ) == 1136, "jkb_reset_t size" );
+JKB_STATIC_ASSERT( sizeof( jkb_reset_t ) == 1244, "jkb_reset_t size" );
 
 typedef struct jkb_usercmd_s {	// usercmd_t, fixed width
 	int32_t		server_time;

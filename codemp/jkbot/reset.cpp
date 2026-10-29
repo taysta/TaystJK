@@ -15,7 +15,14 @@
  *      (userinfo) and link (netsched.cpp);
  *   6. the opponent: a stock bot joins through the game's addbot (profile and skill), its model and
  *      hilt then set in its userinfo (GVM_ClientUserinfoChanged), and its scripted chat windows
- *      armed: during each, the talk button is held in its usercmds, as a human opening the chat.
+ *      armed: during each, the talk button is held in its usercmds, as a human opening the chat;
+ *   7. demo-state starts (P4-DSR-01): a client whose setup has an active start is put there once
+ *      everyone has spawned: its playerState takes the start's origin, velocity and view (the view
+ *      through delta_angles, as the game's SetClientViewAngle does, so its usercmds' angles keep
+ *      steering from there), the teleport bit toggles (no lerp), and its entity follows and is
+ *      relinked so the first snapshot shows it there. Health and every other game state stay as
+ *      spawned. This isn't a game path (the game's setviewpos needs cheats and throws the player
+ *      out at 400 u/s); it changes no physics or combat.
  * Between frags the game respawns players itself; the engine does nothing.
  *
  * Console commands:
@@ -38,6 +45,7 @@
 #include "jkbot_proto.h"
 
 #define JKB_DEFAULT_BOT			"Tavion"	// when RESET names no profile
+#define JKB_EF_TELEPORT_BIT		( 1 << 3 )	// bg_public.h: toggled when the origin jumps
 #define JKB_DEFAULT_BOT_SKILL	4.0f		// the Phase 1 gate's skill-4 stock bot
 
 static int episodeIndex = -1;
@@ -97,6 +105,30 @@ int JKBot_EpisodeIndex( void ) {
 
 int JKBot_RoundStart( void ) {
 	return roundStart;
+}
+
+static void ApplyStart( int clientNum, const jkb_start_t *st ) {
+	if ( clientNum < 0 || !st->active ) {
+		return;
+	}
+	playerState_t *ps = (playerState_t *)SV_GameClientNum( clientNum );
+	const usercmd_t *cmd = JKBot_IsAgent( clientNum ) ? JKBot_AgentCmd( clientNum )
+		: &svs.clients[clientNum].lastUsercmd;
+	const vec3_t view = { st->angles[0], st->angles[1], 0.0f };
+	for ( int i = 0; i < 3; i++ ) {
+		ps->origin[i] = st->origin[i];
+		ps->velocity[i] = st->velocity[i];
+		ps->viewangles[i] = view[i];
+		ps->delta_angles[i] = ANGLE2SHORT( view[i] ) - cmd->angles[i];
+	}
+	ps->eFlags ^= JKB_EF_TELEPORT_BIT;
+	sharedEntity_t *ent = SV_GentityNum( clientNum );
+	VectorCopy( ps->origin, ent->r.currentOrigin );
+	VectorCopy( ps->origin, ent->s.pos.trBase );
+	VectorCopy( ps->velocity, ent->s.pos.trDelta );
+	VectorCopy( view, ent->s.apos.trBase );
+	ent->s.eFlags ^= JKB_EF_TELEPORT_BIT;
+	SV_LinkEntity( ent );
 }
 
 static int AddStockBot( const jkb_agent_setup_t *setup, float skill ) {
@@ -208,6 +240,10 @@ qboolean JKBot_Reset( const jkb_reset_t *r, int *agentClients, int *botClient ) 
 			r->bot.num_chat_events > JKB_MAX_CHAT_EVENTS ? JKB_MAX_CHAT_EVENTS : r->bot.num_chat_events;
 		memcpy( chat, r->bot.chat, sizeof( chat[0] ) * numChat );
 		chatBot = *botClient;
+		ApplyStart( *botClient, &r->bot.start );
+	}
+	for ( int a = 0; a < r->num_agents; a++ ) {
+		ApplyStart( agentClients[a], &r->agents[a].start );
 	}
 	return qtrue;
 }
