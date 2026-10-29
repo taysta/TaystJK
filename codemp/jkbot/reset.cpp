@@ -17,7 +17,10 @@
  *      hilt then set in its userinfo (GVM_ClientUserinfoChanged), and its scripted chat windows
  *      armed: during each, the talk button is held in its usercmds, as a human opening the chat;
  *   7. demo-state starts (P4-DSR-01): a client whose setup has an active start is put there once
- *      everyone has spawned: its playerState takes the start's origin, velocity and view (the view
+ *      it has spawned (in Duel a joining client is a spectator until the game's CheckTournament
+ *      makes it a duelist and spawns it, in a later game frame: so the start waits, checked
+ *      after every game frame, JKBot_ResetGameFrame, and is dropped with a warning if the client
+ *      hasn't spawned within JKB_START_WAIT_MS): its playerState takes the start's origin, velocity and view (the view
  *      through delta_angles, as the game's SetClientViewAngle does, so its usercmds' angles keep
  *      steering from there), the teleport bit toggles (no lerp), and its entity follows and is
  *      relinked so the first snapshot shows it there. Health and every other game state stay as
@@ -46,6 +49,17 @@
 
 #define JKB_DEFAULT_BOT			"Tavion"	// when RESET names no profile
 #define JKB_EF_TELEPORT_BIT		( 1 << 3 )	// bg_public.h: toggled when the origin jumps
+#define JKB_PM_NORMAL			0			// bg_public.h pmtype_t
+#define JKB_STAT_HEALTH			0			// bg_public.h statIndex_t
+#define JKB_START_WAIT_MS		2000
+
+typedef struct {
+	int client;
+	jkb_start_t start;
+} pendingStart_t;
+static pendingStart_t pending[JKB_MAX_AGENTS + 1];
+static int numPending;
+static int pendingSince;  // sv.time when the starts were queued
 #define JKB_DEFAULT_BOT_SKILL	4.0f		// the Phase 1 gate's skill-4 stock bot
 
 static int episodeIndex = -1;
@@ -107,10 +121,15 @@ int JKBot_RoundStart( void ) {
 	return roundStart;
 }
 
-static void ApplyStart( int clientNum, const jkb_start_t *st ) {
-	if ( clientNum < 0 || !st->active ) {
-		return;
+static void QueueStart( int clientNum, const jkb_start_t *st ) {
+	if ( clientNum >= 0 && st->active && numPending < JKB_MAX_AGENTS + 1 ) {
+		pending[numPending].client = clientNum;
+		pending[numPending].start = *st;
+		numPending++;
 	}
+}
+
+static void ApplyStart( int clientNum, const jkb_start_t *st ) {
 	playerState_t *ps = (playerState_t *)SV_GameClientNum( clientNum );
 	const usercmd_t *cmd = JKBot_IsAgent( clientNum ) ? JKBot_AgentCmd( clientNum )
 		: &svs.clients[clientNum].lastUsercmd;
@@ -129,6 +148,22 @@ static void ApplyStart( int clientNum, const jkb_start_t *st ) {
 	VectorCopy( view, ent->s.apos.trBase );
 	ent->s.eFlags ^= JKB_EF_TELEPORT_BIT;
 	SV_LinkEntity( ent );
+}
+
+void JKBot_ResetGameFrame( void ) {
+	int kept = 0;
+	for ( int i = 0; i < numPending; i++ ) {
+		const playerState_t *ps = SV_GameClientNum( pending[i].client );
+		if ( ps->pm_type == JKB_PM_NORMAL && ps->stats[JKB_STAT_HEALTH] > 0 ) {
+			ApplyStart( pending[i].client, &pending[i].start );
+		} else if ( sv.time - pendingSince < JKB_START_WAIT_MS ) {
+			pending[kept++] = pending[i];
+		} else {
+			Com_Printf( "jkbot_reset: client %d didn't spawn within %d ms: its start is dropped\n",
+				pending[i].client, JKB_START_WAIT_MS );
+		}
+	}
+	numPending = kept;
 }
 
 static int AddStockBot( const jkb_agent_setup_t *setup, float skill ) {
@@ -185,6 +220,7 @@ qboolean JKBot_Reset( const jkb_reset_t *r, int *agentClients, int *botClient ) 
 	}
 	chatBot = -1;
 	numChat = 0;
+	numPending = 0;
 	// 2. limits
 	if ( r->fraglimit > 0 ) {
 		Cvar_Set( "fraglimit", va( "%i", r->fraglimit ) );
@@ -240,11 +276,12 @@ qboolean JKBot_Reset( const jkb_reset_t *r, int *agentClients, int *botClient ) 
 			r->bot.num_chat_events > JKB_MAX_CHAT_EVENTS ? JKB_MAX_CHAT_EVENTS : r->bot.num_chat_events;
 		memcpy( chat, r->bot.chat, sizeof( chat[0] ) * numChat );
 		chatBot = *botClient;
-		ApplyStart( *botClient, &r->bot.start );
+		QueueStart( *botClient, &r->bot.start );
 	}
 	for ( int a = 0; a < r->num_agents; a++ ) {
-		ApplyStart( agentClients[a], &r->agents[a].start );
+		QueueStart( agentClients[a], &r->agents[a].start );
 	}
+	pendingSince = sv.time;
 	return qtrue;
 }
 

@@ -74,6 +74,7 @@ void JKBot_Shutdown( void ) {
 void JKBot_GameFrame( int gameTime ) {
 	jkbot_frames++;
 	jkbot_gameTime = gameTime;
+	JKBot_ResetGameFrame();  // before the hash: a start is part of the frame's state
 	JKBot_HashFrame( gameTime );
 	JKBot_BenchGameFrame();
 }

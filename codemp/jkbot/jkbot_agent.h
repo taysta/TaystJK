@@ -46,6 +46,7 @@ void JKBot_BridgeService( void );  // from SV_Frame while lockstep is idle
 struct jkb_reset_s;
 void JKBot_ResetInit( void );
 qboolean JKBot_Reset( const struct jkb_reset_s *r, int *agentClients, int *botClient );
+void JKBot_ResetGameFrame( void );  // after every game frame: pending demo-state starts
 void JKBot_BotUsercmd( int clientNum, usercmd_t *cmd );  // stock bots' usercmds (scripted chat)
 int JKBot_EpisodeIndex( void );
 int JKBot_RoundStart( void );
