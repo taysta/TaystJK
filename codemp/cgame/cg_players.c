@@ -2715,7 +2715,7 @@ static void _PlayerFootStep( const vec3_t origin,
 	if (trace.fraction < 1.0f)
 		return;
 
-	trap->CM_Trace( &trace, origin, end, mins, maxs, 0, MASK_PLAYERSOLID, 0);
+	CG_Trace( &trace, origin, mins, maxs, end, cent->currentState.number, MASK_PLAYERSOLID );
 
 	// no shadow if too high
 	if ( trace.fraction >= 1.0f )
@@ -5490,7 +5490,7 @@ static qboolean CG_PlayerShadow( centity_t *cent, float *shadowPlane ) {
 	{ //stencil
 		end[2] -= 4096.0f;
 
-		trap->CM_Trace( &trace, cent->lerpOrigin, end, mins, maxs, 0, MASK_PLAYERSOLID, 0 );
+		CG_Trace( &trace, cent->lerpOrigin, mins, maxs, end, cent->currentState.number, MASK_PLAYERSOLID );
 
 		if ( trace.fraction == 1.0 || trace.startsolid || trace.allsolid )
 		{
@@ -5501,7 +5501,7 @@ static qboolean CG_PlayerShadow( centity_t *cent, float *shadowPlane ) {
 	{
 		end[2] -= SHADOW_DISTANCE;
 
-		trap->CM_Trace( &trace, cent->lerpOrigin, end, mins, maxs, 0, MASK_PLAYERSOLID, 0 );
+		CG_Trace( &trace, cent->lerpOrigin, mins, maxs, end, cent->currentState.number, MASK_PLAYERSOLID );
 
 		// no shadow if too high
 		if ( trace.fraction == 1.0 || trace.startsolid || trace.allsolid ) {
