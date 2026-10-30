@@ -2715,7 +2715,7 @@ static void _PlayerFootStep( const vec3_t origin,
 	if (trace.fraction < 1.0f)
 		return;
 
-	trap->CM_Trace( &trace, origin, end, mins, maxs, 0, MASK_PLAYERSOLID, 0);
+	CG_Trace( &trace, origin, mins, maxs, end, cent->currentState.number, MASK_PLAYERSOLID );
 
 	// no shadow if too high
 	if ( trace.fraction >= 1.0f )
