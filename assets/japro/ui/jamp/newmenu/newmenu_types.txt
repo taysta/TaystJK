@@ -1,0 +1,231 @@
+New menu row and item types
+===========================
+
+Reference for the macros in newmenuext.h and newmenuconfig.h. Tab 1 (newmenu_tab1.menu) has a
+working example of nearly every one of them.
+
+
+Page layout
+-----------
+
+Each tab is its own menuDef with up to five pages. Each page has 24 rows, 16 units tall, under
+the tab and page buttons. The panel is 240 wide: a row's label takes the left half and its
+control the right half.
+
+Pages are named with the TABn_PAGEm aliases (TAB1_PAGE1 ... TAB5_PAGE5). Every item on a page is
+put in that page's group, so the tab and page buttons can show and hide whole pages at once.
+
+Item names come from the page argument as written, so ROW_YESNO(TAB1_PAGE1, 7, ...) makes
+TAB1_PAGE1_row_7_label and TAB1_PAGE1_row_7_control. Text-only rows have no suffix.
+
+
+Common arguments
+----------------
+
+  pageName     TABn_PAGEm alias of the page the row goes on.
+  rowNumber    1 to 24. Two-line rows use this row and the next one.
+  rowText      Label shown on the left.
+  rowDesc      Help text shown at the bottom of the panel while the row is hovered.
+  rowCvar      Cvar the control reads and writes, in quotes.
+  rowAction    What the control does after it changes the cvar. See "Actions" below.
+  rowExtra     Only on the _EX variants. See "Conditions" below.
+
+Arguments can't contain commas, because commas separate macro arguments. They also can't
+contain another macro call with parentheses: the preprocessor strips the inner parentheses.
+
+
+Text rows (no control)
+----------------------
+
+  ROW_TEXT(page, row, text, desc)
+      Label in the left half.
+
+  ROW_SECTION(page, row, text, desc)
+      Label across the full width. Use it as a heading.
+
+  ROW_TEXT2(page, row, text, text2, desc)
+  ROW_SECTION2(page, row, text, text2, desc)
+      Two lines of text over two rows, half or full width. text2 sits on the second row. Use
+      row 23 or lower.
+
+  ROW_TEXT2Y(page, row, text, text2, text2AlignY, desc)
+  ROW_SECTION2Y(page, row, text, text2, text2AlignY, desc)
+      Same as above, but you choose how far down text2 sits.
+
+
+Control rows (label on the left, control on the right)
+------------------------------------------------------
+
+  ROW_YESNO(page, row, text, desc, cvar, action)
+      Toggles the cvar between 0 and 1. Shows Yes/No.
+
+  ROW_CHECKBOX(page, row, text, desc, cvar, bit, action)
+      Toggles one bit of a bitflag cvar. bit is the bit number, not a mask: 4 flips value 16.
+      Use it for cvars such as cg_strafeHelper that pack several options into one number.
+
+  ROW_MULTI(page, row, text, desc, cvar, { "Label" ; "value" ; "Label" ; "value" }, action)
+      Cycles through a list of named string values. Click to go forward, right-click to go
+      back. Separate every entry with ";". Without it the preprocessor joins neighbouring
+      strings into one and the list ends up empty.
+
+  ROW_MULTIFL(page, row, text, desc, cvar, { "Label" 0 "Label" 1 }, action)
+      Same, but the values are numbers. No separator needed.
+
+  ROW_MULTI_FEEDER(page, row, text, desc, cvar, feeder, action)
+      Cycles through a list the game builds. Only two feeders work here: 40 (FEEDER_LANGUAGES,
+      for se_language) and 19 (FEEDER_PLAYER_SPECIES).
+
+  ROW_NUMERIC(page, row, text, desc, cvar, action)
+      Box where you type a number.
+
+  ROW_EDITFIELD(page, row, text, desc, cvar, maxChars, action)
+      Box where you type text, up to maxChars characters (MAX_CHARS is 26).
+
+  ROW_SLIDERFL(page, row, text, desc, cvar, default, min, max, action)
+      Slider for a decimal value between min and max.
+
+  ROW_SLIDERINT(page, row, text, desc, cvar, default, min, max, action)
+      Slider that only lands on whole numbers.
+
+  ROW_BIND(page, row, text, desc, command, action)
+      Key binding. "command" is what gets bound, e.g. "+scores". Click it, then press a key.
+
+  ROW_ACTION(page, row, text, desc, action)
+      Button with no cvar. It just runs the action, e.g. setcvar foo 1 ;
+
+  ROW_CMD(page, row, text, desc, "command")
+      Button that runs a console command, e.g. "echo test" or "vid_restart".
+
+
+Actions
+-------
+
+The last argument of a control row runs after the control changes its cvar.
+
+  ACT_NONE      Nothing else. Use it for settings that take effect straight away.
+  ACT_DIRTY     Video setting that applies without a restart. Shows APPLY.
+  ACT_RESTART   Video setting that needs vid_restart. Shows APPLY and restarts on apply.
+
+You can also pass your own script, as long as it has no commas, e.g. setcvar foo 1 ;
+ACT_DIRTY or ACT_RESTART can be added on the end: uiScript glCustom ; ACT_RESTART
+
+Video settings: rows using ACT_DIRTY or ACT_RESTART must use the staged ui_r_* copy of the
+setting (ui_r_texturemode, ui_r_fullscreen, ui_r_picmip...), not the real r_* cvar. The menu
+copies the real values into ui_r_* when a tab opens, and APPLY copies them back. Only the cvars
+listed in UI_UpdateVideoSetup (ui_main.c) have a ui_r_* copy. Video settings that apply live,
+such as r_gamma, use the real cvar with ACT_NONE.
+
+Leaving a tab with unapplied changes, through the exit button or another tab, opens a prompt:
+APPLY, DISCARD or CANCEL. ESC and clicking outside the panel close the menu and drop the
+changes without asking (see the note in newmenuconfig.h).
+
+
+Conditions (_EX variants)
+-------------------------
+
+Every text and control row has an _EX version with one extra argument before the action, e.g.
+
+  ROW_YESNO_EX(page, row, text, desc, cvar, cvarTest cg_drawFPS showCvar { 1 }, action)
+
+The extra applies to both the label and the control. The choices are:
+
+  cvarTest X showCvar { values }      only shown while cvar X has one of the values
+  cvarTest X hideCvar { values }      hidden while cvar X has one of the values
+  cvarTest X enableCvar { values }    greyed out unless cvar X has one of the values
+  cvarTest X disableCvar { values }   greyed out while cvar X has one of the values
+
+Only one condition per item. Write the raw text as above: ROW_COND_SHOW(...) and friends only
+work directly inside a hand-written itemDef, not as an _EX argument.
+
+
+Standalone items
+----------------
+
+These aren't label+control rows. You give them a name, a group (the page) and a full rect, e.g.
+BODY_FULL_X BODY_ROW_8_Y BODY_FULL_W BODY_ROW_H2. Each has an _EX version that takes a
+condition as its last argument.
+
+  ITEM_SHADER(name, page, rect, shader, visible)
+      Draws an image.
+
+  ITEM_SHADER_COLOR(name, page, rect, shader, color, visible)
+      Draws an image tinted with a colour.
+
+  ITEM_OWNERDRAW(name, page, rect, ownerdraw, visible)
+      A widget the game draws itself, e.g. UI_VERSION or UI_GLINFO.
+
+  ITEM_LISTBOX_TEXT(name, page, rect, feeder, lineHeight, visible)
+      Scrolling list filled by a feeder, e.g. FEEDER_SERVERS for the server browser.
+
+  ITEM_MODEL(name, page, rect, "models/.../model.glm", visible)
+      3D model preview.
+
+  ITEM_TEXTSCROLL(name, page, rect, "text", maxLineChars, lineHeight, visible)
+      Box of wrapped text with a scrollbar.
+
+  ITEM_TEXTSCROLL_CVAR(name, page, rect, cvar, "fallback", maxLineChars, lineHeight, visible)
+      Same, but shows the cvar's current value.
+
+
+Low-level helpers
+-----------------
+
+Mostly for hand-written itemDefs. Tab 1 pages 4 and 5 show them in use.
+
+  ITEM_BODY_CONTROL_IMPL(name, page, rect, desc, action)
+  ITEM_BODY_CONTROL_EX_IMPL(name, page, rect, desc, condition, action)
+  ITEM_BODY_CONTROL_CMD_IMPL(name, page, rect, desc, "command")
+      The standard control box (style, colours, hover, click sound, action). Put them inside
+      itemDef { type ... cvar ... } to build a control the ROW_* set doesn't cover.
+
+  ROW_CHOICES_1 ... ROW_CHOICES_8("Label", "value", ...)
+      Builds a cvarStrList list with the ";" separators added. Only usable written straight
+      after cvarStrList in a hand-written itemDef, not as a ROW_MULTI argument.
+
+  ACT_CMD("command"), ACT_OPEN(menu), ACT_CLOSE(menu)
+      exec / open / close inside a hand-written action block. They can't be passed as a row's
+      action argument (parentheses).
+
+  ROW_COND_SHOW/HIDE/ENABLE/DISABLE(cvar, { values })
+      The conditions above, for hand-written itemDefs only.
+
+  ITEM_BODY_TEXT_BOX(_EX), TEXT_BOX_BODY(_EX), TEXT_BOX_BODY2(Y)
+      What the text rows are built from, for text at an arbitrary rect.
+
+
+Tab structure (newmenuconfig.h)
+-------------------------------
+
+A tab file is just:
+
+  menuDef
+  {
+      name newmenu_tabN
+      NEWMENU_MENU_PROPS
+      NEWMENU_TAB_LIFECYCLE(N)
+      NEWMENU_TAB_CHROME(N)
+      // ROW_* declarations
+  }
+
+  NEWMENU_MENU_PROPS
+      Position, size, hover colour and help text placement shared by every tab.
+
+  NEWMENU_TAB_LIFECYCLE(N)
+      onOpen (load video settings, show page 1, reset highlights) and onESC.
+      NEWMENU_TAB_LIFECYCLE_EX(N, script) adds your own script to the start of onOpen.
+
+  NEWMENU_TAB_CHROME(N)
+      Backgrounds, highlights, title, exit button, APPLY button, the tab row and this tab's
+      page buttons.
+
+Tab and page names and help text are the HEADER_OPTIONS_TAB_* and OPTIONS_TAB_n_PAGE_* defines
+at the top of newmenuconfig.h.
+
+
+Limits to keep in mind
+----------------------
+
+- A menu script (onOpen, an action block) is cut off at 2048 characters with no warning.
+- show/hide only reach items in the menu running the script. A popup can't hide items in the
+  tab under it.
+- Don't nest $evalint, and don't leave a macro empty: use ACT_NONE or a lone ";" instead.
