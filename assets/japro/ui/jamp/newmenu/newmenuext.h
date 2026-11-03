@@ -301,6 +301,12 @@
     HIDE_PAGE_BODIES
 
 // Hover/focus helpers.
+// The hover highlight is one shared item that MAKE_INTERACTIVE moves under the cursor and parks
+// again (RESET_HOVER) when the cursor leaves. Menus stay loaded between visits, so tabs park it
+// when they open too, or one closed under the cursor would reopen with a stale highlight.
+#define RESET_HOVER \
+    setitemrect newmenu_hover_highlight 0 0 0 0 ;
+
 #define HIGHLIGHT \
 itemDef \
 { \
@@ -313,6 +319,8 @@ itemDef \
     decoration \
 }
 
+// MAKE_INTERACTIVE hands focus to this on mouseExit so the item left behind stops pulsing in
+// focusColor. It must not be a decoration: setfocus ignores decorations.
 #define DUMMYHIGHLIGHT \
 itemDef \
 { \
@@ -322,7 +330,6 @@ itemDef \
     forecolor           COL_BLACK \
     backcolor           COL_BLACK \
     visible             0 \
-    decoration \
 }
 
 #define SELECTEDHIGHLIGHT(highlightName) \
@@ -342,7 +349,7 @@ itemDef \
         setitemrect newmenu_hover_highlight interactiveRect ; \
     } \
     mouseExit { \
-        setitemrect newmenu_hover_highlight interactiveRect ; \
+        RESET_HOVER \
         setfocus newmenu_focus_dummy ; \
     }
 
@@ -638,6 +645,7 @@ itemDef \
         MAKE_INTERACTIVE(itemRect) \
         action \
         { \
+            play  "sound/interface/button1" ; \
             defer VideoSetup NEWMENU_VIDEO_WARNING ; \
             close currentMenu ; \
         } \

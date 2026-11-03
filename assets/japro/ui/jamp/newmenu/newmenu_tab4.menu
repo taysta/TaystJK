@@ -25,6 +25,7 @@
             uiScript            getvideosetup ;
             HIDE_PAGE_UI
             HIDE_APPLY
+            RESET_HOVER
             show                MENU_CHROME_GROUP ;
             show                options_tab_4_pages ;
             show                newmenu_options_tab_4_page_1 ;
@@ -34,7 +35,6 @@
 
         onClose
         {
-            play                "sound/interface/button1" ;
             hide                MENU_CHROME_GROUP ;
             HIDE_PAGE_UI
             HIDE_APPLY
@@ -42,6 +42,7 @@
 
         onESC
         {
+            play                "sound/interface/button1" ;
             defer               VideoSetup NEWMENU_VIDEO_WARNING ;
             close               newmenu_tab4 ;
         }
