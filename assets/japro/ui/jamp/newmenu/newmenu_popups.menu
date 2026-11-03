@@ -117,7 +117,6 @@
             {
                 play            "sound/interface/button1" ;
                 close           NEWMENU_VIDEO_WARNING ;
-                HIDE_APPLY
                 uiScript        updatevideosetup ;
                 rundeferred ;
             }
@@ -145,7 +144,6 @@
             {
                 play            "sound/interface/button1" ;
                 close           NEWMENU_VIDEO_WARNING ;
-                HIDE_APPLY
                 uiScript        getvideosetup ;
                 rundeferred ;
             }
@@ -296,7 +294,6 @@
             action
             {
                 play            "sound/interface/button1" ;
-                HIDE_APPLY
                 close           all ;
                 uiScript        updatevideosetup ;
             }

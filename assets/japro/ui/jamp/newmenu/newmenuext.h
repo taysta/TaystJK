@@ -21,6 +21,10 @@
 //    expansion as a failed token read. ACT_NONE is deliberately a script semicolon, and itemDef
 //    "no extra tokens" cases use separate helper macros instead of passing an empty argument.
 //  - Use menu show/hide commands directly. "uiScript show" is not a valid uiScript command.
+//  - show/hide only search the menu running the script. A popup can't hide items in the tab
+//    underneath it.
+//  - Menu scripts are cut off at 2048 characters once parsed, with no warning. Keep onOpen and
+//    action blocks short.
 //
 //----------------------------------------------------------------------------------------------
 #ifndef NEWMENU_EXT_H
@@ -283,27 +287,23 @@
 #define NEWMENU_VIDEO_WARNING newmenu_video_warning_menu
 #define NEWMENU_VIDEO_RESTART newmenu_video_restart_menu
 
-// Video dirty-state helpers.
+// Video dirty-state helpers. The apply button follows ui_r_modified, which getvideosetup and
+// updatevideosetup reset.
 #define MARK_VIDEO_DIRTY \
-    setcvar    ui_r_modified 1 ; \
-    show       applyChanges ;
+    setcvar    ui_r_modified 1 ;
 
 #define MARK_VIDEO_RESTART \
     setcvar    ui_r_modified 1 ; \
-    setcvar    ui_vidrestart 1 ; \
-    show       applyChanges ;
-
-#define HIDE_APPLY \
-    hide        applyChanges ;
-
-#define HIDE_PAGE_UI \
-    HIDE_PAGE_BARS \
-    HIDE_PAGE_BODIES
+    setcvar    ui_vidrestart 1 ;
 
 // Hover/focus helpers.
 // The hover highlight is one shared item that MAKE_INTERACTIVE moves under the cursor and parks
 // again (RESET_HOVER) when the cursor leaves. Menus stay loaded between visits, so tabs park it
 // when they open too, or one closed under the cursor would reopen with a stale highlight.
+// MAKE_INTERACTIVE also hands focus to newmenu_focus_dummy on mouseExit, so the item left behind
+// stops pulsing in focusColor. setfocus always plays the roam sound (Script_SetFocus), so moving
+// between items plays it twice and leaving the panel plays it once. A silent clearfocus script
+// command (Menu_ClearFocus without the sound) in the UI module would fix that.
 #define RESET_HOVER \
     setitemrect newmenu_hover_highlight 0 0 0 0 ;
 
@@ -319,8 +319,8 @@ itemDef \
     decoration \
 }
 
-// MAKE_INTERACTIVE hands focus to this on mouseExit so the item left behind stops pulsing in
-// focusColor. It must not be a decoration: setfocus ignores decorations.
+// Takes focus on mouseExit (see MAKE_INTERACTIVE). It must not be a decoration: setfocus ignores
+// decorations.
 #define DUMMYHIGHLIGHT \
 itemDef \
 { \
@@ -427,13 +427,7 @@ itemDef \
         itemExtra \
     }
 
-#define ITEM_IMAGE(itemName, itemGroup, itemRect, itemShader, itemVisible) \
-    ITEM_SHADER(itemName, itemGroup, itemRect, itemShader, itemVisible)
-
-#define ITEM_IMAGE_EX(itemName, itemGroup, itemRect, itemShader, itemVisible, itemExtra) \
-    ITEM_SHADER_EX(itemName, itemGroup, itemRect, itemShader, itemVisible, itemExtra)
-
-#define ITEM_IMAGE_COLOR(itemName, itemGroup, itemRect, itemShader, itemColor, itemVisible) \
+#define ITEM_SHADER_COLOR(itemName, itemGroup, itemRect, itemShader, itemColor, itemVisible) \
     itemDef \
     { \
         name            itemName \
@@ -672,7 +666,7 @@ itemDef \
         bordercolor     COL_APPLY_BORDER \
         cvarTest        ui_r_modified \
         showCvar        { 1 } \
-        visible         0 \
+        visible         1 \
         descText        "Apply modified video settings." \
         MAKE_INTERACTIVE(APPLY_CHANGES_X APPLY_CHANGES_Y APPLY_CHANGES_W APPLY_CHANGES_H) \
         action \
@@ -724,7 +718,8 @@ itemDef \
 #define ITEM_BODY_TEXT_BOX(itemName, itemGroup, rowY, itemText, itemDesc) \
     TEXT_BOX_BODY(itemName, itemGroup, BODY_LABEL_X rowY BODY_COLUMN_W BODY_ROW_H, INVISIBLE, itemText, itemDesc)
 
-#define ITEM_TAB_BUTTON(itemName, itemGroup, itemText, itemRect, itemTextAlignX, itemDesc, targetDefaultPage, targetDefaultPageRect, targetPageBar, itemVisible) \
+// hidePages is the tab's HIDE_OPTIONS_TAB_n_PAGE_BODIES helper.
+#define ITEM_TAB_BUTTON(itemName, itemGroup, itemText, itemRect, itemTextAlignX, itemDesc, hidePages, targetDefaultPage, targetDefaultPageRect, itemVisible) \
     itemDef \
     { \
         name            itemName \
@@ -747,9 +742,7 @@ itemDef \
         { \
             play        "sound/interface/button1.wav" ; \
             defer       VideoSetup NEWMENU_VIDEO_WARNING ; \
-            HIDE_PAGE_UI \
-            HIDE_APPLY \
-            show        targetPageBar ; \
+            hidePages \
             show        targetDefaultPage ; \
             setitemrect newmenu_selected_page_highlight targetDefaultPageRect ; \
         } \
@@ -783,10 +776,8 @@ itemDef \
         } \
     }
 
-#define ITEM_PAGE_BUTTON(itemName, itemGroup, itemText, itemRect, itemTextAlignX, itemDesc, targetPage) \
-    ITEM_PAGE_BUTTON_IMPL(itemName, itemGroup, itemText, itemRect, itemTextAlignX, itemDesc, targetPage)
-
-#define ITEM_PAGE_BUTTON_IMPL(itemName, itemGroup, itemText, itemRect, itemTextAlignX, itemDesc, targetPage) \
+// hidePages is the tab's HIDE_OPTIONS_TAB_n_PAGE_BODIES helper.
+#define ITEM_PAGE_BUTTON(itemName, itemGroup, itemText, itemRect, itemTextAlignX, itemDesc, hidePages, targetPage) \
     itemDef { \
         name            itemName \
         group           itemGroup \
@@ -806,9 +797,8 @@ itemDef \
         MAKE_INTERACTIVE(itemRect) \
         action { \
             play        "sound/interface/button1.wav" ; \
-            HIDE_PAGE_UI \
+            hidePages \
             setitemrect newmenu_selected_page_highlight itemRect ; \
-            show        itemGroup ; \
             show        targetPage ; \
         } \
     }
@@ -837,10 +827,12 @@ itemDef \
     close menuName ;
 
 // Body control primitives.
+// ITEM_BODY_CONTROL_STYLE is the name, look and hover behaviour every body control shares.
 // ITEM_BODY_CONTROL_IMPL emits a normal control. ITEM_BODY_CONTROL_EX_IMPL also splices
 // itemDef-level extras such as cvarTest/showCvar/hideCvar/enableCvar/disableCvar.
+// ITEM_BODY_CONTROL_CMD_IMPL execs a command string.
 // controlAction is inserted inside action { ... } after play.
-#define ITEM_BODY_CONTROL_IMPL(controlName, controlGroup, controlRect, controlDesc, controlAction) \
+#define ITEM_BODY_CONTROL_STYLE(controlName, controlGroup, controlRect, controlDesc) \
     name                controlName##_control \
     group               controlGroup \
     text                BODY_OPTION_TEXT \
@@ -857,7 +849,10 @@ itemDef \
     bordercolor         COL_ROW_CONTROL_BORDER \
     descText            controlDesc \
     visible             VISIBLE \
-    MAKE_INTERACTIVE(controlRect) \
+    MAKE_INTERACTIVE(controlRect)
+
+#define ITEM_BODY_CONTROL_IMPL(controlName, controlGroup, controlRect, controlDesc, controlAction) \
+    ITEM_BODY_CONTROL_STYLE(controlName, controlGroup, controlRect, controlDesc) \
     action \
     { \
         play            "sound/interface/button1" ; \
@@ -865,24 +860,8 @@ itemDef \
     }
 
 #define ITEM_BODY_CONTROL_EX_IMPL(controlName, controlGroup, controlRect, controlDesc, controlExtra, controlAction) \
-    name                controlName##_control \
-    group               controlGroup \
-    text                BODY_OPTION_TEXT \
-    rect                controlRect \
-    textalign           ITEM_ALIGN_RIGHT \
-    textalignx          BODY_OPTION_PADDING \
-    textaligny          BODY_OPTION_OFFSET \
-    textscale           BODY_OPTION_SCALE \
-    font                BODY_OPTION_FONT \
-    style               WINDOW_STYLE_FILLED \
-    forecolor           COL_TEXT_PRIMARY \
-    backcolor           COL_ROW_CONTROL_BACK \
-    border              1 \
-    bordercolor         COL_ROW_CONTROL_BORDER \
-    descText            controlDesc \
-    visible             VISIBLE \
+    ITEM_BODY_CONTROL_STYLE(controlName, controlGroup, controlRect, controlDesc) \
     controlExtra \
-    MAKE_INTERACTIVE(controlRect) \
     action \
     { \
         play            "sound/interface/button1" ; \
@@ -890,67 +869,20 @@ itemDef \
     }
 
 #define ITEM_BODY_CONTROL_CMD_IMPL(controlName, controlGroup, controlRect, controlDesc, controlCommand) \
-    name                controlName##_control \
-    group               controlGroup \
-    text                BODY_OPTION_TEXT \
-    rect                controlRect \
-    textalign           ITEM_ALIGN_RIGHT \
-    textalignx          BODY_OPTION_PADDING \
-    textaligny          BODY_OPTION_OFFSET \
-    textscale           BODY_OPTION_SCALE \
-    font                BODY_OPTION_FONT \
-    style               WINDOW_STYLE_FILLED \
-    forecolor           COL_TEXT_PRIMARY \
-    backcolor           COL_ROW_CONTROL_BACK \
-    border              1 \
-    bordercolor         COL_ROW_CONTROL_BORDER \
-    descText            controlDesc \
-    visible             VISIBLE \
-    MAKE_INTERACTIVE(controlRect) \
+    ITEM_BODY_CONTROL_STYLE(controlName, controlGroup, controlRect, controlDesc) \
     action \
     { \
         play            "sound/interface/button1" ; \
         exec            controlCommand ; \
     }
 
-// Backwards-compatible action aliases for older helper names.
-#define ITEM_BODY_GENERIC(controlName, controlGroup, controlRect, controlDesc) \
-    ITEM_BODY_CONTROL_IMPL(controlName, controlGroup, controlRect, controlDesc, ACT_NONE)
-
-#define ITEM_BODY_D(controlName, controlGroup, controlRect, controlDesc) \
-    ITEM_BODY_CONTROL_IMPL(controlName, controlGroup, controlRect, controlDesc, ACT_DIRTY)
-
-#define ITEM_BODY_DR(controlName, controlGroup, controlRect, controlDesc) \
-    ITEM_BODY_CONTROL_IMPL(controlName, controlGroup, controlRect, controlDesc, ACT_RESTART)
-
-#define ITEM_BODY_ACTION_IMPL(controlName, controlGroup, controlRect, controlDesc, controlAction) \
-    ITEM_BODY_CONTROL_IMPL(controlName, controlGroup, controlRect, controlDesc, controlAction)
-
-#define ITEM_BODY_CMD_IMPL(controlName, controlGroup, controlRect, controlDesc, controlCommand) \
-    ITEM_BODY_CONTROL_CMD_IMPL(controlName, controlGroup, controlRect, controlDesc, controlCommand)
-
-#define ITEM_BODY_GENERIC_COND(controlName, controlGroup, controlRect, controlDesc, controlCond) \
-    ITEM_BODY_CONTROL_EX_IMPL(controlName, controlGroup, controlRect, controlDesc, controlCond, ACT_NONE)
-
-#define ITEM_BODY_D_COND(controlName, controlGroup, controlRect, controlDesc, controlCond) \
-    ITEM_BODY_CONTROL_EX_IMPL(controlName, controlGroup, controlRect, controlDesc, controlCond, ACT_DIRTY)
-
-#define ITEM_BODY_DR_COND(controlName, controlGroup, controlRect, controlDesc, controlCond) \
-    ITEM_BODY_CONTROL_EX_IMPL(controlName, controlGroup, controlRect, controlDesc, controlCond, ACT_RESTART)
-
-#define ITEM_BODY_ACTION_COND_IMPL(controlName, controlGroup, controlRect, controlDesc, controlCond, controlAction) \
-    ITEM_BODY_CONTROL_EX_IMPL(controlName, controlGroup, controlRect, controlDesc, controlCond, controlAction)
-
-#define ITEM_BODY_BUTTON_IMPL(controlName, controlGroup, controlRect, controlDesc, controlAction) \
-    ITEM_BODY_ACTION_IMPL(controlName, controlGroup, controlRect, controlDesc, controlAction)
-
 // Body control item wrappers.
 // Each wrapper emits a left-side TEXT_BOX_BODY label plus a right-side control in the same row.
 //
 // Row action model:
 // - Pass ACT_NONE for ordinary controls.
-// - Pass ACT_DIRTY for video changes that can apply without vid_restart.
-// - Pass ACT_RESTART for video changes that require vid_restart.
+// - Pass ACT_DIRTY for staged ui_r_* video changes that can apply without vid_restart.
+// - Pass ACT_RESTART for staged ui_r_* video changes that require vid_restart.
 // - Pass a raw custom action fragment for special rows, e.g. uiScript glCustom ; ACT_RESTART
 // - Use ROW_CMD for exec commands. Parameterized action helpers such as ACT_CMD(...),
 //   ACT_OPEN(...), and ACT_CLOSE(...) cannot be forwarded as rowAction arguments because the
@@ -1150,9 +1082,6 @@ itemDef \
         ITEM_BODY_CONTROL_CMD_IMPL(rowName, rowGroup, BODY_CONTROL_X rowY BODY_COLUMN_W BODY_ROW_H, rowDesc, rowCommand) \
     }
 
-#define ITEM_BODY_BUTTON(rowName, rowGroup, rowY, rowText, rowDesc, rowAction) \
-    ITEM_BODY_ACTION(rowName, rowGroup, rowY, rowText, rowDesc, rowAction)
-
 #define ITEM_BODY_MULTI(rowName, rowGroup, rowY, rowText, rowDesc, rowCvar, rowChoices, rowAction) \
     TEXT_BOX_BODY(rowName##_label, rowGroup, BODY_LABEL_X rowY BODY_COLUMN_W BODY_ROW_H, INVISIBLE, rowText, rowDesc) \
     itemDef \
@@ -1205,9 +1134,13 @@ itemDef \
 //
 // Example:
 //   ROW_YESNO(PAGE, 1, "Simple Items", "Use simple item models.", "cg_simpleItems", ACT_NONE)
-//   ROW_SLIDERFL(PAGE, 2, "Gamma", "Adjust gamma.", "ui_r_gamma", 1.0, 0.5, 3.0, ACT_DIRTY)
-//   ROW_MULTI(PAGE, 3, "Texture Filter", "Texture filtering.", "ui_r_texturemode", { "Bilinear" "GL_LINEAR_MIPMAP_NEAREST" "Trilinear" "GL_LINEAR_MIPMAP_LINEAR" }, ACT_RESTART)
-//   ROW_ACTION(PAGE, 4, "Apply", "Apply video settings.", uiScript updatevideosetup ; HIDE_APPLY)
+//   ROW_SLIDERFL(PAGE, 2, "Gamma", "Adjust gamma.", "r_gamma", 1.0, 0.5, 3.0, ACT_NONE)
+//   ROW_MULTI(PAGE, 3, "Texture Filter", "Texture filtering.", "ui_r_texturemode", { "Bilinear" "GL_LINEAR_MIPMAP_NEAREST" "Trilinear" "GL_LINEAR_MIPMAP_LINEAR" }, ACT_DIRTY)
+//   ROW_ACTION(PAGE, 4, "Apply", "Apply video settings.", uiScript updatevideosetup ;)
+//
+// Video settings go through the staged ui_r_* cvars that getvideosetup/updatevideosetup copy
+// (see UI_UpdateVideoSetup), with ACT_DIRTY or ACT_RESTART. Settings that apply live, such as
+// r_gamma, use the real cvar and ACT_NONE.
 //
 // Item ID is automatically generated as:   <page>_row_<row>
 
@@ -1329,8 +1262,5 @@ itemDef \
 
 #define ROW_CMD(pageName, rowNumber, rowText, rowDesc, rowCommand) \
     ITEM_BODY_CMD(pageName##_row_##rowNumber, pageName, BODY_ROW_##rowNumber##_Y, rowText, rowDesc, rowCommand)
-
-#define ROW_BUTTON(pageName, rowNumber, rowText, rowDesc, rowAction) \
-    ROW_ACTION(pageName, rowNumber, rowText, rowDesc, rowAction)
 
 #endif

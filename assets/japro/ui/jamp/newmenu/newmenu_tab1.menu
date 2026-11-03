@@ -94,11 +94,11 @@
         ROW_SLIDERFL(TAB1_PAGE1, 14,
             "Slider Float",
             "ROW_SLIDERFL",
-            "ui_r_gamma",
+            "ui_r_intensity",
             1.0,
-            0.5,
+            1.0,
             3.0,
-            ACT_DIRTY)
+            ACT_RESTART)
 
         // SLIDER INT
         ROW_SLIDERINT(TAB1_PAGE1, 15,
@@ -133,14 +133,14 @@
         ROW_YESNO(TAB1_PAGE1, 19,
             "Dirty",
             "ACT_DIRTY",
-            "cg_simpleItems",
+            "ui_r_fastSky",
             ACT_DIRTY)
 
         // RESTART
         ROW_YESNO(TAB1_PAGE1, 20,
             "Restart",
             "ACT_RESTART",
-            "r_fullscreen",
+            "ui_r_fullscreen",
             ACT_RESTART)
 
         // Leave some empty rows to check spacing
@@ -174,7 +174,7 @@
             ACT_NONE)
 
         ROW_NUMERIC_EX(TAB1_PAGE2, 6, "Numeric EX", "ROW_NUMERIC_EX", "cg_fov", cvarTest cg_dynamicCrosshair enableCvar { 1 }, ACT_NONE)
-        ROW_SLIDERFL_EX(TAB1_PAGE2, 7, "Slider Float EX", "ROW_SLIDERFL_EX", "ui_r_gamma", 1.0, 0.5, 3.0, cvarTest cg_dynamicCrosshair enableCvar { 1 }, ACT_DIRTY)
+        ROW_SLIDERFL_EX(TAB1_PAGE2, 7, "Slider Float EX", "ROW_SLIDERFL_EX", "ui_r_intensity", 1.0, 1.0, 3.0, cvarTest cg_dynamicCrosshair enableCvar { 1 }, ACT_RESTART)
         ROW_SLIDERINT_EX(TAB1_PAGE2, 8, "Slider Int EX", "ROW_SLIDERINT_EX", "cg_crosshairSize", 24, 8, 64, cvarTest cg_dynamicCrosshair enableCvar { 1 }, ACT_NONE)
         ROW_CHECKBOX_EX(TAB1_PAGE2, 9, "Checkbox EX", "ROW_CHECKBOX_EX", "cg_strafeHelper", 4, cvarTest cg_dynamicCrosshair enableCvar { 1 }, ACT_NONE)
         ROW_YESNO_EX(TAB1_PAGE2, 10, "Yes/No EX", "ROW_YESNO_EX", "cg_drawFPS", cvarTest cg_dynamicCrosshair enableCvar { 1 }, ACT_NONE)
@@ -190,16 +190,13 @@
         ROW_SECTION2(TAB1_PAGE2, 17, "Section2", "Second line", "ROW_SECTION2")
         ROW_TEXT2Y(TAB1_PAGE2, 19, "Text2Y", "Custom Y", 8, "ROW_TEXT2Y")
         ROW_SECTION2Y(TAB1_PAGE2, 21, "Section2Y", "Custom Y", 8, "ROW_SECTION2Y")
-        ROW_BUTTON(TAB1_PAGE2, 23, "Button Alias", "ROW_BUTTON", setcvar ui_newmenu_button_test 1 ;)
         ROW_CMD(TAB1_PAGE2, 24, "Command", "ROW_CMD", "echo ROW_CMD_PAGE2")
 
 
         // Page 3 - standalone ITEM_* widget helpers
         ITEM_SHADER(tab1_page3_shader, TAB1_PAGE3, BODY_FULL_X BODY_ROW_1_Y BODY_FULL_W BODY_ROW_H, "white", INVISIBLE)
         ITEM_SHADER_EX(tab1_page3_shader_ex, TAB1_PAGE3, BODY_FULL_X BODY_ROW_2_Y BODY_FULL_W BODY_ROW_H, "white", INVISIBLE, cvarTest cg_drawFPS showCvar { 1 })
-        ITEM_IMAGE(tab1_page3_image, TAB1_PAGE3, BODY_FULL_X BODY_ROW_3_Y BODY_FULL_W BODY_ROW_H, "white", INVISIBLE)
-        ITEM_IMAGE_EX(tab1_page3_image_ex, TAB1_PAGE3, BODY_FULL_X BODY_ROW_4_Y BODY_FULL_W BODY_ROW_H, "white", INVISIBLE, cvarTest cg_drawFPS showCvar { 1 })
-        ITEM_IMAGE_COLOR(tab1_page3_image_color, TAB1_PAGE3, BODY_FULL_X BODY_ROW_5_Y BODY_FULL_W BODY_ROW_H, "white", COL_TEXT_PRIMARY, INVISIBLE)
+        ITEM_SHADER_COLOR(tab1_page3_shader_color, TAB1_PAGE3, BODY_FULL_X BODY_ROW_5_Y BODY_FULL_W BODY_ROW_H, "white", COL_TEXT_PRIMARY, INVISIBLE)
 
         ITEM_OWNERDRAW(tab1_page3_ownerdraw, TAB1_PAGE3, BODY_FULL_X BODY_ROW_6_Y BODY_FULL_W BODY_ROW_H, UI_VERSION, INVISIBLE)
         ITEM_OWNERDRAW_EX(tab1_page3_ownerdraw_ex, TAB1_PAGE3, BODY_FULL_X BODY_ROW_7_Y BODY_FULL_W BODY_ROW_H, UI_GLINFO, INVISIBLE, cvarTest cg_drawFPS showCvar { 1 })
@@ -445,35 +442,32 @@
         // Page 5 - low-level body wrapper fixtures
         ROW_SECTION(TAB1_PAGE5, 1, "Low-Level Body", "Direct ITEM_BODY_* wrappers")
 
-        TEXT_BOX_BODY(tab1_page5_body_generic_label, TAB1_PAGE5, BODY_LABEL_X BODY_ROW_2_Y BODY_COLUMN_W BODY_ROW_H, INVISIBLE, "ITEM_BODY_GENERIC", "Back-compat ACT_NONE body")
-        itemDef { type ITEM_TYPE_BUTTON ITEM_BODY_GENERIC(tab1_page5_body_generic, TAB1_PAGE5, BODY_CONTROL_X BODY_ROW_2_Y BODY_COLUMN_W BODY_ROW_H, "ITEM_BODY_GENERIC") }
+        TEXT_BOX_BODY(tab1_page5_body_none_label, TAB1_PAGE5, BODY_LABEL_X BODY_ROW_2_Y BODY_COLUMN_W BODY_ROW_H, INVISIBLE, "CONTROL ACT_NONE", "ITEM_BODY_CONTROL_IMPL")
+        itemDef { type ITEM_TYPE_BUTTON ITEM_BODY_CONTROL_IMPL(tab1_page5_body_none, TAB1_PAGE5, BODY_CONTROL_X BODY_ROW_2_Y BODY_COLUMN_W BODY_ROW_H, "ITEM_BODY_CONTROL_IMPL ACT_NONE", ACT_NONE) }
 
-        TEXT_BOX_BODY(tab1_page5_body_d_label, TAB1_PAGE5, BODY_LABEL_X BODY_ROW_3_Y BODY_COLUMN_W BODY_ROW_H, INVISIBLE, "ITEM_BODY_D", "Back-compat dirty body")
-        itemDef { type ITEM_TYPE_BUTTON ITEM_BODY_D(tab1_page5_body_d, TAB1_PAGE5, BODY_CONTROL_X BODY_ROW_3_Y BODY_COLUMN_W BODY_ROW_H, "ITEM_BODY_D") }
+        TEXT_BOX_BODY(tab1_page5_body_dirty_label, TAB1_PAGE5, BODY_LABEL_X BODY_ROW_3_Y BODY_COLUMN_W BODY_ROW_H, INVISIBLE, "CONTROL ACT_DIRTY", "ITEM_BODY_CONTROL_IMPL")
+        itemDef { type ITEM_TYPE_BUTTON ITEM_BODY_CONTROL_IMPL(tab1_page5_body_dirty, TAB1_PAGE5, BODY_CONTROL_X BODY_ROW_3_Y BODY_COLUMN_W BODY_ROW_H, "ITEM_BODY_CONTROL_IMPL ACT_DIRTY", ACT_DIRTY) }
 
-        TEXT_BOX_BODY(tab1_page5_body_dr_label, TAB1_PAGE5, BODY_LABEL_X BODY_ROW_4_Y BODY_COLUMN_W BODY_ROW_H, INVISIBLE, "ITEM_BODY_DR", "Back-compat restart body")
-        itemDef { type ITEM_TYPE_BUTTON ITEM_BODY_DR(tab1_page5_body_dr, TAB1_PAGE5, BODY_CONTROL_X BODY_ROW_4_Y BODY_COLUMN_W BODY_ROW_H, "ITEM_BODY_DR") }
+        TEXT_BOX_BODY(tab1_page5_body_restart_label, TAB1_PAGE5, BODY_LABEL_X BODY_ROW_4_Y BODY_COLUMN_W BODY_ROW_H, INVISIBLE, "CONTROL ACT_RESTART", "ITEM_BODY_CONTROL_IMPL")
+        itemDef { type ITEM_TYPE_BUTTON ITEM_BODY_CONTROL_IMPL(tab1_page5_body_restart, TAB1_PAGE5, BODY_CONTROL_X BODY_ROW_4_Y BODY_COLUMN_W BODY_ROW_H, "ITEM_BODY_CONTROL_IMPL ACT_RESTART", ACT_RESTART) }
 
-        TEXT_BOX_BODY(tab1_page5_body_action_label, TAB1_PAGE5, BODY_LABEL_X BODY_ROW_5_Y BODY_COLUMN_W BODY_ROW_H, INVISIBLE, "ACTION_IMPL", "Custom action body")
-        itemDef { type ITEM_TYPE_BUTTON ITEM_BODY_ACTION_IMPL(tab1_page5_body_action, TAB1_PAGE5, BODY_CONTROL_X BODY_ROW_5_Y BODY_COLUMN_W BODY_ROW_H, "ITEM_BODY_ACTION_IMPL", setcvar ui_newmenu_body_action_impl 1 ;) }
+        TEXT_BOX_BODY(tab1_page5_body_action_label, TAB1_PAGE5, BODY_LABEL_X BODY_ROW_5_Y BODY_COLUMN_W BODY_ROW_H, INVISIBLE, "CONTROL custom", "ITEM_BODY_CONTROL_IMPL")
+        itemDef { type ITEM_TYPE_BUTTON ITEM_BODY_CONTROL_IMPL(tab1_page5_body_action, TAB1_PAGE5, BODY_CONTROL_X BODY_ROW_5_Y BODY_COLUMN_W BODY_ROW_H, "ITEM_BODY_CONTROL_IMPL custom action", setcvar ui_newmenu_body_action_impl 1 ;) }
 
-        TEXT_BOX_BODY(tab1_page5_body_cmd_label, TAB1_PAGE5, BODY_LABEL_X BODY_ROW_6_Y BODY_COLUMN_W BODY_ROW_H, INVISIBLE, "CMD_IMPL", "Exec command body")
-        itemDef { type ITEM_TYPE_BUTTON ITEM_BODY_CMD_IMPL(tab1_page5_body_cmd, TAB1_PAGE5, BODY_CONTROL_X BODY_ROW_6_Y BODY_COLUMN_W BODY_ROW_H, "ITEM_BODY_CMD_IMPL", "echo body_cmd_impl") }
+        TEXT_BOX_BODY(tab1_page5_body_cmd_label, TAB1_PAGE5, BODY_LABEL_X BODY_ROW_6_Y BODY_COLUMN_W BODY_ROW_H, INVISIBLE, "CONTROL_CMD", "ITEM_BODY_CONTROL_CMD_IMPL")
+        itemDef { type ITEM_TYPE_BUTTON ITEM_BODY_CONTROL_CMD_IMPL(tab1_page5_body_cmd, TAB1_PAGE5, BODY_CONTROL_X BODY_ROW_6_Y BODY_COLUMN_W BODY_ROW_H, "ITEM_BODY_CONTROL_CMD_IMPL", "echo body_cmd_impl") }
 
-        TEXT_BOX_BODY(tab1_page5_body_button_label, TAB1_PAGE5, BODY_LABEL_X BODY_ROW_7_Y BODY_COLUMN_W BODY_ROW_H, INVISIBLE, "BUTTON_IMPL", "Button alias body")
-        itemDef { type ITEM_TYPE_BUTTON ITEM_BODY_BUTTON_IMPL(tab1_page5_body_button, TAB1_PAGE5, BODY_CONTROL_X BODY_ROW_7_Y BODY_COLUMN_W BODY_ROW_H, "ITEM_BODY_BUTTON_IMPL", setcvar ui_newmenu_body_button_impl 1 ;) }
+        TEXT_BOX_BODY(tab1_page5_body_none_ex_label, TAB1_PAGE5, BODY_LABEL_X BODY_ROW_8_Y BODY_COLUMN_W BODY_ROW_H, INVISIBLE, "EX ACT_NONE", "ITEM_BODY_CONTROL_EX_IMPL")
+        itemDef { type ITEM_TYPE_BUTTON ITEM_BODY_CONTROL_EX_IMPL(tab1_page5_body_none_ex, TAB1_PAGE5, BODY_CONTROL_X BODY_ROW_8_Y BODY_COLUMN_W BODY_ROW_H, "ITEM_BODY_CONTROL_EX_IMPL ACT_NONE", cvarTest cg_drawFPS showCvar { 0 }, ACT_NONE) }
 
-        TEXT_BOX_BODY(tab1_page5_body_generic_cond_label, TAB1_PAGE5, BODY_LABEL_X BODY_ROW_8_Y BODY_COLUMN_W BODY_ROW_H, INVISIBLE, "GENERIC_COND", "Conditional ACT_NONE body")
-        itemDef { type ITEM_TYPE_BUTTON ITEM_BODY_GENERIC_COND(tab1_page5_body_generic_cond, TAB1_PAGE5, BODY_CONTROL_X BODY_ROW_8_Y BODY_COLUMN_W BODY_ROW_H, "ITEM_BODY_GENERIC_COND", cvarTest cg_drawFPS showCvar { 0 }) }
+        TEXT_BOX_BODY(tab1_page5_body_dirty_ex_label, TAB1_PAGE5, BODY_LABEL_X BODY_ROW_9_Y BODY_COLUMN_W BODY_ROW_H, INVISIBLE, "EX ACT_DIRTY", "ITEM_BODY_CONTROL_EX_IMPL")
+        itemDef { type ITEM_TYPE_BUTTON ITEM_BODY_CONTROL_EX_IMPL(tab1_page5_body_dirty_ex, TAB1_PAGE5, BODY_CONTROL_X BODY_ROW_9_Y BODY_COLUMN_W BODY_ROW_H, "ITEM_BODY_CONTROL_EX_IMPL ACT_DIRTY", cvarTest cg_dynamicCrosshair enableCvar { 0 }, ACT_DIRTY) }
 
-        TEXT_BOX_BODY(tab1_page5_body_d_cond_label, TAB1_PAGE5, BODY_LABEL_X BODY_ROW_9_Y BODY_COLUMN_W BODY_ROW_H, INVISIBLE, "D_COND", "Conditional dirty body")
-        itemDef { type ITEM_TYPE_BUTTON ITEM_BODY_D_COND(tab1_page5_body_d_cond, TAB1_PAGE5, BODY_CONTROL_X BODY_ROW_9_Y BODY_COLUMN_W BODY_ROW_H, "ITEM_BODY_D_COND", cvarTest cg_dynamicCrosshair enableCvar { 0 }) }
+        TEXT_BOX_BODY(tab1_page5_body_restart_ex_label, TAB1_PAGE5, BODY_LABEL_X BODY_ROW_10_Y BODY_COLUMN_W BODY_ROW_H, INVISIBLE, "EX ACT_RESTART", "ITEM_BODY_CONTROL_EX_IMPL")
+        itemDef { type ITEM_TYPE_BUTTON ITEM_BODY_CONTROL_EX_IMPL(tab1_page5_body_restart_ex, TAB1_PAGE5, BODY_CONTROL_X BODY_ROW_10_Y BODY_COLUMN_W BODY_ROW_H, "ITEM_BODY_CONTROL_EX_IMPL ACT_RESTART", cvarTest cg_crosshairIdentifyTarget disableCvar { 1 }, ACT_RESTART) }
 
-        TEXT_BOX_BODY(tab1_page5_body_dr_cond_label, TAB1_PAGE5, BODY_LABEL_X BODY_ROW_10_Y BODY_COLUMN_W BODY_ROW_H, INVISIBLE, "DR_COND", "Conditional restart body")
-        itemDef { type ITEM_TYPE_BUTTON ITEM_BODY_DR_COND(tab1_page5_body_dr_cond, TAB1_PAGE5, BODY_CONTROL_X BODY_ROW_10_Y BODY_COLUMN_W BODY_ROW_H, "ITEM_BODY_DR_COND", cvarTest cg_crosshairIdentifyTarget disableCvar { 1 }) }
-
-        TEXT_BOX_BODY(tab1_page5_body_action_cond_label, TAB1_PAGE5, BODY_LABEL_X BODY_ROW_11_Y BODY_COLUMN_W BODY_ROW_H, INVISIBLE, "ACTION_COND", "Conditional custom action body")
-        itemDef { type ITEM_TYPE_BUTTON ITEM_BODY_ACTION_COND_IMPL(tab1_page5_body_action_cond, TAB1_PAGE5, BODY_CONTROL_X BODY_ROW_11_Y BODY_COLUMN_W BODY_ROW_H, "ITEM_BODY_ACTION_COND_IMPL", cvarTest cg_drawTimer hideCvar { 1 }, setcvar ui_newmenu_body_action_cond 1 ;) }
+        TEXT_BOX_BODY(tab1_page5_body_action_ex_label, TAB1_PAGE5, BODY_LABEL_X BODY_ROW_11_Y BODY_COLUMN_W BODY_ROW_H, INVISIBLE, "EX custom", "ITEM_BODY_CONTROL_EX_IMPL")
+        itemDef { type ITEM_TYPE_BUTTON ITEM_BODY_CONTROL_EX_IMPL(tab1_page5_body_action_ex, TAB1_PAGE5, BODY_CONTROL_X BODY_ROW_11_Y BODY_COLUMN_W BODY_ROW_H, "ITEM_BODY_CONTROL_EX_IMPL custom action", cvarTest cg_drawTimer hideCvar { 1 }, setcvar ui_newmenu_body_action_cond 1 ;) }
 
         ITEM_BODY_TEXT_BOX(tab1_page5_direct_text_box, TAB1_PAGE5, BODY_ROW_12_Y, "ITEM_BODY_TEXT_BOX", "Direct body text wrapper")
         ITEM_BODY_TEXT_BOX_EX(tab1_page5_direct_text_box_ex, TAB1_PAGE5, BODY_ROW_13_Y, "ITEM_BODY_TEXT_BOX_EX", "Direct body text EX wrapper", cvarTest cg_drawFPS showCvar { 0 })

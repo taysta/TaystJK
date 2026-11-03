@@ -15,8 +15,8 @@
 //  - Use TAB#_PAGE# aliases as the page argument for ROW_* declarations.
 //  - Do not nest $evalint. Keep reusable math in *_EXPR macros and use $evalint only at the final
 //    value/rect-component layer.
-//  - HIDE_PAGE_BARS and HIDE_PAGE_BODIES are used by newmenuext.h helper macros after both
-//    headers have been included, so avoid moving them into menu-local scope.
+//  - Each tab menu only holds its own pages, so page switches hide just that tab's bodies with
+//    HIDE_OPTIONS_TAB_n_PAGE_BODIES.
 //
 //----------------------------------------------------------------------------------------------
 #ifndef NEWMENU_CONFIG_H
@@ -215,14 +215,7 @@
 #define TAB5_PAGE4 newmenu_options_tab_5_page_4
 #define TAB5_PAGE5 newmenu_options_tab_5_page_5
 
-// Shared visibility helpers.
-#define HIDE_PAGE_BARS \
-    hide        options_tab_1_pages ; \
-    hide        options_tab_2_pages ; \
-    hide        options_tab_3_pages ; \
-    hide        options_tab_4_pages ; \
-    hide        options_tab_5_pages ;
-
+// Per-tab page body hide helpers.
 #define HIDE_OPTIONS_TAB_1_PAGE_BODIES \
     hide        newmenu_options_tab_1_page_1 ; \
     hide        newmenu_options_tab_1_page_2 ; \
@@ -258,13 +251,6 @@
     hide        newmenu_options_tab_5_page_4 ; \
     hide        newmenu_options_tab_5_page_5 ;
 
-#define HIDE_PAGE_BODIES \
-    HIDE_OPTIONS_TAB_1_PAGE_BODIES \
-    HIDE_OPTIONS_TAB_2_PAGE_BODIES \
-    HIDE_OPTIONS_TAB_3_PAGE_BODIES \
-    HIDE_OPTIONS_TAB_4_PAGE_BODIES \
-    HIDE_OPTIONS_TAB_5_PAGE_BODIES
-
 //----------------------------------------------------------------------------------------------
 //
 //  Shared tab menu chrome.
@@ -280,9 +266,14 @@
 //          // ROW_* declarations...
 //      }
 //
-//  - Menu sounds belong to the action that closes a tab (ESC, the exit button, tab buttons), not
-//    to onClose: tab buttons and scripts such as "close all" close tabs too, and would play
-//    the sound a second time.
+//  - Only the exit and tab buttons show the unapplied-video prompt. In game, ESC closes every
+//    menu without running onESC (UI_KeyEvent calls Menus_CloseAll unless a fullScreen menu is
+//    visible), and outOfBoundsClick closes the tab through onClose only, so both drop unapplied
+//    changes silently. onESC stays so the prompt works if that changes. The fix is a small UI
+//    module change: an opt-in menuDef keyword that makes UI_KeyEvent pass ESC to Menu_HandleKey
+//    and makes Menus_HandleOOBClick run onESC for that menu.
+//  - Menu sounds belong to the action that closes a tab (onESC, the exit button, tab buttons).
+//    Tabs have no onClose: onOpen resets everything they show.
 //  - NEWMENU_TAB_LIFECYCLE_EX(n, extraOnOpen) adds a fragment to the start of onOpen. The
 //    fragment can't contain commas. NEWMENU_TAB_LIFECYCLE fills it with a lone ";", which
 //    menu scripts skip.
@@ -304,20 +295,13 @@
     { \
         uiScript            getvideosetup ; \
         extraOnOpen \
-        HIDE_PAGE_UI \
-        HIDE_APPLY \
+        HIDE_OPTIONS_TAB_##n##_PAGE_BODIES \
         RESET_HOVER \
         show                MENU_CHROME_GROUP ; \
         show                options_tab_##n##_pages ; \
         show                newmenu_options_tab_##n##_page_1 ; \
         setitemrect         newmenu_selected_tab_highlight HEADER_OPTIONS_TAB_##n##_RECT ; \
         setitemrect         newmenu_selected_page_highlight OPTIONS_TAB_##n##_PAGE_1_RECT ; \
-    } \
-    onClose \
-    { \
-        hide                MENU_CHROME_GROUP ; \
-        HIDE_PAGE_UI \
-        HIDE_APPLY \
     } \
     onESC \
     { \
@@ -331,7 +315,7 @@
 
 // The current tab's cell resets it to page 1; the others switch to their own menu.
 #define NEWMENU_TAB_ACTIVE(i) \
-    ITEM_TAB_BUTTON(options_tab_##i##_button, MENU_CHROME_GROUP, HEADER_OPTIONS_TAB_##i##_TEXT, HEADER_OPTIONS_TAB_##i##_RECT, HEADER_OPTIONS_TAB_HALF_WIDTH, HEADER_OPTIONS_TAB_##i##_DESC_TEXT, newmenu_options_tab_##i##_page_1, OPTIONS_TAB_##i##_PAGE_1_RECT, options_tab_##i##_pages, VISIBLE)
+    ITEM_TAB_BUTTON(options_tab_##i##_button, MENU_CHROME_GROUP, HEADER_OPTIONS_TAB_##i##_TEXT, HEADER_OPTIONS_TAB_##i##_RECT, HEADER_OPTIONS_TAB_HALF_WIDTH, HEADER_OPTIONS_TAB_##i##_DESC_TEXT, HIDE_OPTIONS_TAB_##i##_PAGE_BODIES, newmenu_options_tab_##i##_page_1, OPTIONS_TAB_##i##_PAGE_1_RECT, VISIBLE)
 
 #define NEWMENU_TAB_INACTIVE(n, i) \
     ITEM_TAB_NAV(options_tab_##i##_button, MENU_CHROME_GROUP, HEADER_OPTIONS_TAB_##i##_TEXT, HEADER_OPTIONS_TAB_##i##_RECT, HEADER_OPTIONS_TAB_HALF_WIDTH, HEADER_OPTIONS_TAB_##i##_DESC_TEXT, newmenu_tab##n, newmenu_tab##i, VISIBLE)
@@ -372,7 +356,7 @@
     NEWMENU_TAB_ACTIVE(5)
 
 #define NEWMENU_PAGE_BUTTON(n, p) \
-    ITEM_PAGE_BUTTON(options_tab_##n##_page_##p##_button, options_tab_##n##_pages, OPTIONS_TAB_##n##_PAGE_##p##_TEXT, OPTIONS_TAB_##n##_PAGE_##p##_RECT, OPTIONS_TAB_##n##_PAGE_HALF_WIDTH, OPTIONS_TAB_##n##_PAGE_##p##_DESC_TEXT, newmenu_options_tab_##n##_page_##p)
+    ITEM_PAGE_BUTTON(options_tab_##n##_page_##p##_button, options_tab_##n##_pages, OPTIONS_TAB_##n##_PAGE_##p##_TEXT, OPTIONS_TAB_##n##_PAGE_##p##_RECT, OPTIONS_TAB_##n##_PAGE_HALF_WIDTH, OPTIONS_TAB_##n##_PAGE_##p##_DESC_TEXT, HIDE_OPTIONS_TAB_##n##_PAGE_BODIES, newmenu_options_tab_##n##_page_##p)
 
 #define NEWMENU_PAGE_BUTTONS(n) \
     NEWMENU_PAGE_BUTTON(n, 1) \

@@ -672,6 +672,10 @@
 			textstyle			3
 			forecolor			1 .682 0 1
 			visible			    1
+			// Work in progress: only shown after "set ui_newmenu 1", because tab 1's test rows
+			// change real settings.
+			cvarTest			ui_newmenu
+			showCvar			{ 1 }
 			descText			"Open new menu."
 
 			mouseEnter
@@ -687,8 +691,9 @@
 				play			"sound/interface/button1"
 
 				defer			VideoSetup	videowarningMenu
-                open            ingame_newmenu
-				hide			ingame_setup
+				close			ingame
+				close			ingame_setup
+				open			newmenu_tab1
 			}
 		}
 
