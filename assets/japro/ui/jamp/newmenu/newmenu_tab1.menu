@@ -56,7 +56,7 @@
             "Multi",
             "ROW_MULTI",
             "ui_r_texturemode",
-            { "Bilinear" "GL_LINEAR_MIPMAP_NEAREST" "Trilinear" "GL_LINEAR_MIPMAP_LINEAR" },
+            { "Bilinear" ; "GL_LINEAR_MIPMAP_NEAREST" ; "Trilinear" ; "GL_LINEAR_MIPMAP_LINEAR" },
             ACT_DIRTY)
 
         // MULTI (float)
@@ -156,7 +156,7 @@
         ROW_MULTI_EX(TAB1_PAGE2, 3,
             "Multi EX", "ROW_MULTI_EX",
             "ui_r_texturemode",
-            { "Bilinear" "GL_LINEAR_MIPMAP_NEAREST" "Trilinear" "GL_LINEAR_MIPMAP_LINEAR" },
+            { "Bilinear" ; "GL_LINEAR_MIPMAP_NEAREST" ; "Trilinear" ; "GL_LINEAR_MIPMAP_LINEAR" },
             cvarTest cg_dynamicCrosshair enableCvar { 1 },
             ACT_DIRTY)
 

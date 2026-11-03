@@ -1125,8 +1125,10 @@ itemDef \
 // Public row declaration API.
 // Prefer these in tab .menu files. They keep call sites focused on page, row, text, cvar,
 // and action while hiding BODY_ROW_*_Y and the label/control column plumbing.
-// Keep cvarStrList/cvarFloatList values as no-comma label/value pairs:
-// { "Low" "low" "High" "high" } or { "Low" 0 "High" 1 }.
+// List values can't use commas inside a macro argument, so separate cvarStrList entries with ";"
+// instead: { "Low" ; "low" ; "High" ; "high" }. Without a separator the preprocessor joins
+// adjacent strings into one and the list loads empty. cvarFloatList needs none, since labels and
+// numbers alternate: { "Low" 0 "High" 1 }.
 // Do not pass ROW_CHOICES_N(...) through row macros: nested parentheses are stripped by the
 // botlib preprocessor before the inner macro can expand.
 // ROW_TEXT2/ROW_SECTION2 and their Y variants consume the current row and the next row;
@@ -1135,7 +1137,7 @@ itemDef \
 // Example:
 //   ROW_YESNO(PAGE, 1, "Simple Items", "Use simple item models.", "cg_simpleItems", ACT_NONE)
 //   ROW_SLIDERFL(PAGE, 2, "Gamma", "Adjust gamma.", "r_gamma", 1.0, 0.5, 3.0, ACT_NONE)
-//   ROW_MULTI(PAGE, 3, "Texture Filter", "Texture filtering.", "ui_r_texturemode", { "Bilinear" "GL_LINEAR_MIPMAP_NEAREST" "Trilinear" "GL_LINEAR_MIPMAP_LINEAR" }, ACT_DIRTY)
+//   ROW_MULTI(PAGE, 3, "Texture Filter", "Texture filtering.", "ui_r_texturemode", { "Bilinear" ; "GL_LINEAR_MIPMAP_NEAREST" ; "Trilinear" ; "GL_LINEAR_MIPMAP_LINEAR" }, ACT_DIRTY)
 //   ROW_ACTION(PAGE, 4, "Apply", "Apply video settings.", uiScript updatevideosetup ;)
 //
 // Video settings go through the staged ui_r_* cvars that getvideosetup/updatevideosetup copy
@@ -1147,28 +1149,28 @@ itemDef \
 // Low-level choice helpers. Safe only when expanded directly beside cvarStrList/cvarFloatList,
 // not when passed as a rowChoices argument to ROW_MULTI/ROW_MULTIFL.
 #define ROW_CHOICES_1(text1, value1) \
-    { text1 value1 }
+    { text1 ; value1 }
 
 #define ROW_CHOICES_2(text1, value1, text2, value2) \
-    { text1 value1 text2 value2 }
+    { text1 ; value1 ; text2 ; value2 }
 
 #define ROW_CHOICES_3(text1, value1, text2, value2, text3, value3) \
-    { text1 value1 text2 value2 text3 value3 }
+    { text1 ; value1 ; text2 ; value2 ; text3 ; value3 }
 
 #define ROW_CHOICES_4(text1, value1, text2, value2, text3, value3, text4, value4) \
-    { text1 value1 text2 value2 text3 value3 text4 value4 }
+    { text1 ; value1 ; text2 ; value2 ; text3 ; value3 ; text4 ; value4 }
 
 #define ROW_CHOICES_5(text1, value1, text2, value2, text3, value3, text4, value4, text5, value5) \
-    { text1 value1 text2 value2 text3 value3 text4 value4 text5 value5 }
+    { text1 ; value1 ; text2 ; value2 ; text3 ; value3 ; text4 ; value4 ; text5 ; value5 }
 
 #define ROW_CHOICES_6(text1, value1, text2, value2, text3, value3, text4, value4, text5, value5, text6, value6) \
-    { text1 value1 text2 value2 text3 value3 text4 value4 text5 value5 text6 value6 }
+    { text1 ; value1 ; text2 ; value2 ; text3 ; value3 ; text4 ; value4 ; text5 ; value5 ; text6 ; value6 }
 
 #define ROW_CHOICES_7(text1, value1, text2, value2, text3, value3, text4, value4, text5, value5, text6, value6, text7, value7) \
-    { text1 value1 text2 value2 text3 value3 text4 value4 text5 value5 text6 value6 text7 value7 }
+    { text1 ; value1 ; text2 ; value2 ; text3 ; value3 ; text4 ; value4 ; text5 ; value5 ; text6 ; value6 ; text7 ; value7 }
 
 #define ROW_CHOICES_8(text1, value1, text2, value2, text3, value3, text4, value4, text5, value5, text6, value6, text7, value7, text8, value8) \
-    { text1 value1 text2 value2 text3 value3 text4 value4 text5 value5 text6 value6 text7 value7 text8 value8 }
+    { text1 ; value1 ; text2 ; value2 ; text3 ; value3 ; text4 ; value4 ; text5 ; value5 ; text6 ; value6 ; text7 ; value7 ; text8 ; value8 }
 
 #define ROW_TEXT(pageName, rowNumber, rowText, rowDesc) \
     ITEM_BODY_TEXT_BOX(pageName##_row_##rowNumber, pageName, BODY_ROW_##rowNumber##_Y, rowText, rowDesc)
