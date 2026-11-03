@@ -1,18 +1,18 @@
 New menu row and item types
 ===========================
 
-Reference for the macros in newmenuext.h and newmenuconfig.h. Tab 1 (newmenu_tab1.menu) has a
-working example of nearly every one of them.
+Reference for the macros in newmenuext.h and newmenuconfig.h. newmenu_tab1.menu (the CONTROLS
+tab) shows the section and bind rows in use.
 
 
 Page layout
 -----------
 
-Each tab is its own menuDef with up to five pages. Each page has 24 rows, 16 units tall, under
-the tab and page buttons. The panel is 240 wide: a row's label takes the left half and its
-control the right half.
+Each tab is its own menuDef with one or more pages (newmenuconfig.h explains how to add tabs
+and pages). Each page has 24 rows, 16 units tall, under the tab and page buttons. The panel is
+240 wide: a row's label takes the left half and its control the right half.
 
-Pages are named with the TABn_PAGEm aliases (TAB1_PAGE1 ... TAB5_PAGE5). Every item on a page is
+Pages are named with the TABn_PAGEm aliases (TAB1_PAGE1, TAB1_PAGE2...). Every item on a page is
 put in that page's group, so the tab and page buttons can show and hide whole pages at once.
 
 Item names come from the page argument as written, so ROW_YESNO(TAB1_PAGE1, 7, ...) makes
@@ -170,7 +170,7 @@ condition as its last argument.
 Low-level helpers
 -----------------
 
-Mostly for hand-written itemDefs. Tab 1 pages 4 and 5 show them in use.
+Mostly for hand-written itemDefs.
 
   ITEM_BODY_CONTROL_IMPL(name, page, rect, desc, action)
   ITEM_BODY_CONTROL_EX_IMPL(name, page, rect, desc, condition, action)

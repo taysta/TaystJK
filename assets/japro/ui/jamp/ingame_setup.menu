@@ -660,7 +660,7 @@
 		{
 			name				newmenubutton
 			group				setup_submenu
-			text				"NEW MENU"
+			text				"TRIBES"
 			type				ITEM_TYPE_BUTTON
 			style				WINDOW_STYLE_EMPTY
 			rect				20 283 170 30
@@ -672,11 +672,10 @@
 			textstyle			3
 			forecolor			1 .682 0 1
 			visible			    1
-			// Work in progress: only shown after "set ui_newmenu 1", because tab 1's test rows
-			// change real settings.
-			cvarTest			ui_newmenu
+			// Only shown while the Tribes HUD is active (cgame sets ui_tribesMode).
+			cvarTest			ui_tribesMode
 			showCvar			{ 1 }
-			descText			"Open new menu."
+			descText			"Tribes controls."
 
 			mouseEnter
 			{
