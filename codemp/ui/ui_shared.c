@@ -5047,7 +5047,13 @@ static const char *g_bindCommands[] = {
 	"slot 6",
 	"slot 7",
 	"slot 8",
-	"slot 9"
+	"slot 9",
+	"slotnext", //tribes
+	"slotprev",
+	"+singlefire",
+	"selectfiremode",
+	"thrownade",
+	"+grapple"
 };
 
 #define g_bindCount ARRAY_LEN(g_bindCommands)
