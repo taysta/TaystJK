@@ -10,78 +10,9 @@
     menuDef
     {
         name                    newmenu_tab3
-        rect                    MENU_X 0 MENU_WIDTH SCREEN_HEIGHT
-        outOfBoundsClick
-        focusColor              COL_WHITE
-        descX                   DESC_TEXT_X
-        descY                   DESC_TEXT_Y
-        descScale               DESC_TEXT_SCALE
-        descColor               COL_DESC_TEXT
-        descAlignment           ITEM_ALIGN_LEFT
-
-        // Menu lifecycle.
-        onOpen
-        {
-            uiScript            getvideosetup ;
-            HIDE_PAGE_UI
-            HIDE_APPLY
-            RESET_HOVER
-            show                MENU_CHROME_GROUP ;
-            show                options_tab_3_pages ;
-            show                newmenu_options_tab_3_page_1 ;
-            setitemrect         newmenu_selected_tab_highlight HEADER_OPTIONS_TAB_3_RECT ;
-            setitemrect         newmenu_selected_page_highlight OPTIONS_TAB_3_PAGE_1_RECT ;
-        }
-
-        onClose
-        {
-            hide                MENU_CHROME_GROUP ;
-            HIDE_PAGE_UI
-            HIDE_APPLY
-        }
-
-        onESC
-        {
-            play                "sound/interface/button1" ;
-            defer               VideoSetup NEWMENU_VIDEO_WARNING ;
-            close               newmenu_tab3 ;
-        }
-
-        // Shared menu chrome.
-        // HEADER BACKGROUND
-        ITEM_BACKGROUND(background_header,      MENU_CHROME_GROUP, 0 0 MENU_WIDTH HEADER_HEIGHT,                       COL_MENU_HEADER_BACK)
-
-        // MAIN PANEL BACKGROUND
-        ITEM_BACKGROUND(background_main_panel,  MENU_CHROME_GROUP, 0 HEADER_HEIGHT MENU_WIDTH HEADER_HEIGHT_REMAINING, COL_MENU_PANEL_BACK)
-
-        // Hover/focus helpers.
-        SELECTEDHIGHLIGHT(newmenu_selected_tab_highlight)
-        SELECTEDHIGHLIGHT(newmenu_selected_page_highlight)
-        HIGHLIGHT
-        DUMMYHIGHLIGHT
-
-        // HEADER TITLE
-        TEXT_BOX_HEADER(header_title, MENU_CHROME_GROUP, 0 0 HEADER_TITLE_WIDTH HEADER_HEIGHT_HALF, VISIBLE, HEADER_TITLE)
-
-        // EXIT MENU BUTTON
-        ITEM_EXIT_SELF(header_exit_button, MENU_CHROME_GROUP, HEADER_EXIT_ICON_X HEADER_PADDING HEADER_EXIT_ICON_SIZE HEADER_EXIT_ICON_SIZE, COL_WHITE, HEADER_EXIT_ICON_SHADER, newmenu_tab3)
-
-        // APPLY VIDEO BUTTON
-        ITEM_APPLY_CHANGES
-
-        // TOP-LEVEL MENU TABS
-        ITEM_TAB_NAV   (options_tab_1_button,   MENU_CHROME_GROUP, HEADER_OPTIONS_TAB_1_TEXT,  HEADER_OPTIONS_TAB_1_RECT,  HEADER_OPTIONS_TAB_HALF_WIDTH,  HEADER_OPTIONS_TAB_1_DESC_TEXT,  newmenu_tab3,  newmenu_tab1,  VISIBLE)
-        ITEM_TAB_NAV   (options_tab_2_button,   MENU_CHROME_GROUP, HEADER_OPTIONS_TAB_2_TEXT,  HEADER_OPTIONS_TAB_2_RECT,  HEADER_OPTIONS_TAB_HALF_WIDTH,  HEADER_OPTIONS_TAB_2_DESC_TEXT,  newmenu_tab3,  newmenu_tab2,  VISIBLE)
-        ITEM_TAB_BUTTON(options_tab_3_button,   MENU_CHROME_GROUP, HEADER_OPTIONS_TAB_3_TEXT,  HEADER_OPTIONS_TAB_3_RECT,  HEADER_OPTIONS_TAB_HALF_WIDTH,  HEADER_OPTIONS_TAB_3_DESC_TEXT,  newmenu_options_tab_3_page_1,  OPTIONS_TAB_3_PAGE_1_RECT,  options_tab_3_pages,  VISIBLE)
-        ITEM_TAB_NAV   (options_tab_4_button,   MENU_CHROME_GROUP, HEADER_OPTIONS_TAB_4_TEXT,  HEADER_OPTIONS_TAB_4_RECT,  HEADER_OPTIONS_TAB_HALF_WIDTH,  HEADER_OPTIONS_TAB_4_DESC_TEXT,  newmenu_tab3,  newmenu_tab4,  VISIBLE)
-        ITEM_TAB_NAV   (options_tab_5_button,   MENU_CHROME_GROUP, HEADER_OPTIONS_TAB_5_TEXT,  HEADER_OPTIONS_TAB_5_RECT,  HEADER_OPTIONS_TAB_HALF_WIDTH,  HEADER_OPTIONS_TAB_5_DESC_TEXT,  newmenu_tab3,  newmenu_tab5,  VISIBLE)
-
-        // Current tab page buttons.
-        ITEM_PAGE_BUTTON(options_tab_3_page_1_button,  options_tab_3_pages,  OPTIONS_TAB_3_PAGE_1_TEXT,  OPTIONS_TAB_3_PAGE_1_RECT,  OPTIONS_TAB_3_PAGE_HALF_WIDTH,  OPTIONS_TAB_3_PAGE_1_DESC_TEXT,  newmenu_options_tab_3_page_1)
-        ITEM_PAGE_BUTTON(options_tab_3_page_2_button,  options_tab_3_pages,  OPTIONS_TAB_3_PAGE_2_TEXT,  OPTIONS_TAB_3_PAGE_2_RECT,  OPTIONS_TAB_3_PAGE_HALF_WIDTH,  OPTIONS_TAB_3_PAGE_2_DESC_TEXT,  newmenu_options_tab_3_page_2)
-        ITEM_PAGE_BUTTON(options_tab_3_page_3_button,  options_tab_3_pages,  OPTIONS_TAB_3_PAGE_3_TEXT,  OPTIONS_TAB_3_PAGE_3_RECT,  OPTIONS_TAB_3_PAGE_HALF_WIDTH,  OPTIONS_TAB_3_PAGE_3_DESC_TEXT,  newmenu_options_tab_3_page_3)
-        ITEM_PAGE_BUTTON(options_tab_3_page_4_button,  options_tab_3_pages,  OPTIONS_TAB_3_PAGE_4_TEXT,  OPTIONS_TAB_3_PAGE_4_RECT,  OPTIONS_TAB_3_PAGE_HALF_WIDTH,  OPTIONS_TAB_3_PAGE_4_DESC_TEXT,  newmenu_options_tab_3_page_4)
-        ITEM_PAGE_BUTTON(options_tab_3_page_5_button,  options_tab_3_pages,  OPTIONS_TAB_3_PAGE_5_TEXT,  OPTIONS_TAB_3_PAGE_5_RECT,  OPTIONS_TAB_3_PAGE_HALF_WIDTH,  OPTIONS_TAB_3_PAGE_5_DESC_TEXT,  newmenu_options_tab_3_page_5)
+        NEWMENU_MENU_PROPS
+        NEWMENU_TAB_LIFECYCLE(3)
+        NEWMENU_TAB_CHROME(3)
 
         // Page body rows.
         // Page 1

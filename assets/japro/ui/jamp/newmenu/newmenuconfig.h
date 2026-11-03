@@ -3,8 +3,8 @@
 //  newmenuconfig.h
 //
 //  Tab/page configuration for the split newmenu implementation. This file owns the visible
-//  tab labels, descText strings, tab counts, derived tab/page rects, and shared hide helpers
-//  for page selector bars and page bodies.
+//  tab labels, descText strings, tab counts, derived tab/page rects, shared hide helpers
+//  for page selector bars and page bodies, and the menu chrome every tab shares.
 //
 //  Usage notes:
 //  - Include newmenuext.h first. The width/height calculations in this file depend on base
@@ -264,5 +264,136 @@
     HIDE_OPTIONS_TAB_3_PAGE_BODIES \
     HIDE_OPTIONS_TAB_4_PAGE_BODIES \
     HIDE_OPTIONS_TAB_5_PAGE_BODIES
+
+//----------------------------------------------------------------------------------------------
+//
+//  Shared tab menu chrome.
+//
+//  Every newmenu_tab* menu is the same apart from its number and its body rows, so a tab file is:
+//
+//      menuDef
+//      {
+//          name newmenu_tabN
+//          NEWMENU_MENU_PROPS
+//          NEWMENU_TAB_LIFECYCLE(N)
+//          NEWMENU_TAB_CHROME(N)
+//          // ROW_* declarations...
+//      }
+//
+//  - Menu sounds belong to the action that closes a tab (ESC, the exit button, tab buttons), not
+//    to onClose: tab buttons and scripts such as "close all" close tabs too, and would play
+//    the sound a second time.
+//  - NEWMENU_TAB_LIFECYCLE_EX(n, extraOnOpen) adds a fragment to the start of onOpen. The
+//    fragment can't contain commas. NEWMENU_TAB_LIFECYCLE fills it with a lone ";", which
+//    menu scripts skip.
+//
+//----------------------------------------------------------------------------------------------
+
+#define NEWMENU_MENU_PROPS \
+    rect                    MENU_X 0 MENU_WIDTH SCREEN_HEIGHT \
+    outOfBoundsClick \
+    focusColor              COL_WHITE \
+    descX                   DESC_TEXT_X \
+    descY                   DESC_TEXT_Y \
+    descScale               DESC_TEXT_SCALE \
+    descColor               COL_DESC_TEXT \
+    descAlignment           ITEM_ALIGN_LEFT
+
+#define NEWMENU_TAB_LIFECYCLE_EX(n, extraOnOpen) \
+    onOpen \
+    { \
+        uiScript            getvideosetup ; \
+        extraOnOpen \
+        HIDE_PAGE_UI \
+        HIDE_APPLY \
+        RESET_HOVER \
+        show                MENU_CHROME_GROUP ; \
+        show                options_tab_##n##_pages ; \
+        show                newmenu_options_tab_##n##_page_1 ; \
+        setitemrect         newmenu_selected_tab_highlight HEADER_OPTIONS_TAB_##n##_RECT ; \
+        setitemrect         newmenu_selected_page_highlight OPTIONS_TAB_##n##_PAGE_1_RECT ; \
+    } \
+    onClose \
+    { \
+        hide                MENU_CHROME_GROUP ; \
+        HIDE_PAGE_UI \
+        HIDE_APPLY \
+    } \
+    onESC \
+    { \
+        play                "sound/interface/button1" ; \
+        defer               VideoSetup NEWMENU_VIDEO_WARNING ; \
+        close               newmenu_tab##n ; \
+    }
+
+#define NEWMENU_TAB_LIFECYCLE(n) \
+    NEWMENU_TAB_LIFECYCLE_EX(n, ;)
+
+// The current tab's cell resets it to page 1; the others switch to their own menu.
+#define NEWMENU_TAB_ACTIVE(i) \
+    ITEM_TAB_BUTTON(options_tab_##i##_button, MENU_CHROME_GROUP, HEADER_OPTIONS_TAB_##i##_TEXT, HEADER_OPTIONS_TAB_##i##_RECT, HEADER_OPTIONS_TAB_HALF_WIDTH, HEADER_OPTIONS_TAB_##i##_DESC_TEXT, newmenu_options_tab_##i##_page_1, OPTIONS_TAB_##i##_PAGE_1_RECT, options_tab_##i##_pages, VISIBLE)
+
+#define NEWMENU_TAB_INACTIVE(n, i) \
+    ITEM_TAB_NAV(options_tab_##i##_button, MENU_CHROME_GROUP, HEADER_OPTIONS_TAB_##i##_TEXT, HEADER_OPTIONS_TAB_##i##_RECT, HEADER_OPTIONS_TAB_HALF_WIDTH, HEADER_OPTIONS_TAB_##i##_DESC_TEXT, newmenu_tab##n, newmenu_tab##i, VISIBLE)
+
+#define NEWMENU_TAB_ROW_1 \
+    NEWMENU_TAB_ACTIVE(1) \
+    NEWMENU_TAB_INACTIVE(1, 2) \
+    NEWMENU_TAB_INACTIVE(1, 3) \
+    NEWMENU_TAB_INACTIVE(1, 4) \
+    NEWMENU_TAB_INACTIVE(1, 5)
+
+#define NEWMENU_TAB_ROW_2 \
+    NEWMENU_TAB_INACTIVE(2, 1) \
+    NEWMENU_TAB_ACTIVE(2) \
+    NEWMENU_TAB_INACTIVE(2, 3) \
+    NEWMENU_TAB_INACTIVE(2, 4) \
+    NEWMENU_TAB_INACTIVE(2, 5)
+
+#define NEWMENU_TAB_ROW_3 \
+    NEWMENU_TAB_INACTIVE(3, 1) \
+    NEWMENU_TAB_INACTIVE(3, 2) \
+    NEWMENU_TAB_ACTIVE(3) \
+    NEWMENU_TAB_INACTIVE(3, 4) \
+    NEWMENU_TAB_INACTIVE(3, 5)
+
+#define NEWMENU_TAB_ROW_4 \
+    NEWMENU_TAB_INACTIVE(4, 1) \
+    NEWMENU_TAB_INACTIVE(4, 2) \
+    NEWMENU_TAB_INACTIVE(4, 3) \
+    NEWMENU_TAB_ACTIVE(4) \
+    NEWMENU_TAB_INACTIVE(4, 5)
+
+#define NEWMENU_TAB_ROW_5 \
+    NEWMENU_TAB_INACTIVE(5, 1) \
+    NEWMENU_TAB_INACTIVE(5, 2) \
+    NEWMENU_TAB_INACTIVE(5, 3) \
+    NEWMENU_TAB_INACTIVE(5, 4) \
+    NEWMENU_TAB_ACTIVE(5)
+
+#define NEWMENU_PAGE_BUTTON(n, p) \
+    ITEM_PAGE_BUTTON(options_tab_##n##_page_##p##_button, options_tab_##n##_pages, OPTIONS_TAB_##n##_PAGE_##p##_TEXT, OPTIONS_TAB_##n##_PAGE_##p##_RECT, OPTIONS_TAB_##n##_PAGE_HALF_WIDTH, OPTIONS_TAB_##n##_PAGE_##p##_DESC_TEXT, newmenu_options_tab_##n##_page_##p)
+
+#define NEWMENU_PAGE_BUTTONS(n) \
+    NEWMENU_PAGE_BUTTON(n, 1) \
+    NEWMENU_PAGE_BUTTON(n, 2) \
+    NEWMENU_PAGE_BUTTON(n, 3) \
+    NEWMENU_PAGE_BUTTON(n, 4) \
+    NEWMENU_PAGE_BUTTON(n, 5)
+
+// Backgrounds, the shared highlight helpers, header title, exit and apply buttons, the tab row
+// and this tab's page buttons. Draw order matters: backgrounds, then highlights, then the rest.
+#define NEWMENU_TAB_CHROME(n) \
+    ITEM_BACKGROUND(background_header,      MENU_CHROME_GROUP, 0 0 MENU_WIDTH HEADER_HEIGHT,                       COL_MENU_HEADER_BACK) \
+    ITEM_BACKGROUND(background_main_panel,  MENU_CHROME_GROUP, 0 HEADER_HEIGHT MENU_WIDTH HEADER_HEIGHT_REMAINING, COL_MENU_PANEL_BACK) \
+    SELECTEDHIGHLIGHT(newmenu_selected_tab_highlight) \
+    SELECTEDHIGHLIGHT(newmenu_selected_page_highlight) \
+    HIGHLIGHT \
+    DUMMYHIGHLIGHT \
+    TEXT_BOX_HEADER(header_title, MENU_CHROME_GROUP, 0 0 HEADER_TITLE_WIDTH HEADER_HEIGHT_HALF, VISIBLE, HEADER_TITLE) \
+    ITEM_EXIT(header_exit_button, MENU_CHROME_GROUP, HEADER_EXIT_ICON_X HEADER_PADDING HEADER_EXIT_ICON_SIZE HEADER_EXIT_ICON_SIZE, COL_WHITE, HEADER_EXIT_ICON_SHADER, newmenu_tab##n) \
+    ITEM_APPLY_CHANGES \
+    NEWMENU_TAB_ROW_##n \
+    NEWMENU_PAGE_BUTTONS(n)
 
 #endif

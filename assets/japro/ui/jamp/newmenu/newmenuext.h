@@ -651,9 +651,6 @@ itemDef \
         } \
     }
 
-#define ITEM_EXIT_SELF(itemName, itemGroup, itemRect, itemColor, itemShader, currentMenu) \
-    ITEM_EXIT(itemName, itemGroup, itemRect, itemColor, itemShader, currentMenu)
-
 #define ITEM_APPLY_CHANGES \
     itemDef \
     { \
