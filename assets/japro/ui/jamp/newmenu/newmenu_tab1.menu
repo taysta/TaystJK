@@ -11,7 +11,9 @@
     {
         name                    newmenu_tab1
         NEWMENU_MENU_PROPS
-        NEWMENU_TAB_LIFECYCLE(1)
+        // Reload the key table: bind rows rewrite every bind from it, so a stale copy would undo
+        // binds made from the console since the UI last loaded it.
+        NEWMENU_TAB_LIFECYCLE_EX(1, uiScript loadControls ;)
         NEWMENU_TAB_CHROME(1)
 
         // Page 1 - weapons
