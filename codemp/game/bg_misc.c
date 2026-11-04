@@ -1942,18 +1942,23 @@ qboolean BG_CanUseFPNow(int gametype, playerState_t *ps, int time, forcePowers_t
 #elif defined _CGAME
 	if (ps->duelInProgress) // consider duel types.
 	{
-		switch ( cg_dueltypes[ps->clientNum]) {
-					case 0: //normal duel
-			if (power != FP_SABER_OFFENSE && power != FP_SABER_DEFENSE && power != FP_LEVITATION)
+		//cg_dueltypes: 1: saber duel, 2: force duel, weapon+2: gun duel, 20: co-op
+		const int duelType = cg_dueltypes[ps->clientNum];
+		qboolean allowAll;
+
+		if (cgs.serverMod == SVMOD_JAPRO)
+			allowAll = (qboolean)(duelType == 2 || (duelType == 20 && ps->stats[STAT_RACEMODE]));
+		else if (cgs.serverMod == SVMOD_JAPLUS)
+			allowAll = (qboolean)(duelType != 0);
+		else
+			allowAll = qfalse;
+
+		if (!allowAll && power != FP_SABER_OFFENSE && power != FP_SABER_DEFENSE && power != FP_LEVITATION)
+		{
+			if (!ps->saberLockFrame || power != FP_PUSH)
 			{
-				if (!ps->saberLockFrame || power != FP_PUSH)
-				{
-					return qfalse;
-				}
+				return qfalse;
 			}
-			break;
-		case 1: //force duel
-			break;
 		}
 	}
 #endif

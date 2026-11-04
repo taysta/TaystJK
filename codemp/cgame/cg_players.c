@@ -11316,7 +11316,7 @@ void CG_Player( centity_t *cent ) {
 		if (cent->currentState.saberInFlight && cent->currentState.torsoAnim == BOTH_STAND1)
 			cent->currentState.torsoAnim = cent->currentState.legsAnim;
 
-		if (cgs.serverMod != SVMOD_JAPRO || !cg.predictedPlayerState.stats[STAT_RACEMODE] || !(cgs.jcinfo2 & (1 << JAPRO_CINFO2_RACEMODE)))
+		if (cgs.serverMod != SVMOD_JAPRO || !cg.predictedPlayerState.stats[STAT_RACEMODE] || !(cgs.jcinfo2 & JAPRO_CINFO2_RACEMODE))
 		{
 			if (cent->currentState.torsoAnim == BOTH_RUN_STAFF)
 				cent->currentState.torsoAnim = BOTH_RUN1;
