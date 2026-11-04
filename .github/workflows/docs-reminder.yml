@@ -1,0 +1,63 @@
+name: Docs reminder
+
+# Non-blocking. A pull request that registers a new cvar or command gets one comment
+# pointing at what else that usually needs. It never fails the build and never blocks a
+# merge -- the author decides whether any of it applies.
+#
+# pull_request_target is used so the comment also works on pull requests from forks, which
+# a plain pull_request trigger cannot do. Nothing from the pull request is checked out or
+# executed: the diff is read through the API, so the write-capable token never runs
+# untrusted code.
+
+on:
+  pull_request_target:
+    branches: [master, beta]
+    paths:
+      - "codemp/**"
+      - "shared/**"
+
+permissions:
+  contents: read
+  pull-requests: write
+
+jobs:
+  remind:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Comment when a registration is added
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          REPO: ${{ github.repository }}
+          PR: ${{ github.event.pull_request.number }}
+        run: |
+          set -euo pipefail
+          marker="<!-- docs-reminder -->"
+
+          # Added lines only, so moving or deleting a registration does not trigger this.
+          added=$(gh pr diff "$PR" --repo "$REPO" \
+            | grep -E '^\+' | grep -v '^\+\+\+' \
+            | grep -cE 'Cvar_Get|Cvar_Register|AddCommand|XCVAR_DEF' || true)
+
+          if [ "${added:-0}" -eq 0 ]; then
+            echo "No new registrations found."
+            exit 0
+          fi
+
+          if gh pr view "$PR" --repo "$REPO" --json comments \
+             --jq '.comments[].body' | grep -qF "$marker"; then
+            echo "Already commented."
+            exit 0
+          fi
+
+          gh pr comment "$PR" --repo "$REPO" --body "$marker
+          This pull request looks like it registers a cvar or command. A few things usually
+          go with that -- ignore any that do not apply here:
+
+          - a line in \`CHANGELOG.md\` under **Features → Tayst's Fork**, naming it in backticks
+          - a description in the registration itself, which is what the console reference shows
+          - an \`XDOCS_*\` entry in \`codemp/ui/ui_xdocs.h\`, which is what \`/help <name>\` shows
+          - a menu entry, if a player would want to change it without the console
+
+          Full reasoning: https://taysta.github.io/TaystJK/development/contributing/
+
+          This comment is posted once and never blocks a merge."
