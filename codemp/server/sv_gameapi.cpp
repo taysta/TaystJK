@@ -2831,7 +2831,7 @@ void SV_InitGame( qboolean restart ) {
 			else if (!Q_stricmpn(gamename, "OpenJK", 6)) {
 				svs.servermod = SVMOD_OPENJK;
 			}
-			else if (!Q_stricmp(gamename, "^5L^7ugormod ^5v3") || !Q_stricmp(gamename, "Lugormod"))
+			else if (!Q_stricmp(gamename, "^5L^7ugormod ^5v3") || !Q_stricmp(gamename, "Lugormod") || !Q_stricmp(gamename, "Lugormod X"))
 			{
 				svs.servermod = SVMOD_LMD;
 			}

@@ -66,6 +66,8 @@ extern  float   forceJumpStrength[];
 
 extern	int		c_pmove;
 
+extern	float	scaleh; // Lugormod model scale of the entity being moved
+
 extern int forcePowerNeeded[NUM_FORCE_POWER_LEVELS][NUM_FORCE_POWERS];
 
 //PM anim utility functions:
