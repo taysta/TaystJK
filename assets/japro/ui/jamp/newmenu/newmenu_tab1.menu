@@ -1,0 +1,57 @@
+#include "ui/jamp/newmenu/newmenuext.h"
+#include "ui/jamp/newmenu/newmenuconfig.h"
+
+//----------------------------------------------------------------------------------------------
+//
+//	newmenu_tab1 (CONTROLS)
+//
+//----------------------------------------------------------------------------------------------
+{
+    menuDef
+    {
+        name                    newmenu_tab1
+        NEWMENU_MENU_PROPS
+        // Reload the key table: bind rows rewrite every bind from it, so a stale copy would undo
+        // binds made from the console since the UI last loaded it.
+        NEWMENU_TAB_LIFECYCLE_EX(1, uiScript loadControls ;)
+        NEWMENU_TAB_CHROME(1)
+
+        // Page 1 - weapons
+        ROW_SECTION(TAB1_PAGE1, 1, "Weapons", "Weapon and firing keys")
+        ROW_BIND(TAB1_PAGE1, 2, "Fire", "Fire the current weapon in the selected fire mode.", "+singlefire", ACT_NONE)
+        ROW_BIND(TAB1_PAGE1, 3, "Fire Mode", "Switch between primary and secondary fire.", "selectfiremode", ACT_NONE)
+        ROW_BIND(TAB1_PAGE1, 4, "Zoom", "Zoom in.", "+zoom", ACT_NONE)
+        ROW_BIND(TAB1_PAGE1, 5, "Throw Grenade", "Throw a grenade without switching to it.", "thrownade", ACT_NONE)
+        ROW_BIND(TAB1_PAGE1, 6, "Next Weapon", "Select the next weapon slot.", "slotnext", ACT_NONE)
+        ROW_BIND(TAB1_PAGE1, 7, "Previous Weapon", "Select the previous weapon slot.", "slotprev", ACT_NONE)
+        ROW_BIND(TAB1_PAGE1, 8, "Ignite Saber", "Switch to your saber.", "weapon 1", ACT_NONE)
+
+        ROW_SECTION(TAB1_PAGE1, 10, "Weapon Slots", "Select a weapon slot directly")
+        ROW_BIND(TAB1_PAGE1, 11, "Slot 1", "Select weapon slot 1.", "slot 1", ACT_NONE)
+        ROW_BIND(TAB1_PAGE1, 12, "Slot 2", "Select weapon slot 2.", "slot 2", ACT_NONE)
+        ROW_BIND(TAB1_PAGE1, 13, "Slot 3", "Select weapon slot 3.", "slot 3", ACT_NONE)
+        ROW_BIND(TAB1_PAGE1, 14, "Slot 4", "Select weapon slot 4.", "slot 4", ACT_NONE)
+        ROW_BIND(TAB1_PAGE1, 15, "Slot 5", "Select weapon slot 5.", "slot 5", ACT_NONE)
+        ROW_BIND(TAB1_PAGE1, 16, "Slot 6", "Select weapon slot 6.", "slot 6", ACT_NONE)
+        ROW_BIND(TAB1_PAGE1, 17, "Slot 7", "Select weapon slot 7.", "slot 7", ACT_NONE)
+        ROW_BIND(TAB1_PAGE1, 18, "Slot 8", "Select weapon slot 8.", "slot 8", ACT_NONE)
+        ROW_BIND(TAB1_PAGE1, 19, "Slot 9", "Select weapon slot 9.", "slot 9", ACT_NONE)
+
+        // Page 2 - movement
+        ROW_SECTION(TAB1_PAGE2, 1, "Movement", "Movement keys")
+        ROW_BIND(TAB1_PAGE2, 2, "Jump / Jetpack", "Jump. Hold in the air to use the jetpack.", "+moveup", ACT_NONE)
+        ROW_BIND(TAB1_PAGE2, 3, "Ski", "Hold to ski: slide without ground friction.", "+button13", ACT_NONE)
+        ROW_BIND(TAB1_PAGE2, 4, "Crouch / Downjet", "Crouch. Hold in the air to jet downwards.", "+movedown", ACT_NONE)
+        ROW_BIND(TAB1_PAGE2, 5, "Grapple", "Fire the grappling hook.", "+grapple", ACT_NONE)
+
+        // Page 3 - actions
+        ROW_SECTION(TAB1_PAGE3, 1, "Actions", "Pack and other action keys")
+        ROW_BIND(TAB1_PAGE3, 2, "Pack", "Use your pack (shield, thrust, blink or overdrive).", "+force_lightning", ACT_NONE)
+        ROW_BIND(TAB1_PAGE3, 3, "Use", "Use or activate what you are looking at.", "+use", ACT_NONE)
+        ROW_BIND(TAB1_PAGE3, 4, "Use Item", "Use the item in your inventory.", "invfree", ACT_NONE)
+        ROW_BIND(TAB1_PAGE3, 5, "Throw Flag", "Drop the flag you are carrying.", "throwflag", ACT_NONE)
+        ROW_BIND(TAB1_PAGE3, 6, "Third Person", "Toggle third person view.", "cg_thirdperson !", ACT_NONE)
+        ROW_BIND(TAB1_PAGE3, 7, "Voice Chat", "Open the voice chat menu.", "voicechat", ACT_NONE)
+        ROW_BIND(TAB1_PAGE3, 8, "Kill", "Kill yourself and respawn.", "kill", ACT_NONE)
+    }
+}
