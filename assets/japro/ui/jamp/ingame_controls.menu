@@ -612,7 +612,7 @@
 			textstyle			3
 			forecolor			1 .682 0 1
 			visible				1
-			// Only shown while the Tribes HUD is active (cgame sets ui_tribesMode).
+			// Only shown on Tribes servers, like the other Tribes menu items (the UI sets ui_tribesMode from the server info).
 			cvarTest			ui_tribesMode
 			showCvar			{ 1 }
 			descText			"Configure your Tribes controls."

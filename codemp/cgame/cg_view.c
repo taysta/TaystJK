@@ -2956,17 +2956,6 @@ void CG_DrawActiveFrame( int serverTime, stereoFrame_t stereoView, qboolean demo
 	// update cg.predictedPlayerState
 	CG_PredictPlayerState();
 
-	// let UI menus show Tribes-only entries, using the same test as the Tribes HUD
-	{
-		static int lastTribesMode = -1;
-		const int tribesMode = IsJaPRO() && cg.predictedPlayerState.stats[STAT_MOVEMENTSTYLE] == MV_TRIBES;
-
-		if (tribesMode != lastTribesMode) {
-			trap->Cvar_Set("ui_tribesMode", tribesMode ? "1" : "0");
-			lastTribesMode = tribesMode;
-		}
-	}
-
 	// decide on third person view
 	if (cgs.serverMod == SVMOD_JAPRO && cg.predictedPlayerState.pm_flags & PMF_FOLLOW && cg_specCameraMode.integer) {
 		if (cg.predictedPlayerState.persistant[PERS_CAMERA_SETTINGS] > 0)
