@@ -3337,6 +3337,9 @@ void CG_Shutdown( void )
 
 	// don't advertise our capabilities to whatever cgame loads next
 	trap->Cvar_Set( "taystJKcgflags", "0" );
+
+	// hide Tribes-only menu entries until the next cgame decides otherwise
+	trap->Cvar_Set( "ui_tribesMode", "0" );
 }
 
 /*
