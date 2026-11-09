@@ -77,12 +77,12 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 ## Evidence
 
-- registration: [codemp/game/g_xcvar.h:167](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/codemp/game/g_xcvar.h#L167) (XCVAR_DEF)
-- registration: [codemp/ui/ui_xcvar.h:49](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/codemp/ui/ui_xcvar.h#L49) (XCVAR_DEF)
-- behavior: [codemp/game/g_main.c:1283](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/codemp/game/g_main.c#L1283)
-- behavior: [codemp/game/g_main.c:2922](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/codemp/game/g_main.c#L2922)
-- behavior: [codemp/game/g_main.c:2716](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/codemp/game/g_main.c#L2716)
-- behavior: [codemp/game/g_main.c:2746](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/codemp/game/g_main.c#L2746)
-- behavior: [codemp/game/g_main.c:2923](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/codemp/game/g_main.c#L2923)
+- registration: [codemp/game/g_xcvar.h:167](https://github.com/taysta/TaystJK/blame/77851b2c2d224004cb476a275fe4e4998f714230/codemp/game/g_xcvar.h#L167) (XCVAR_DEF)
+- registration: [codemp/ui/ui_xcvar.h:49](https://github.com/taysta/TaystJK/blame/77851b2c2d224004cb476a275fe4e4998f714230/codemp/ui/ui_xcvar.h#L49) (XCVAR_DEF)
+- behavior: [codemp/game/g_main.c:1283](https://github.com/taysta/TaystJK/blame/77851b2c2d224004cb476a275fe4e4998f714230/codemp/game/g_main.c#L1283)
+- behavior: [codemp/game/g_main.c:2922](https://github.com/taysta/TaystJK/blame/77851b2c2d224004cb476a275fe4e4998f714230/codemp/game/g_main.c#L2922)
+- behavior: [codemp/game/g_main.c:2716](https://github.com/taysta/TaystJK/blame/77851b2c2d224004cb476a275fe4e4998f714230/codemp/game/g_main.c#L2716)
+- behavior: [codemp/game/g_main.c:2746](https://github.com/taysta/TaystJK/blame/77851b2c2d224004cb476a275fe4e4998f714230/codemp/game/g_main.c#L2746)
+- behavior: [codemp/game/g_main.c:2923](https://github.com/taysta/TaystJK/blame/77851b2c2d224004cb476a275fe4e4998f714230/codemp/game/g_main.c#L2923)
 
-<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/d843fa409b7e269a3775392e569f8f4694a7cb25"><code>d843fa409b7e</code></a> on 2026-11-09. Anything merged after that is not reflected here.</p>
+<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/77851b2c2d224004cb476a275fe4e4998f714230"><code>77851b2c2d22</code></a> on 2026-11-10. Anything merged after that is not reflected here.</p>

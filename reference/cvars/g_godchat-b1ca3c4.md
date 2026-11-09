@@ -37,8 +37,8 @@ Controls `g_godChat` in the game module. Consult the cited behavior reads before
 
 | Value | Meaning | Evidence |
 |:--|:--|:--|
-| `0` | Disabled. | [codemp/game/g_active.c:3871](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/codemp/game/g_active.c#L3871) |
-| `1` | Enabled. | [codemp/game/g_active.c:3871](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/codemp/game/g_active.c#L3871) |
+| `0` | Disabled. | [codemp/game/g_active.c:3871](https://github.com/taysta/TaystJK/blame/77851b2c2d224004cb476a275fe4e4998f714230/codemp/game/g_active.c#L3871) |
+| `1` | Enabled. | [codemp/game/g_active.c:3871](https://github.com/taysta/TaystJK/blame/77851b2c2d224004cb476a275fe4e4998f714230/codemp/game/g_active.c#L3871) |
 
 ## Flags
 
@@ -67,9 +67,9 @@ Authored dates come from the exact registration's first content commit, PR dates
 
 ## Evidence
 
-- registration: [codemp/game/g_xcvar.h:280](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/codemp/game/g_xcvar.h#L280) (XCVAR_DEF)
-- behavior: [codemp/game/g_active.c:3871](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/codemp/game/g_active.c#L3871)
-- behavior: [codemp/game/g_combat.c:4777](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/codemp/game/g_combat.c#L4777)
-- behavior: [codemp/game/w_force.c:576](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/codemp/game/w_force.c#L576)
+- registration: [codemp/game/g_xcvar.h:280](https://github.com/taysta/TaystJK/blame/77851b2c2d224004cb476a275fe4e4998f714230/codemp/game/g_xcvar.h#L280) (XCVAR_DEF)
+- behavior: [codemp/game/g_active.c:3871](https://github.com/taysta/TaystJK/blame/77851b2c2d224004cb476a275fe4e4998f714230/codemp/game/g_active.c#L3871)
+- behavior: [codemp/game/g_combat.c:4777](https://github.com/taysta/TaystJK/blame/77851b2c2d224004cb476a275fe4e4998f714230/codemp/game/g_combat.c#L4777)
+- behavior: [codemp/game/w_force.c:576](https://github.com/taysta/TaystJK/blame/77851b2c2d224004cb476a275fe4e4998f714230/codemp/game/w_force.c#L576)
 
-<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/d843fa409b7e269a3775392e569f8f4694a7cb25"><code>d843fa409b7e</code></a> on 2026-11-09. Anything merged after that is not reflected here.</p>
+<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/77851b2c2d224004cb476a275fe4e4998f714230"><code>77851b2c2d22</code></a> on 2026-11-10. Anything merged after that is not reflected here.</p>

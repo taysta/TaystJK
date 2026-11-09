@@ -38,9 +38,9 @@ description: "-2=Target closest excluding otherbots. -1=target closest. 0-31=tar
 
 | Value | Meaning | Evidence |
 |:--|:--|:--|
-| `-2` | Target closest excluding otherbots. | [docs/japro_docs.md:143](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/docs/japro_docs.md#L143) |
-| `-1` | Target closest. 0. | [docs/japro_docs.md:143](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/docs/japro_docs.md#L143) |
-| `31` | Target clientnum. | [docs/japro_docs.md:143](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/docs/japro_docs.md#L143) |
+| `-2` | Target closest excluding otherbots. | [docs/japro_docs.md:143](https://github.com/taysta/TaystJK/blame/77851b2c2d224004cb476a275fe4e4998f714230/docs/japro_docs.md#L143) |
+| `-1` | Target closest. 0. | [docs/japro_docs.md:143](https://github.com/taysta/TaystJK/blame/77851b2c2d224004cb476a275fe4e4998f714230/docs/japro_docs.md#L143) |
+| `31` | Target clientnum. | [docs/japro_docs.md:143](https://github.com/taysta/TaystJK/blame/77851b2c2d224004cb476a275fe4e4998f714230/docs/japro_docs.md#L143) |
 
 ## Flags
 
@@ -77,11 +77,11 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 ## Evidence
 
-- registration: [codemp/game/g_xcvar.h:341](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/codemp/game/g_xcvar.h#L341) (XCVAR_DEF)
-- behavior: [codemp/game/ai_main.c:1801](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/codemp/game/ai_main.c#L1801)
-- behavior: [codemp/game/ai_main.c:8935](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/codemp/game/ai_main.c#L8935)
-- behavior: [codemp/game/ai_main.c:8973](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/codemp/game/ai_main.c#L8973)
-- behavior: [codemp/game/ai_main.c:8939](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/codemp/game/ai_main.c#L8939)
-- documentation: [docs/japro_docs.md:143](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/docs/japro_docs.md#L143)
+- registration: [codemp/game/g_xcvar.h:341](https://github.com/taysta/TaystJK/blame/77851b2c2d224004cb476a275fe4e4998f714230/codemp/game/g_xcvar.h#L341) (XCVAR_DEF)
+- behavior: [codemp/game/ai_main.c:1801](https://github.com/taysta/TaystJK/blame/77851b2c2d224004cb476a275fe4e4998f714230/codemp/game/ai_main.c#L1801)
+- behavior: [codemp/game/ai_main.c:8935](https://github.com/taysta/TaystJK/blame/77851b2c2d224004cb476a275fe4e4998f714230/codemp/game/ai_main.c#L8935)
+- behavior: [codemp/game/ai_main.c:8973](https://github.com/taysta/TaystJK/blame/77851b2c2d224004cb476a275fe4e4998f714230/codemp/game/ai_main.c#L8973)
+- behavior: [codemp/game/ai_main.c:8939](https://github.com/taysta/TaystJK/blame/77851b2c2d224004cb476a275fe4e4998f714230/codemp/game/ai_main.c#L8939)
+- documentation: [docs/japro_docs.md:143](https://github.com/taysta/TaystJK/blame/77851b2c2d224004cb476a275fe4e4998f714230/docs/japro_docs.md#L143)
 
-<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/d843fa409b7e269a3775392e569f8f4694a7cb25"><code>d843fa409b7e</code></a> on 2026-11-09. Anything merged after that is not reflected here.</p>
+<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/77851b2c2d224004cb476a275fe4e4998f714230"><code>77851b2c2d22</code></a> on 2026-11-10. Anything merged after that is not reflected here.</p>

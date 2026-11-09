@@ -33,7 +33,7 @@ Controls `ui_geometricdetail` in the ui module. Consult the cited behavior reads
 | Confidence | `medium` |
 | Added | 2015-06-17 in [`d93386f34`](https://github.com/taysta/TaystJK/commit/d93386f34b71fbf1eff27f198956e519918f45a0) <span class="status-chip">needs review</span> ([how to compare this against your build](/TaystJK/features/whats-new/#how-to-tell-what-your-build-has)) |
 | In-game xdocs | No |
-| In-game menu | Yes: [ingame_setup.menu:1339](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/assets/japro/ui/jamp/ingame_setup.menu#L1339), [ingame_setup.menu:1355](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/assets/japro/ui/jamp/ingame_setup.menu#L1355), [ingame_setup.menu:2218](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/assets/japro/ui/jamp/ingame_setup.menu#L2218) |
+| In-game menu | Yes: [ingame_setup.menu:1339](https://github.com/taysta/TaystJK/blame/77851b2c2d224004cb476a275fe4e4998f714230/assets/japro/ui/jamp/ingame_setup.menu#L1339), [ingame_setup.menu:1355](https://github.com/taysta/TaystJK/blame/77851b2c2d224004cb476a275fe4e4998f714230/assets/japro/ui/jamp/ingame_setup.menu#L1355), [ingame_setup.menu:2218](https://github.com/taysta/TaystJK/blame/77851b2c2d224004cb476a275fe4e4998f714230/assets/japro/ui/jamp/ingame_setup.menu#L2218) |
 
 ## Values
 
@@ -67,11 +67,11 @@ Authored dates come from the exact registration's first content commit, PR dates
 
 ## Evidence
 
-- registration: [codemp/ui/ui_main.c:6349](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/codemp/ui/ui_main.c#L6349) (Cvar_Register)
-- behavior: [codemp/ui/ui_main.c:5900](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/codemp/ui/ui_main.c#L5900)
-- behavior: [codemp/ui/ui_main.c:6087](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/codemp/ui/ui_main.c#L6087)
-- behavior: [codemp/ui/ui_main.c:6099](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/codemp/ui/ui_main.c#L6099)
-- behavior: [codemp/ui/ui_main.c:6112](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/codemp/ui/ui_main.c#L6112)
-- behavior: [codemp/ui/ui_main.c:6125](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/codemp/ui/ui_main.c#L6125)
+- registration: [codemp/ui/ui_main.c:6349](https://github.com/taysta/TaystJK/blame/77851b2c2d224004cb476a275fe4e4998f714230/codemp/ui/ui_main.c#L6349) (Cvar_Register)
+- behavior: [codemp/ui/ui_main.c:5900](https://github.com/taysta/TaystJK/blame/77851b2c2d224004cb476a275fe4e4998f714230/codemp/ui/ui_main.c#L5900)
+- behavior: [codemp/ui/ui_main.c:6087](https://github.com/taysta/TaystJK/blame/77851b2c2d224004cb476a275fe4e4998f714230/codemp/ui/ui_main.c#L6087)
+- behavior: [codemp/ui/ui_main.c:6099](https://github.com/taysta/TaystJK/blame/77851b2c2d224004cb476a275fe4e4998f714230/codemp/ui/ui_main.c#L6099)
+- behavior: [codemp/ui/ui_main.c:6112](https://github.com/taysta/TaystJK/blame/77851b2c2d224004cb476a275fe4e4998f714230/codemp/ui/ui_main.c#L6112)
+- behavior: [codemp/ui/ui_main.c:6125](https://github.com/taysta/TaystJK/blame/77851b2c2d224004cb476a275fe4e4998f714230/codemp/ui/ui_main.c#L6125)
 
-<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/d843fa409b7e269a3775392e569f8f4694a7cb25"><code>d843fa409b7e</code></a> on 2026-11-09. Anything merged after that is not reflected here.</p>
+<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/77851b2c2d224004cb476a275fe4e4998f714230"><code>77851b2c2d22</code></a> on 2026-11-10. Anything merged after that is not reflected here.</p>

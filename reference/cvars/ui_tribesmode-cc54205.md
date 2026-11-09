@@ -11,7 +11,7 @@ description: "Report whether the connected jaPRO server runs tribes mode."
 
 <span class="label ref-origin ref-origin-japro">jaPRO</span>
 
-<p class="ref-notice"><strong>Engine-managed.</strong> The game maintains this value itself, so it is not a setting to change by hand: it is read-only after registration (<code>CVAR_ROM</code>); it is internal UI/engine state, hidden from every cvar listing (<code>CVAR_INTERNAL</code>).</p>
+<p class="ref-notice"><strong>Engine-managed.</strong> The game maintains this value itself, so it is not a setting to change by hand: no registration exists; every cited site only writes it with <code>Cvar_Set</code>, so a value you set is replaced the next time that code runs.</p>
 
 Menu-only state the UI keeps while reading server info. `UI_UpdateCurrentServerInfo` clears it on every refresh and sets it to 1 when a jaPRO server advertises `JAPRO_CINFO2_WTTRIBES` in its `jcinfo2` key; the in-game tribes menu reads it to offer the class and pack pages. A value set by hand is replaced at the next refresh.
 
@@ -26,25 +26,31 @@ Menu-only state the UI keeps while reading server info. `UI_UpdateCurrentServerI
 | Cheat protected | No |
 | Network scope | `client-only`: Local to the client/UI/renderer. |
 | Category | HUD & interface |
-| Module | `cgame` |
+| Module | `ui` |
 | Renderer | All / not renderer-specific |
 | Derivation | `code-trace` |
 | Confidence | `high` |
 | Added | 2024-02-28 in [`baa02905f`](https://github.com/taysta/TaystJK/commit/baa02905f40f33652a2ae326fe55ece2642169c1) ([how to compare this against your build](/TaystJK/features/whats-new/#how-to-tell-what-your-build-has)) |
 | In-game xdocs | No |
-| In-game menu | Yes: [ingame.menu:72](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/assets/japro/ui/jamp/ingame.menu#L72), [ingame.menu:86](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/assets/japro/ui/jamp/ingame.menu#L86), [ingame.menu:898](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/assets/japro/ui/jamp/ingame.menu#L898) |
+| In-game menu | Yes: [ingame.menu:72](https://github.com/taysta/TaystJK/blame/77851b2c2d224004cb476a275fe4e4998f714230/assets/japro/ui/jamp/ingame.menu#L72), [ingame.menu:86](https://github.com/taysta/TaystJK/blame/77851b2c2d224004cb476a275fe4e4998f714230/assets/japro/ui/jamp/ingame.menu#L86), [ingame.menu:898](https://github.com/taysta/TaystJK/blame/77851b2c2d224004cb476a275fe4e4998f714230/assets/japro/ui/jamp/ingame.menu#L898) |
 
 ## Values
 
 | Value | Meaning | Evidence |
 |:--|:--|:--|
-| `0` | The server does not advertise tribes mode, or its info has not been read yet. | [codemp/ui/ui_main.c:630](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/codemp/ui/ui_main.c#L630) |
-| `1` | The connected jaPRO server advertises tribes mode. | [codemp/ui/ui_main.c:659](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/codemp/ui/ui_main.c#L659) |
+| `0` | The server does not advertise tribes mode, or its info has not been read yet. | [codemp/ui/ui_main.c:630](https://github.com/taysta/TaystJK/blame/77851b2c2d224004cb476a275fe4e4998f714230/codemp/ui/ui_main.c#L630) |
+| `1` | The connected jaPRO server advertises tribes mode. | [codemp/ui/ui_main.c:659](https://github.com/taysta/TaystJK/blame/77851b2c2d224004cb476a275fe4e4998f714230/codemp/ui/ui_main.c#L659) |
 
 ## Flags
 
-- `CVAR_INTERNAL`: internal UI/engine state
-- `CVAR_ROM`: read-only after registration
+No cvar flags are registered at the cited site.
+
+## Registration-specific defaults
+
+| Default | Module | Renderer | Compile condition |
+|:--|:--|:--|:--|
+| `0` | `ui` | `—` | `always` |
+| `1` | `ui` | `—` | `always` |
 
 ## Provenance
 
@@ -67,10 +73,7 @@ Authored dates come from the exact registration's first content commit, PR dates
 
 ## Evidence
 
-- registration: [codemp/cgame/cg_xcvar.h:402](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/codemp/cgame/cg_xcvar.h#L402) (XCVAR_DEF)
-- behavior: [codemp/cgame/cg_main.c:3342](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/codemp/cgame/cg_main.c#L3342)
-- behavior: [codemp/cgame/cg_view.c:2965](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/codemp/cgame/cg_view.c#L2965)
-- behavior: [codemp/ui/ui_main.c:630](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/codemp/ui/ui_main.c#L630)
-- behavior: [codemp/ui/ui_main.c:659](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/codemp/ui/ui_main.c#L659)
+- registration: [codemp/ui/ui_main.c:630](https://github.com/taysta/TaystJK/blame/77851b2c2d224004cb476a275fe4e4998f714230/codemp/ui/ui_main.c#L630) (implicit Cvar_Set)
+- registration: [codemp/ui/ui_main.c:659](https://github.com/taysta/TaystJK/blame/77851b2c2d224004cb476a275fe4e4998f714230/codemp/ui/ui_main.c#L659) (implicit Cvar_Set)
 
-<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/d843fa409b7e269a3775392e569f8f4694a7cb25"><code>d843fa409b7e</code></a> on 2026-11-09. Anything merged after that is not reflected here.</p>
+<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/77851b2c2d224004cb476a275fe4e4998f714230"><code>77851b2c2d22</code></a> on 2026-11-10. Anything merged after that is not reflected here.</p>

@@ -38,8 +38,8 @@ Controls `broadsword` in the cgame module. Consult the cited behavior reads befo
 
 | Value | Meaning | Evidence |
 |:--|:--|:--|
-| `0` | Disabled. | [codemp/cgame/cg_players.c:4275](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/codemp/cgame/cg_players.c#L4275) |
-| `1` | Enabled. | [codemp/cgame/cg_players.c:4275](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/codemp/cgame/cg_players.c#L4275) |
+| `0` | Disabled. | [codemp/cgame/cg_players.c:4275](https://github.com/taysta/TaystJK/blame/77851b2c2d224004cb476a275fe4e4998f714230/codemp/cgame/cg_players.c#L4275) |
+| `1` | Enabled. | [codemp/cgame/cg_players.c:4275](https://github.com/taysta/TaystJK/blame/77851b2c2d224004cb476a275fe4e4998f714230/codemp/cgame/cg_players.c#L4275) |
 
 ## Flags
 
@@ -88,15 +88,15 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 ## Evidence
 
-- registration: [codemp/cgame/cg_xcvar.h:254](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/codemp/cgame/cg_xcvar.h#L254) (XCVAR_DEF)
-- registration: [codemp/rd-dedicated/tr_init.cpp:442](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/codemp/rd-dedicated/tr_init.cpp#L442) (Cvar_Get)
-- registration: [codemp/rd-rend2/tr_init.cpp:1709](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/codemp/rd-rend2/tr_init.cpp#L1709) (Cvar_Get)
-- registration: [codemp/rd-vanilla/tr_init.cpp:1755](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/codemp/rd-vanilla/tr_init.cpp#L1755) (Cvar_Get)
-- registration: [codemp/rd-vulkan/tr_init.cpp:987](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/codemp/rd-vulkan/tr_init.cpp#L987) (Cvar_Get)
-- behavior: [codemp/cgame/cg_players.c:4275](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/codemp/cgame/cg_players.c#L4275)
-- behavior: [codemp/rd-dedicated/G2_bones.cpp:1645](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/codemp/rd-dedicated/G2_bones.cpp#L1645)
-- behavior: [codemp/rd-dedicated/G2_bones.cpp:1938](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/codemp/rd-dedicated/G2_bones.cpp#L1938)
-- behavior: [codemp/rd-dedicated/G2_bones.cpp:2300](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/codemp/rd-dedicated/G2_bones.cpp#L2300)
-- behavior: [codemp/rd-rend2/G2_bones.cpp:1646](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/codemp/rd-rend2/G2_bones.cpp#L1646)
+- registration: [codemp/cgame/cg_xcvar.h:254](https://github.com/taysta/TaystJK/blame/77851b2c2d224004cb476a275fe4e4998f714230/codemp/cgame/cg_xcvar.h#L254) (XCVAR_DEF)
+- registration: [codemp/rd-dedicated/tr_init.cpp:442](https://github.com/taysta/TaystJK/blame/77851b2c2d224004cb476a275fe4e4998f714230/codemp/rd-dedicated/tr_init.cpp#L442) (Cvar_Get)
+- registration: [codemp/rd-rend2/tr_init.cpp:1709](https://github.com/taysta/TaystJK/blame/77851b2c2d224004cb476a275fe4e4998f714230/codemp/rd-rend2/tr_init.cpp#L1709) (Cvar_Get)
+- registration: [codemp/rd-vanilla/tr_init.cpp:1755](https://github.com/taysta/TaystJK/blame/77851b2c2d224004cb476a275fe4e4998f714230/codemp/rd-vanilla/tr_init.cpp#L1755) (Cvar_Get)
+- registration: [codemp/rd-vulkan/tr_init.cpp:987](https://github.com/taysta/TaystJK/blame/77851b2c2d224004cb476a275fe4e4998f714230/codemp/rd-vulkan/tr_init.cpp#L987) (Cvar_Get)
+- behavior: [codemp/cgame/cg_players.c:4275](https://github.com/taysta/TaystJK/blame/77851b2c2d224004cb476a275fe4e4998f714230/codemp/cgame/cg_players.c#L4275)
+- behavior: [codemp/rd-dedicated/G2_bones.cpp:1645](https://github.com/taysta/TaystJK/blame/77851b2c2d224004cb476a275fe4e4998f714230/codemp/rd-dedicated/G2_bones.cpp#L1645)
+- behavior: [codemp/rd-dedicated/G2_bones.cpp:1938](https://github.com/taysta/TaystJK/blame/77851b2c2d224004cb476a275fe4e4998f714230/codemp/rd-dedicated/G2_bones.cpp#L1938)
+- behavior: [codemp/rd-dedicated/G2_bones.cpp:2300](https://github.com/taysta/TaystJK/blame/77851b2c2d224004cb476a275fe4e4998f714230/codemp/rd-dedicated/G2_bones.cpp#L2300)
+- behavior: [codemp/rd-rend2/G2_bones.cpp:1646](https://github.com/taysta/TaystJK/blame/77851b2c2d224004cb476a275fe4e4998f714230/codemp/rd-rend2/G2_bones.cpp#L1646)
 
-<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/d843fa409b7e269a3775392e569f8f4694a7cb25"><code>d843fa409b7e</code></a> on 2026-11-09. Anything merged after that is not reflected here.</p>
+<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/77851b2c2d224004cb476a275fe4e4998f714230"><code>77851b2c2d22</code></a> on 2026-11-10. Anything merged after that is not reflected here.</p>

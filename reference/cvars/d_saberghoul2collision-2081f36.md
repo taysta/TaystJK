@@ -37,8 +37,8 @@ Controls `d_saberGhoul2Collision` in the game module. Consult the cited behavior
 
 | Value | Meaning | Evidence |
 |:--|:--|:--|
-| `0` | Disabled. | [codemp/game/g_combat.c:4459](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/codemp/game/g_combat.c#L4459) |
-| `1` | Enabled. | [codemp/game/g_combat.c:4459](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/codemp/game/g_combat.c#L4459) |
+| `0` | Disabled. | [codemp/game/g_combat.c:4459](https://github.com/taysta/TaystJK/blame/77851b2c2d224004cb476a275fe4e4998f714230/codemp/game/g_combat.c#L4459) |
+| `1` | Enabled. | [codemp/game/g_combat.c:4459](https://github.com/taysta/TaystJK/blame/77851b2c2d224004cb476a275fe4e4998f714230/codemp/game/g_combat.c#L4459) |
 
 ## Flags
 
@@ -66,11 +66,11 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 ## Evidence
 
-- registration: [codemp/game/g_xcvar.h:55](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/codemp/game/g_xcvar.h#L55) (XCVAR_DEF)
-- behavior: [codemp/game/g_combat.c:4459](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/codemp/game/g_combat.c#L4459)
-- behavior: [codemp/game/g_combat.c:4571](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/codemp/game/g_combat.c#L4571)
-- behavior: [codemp/game/w_saber.c:4019](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/codemp/game/w_saber.c#L4019)
-- behavior: [codemp/game/w_saber.c:5470](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/codemp/game/w_saber.c#L5470)
-- behavior: [codemp/game/g_cmds.c:8313](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/codemp/game/g_cmds.c#L8313)
+- registration: [codemp/game/g_xcvar.h:55](https://github.com/taysta/TaystJK/blame/77851b2c2d224004cb476a275fe4e4998f714230/codemp/game/g_xcvar.h#L55) (XCVAR_DEF)
+- behavior: [codemp/game/g_combat.c:4459](https://github.com/taysta/TaystJK/blame/77851b2c2d224004cb476a275fe4e4998f714230/codemp/game/g_combat.c#L4459)
+- behavior: [codemp/game/g_combat.c:4571](https://github.com/taysta/TaystJK/blame/77851b2c2d224004cb476a275fe4e4998f714230/codemp/game/g_combat.c#L4571)
+- behavior: [codemp/game/w_saber.c:4019](https://github.com/taysta/TaystJK/blame/77851b2c2d224004cb476a275fe4e4998f714230/codemp/game/w_saber.c#L4019)
+- behavior: [codemp/game/w_saber.c:5470](https://github.com/taysta/TaystJK/blame/77851b2c2d224004cb476a275fe4e4998f714230/codemp/game/w_saber.c#L5470)
+- behavior: [codemp/game/g_cmds.c:8313](https://github.com/taysta/TaystJK/blame/77851b2c2d224004cb476a275fe4e4998f714230/codemp/game/g_cmds.c#L8313)
 
-<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/d843fa409b7e269a3775392e569f8f4694a7cb25"><code>d843fa409b7e</code></a> on 2026-11-09. Anything merged after that is not reflected here.</p>
+<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/77851b2c2d224004cb476a275fe4e4998f714230"><code>77851b2c2d22</code></a> on 2026-11-10. Anything merged after that is not reflected here.</p>

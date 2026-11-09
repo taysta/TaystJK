@@ -39,10 +39,10 @@ No discrete value list is enforced or documented in the inspected source.
 
 ## Enforced ranges
 
-- `0` through `16` (integer; Cvar_CheckRange). Evidence: [codemp/rd-dedicated/tr_init.cpp:334](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/codemp/rd-dedicated/tr_init.cpp#L334)
-- `0` through `16` (integer; Cvar_CheckRange). Evidence: [codemp/rd-rend2/tr_init.cpp:1521](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/codemp/rd-rend2/tr_init.cpp#L1521)
-- `0` through `16` (integer; Cvar_CheckRange). Evidence: [codemp/rd-vanilla/tr_init.cpp:1652](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/codemp/rd-vanilla/tr_init.cpp#L1652)
-- `0` through `16` (integer; Cvar_CheckRange). Evidence: [codemp/rd-vulkan/tr_init.cpp:804](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/codemp/rd-vulkan/tr_init.cpp#L804)
+- `0` through `16` (integer; Cvar_CheckRange). Evidence: [codemp/rd-dedicated/tr_init.cpp:334](https://github.com/taysta/TaystJK/blame/77851b2c2d224004cb476a275fe4e4998f714230/codemp/rd-dedicated/tr_init.cpp#L334)
+- `0` through `16` (integer; Cvar_CheckRange). Evidence: [codemp/rd-rend2/tr_init.cpp:1521](https://github.com/taysta/TaystJK/blame/77851b2c2d224004cb476a275fe4e4998f714230/codemp/rd-rend2/tr_init.cpp#L1521)
+- `0` through `16` (integer; Cvar_CheckRange). Evidence: [codemp/rd-vanilla/tr_init.cpp:1652](https://github.com/taysta/TaystJK/blame/77851b2c2d224004cb476a275fe4e4998f714230/codemp/rd-vanilla/tr_init.cpp#L1652)
+- `0` through `16` (integer; Cvar_CheckRange). Evidence: [codemp/rd-vulkan/tr_init.cpp:804](https://github.com/taysta/TaystJK/blame/77851b2c2d224004cb476a275fe4e4998f714230/codemp/rd-vulkan/tr_init.cpp#L804)
 
 ## Flags
 
@@ -99,14 +99,14 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 ## Evidence
 
-- registration: [codemp/rd-dedicated/tr_init.cpp:333](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/codemp/rd-dedicated/tr_init.cpp#L333) (Cvar_Get)
-- registration: [codemp/rd-rend2/tr_init.cpp:1520](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/codemp/rd-rend2/tr_init.cpp#L1520) (Cvar_Get)
-- registration: [codemp/rd-vanilla/tr_init.cpp:1651](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/codemp/rd-vanilla/tr_init.cpp#L1651) (Cvar_Get)
-- registration: [codemp/rd-vulkan/tr_init.cpp:803](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/codemp/rd-vulkan/tr_init.cpp#L803) (Cvar_Get)
-- behavior: [codemp/rd-rend2/tr_init.cpp:1326](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/codemp/rd-rend2/tr_init.cpp#L1326)
-- behavior: [codemp/rd-vanilla/tr_image.cpp:601](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/codemp/rd-vanilla/tr_image.cpp#L601)
-- behavior: [codemp/rd-vanilla/tr_init.cpp:1516](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/codemp/rd-vanilla/tr_init.cpp#L1516)
-- behavior: [codemp/rd-vulkan/vk_image.cpp:620](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/codemp/rd-vulkan/vk_image.cpp#L620)
-- behavior: [codemp/rd-vulkan/vk_image.cpp:621](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/codemp/rd-vulkan/vk_image.cpp#L621)
+- registration: [codemp/rd-dedicated/tr_init.cpp:333](https://github.com/taysta/TaystJK/blame/77851b2c2d224004cb476a275fe4e4998f714230/codemp/rd-dedicated/tr_init.cpp#L333) (Cvar_Get)
+- registration: [codemp/rd-rend2/tr_init.cpp:1520](https://github.com/taysta/TaystJK/blame/77851b2c2d224004cb476a275fe4e4998f714230/codemp/rd-rend2/tr_init.cpp#L1520) (Cvar_Get)
+- registration: [codemp/rd-vanilla/tr_init.cpp:1651](https://github.com/taysta/TaystJK/blame/77851b2c2d224004cb476a275fe4e4998f714230/codemp/rd-vanilla/tr_init.cpp#L1651) (Cvar_Get)
+- registration: [codemp/rd-vulkan/tr_init.cpp:803](https://github.com/taysta/TaystJK/blame/77851b2c2d224004cb476a275fe4e4998f714230/codemp/rd-vulkan/tr_init.cpp#L803) (Cvar_Get)
+- behavior: [codemp/rd-rend2/tr_init.cpp:1326](https://github.com/taysta/TaystJK/blame/77851b2c2d224004cb476a275fe4e4998f714230/codemp/rd-rend2/tr_init.cpp#L1326)
+- behavior: [codemp/rd-vanilla/tr_image.cpp:601](https://github.com/taysta/TaystJK/blame/77851b2c2d224004cb476a275fe4e4998f714230/codemp/rd-vanilla/tr_image.cpp#L601)
+- behavior: [codemp/rd-vanilla/tr_init.cpp:1516](https://github.com/taysta/TaystJK/blame/77851b2c2d224004cb476a275fe4e4998f714230/codemp/rd-vanilla/tr_init.cpp#L1516)
+- behavior: [codemp/rd-vulkan/vk_image.cpp:620](https://github.com/taysta/TaystJK/blame/77851b2c2d224004cb476a275fe4e4998f714230/codemp/rd-vulkan/vk_image.cpp#L620)
+- behavior: [codemp/rd-vulkan/vk_image.cpp:621](https://github.com/taysta/TaystJK/blame/77851b2c2d224004cb476a275fe4e4998f714230/codemp/rd-vulkan/vk_image.cpp#L621)
 
-<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/d843fa409b7e269a3775392e569f8f4694a7cb25"><code>d843fa409b7e</code></a> on 2026-11-09. Anything merged after that is not reflected here.</p>
+<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/77851b2c2d224004cb476a275fe4e4998f714230"><code>77851b2c2d22</code></a> on 2026-11-10. Anything merged after that is not reflected here.</p>

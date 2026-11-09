@@ -37,8 +37,8 @@ Controls `r_debugWeather` in the renderer module. Consult the cited behavior rea
 
 | Value | Meaning | Evidence |
 |:--|:--|:--|
-| `0` | Selects the code path tested for value 0. | [shared/rd-rend2/tr_weather.cpp:1137](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/shared/rd-rend2/tr_weather.cpp#L1137) |
-| `2` | Selects the code path tested for value 2. | [shared/rd-rend2/tr_backend.cpp:3286](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/shared/rd-rend2/tr_backend.cpp#L3286) |
+| `0` | Selects the code path tested for value 0. | [shared/rd-rend2/tr_weather.cpp:1137](https://github.com/taysta/TaystJK/blame/77851b2c2d224004cb476a275fe4e4998f714230/shared/rd-rend2/tr_weather.cpp#L1137) |
+| `2` | Selects the code path tested for value 2. | [shared/rd-rend2/tr_backend.cpp:3286](https://github.com/taysta/TaystJK/blame/77851b2c2d224004cb476a275fe4e4998f714230/shared/rd-rend2/tr_backend.cpp#L3286) |
 
 ## Flags
 
@@ -77,8 +77,8 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 ## Evidence
 
-- registration: [codemp/rd-rend2/tr_init.cpp:1518](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/codemp/rd-rend2/tr_init.cpp#L1518) (Cvar_Get)
-- behavior: [shared/rd-rend2/tr_backend.cpp:3286](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/shared/rd-rend2/tr_backend.cpp#L3286)
-- behavior: [shared/rd-rend2/tr_weather.cpp:1137](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/shared/rd-rend2/tr_weather.cpp#L1137)
+- registration: [codemp/rd-rend2/tr_init.cpp:1518](https://github.com/taysta/TaystJK/blame/77851b2c2d224004cb476a275fe4e4998f714230/codemp/rd-rend2/tr_init.cpp#L1518) (Cvar_Get)
+- behavior: [shared/rd-rend2/tr_backend.cpp:3286](https://github.com/taysta/TaystJK/blame/77851b2c2d224004cb476a275fe4e4998f714230/shared/rd-rend2/tr_backend.cpp#L3286)
+- behavior: [shared/rd-rend2/tr_weather.cpp:1137](https://github.com/taysta/TaystJK/blame/77851b2c2d224004cb476a275fe4e4998f714230/shared/rd-rend2/tr_weather.cpp#L1137)
 
-<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/d843fa409b7e269a3775392e569f8f4694a7cb25"><code>d843fa409b7e</code></a> on 2026-11-09. Anything merged after that is not reflected here.</p>
+<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/77851b2c2d224004cb476a275fe4e4998f714230"><code>77851b2c2d22</code></a> on 2026-11-10. Anything merged after that is not reflected here.</p>

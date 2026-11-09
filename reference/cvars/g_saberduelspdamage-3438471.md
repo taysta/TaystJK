@@ -38,8 +38,8 @@ Toggle use of SP style damage in saber duels.
 
 | Value | Meaning | Evidence |
 |:--|:--|:--|
-| `0` | Disabled. | [codemp/game/g_cmds.c:8300](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/codemp/game/g_cmds.c#L8300) |
-| `1` | Enabled. | [codemp/game/g_cmds.c:8300](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/codemp/game/g_cmds.c#L8300) |
+| `0` | Disabled. | [codemp/game/g_cmds.c:8300](https://github.com/taysta/TaystJK/blame/77851b2c2d224004cb476a275fe4e4998f714230/codemp/game/g_cmds.c#L8300) |
+| `1` | Enabled. | [codemp/game/g_cmds.c:8300](https://github.com/taysta/TaystJK/blame/77851b2c2d224004cb476a275fe4e4998f714230/codemp/game/g_cmds.c#L8300) |
 
 ## Flags
 
@@ -68,12 +68,12 @@ Authored dates come from the exact registration's first content commit, PR dates
 
 ## Evidence
 
-- registration: [codemp/game/g_xcvar.h:199](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/codemp/game/g_xcvar.h#L199) (XCVAR_DEF)
-- behavior: [codemp/game/g_cmds.c:8300](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/codemp/game/g_cmds.c#L8300)
-- behavior: [codemp/game/g_cmds.c:8352](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/codemp/game/g_cmds.c#L8352)
-- behavior: [codemp/game/w_saber.c:3965](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/codemp/game/w_saber.c#L3965)
-- behavior: [codemp/game/g_cmds.c:8301](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/codemp/game/g_cmds.c#L8301)
-- behavior: [codemp/game/w_saber.c:3858](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/codemp/game/w_saber.c#L3858)
-- documentation: [docs/japro_docs.md:19](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/docs/japro_docs.md#L19)
+- registration: [codemp/game/g_xcvar.h:199](https://github.com/taysta/TaystJK/blame/77851b2c2d224004cb476a275fe4e4998f714230/codemp/game/g_xcvar.h#L199) (XCVAR_DEF)
+- behavior: [codemp/game/g_cmds.c:8300](https://github.com/taysta/TaystJK/blame/77851b2c2d224004cb476a275fe4e4998f714230/codemp/game/g_cmds.c#L8300)
+- behavior: [codemp/game/g_cmds.c:8352](https://github.com/taysta/TaystJK/blame/77851b2c2d224004cb476a275fe4e4998f714230/codemp/game/g_cmds.c#L8352)
+- behavior: [codemp/game/w_saber.c:3965](https://github.com/taysta/TaystJK/blame/77851b2c2d224004cb476a275fe4e4998f714230/codemp/game/w_saber.c#L3965)
+- behavior: [codemp/game/g_cmds.c:8301](https://github.com/taysta/TaystJK/blame/77851b2c2d224004cb476a275fe4e4998f714230/codemp/game/g_cmds.c#L8301)
+- behavior: [codemp/game/w_saber.c:3858](https://github.com/taysta/TaystJK/blame/77851b2c2d224004cb476a275fe4e4998f714230/codemp/game/w_saber.c#L3858)
+- documentation: [docs/japro_docs.md:19](https://github.com/taysta/TaystJK/blame/77851b2c2d224004cb476a275fe4e4998f714230/docs/japro_docs.md#L19)
 
-<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/d843fa409b7e269a3775392e569f8f4694a7cb25"><code>d843fa409b7e</code></a> on 2026-11-09. Anything merged after that is not reflected here.</p>
+<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/77851b2c2d224004cb476a275fe4e4998f714230"><code>77851b2c2d22</code></a> on 2026-11-10. Anything merged after that is not reflected here.</p>

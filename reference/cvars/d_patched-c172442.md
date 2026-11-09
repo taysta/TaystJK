@@ -38,8 +38,8 @@ Controls `d_patched` in the game module. Consult the cited behavior reads before
 
 | Value | Meaning | Evidence |
 |:--|:--|:--|
-| `0` | Disabled. | [codemp/game/g_navnew.c:786](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/codemp/game/g_navnew.c#L786) |
-| `1` | Enabled. | [codemp/game/g_navnew.c:786](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/codemp/game/g_navnew.c#L786) |
+| `0` | Disabled. | [codemp/game/g_navnew.c:786](https://github.com/taysta/TaystJK/blame/77851b2c2d224004cb476a275fe4e4998f714230/codemp/game/g_navnew.c#L786) |
+| `1` | Enabled. | [codemp/game/g_navnew.c:786](https://github.com/taysta/TaystJK/blame/77851b2c2d224004cb476a275fe4e4998f714230/codemp/game/g_navnew.c#L786) |
 
 ## Flags
 
@@ -73,12 +73,12 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 ## Evidence
 
-- registration: [codemp/game/g_xcvar.h:48](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/codemp/game/g_xcvar.h#L48) (XCVAR_DEF)
-- registration: [codemp/server/NPCNav/navigator.cpp:47](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/codemp/server/NPCNav/navigator.cpp#L47) (Cvar_Get)
-- behavior: [codemp/game/g_navnew.c:786](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/codemp/game/g_navnew.c#L786)
-- behavior: [codemp/server/NPCNav/navigator.cpp:1942](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/codemp/server/NPCNav/navigator.cpp#L1942)
-- behavior: [codemp/game/NPC.c:763](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/codemp/game/NPC.c#L763)
-- behavior: [codemp/game/g_navnew.c:163](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/codemp/game/g_navnew.c#L163)
-- behavior: [codemp/game/g_navnew.c:494](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/codemp/game/g_navnew.c#L494)
+- registration: [codemp/game/g_xcvar.h:48](https://github.com/taysta/TaystJK/blame/77851b2c2d224004cb476a275fe4e4998f714230/codemp/game/g_xcvar.h#L48) (XCVAR_DEF)
+- registration: [codemp/server/NPCNav/navigator.cpp:47](https://github.com/taysta/TaystJK/blame/77851b2c2d224004cb476a275fe4e4998f714230/codemp/server/NPCNav/navigator.cpp#L47) (Cvar_Get)
+- behavior: [codemp/game/g_navnew.c:786](https://github.com/taysta/TaystJK/blame/77851b2c2d224004cb476a275fe4e4998f714230/codemp/game/g_navnew.c#L786)
+- behavior: [codemp/server/NPCNav/navigator.cpp:1942](https://github.com/taysta/TaystJK/blame/77851b2c2d224004cb476a275fe4e4998f714230/codemp/server/NPCNav/navigator.cpp#L1942)
+- behavior: [codemp/game/NPC.c:763](https://github.com/taysta/TaystJK/blame/77851b2c2d224004cb476a275fe4e4998f714230/codemp/game/NPC.c#L763)
+- behavior: [codemp/game/g_navnew.c:163](https://github.com/taysta/TaystJK/blame/77851b2c2d224004cb476a275fe4e4998f714230/codemp/game/g_navnew.c#L163)
+- behavior: [codemp/game/g_navnew.c:494](https://github.com/taysta/TaystJK/blame/77851b2c2d224004cb476a275fe4e4998f714230/codemp/game/g_navnew.c#L494)
 
-<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/d843fa409b7e269a3775392e569f8f4694a7cb25"><code>d843fa409b7e</code></a> on 2026-11-09. Anything merged after that is not reflected here.</p>
+<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/77851b2c2d224004cb476a275fe4e4998f714230"><code>77851b2c2d22</code></a> on 2026-11-10. Anything merged after that is not reflected here.</p>

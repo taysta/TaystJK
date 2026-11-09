@@ -39,8 +39,8 @@ Automatically respawn players to where they died after losing a duel.
 
 | Value | Meaning | Evidence |
 |:--|:--|:--|
-| `0` | Disabled. | [codemp/game/g_client.c:4070](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/codemp/game/g_client.c#L4070) |
-| `1` | Enabled. | [codemp/game/g_client.c:4070](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/codemp/game/g_client.c#L4070) |
+| `0` | Disabled. | [codemp/game/g_client.c:4070](https://github.com/taysta/TaystJK/blame/77851b2c2d224004cb476a275fe4e4998f714230/codemp/game/g_client.c#L4070) |
+| `1` | Enabled. | [codemp/game/g_client.c:4070](https://github.com/taysta/TaystJK/blame/77851b2c2d224004cb476a275fe4e4998f714230/codemp/game/g_client.c#L4070) |
 
 ## Flags
 
@@ -69,9 +69,9 @@ Authored dates come from the exact registration's first content commit, PR dates
 
 ## Evidence
 
-- registration: [codemp/game/g_xcvar.h:259](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/codemp/game/g_xcvar.h#L259) (XCVAR_DEF)
-- behavior: [codemp/game/g_client.c:4070](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/codemp/game/g_client.c#L4070)
-- behavior: [codemp/game/g_combat.c:2233](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/codemp/game/g_combat.c#L2233)
-- documentation: [docs/japro_docs.md:71](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/docs/japro_docs.md#L71)
+- registration: [codemp/game/g_xcvar.h:259](https://github.com/taysta/TaystJK/blame/77851b2c2d224004cb476a275fe4e4998f714230/codemp/game/g_xcvar.h#L259) (XCVAR_DEF)
+- behavior: [codemp/game/g_client.c:4070](https://github.com/taysta/TaystJK/blame/77851b2c2d224004cb476a275fe4e4998f714230/codemp/game/g_client.c#L4070)
+- behavior: [codemp/game/g_combat.c:2233](https://github.com/taysta/TaystJK/blame/77851b2c2d224004cb476a275fe4e4998f714230/codemp/game/g_combat.c#L2233)
+- documentation: [docs/japro_docs.md:71](https://github.com/taysta/TaystJK/blame/77851b2c2d224004cb476a275fe4e4998f714230/docs/japro_docs.md#L71)
 
-<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/d843fa409b7e269a3775392e569f8f4694a7cb25"><code>d843fa409b7e</code></a> on 2026-11-09. Anything merged after that is not reflected here.</p>
+<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/77851b2c2d224004cb476a275fe4e4998f714230"><code>77851b2c2d22</code></a> on 2026-11-10. Anything merged after that is not reflected here.</p>

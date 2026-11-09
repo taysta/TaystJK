@@ -29,7 +29,7 @@ Forwards this command to the connected game server.
 | Confidence | `high` |
 | Added | 2013-04-08 in [`14cea1563`](https://github.com/taysta/TaystJK/commit/14cea1563762076974bee277afadbd5bf234c494) ([how to compare this against your build](/TaystJK/features/whats-new/#how-to-tell-what-your-build-has)) |
 | In-game xdocs | No |
-| In-game menu | Yes: [ingame_controls.menu:3755](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/assets/japro/ui/jamp/ingame_controls.menu#L3755), [ingame_controls.menu:3764](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/assets/japro/ui/jamp/ingame_controls.menu#L3764), [ingame_setup.menu:4047](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/assets/japro/ui/jamp/ingame_setup.menu#L4047) |
+| In-game menu | Yes: [ingame_controls.menu:3755](https://github.com/taysta/TaystJK/blame/77851b2c2d224004cb476a275fe4e4998f714230/assets/japro/ui/jamp/ingame_controls.menu#L3755), [ingame_controls.menu:3764](https://github.com/taysta/TaystJK/blame/77851b2c2d224004cb476a275fe4e4998f714230/assets/japro/ui/jamp/ingame_controls.menu#L3764), [ingame_setup.menu:4047](https://github.com/taysta/TaystJK/blame/77851b2c2d224004cb476a275fe4e4998f714230/assets/japro/ui/jamp/ingame_setup.menu#L4047) |
 
 ## Arguments and gating
 
@@ -66,8 +66,8 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 ## Evidence
 
-- registration: [codemp/cgame/cg_consolecmds.c:2582](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/codemp/cgame/cg_consolecmds.c#L2582) (forwarded client command table)
-- registration: [codemp/game/g_cmds.c:8991](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/codemp/game/g_cmds.c#L8991) (game command table)
-- handler: [codemp/game/g_cmds.c:987](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/codemp/game/g_cmds.c#L987)
+- registration: [codemp/cgame/cg_consolecmds.c:2582](https://github.com/taysta/TaystJK/blame/77851b2c2d224004cb476a275fe4e4998f714230/codemp/cgame/cg_consolecmds.c#L2582) (forwarded client command table)
+- registration: [codemp/game/g_cmds.c:8991](https://github.com/taysta/TaystJK/blame/77851b2c2d224004cb476a275fe4e4998f714230/codemp/game/g_cmds.c#L8991) (game command table)
+- handler: [codemp/game/g_cmds.c:987](https://github.com/taysta/TaystJK/blame/77851b2c2d224004cb476a275fe4e4998f714230/codemp/game/g_cmds.c#L987)
 
-<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/d843fa409b7e269a3775392e569f8f4694a7cb25"><code>d843fa409b7e</code></a> on 2026-11-09. Anything merged after that is not reflected here.</p>
+<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/77851b2c2d224004cb476a275fe4e4998f714230"><code>77851b2c2d22</code></a> on 2026-11-10. Anything merged after that is not reflected here.</p>

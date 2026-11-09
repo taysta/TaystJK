@@ -37,8 +37,8 @@ Controls `g_debugMelee` in the game module. Consult the cited behavior reads bef
 
 | Value | Meaning | Evidence |
 |:--|:--|:--|
-| `0` | Disabled. | [codemp/game/g_trigger.c:1347](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/codemp/game/g_trigger.c#L1347) |
-| `1` | Enabled. | [codemp/game/g_trigger.c:1347](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/codemp/game/g_trigger.c#L1347) |
+| `0` | Disabled. | [codemp/game/g_trigger.c:1347](https://github.com/taysta/TaystJK/blame/77851b2c2d224004cb476a275fe4e4998f714230/codemp/game/g_trigger.c#L1347) |
+| `1` | Enabled. | [codemp/game/g_trigger.c:1347](https://github.com/taysta/TaystJK/blame/77851b2c2d224004cb476a275fe4e4998f714230/codemp/game/g_trigger.c#L1347) |
 
 ## Flags
 
@@ -68,11 +68,11 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 ## Evidence
 
-- registration: [codemp/game/g_xcvar.h:81](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/codemp/game/g_xcvar.h#L81) (XCVAR_DEF)
-- behavior: [codemp/game/g_trigger.c:1347](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/codemp/game/g_trigger.c#L1347)
-- behavior: [codemp/game/g_combat.c:6220](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/codemp/game/g_combat.c#L6220)
-- behavior: [codemp/game/w_force.c:785](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/codemp/game/w_force.c#L785)
-- behavior: [codemp/game/w_force.c:3776](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/codemp/game/w_force.c#L3776)
-- behavior: [codemp/game/g_active.c:4968](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/codemp/game/g_active.c#L4968)
+- registration: [codemp/game/g_xcvar.h:81](https://github.com/taysta/TaystJK/blame/77851b2c2d224004cb476a275fe4e4998f714230/codemp/game/g_xcvar.h#L81) (XCVAR_DEF)
+- behavior: [codemp/game/g_trigger.c:1347](https://github.com/taysta/TaystJK/blame/77851b2c2d224004cb476a275fe4e4998f714230/codemp/game/g_trigger.c#L1347)
+- behavior: [codemp/game/g_combat.c:6220](https://github.com/taysta/TaystJK/blame/77851b2c2d224004cb476a275fe4e4998f714230/codemp/game/g_combat.c#L6220)
+- behavior: [codemp/game/w_force.c:785](https://github.com/taysta/TaystJK/blame/77851b2c2d224004cb476a275fe4e4998f714230/codemp/game/w_force.c#L785)
+- behavior: [codemp/game/w_force.c:3776](https://github.com/taysta/TaystJK/blame/77851b2c2d224004cb476a275fe4e4998f714230/codemp/game/w_force.c#L3776)
+- behavior: [codemp/game/g_active.c:4968](https://github.com/taysta/TaystJK/blame/77851b2c2d224004cb476a275fe4e4998f714230/codemp/game/g_active.c#L4968)
 
-<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/d843fa409b7e269a3775392e569f8f4694a7cb25"><code>d843fa409b7e</code></a> on 2026-11-09. Anything merged after that is not reflected here.</p>
+<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/77851b2c2d224004cb476a275fe4e4998f714230"><code>77851b2c2d22</code></a> on 2026-11-10. Anything merged after that is not reflected here.</p>

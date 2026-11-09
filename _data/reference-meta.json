@@ -5,8 +5,8 @@
     "cvars": 1445
   },
   "extractor_version": 7,
-  "source_commit": "d843fa409b7e269a3775392e569f8f4694a7cb25",
-  "source_commit_date": "2026-11-09T13:27:48+08:00",
+  "source_commit": "77851b2c2d224004cb476a275fe4e4998f714230",
+  "source_commit_date": "2026-11-10T01:39:46+08:00",
   "upstream_commits": {
     "14cea1563762076974bee277afadbd5bf234c494": "14cea1563762076974bee277afadbd5bf234c494",
     "Sunny/master": "362b28150b83e1d077137c5ea67ebb8a123629ba",
@@ -15,7 +15,7 @@
     "jk2mv/master": "7d601454c3db68492289d4d4e3dc30bff39e4246",
     "newjk/master": "40e10bbd5efee7a57db8f41b4f54cf4ce2e166d3",
     "openjk/master": "260c59c2907187af555a676fe0cc798893bf7757",
-    "origin/master": "d843fa409b7e269a3775392e569f8f4694a7cb25",
+    "origin/master": "77851b2c2d224004cb476a275fe4e4998f714230",
     "somaz/rend2-unified-wip": "788c19e97f02c0b68db29d63060305b6ad1580e5"
   }
 }
