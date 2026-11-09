@@ -2434,8 +2434,13 @@ void S_UpdateEntityPosition( int entityNum, const vec3_t origin )
 #ifdef USE_OPENAL
 	if (s_UseOpenAL)
 	{
-		if (entityNum == 0)
+		// The listener's own sounds stay relative to it. This was entity 0,
+		// which only holds in single player; in MP it's whichever client we are.
+		if (entityNum == listener_number)
+		{
+			VectorCopy( origin, s_entityPosition[entityNum] );
 			return;
+		}
 
 		int i;
 		channel_t *ch = s_channels + 1;
@@ -2618,6 +2623,9 @@ void S_Respatialize( int entityNum, const vec3_t head, matrix3_t axis, int inwat
 	if ( !s_soundStarted || s_soundMuted ) {
 		return;
 	}
+
+	// both backends need to know which entity is us
+	listener_number = entityNum;
 
 #ifdef USE_OPENAL
 	if (s_UseOpenAL)
