@@ -37,8 +37,8 @@ Controls `d_JediAI` in the game module. Consult the cited behavior reads before 
 
 | Value | Meaning | Evidence |
 |:--|:--|:--|
-| `0` | Disabled. | [codemp/game/NPC_AI_Jedi.c:1383](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/game/NPC_AI_Jedi.c#L1383) |
-| `1` | Enabled. | [codemp/game/NPC_AI_Jedi.c:1383](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/game/NPC_AI_Jedi.c#L1383) |
+| `0` | Disabled. | [codemp/game/NPC_AI_Jedi.c:1383](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/codemp/game/NPC_AI_Jedi.c#L1383) |
+| `1` | Enabled. | [codemp/game/NPC_AI_Jedi.c:1383](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/codemp/game/NPC_AI_Jedi.c#L1383) |
 
 ## Flags
 
@@ -65,11 +65,11 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 ## Evidence
 
-- registration: [codemp/game/g_xcvar.h:41](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/game/g_xcvar.h#L41) (XCVAR_DEF)
-- behavior: [codemp/game/NPC_AI_Jedi.c:1383](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/game/NPC_AI_Jedi.c#L1383)
-- behavior: [codemp/game/NPC_AI_Jedi.c:2536](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/game/NPC_AI_Jedi.c#L2536)
-- behavior: [codemp/game/NPC_AI_Jedi.c:2581](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/game/NPC_AI_Jedi.c#L2581)
-- behavior: [codemp/game/NPC_AI_Jedi.c:2592](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/game/NPC_AI_Jedi.c#L2592)
-- behavior: [codemp/game/NPC_AI_Jedi.c:2629](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/game/NPC_AI_Jedi.c#L2629)
+- registration: [codemp/game/g_xcvar.h:41](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/codemp/game/g_xcvar.h#L41) (XCVAR_DEF)
+- behavior: [codemp/game/NPC_AI_Jedi.c:1383](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/codemp/game/NPC_AI_Jedi.c#L1383)
+- behavior: [codemp/game/NPC_AI_Jedi.c:2536](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/codemp/game/NPC_AI_Jedi.c#L2536)
+- behavior: [codemp/game/NPC_AI_Jedi.c:2581](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/codemp/game/NPC_AI_Jedi.c#L2581)
+- behavior: [codemp/game/NPC_AI_Jedi.c:2592](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/codemp/game/NPC_AI_Jedi.c#L2592)
+- behavior: [codemp/game/NPC_AI_Jedi.c:2629](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/codemp/game/NPC_AI_Jedi.c#L2629)
 
-<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/21044fb29768df0061bc4897bbb97d82304a1fe3"><code>21044fb29768</code></a> on 2026-10-25. Anything merged after that is not reflected here.</p>
+<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/d843fa409b7e269a3775392e569f8f4694a7cb25"><code>d843fa409b7e</code></a> on 2026-11-09. Anything merged after that is not reflected here.</p>

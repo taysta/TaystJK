@@ -61,9 +61,9 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 ## Evidence
 
-- registration: [codemp/cgame/cg_xcvar.h:370](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/cgame/cg_xcvar.h#L370) (XCVAR_DEF)
-- behavior: [codemp/cgame/cg_view.c:3127](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/cgame/cg_view.c#L3127)
-- behavior: [codemp/cgame/cg_view.c:3118](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/cgame/cg_view.c#L3118)
-- behavior: [codemp/cgame/cg_view.c:3123](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/cgame/cg_view.c#L3123)
+- registration: [codemp/cgame/cg_xcvar.h:370](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/codemp/cgame/cg_xcvar.h#L370) (XCVAR_DEF)
+- behavior: [codemp/cgame/cg_view.c:3138](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/codemp/cgame/cg_view.c#L3138)
+- behavior: [codemp/cgame/cg_view.c:3129](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/codemp/cgame/cg_view.c#L3129)
+- behavior: [codemp/cgame/cg_view.c:3134](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/codemp/cgame/cg_view.c#L3134)
 
-<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/21044fb29768df0061bc4897bbb97d82304a1fe3"><code>21044fb29768</code></a> on 2026-10-25. Anything merged after that is not reflected here.</p>
+<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/d843fa409b7e269a3775392e569f8f4694a7cb25"><code>d843fa409b7e</code></a> on 2026-11-09. Anything merged after that is not reflected here.</p>

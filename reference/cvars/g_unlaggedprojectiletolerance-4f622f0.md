@@ -47,7 +47,7 @@ Origin: <span class="label ref-origin ref-origin-japro">jaPRO</span>
 
 - Ultimate-origin introduction: [`41c7e75be47a`](https://github.com/videoP/jaPRO/commit/41c7e75be47a14426fe6ec5dd479edc5aa77a310) in <span class="label ref-origin ref-origin-japro">jaPRO</span> (content authored `2023-12-21`, integrated `2023-12-21`)
 - Origin pull request: [#57](https://github.com/taysta/TaystJK/pull/57)
-- Upstream registration evidence: [codemp/game/g_xcvar.h:278](https://github.com/videoP/jaPRO/blame/a4d22a138f1e055c8d8fe6109926dff84c4233a2/codemp/game/g_xcvar.h#L278)
+- Upstream registration evidence: [codemp/game/g_xcvar.h:278](https://github.com/videoP/jaPRO/blame/24408c702a83557ee29333ea4a747af624aa5cff/codemp/game/g_xcvar.h#L278)
 - Attribution method: `squash-feature-group-explicit-credit`
 - Attribution confidence: `high`
 - Notes: The identifier's single-prefix squash feature group explicitly credits japro.
@@ -72,11 +72,11 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 ## Evidence
 
-- registration: [codemp/game/g_xcvar.h:277](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/game/g_xcvar.h#L277) (XCVAR_DEF)
-- behavior: [codemp/game/g_missile.c:385](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/game/g_missile.c#L385)
-- behavior: [codemp/game/g_missile.c:1439](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/game/g_missile.c#L1439)
-- behavior: [codemp/game/g_missile.c:386](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/game/g_missile.c#L386)
-- behavior: [codemp/game/g_missile.c:1440](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/game/g_missile.c#L1440)
-- behavior: [codemp/cgame/cg_weapons.c:2473](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/cgame/cg_weapons.c#L2473)
+- registration: [codemp/game/g_xcvar.h:277](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/codemp/game/g_xcvar.h#L277) (XCVAR_DEF)
+- behavior: [codemp/game/g_missile.c:385](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/codemp/game/g_missile.c#L385)
+- behavior: [codemp/game/g_missile.c:1439](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/codemp/game/g_missile.c#L1439)
+- behavior: [codemp/game/g_missile.c:386](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/codemp/game/g_missile.c#L386)
+- behavior: [codemp/game/g_missile.c:1440](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/codemp/game/g_missile.c#L1440)
+- behavior: [codemp/cgame/cg_weapons.c:2473](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/codemp/cgame/cg_weapons.c#L2473)
 
-<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/21044fb29768df0061bc4897bbb97d82304a1fe3"><code>21044fb29768</code></a> on 2026-10-25. Anything merged after that is not reflected here.</p>
+<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/d843fa409b7e269a3775392e569f8f4694a7cb25"><code>d843fa409b7e</code></a> on 2026-11-09. Anything merged after that is not reflected here.</p>

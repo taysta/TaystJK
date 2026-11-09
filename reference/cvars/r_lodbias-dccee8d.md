@@ -37,8 +37,8 @@ Controls `r_lodbias` in the renderer module. Consult the cited behavior reads be
 
 | Value | Meaning | Evidence |
 |:--|:--|:--|
-| `0` | Disabled. | [codemp/rd-dedicated/tr_model.cpp:1321](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/rd-dedicated/tr_model.cpp#L1321) |
-| `1` | Enabled. | [codemp/rd-dedicated/tr_model.cpp:1321](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/rd-dedicated/tr_model.cpp#L1321) |
+| `0` | Disabled. | [codemp/rd-dedicated/tr_model.cpp:1321](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/codemp/rd-dedicated/tr_model.cpp#L1321) |
+| `1` | Enabled. | [codemp/rd-dedicated/tr_model.cpp:1321](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/codemp/rd-dedicated/tr_model.cpp#L1321) |
 
 ## Flags
 
@@ -90,14 +90,14 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 ## Evidence
 
-- registration: [codemp/rd-dedicated/tr_init.cpp:361](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/rd-dedicated/tr_init.cpp#L361) (Cvar_Get)
-- registration: [codemp/rd-rend2/tr_init.cpp:1611](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/rd-rend2/tr_init.cpp#L1611) (Cvar_Get)
-- registration: [codemp/rd-vanilla/tr_init.cpp:1670](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/rd-vanilla/tr_init.cpp#L1670) (Cvar_Get)
-- registration: [codemp/rd-vulkan/tr_init.cpp:822](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/rd-vulkan/tr_init.cpp#L822) (Cvar_Get)
-- behavior: [codemp/rd-dedicated/tr_model.cpp:1321](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/rd-dedicated/tr_model.cpp#L1321)
-- behavior: [codemp/rd-vanilla/tr_ghoul2.cpp:903](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/rd-vanilla/tr_ghoul2.cpp#L903)
-- behavior: [codemp/rd-vanilla/tr_model.cpp:1389](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/rd-vanilla/tr_model.cpp#L1389)
-- behavior: [codemp/rd-vulkan/tr_ghoul2.cpp:925](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/rd-vulkan/tr_ghoul2.cpp#L925)
-- behavior: [shared/rd-rend2/tr_ghoul2.cpp:1005](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/shared/rd-rend2/tr_ghoul2.cpp#L1005)
+- registration: [codemp/rd-dedicated/tr_init.cpp:361](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/codemp/rd-dedicated/tr_init.cpp#L361) (Cvar_Get)
+- registration: [codemp/rd-rend2/tr_init.cpp:1611](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/codemp/rd-rend2/tr_init.cpp#L1611) (Cvar_Get)
+- registration: [codemp/rd-vanilla/tr_init.cpp:1670](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/codemp/rd-vanilla/tr_init.cpp#L1670) (Cvar_Get)
+- registration: [codemp/rd-vulkan/tr_init.cpp:822](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/codemp/rd-vulkan/tr_init.cpp#L822) (Cvar_Get)
+- behavior: [codemp/rd-dedicated/tr_model.cpp:1321](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/codemp/rd-dedicated/tr_model.cpp#L1321)
+- behavior: [codemp/rd-vanilla/tr_ghoul2.cpp:903](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/codemp/rd-vanilla/tr_ghoul2.cpp#L903)
+- behavior: [codemp/rd-vanilla/tr_model.cpp:1389](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/codemp/rd-vanilla/tr_model.cpp#L1389)
+- behavior: [codemp/rd-vulkan/tr_ghoul2.cpp:925](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/codemp/rd-vulkan/tr_ghoul2.cpp#L925)
+- behavior: [shared/rd-rend2/tr_ghoul2.cpp:1005](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/shared/rd-rend2/tr_ghoul2.cpp#L1005)
 
-<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/21044fb29768df0061bc4897bbb97d82304a1fe3"><code>21044fb29768</code></a> on 2026-10-25. Anything merged after that is not reflected here.</p>
+<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/d843fa409b7e269a3775392e569f8f4694a7cb25"><code>d843fa409b7e</code></a> on 2026-11-09. Anything merged after that is not reflected here.</p>

@@ -38,8 +38,8 @@ Toggle JK2 1.02-style colored text shadows
 
 | Value | Meaning | Evidence |
 |:--|:--|:--|
-| `0` | Disabled. | [codemp/rd-common/tr_font.cpp:1625](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/rd-common/tr_font.cpp#L1625) |
-| `1` | Enabled. | [codemp/rd-common/tr_font.cpp:1625](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/rd-common/tr_font.cpp#L1625) |
+| `0` | Disabled. | [codemp/rd-common/tr_font.cpp:1625](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/codemp/rd-common/tr_font.cpp#L1625) |
+| `1` | Enabled. | [codemp/rd-common/tr_font.cpp:1625](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/codemp/rd-common/tr_font.cpp#L1625) |
 
 ## Flags
 
@@ -78,7 +78,7 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 ## Evidence
 
-- registration: [codemp/rd-common/tr_font.cpp:1844](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/rd-common/tr_font.cpp#L1844) (Cvar_Get)
-- behavior: [codemp/rd-common/tr_font.cpp:1625](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/rd-common/tr_font.cpp#L1625)
+- registration: [codemp/rd-common/tr_font.cpp:1844](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/codemp/rd-common/tr_font.cpp#L1844) (Cvar_Get)
+- behavior: [codemp/rd-common/tr_font.cpp:1625](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/codemp/rd-common/tr_font.cpp#L1625)
 
-<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/21044fb29768df0061bc4897bbb97d82304a1fe3"><code>21044fb29768</code></a> on 2026-10-25. Anything merged after that is not reflected here.</p>
+<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/d843fa409b7e269a3775392e569f8f4694a7cb25"><code>d843fa409b7e</code></a> on 2026-11-09. Anything merged after that is not reflected here.</p>

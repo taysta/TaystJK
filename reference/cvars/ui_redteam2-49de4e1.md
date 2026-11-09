@@ -67,11 +67,11 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 ## Evidence
 
-- registration: [codemp/ui/ui_xcvar.h:108](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/ui/ui_xcvar.h#L108) (XCVAR_DEF)
-- behavior: [assets/japro/ui/jamp/menudef.h:285](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/assets/japro/ui/jamp/menudef.h#L285)
-- behavior: [codemp/ui/menudef.h:285](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/ui/menudef.h#L285)
-- behavior: [codemp/ui/ui_main.c:2845](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/ui/ui_main.c#L2845)
-- behavior: [codemp/ui/ui_main.c:3259](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/ui/ui_main.c#L3259)
-- behavior: [codemp/ui/ui_main.c:5414](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/ui/ui_main.c#L5414)
+- registration: [codemp/ui/ui_xcvar.h:108](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/codemp/ui/ui_xcvar.h#L108) (XCVAR_DEF)
+- behavior: [assets/japro/ui/jamp/menudef.h:285](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/assets/japro/ui/jamp/menudef.h#L285)
+- behavior: [codemp/ui/menudef.h:285](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/codemp/ui/menudef.h#L285)
+- behavior: [codemp/ui/ui_main.c:2845](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/codemp/ui/ui_main.c#L2845)
+- behavior: [codemp/ui/ui_main.c:3259](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/codemp/ui/ui_main.c#L3259)
+- behavior: [codemp/ui/ui_main.c:5414](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/codemp/ui/ui_main.c#L5414)
 
-<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/21044fb29768df0061bc4897bbb97d82304a1fe3"><code>21044fb29768</code></a> on 2026-10-25. Anything merged after that is not reflected here.</p>
+<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/d843fa409b7e269a3775392e569f8f4694a7cb25"><code>d843fa409b7e</code></a> on 2026-11-09. Anything merged after that is not reflected here.</p>

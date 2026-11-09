@@ -37,8 +37,8 @@ Controls `cg_draw3DIcons` in the cgame module. Consult the cited behavior reads 
 
 | Value | Meaning | Evidence |
 |:--|:--|:--|
-| `0` | Disabled. | [codemp/cgame/cg_draw.c:557](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/cgame/cg_draw.c#L557) |
-| `1` | Enabled. | [codemp/cgame/cg_draw.c:557](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/cgame/cg_draw.c#L557) |
+| `0` | Disabled. | [codemp/cgame/cg_draw.c:557](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/codemp/cgame/cg_draw.c#L557) |
+| `1` | Enabled. | [codemp/cgame/cg_draw.c:557](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/codemp/cgame/cg_draw.c#L557) |
 
 ## Flags
 
@@ -64,8 +64,8 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 ## Evidence
 
-- registration: [codemp/cgame/cg_xcvar.h:271](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/cgame/cg_xcvar.h#L271) (XCVAR_DEF)
-- behavior: [codemp/cgame/cg_draw.c:557](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/cgame/cg_draw.c#L557)
-- behavior: [codemp/cgame/cg_draw.c:482](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/cgame/cg_draw.c#L482)
+- registration: [codemp/cgame/cg_xcvar.h:271](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/codemp/cgame/cg_xcvar.h#L271) (XCVAR_DEF)
+- behavior: [codemp/cgame/cg_draw.c:557](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/codemp/cgame/cg_draw.c#L557)
+- behavior: [codemp/cgame/cg_draw.c:482](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/codemp/cgame/cg_draw.c#L482)
 
-<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/21044fb29768df0061bc4897bbb97d82304a1fe3"><code>21044fb29768</code></a> on 2026-10-25. Anything merged after that is not reflected here.</p>
+<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/d843fa409b7e269a3775392e569f8f4694a7cb25"><code>d843fa409b7e</code></a> on 2026-11-09. Anything merged after that is not reflected here.</p>

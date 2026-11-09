@@ -37,8 +37,8 @@ Controls `bot_getinthecarrr` in the game module. Consult the cited behavior read
 
 | Value | Meaning | Evidence |
 |:--|:--|:--|
-| `2` | Selects the code path tested for value 2. | [codemp/game/ai_main.c:9094](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/game/ai_main.c#L9094) |
-| `3` | Selects the code path tested for value 3. | [codemp/game/ai_main.c:9098](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/game/ai_main.c#L9098) |
+| `2` | Selects the code path tested for value 2. | [codemp/game/ai_main.c:9094](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/codemp/game/ai_main.c#L9094) |
+| `3` | Selects the code path tested for value 3. | [codemp/game/ai_main.c:9098](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/codemp/game/ai_main.c#L9098) |
 
 ## Flags
 
@@ -64,10 +64,10 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 ## Evidence
 
-- registration: [codemp/game/ai_main.c:10693](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/game/ai_main.c#L10693) (Cvar_Register); condition `!defined(FINAL_BUILD)`
-- behavior: [codemp/game/ai_main.c:9094](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/game/ai_main.c#L9094)
-- behavior: [codemp/game/ai_main.c:9098](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/game/ai_main.c#L9098)
-- behavior: [codemp/game/ai_main.c:9086](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/game/ai_main.c#L9086)
-- behavior: [codemp/game/ai_main.c:9115](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/game/ai_main.c#L9115)
+- registration: [codemp/game/ai_main.c:10693](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/codemp/game/ai_main.c#L10693) (Cvar_Register); condition `!defined(FINAL_BUILD)`
+- behavior: [codemp/game/ai_main.c:9094](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/codemp/game/ai_main.c#L9094)
+- behavior: [codemp/game/ai_main.c:9098](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/codemp/game/ai_main.c#L9098)
+- behavior: [codemp/game/ai_main.c:9086](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/codemp/game/ai_main.c#L9086)
+- behavior: [codemp/game/ai_main.c:9115](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/codemp/game/ai_main.c#L9115)
 
-<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/21044fb29768df0061bc4897bbb97d82304a1fe3"><code>21044fb29768</code></a> on 2026-10-25. Anything merged after that is not reflected here.</p>
+<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/d843fa409b7e269a3775392e569f8f4694a7cb25"><code>d843fa409b7e</code></a> on 2026-11-09. Anything merged after that is not reflected here.</p>

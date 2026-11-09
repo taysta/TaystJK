@@ -39,7 +39,7 @@ No verified argument schema is available beyond the syntax shown above.
 Origin: <span class="label ref-origin ref-origin-japro">jaPRO</span>
 
 - Ultimate-origin introduction: [`ad634ee5d2ff`](https://github.com/videoP/jaPRO/commit/ad634ee5d2ffe8264a546136a174ee3fdba985c3) in <span class="label ref-origin ref-origin-japro">jaPRO</span> (content authored `2018-10-23`, integrated `2018-11-04`)
-- Upstream registration evidence: [codemp/game/g_svcmds.c:1673](https://github.com/videoP/jaPRO/blame/a4d22a138f1e055c8d8fe6109926dff84c4233a2/codemp/game/g_svcmds.c#L1673)
+- Upstream registration evidence: [codemp/game/g_svcmds.c:1673](https://github.com/videoP/jaPRO/blame/24408c702a83557ee29333ea4a747af624aa5cff/codemp/game/g_svcmds.c#L1673)
 - Attribution method: `shared-earliest-commit-module-lineage`
 - Attribution confidence: `medium`
 - Notes: The earliest authored/submitted introduction is shared by eternaljk, taystjk, japro, vulkan; module lineage selects japro. The squash feature group broadly credits eternaljk, but non-identifier-specific credit does not override the japro game-module provider lineage.
@@ -69,7 +69,7 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 ## Evidence
 
-- registration: [codemp/game/g_svcmds.c:1683](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/game/g_svcmds.c#L1683) (game-console command table)
-- handler: [codemp/game/g_account.c:2862](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/game/g_account.c#L2862)
+- registration: [codemp/game/g_svcmds.c:1683](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/codemp/game/g_svcmds.c#L1683) (game-console command table)
+- handler: [codemp/game/g_account.c:2862](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/codemp/game/g_account.c#L2862)
 
-<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/21044fb29768df0061bc4897bbb97d82304a1fe3"><code>21044fb29768</code></a> on 2026-10-25. Anything merged after that is not reflected here.</p>
+<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/d843fa409b7e269a3775392e569f8f4694a7cb25"><code>d843fa409b7e</code></a> on 2026-11-09. Anything merged after that is not reflected here.</p>

@@ -38,8 +38,8 @@ description: "1=Groundstabs damage players on ground. 2=Groundstabs damage playe
 
 | Value | Meaning | Evidence |
 |:--|:--|:--|
-| `1` | Groundstabs damage players on ground. | [docs/japro_docs.md:18](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/docs/japro_docs.md#L18) |
-| `2` | Groundstabs damage players on ground but with reduced damage. | [docs/japro_docs.md:18](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/docs/japro_docs.md#L18) |
+| `1` | Groundstabs damage players on ground. | [docs/japro_docs.md:18](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/docs/japro_docs.md#L18) |
+| `2` | Groundstabs damage players on ground but with reduced damage. | [docs/japro_docs.md:18](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/docs/japro_docs.md#L18) |
 
 ## Flags
 
@@ -50,7 +50,7 @@ description: "1=Groundstabs damage players on ground. 2=Groundstabs damage playe
 Origin: <span class="label ref-origin ref-origin-japro">jaPRO</span>
 
 - Ultimate-origin introduction: [`d9d510063ce6`](https://github.com/videoP/jaPRO/commit/d9d510063ce680639e6ba060021b6d40ee0c1419) in <span class="label ref-origin ref-origin-japro">jaPRO</span> (content authored `2014-01-11`, integrated `2018-01-01`)
-- Upstream registration evidence: [codemp/game/g_xcvar.h:199](https://github.com/videoP/jaPRO/blame/a4d22a138f1e055c8d8fe6109926dff84c4233a2/codemp/game/g_xcvar.h#L199)
+- Upstream registration evidence: [codemp/game/g_xcvar.h:199](https://github.com/videoP/jaPRO/blame/24408c702a83557ee29333ea4a747af624aa5cff/codemp/game/g_xcvar.h#L199)
 - Attribution method: `squash-feature-group-explicit-credit`
 - Attribution confidence: `medium`
 - Notes: The earliest authored/submitted introduction is shared by eternaljk, taystjk, japro, vulkan; fork-lineage order selects eternaljk. The identifier's single-prefix squash feature group explicitly credits japro.
@@ -68,12 +68,12 @@ Authored dates come from the exact registration's first content commit, PR dates
 
 ## Evidence
 
-- registration: [codemp/game/g_xcvar.h:198](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/game/g_xcvar.h#L198) (XCVAR_DEF)
-- behavior: [codemp/game/g_cmds.c:8334](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/game/g_cmds.c#L8334)
-- behavior: [codemp/game/g_cmds.c:8336](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/game/g_cmds.c#L8336)
-- behavior: [codemp/game/w_saber.c:4402](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/game/w_saber.c#L4402)
-- behavior: [codemp/game/w_saber.c:4436](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/game/w_saber.c#L4436)
-- behavior: [codemp/game/w_saber.c:4448](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/game/w_saber.c#L4448)
-- documentation: [docs/japro_docs.md:18](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/docs/japro_docs.md#L18)
+- registration: [codemp/game/g_xcvar.h:198](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/codemp/game/g_xcvar.h#L198) (XCVAR_DEF)
+- behavior: [codemp/game/g_cmds.c:8334](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/codemp/game/g_cmds.c#L8334)
+- behavior: [codemp/game/g_cmds.c:8336](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/codemp/game/g_cmds.c#L8336)
+- behavior: [codemp/game/w_saber.c:4402](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/codemp/game/w_saber.c#L4402)
+- behavior: [codemp/game/w_saber.c:4436](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/codemp/game/w_saber.c#L4436)
+- behavior: [codemp/game/w_saber.c:4448](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/codemp/game/w_saber.c#L4448)
+- documentation: [docs/japro_docs.md:18](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/docs/japro_docs.md#L18)
 
-<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/21044fb29768df0061bc4897bbb97d82304a1fe3"><code>21044fb29768</code></a> on 2026-10-25. Anything merged after that is not reflected here.</p>
+<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/d843fa409b7e269a3775392e569f8f4694a7cb25"><code>d843fa409b7e</code></a> on 2026-11-09. Anything merged after that is not reflected here.</p>

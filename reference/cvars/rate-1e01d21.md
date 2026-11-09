@@ -30,7 +30,7 @@ Data rate
 | Confidence | `high` |
 | Added | 2013-04-08 in [`14cea1563`](https://github.com/taysta/TaystJK/commit/14cea1563762076974bee277afadbd5bf234c494) ([how to compare this against your build](/TaystJK/features/whats-new/#how-to-tell-what-your-build-has)) |
 | In-game xdocs | No |
-| In-game menu | Yes: [ingame_setup.menu:5309](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/assets/japro/ui/jamp/ingame_setup.menu#L5309), [ingame_setup.menu:5312](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/assets/japro/ui/jamp/ingame_setup.menu#L5312), [ingame_setup.menu:5313](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/assets/japro/ui/jamp/ingame_setup.menu#L5313) |
+| In-game menu | Yes: [ingame_setup.menu:5309](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/assets/japro/ui/jamp/ingame_setup.menu#L5309), [ingame_setup.menu:5312](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/assets/japro/ui/jamp/ingame_setup.menu#L5312), [ingame_setup.menu:5313](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/assets/japro/ui/jamp/ingame_setup.menu#L5313) |
 
 ## Values
 
@@ -62,11 +62,11 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 ## Evidence
 
-- registration: [codemp/client/cl_main.cpp:3419](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/client/cl_main.cpp#L3419) (Cvar_Get)
-- behavior: [codemp/game/g_cmds.c:8759](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/game/g_cmds.c#L8759)
-- behavior: [codemp/client/cl_input.cpp:1117](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/client/cl_input.cpp#L1117)
-- behavior: [codemp/client/cl_input.cpp:1122](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/client/cl_input.cpp#L1122)
-- behavior: [codemp/client/cl_input.cpp:1142](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/client/cl_input.cpp#L1142)
-- behavior: [codemp/client/cl_input.cpp:1143](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/client/cl_input.cpp#L1143)
+- registration: [codemp/client/cl_main.cpp:3427](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/codemp/client/cl_main.cpp#L3427) (Cvar_Get)
+- behavior: [codemp/game/g_cmds.c:8759](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/codemp/game/g_cmds.c#L8759)
+- behavior: [codemp/client/cl_input.cpp:1117](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/codemp/client/cl_input.cpp#L1117)
+- behavior: [codemp/client/cl_input.cpp:1122](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/codemp/client/cl_input.cpp#L1122)
+- behavior: [codemp/client/cl_input.cpp:1142](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/codemp/client/cl_input.cpp#L1142)
+- behavior: [codemp/client/cl_input.cpp:1143](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/codemp/client/cl_input.cpp#L1143)
 
-<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/21044fb29768df0061bc4897bbb97d82304a1fe3"><code>21044fb29768</code></a> on 2026-10-25. Anything merged after that is not reflected here.</p>
+<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/d843fa409b7e269a3775392e569f8f4694a7cb25"><code>d843fa409b7e</code></a> on 2026-11-09. Anything merged after that is not reflected here.</p>

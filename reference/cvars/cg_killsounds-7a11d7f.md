@@ -29,16 +29,16 @@ Play a sound when you kill someone
 | Derivation | `documented` |
 | Confidence | `high` |
 | Added | 2024-03-06 in [`477910d22`](https://github.com/taysta/TaystJK/commit/477910d22e11f8e6a4967b7ea074bfb2de181a49) ([how to compare this against your build](/TaystJK/features/whats-new/#how-to-tell-what-your-build-has)) |
-| In-game xdocs | Yes: [codemp/ui/ui_xdocs.h:402](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/ui/ui_xdocs.h#L402) |
+| In-game xdocs | Yes: [codemp/ui/ui_xdocs.h:402](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/codemp/ui/ui_xdocs.h#L402) |
 | In-game menu | No |
 
 ## Values
 
 | Value | Meaning | Evidence |
 |:--|:--|:--|
-| `0` | Don't play the kill sound (Base behavior) | [codemp/ui/ui_xdocs.h:402](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/ui/ui_xdocs.h#L402) |
-| `1` | Play the kill sound | [codemp/ui/ui_xdocs.h:403](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/ui/ui_xdocs.h#L403) |
-| `2` | Play the kill sound + midair kill sound | [codemp/ui/ui_xdocs.h:403](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/ui/ui_xdocs.h#L403) |
+| `0` | Don't play the kill sound (Base behavior) | [codemp/ui/ui_xdocs.h:402](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/codemp/ui/ui_xdocs.h#L402) |
+| `1` | Play the kill sound | [codemp/ui/ui_xdocs.h:403](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/codemp/ui/ui_xdocs.h#L403) |
+| `2` | Play the kill sound + midair kill sound | [codemp/ui/ui_xdocs.h:403](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/codemp/ui/ui_xdocs.h#L403) |
 
 ## Flags
 
@@ -51,7 +51,7 @@ Origin: <span class="label ref-origin ref-origin-japro">jaPRO</span>
 - Ultimate-origin introduction: [`477910d22e11`](https://github.com/videoP/jaPRO/commit/477910d22e11f8e6a4967b7ea074bfb2de181a49) in <span class="label ref-origin ref-origin-japro">jaPRO</span> (content authored `2024-03-06`, integrated `2024-03-06`)
 - Origin pull request: [#168](https://github.com/taysta/TaystJK/pull/168)
 - Matching squash bullet: `[jaPRO/Sounds] Guard new killsounds behind cvar cg_killSound 0 = off 1 = on 2 = on + midair sound, commented out developer print, made them louder`
-- Upstream registration evidence: [codemp/cgame/cg_xcvar.h:123](https://github.com/videoP/jaPRO/blame/a4d22a138f1e055c8d8fe6109926dff84c4233a2/codemp/cgame/cg_xcvar.h#L123)
+- Upstream registration evidence: [codemp/cgame/cg_xcvar.h:123](https://github.com/videoP/jaPRO/blame/24408c702a83557ee29333ea4a747af624aa5cff/codemp/cgame/cg_xcvar.h#L123)
 - Attribution method: `squash-feature-group-explicit-credit`
 - Attribution confidence: `high`
 - Notes: The identifier's single-prefix squash feature group explicitly credits japro.
@@ -75,10 +75,10 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 ## Evidence
 
-- registration: [codemp/cgame/cg_xcvar.h:126](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/cgame/cg_xcvar.h#L126) (XCVAR_DEF)
-- behavior: [codemp/cgame/cg_event.c:277](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/cgame/cg_event.c#L277)
-- behavior: [codemp/cgame/cg_event.c:276](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/cgame/cg_event.c#L276)
-- behavior: [codemp/ui/ui_xdocs.h:402](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/ui/ui_xdocs.h#L402)
-- documentation: [codemp/ui/ui_xdocs.h:402](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/ui/ui_xdocs.h#L402)
+- registration: [codemp/cgame/cg_xcvar.h:126](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/codemp/cgame/cg_xcvar.h#L126) (XCVAR_DEF)
+- behavior: [codemp/cgame/cg_event.c:277](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/codemp/cgame/cg_event.c#L277)
+- behavior: [codemp/cgame/cg_event.c:276](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/codemp/cgame/cg_event.c#L276)
+- behavior: [codemp/ui/ui_xdocs.h:402](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/codemp/ui/ui_xdocs.h#L402)
+- documentation: [codemp/ui/ui_xdocs.h:402](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/codemp/ui/ui_xdocs.h#L402)
 
-<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/21044fb29768df0061bc4897bbb97d82304a1fe3"><code>21044fb29768</code></a> on 2026-10-25. Anything merged after that is not reflected here.</p>
+<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/d843fa409b7e269a3775392e569f8f4694a7cb25"><code>d843fa409b7e</code></a> on 2026-11-09. Anything merged after that is not reflected here.</p>

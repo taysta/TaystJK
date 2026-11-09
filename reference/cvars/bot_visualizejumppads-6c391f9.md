@@ -52,11 +52,11 @@ Origin: <span class="label ref-origin ref-origin-basejka">Base Jedi Academy</spa
 
 ## Evidence
 
-- registration: [codemp/server/sv_bot.cpp:662](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/server/sv_bot.cpp#L662) (Cvar_Get)
-- behavior: [codemp/botlib/be_aas_reach.cpp:297](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/botlib/be_aas_reach.cpp#L297)
-- behavior: [codemp/botlib/be_aas_reach.cpp:306](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/botlib/be_aas_reach.cpp#L306)
-- behavior: [codemp/botlib/be_aas_reach.cpp:308](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/botlib/be_aas_reach.cpp#L308)
-- behavior: [codemp/botlib/be_aas_reach.cpp:336](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/botlib/be_aas_reach.cpp#L336)
-- behavior: [codemp/botlib/be_aas_reach.cpp:3492](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/botlib/be_aas_reach.cpp#L3492)
+- registration: [codemp/server/sv_bot.cpp:662](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/codemp/server/sv_bot.cpp#L662) (Cvar_Get)
+- behavior: [codemp/botlib/be_aas_reach.cpp:297](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/codemp/botlib/be_aas_reach.cpp#L297)
+- behavior: [codemp/botlib/be_aas_reach.cpp:306](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/codemp/botlib/be_aas_reach.cpp#L306)
+- behavior: [codemp/botlib/be_aas_reach.cpp:308](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/codemp/botlib/be_aas_reach.cpp#L308)
+- behavior: [codemp/botlib/be_aas_reach.cpp:336](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/codemp/botlib/be_aas_reach.cpp#L336)
+- behavior: [codemp/botlib/be_aas_reach.cpp:3492](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/codemp/botlib/be_aas_reach.cpp#L3492)
 
-<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/21044fb29768df0061bc4897bbb97d82304a1fe3"><code>21044fb29768</code></a> on 2026-10-25. Anything merged after that is not reflected here.</p>
+<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/d843fa409b7e269a3775392e569f8f4694a7cb25"><code>d843fa409b7e</code></a> on 2026-11-09. Anything merged after that is not reflected here.</p>

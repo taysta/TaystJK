@@ -38,8 +38,8 @@ Controls `cg_strafeTrailPlums` in the cgame module. Consult the cited behavior r
 
 | Value | Meaning | Evidence |
 |:--|:--|:--|
-| `0` | Disabled. | [codemp/cgame/cg_snapshot.c:647](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/cgame/cg_snapshot.c#L647) |
-| `1` | Enabled. | [codemp/cgame/cg_snapshot.c:647](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/cgame/cg_snapshot.c#L647) |
+| `0` | Disabled. | [codemp/cgame/cg_snapshot.c:647](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/codemp/cgame/cg_snapshot.c#L647) |
+| `1` | Enabled. | [codemp/cgame/cg_snapshot.c:647](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/codemp/cgame/cg_snapshot.c#L647) |
 
 ## Flags
 
@@ -52,7 +52,7 @@ Origin: <span class="label ref-origin ref-origin-japro">jaPRO</span>
 - Ultimate-origin introduction: [`258031c97e93`](https://github.com/videoP/jaPRO/commit/258031c97e933f2293dc35c18af5ea16847f0241) in <span class="label ref-origin ref-origin-japro">jaPRO</span> (content authored `2024-04-15`, integrated `2024-04-15`)
 - Origin pull request: [#188](https://github.com/taysta/TaystJK/pull/188)
 - Matching squash bullet: `[jaPRO/cgame] Restore cg_scorePlums default value and introduce cg_strafeTrailPlums and cg_spotIconPlums where new cg_scorePlums usages had occurred in jaPRO`
-- Upstream registration evidence: [codemp/cgame/cg_xcvar.h:224](https://github.com/videoP/jaPRO/blame/a4d22a138f1e055c8d8fe6109926dff84c4233a2/codemp/cgame/cg_xcvar.h#L224)
+- Upstream registration evidence: [codemp/cgame/cg_xcvar.h:224](https://github.com/videoP/jaPRO/blame/24408c702a83557ee29333ea4a747af624aa5cff/codemp/cgame/cg_xcvar.h#L224)
 - Attribution method: `identifier-adjacent-explicit-credit`
 - Attribution confidence: `high`
 - Notes: An identifier-adjacent source/commit/PR line explicitly credits japro.
@@ -68,7 +68,7 @@ Authored dates come from the exact registration's first content commit, PR dates
 
 ## Evidence
 
-- registration: [codemp/cgame/cg_xcvar.h:228](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/cgame/cg_xcvar.h#L228) (XCVAR_DEF)
-- behavior: [codemp/cgame/cg_snapshot.c:647](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/cgame/cg_snapshot.c#L647)
+- registration: [codemp/cgame/cg_xcvar.h:228](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/codemp/cgame/cg_xcvar.h#L228) (XCVAR_DEF)
+- behavior: [codemp/cgame/cg_snapshot.c:647](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/codemp/cgame/cg_snapshot.c#L647)
 
-<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/21044fb29768df0061bc4897bbb97d82304a1fe3"><code>21044fb29768</code></a> on 2026-10-25. Anything merged after that is not reflected here.</p>
+<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/d843fa409b7e269a3775392e569f8f4694a7cb25"><code>d843fa409b7e</code></a> on 2026-11-09. Anything merged after that is not reflected here.</p>

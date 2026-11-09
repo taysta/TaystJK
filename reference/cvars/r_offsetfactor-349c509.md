@@ -82,14 +82,14 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 ## Evidence
 
-- registration: [codemp/rd-dedicated/tr_init.cpp:425](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/rd-dedicated/tr_init.cpp#L425) (Cvar_Get)
-- registration: [codemp/rd-rend2/tr_init.cpp:1678](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/rd-rend2/tr_init.cpp#L1678) (Cvar_Get)
-- registration: [codemp/rd-vanilla/tr_init.cpp:1735](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/rd-vanilla/tr_init.cpp#L1735) (Cvar_Get)
-- registration: [codemp/rd-vulkan/tr_init.cpp:897](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/rd-vulkan/tr_init.cpp#L897) (Cvar_Get)
-- behavior: [codemp/rd-vanilla/tr_shade.cpp:1814](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/rd-vanilla/tr_shade.cpp#L1814)
-- behavior: [codemp/rd-vulkan/vk_pipelines.cpp:1235](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/rd-vulkan/vk_pipelines.cpp#L1235)
-- behavior: [codemp/rd-vulkan/vk_pipelines.cpp:1238](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/rd-vulkan/vk_pipelines.cpp#L1238)
-- behavior: [codemp/rd-vulkan/vk_shade_geometry.cpp:891](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/rd-vulkan/vk_shade_geometry.cpp#L891)
-- behavior: [shared/rd-rend2/tr_backend.cpp:686](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/shared/rd-rend2/tr_backend.cpp#L686)
+- registration: [codemp/rd-dedicated/tr_init.cpp:425](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/codemp/rd-dedicated/tr_init.cpp#L425) (Cvar_Get)
+- registration: [codemp/rd-rend2/tr_init.cpp:1678](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/codemp/rd-rend2/tr_init.cpp#L1678) (Cvar_Get)
+- registration: [codemp/rd-vanilla/tr_init.cpp:1735](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/codemp/rd-vanilla/tr_init.cpp#L1735) (Cvar_Get)
+- registration: [codemp/rd-vulkan/tr_init.cpp:897](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/codemp/rd-vulkan/tr_init.cpp#L897) (Cvar_Get)
+- behavior: [codemp/rd-vanilla/tr_shade.cpp:1814](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/codemp/rd-vanilla/tr_shade.cpp#L1814)
+- behavior: [codemp/rd-vulkan/vk_pipelines.cpp:1235](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/codemp/rd-vulkan/vk_pipelines.cpp#L1235)
+- behavior: [codemp/rd-vulkan/vk_pipelines.cpp:1238](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/codemp/rd-vulkan/vk_pipelines.cpp#L1238)
+- behavior: [codemp/rd-vulkan/vk_shade_geometry.cpp:891](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/codemp/rd-vulkan/vk_shade_geometry.cpp#L891)
+- behavior: [shared/rd-rend2/tr_backend.cpp:698](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/shared/rd-rend2/tr_backend.cpp#L698)
 
-<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/21044fb29768df0061bc4897bbb97d82304a1fe3"><code>21044fb29768</code></a> on 2026-10-25. Anything merged after that is not reflected here.</p>
+<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/d843fa409b7e269a3775392e569f8f4694a7cb25"><code>d843fa409b7e</code></a> on 2026-11-09. Anything merged after that is not reflected here.</p>

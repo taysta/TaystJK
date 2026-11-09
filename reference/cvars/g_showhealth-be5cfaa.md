@@ -38,8 +38,8 @@ Show healthbars above players heads when aimed at. Requires map restart.
 
 | Value | Meaning | Evidence |
 |:--|:--|:--|
-| `0` | Disabled. | [codemp/game/g_client.c:4216](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/game/g_client.c#L4216) |
-| `1` | Enabled. | [codemp/game/g_client.c:4216](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/game/g_client.c#L4216) |
+| `0` | Disabled. | [codemp/game/g_client.c:4216](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/codemp/game/g_client.c#L4216) |
+| `1` | Enabled. | [codemp/game/g_client.c:4216](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/codemp/game/g_client.c#L4216) |
 
 ## Flags
 
@@ -50,7 +50,7 @@ Show healthbars above players heads when aimed at. Requires map restart.
 Origin: <span class="label ref-origin ref-origin-japro">jaPRO</span>
 
 - Ultimate-origin introduction: [`d9d510063ce6`](https://github.com/videoP/jaPRO/commit/d9d510063ce680639e6ba060021b6d40ee0c1419) in <span class="label ref-origin ref-origin-japro">jaPRO</span> (content authored `2014-02-01`, integrated `2018-01-01`)
-- Upstream registration evidence: [codemp/game/g_xcvar.h:282](https://github.com/videoP/jaPRO/blame/a4d22a138f1e055c8d8fe6109926dff84c4233a2/codemp/game/g_xcvar.h#L282)
+- Upstream registration evidence: [codemp/game/g_xcvar.h:282](https://github.com/videoP/jaPRO/blame/24408c702a83557ee29333ea4a747af624aa5cff/codemp/game/g_xcvar.h#L282)
 - Attribution method: `squash-feature-group-explicit-credit`
 - Attribution confidence: `medium`
 - Notes: The earliest authored/submitted introduction is shared by eternaljk, taystjk, japro, vulkan; fork-lineage order selects eternaljk. The identifier's single-prefix squash feature group explicitly credits japro.
@@ -80,12 +80,12 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 ## Evidence
 
-- registration: [codemp/game/g_xcvar.h:281](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/game/g_xcvar.h#L281) (XCVAR_DEF)
-- behavior: [codemp/game/g_client.c:4216](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/game/g_client.c#L4216)
-- behavior: [codemp/game/g_active.c:4523](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/game/g_active.c#L4523)
-- behavior: [codemp/game/g_cmds.c:4397](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/game/g_cmds.c#L4397)
-- behavior: [codemp/game/g_cmds.c:8290](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/game/g_cmds.c#L8290)
-- behavior: [codemp/game/g_cvar.c:536](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/game/g_cvar.c#L536)
-- documentation: [docs/japro_docs.md:94](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/docs/japro_docs.md#L94)
+- registration: [codemp/game/g_xcvar.h:281](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/codemp/game/g_xcvar.h#L281) (XCVAR_DEF)
+- behavior: [codemp/game/g_client.c:4216](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/codemp/game/g_client.c#L4216)
+- behavior: [codemp/game/g_active.c:4523](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/codemp/game/g_active.c#L4523)
+- behavior: [codemp/game/g_cmds.c:4397](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/codemp/game/g_cmds.c#L4397)
+- behavior: [codemp/game/g_cmds.c:8290](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/codemp/game/g_cmds.c#L8290)
+- behavior: [codemp/game/g_cvar.c:536](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/codemp/game/g_cvar.c#L536)
+- documentation: [docs/japro_docs.md:94](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/docs/japro_docs.md#L94)
 
-<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/21044fb29768df0061bc4897bbb97d82304a1fe3"><code>21044fb29768</code></a> on 2026-10-25. Anything merged after that is not reflected here.</p>
+<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/d843fa409b7e269a3775392e569f8f4694a7cb25"><code>d843fa409b7e</code></a> on 2026-11-09. Anything merged after that is not reflected here.</p>

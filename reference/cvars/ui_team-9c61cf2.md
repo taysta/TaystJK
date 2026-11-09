@@ -63,13 +63,13 @@ Origin: <span class="label ref-origin ref-origin-basejka">Base Jedi Academy</spa
 
 ## Evidence
 
-- registration: [codemp/cgame/cg_players.c:2183](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/cgame/cg_players.c#L2183) (implicit Cvar_Set)
-- registration: [codemp/ui/ui_main.c:8015](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/ui/ui_main.c#L8015) (implicit Cvar_Set)
-- registration: [codemp/ui/ui_main.c:8019](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/ui/ui_main.c#L8019) (implicit Cvar_Set)
-- registration: [codemp/ui/ui_main.c:8023](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/ui/ui_main.c#L8023) (implicit Cvar_Set)
-- behavior: [codemp/ui/ui_main.c:8414](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/ui/ui_main.c#L8414)
-- behavior: [codemp/ui/ui_main.c:9706](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/ui/ui_main.c#L9706)
-- behavior: [codemp/ui/ui_main.c:10398](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/ui/ui_main.c#L10398)
-- behavior: [codemp/ui/ui_main.c:10803](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/ui/ui_main.c#L10803)
+- registration: [codemp/cgame/cg_players.c:2183](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/codemp/cgame/cg_players.c#L2183) (implicit Cvar_Set)
+- registration: [codemp/ui/ui_main.c:8015](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/codemp/ui/ui_main.c#L8015) (implicit Cvar_Set)
+- registration: [codemp/ui/ui_main.c:8019](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/codemp/ui/ui_main.c#L8019) (implicit Cvar_Set)
+- registration: [codemp/ui/ui_main.c:8023](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/codemp/ui/ui_main.c#L8023) (implicit Cvar_Set)
+- behavior: [codemp/ui/ui_main.c:8414](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/codemp/ui/ui_main.c#L8414)
+- behavior: [codemp/ui/ui_main.c:9706](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/codemp/ui/ui_main.c#L9706)
+- behavior: [codemp/ui/ui_main.c:10398](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/codemp/ui/ui_main.c#L10398)
+- behavior: [codemp/ui/ui_main.c:10803](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/codemp/ui/ui_main.c#L10803)
 
-<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/21044fb29768df0061bc4897bbb97d82304a1fe3"><code>21044fb29768</code></a> on 2026-10-25. Anything merged after that is not reflected here.</p>
+<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/d843fa409b7e269a3775392e569f8f4694a7cb25"><code>d843fa409b7e</code></a> on 2026-11-09. Anything merged after that is not reflected here.</p>

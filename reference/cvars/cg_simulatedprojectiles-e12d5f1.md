@@ -32,14 +32,14 @@ Wether to use simulated projectiles so bullets appear instantly. Values > 1 don'
 | Confidence | `medium` |
 | Added | 2018-09-03 in [`bdcd618c6`](https://github.com/taysta/TaystJK/commit/bdcd618c67713b86946b720d791c382d3908d97c) <span class="status-chip">needs review</span> ([how to compare this against your build](/TaystJK/features/whats-new/#how-to-tell-what-your-build-has)) |
 | In-game xdocs | No |
-| In-game menu | Yes: [ingame_setup.menu:4937](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/assets/japro/ui/jamp/ingame_setup.menu#L4937) |
+| In-game menu | Yes: [ingame_setup.menu:4937](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/assets/japro/ui/jamp/ingame_setup.menu#L4937) |
 
 ## Values
 
 | Value | Meaning | Evidence |
 |:--|:--|:--|
-| `0` | Disabled. | [codemp/cgame/cg_weapons.c:2755](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/cgame/cg_weapons.c#L2755) |
-| `1` | Enabled. | [codemp/cgame/cg_weapons.c:2755](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/cgame/cg_weapons.c#L2755) |
+| `0` | Disabled. | [codemp/cgame/cg_weapons.c:2755](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/codemp/cgame/cg_weapons.c#L2755) |
+| `1` | Enabled. | [codemp/cgame/cg_weapons.c:2755](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/codemp/cgame/cg_weapons.c#L2755) |
 
 ## Flags
 
@@ -50,7 +50,7 @@ Wether to use simulated projectiles so bullets appear instantly. Values > 1 don'
 Origin: <span class="label ref-origin ref-origin-japro">jaPRO</span>
 
 - Ultimate-origin introduction: [`bdcd618c6771`](https://github.com/videoP/jaPRO/commit/bdcd618c67713b86946b720d791c382d3908d97c) in <span class="label ref-origin ref-origin-japro">jaPRO</span> (content authored `2018-09-03`, integrated `2018-09-03`)
-- Upstream registration evidence: [codemp/cgame/cg_xcvar.h:143](https://github.com/videoP/jaPRO/blame/a4d22a138f1e055c8d8fe6109926dff84c4233a2/codemp/cgame/cg_xcvar.h#L143)
+- Upstream registration evidence: [codemp/cgame/cg_xcvar.h:143](https://github.com/videoP/jaPRO/blame/24408c702a83557ee29333ea4a747af624aa5cff/codemp/cgame/cg_xcvar.h#L143)
 - Attribution method: `squash-feature-group-explicit-credit`
 - Attribution confidence: `medium`
 - Notes: The identifier's single-prefix squash feature group explicitly credits japro.
@@ -78,11 +78,11 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 ## Evidence
 
-- registration: [codemp/cgame/cg_xcvar.h:146](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/cgame/cg_xcvar.h#L146) (XCVAR_DEF)
-- behavior: [codemp/cgame/cg_weapons.c:2755](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/cgame/cg_weapons.c#L2755)
-- behavior: [codemp/cgame/cg_localents.c:1215](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/cgame/cg_localents.c#L1215)
-- behavior: [codemp/cgame/cg_weapons.c:2430](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/cgame/cg_weapons.c#L2430)
-- behavior: [codemp/ui/ui_xdocs.h:613](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/ui/ui_xdocs.h#L613)
-- documentation: [docs/japro_docs.md:480](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/docs/japro_docs.md#L480)
+- registration: [codemp/cgame/cg_xcvar.h:146](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/codemp/cgame/cg_xcvar.h#L146) (XCVAR_DEF)
+- behavior: [codemp/cgame/cg_weapons.c:2755](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/codemp/cgame/cg_weapons.c#L2755)
+- behavior: [codemp/cgame/cg_localents.c:1215](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/codemp/cgame/cg_localents.c#L1215)
+- behavior: [codemp/cgame/cg_weapons.c:2430](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/codemp/cgame/cg_weapons.c#L2430)
+- behavior: [codemp/ui/ui_xdocs.h:613](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/codemp/ui/ui_xdocs.h#L613)
+- documentation: [docs/japro_docs.md:480](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/docs/japro_docs.md#L480)
 
-<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/21044fb29768df0061bc4897bbb97d82304a1fe3"><code>21044fb29768</code></a> on 2026-10-25. Anything merged after that is not reflected here.</p>
+<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/d843fa409b7e269a3775392e569f8f4694a7cb25"><code>d843fa409b7e</code></a> on 2026-11-09. Anything merged after that is not reflected here.</p>

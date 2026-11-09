@@ -46,7 +46,7 @@ No discrete value list is enforced or documented in the inspected source.
 Origin: <span class="label ref-origin ref-origin-japro">jaPRO</span>
 
 - Ultimate-origin introduction: [`d9d510063ce6`](https://github.com/videoP/jaPRO/commit/d9d510063ce680639e6ba060021b6d40ee0c1419) in <span class="label ref-origin ref-origin-japro">jaPRO</span> (content authored `2014-09-09`, integrated `2018-01-01`)
-- Upstream registration evidence: [codemp/game/g_xcvar.h:340](https://github.com/videoP/jaPRO/blame/a4d22a138f1e055c8d8fe6109926dff84c4233a2/codemp/game/g_xcvar.h#L340)
+- Upstream registration evidence: [codemp/game/g_xcvar.h:340](https://github.com/videoP/jaPRO/blame/24408c702a83557ee29333ea4a747af624aa5cff/codemp/game/g_xcvar.h#L340)
 - Attribution method: `squash-feature-group-explicit-credit`
 - Attribution confidence: `medium`
 - Notes: The earliest authored/submitted introduction is shared by eternaljk, taystjk, japro, vulkan; fork-lineage order selects eternaljk. The identifier's single-prefix squash feature group explicitly credits japro.
@@ -74,10 +74,10 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 ## Evidence
 
-- registration: [codemp/game/g_xcvar.h:339](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/game/g_xcvar.h#L339) (XCVAR_DEF)
-- behavior: [codemp/game/bg_slidemove.c:829](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/game/bg_slidemove.c#L829)
-- behavior: [codemp/game/ai_main.c:6237](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/game/ai_main.c#L6237)
-- behavior: [codemp/game/bg_pmove.c:15497](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/game/bg_pmove.c#L15497)
-- behavior: [codemp/game/bg_slidemove.c:830](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/game/bg_slidemove.c#L830)
+- registration: [codemp/game/g_xcvar.h:339](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/codemp/game/g_xcvar.h#L339) (XCVAR_DEF)
+- behavior: [codemp/game/bg_slidemove.c:829](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/codemp/game/bg_slidemove.c#L829)
+- behavior: [codemp/game/ai_main.c:6237](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/codemp/game/ai_main.c#L6237)
+- behavior: [codemp/game/bg_pmove.c:15497](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/codemp/game/bg_pmove.c#L15497)
+- behavior: [codemp/game/bg_slidemove.c:830](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/codemp/game/bg_slidemove.c#L830)
 
-<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/21044fb29768df0061bc4897bbb97d82304a1fe3"><code>21044fb29768</code></a> on 2026-10-25. Anything merged after that is not reflected here.</p>
+<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/d843fa409b7e269a3775392e569f8f4694a7cb25"><code>d843fa409b7e</code></a> on 2026-11-09. Anything merged after that is not reflected here.</p>

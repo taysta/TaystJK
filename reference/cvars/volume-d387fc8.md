@@ -91,11 +91,11 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 ## Evidence
 
-- registration: [codemp/client/snd_dma.cpp:454](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/client/snd_dma.cpp#L454) (Cvar_Get)
-- behavior: [codemp/client/cl_cin.cpp:1179](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/client/cl_cin.cpp#L1179)
-- behavior: [codemp/client/cl_cin.cpp:1189](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/client/cl_cin.cpp#L1189)
-- behavior: [codemp/client/snd_dma.cpp:4986](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/client/snd_dma.cpp#L4986)
-- behavior: [codemp/client/snd_dma.cpp:4998](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/client/snd_dma.cpp#L4998)
-- behavior: [codemp/client/snd_dma.cpp:5058](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/client/snd_dma.cpp#L5058)
+- registration: [codemp/client/snd_dma.cpp:485](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/codemp/client/snd_dma.cpp#L485) (Cvar_Get)
+- behavior: [codemp/client/cl_cin.cpp:1179](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/codemp/client/cl_cin.cpp#L1179)
+- behavior: [codemp/client/cl_cin.cpp:1189](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/codemp/client/cl_cin.cpp#L1189)
+- behavior: [codemp/client/snd_dma.cpp:5030](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/codemp/client/snd_dma.cpp#L5030)
+- behavior: [codemp/client/snd_dma.cpp:5042](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/codemp/client/snd_dma.cpp#L5042)
+- behavior: [codemp/client/snd_dma.cpp:5102](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/codemp/client/snd_dma.cpp#L5102)
 
-<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/21044fb29768df0061bc4897bbb97d82304a1fe3"><code>21044fb29768</code></a> on 2026-10-25. Anything merged after that is not reflected here.</p>
+<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/d843fa409b7e269a3775392e569f8f4694a7cb25"><code>d843fa409b7e</code></a> on 2026-11-09. Anything merged after that is not reflected here.</p>

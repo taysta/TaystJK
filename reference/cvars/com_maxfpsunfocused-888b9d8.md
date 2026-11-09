@@ -37,8 +37,8 @@ Controls `com_maxfpsUnfocused` in the engine-shared module. Consult the cited be
 
 | Value | Meaning | Evidence |
 |:--|:--|:--|
-| `0` | Disabled. | [codemp/qcommon/common.cpp:1755](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/qcommon/common.cpp#L1755) |
-| `1` | Enabled. | [codemp/qcommon/common.cpp:1755](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/qcommon/common.cpp#L1755) |
+| `0` | Disabled. | [codemp/qcommon/common.cpp:1755](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/codemp/qcommon/common.cpp#L1755) |
+| `1` | Enabled. | [codemp/qcommon/common.cpp:1755](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/codemp/qcommon/common.cpp#L1755) |
 
 ## Flags
 
@@ -79,8 +79,8 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 ## Evidence
 
-- registration: [shared/sys/sys_main.cpp:176](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/shared/sys/sys_main.cpp#L176) (Cvar_Get)
-- behavior: [codemp/qcommon/common.cpp:1755](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/qcommon/common.cpp#L1755)
-- behavior: [codemp/qcommon/common.cpp:1756](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/qcommon/common.cpp#L1756)
+- registration: [shared/sys/sys_main.cpp:176](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/shared/sys/sys_main.cpp#L176) (Cvar_Get)
+- behavior: [codemp/qcommon/common.cpp:1755](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/codemp/qcommon/common.cpp#L1755)
+- behavior: [codemp/qcommon/common.cpp:1756](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/codemp/qcommon/common.cpp#L1756)
 
-<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/21044fb29768df0061bc4897bbb97d82304a1fe3"><code>21044fb29768</code></a> on 2026-10-25. Anything merged after that is not reflected here.</p>
+<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/d843fa409b7e269a3775392e569f8f4694a7cb25"><code>d843fa409b7e</code></a> on 2026-11-09. Anything merged after that is not reflected here.</p>

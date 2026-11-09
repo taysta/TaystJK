@@ -37,7 +37,7 @@ Controls `com_speeds` in the engine-shared module. Consult the cited behavior re
 
 | Value | Meaning | Evidence |
 |:--|:--|:--|
-| `3` | Selects the code path tested for value 3. | [codemp/qcommon/common.cpp:1072](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/qcommon/common.cpp#L1072) |
+| `3` | Selects the code path tested for value 3. | [codemp/qcommon/common.cpp:1072](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/codemp/qcommon/common.cpp#L1072) |
 
 ## Flags
 
@@ -66,11 +66,11 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 ## Evidence
 
-- registration: [codemp/qcommon/common.cpp:1470](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/qcommon/common.cpp#L1470) (Cvar_Get)
-- behavior: [codemp/client/cl_scrn.cpp:618](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/client/cl_scrn.cpp#L618)
-- behavior: [codemp/qcommon/common.cpp:1063](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/qcommon/common.cpp#L1063)
-- behavior: [codemp/qcommon/common.cpp:1069](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/qcommon/common.cpp#L1069)
-- behavior: [codemp/qcommon/common.cpp:1072](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/qcommon/common.cpp#L1072)
-- behavior: [codemp/qcommon/common.cpp:1742](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/qcommon/common.cpp#L1742)
+- registration: [codemp/qcommon/common.cpp:1470](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/codemp/qcommon/common.cpp#L1470) (Cvar_Get)
+- behavior: [codemp/client/cl_scrn.cpp:618](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/codemp/client/cl_scrn.cpp#L618)
+- behavior: [codemp/qcommon/common.cpp:1063](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/codemp/qcommon/common.cpp#L1063)
+- behavior: [codemp/qcommon/common.cpp:1069](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/codemp/qcommon/common.cpp#L1069)
+- behavior: [codemp/qcommon/common.cpp:1072](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/codemp/qcommon/common.cpp#L1072)
+- behavior: [codemp/qcommon/common.cpp:1742](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/codemp/qcommon/common.cpp#L1742)
 
-<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/21044fb29768df0061bc4897bbb97d82304a1fe3"><code>21044fb29768</code></a> on 2026-10-25. Anything merged after that is not reflected here.</p>
+<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/d843fa409b7e269a3775392e569f8f4694a7cb25"><code>d843fa409b7e</code></a> on 2026-11-09. Anything merged after that is not reflected here.</p>
