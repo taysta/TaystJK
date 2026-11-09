@@ -39,7 +39,7 @@ No verified argument schema is available beyond the syntax shown above.
 Origin: <span class="label ref-origin ref-origin-japro">jaPRO</span>
 
 - Ultimate-origin introduction: [`fa2b5ba6883b`](https://github.com/videoP/jaPRO/commit/fa2b5ba6883ba72c77c53130fedf2d3d2bfb86ea) in <span class="label ref-origin ref-origin-japro">jaPRO</span> (content authored `2018-08-09`, integrated `2018-08-20`)
-- Upstream registration evidence: [codemp/game/g_svcmds.c:1663](https://github.com/videoP/jaPRO/blame/a4d22a138f1e055c8d8fe6109926dff84c4233a2/codemp/game/g_svcmds.c#L1663)
+- Upstream registration evidence: [codemp/game/g_svcmds.c:1663](https://github.com/videoP/jaPRO/blame/24408c702a83557ee29333ea4a747af624aa5cff/codemp/game/g_svcmds.c#L1663)
 - Attribution method: `shared-earliest-commit-module-lineage`
 - Attribution confidence: `medium`
 - Notes: The earliest authored/submitted introduction is shared by eternaljk, taystjk, japro, vulkan; module lineage selects japro.
@@ -65,7 +65,7 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 ## Evidence
 
-- registration: [codemp/game/g_svcmds.c:1673](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/game/g_svcmds.c#L1673) (game-console command table)
-- handler: [codemp/game/g_account.c:3108](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/game/g_account.c#L3108)
+- registration: [codemp/game/g_svcmds.c:1673](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/codemp/game/g_svcmds.c#L1673) (game-console command table)
+- handler: [codemp/game/g_account.c:3108](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/codemp/game/g_account.c#L3108)
 
-<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/21044fb29768df0061bc4897bbb97d82304a1fe3"><code>21044fb29768</code></a> on 2026-10-25. Anything merged after that is not reflected here.</p>
+<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/d843fa409b7e269a3775392e569f8f4694a7cb25"><code>d843fa409b7e</code></a> on 2026-11-09. Anything merged after that is not reflected here.</p>

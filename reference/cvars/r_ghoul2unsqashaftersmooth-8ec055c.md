@@ -37,8 +37,8 @@ Controls `r_Ghoul2UnSqashAfterSmooth` in the renderer module. Consult the cited 
 
 | Value | Meaning | Evidence |
 |:--|:--|:--|
-| `0` | Disabled. | [codemp/rd-dedicated/tr_ghoul2.cpp:1910](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/rd-dedicated/tr_ghoul2.cpp#L1910) |
-| `1` | Enabled. | [codemp/rd-dedicated/tr_ghoul2.cpp:1910](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/rd-dedicated/tr_ghoul2.cpp#L1910) |
+| `0` | Disabled. | [codemp/rd-dedicated/tr_ghoul2.cpp:1910](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/codemp/rd-dedicated/tr_ghoul2.cpp#L1910) |
+| `1` | Enabled. | [codemp/rd-dedicated/tr_ghoul2.cpp:1910](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/codemp/rd-dedicated/tr_ghoul2.cpp#L1910) |
 
 ## Flags
 
@@ -79,14 +79,14 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 ## Evidence
 
-- registration: [codemp/rd-dedicated/tr_init.cpp:441](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/rd-dedicated/tr_init.cpp#L441) (Cvar_Get)
-- registration: [codemp/rd-rend2/tr_init.cpp:1708](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/rd-rend2/tr_init.cpp#L1708) (Cvar_Get)
-- registration: [codemp/rd-vanilla/tr_init.cpp:1754](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/rd-vanilla/tr_init.cpp#L1754) (Cvar_Get)
-- registration: [codemp/rd-vulkan/tr_init.cpp:986](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/rd-vulkan/tr_init.cpp#L986) (Cvar_Get)
-- behavior: [codemp/rd-dedicated/tr_ghoul2.cpp:1910](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/rd-dedicated/tr_ghoul2.cpp#L1910)
-- behavior: [codemp/rd-dedicated/tr_ghoul2.cpp:1962](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/rd-dedicated/tr_ghoul2.cpp#L1962)
-- behavior: [codemp/rd-vanilla/tr_ghoul2.cpp:2062](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/rd-vanilla/tr_ghoul2.cpp#L2062)
-- behavior: [codemp/rd-vanilla/tr_ghoul2.cpp:2114](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/rd-vanilla/tr_ghoul2.cpp#L2114)
-- behavior: [codemp/rd-vulkan/tr_ghoul2.cpp:2115](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/rd-vulkan/tr_ghoul2.cpp#L2115)
+- registration: [codemp/rd-dedicated/tr_init.cpp:441](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/codemp/rd-dedicated/tr_init.cpp#L441) (Cvar_Get)
+- registration: [codemp/rd-rend2/tr_init.cpp:1708](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/codemp/rd-rend2/tr_init.cpp#L1708) (Cvar_Get)
+- registration: [codemp/rd-vanilla/tr_init.cpp:1754](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/codemp/rd-vanilla/tr_init.cpp#L1754) (Cvar_Get)
+- registration: [codemp/rd-vulkan/tr_init.cpp:986](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/codemp/rd-vulkan/tr_init.cpp#L986) (Cvar_Get)
+- behavior: [codemp/rd-dedicated/tr_ghoul2.cpp:1910](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/codemp/rd-dedicated/tr_ghoul2.cpp#L1910)
+- behavior: [codemp/rd-dedicated/tr_ghoul2.cpp:1962](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/codemp/rd-dedicated/tr_ghoul2.cpp#L1962)
+- behavior: [codemp/rd-vanilla/tr_ghoul2.cpp:2062](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/codemp/rd-vanilla/tr_ghoul2.cpp#L2062)
+- behavior: [codemp/rd-vanilla/tr_ghoul2.cpp:2114](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/codemp/rd-vanilla/tr_ghoul2.cpp#L2114)
+- behavior: [codemp/rd-vulkan/tr_ghoul2.cpp:2115](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/codemp/rd-vulkan/tr_ghoul2.cpp#L2115)
 
-<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/21044fb29768df0061bc4897bbb97d82304a1fe3"><code>21044fb29768</code></a> on 2026-10-25. Anything merged after that is not reflected here.</p>
+<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/d843fa409b7e269a3775392e569f8f4694a7cb25"><code>d843fa409b7e</code></a> on 2026-11-09. Anything merged after that is not reflected here.</p>

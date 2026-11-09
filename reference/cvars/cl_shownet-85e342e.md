@@ -38,7 +38,7 @@ Controls `cl_shownet` in the engine-client module. Consult the cited behavior re
 
 | Value | Meaning | Evidence |
 |:--|:--|:--|
-| `3` | Selects the code path tested for value 3. | [codemp/client/cl_parse.cpp:142](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/client/cl_parse.cpp#L142) |
+| `3` | Selects the code path tested for value 3. | [codemp/client/cl_parse.cpp:142](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/codemp/client/cl_parse.cpp#L142) |
 
 ## Flags
 
@@ -72,12 +72,12 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 ## Evidence
 
-- registration: [codemp/client/cl_main.cpp:3323](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/client/cl_main.cpp#L3323) (Cvar_Get)
-- registration: [codemp/null/null_client.cpp:32](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/null/null_client.cpp#L32) (Cvar_Get)
-- behavior: [codemp/client/cl_parse.cpp:54](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/client/cl_parse.cpp#L54)
-- behavior: [codemp/client/cl_parse.cpp:142](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/client/cl_parse.cpp#L142)
-- behavior: [codemp/client/cl_parse.cpp:159](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/client/cl_parse.cpp#L159)
-- behavior: [codemp/client/cl_parse.cpp:178](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/client/cl_parse.cpp#L178)
-- behavior: [codemp/client/cl_parse.cpp:190](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/client/cl_parse.cpp#L190)
+- registration: [codemp/client/cl_main.cpp:3331](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/codemp/client/cl_main.cpp#L3331) (Cvar_Get)
+- registration: [codemp/null/null_client.cpp:32](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/codemp/null/null_client.cpp#L32) (Cvar_Get)
+- behavior: [codemp/client/cl_parse.cpp:54](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/codemp/client/cl_parse.cpp#L54)
+- behavior: [codemp/client/cl_parse.cpp:142](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/codemp/client/cl_parse.cpp#L142)
+- behavior: [codemp/client/cl_parse.cpp:159](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/codemp/client/cl_parse.cpp#L159)
+- behavior: [codemp/client/cl_parse.cpp:178](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/codemp/client/cl_parse.cpp#L178)
+- behavior: [codemp/client/cl_parse.cpp:190](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/codemp/client/cl_parse.cpp#L190)
 
-<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/21044fb29768df0061bc4897bbb97d82304a1fe3"><code>21044fb29768</code></a> on 2026-10-25. Anything merged after that is not reflected here.</p>
+<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/d843fa409b7e269a3775392e569f8f4694a7cb25"><code>d843fa409b7e</code></a> on 2026-11-09. Anything merged after that is not reflected here.</p>

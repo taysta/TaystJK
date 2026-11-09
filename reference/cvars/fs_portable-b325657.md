@@ -65,10 +65,10 @@ Authored dates come from the exact registration's first content commit, PR dates
 
 ## Evidence
 
-- registration: [codemp/qcommon/files.cpp:3921](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/qcommon/files.cpp#L3921) (Cvar_Get)
-- behavior: [shared/sys/sys_win32.cpp:176](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/shared/sys/sys_win32.cpp#L176)
-- behavior: [shared/sys/sys_win32.cpp:172](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/shared/sys/sys_win32.cpp#L172)
-- behavior: [shared/sys/sys_win32.cpp:174](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/shared/sys/sys_win32.cpp#L174)
-- behavior: [shared/sys/sys_win32.cpp:187](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/shared/sys/sys_win32.cpp#L187)
+- registration: [codemp/qcommon/files.cpp:3921](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/codemp/qcommon/files.cpp#L3921) (Cvar_Get)
+- behavior: [shared/sys/sys_win32.cpp:176](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/shared/sys/sys_win32.cpp#L176)
+- behavior: [shared/sys/sys_win32.cpp:172](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/shared/sys/sys_win32.cpp#L172)
+- behavior: [shared/sys/sys_win32.cpp:174](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/shared/sys/sys_win32.cpp#L174)
+- behavior: [shared/sys/sys_win32.cpp:187](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/shared/sys/sys_win32.cpp#L187)
 
-<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/21044fb29768df0061bc4897bbb97d82304a1fe3"><code>21044fb29768</code></a> on 2026-10-25. Anything merged after that is not reflected here.</p>
+<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/d843fa409b7e269a3775392e569f8f4694a7cb25"><code>d843fa409b7e</code></a> on 2026-11-09. Anything merged after that is not reflected here.</p>

@@ -39,8 +39,8 @@ Widescreen aspect ratio correction
 
 | Value | Meaning | Evidence |
 |:--|:--|:--|
-| `1` | Selects the code path tested for value 1. | [codemp/rd-common/tr_font.cpp:1458](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/rd-common/tr_font.cpp#L1458) |
-| `2` | Selects the code path tested for value 2. | [codemp/rd-common/tr_font.cpp:1461](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/rd-common/tr_font.cpp#L1461) |
+| `1` | Selects the code path tested for value 1. | [codemp/rd-common/tr_font.cpp:1458](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/codemp/rd-common/tr_font.cpp#L1458) |
+| `2` | Selects the code path tested for value 2. | [codemp/rd-common/tr_font.cpp:1461](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/codemp/rd-common/tr_font.cpp#L1461) |
 
 ## Flags
 
@@ -62,7 +62,7 @@ Widescreen aspect ratio correction
 Origin: <span class="label ref-origin ref-origin-japro">jaPRO</span>
 
 - Ultimate-origin introduction: [`b713e21a0ea8`](https://github.com/videoP/jaPRO/commit/b713e21a0ea84fe4d2d1d87c1a6f5dfd84e9cbb5) in <span class="label ref-origin ref-origin-japro">jaPRO</span> (content authored `2017-12-04`, integrated `2017-12-04`)
-- Upstream registration evidence: [codemp/cgame/cg_xcvar.h:140](https://github.com/videoP/jaPRO/blame/a4d22a138f1e055c8d8fe6109926dff84c4233a2/codemp/cgame/cg_xcvar.h#L140)
+- Upstream registration evidence: [codemp/cgame/cg_xcvar.h:140](https://github.com/videoP/jaPRO/blame/24408c702a83557ee29333ea4a747af624aa5cff/codemp/cgame/cg_xcvar.h#L140)
 - Attribution method: `squash-feature-group-explicit-credit`
 - Attribution confidence: `medium`
 - Notes: The earliest authored/submitted introduction is shared by eternaljk, taystjk, japro, vulkan; fork-lineage order selects eternaljk. The identifier's single-prefix squash feature group explicitly credits japro.
@@ -107,16 +107,16 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 ## Evidence
 
-- registration: [codemp/cgame/cg_xcvar.h:143](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/cgame/cg_xcvar.h#L143) (XCVAR_DEF)
-- registration: [codemp/client/cl_main.cpp:3444](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/client/cl_main.cpp#L3444) (Cvar_Get)
-- registration: [codemp/rd-rend2/tr_init.cpp:1696](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/rd-rend2/tr_init.cpp#L1696) (Cvar_Get)
-- registration: [codemp/rd-vanilla/tr_init.cpp:1743](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/rd-vanilla/tr_init.cpp#L1743) (Cvar_Get)
-- registration: [codemp/rd-vulkan/tr_init.cpp:905](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/rd-vulkan/tr_init.cpp#L905) (Cvar_Get)
-- registration: [codemp/ui/ui_xcvar.h:37](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/ui/ui_xcvar.h#L37) (XCVAR_DEF)
-- behavior: [codemp/client/cl_main.cpp:2424](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/client/cl_main.cpp#L2424)
-- behavior: [codemp/rd-common/tr_font.cpp:1458](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/rd-common/tr_font.cpp#L1458)
-- behavior: [codemp/rd-common/tr_font.cpp:1461](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/rd-common/tr_font.cpp#L1461)
-- behavior: [codemp/rd-common/tr_font.cpp:1760](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/rd-common/tr_font.cpp#L1760)
-- behavior: [codemp/rd-common/tr_font.cpp:1764](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/rd-common/tr_font.cpp#L1764)
+- registration: [codemp/cgame/cg_xcvar.h:143](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/codemp/cgame/cg_xcvar.h#L143) (XCVAR_DEF)
+- registration: [codemp/client/cl_main.cpp:3452](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/codemp/client/cl_main.cpp#L3452) (Cvar_Get)
+- registration: [codemp/rd-rend2/tr_init.cpp:1696](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/codemp/rd-rend2/tr_init.cpp#L1696) (Cvar_Get)
+- registration: [codemp/rd-vanilla/tr_init.cpp:1743](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/codemp/rd-vanilla/tr_init.cpp#L1743) (Cvar_Get)
+- registration: [codemp/rd-vulkan/tr_init.cpp:905](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/codemp/rd-vulkan/tr_init.cpp#L905) (Cvar_Get)
+- registration: [codemp/ui/ui_xcvar.h:37](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/codemp/ui/ui_xcvar.h#L37) (XCVAR_DEF)
+- behavior: [codemp/client/cl_main.cpp:2432](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/codemp/client/cl_main.cpp#L2432)
+- behavior: [codemp/rd-common/tr_font.cpp:1458](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/codemp/rd-common/tr_font.cpp#L1458)
+- behavior: [codemp/rd-common/tr_font.cpp:1461](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/codemp/rd-common/tr_font.cpp#L1461)
+- behavior: [codemp/rd-common/tr_font.cpp:1760](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/codemp/rd-common/tr_font.cpp#L1760)
+- behavior: [codemp/rd-common/tr_font.cpp:1764](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/codemp/rd-common/tr_font.cpp#L1764)
 
-<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/21044fb29768df0061bc4897bbb97d82304a1fe3"><code>21044fb29768</code></a> on 2026-10-25. Anything merged after that is not reflected here.</p>
+<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/d843fa409b7e269a3775392e569f8f4694a7cb25"><code>d843fa409b7e</code></a> on 2026-11-09. Anything merged after that is not reflected here.</p>

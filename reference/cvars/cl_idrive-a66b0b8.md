@@ -37,7 +37,7 @@ Controls `cl_idrive` in the engine-client module. Consult the cited behavior rea
 
 | Value | Meaning | Evidence |
 |:--|:--|:--|
-| `2` | Selects the code path tested for value 2. | [codemp/client/cl_input.cpp:904](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/client/cl_input.cpp#L904) |
+| `2` | Selects the code path tested for value 2. | [codemp/client/cl_input.cpp:904](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/codemp/client/cl_input.cpp#L904) |
 
 ## Flags
 
@@ -48,7 +48,7 @@ Controls `cl_idrive` in the engine-client module. Consult the cited behavior rea
 Origin: <span class="label ref-origin ref-origin-japro">jaPRO</span>
 
 - Ultimate-origin introduction: [`e0d7a341bc6c`](https://github.com/videoP/jaPRO/commit/e0d7a341bc6c9a68a359941a4065e9c6b408305a) in <span class="label ref-origin ref-origin-japro">jaPRO</span> (content authored `2017-12-05`, integrated `2017-12-05`)
-- Upstream registration evidence: [codemp/client/cl_input.cpp:1832](https://github.com/videoP/jaPRO/blame/a4d22a138f1e055c8d8fe6109926dff84c4233a2/codemp/client/cl_input.cpp#L1832)
+- Upstream registration evidence: [codemp/client/cl_input.cpp:1832](https://github.com/videoP/jaPRO/blame/24408c702a83557ee29333ea4a747af624aa5cff/codemp/client/cl_input.cpp#L1832)
 - Attribution method: `identifier-adjacent-explicit-credit`
 - Attribution confidence: `high`
 - Notes: The earliest authored/submitted introduction is shared by eternaljk, taystjk, japro, vulkan; fork-lineage order selects eternaljk. An identifier-adjacent source/commit/PR line explicitly credits japro.
@@ -76,11 +76,11 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 ## Evidence
 
-- registration: [codemp/client/cl_input.cpp:1832](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/client/cl_input.cpp#L1832) (Cvar_Get)
-- behavior: [codemp/client/cl_input.cpp:494](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/client/cl_input.cpp#L494)
-- behavior: [codemp/client/cl_input.cpp:904](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/client/cl_input.cpp#L904)
-- behavior: [codemp/client/cl_input.cpp:918](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/client/cl_input.cpp#L918)
-- behavior: [codemp/client/cl_input.cpp:931](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/client/cl_input.cpp#L931)
-- behavior: [codemp/client/cl_input.cpp:944](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/client/cl_input.cpp#L944)
+- registration: [codemp/client/cl_input.cpp:1832](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/codemp/client/cl_input.cpp#L1832) (Cvar_Get)
+- behavior: [codemp/client/cl_input.cpp:494](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/codemp/client/cl_input.cpp#L494)
+- behavior: [codemp/client/cl_input.cpp:904](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/codemp/client/cl_input.cpp#L904)
+- behavior: [codemp/client/cl_input.cpp:918](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/codemp/client/cl_input.cpp#L918)
+- behavior: [codemp/client/cl_input.cpp:931](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/codemp/client/cl_input.cpp#L931)
+- behavior: [codemp/client/cl_input.cpp:944](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/codemp/client/cl_input.cpp#L944)
 
-<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/21044fb29768df0061bc4897bbb97d82304a1fe3"><code>21044fb29768</code></a> on 2026-10-25. Anything merged after that is not reflected here.</p>
+<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/d843fa409b7e269a3775392e569f8f4694a7cb25"><code>d843fa409b7e</code></a> on 2026-11-09. Anything merged after that is not reflected here.</p>

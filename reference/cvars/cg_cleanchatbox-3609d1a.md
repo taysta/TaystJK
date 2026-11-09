@@ -39,8 +39,8 @@ description: "1=Remove all colors from chat msgs, 2=Only remove color at beginin
 
 | Value | Meaning | Evidence |
 |:--|:--|:--|
-| `1` | Remove all colors from chat msgs. | [docs/japro_docs.md:439](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/docs/japro_docs.md#L439) |
-| `2` | Only remove color at begining of message. | [docs/japro_docs.md:439](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/docs/japro_docs.md#L439) |
+| `1` | Remove all colors from chat msgs. | [docs/japro_docs.md:439](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/docs/japro_docs.md#L439) |
+| `2` | Only remove color at begining of message. | [docs/japro_docs.md:439](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/docs/japro_docs.md#L439) |
 
 ## Flags
 
@@ -51,7 +51,7 @@ description: "1=Remove all colors from chat msgs, 2=Only remove color at beginin
 Origin: <span class="label ref-origin ref-origin-japro">jaPRO</span>
 
 - Ultimate-origin introduction: [`bdcd618c6771`](https://github.com/videoP/jaPRO/commit/bdcd618c67713b86946b720d791c382d3908d97c) in <span class="label ref-origin ref-origin-japro">jaPRO</span> (content authored `2018-09-03`, integrated `2018-09-03`)
-- Upstream registration evidence: [codemp/cgame/cg_xcvar.h:239](https://github.com/videoP/jaPRO/blame/a4d22a138f1e055c8d8fe6109926dff84c4233a2/codemp/cgame/cg_xcvar.h#L239)
+- Upstream registration evidence: [codemp/cgame/cg_xcvar.h:239](https://github.com/videoP/jaPRO/blame/24408c702a83557ee29333ea4a747af624aa5cff/codemp/cgame/cg_xcvar.h#L239)
 - Attribution method: `squash-feature-group-explicit-credit`
 - Attribution confidence: `medium`
 - Notes: The identifier's single-prefix squash feature group explicitly credits japro.
@@ -83,12 +83,12 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 ## Evidence
 
-- registration: [codemp/cgame/cg_xcvar.h:243](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/cgame/cg_xcvar.h#L243) (XCVAR_DEF)
-- behavior: [codemp/cgame/cg_draw.c:10733](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/cgame/cg_draw.c#L10733)
-- behavior: [codemp/cgame/cg_draw.c:10736](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/cgame/cg_draw.c#L10736)
-- behavior: [codemp/cgame/cg_servercmds.c:1753](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/cgame/cg_servercmds.c#L1753)
-- behavior: [codemp/cgame/cg_draw.c:10702](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/cgame/cg_draw.c#L10702)
-- behavior: [codemp/cgame/cg_servercmds.c:1716](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/cgame/cg_servercmds.c#L1716)
-- documentation: [docs/japro_docs.md:439](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/docs/japro_docs.md#L439)
+- registration: [codemp/cgame/cg_xcvar.h:243](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/codemp/cgame/cg_xcvar.h#L243) (XCVAR_DEF)
+- behavior: [codemp/cgame/cg_draw.c:10733](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/codemp/cgame/cg_draw.c#L10733)
+- behavior: [codemp/cgame/cg_draw.c:10736](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/codemp/cgame/cg_draw.c#L10736)
+- behavior: [codemp/cgame/cg_servercmds.c:1753](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/codemp/cgame/cg_servercmds.c#L1753)
+- behavior: [codemp/cgame/cg_draw.c:10702](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/codemp/cgame/cg_draw.c#L10702)
+- behavior: [codemp/cgame/cg_servercmds.c:1716](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/codemp/cgame/cg_servercmds.c#L1716)
+- documentation: [docs/japro_docs.md:439](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/docs/japro_docs.md#L439)
 
-<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/21044fb29768df0061bc4897bbb97d82304a1fe3"><code>21044fb29768</code></a> on 2026-10-25. Anything merged after that is not reflected here.</p>
+<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/d843fa409b7e269a3775392e569f8f4694a7cb25"><code>d843fa409b7e</code></a> on 2026-11-09. Anything merged after that is not reflected here.</p>

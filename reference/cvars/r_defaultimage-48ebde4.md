@@ -65,9 +65,9 @@ Authored dates come from the exact registration's first content commit, PR dates
 
 ## Evidence
 
-- registration: [codemp/rd-vulkan/tr_init.cpp:911](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/rd-vulkan/tr_init.cpp#L911) (Cvar_Get)
-- behavior: [codemp/rd-vulkan/vk_image.cpp:1630](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/rd-vulkan/vk_image.cpp#L1630)
-- behavior: [codemp/rd-vulkan/vk_image.cpp:1633](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/rd-vulkan/vk_image.cpp#L1633)
-- behavior: [codemp/rd-vulkan/vk_image.cpp:1637](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/rd-vulkan/vk_image.cpp#L1637)
+- registration: [codemp/rd-vulkan/tr_init.cpp:911](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/codemp/rd-vulkan/tr_init.cpp#L911) (Cvar_Get)
+- behavior: [codemp/rd-vulkan/vk_image.cpp:1630](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/codemp/rd-vulkan/vk_image.cpp#L1630)
+- behavior: [codemp/rd-vulkan/vk_image.cpp:1633](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/codemp/rd-vulkan/vk_image.cpp#L1633)
+- behavior: [codemp/rd-vulkan/vk_image.cpp:1637](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/codemp/rd-vulkan/vk_image.cpp#L1637)
 
-<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/21044fb29768df0061bc4897bbb97d82304a1fe3"><code>21044fb29768</code></a> on 2026-10-25. Anything merged after that is not reflected here.</p>
+<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/d843fa409b7e269a3775392e569f8f4694a7cb25"><code>d843fa409b7e</code></a> on 2026-11-09. Anything merged after that is not reflected here.</p>

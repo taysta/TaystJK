@@ -38,7 +38,7 @@ Toggle engine chat logs
 
 | Value | Meaning | Evidence |
 |:--|:--|:--|
-| `2` | Selects the code path tested for value 2. | [codemp/client/cl_cgame.cpp:783](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/client/cl_cgame.cpp#L783) |
+| `2` | Selects the code path tested for value 2. | [codemp/client/cl_cgame.cpp:783](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/codemp/client/cl_cgame.cpp#L783) |
 
 ## Flags
 
@@ -82,10 +82,10 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 ## Evidence
 
-- registration: [codemp/client/cl_main.cpp:3458](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/client/cl_main.cpp#L3458) (Cvar_Get)
-- behavior: [codemp/client/cl_cgame.cpp:563](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/client/cl_cgame.cpp#L563)
-- behavior: [codemp/client/cl_cgame.cpp:701](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/client/cl_cgame.cpp#L701)
-- behavior: [codemp/client/cl_cgame.cpp:774](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/client/cl_cgame.cpp#L774)
-- behavior: [codemp/client/cl_cgame.cpp:783](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/client/cl_cgame.cpp#L783)
+- registration: [codemp/client/cl_main.cpp:3466](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/codemp/client/cl_main.cpp#L3466) (Cvar_Get)
+- behavior: [codemp/client/cl_cgame.cpp:563](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/codemp/client/cl_cgame.cpp#L563)
+- behavior: [codemp/client/cl_cgame.cpp:701](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/codemp/client/cl_cgame.cpp#L701)
+- behavior: [codemp/client/cl_cgame.cpp:774](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/codemp/client/cl_cgame.cpp#L774)
+- behavior: [codemp/client/cl_cgame.cpp:783](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/codemp/client/cl_cgame.cpp#L783)
 
-<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/21044fb29768df0061bc4897bbb97d82304a1fe3"><code>21044fb29768</code></a> on 2026-10-25. Anything merged after that is not reflected here.</p>
+<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/d843fa409b7e269a3775392e569f8f4694a7cb25"><code>d843fa409b7e</code></a> on 2026-11-09. Anything merged after that is not reflected here.</p>

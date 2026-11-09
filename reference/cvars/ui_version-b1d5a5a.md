@@ -34,7 +34,7 @@ Used by UI in the in-game "about" menu
 | Confidence | `medium` |
 | Added | 2018-10-04 in [`e4ececfdb`](https://github.com/taysta/TaystJK/commit/e4ececfdb4d1033473d6f502615964281530d401) <span class="status-chip">needs review</span> ([how to compare this against your build](/TaystJK/features/whats-new/#how-to-tell-what-your-build-has)) |
 | In-game xdocs | No |
-| In-game menu | Yes: [ingame_about.menu:267](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/assets/japro/ui/jamp/ingame_about.menu#L267) |
+| In-game menu | Yes: [ingame_about.menu:267](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/assets/japro/ui/jamp/ingame_about.menu#L267) |
 
 ## Values
 
@@ -67,11 +67,11 @@ Authored dates come from the exact registration's first content commit, PR dates
 
 ## Evidence
 
-- registration: [codemp/cgame/cg_servercmds.c:237](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/cgame/cg_servercmds.c#L237) (implicit Cvar_Set)
-- behavior: [codemp/ui/ui_main.c:3364](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/ui/ui_main.c#L3364)
-- behavior: [assets/japro/ui/jamp/menudef.h:346](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/assets/japro/ui/jamp/menudef.h#L346)
-- behavior: [codemp/ui/menudef.h:346](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/ui/menudef.h#L346)
-- behavior: [codemp/ui/ui_main.c:3084](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/ui/ui_main.c#L3084)
-- behavior: [codemp/ui/ui_main.c:3087](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/ui/ui_main.c#L3087)
+- registration: [codemp/cgame/cg_servercmds.c:237](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/codemp/cgame/cg_servercmds.c#L237) (implicit Cvar_Set)
+- behavior: [codemp/ui/ui_main.c:3364](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/codemp/ui/ui_main.c#L3364)
+- behavior: [assets/japro/ui/jamp/menudef.h:346](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/assets/japro/ui/jamp/menudef.h#L346)
+- behavior: [codemp/ui/menudef.h:346](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/codemp/ui/menudef.h#L346)
+- behavior: [codemp/ui/ui_main.c:3084](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/codemp/ui/ui_main.c#L3084)
+- behavior: [codemp/ui/ui_main.c:3087](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/codemp/ui/ui_main.c#L3087)
 
-<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/21044fb29768df0061bc4897bbb97d82304a1fe3"><code>21044fb29768</code></a> on 2026-10-25. Anything merged after that is not reflected here.</p>
+<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/d843fa409b7e269a3775392e569f8f4694a7cb25"><code>d843fa409b7e</code></a> on 2026-11-09. Anything merged after that is not reflected here.</p>

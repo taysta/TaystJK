@@ -37,8 +37,8 @@ Controls `r_ignoreGLErrors` in the renderer module. Consult the cited behavior r
 
 | Value | Meaning | Evidence |
 |:--|:--|:--|
-| `0` | Disabled. | [codemp/rd-rend2/tr_init.cpp:608](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/rd-rend2/tr_init.cpp#L608) |
-| `1` | Enabled. | [codemp/rd-rend2/tr_init.cpp:608](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/rd-rend2/tr_init.cpp#L608) |
+| `0` | Disabled. | [codemp/rd-rend2/tr_init.cpp:608](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/codemp/rd-rend2/tr_init.cpp#L608) |
+| `1` | Enabled. | [codemp/rd-rend2/tr_init.cpp:608](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/codemp/rd-rend2/tr_init.cpp#L608) |
 
 ## Flags
 
@@ -85,13 +85,13 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 ## Evidence
 
-- registration: [codemp/rd-dedicated/tr_init.cpp:366](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/rd-dedicated/tr_init.cpp#L366) (Cvar_Get)
-- registration: [codemp/rd-rend2/tr_init.cpp:1618](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/rd-rend2/tr_init.cpp#L1618) (Cvar_Get)
-- registration: [codemp/rd-vanilla/tr_init.cpp:1676](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/rd-vanilla/tr_init.cpp#L1676) (Cvar_Get)
-- registration: [codemp/rd-vulkan/tr_init.cpp:834](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/rd-vulkan/tr_init.cpp#L834) (Cvar_Get)
-- behavior: [codemp/rd-rend2/tr_init.cpp:608](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/rd-rend2/tr_init.cpp#L608)
-- behavior: [codemp/rd-vanilla/tr_cmds.cpp:420](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/rd-vanilla/tr_cmds.cpp#L420)
-- behavior: [codemp/rd-vanilla/tr_init.cpp:860](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/rd-vanilla/tr_init.cpp#L860)
-- behavior: [shared/rd-rend2/tr_cmds.cpp:682](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/shared/rd-rend2/tr_cmds.cpp#L682)
+- registration: [codemp/rd-dedicated/tr_init.cpp:366](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/codemp/rd-dedicated/tr_init.cpp#L366) (Cvar_Get)
+- registration: [codemp/rd-rend2/tr_init.cpp:1618](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/codemp/rd-rend2/tr_init.cpp#L1618) (Cvar_Get)
+- registration: [codemp/rd-vanilla/tr_init.cpp:1676](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/codemp/rd-vanilla/tr_init.cpp#L1676) (Cvar_Get)
+- registration: [codemp/rd-vulkan/tr_init.cpp:834](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/codemp/rd-vulkan/tr_init.cpp#L834) (Cvar_Get)
+- behavior: [codemp/rd-rend2/tr_init.cpp:608](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/codemp/rd-rend2/tr_init.cpp#L608)
+- behavior: [codemp/rd-vanilla/tr_cmds.cpp:420](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/codemp/rd-vanilla/tr_cmds.cpp#L420)
+- behavior: [codemp/rd-vanilla/tr_init.cpp:860](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/codemp/rd-vanilla/tr_init.cpp#L860)
+- behavior: [shared/rd-rend2/tr_cmds.cpp:682](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/shared/rd-rend2/tr_cmds.cpp#L682)
 
-<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/21044fb29768df0061bc4897bbb97d82304a1fe3"><code>21044fb29768</code></a> on 2026-10-25. Anything merged after that is not reflected here.</p>
+<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/d843fa409b7e269a3775392e569f8f4694a7cb25"><code>d843fa409b7e</code></a> on 2026-11-09. Anything merged after that is not reflected here.</p>

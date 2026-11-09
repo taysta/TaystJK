@@ -20,12 +20,12 @@ The reference separates origin from current availability. An entry inherited fro
 | <span class="label ref-origin ref-origin-basejka">Base Jedi Academy</span> | [`JACoders/OpenJK@14cea1563762`](https://github.com/JACoders/OpenJK/tree/14cea1563762076974bee277afadbd5bf234c494) | Raven/id JA source present in OpenJK's initial import |
 | <span class="label ref-origin ref-origin-openjk">OpenJK</span> | [`JACoders/OpenJK@260c59c29071`](https://github.com/JACoders/OpenJK/tree/260c59c2907187af555a676fe0cc798893bf7757) | post-import OpenJK additions |
 | <span class="label ref-origin ref-origin-eternaljk">EternalJK</span> | [`eternalcodes/EternalJK@a40e793a802c`](https://github.com/eternalcodes/EternalJK/tree/a40e793a802c8db8df6132b711eea2fc846e5dd1) | public EternalJK additions and explicitly credited private continuation work |
-| <span class="label ref-origin ref-origin-japro">jaPRO</span> | [`videoP/jaPRO@a4d22a138f1e`](https://github.com/videoP/jaPRO/tree/a4d22a138f1e055c8d8fe6109926dff84c4233a2) | jaPRO gameplay, HUD, movement, and admin work |
+| <span class="label ref-origin ref-origin-japro">jaPRO</span> | [`videoP/jaPRO@24408c702a83`](https://github.com/videoP/jaPRO/tree/24408c702a83557ee29333ea4a747af624aa5cff) | jaPRO gameplay, HUD, movement, and admin work |
 | <span class="label ref-origin ref-origin-jk2mv">JK2MV</span> | [`mvdevs/jk2mv@7d601454c3db`](https://github.com/mvdevs/jk2mv/tree/7d601454c3db68492289d4d4e3dc30bff39e4246) | selected JK2MV ports |
 | <span class="label ref-origin ref-origin-newjk">NewJK / NewMod</span> | [`jkanewmod/NewJK@40e10bbd5efe`](https://github.com/jkanewmod/NewJK/tree/40e10bbd5efee7a57db8f41b4f54cf4ce2e166d3) | NewJK and explicitly credited NewMod ports |
 | <span class="label ref-origin ref-origin-rend2">rend2</span> | [`SomaZ/OpenJK@788c19e97f02`](https://github.com/SomaZ/OpenJK/tree/788c19e97f02c0b68db29d63060305b6ad1580e5) | SomaZ rend2-unified renderer lineage |
 | <span class="label ref-origin ref-origin-vulkan">Vulkan</span> | [`JKSunny/EternalJK@362b28150b83`](https://github.com/JKSunny/EternalJK/tree/362b28150b83e1d077137c5ea67ebb8a123629ba) | JKSunny Vulkan renderer lineage |
-| <span class="label ref-origin ref-origin-taystjk">TaystJK</span> | [`taysta/TaystJK@21044fb29768`](https://github.com/taysta/TaystJK/tree/21044fb29768df0061bc4897bbb97d82304a1fe3) | entries first evidenced in TaystJK after upstream checks |
+| <span class="label ref-origin ref-origin-taystjk">TaystJK</span> | [`taysta/TaystJK@d843fa409b7e`](https://github.com/taysta/TaystJK/tree/d843fa409b7e269a3775392e569f8f4694a7cb25) | entries first evidenced in TaystJK after upstream checks |
 
 ## Evidence process
 

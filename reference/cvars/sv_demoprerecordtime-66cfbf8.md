@@ -69,10 +69,10 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 ## Evidence
 
-- registration: [codemp/server/sv_init.cpp:1058](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/server/sv_init.cpp#L1058) (Cvar_Get); condition `defined(DEDICATED)`
-- behavior: [codemp/server/sv_snapshot.cpp:898](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/server/sv_snapshot.cpp#L898)
-- behavior: [codemp/server/sv_snapshot.cpp:893](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/server/sv_snapshot.cpp#L893)
-- behavior: [codemp/server/sv_snapshot.cpp:894](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/server/sv_snapshot.cpp#L894)
-- documentation: [docs/japro_docs.md:135](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/docs/japro_docs.md#L135)
+- registration: [codemp/server/sv_init.cpp:1058](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/codemp/server/sv_init.cpp#L1058) (Cvar_Get); condition `defined(DEDICATED)`
+- behavior: [codemp/server/sv_snapshot.cpp:898](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/codemp/server/sv_snapshot.cpp#L898)
+- behavior: [codemp/server/sv_snapshot.cpp:893](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/codemp/server/sv_snapshot.cpp#L893)
+- behavior: [codemp/server/sv_snapshot.cpp:894](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/codemp/server/sv_snapshot.cpp#L894)
+- documentation: [docs/japro_docs.md:135](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/docs/japro_docs.md#L135)
 
-<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/21044fb29768df0061bc4897bbb97d82304a1fe3"><code>21044fb29768</code></a> on 2026-10-25. Anything merged after that is not reflected here.</p>
+<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/d843fa409b7e269a3775392e569f8f4694a7cb25"><code>d843fa409b7e</code></a> on 2026-11-09. Anything merged after that is not reflected here.</p>

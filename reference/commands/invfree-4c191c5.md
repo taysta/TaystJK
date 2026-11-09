@@ -28,7 +28,7 @@ Runs `CG_InvUseAvailable` in the cgame module.
 | Confidence | `high` |
 | Added | 2024-02-28 in [`baa02905f`](https://github.com/taysta/TaystJK/commit/baa02905f40f33652a2ae326fe55ece2642169c1) ([how to compare this against your build](/TaystJK/features/whats-new/#how-to-tell-what-your-build-has)) |
 | In-game xdocs | No |
-| In-game menu | No |
+| In-game menu | Yes: [newmenu_tab1.menu:51](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/assets/japro/ui/jamp/newmenu/newmenu_tab1.menu#L51) |
 
 ## Arguments and gating
 
@@ -40,7 +40,7 @@ Origin: <span class="label ref-origin ref-origin-japro">jaPRO</span>
 
 - Ultimate-origin introduction: [`baa02905f40f`](https://github.com/videoP/jaPRO/commit/baa02905f40f33652a2ae326fe55ece2642169c1) in <span class="label ref-origin ref-origin-japro">jaPRO</span> (content authored `2024-02-18`, integrated `2024-02-27`)
 - Origin pull request: [#130](https://github.com/taysta/TaystJK/pull/130)
-- Upstream registration evidence: [codemp/cgame/cg_consolecmds.c:2456](https://github.com/videoP/jaPRO/blame/a4d22a138f1e055c8d8fe6109926dff84c4233a2/codemp/cgame/cg_consolecmds.c#L2456)
+- Upstream registration evidence: [codemp/cgame/cg_consolecmds.c:2456](https://github.com/videoP/jaPRO/blame/24408c702a83557ee29333ea4a747af624aa5cff/codemp/cgame/cg_consolecmds.c#L2456)
 - Attribution method: `introduction-commit-explicit-credit`
 - Attribution confidence: `high`
 
@@ -55,7 +55,7 @@ Authored dates come from the exact registration's first content commit, PR dates
 
 ## Evidence
 
-- registration: [codemp/cgame/cg_consolecmds.c:2456](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/cgame/cg_consolecmds.c#L2456) (cgame command table)
-- handler: [codemp/cgame/cg_main.c:3494](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/cgame/cg_main.c#L3494)
+- registration: [codemp/cgame/cg_consolecmds.c:2456](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/codemp/cgame/cg_consolecmds.c#L2456) (cgame command table)
+- handler: [codemp/cgame/cg_main.c:3497](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/codemp/cgame/cg_main.c#L3497)
 
-<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/21044fb29768df0061bc4897bbb97d82304a1fe3"><code>21044fb29768</code></a> on 2026-10-25. Anything merged after that is not reflected here.</p>
+<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/d843fa409b7e269a3775392e569f8f4694a7cb25"><code>d843fa409b7e</code></a> on 2026-11-09. Anything merged after that is not reflected here.</p>

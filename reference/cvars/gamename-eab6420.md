@@ -527,12 +527,12 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 ## Evidence
 
-- registration: [codemp/game/g_xcvar.h:171](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/game/g_xcvar.h#L171) (XCVAR_DEF)
-- registration: [codemp/server/sv_gameapi.cpp:3193](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/server/sv_gameapi.cpp#L3193) (Cvar_Get)
-- behavior: [codemp/qcommon/files.cpp:3956](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/qcommon/files.cpp#L3956)
-- behavior: [codemp/qcommon/files.cpp:3974](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/qcommon/files.cpp#L3974)
-- behavior: [codemp/server/sv_gameapi.cpp:3200](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/server/sv_gameapi.cpp#L3200)
-- behavior: [codemp/qcommon/files.cpp:3934](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/qcommon/files.cpp#L3934)
-- behavior: [codemp/qcommon/files.cpp:3937](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/qcommon/files.cpp#L3937)
+- registration: [codemp/game/g_xcvar.h:171](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/codemp/game/g_xcvar.h#L171) (XCVAR_DEF)
+- registration: [codemp/server/sv_gameapi.cpp:3193](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/codemp/server/sv_gameapi.cpp#L3193) (Cvar_Get)
+- behavior: [codemp/qcommon/files.cpp:3956](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/codemp/qcommon/files.cpp#L3956)
+- behavior: [codemp/qcommon/files.cpp:3974](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/codemp/qcommon/files.cpp#L3974)
+- behavior: [codemp/server/sv_gameapi.cpp:3200](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/codemp/server/sv_gameapi.cpp#L3200)
+- behavior: [codemp/qcommon/files.cpp:3934](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/codemp/qcommon/files.cpp#L3934)
+- behavior: [codemp/qcommon/files.cpp:3937](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/codemp/qcommon/files.cpp#L3937)
 
-<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/21044fb29768df0061bc4897bbb97d82304a1fe3"><code>21044fb29768</code></a> on 2026-10-25. Anything merged after that is not reflected here.</p>
+<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/d843fa409b7e269a3775392e569f8f4694a7cb25"><code>d843fa409b7e</code></a> on 2026-11-09. Anything merged after that is not reflected here.</p>

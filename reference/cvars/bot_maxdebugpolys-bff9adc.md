@@ -52,11 +52,11 @@ Origin: <span class="label ref-origin ref-origin-basejka">Base Jedi Academy</spa
 
 ## Evidence
 
-- registration: [codemp/server/sv_bot.cpp:659](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/server/sv_bot.cpp#L659) (Cvar_Get)
-- behavior: [codemp/server/sv_bot.cpp:501](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/server/sv_bot.cpp#L501)
-- behavior: [codemp/server/sv_bot.cpp:274](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/server/sv_bot.cpp#L274)
-- behavior: [codemp/server/sv_bot.cpp:497](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/server/sv_bot.cpp#L497)
-- behavior: [codemp/server/sv_bot.cpp:39](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/server/sv_bot.cpp#L39)
-- behavior: [codemp/server/sv_bot.cpp:709](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/server/sv_bot.cpp#L709)
+- registration: [codemp/server/sv_bot.cpp:659](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/codemp/server/sv_bot.cpp#L659) (Cvar_Get)
+- behavior: [codemp/server/sv_bot.cpp:501](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/codemp/server/sv_bot.cpp#L501)
+- behavior: [codemp/server/sv_bot.cpp:274](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/codemp/server/sv_bot.cpp#L274)
+- behavior: [codemp/server/sv_bot.cpp:497](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/codemp/server/sv_bot.cpp#L497)
+- behavior: [codemp/server/sv_bot.cpp:39](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/codemp/server/sv_bot.cpp#L39)
+- behavior: [codemp/server/sv_bot.cpp:709](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/codemp/server/sv_bot.cpp#L709)
 
-<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/21044fb29768df0061bc4897bbb97d82304a1fe3"><code>21044fb29768</code></a> on 2026-10-25. Anything merged after that is not reflected here.</p>
+<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/d843fa409b7e269a3775392e569f8f4694a7cb25"><code>d843fa409b7e</code></a> on 2026-11-09. Anything merged after that is not reflected here.</p>

@@ -38,10 +38,10 @@ Controls physics applied to FX system particles - 0: Disable all FX physics - 1:
 
 | Value | Meaning | Evidence |
 |:--|:--|:--|
-| `0` | Disable all FX physics. | [codemp/client/FxUtil.cpp:117](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/client/FxUtil.cpp#L117) |
-| `1` | Use non-expensive physics only. | [codemp/client/FxUtil.cpp:117](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/client/FxUtil.cpp#L117) |
-| `2` | Use flags in the fx file (Default behavior). | [codemp/client/FxUtil.cpp:117](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/client/FxUtil.cpp#L117) |
-| `3` | Force expensive physics on all particles. | [codemp/client/FxUtil.cpp:117](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/client/FxUtil.cpp#L117) |
+| `0` | Disable all FX physics. | [codemp/client/FxUtil.cpp:117](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/codemp/client/FxUtil.cpp#L117) |
+| `1` | Use non-expensive physics only. | [codemp/client/FxUtil.cpp:117](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/codemp/client/FxUtil.cpp#L117) |
+| `2` | Use flags in the fx file (Default behavior). | [codemp/client/FxUtil.cpp:117](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/codemp/client/FxUtil.cpp#L117) |
+| `3` | Force expensive physics on all particles. | [codemp/client/FxUtil.cpp:117](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/codemp/client/FxUtil.cpp#L117) |
 
 ## Flags
 
@@ -52,7 +52,7 @@ Controls physics applied to FX system particles - 0: Disable all FX physics - 1:
 Origin: <span class="label ref-origin ref-origin-japro">jaPRO</span>
 
 - Ultimate-origin introduction: [`d9d510063ce6`](https://github.com/videoP/jaPRO/commit/d9d510063ce680639e6ba060021b6d40ee0c1419) in <span class="label ref-origin ref-origin-japro">jaPRO</span> (content authored `2014-01-18`, integrated `2018-01-01`)
-- Upstream registration evidence: [codemp/client/FxUtil.cpp:117](https://github.com/videoP/jaPRO/blame/a4d22a138f1e055c8d8fe6109926dff84c4233a2/codemp/client/FxUtil.cpp#L117)
+- Upstream registration evidence: [codemp/client/FxUtil.cpp:117](https://github.com/videoP/jaPRO/blame/24408c702a83557ee29333ea4a747af624aa5cff/codemp/client/FxUtil.cpp#L117)
 - Attribution method: `squash-feature-group-explicit-credit`
 - Attribution confidence: `medium`
 - Notes: The earliest authored/submitted introduction is shared by eternaljk, taystjk, japro, vulkan; fork-lineage order selects eternaljk. The identifier's single-prefix squash feature group explicitly credits japro.
@@ -79,8 +79,8 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 ## Evidence
 
-- registration: [codemp/client/FxUtil.cpp:117](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/client/FxUtil.cpp#L117) (Cvar_Get)
-- behavior: [codemp/client/FxPrimitives.cpp:228](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/client/FxPrimitives.cpp#L228)
-- behavior: [codemp/client/FxPrimitives.cpp:230](https://github.com/taysta/TaystJK/blame/21044fb29768df0061bc4897bbb97d82304a1fe3/codemp/client/FxPrimitives.cpp#L230)
+- registration: [codemp/client/FxUtil.cpp:117](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/codemp/client/FxUtil.cpp#L117) (Cvar_Get)
+- behavior: [codemp/client/FxPrimitives.cpp:228](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/codemp/client/FxPrimitives.cpp#L228)
+- behavior: [codemp/client/FxPrimitives.cpp:230](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/codemp/client/FxPrimitives.cpp#L230)
 
-<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/21044fb29768df0061bc4897bbb97d82304a1fe3"><code>21044fb29768</code></a> on 2026-10-25. Anything merged after that is not reflected here.</p>
+<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/d843fa409b7e269a3775392e569f8f4694a7cb25"><code>d843fa409b7e</code></a> on 2026-11-09. Anything merged after that is not reflected here.</p>
