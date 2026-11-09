@@ -888,7 +888,7 @@ static UniformBlockBinding GetBonesBlockUniformBinding()
 	binding.ubo = currentFrameUbo;
 	binding.block = UNIFORM_BLOCK_BONES;
 
-	if (glState.skeletalAnimation)
+	if (glState.skeletalAnimation && tr.animationBoneUboOffset >= 0)
 		binding.offset = tr.animationBoneUboOffset;
 	else
 		binding.offset = 0;
@@ -904,10 +904,21 @@ static UniformBlockBinding GetPreviousBonesBlockUniformBinding()
 	binding.ubo = frameUbo;
 	binding.block = UNIFORM_BLOCK_PREVIOUS_BONES;
 
-	if (glState.skeletalAnimation)
+	if (glState.skeletalAnimation && tr.previousAnimationBoneUboOffset >= 0)
+	{
 		binding.offset = tr.previousAnimationBoneUboOffset;
+	}
+	else if (glState.skeletalAnimation && tr.animationBoneUboOffset >= 0)
+	{
+		// No bones cached from the previous frame, so use this frame's
+		// bones instead of binding an invalid range
+		binding.ubo = backEndData->currentFrame->ubo[frameScene];
+		binding.offset = tr.animationBoneUboOffset;
+	}
 	else
+	{
 		binding.offset = 0;
+	}
 
 	return binding;
 }

@@ -402,6 +402,7 @@ void GL_VertexAttribPointers(
 	assert(attributes != nullptr || numAttributes == 0);
 
 	uint32_t newAttribs = 0;
+	bool attribsChanged = false;
 	for ( size_t i = 0; i < numAttributes; i++ )
 	{
 		vertexAttribute_t& attrib = attributes[i];
@@ -414,6 +415,7 @@ void GL_VertexAttribPointers(
 			continue;
 		}
 
+		attribsChanged = true;
 		R_BindVBO(attrib.vbo);
 		if ( attrib.integerAttribute )
 		{
@@ -455,6 +457,16 @@ void GL_VertexAttribPointers(
 		}
 
 		glState.vertexAttribsState = newAttribs;
+		attribsChanged = true;
+	}
+
+	// macOS GL runs on Metal, where vertex and uniform buffers share the same
+	// buffer slots. After a vertex attribute change the driver can leave stale
+	// uniform buffers bound while still reporting the old bindings, so make the
+	// next draw re-issue its uniform block bindings.
+	if ( attribsChanged )
+	{
+		memset(glState.currentUBOs, 0, sizeof(glState.currentUBOs));
 	}
 }
 
