@@ -35,3 +35,10 @@ void	SNDDMA_BeginPainting (void);
 void	SNDDMA_Submit(void);
 
 void	SNDDMA_Activate(qboolean activate);
+// microphone capture for VoIP (mono signed 16-bit)
+qboolean SNDDMA_OpenCapture(const char *deviceName, int rate);	// opens paused
+void	SNDDMA_PauseCapture(qboolean pause);
+int		SNDDMA_AvailableCaptureSamples(void);
+int		SNDDMA_Capture(int samples, short *data);
+void	SNDDMA_CloseCapture(void);
+void	SNDDMA_ListCaptureDevices(void);

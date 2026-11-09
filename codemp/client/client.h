@@ -516,6 +516,18 @@ void CL_FlushMemory(void);
 void CL_ShutdownAll( qboolean shutdownRef );
 void CL_AddReliableCommand( const char *cmd, qboolean isDisconnectCmd );
 
+//
+// cl_voip.cpp
+//
+extern int cl_voipDemoCutBit;
+void CL_Voip_Init( void );
+void CL_Voip_Shutdown( void );
+void CL_Voip_Disconnect( void );
+void CL_Voip_Frame( void );
+void CL_Voip_DrawMeter( void );
+void CL_WriteVoipPacket( msg_t *msg );
+void CL_ParseVoip( msg_t *msg );
+
 void CL_StartHunkUsers( void );
 
 qboolean CL_GetSnapshot( int snapshotNumber, snapshot_t *snapshot );

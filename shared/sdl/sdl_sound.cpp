@@ -175,13 +175,12 @@ qboolean SNDDMA_Init(int sampleFrequencyInKHz)
 
 	Com_Printf( "SDL_Init( SDL_INIT_AUDIO )... " );
 
-	if (!SDL_WasInit(SDL_INIT_AUDIO))
+	// always take a reference: the VoIP capture device holds its own, and
+	// SNDDMA_Shutdown's SDL_QuitSubSystem must not release that one
+	if (SDL_InitSubSystem(SDL_INIT_AUDIO) != 0)
 	{
-		if (SDL_Init(SDL_INIT_AUDIO) != 0)
-		{
-			Com_Printf( "FAILED (%s)\n", SDL_GetError( ) );
-			return qfalse;
-		}
+		Com_Printf( "FAILED (%s)\n", SDL_GetError( ) );
+		return qfalse;
 	}
 
 	Com_Printf( "OK\n" );
@@ -330,4 +329,100 @@ SNDDMA_Activate
 void SNDDMA_Activate( qboolean activate )
 {
 	SDL_PauseAudioDevice( dev, !activate );
+}
+
+/*
+===============
+VoIP capture
+
+Separate SDL device from playback so it works with either sound backend.
+Each open holds its own reference on the SDL audio subsystem.
+===============
+*/
+static SDL_AudioDeviceID captureDev = 0;
+
+qboolean SNDDMA_OpenCapture(const char *deviceName, int rate)
+{
+	SDL_AudioSpec desired;
+	SDL_AudioSpec obtained;
+
+	if (captureDev)
+		return qtrue;
+
+	if (SDL_InitSubSystem(SDL_INIT_AUDIO) != 0)
+	{
+		Com_Printf("SDL_InitSubSystem( SDL_INIT_AUDIO ) for capture failed: %s\n", SDL_GetError());
+		return qfalse;
+	}
+
+	memset(&desired, 0, sizeof(desired));
+	memset(&obtained, 0, sizeof(obtained));
+	desired.freq = rate;
+	desired.format = AUDIO_S16SYS;
+	desired.channels = 1;
+	desired.samples = 512;
+
+	// no allowed changes: SDL converts to exactly this format for us
+	captureDev = SDL_OpenAudioDevice((deviceName && deviceName[0]) ? deviceName : NULL, 1, &desired, &obtained, 0);
+	if (!captureDev)
+	{
+		Com_Printf("SDL_OpenAudioDevice() for capture failed: %s\n", SDL_GetError());
+		SDL_QuitSubSystem(SDL_INIT_AUDIO);
+		return qfalse;
+	}
+
+	Com_Printf("SDL capture device opened (%s).\n", (deviceName && deviceName[0]) ? deviceName : "default");
+	return qtrue;
+}
+
+// Start or stop delivering microphone samples; starting drops anything stale.
+void SNDDMA_PauseCapture(qboolean pause)
+{
+	if (!captureDev)
+		return;
+
+	if (!pause)
+		SDL_ClearQueuedAudio(captureDev);
+	SDL_PauseAudioDevice(captureDev, pause ? 1 : 0);
+}
+
+int SNDDMA_AvailableCaptureSamples(void)
+{
+	if (!captureDev)
+		return 0;
+	return (int)(SDL_GetQueuedAudioSize(captureDev) / sizeof(short));
+}
+
+int SNDDMA_Capture(int samples, short *data)
+{
+	if (!captureDev)
+		return 0;
+	return (int)(SDL_DequeueAudio(captureDev, data, samples * sizeof(short)) / sizeof(short));
+}
+
+void SNDDMA_CloseCapture(void)
+{
+	if (!captureDev)
+		return;
+
+	SDL_CloseAudioDevice(captureDev);
+	captureDev = 0;
+	SDL_QuitSubSystem(SDL_INIT_AUDIO);
+	Com_Printf("SDL capture device closed.\n");
+}
+
+void SNDDMA_ListCaptureDevices(void)
+{
+	if (SDL_InitSubSystem(SDL_INIT_AUDIO) != 0)
+	{
+		Com_Printf("SDL_InitSubSystem( SDL_INIT_AUDIO ) failed: %s\n", SDL_GetError());
+		return;
+	}
+
+	const int count = SDL_GetNumAudioDevices(1);
+	Com_Printf("%d capture device(s):\n", count < 0 ? 0 : count);
+	for (int i = 0; i < count; i++)
+		Com_Printf("  \"%s\"\n", SDL_GetAudioDeviceName(i, 1));
+
+	SDL_QuitSubSystem(SDL_INIT_AUDIO);
 }

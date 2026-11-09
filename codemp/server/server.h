@@ -150,6 +150,21 @@ typedef struct {
 typedef std::vector<std::unique_ptr<bufferedMessageContainer_t>>::iterator demoPreRecordBufferIt;
 #endif
 
+// voice packets waiting for a client's next snapshot (sv_voip.cpp)
+#define VOIP_SERVER_QUEUE	24
+
+typedef struct voipServerPacket_s {
+	int				sender;
+	int				generation;
+	int				sequence;
+	int				frames;
+	int				flags;
+	int				range;
+	int				origin[3];
+	int				len;
+	byte			data[VOIP_MAX_PACKET_BYTES];
+} voipServerPacket_t;
+
 typedef struct client_s {
 	clientState_t	state;
 	char			userinfo[MAX_INFO_STRING];		// name, etc
@@ -207,6 +222,15 @@ typedef struct client_s {
 
 	int				oldServerTime;
 	qboolean		csUpdated[MAX_CONFIGSTRINGS];
+
+	// voice chat (sv_voip.cpp)
+	qboolean		hasVoip;			// sent "voip on"
+	qboolean		voipMuted;			// muted with voipmute
+	int				voipBudgetTime;		// rate limit window start
+	int				voipBudgetBytes;
+	voipServerPacket_t	voipQueue[VOIP_SERVER_QUEUE];
+	int				voipQueueHead;
+	int				voipQueueCount;
 
 #ifdef DEDICATED
 	demoInfo_t		demo;
@@ -463,6 +487,16 @@ void SV_SendClientSnapshot( client_t *client );
 int	SV_NumForGentity( sharedEntity_t *ent );
 sharedEntity_t *SV_GentityNum( int num );
 playerState_t *SV_GameClientNum( int num );
+
+//
+// sv_voip.cpp
+//
+void SV_Voip_Init( void );
+void SV_Voip_Frame( void );
+void SV_Voip_f( client_t *cl );
+qboolean SV_UserVoip( client_t *cl, msg_t *msg );
+void SV_WriteVoipToClient( client_t *cl, msg_t *msg );
+void SV_Voip_ClearQueue( client_t *cl );
 svEntity_t	*SV_SvEntityForGentity( sharedEntity_t *gEnt );
 sharedEntity_t *SV_GEntityForSvEntity( svEntity_t *svEnt );
 void		SV_InitGameProgs ( void );

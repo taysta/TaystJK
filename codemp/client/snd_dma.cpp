@@ -691,6 +691,10 @@ void S_Init( void ) {
 	}
 #endif
 
+	if ( s_soundStarted ) {
+		S_Voip_Init();
+	}
+
 	Com_Printf("------------------------------------\n");
 
 	Com_Printf("\n--- ambient sound initialization ---\n");
@@ -726,6 +730,9 @@ void S_Shutdown( void )
 	if ( !s_soundStarted ) {
 		return;
 	}
+
+	// before the OpenAL context goes away
+	S_Voip_Shutdown();
 
 	S_FreeAllSFXMem();
 	S_UnCacheDynamicMusic();
@@ -1918,6 +1925,8 @@ void S_StopSounds(void)
 	}
 #endif
 
+	S_Voip_ClearStreams();
+
 	// clear out the lip synching override array
 	memset(s_entityWavVol, 0,sizeof(s_entityWavVol));
 
@@ -2624,6 +2633,8 @@ void S_Respatialize( int entityNum, const vec3_t head, matrix3_t axis, int inwat
 		return;
 	}
 
+	S_Voip_Respatialize( entityNum, head );
+
 	// both backends need to know which entity is us
 	listener_number = entityNum;
 
@@ -3196,6 +3207,9 @@ void S_Update_(void) {
 		UpdateLoopingSounds();
 
 		AL_UpdateRawSamples();
+
+		S_Voip_UpdateAL();
+		S_Voip_UpdateLipSync();
 	}
 	else
 	{
@@ -3229,6 +3243,7 @@ void S_Update_(void) {
 		SNDDMA_Submit ();
 
 		S_DoLipSynchs( s_oldpaintedtime );
+		S_Voip_UpdateLipSync();
 #ifdef USE_OPENAL
 	}
 #endif
@@ -6286,24 +6301,16 @@ void UpdateEAXListener()
 /*
 	Updates the EAX Buffer related effects on the given Source
 */
+static void UpdateEAXSource(ALuint alSource, int *plSlotID, EMPOINT EMSourcePoint, bool bVoice);
+
 void UpdateEAXBuffer(channel_t *ch)
 {
-	HRESULT hr;
 	EMPOINT EMSourcePoint;
-	EMPOINT EMVirtualSourcePoint;
-	EAXOBSTRUCTIONPROPERTIES eaxOBProp;
-	EAXOCCLUSIONPROPERTIES eaxOCProp;
-	int i;
-	long lSourceID;
 
 	// If EAX Manager is not initialized, or there is no EAX support, or the listener
 	// is underwater, return
 	if ((!s_lpEAXManager) || (!s_bEAX) || (s_bInWater))
 		return;
-
-	// Set Occlusion Direct Ratio to the default value (it won't get set by the current version of
-	// EAX Manager)
-	eaxOCProp.flOcclusionDirectRatio = EAXSOURCE_DEFAULTOCCLUSIONDIRECTRATIO;
 
 	// Convert Source co-ordinate to left-handed system
 	if (ch->fixed_origin)
@@ -6343,7 +6350,78 @@ void UpdateEAXBuffer(channel_t *ch)
 		}
 	}
 
+	UpdateEAXSource(ch->alSource, &ch->lSlotID, EMSourcePoint,
+		(ch->entchannel == CHAN_VOICE) || (ch->entchannel == CHAN_VOICE_ATTEN) || (ch->entchannel == CHAN_VOICE_GLOBAL));
+}
+
+/*
+	Positional VoIP sources aren't channels; they get the same zone reverb and,
+	unlike scripted dialogue, the .eal's obstruction/occlusion (none of the
+	stock MP .eal files define any obstacles, so that only matters for maps
+	whose .eal does)
+*/
+void S_AL_UpdateSourceEAX(ALuint source, int *slotID, const vec3_t origin, qboolean atListener)
+{
+	EMPOINT EMSourcePoint;
+
+	if ((!s_lpEAXManager) || (!s_bEAX))
+		return;
+
+	if (s_bInWater)
+	{
+		// same treatment S_Respatialize gives the channels when the listener goes under
+		EAXOCCLUSIONPROPERTIES eaxOCProp;
+		EAXACTIVEFXSLOTS eaxActiveSlots;
+
+		eaxOCProp.lOcclusion = -3000;
+		eaxOCProp.flOcclusionLFRatio = 0.0f;
+		eaxOCProp.flOcclusionRoomRatio = 1.37f;
+		eaxOCProp.flOcclusionDirectRatio = 1.0f;
+
+		eaxActiveSlots.guidActiveFXSlots[0] = EAX_NULL_GUID;
+		eaxActiveSlots.guidActiveFXSlots[1] = EAX_PrimaryFXSlotID;
+
+		s_eaxSet(&EAXPROPERTYID_EAX40_Source, EAXSOURCE_OCCLUSIONPARAMETERS,
+			source, &eaxOCProp, sizeof(EAXOCCLUSIONPROPERTIES));
+		s_eaxSet(&EAXPROPERTYID_EAX40_Source, EAXSOURCE_ACTIVEFXSLOTID, source,
+			&eaxActiveSlots, 2*sizeof(GUID));
+
+		// pick a zone slot again once out of the water
+		*slotID = -1;
+		return;
+	}
+
+	if (atListener)
+	{
+		// Converting from Open AL -> DS3D (for EAGLE) ... invert Z
+		EMSourcePoint.fX = listener_pos[0];
+		EMSourcePoint.fY = listener_pos[1];
+		EMSourcePoint.fZ = -listener_pos[2];
+	}
+	else
+	{
+		// Converting from Quake -> DS3D (for EAGLE) ... swap Y and Z
+		EMSourcePoint.fX = origin[0];
+		EMSourcePoint.fY = origin[2];
+		EMSourcePoint.fZ = origin[1];
+	}
+
+	UpdateEAXSource(source, slotID, EMSourcePoint, atListener ? true : false);
+}
+
+static void UpdateEAXSource(ALuint alSource, int *plSlotID, EMPOINT EMSourcePoint, bool bVoice)
+{
+	HRESULT hr;
+	EMPOINT EMVirtualSourcePoint;
+	EAXOBSTRUCTIONPROPERTIES eaxOBProp;
+	EAXOCCLUSIONPROPERTIES eaxOCProp;
+	int i;
+	long lSourceID;
 	int32_t lExclusion;
+
+	// Set Occlusion Direct Ratio to the default value (it won't get set by the current version of
+	// EAX Manager)
+	eaxOCProp.flOcclusionDirectRatio = EAXSOURCE_DEFAULTOCCLUSIONDIRECTRATIO;
 
 	// Just determine what environment the source is in
 	if (s_lpEAXManager->GetListenerDynamicAttributes(0, &EMSourcePoint, &lSourceID, 0)==EM_OK)
@@ -6354,13 +6432,13 @@ void UpdateEAXBuffer(channel_t *ch)
 			if (s_FXSlotInfo[i].lEnvID == lSourceID)
 			{
 				// If the Source is not sending to this slot, then enable the send now
-				if (ch->lSlotID != i)
+				if (*plSlotID != i)
 				{
 					// Set this
-					if (s_eaxSet(&EAXPROPERTYID_EAX40_Source, EAXSOURCE_ACTIVEFXSLOTID, ch->alSource, &s_FXSlotInfo[i].FXSlotGuid, sizeof(GUID))!=AL_NO_ERROR)
+					if (s_eaxSet(&EAXPROPERTYID_EAX40_Source, EAXSOURCE_ACTIVEFXSLOTID, alSource, &s_FXSlotInfo[i].FXSlotGuid, sizeof(GUID))!=AL_NO_ERROR)
 						Com_OPrintf("UpdateEAXBuffer = failed to set ActiveFXSlotID\n");
 
-					ch->lSlotID = i;
+					*plSlotID = i;
 				}
 
 				break;
@@ -6373,20 +6451,20 @@ void UpdateEAXBuffer(channel_t *ch)
 	}
 
 	// Add some Exclusion to sounds that are not located in the Listener's environment
-	if (s_FXSlotInfo[ch->lSlotID].lEnvID == s_EnvironmentID)
+	if (*plSlotID >= 0 && s_FXSlotInfo[*plSlotID].lEnvID == s_EnvironmentID)
 	{
 		lExclusion = 0;
-		if (s_eaxSet(&EAXPROPERTYID_EAX40_Source, EAXSOURCE_EXCLUSION, ch->alSource, &lExclusion, sizeof(lExclusion))!=AL_NO_ERROR)
+		if (s_eaxSet(&EAXPROPERTYID_EAX40_Source, EAXSOURCE_EXCLUSION, alSource, &lExclusion, sizeof(lExclusion))!=AL_NO_ERROR)
 			Com_OPrintf("UpdateEAXBuffer : Failed to set exclusion to 0\n");
 	}
 	else
 	{
 		lExclusion = -1000;
-		if (s_eaxSet(&EAXPROPERTYID_EAX40_Source, EAXSOURCE_EXCLUSION, ch->alSource, &lExclusion, sizeof(lExclusion))!=AL_NO_ERROR)
+		if (s_eaxSet(&EAXPROPERTYID_EAX40_Source, EAXSOURCE_EXCLUSION, alSource, &lExclusion, sizeof(lExclusion))!=AL_NO_ERROR)
 			Com_OPrintf("UpdateEAXBuffer : Failed to set exclusion to -1000\n");
 	}
 
-	if ((ch->entchannel == CHAN_VOICE) || (ch->entchannel == CHAN_VOICE_ATTEN) || (ch->entchannel == CHAN_VOICE_GLOBAL))
+	if (bVoice)
 	{
 		// Remove any Occlusion + Obstruction
 		eaxOBProp.lObstruction = EAXSOURCE_DEFAULTOBSTRUCTION;
@@ -6398,10 +6476,10 @@ void UpdateEAXBuffer(channel_t *ch)
 		eaxOCProp.flOcclusionDirectRatio = EAXSOURCE_DEFAULTOCCLUSIONDIRECTRATIO;
 
 		s_eaxSet(&EAXPROPERTYID_EAX40_Source, EAXSOURCE_OBSTRUCTIONPARAMETERS,
-			ch->alSource, &eaxOBProp, sizeof(EAXOBSTRUCTIONPROPERTIES));
+			alSource, &eaxOBProp, sizeof(EAXOBSTRUCTIONPROPERTIES));
 
 		s_eaxSet(&EAXPROPERTYID_EAX40_Source, EAXSOURCE_OCCLUSIONPARAMETERS,
-			ch->alSource, &eaxOCProp, sizeof(EAXOCCLUSIONPROPERTIES));
+			alSource, &eaxOCProp, sizeof(EAXOCCLUSIONPROPERTIES));
 	}
 	else
 	{
@@ -6412,10 +6490,10 @@ void UpdateEAXBuffer(channel_t *ch)
 		{
 			// Set EAX effect !
 			s_eaxSet(&EAXPROPERTYID_EAX40_Source, EAXSOURCE_OBSTRUCTIONPARAMETERS,
-				ch->alSource, &eaxOBProp, sizeof(EAXOBSTRUCTIONPROPERTIES));
+				alSource, &eaxOBProp, sizeof(EAXOBSTRUCTIONPROPERTIES));
 
 			s_eaxSet(&EAXPROPERTYID_EAX40_Source, EAXSOURCE_OCCLUSIONPARAMETERS,
-				ch->alSource, &eaxOCProp, sizeof(EAXOCCLUSIONPROPERTIES));
+				alSource, &eaxOCProp, sizeof(EAXOCCLUSIONPROPERTIES));
 		}
 	}
 

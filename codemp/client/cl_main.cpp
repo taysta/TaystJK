@@ -237,6 +237,23 @@ Dumps the current net message, prefixed by the length
 */
 void CL_WriteDemoMessage ( msg_t *msg, int headerBytes ) {
 	int		len, swlen;
+	static byte	cutData[MAX_MSGLEN];
+	msg_t		cut;
+
+	// Leave voice chat out of demos: cut the message where svc_voip starts
+	// and end it there, so the demo plays in clients that don't know svc_voip.
+	if ( cl_voipDemoCutBit >= 0 && cl_voipDemoCutBit < msg->cursize * 8 ) {
+		cut = *msg;
+		cut.data = cutData;
+		cut.maxsize = sizeof( cutData );
+		cut.oob = qfalse;
+		memcpy( cutData, msg->data, msg->cursize );
+		cut.bit = cl_voipDemoCutBit;
+		// Huffman output ORs into a partly used byte
+		cutData[cut.bit >> 3] &= (byte)( ( 1 << ( cut.bit & 7 ) ) - 1 );
+		MSG_WriteByte( &cut, svc_EOF );
+		msg = &cut;
+	}
 
 	// write the packet sequence
 	len = clc.serverMessageSequence;
@@ -952,6 +969,8 @@ void CL_Disconnect( qboolean showMainMenu ) {
 	FS_PureServerSetReferencedPaks("", "");
 
 	CL_ClearState ();
+
+	CL_Voip_Disconnect();
 
 	// wipe the client connection
 	Com_Memset( &clc, 0, sizeof( clc ) );
@@ -2548,6 +2567,9 @@ void CL_Frame ( int msec ) {
 		CL_CheckTimeout();
 	}
 
+	// capture and encode voice before the packet goes out
+	CL_Voip_Frame();
+
 	// send intentions now
 	CL_SendCmd();
 
@@ -3315,6 +3337,8 @@ void CL_Init( void ) {
 
 	CL_InitInput ();
 
+	CL_Voip_Init ();
+
 	//
 	// register our variables
 	//
@@ -3564,6 +3588,8 @@ void CL_Shutdown( void ) {
 
 	// RJ: added the shutdown all to close down the cgame (to free up some memory, such as in the fx system)
 	CL_ShutdownAll( qtrue );
+
+	CL_Voip_Shutdown();
 
 	S_Shutdown();
 	//CL_ShutdownUI();

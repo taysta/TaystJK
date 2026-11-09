@@ -49,6 +49,8 @@ option(BuildDiscordRichPresence "Whether to build with Discord Rich Presence int
 option(BuildTests "Whether to build automatic unit tests (requires Boost)" OFF)
 option(BuildEalMan "Build the portable EAL Manager library" ON)
 option(BuildOpenALSupport "Build the optional OpenAL sound backend" ON)
+option(BuildVoip "Build in-game voice chat into the MP client (needs Opus)" ON)
+option(UseInternalOpus "If set, build TaystJK's pinned Opus release into the client." ON)
 option(UseAddressSanitizer "Whether to enable runtime address sanitizer" OFF)
 option(UseUndefinedSanitizer "Whether to enable runtime Undefined Behavior sanitizer" OFF)
 
@@ -644,6 +646,55 @@ if(TaystJKOpenAL AND UseInternalOpenAL)
 			$<$<COMPILE_LANGUAGE:CXX>:-Wno-error=function-effects>)
 	endif()
 endif()
+# Opus for in-game voice chat. Only the client encodes and decodes; the
+# server relays the packets untouched.
+set(TaystJKVoip OFF)
+if(BuildMPEngine AND BuildVoip)
+	if(UseInternalOpus)
+		set(TaystJKOpusVersion "1.5.2")
+		set(TaystJKOpusArchiveHash
+			"65c1d2f78b9f2fb20082c38cbe47c951ad5839345876e46941612ee87f9a7ce1")
+
+		set(OPUS_BUILD_SHARED_LIBRARY OFF CACHE BOOL "Build Opus as a shared library" FORCE)
+		set(OPUS_BUILD_PROGRAMS OFF CACHE BOOL "Build Opus programs" FORCE)
+		set(OPUS_BUILD_TESTING OFF CACHE BOOL "Build Opus tests" FORCE)
+		set(OPUS_INSTALL_PKG_CONFIG_MODULE OFF CACHE BOOL "Install the Opus pkg-config module" FORCE)
+		set(OPUS_INSTALL_CMAKE_CONFIG_MODULE OFF CACHE BOOL "Install the Opus CMake module" FORCE)
+
+		# Opus is linked statically into the client, so keep its unconditional
+		# install(TARGETS opus) out of TaystJK's install tree.
+		if(CMAKE_VERSION VERSION_GREATER_EQUAL "3.28")
+			FetchContent_Declare(opus
+				URL "https://downloads.xiph.org/releases/opus/opus-${TaystJKOpusVersion}.tar.gz"
+				URL_HASH "SHA256=${TaystJKOpusArchiveHash}"
+				EXCLUDE_FROM_ALL)
+			FetchContent_MakeAvailable(opus)
+		else()
+			FetchContent_Declare(opus
+				URL "https://downloads.xiph.org/releases/opus/opus-${TaystJKOpusVersion}.tar.gz"
+				URL_HASH "SHA256=${TaystJKOpusArchiveHash}")
+			FetchContent_GetProperties(opus)
+			if(NOT opus_POPULATED)
+				FetchContent_Populate(opus)
+				add_subdirectory("${opus_SOURCE_DIR}" "${opus_BINARY_DIR}" EXCLUDE_FROM_ALL)
+			endif()
+		endif()
+		set(TaystJKVoip ON)
+	else()
+		find_package(PkgConfig QUIET)
+		if(PKG_CONFIG_FOUND)
+			pkg_check_modules(OPUS IMPORTED_TARGET opus)
+		endif()
+		if(OPUS_FOUND)
+			set(TaystJKVoip ON)
+		else()
+			message(WARNING
+				"System Opus not found; building without voice chat. "
+				"Install libopus or configure with UseInternalOpus=ON.")
+		endif()
+	endif()
+endif()
+
 # Add projects
 add_subdirectory(${MPDir})
 

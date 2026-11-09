@@ -313,7 +313,10 @@ enum svc_ops_e {
 	svc_snapshot,
 	svc_setgame,
 	svc_mapchange,
-	svc_EOF
+	svc_EOF,
+
+	// TaystJK extensions, only sent to clients that asked for them
+	svc_voip					// see SV_WriteVoipToClient
 };
 
 
@@ -326,8 +329,22 @@ enum clc_ops_e {
 	clc_move,				// [[usercmd_t]
 	clc_moveNoDelta,		// [[usercmd_t]
 	clc_clientCommand,		// [string] message
-	clc_EOF
+	clc_EOF,
+
+	// TaystJK extensions, only sent to servers that advertise them
+	clc_voip				// see CL_WriteVoipPacket
 };
+
+// Voice chat. A server running with sv_voip 1 sets the serverinfo key
+// sv_voipProtocol to VOIP_PROTOCOL; clients that match it send "voip on" and
+// from then on exchange clc_voip / svc_voip. Payloads are Opus frames, each
+// prefixed with a length byte.
+#define VOIP_PROTOCOL			"tjk-opus1"
+#define VOIP_MAX_PACKET_BYTES	600
+#define VOIP_MAX_PACKET_FRAMES	12
+#define VOIP_FLAG_NONSPATIAL	1		// play at the listener (spectator chat)
+#define VOIP_SAMPLE_RATE		48000
+#define VOIP_FRAME_SAMPLES		960		// 20 ms Opus frames
 
 /*
 ==============================================================

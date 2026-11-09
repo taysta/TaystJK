@@ -377,6 +377,7 @@ if(BuildMPEngine OR BuildMPDed)
 		"${MPDir}/server/sv_gameapi.h"
 		"${MPDir}/server/duel_cull.cpp"
 		"${MPDir}/server/duel_cull.h"
+		"${MPDir}/server/sv_voip.cpp"
 		)
 	source_group("server" FILES ${MPEngineAndDedServerFiles})
 	set(MPEngineAndDedFiles ${MPEngineAndDedFiles} ${MPEngineAndDedServerFiles})
@@ -436,6 +437,16 @@ if(BuildMPEngine)
 			set(MPEngineIncludeDirectories ${MPEngineIncludeDirectories} ${OpenJKLibDir}/discord-rpc/include)
 			set(MPEngineDefines ${MPEngineDefines} "DISCORD")
 			set(MPEngineLibraries ${MPEngineLibraries} ${OpenJKLibDir}/discord-rpc/lib/x64/discord-rpc.lib)
+		endif()
+	endif()
+
+	# Opus for voice chat
+	if(TaystJKVoip)
+		set(MPEngineDefines ${MPEngineDefines} "USE_VOIP")
+		if(UseInternalOpus)
+			set(MPEngineLibraries ${MPEngineLibraries} opus)
+		else()
+			set(MPEngineLibraries ${MPEngineLibraries} PkgConfig::OPUS)
 		endif()
 	endif()
 
@@ -538,6 +549,8 @@ if(BuildMPEngine)
 		"${MPDir}/client/snd_mp3.h"
 		"${MPDir}/client/snd_music.cpp"
 		"${MPDir}/client/snd_music.h"
+		"${MPDir}/client/snd_voice.cpp"
+		"${MPDir}/client/cl_voip.cpp"
 		)
 	source_group("client" FILES ${MPEngineClientFiles})
 	set(MPEngineFiles ${MPEngineFiles} ${MPEngineClientFiles})
@@ -748,6 +761,14 @@ if(BuildMPEngine)
 		install(FILES "${openalsoft_SOURCE_DIR}/COPYING"
 			DESTINATION "${JKAInstallDir}/licenses"
 			RENAME "OpenAL-Soft-LGPL-2.0.txt"
+			COMPONENT ${JKAMPClientComponent})
+	endif()
+
+	# Opus is linked statically; its BSD license still ships with the client
+	if(TaystJKVoip AND UseInternalOpus)
+		install(FILES "${opus_SOURCE_DIR}/COPYING"
+			DESTINATION "${JKAInstallDir}/licenses"
+			RENAME "Opus-BSD-3-Clause.txt"
 			COMPONENT ${JKAMPClientComponent})
 	endif()
 

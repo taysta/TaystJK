@@ -562,6 +562,7 @@ void SCR_DrawScreenField( stereoFrame_t stereoFrame ) {
 		case CA_ACTIVE:
 			CL_CGameRendering( stereoFrame );
 			SCR_DrawDemoRecording();
+			CL_Voip_DrawMeter();
 			break;
 		}
 	}

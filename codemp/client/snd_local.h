@@ -232,4 +232,16 @@ void S_memoryLoad(sfx_t *sfx);
 //
 //////////////////////////////////
 
+// snd_voice.cpp
+void S_Voip_Init(void);
+void S_Voip_Shutdown(void);
+void S_Voip_ClearStreams(void);
+void S_Voip_Respatialize(int entityNum, const vec3_t head);
+void S_Voip_PaintChannels(portable_samplepair_t *paint, int start, int end);
+void S_Voip_UpdateLipSync(void);
+#ifdef USE_OPENAL
+void S_Voip_UpdateAL(void);
+void S_AL_UpdateSourceEAX(ALuint source, int *slotID, const vec3_t origin, qboolean atListener);
+#endif
+
 #include "snd_mp3.h"

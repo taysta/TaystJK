@@ -517,6 +517,9 @@ void SV_SendClientGameState( client_t *client ) {
 
 	MSG_Init( &msg, msgBuffer, sizeof( msgBuffer ) );
 
+	// voice queued on the previous map is stale
+	SV_Voip_ClearQueue( client );
+
 	// MW - my attempt to fix illegible server message errors caused by
 	// packet fragmentation of initial snapshot.
 	while(client->state&&client->netchan.unsentFragments)
@@ -1419,6 +1422,7 @@ static ucmd_t ucmds[] = {
 	{"nextdl", SV_NextDownload_f},
 	{"stopdl", SV_StopDownload_f},
 	{"donedl", SV_DoneDownload_f},
+	{"voip", SV_Voip_f},
 
 	{NULL, NULL}
 };
@@ -1891,6 +1895,14 @@ void SV_ExecuteClientMessage( client_t *cl, msg_t *msg ) {
 			return;	// disconnect command
 		}
 	} while ( 1 );
+
+	// optional voice packet, only sent once we advertised sv_voipProtocol
+	if ( c == clc_voip ) {
+		if ( !SV_UserVoip( cl, msg ) ) {
+			return;
+		}
+		c = MSG_ReadByte( msg );
+	}
 
 	// read the usercmd_t
 	if ( c == clc_move ) {

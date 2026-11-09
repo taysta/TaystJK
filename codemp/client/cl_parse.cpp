@@ -48,6 +48,8 @@ char *svc_strings[256] = {
 	"svc_snapshot",
 	"svc_setgame",
 	"svc_mapchange",
+	"svc_EOF",
+	"svc_voip",
 };
 
 void SHOWNET( msg_t *msg, char *s) {
@@ -890,6 +892,8 @@ void CL_ParseServerMessage( msg_t *msg ) {
 		clc.reliableAcknowledge = clc.reliableSequence;
 	}
 
+	cl_voipDemoCutBit = -1;
+
 	//
 	// parse the message
 	//
@@ -899,6 +903,7 @@ void CL_ParseServerMessage( msg_t *msg ) {
 			break;
 		}
 
+		const int cmdBit = msg->bit;
 		cmd = MSG_ReadByte( msg );
 
 		if ( cmd == svc_EOF) {
@@ -940,6 +945,13 @@ void CL_ParseServerMessage( msg_t *msg ) {
 			CL_KillDownload();
 			if ( cls.cgameStarted )
 				CGVM_MapChange();
+			break;
+		case svc_voip:
+			// voice always trails the message; demos are cut here
+			if ( cl_voipDemoCutBit < 0 ) {
+				cl_voipDemoCutBit = cmdBit;
+			}
+			CL_ParseVoip( msg );
 			break;
 		}
 	}

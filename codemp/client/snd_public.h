@@ -45,6 +45,16 @@ float S_GetSampleLengthInMilliSeconds( sfxHandle_t sfxHandle);
 // cinematics and voice-over-network will send raw samples
 // 1.0 volume will be direct output of source samples
 void S_RawSamples( int samples, int rate, int width, int channels, const byte *data, float volume, int bFirstOrOnlyUpdateThisFrame );
+
+// positional voice chat: mono 16-bit samples at VOIP_SAMPLE_RATE spoken by entnum
+typedef struct voipSource_s {
+	qboolean	useOrigin;		// entity isn't in our snapshot: play at origin instead
+	vec3_t		origin;
+	qboolean	nonSpatial;		// play at the listener with no falloff (spectator chat)
+	float		range;			// falloff distance, 0 = none, < 0 = s_voipRange
+} voipSource_t;
+
+void S_Voip_Write( int entnum, const short *samples, int count, const voipSource_t *source );
 // stop all sounds
 void S_StopSounds(void);	// from snd_dma.cpp
 // stop all sounds and the background track

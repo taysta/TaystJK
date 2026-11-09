@@ -502,6 +502,8 @@ void S_PaintChannels( int endtime ) {
 			}
 		}
 */
+		S_Voip_PaintChannels( paintbuffer, s_paintedtime, end );
+
 		// transfer out according to DMA format
 		S_TransferPaintBuffer( end );
 		s_paintedtime = end;

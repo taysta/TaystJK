@@ -432,6 +432,43 @@ static void SV_KickBlankPlayers( void ) {
 
 /*
 ==================
+SV_VoipMute_f / SV_VoipUnmute_f
+
+Stop relaying a player's voice chat
+==================
+*/
+static void SV_VoipSetMuted( qboolean muted ) {
+	client_t *cl;
+
+	if ( !com_sv_running->integer ) {
+		Com_Printf( "Server is not running.\n" );
+		return;
+	}
+
+	if ( Cmd_Argc() != 2 ) {
+		Com_Printf( "Usage: %s <player name or id>\n", Cmd_Argv( 0 ) );
+		return;
+	}
+
+	cl = SV_GetPlayerByHandle();
+	if ( !cl ) {
+		return;
+	}
+
+	cl->voipMuted = muted;
+	Com_Printf( "%s^7's voice chat is %s.\n", cl->name, muted ? "muted" : "unmuted" );
+}
+
+static void SV_VoipMute_f( void ) {
+	SV_VoipSetMuted( qtrue );
+}
+
+static void SV_VoipUnmute_f( void ) {
+	SV_VoipSetMuted( qfalse );
+}
+
+/*
+==================
 SV_Kick_f
 
 Kick a user off of the server
@@ -2318,6 +2355,8 @@ void SV_AddOperatorCommands( void ) {
 	Cmd_AddCommand ("kickbots", SV_KickBots_f, "Kick all bots from the server" );
 	Cmd_AddCommand ("kickall", SV_KickAll_f, "Kick all users from the server" );
 	Cmd_AddCommand ("kicknum", SV_KickNum_f, "Kick a user from the server by userid" );
+	Cmd_AddCommand ("voipmute", SV_VoipMute_f, "Stop relaying a player's voice chat" );
+	Cmd_AddCommand ("voipunmute", SV_VoipUnmute_f, "Relay a muted player's voice chat again" );
 	Cmd_AddCommand ("clientkick", SV_KickNum_f, "Kick a user from the server by userid" );
 	Cmd_AddCommand ("status", SV_Status_f, "Prints status of server and connected clients" );
 	Cmd_AddCommand ("serverinfo", SV_Serverinfo_f, "Prints the serverinfo that is visible in the server browsers" );

@@ -919,6 +919,9 @@ void SV_SendMessageToClient( msg_t *msg, client_t *client ) {
 	}
 #endif
 
+	// voice goes on after the demo copy above so it never ends up in demos
+	SV_WriteVoipToClient( client, msg );
+
 	// send the datagram
 	SV_Netchan_Transmit( client, msg );	//msg->cursize, msg->data );
 
