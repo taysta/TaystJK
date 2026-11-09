@@ -12,7 +12,7 @@ toc: true
 
 # Libraries and versions
 
-<p class="page-lede">Versions below are read from TaystJK source commit <code>f999cbc0912</code>. A build that uses system libraries can end up with different versions; its configure log has the real ones.</p>
+<p class="page-lede">Versions below are read from TaystJK source commit <code>d843fa409b7</code>. A build that uses system libraries can end up with different versions; its configure log has the real ones.</p>
 </div>
 
 ## Versioned source dependencies
@@ -20,7 +20,8 @@ toc: true
 | Library | Version in tree | How TaystJK uses it | Evidence |
 |:--|:--|:--|:--|
 | SDL 2 | 2.32.4 | Windowing, input, audio, and platform integration; bundled by default on Windows and macOS, system-provided by default on Linux. | [`SDL_version.h`](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/lib/SDL2/include/SDL_version.h#L59) |
-| OpenAL Soft | 1.23.1 | Bundled software implementation of OpenAL on Windows, including software EAX support in the 32-bit package. | [OpenAL Soft import](https://github.com/taysta/TaystJK/commit/e7467a834a155ceb60913739a90313beea52adc5) |
+| OpenAL Soft | 1.25.2 | OpenAL sound backend with software EAX; fetched and built from source by CMake and packaged with the client on Windows (MSVC), Linux and macOS. | [`CMakeLists.txt`](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/CMakeLists.txt#L595) |
+| EalMan | upstream commit `7c19ff8` | Portable reimplementation of Creative's EAX Manager (`EaxMan.dll`) that reads the game's `.eal` environment files; built as a static library with the OpenAL backend. | [`lib/EalMan/readme.txt`](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/lib/EalMan/readme.txt#L4) |
 | libpng | 1.6.53 | PNG image loading for renderer builds. | [`png.h`](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/lib/libpng/include/png.h#L3) |
 | zlib | 1.3.1 | Deflate compression and PK3 support. | [`zlib.h`](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/lib/zlib/include/zlib.h#L40) |
 | minizip | from zlib 1.3.1 | ZIP/PK3 reading; always uses TaystJK's modified bundled copy. | [`lib/minizip/CMakeLists.txt`](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/lib/minizip/CMakeLists.txt#L37) |
@@ -42,11 +43,19 @@ TaystJK also carries prebuilt Discord RPC libraries for some platforms. Nothing 
 
 ## Bundled versus system libraries
 
-Windows defaults to bundled OpenAL, zlib, libpng, libjpeg, and SDL 2. macOS defaults to bundled zlib, libpng, libjpeg, and SDL 2. Other Unix-like systems normally use libraries found by CMake, except for the always-bundled modified minizip, cJSON, Mongoose, gsl-lite, and embedded SQLite source.
+Windows defaults to bundled zlib, libpng, libjpeg, and SDL 2. macOS defaults to bundled zlib, libpng, libjpeg, and SDL 2. Other Unix-like systems normally use libraries found by CMake, except for the always-bundled modified minizip, cJSON, Mongoose, gsl-lite, and embedded SQLite source.
 
-On 32-bit Windows, the bundled OpenAL Soft library works with the shipped `EaxMan.dll` to provide EAX environmental audio in software; Creative or other EAX-capable hardware is not required. The 64-bit engine has support for loading `EaxMan64.dll`, but that library is not available in the release, so TaystJK's complete EAX path is currently limited to the 32-bit Windows build.
+OpenAL Soft is bundled by default on every platform, provided the toolchain can build it: it needs CMake 3.18 or newer and, with GCC, GCC 12 or newer. With an older toolchain `UseInternalOpenAL` defaults to `OFF`
+([`CMakeLists.txt`](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/CMakeLists.txt#L64))
+and CMake looks for a system OpenAL instead; if it finds none, it warns and builds the client without the OpenAL backend, leaving only the software mixer
+([`CMakeLists.txt`](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/CMakeLists.txt#L566)).
+MinGW builds and builds without the client skip OpenAL entirely. `BuildOpenALSupport=OFF` does the same on purpose; the Windows XP compatibility workflow uses it because its toolchain cannot build OpenAL Soft.
 
-The relevant switches are `UseInternalOpenAL`, `UseInternalZlib`, `UseInternalPNG`, `UseInternalJPEG`, `UseTurboJPEG`, and `UseInternalSDL2`. CMake records its actual choices in the configure output and `CMakeCache.txt`.
+The bundled OpenAL Soft is configured with EAX enabled on every platform, and EalMan is linked into the client, so EAX environmental audio works in software on all of them; Creative or other EAX-capable hardware is not required. On Windows the library is named `OpenALSoft.x86.dll` or `OpenALSoft.x86_64.dll` so it cannot collide with the retail game's `OpenAL32.dll`. On Linux it is installed beside the client as `libopenal.so.1`, and on macOS it goes in the app bundle's `Frameworks`.
+
+A system OpenAL usually has no EAX. Upstream OpenAL Soft only enables EAX by default on Windows, so a Linux build linked against a distribution's OpenAL generally gets the OpenAL backend without the environmental effects.
+
+The relevant switches are `UseInternalOpenAL`, `BuildOpenALSupport`, `UseInternalZlib`, `UseInternalPNG`, `UseInternalJPEG`, `UseTurboJPEG`, and `UseInternalSDL2`. CMake records its actual choices in the configure output and `CMakeCache.txt`.
 
 Release builds set `UseTurboJPEG=ON` on every platform
 ([`build.yml`](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/.github/workflows/build.yml#L96)).

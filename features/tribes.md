@@ -26,7 +26,7 @@ that switches on by itself when the server runs Tribes.
 
 Nothing extra needs installing. The assets ship in `japro-assets.pk3`: the jetpack and mortar
 effects under `effects/tribes/`, the ski and thrust sounds, the spinfusor disc model and the
-Tribes menu.
+Tribes menus.
 
 Run the client config, `japro_tribes`, to set up the binds the mode expects. Read it first,
 because it rebinds the number keys; [shipped configs](/TaystJK/features/shipped-configs/#tribes)
@@ -35,6 +35,21 @@ describes it.
 ```text
 exec japro_tribes
 ```
+
+To change binds one at a time instead, open the in-game menu and choose **Controls**. On a
+server running Tribes it has a **Tribes** button
+([`ingame_controls.menu`](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/assets/japro/ui/jamp/ingame_controls.menu#L616)),
+which opens a controls menu with three pages
+([`newmenu_tab1.menu`](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/assets/japro/ui/jamp/newmenu/newmenu_tab1.menu#L20)):
+
+| Page | Binds |
+|:--|:--|
+| Weapons | Fire, fire mode, zoom, throw grenade, next and previous weapon, saber, and weapon slots 1 to 9. |
+| Movement | Jump and jetpack, ski, crouch and downjet, grapple. |
+| Actions | Pack, use, use item, throw flag, third person, voice chat, kill. |
+
+It reads your current binds each time it opens, so binds you set from the console or with
+`japro_tribes` show up there.
 
 Bit 22 of `cg_stylePlayer`, labelled "Tribes Clientside (Requires assets)", is optional. It
 only changes how the concussion rifle's shot looks, drawing it as a glowing spinfusor disc

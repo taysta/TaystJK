@@ -3,7 +3,7 @@ title: "Client behaviour changes"
 layout: reference
 nav_order: 2
 parent: "Features"
-description: "Engine and client behaviour that differs from stock Jedi Academy: shader overrides, modifier binds, console editing, and widescreen assets."
+description: "Engine and client behaviour that differs from stock Jedi Academy: shader overrides, modifier binds, console editing, widescreen assets, and EAX audio."
 toc: true
 origin: taystjk
 ---
@@ -156,3 +156,44 @@ fixed 480-line reference
 ([`tr_font.cpp`](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/rd-common/tr_font.cpp#L1171)).
 It only helps where the font assets carry enough detail to scale up; with the retail fonts
 there is nothing extra to reveal.
+
+## EAX environmental audio
+
+Jedi Academy's EAX option, **EAX** in the sound setup menu or the `s_UseOpenAL` cvar, works on
+every platform TaystJK releases for: 32- and 64-bit Windows, Linux and macOS. The game needed
+Creative's EAX drivers for it; TaystJK plays it through OpenAL Soft, which implements EAX in
+software, and EalMan, an open reimplementation of Creative's EAX Manager that reads the game's
+environment data
+([`snd_dma.cpp`](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/codemp/client/snd_dma.cpp#L5444)).
+Both ship inside the client, so there is nothing to download and no sound card requirement.
+
+It is off by default
+([`snd_dma.cpp`](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/codemp/client/snd_dma.cpp#L533)).
+Turn it on in the menu, or from the console; the setting is latched, so restart the sound
+system for it to take effect:
+
+```text
+s_UseOpenAL 1
+snd_restart
+```
+
+`soundinfo` then reports `EAX 4.0 is supported`, and whether the current map's environment file
+loaded
+([`snd_dma.cpp`](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/codemp/client/snd_dma.cpp#L431)).
+
+- **Reverb needs a map file.** The environments come from `eagle/<mapname>.eal`
+  ([`snd_dma.cpp`](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/codemp/client/snd_dma.cpp#L1040)).
+  Every retail multiplayer map has one in `assets0.pk3`. A custom map gets reverb only if its
+  author shipped an `.eal`; on any other map reverb stays off, and you still get OpenAL's
+  positional sound.
+- **No device, no change.** If OpenAL cannot open an audio device, the client prints
+  `OpenAL initialization failed, using the software mixer` and carries on with the standard
+  mixer
+  ([`snd_dma.cpp`](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/codemp/client/snd_dma.cpp#L549)).
+- **Video capture is silent.** `video` records no audio while `s_UseOpenAL` is on, and says so
+  ([`cl_avi.cpp`](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/codemp/client/cl_avi.cpp#L415)).
+  Turn it off before recording a video with sound.
+- **Keep the OpenAL library.** The client is linked against OpenAL Soft and will not start
+  without it, even with EAX off. The release ships it as `OpenALSoft.x86_64.dll` or
+  `OpenALSoft.x86.dll` beside the Windows executable, `libopenal.so.1` beside the Linux one, and
+  `libopenal.1.dylib` in the macOS app's `Contents/Frameworks`.

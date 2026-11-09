@@ -73,13 +73,13 @@ for the build you chose:
 - the **x64** package for `TaystJK-windows-x86_64`
 - the **x86** package for `TaystJK-windows-x86`
 
-The archive already includes the matching SDL 2 and OpenAL DLLs. Keep them beside the
-TaystJK executable, and do not replace them with DLLs from third-party download sites.
+The archive already includes the matching SDL 2 and OpenAL Soft DLLs (`OpenALSoft.x86_64.dll`
+or `OpenALSoft.x86.dll`). Keep them beside the TaystJK executable, and do not replace them
+with DLLs from third-party download sites. Both builds support EAX environmental audio; see
+[EAX environmental audio](/TaystJK/features/client-behaviour/#eax-environmental-audio).
 
-The 32-bit build has one thing the 64-bit build lacks: EAX environmental audio, done in
-software by its bundled OpenAL Soft and `EaxMan.dll`, so no EAX sound card is needed. Choose
-x86 if you want EAX or need another 32-bit compatibility feature, and keep `OpenAL32.dll` and
-`EaxMan.dll` beside the executable. See [platform support](/TaystJK/install/platform-support/#eax-is-32-bit-windows-only).
+Current builds load neither `OpenAL32.dll` nor `EaxMan.dll`. Older TaystJK releases shipped
+both, and copies they left in `GameData` are no longer used by TaystJK.
 
 ### Install TaystJK
 
@@ -175,7 +175,7 @@ is for builds you compiled, not for releases.
 
 ### Install prerequisites
 
-The Linux client uses system-provided SDL 2, OpenGL, JPEG, PNG, zlib, and C++ runtime libraries. For the 64-bit release on Ubuntu 22.04, install them with:
+The Linux client uses system-provided SDL 2, OpenGL, JPEG, PNG, zlib, and C++ runtime libraries. OpenAL Soft is the exception: the archive ships `libopenal.so.1` beside the executable, so keep it there. For the 64-bit release on Ubuntu 22.04, install the rest with:
 
 ```sh
 sudo apt update

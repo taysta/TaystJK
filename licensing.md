@@ -27,8 +27,10 @@ obligation. It is not a permissive licence: shipping a closed-source client buil
 code is not permitted.
 
 The bundled third-party libraries keep the licences their own projects publish them under.
-Most, such as SDL, zlib, libpng, OpenAL Soft, cJSON and SQLite, are not GPLv2 code. Mongoose,
-the HTTP library used for downloads, is GPLv2 (or a commercial licence).
+Most, such as SDL, zlib, libpng, OpenAL Soft, EalMan, cJSON and SQLite, are not GPLv2 code.
+Mongoose, the HTTP library used for downloads, is GPLv2 (or a commercial licence). OpenAL Soft
+and EalMan are LGPL, and every release carries their licence texts in a `licenses` folder
+at the top of the archive.
 [Libraries and versions](/TaystJK/development/libraries/) lists them.
 The Steamworks library is the one TaystJK cannot bundle at all; see
 [Steam playtime and overlay](/TaystJK/install/#steam-playtime-and-overlay).

@@ -19,27 +19,8 @@ Each of these is decided when the client is built, so no cvar will turn it on.
 
 | Feature | Available on | Absent on |
 |:--|:--|:--|
-| EAX environmental audio | 32-bit Windows | 64-bit Windows, Linux, macOS |
 | Discord Rich Presence | Windows (32- and 64-bit), 64-bit Linux, the x86_64 macOS build | arm64 macOS, including the universal app on Apple silicon; 32-bit and ARM Linux; the Windows AddressSanitizer build |
 | Steam playtime and overlay | Windows | Linux, macOS |
-
-## EAX is 32-bit Windows only
-
-The EAX headers are compiled in only under MSVC
-([`CMakeLists.txt`](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/CMakeLists.txt#L497)),
-so it never exists outside Windows at all.
-
-On Windows it is narrower still. The sound code asks for `EAXMan64.dll` in a 64-bit build
-and `EaxMan.dll` otherwise
-([`snd_dma.cpp`](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/codemp/client/snd_dma.cpp#L5399)),
-but the installer ships `EaxMan.dll` only for 32-bit builds. A 64-bit install gets
-`OpenAL32.x86_64.dll` and nothing else
-([`InstallConfig.cmake`](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/cmake/Modules/InstallConfig.cmake#L78)).
-The 64-bit path therefore looks for a library that is never shipped, and EAX quietly stays
-off.
-
-If you want EAX, you need a 32-bit Windows build. There is no configuration that changes
-this.
 
 ## Discord Rich Presence needs x86-64 on Linux and macOS
 

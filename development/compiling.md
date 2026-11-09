@@ -40,10 +40,19 @@ TaystJK is GPLv2 software. If you distribute a changed binary, make the correspo
 | `BuildMPRdVulkan` | `ON` | Vulkan renderer. |
 | `BuildPortableVersion` | `OFF` | Store user files beside the executable. |
 | `BuildDiscordRichPresence` | `ON` | Include Discord Rich Presence where a bundled binary is available. |
+| `BuildOpenALSupport` | `ON` | OpenAL sound backend, which EAX needs. Off, the client has only the software mixer. |
+| `UseInternalOpenAL` | `ON` (see below) | Download, build and package OpenAL Soft with EAX enabled, instead of using a system OpenAL. |
 | `UseAddressSanitizer` | `OFF` | Detect many memory errors at runtime. |
 | `UseUndefinedSanitizer` | `OFF` | Detect undefined behavior with GCC/Clang. |
 
-The authoritative list is in the top-level [CMake configuration](https://github.com/taysta/TaystJK/blame/76943f046bbbdc23d67323b838cb1c4c1e3fba0e/CMakeLists.txt#L38).
+`UseInternalOpenAL` defaults to `ON` only with CMake 3.18 or newer and, when the compiler is
+GCC, GCC 12 or newer; otherwise it defaults to `OFF`
+([`CMakeLists.txt`](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/CMakeLists.txt#L64)).
+The first configure downloads the OpenAL Soft source from GitHub, so it needs network access.
+[Libraries and versions](/TaystJK/development/libraries/#bundled-versus-system-libraries)
+covers what each choice gives you.
+
+The authoritative list is in the top-level [CMake configuration](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/CMakeLists.txt#L38).
 
 ## Compile for your platform
 
@@ -109,7 +118,7 @@ set a custom install path. Everything except tests is on by default, and portabl
 are on, matching what the release workflow produces. If CMake is not on your `PATH` the
 script says so and stops straight away.
 
-Prefer an x64 build when developing or testing rend2. Its memory use can exhaust a 32-bit process's limited address space on demanding maps or asset sets. Build for Win32 only when you need to test a 32-bit compatibility path, such as the shipped `EaxMan.dll` integration.
+Prefer an x64 build when developing or testing rend2. Its memory use can exhaust a 32-bit process's limited address space on demanding maps or asset sets. Build for Win32 only when you need to test a 32-bit compatibility path.
   </section>
 
   <section class="platform-panel" id="platform-panel-macos" role="tabpanel" aria-labelledby="platform-tab-macos" tabindex="0" data-platform-panel="macos" markdown="1">
@@ -142,8 +151,14 @@ On Debian or Ubuntu, install the normal development dependencies:
 ```sh
 sudo apt update
 sudo apt install build-essential cmake git libsdl2-dev libgl1-mesa-dev \
-  libjpeg-dev libpng-dev zlib1g-dev
+  libjpeg-dev libpng-dev zlib1g-dev libasound2-dev libpulse-dev libpipewire-0.3-dev
 ```
+
+The last three let the bundled OpenAL Soft build its ALSA, PulseAudio and PipeWire output
+backends. OpenAL Soft also needs GCC 12 or newer. Ubuntu 22.04 defaults to GCC 11, so
+install `gcc-12 g++-12` and add `-DCMAKE_C_COMPILER=gcc-12 -DCMAKE_CXX_COMPILER=g++-12` to the
+configure command, as the release build does. Without that, CMake uses a system OpenAL
+(`libopenal-dev`), which usually has no EAX.
 
 Configure, compile, and optionally install into a test staging directory:
 
@@ -177,6 +192,7 @@ Keep test builds separate from the client you use every day. The [installation g
 
 - Delete only the affected build directory or choose a new one; do not build in the source tree.
 - Check the first missing package reported by CMake. On Linux, setting `UseInternalSDL2`, `UseInternalJPEG`, `UseInternalPNG`, and `UseInternalZlib` changes which dependencies must be installed.
+- If the OpenAL Soft download or build fails, configure with `-DUseInternalOpenAL=OFF` to use a system OpenAL, or `-DBuildOpenALSupport=OFF` to build with the software mixer only.
 - Make sure the compiler architecture matches the libraries and executable you intend to load.
 - Use `cmake --build build --target help` to list available targets for a Makefiles or Ninja build.
 

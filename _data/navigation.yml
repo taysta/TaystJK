@@ -71,7 +71,7 @@ sections:
         items:
           - title: Client behaviour
             url: /features/client-behaviour/
-            description: Shader overrides, modifier binds, console editing, and widescreen assets.
+            description: Shader overrides, modifier binds, console editing, widescreen assets, and EAX audio.
             cta: Behaviour changes
           - title: HUD and movement tools
             url: /features/hud-and-movement/

@@ -88,6 +88,9 @@ needs console output captured from a client you actually launched.
 assembly and page generation, runs every check and a Jekyll build, and opens or updates a
 pull request against `gh-pages`. It runs weekly, when a release is published, and after each
 automatic `latest-build` release. Nothing is pushed to the published branch without review.
+It only runs in `taysta/TaystJK`; a fork skips it, so it never opens refresh pull requests or
+tracking issues against the fork's own copy
+([`reference-check.yml`](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/.github/workflows/reference-check.yml#L36)).
 
 It keeps the existing runtime reconciliation instead of redoing it, because no runner
 launches the game, and an old `+cvarlist` capture must not be relabelled as current. A

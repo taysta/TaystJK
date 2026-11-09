@@ -4,22 +4,21 @@ layout: reference
 generated: true
 nav_exclude: true
 search_exclude: false
+description: "Use OpenAL with EAX environmental audio instead of the software mixer."
 ---
 
 # `s_UseOpenAL`
 
 <span class="label ref-origin ref-origin-basejka">Base Jedi Academy</span>
 
-<p class="ref-warning"><strong>Needs review.</strong> The inventory/provenance evidence is recorded, but some behavior, options, or attribution still lacks a direct user-facing source.</p>
-
-Controls `cv` in the engine-client module. Consult the cited behavior reads before relying on values not listed here.
+Selects the OpenAL sound backend instead of the software mixer. With OpenAL, EAX environmental reverb is applied through the bundled OpenAL Soft and EalMan, using the current map's `eagle/<mapname>.eal` file when one exists. If OpenAL cannot open a device the client prints a warning and falls back to the software mixer. Latched: takes effect after `snd_restart`. Video capture records no audio while it is on.
 
 ## At a glance
 
 | Field | Value |
 |:--|:--|
 | Default | `0` |
-| Value type | `float` |
+| Value type | `bool` |
 | Restart | Yes; the value is latched. |
 | Manually settable | Yes |
 | Cheat protected | No |
@@ -35,7 +34,10 @@ Controls `cv` in the engine-client module. Consult the cited behavior reads befo
 
 ## Values
 
-No discrete value list is enforced or documented in the inspected source.
+| Value | Meaning | Evidence |
+|:--|:--|:--|
+| `0` | Use the software mixer. | [codemp/client/snd_dma.cpp:533](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/codemp/client/snd_dma.cpp#L533) |
+| `1` | Use OpenAL, with EAX when the OpenAL implementation supports it. | [codemp/client/snd_dma.cpp:536](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/codemp/client/snd_dma.cpp#L536) |
 
 ## Flags
 

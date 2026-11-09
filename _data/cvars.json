@@ -357048,7 +357048,7 @@
       }
     ],
     "derivation": "code-trace",
-    "description": "Controls `cv` in the engine-client module. Consult the cited behavior reads before relying on values not listed here.",
+    "description": "Selects the OpenAL sound backend instead of the software mixer. With OpenAL, EAX environmental reverb is applied through the bundled OpenAL Soft and EalMan, using the current map's `eagle/<mapname>.eal` file when one exists. If OpenAL cannot open a device the client prints a warning and falls back to the software mixer. Latched: takes effect after `snd_restart`. Video capture records no audio while it is on.",
     "engine_managed": false,
     "engine_managed_basis": [],
     "evidence": [
@@ -357216,10 +357216,27 @@
     "renderer": [],
     "requires_restart": true,
     "source_commit": "d843fa409b7e269a3775392e569f8f4694a7cb25",
-    "status": "needs-review",
-    "summary": "Controls `cv` in the engine-client module.",
-    "value_type": "float",
-    "values": [],
+    "status": "documented",
+    "summary": "Use OpenAL with EAX environmental audio instead of the software mixer.",
+    "value_type": "bool",
+    "values": [
+      {
+        "evidence": {
+          "line": 533,
+          "path": "codemp/client/snd_dma.cpp"
+        },
+        "meaning": "Use the software mixer.",
+        "value": "0"
+      },
+      {
+        "evidence": {
+          "line": 536,
+          "path": "codemp/client/snd_dma.cpp"
+        },
+        "meaning": "Use OpenAL, with EAX when the OpenAL implementation supports it.",
+        "value": "1"
+      }
+    ],
     "variables": [
       "cv"
     ],

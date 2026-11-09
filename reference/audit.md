@@ -829,7 +829,7 @@ The dump was captured from stdout after loading `mp/ffa3`; stdout does not use t
 | [`write`](/TaystJK/reference/commands/write-e1d0c6c/) | command | engine-shared | Write the configuration to file |
 | [`ysal`](/TaystJK/reference/commands/ysal-49fb494/) | command | cgame | Forwards this command to the connected game server. |
 
-## Semantics or options needing review (1645)
+## Semantics or options needing review (1644)
 
 | Name | Kind | Module | Summary |
 |:--|:--|:--|:--|
@@ -1788,7 +1788,6 @@ The dump was captured from stdout after loading `mp/ffa3`; stdout does not use t
 | [`s_threshold2`](/TaystJK/reference/cvars/s_threshold2-c620de4/) | cvar | engine-client | Controls `s_lip_threshold_2` in the engine-client module. |
 | [`s_threshold3`](/TaystJK/reference/cvars/s_threshold3-42c9ced/) | cvar | engine-client | Controls `s_lip_threshold_3` in the engine-client module. |
 | [`s_threshold4`](/TaystJK/reference/cvars/s_threshold4-efb9d34/) | cvar | engine-client | Controls `s_lip_threshold_4` in the engine-client module. |
-| [`s_UseOpenAL`](/TaystJK/reference/cvars/s_useopenal-edb5f99/) | cvar | engine-client | Controls `cv` in the engine-client module. |
 | [`se_debug`](/TaystJK/reference/cvars/se_debug-6156cff/) | cvar | engine-shared | Controls `se_debug` in the engine-shared module. |
 | [`se_language`](/TaystJK/reference/cvars/se_language-5545a01/) | cvar | engine-shared | Controls `se_language` in the engine-shared module. |
 | [`session`](/TaystJK/reference/cvars/session-fcbdc4c/) | cvar | game | Controls `session` in the game module. |
@@ -3375,7 +3374,7 @@ These entries have dated post-origin registration or behavior evidence on TaystJ
 | [`s_threshold2`](/TaystJK/reference/cvars/s_threshold2-c620de4/) | cvar | engine-client | Controls `s_lip_threshold_2` in the engine-client module. |
 | [`s_threshold3`](/TaystJK/reference/cvars/s_threshold3-42c9ced/) | cvar | engine-client | Controls `s_lip_threshold_3` in the engine-client module. |
 | [`s_threshold4`](/TaystJK/reference/cvars/s_threshold4-efb9d34/) | cvar | engine-client | Controls `s_lip_threshold_4` in the engine-client module. |
-| [`s_UseOpenAL`](/TaystJK/reference/cvars/s_useopenal-edb5f99/) | cvar | engine-client | Controls `cv` in the engine-client module. |
+| [`s_UseOpenAL`](/TaystJK/reference/cvars/s_useopenal-edb5f99/) | cvar | engine-client | Use OpenAL with EAX environmental audio instead of the software mixer. |
 | [`s_volume`](/TaystJK/reference/cvars/s_volume-b61560f/) | cvar | engine-client | Sound effects volume |
 | [`s_volumeVoice`](/TaystJK/reference/cvars/s_volumevoice-44b8e79/) | cvar | engine-client | Voice channel volume |
 | [`saber1`](/TaystJK/reference/cvars/saber1-5e6205e/) | cvar | engine-client | Player default right hand saber |
