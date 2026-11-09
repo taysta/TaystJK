@@ -38,7 +38,7 @@ No discrete value list is enforced or documented in the inspected source.
 
 ## Enforced ranges
 
-- `1` through `1000` (integer; Cvar_CheckRange). Evidence: [codemp/server/sv_init.cpp:1068](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/codemp/server/sv_init.cpp#L1068)
+- `1` through `1000` (integer; Cvar_CheckRange). Evidence: [codemp/server/sv_init.cpp:1068](https://github.com/taysta/TaystJK/blame/77851b2c2d224004cb476a275fe4e4998f714230/codemp/server/sv_init.cpp#L1068)
 
 ## Flags
 
@@ -77,10 +77,10 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 ## Evidence
 
-- registration: [codemp/server/sv_init.cpp:1067](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/codemp/server/sv_init.cpp#L1067) (Cvar_Get)
-- behavior: [codemp/server/sv_main.cpp:1165](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/codemp/server/sv_main.cpp#L1165)
-- behavior: [codemp/server/sv_main.cpp:1232](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/codemp/server/sv_main.cpp#L1232)
-- behavior: [codemp/server/sv_init.cpp:1068](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/codemp/server/sv_init.cpp#L1068)
+- registration: [codemp/server/sv_init.cpp:1067](https://github.com/taysta/TaystJK/blame/77851b2c2d224004cb476a275fe4e4998f714230/codemp/server/sv_init.cpp#L1067) (Cvar_Get)
+- behavior: [codemp/server/sv_main.cpp:1165](https://github.com/taysta/TaystJK/blame/77851b2c2d224004cb476a275fe4e4998f714230/codemp/server/sv_main.cpp#L1165)
+- behavior: [codemp/server/sv_main.cpp:1232](https://github.com/taysta/TaystJK/blame/77851b2c2d224004cb476a275fe4e4998f714230/codemp/server/sv_main.cpp#L1232)
+- behavior: [codemp/server/sv_init.cpp:1068](https://github.com/taysta/TaystJK/blame/77851b2c2d224004cb476a275fe4e4998f714230/codemp/server/sv_init.cpp#L1068)
 - upstream-documentation: [CVARS.rst:581](https://github.com/mvdevs/jk2mv/blame/7d601454c3db68492289d4d4e3dc30bff39e4246/CVARS.rst#L581)
 
-<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/d843fa409b7e269a3775392e569f8f4694a7cb25"><code>d843fa409b7e</code></a> on 2026-11-09. Anything merged after that is not reflected here.</p>
+<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/77851b2c2d224004cb476a275fe4e4998f714230"><code>77851b2c2d22</code></a> on 2026-11-10. Anything merged after that is not reflected here.</p>

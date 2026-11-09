@@ -30,14 +30,14 @@ Disable/enable cubemapping
 | Confidence | `high` |
 | Added | 2023-10-03 in [`86c075638`](https://github.com/taysta/TaystJK/commit/86c0756385efd1e0c24b5c435739ccba3bee3919) ([how to compare this against your build](/TaystJK/features/whats-new/#how-to-tell-what-your-build-has)) |
 | In-game xdocs | No |
-| In-game menu | Yes: [ingame_setup.menu:1995](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/assets/japro/ui/jamp/ingame_setup.menu#L1995), [setup.menu:1785](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/assets/japro/ui/jamp/setup.menu#L1785) |
+| In-game menu | Yes: [ingame_setup.menu:1995](https://github.com/taysta/TaystJK/blame/77851b2c2d224004cb476a275fe4e4998f714230/assets/japro/ui/jamp/ingame_setup.menu#L1995), [setup.menu:1785](https://github.com/taysta/TaystJK/blame/77851b2c2d224004cb476a275fe4e4998f714230/assets/japro/ui/jamp/setup.menu#L1785) |
 
 ## Values
 
 | Value | Meaning | Evidence |
 |:--|:--|:--|
-| `0` | Disabled. | [shared/rd-rend2/tr_backend.cpp:3310](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/shared/rd-rend2/tr_backend.cpp#L3310) |
-| `1` | Enabled. | [shared/rd-rend2/tr_backend.cpp:3310](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/shared/rd-rend2/tr_backend.cpp#L3310) |
+| `0` | Disabled. | [shared/rd-rend2/tr_backend.cpp:3310](https://github.com/taysta/TaystJK/blame/77851b2c2d224004cb476a275fe4e4998f714230/shared/rd-rend2/tr_backend.cpp#L3310) |
+| `1` | Enabled. | [shared/rd-rend2/tr_backend.cpp:3310](https://github.com/taysta/TaystJK/blame/77851b2c2d224004cb476a275fe4e4998f714230/shared/rd-rend2/tr_backend.cpp#L3310) |
 
 ## Flags
 
@@ -78,11 +78,11 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 ## Evidence
 
-- registration: [codemp/rd-rend2/tr_init.cpp:1562](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/codemp/rd-rend2/tr_init.cpp#L1562) (Cvar_Get)
-- behavior: [shared/rd-rend2/tr_backend.cpp:3310](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/shared/rd-rend2/tr_backend.cpp#L3310)
-- behavior: [shared/rd-rend2/tr_bsp.cpp:4417](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/shared/rd-rend2/tr_bsp.cpp#L4417)
-- behavior: [shared/rd-rend2/tr_bsp.cpp:4532](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/shared/rd-rend2/tr_bsp.cpp#L4532)
-- behavior: [shared/rd-rend2/tr_glsl.cpp:385](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/shared/rd-rend2/tr_glsl.cpp#L385)
-- behavior: [shared/rd-rend2/tr_glsl.cpp:1897](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/shared/rd-rend2/tr_glsl.cpp#L1897)
+- registration: [codemp/rd-rend2/tr_init.cpp:1562](https://github.com/taysta/TaystJK/blame/77851b2c2d224004cb476a275fe4e4998f714230/codemp/rd-rend2/tr_init.cpp#L1562) (Cvar_Get)
+- behavior: [shared/rd-rend2/tr_backend.cpp:3310](https://github.com/taysta/TaystJK/blame/77851b2c2d224004cb476a275fe4e4998f714230/shared/rd-rend2/tr_backend.cpp#L3310)
+- behavior: [shared/rd-rend2/tr_bsp.cpp:4417](https://github.com/taysta/TaystJK/blame/77851b2c2d224004cb476a275fe4e4998f714230/shared/rd-rend2/tr_bsp.cpp#L4417)
+- behavior: [shared/rd-rend2/tr_bsp.cpp:4532](https://github.com/taysta/TaystJK/blame/77851b2c2d224004cb476a275fe4e4998f714230/shared/rd-rend2/tr_bsp.cpp#L4532)
+- behavior: [shared/rd-rend2/tr_glsl.cpp:385](https://github.com/taysta/TaystJK/blame/77851b2c2d224004cb476a275fe4e4998f714230/shared/rd-rend2/tr_glsl.cpp#L385)
+- behavior: [shared/rd-rend2/tr_glsl.cpp:1897](https://github.com/taysta/TaystJK/blame/77851b2c2d224004cb476a275fe4e4998f714230/shared/rd-rend2/tr_glsl.cpp#L1897)
 
-<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/d843fa409b7e269a3775392e569f8f4694a7cb25"><code>d843fa409b7e</code></a> on 2026-11-09. Anything merged after that is not reflected here.</p>
+<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/77851b2c2d224004cb476a275fe4e4998f714230"><code>77851b2c2d22</code></a> on 2026-11-10. Anything merged after that is not reflected here.</p>

@@ -52,11 +52,11 @@ Origin: <span class="label ref-origin ref-origin-basejka">Base Jedi Academy</spa
 
 ## Evidence
 
-- registration: [codemp/server/sv_bot.cpp:669](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/codemp/server/sv_bot.cpp#L669) (Cvar_Get)
-- behavior: [codemp/botlib/be_ai_char.cpp:176](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/codemp/botlib/be_ai_char.cpp#L176)
-- behavior: [codemp/botlib/be_ai_chat.cpp:2238](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/codemp/botlib/be_ai_chat.cpp#L2238)
-- behavior: [codemp/botlib/be_ai_chat.cpp:2271](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/codemp/botlib/be_ai_chat.cpp#L2271)
-- behavior: [codemp/botlib/be_ai_chat.cpp:2959](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/codemp/botlib/be_ai_chat.cpp#L2959)
-- behavior: [codemp/botlib/be_ai_weight.cpp:156](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/codemp/botlib/be_ai_weight.cpp#L156)
+- registration: [codemp/server/sv_bot.cpp:669](https://github.com/taysta/TaystJK/blame/77851b2c2d224004cb476a275fe4e4998f714230/codemp/server/sv_bot.cpp#L669) (Cvar_Get)
+- behavior: [codemp/botlib/be_ai_char.cpp:176](https://github.com/taysta/TaystJK/blame/77851b2c2d224004cb476a275fe4e4998f714230/codemp/botlib/be_ai_char.cpp#L176)
+- behavior: [codemp/botlib/be_ai_chat.cpp:2238](https://github.com/taysta/TaystJK/blame/77851b2c2d224004cb476a275fe4e4998f714230/codemp/botlib/be_ai_chat.cpp#L2238)
+- behavior: [codemp/botlib/be_ai_chat.cpp:2271](https://github.com/taysta/TaystJK/blame/77851b2c2d224004cb476a275fe4e4998f714230/codemp/botlib/be_ai_chat.cpp#L2271)
+- behavior: [codemp/botlib/be_ai_chat.cpp:2959](https://github.com/taysta/TaystJK/blame/77851b2c2d224004cb476a275fe4e4998f714230/codemp/botlib/be_ai_chat.cpp#L2959)
+- behavior: [codemp/botlib/be_ai_weight.cpp:156](https://github.com/taysta/TaystJK/blame/77851b2c2d224004cb476a275fe4e4998f714230/codemp/botlib/be_ai_weight.cpp#L156)
 
-<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/d843fa409b7e269a3775392e569f8f4694a7cb25"><code>d843fa409b7e</code></a> on 2026-11-09. Anything merged after that is not reflected here.</p>
+<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/77851b2c2d224004cb476a275fe4e4998f714230"><code>77851b2c2d22</code></a> on 2026-11-10. Anything merged after that is not reflected here.</p>

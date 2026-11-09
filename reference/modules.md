@@ -17,11 +17,11 @@ description: "Every cvar and command grouped by the module that registers it: en
 </div>
 
 <div class="directory-grid">
-<a class="directory-card" href="/TaystJK/reference/modules/cgame/"><span class="directory-code">cgame</span><strong>595</strong><span>entries</span></a>
+<a class="directory-card" href="/TaystJK/reference/modules/cgame/"><span class="directory-code">cgame</span><strong>594</strong><span>entries</span></a>
 <a class="directory-card" href="/TaystJK/reference/modules/engine-client/"><span class="directory-code">engine-client</span><strong>311</strong><span>entries</span></a>
 <a class="directory-card" href="/TaystJK/reference/modules/engine-server/"><span class="directory-code">engine-server</span><strong>128</strong><span>entries</span></a>
 <a class="directory-card" href="/TaystJK/reference/modules/engine-shared/"><span class="directory-code">engine-shared</span><strong>142</strong><span>entries</span></a>
 <a class="directory-card" href="/TaystJK/reference/modules/game/"><span class="directory-code">game</span><strong>370</strong><span>entries</span></a>
 <a class="directory-card" href="/TaystJK/reference/modules/renderer/"><span class="directory-code">renderer</span><strong>267</strong><span>entries</span></a>
-<a class="directory-card" href="/TaystJK/reference/modules/ui/"><span class="directory-code">ui</span><strong>205</strong><span>entries</span></a>
+<a class="directory-card" href="/TaystJK/reference/modules/ui/"><span class="directory-code">ui</span><strong>206</strong><span>entries</span></a>
 </div>

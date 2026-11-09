@@ -36,13 +36,13 @@ Selects a neutral-flag game mode. Values 1 to 3 are rabbit variants for FFA and 
 
 | Value | Meaning | Evidence |
 |:--|:--|:--|
-| `0` | Off. The map's neutral flag is removed at load, and CTF keeps its red and blue flags. | [codemp/game/g_items.c:3160](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/codemp/game/g_items.c#L3160) |
-| `1` | Rabbit, in FFA and team FFA: a neutral flag spawns and players fight to carry it. | [codemp/game/g_cvar.c:472](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/codemp/game/g_cvar.c#L472) |
-| `2` | Sniper rabbit: as 1, but picking up the flag leaves the carrier with only a disruptor and 300 ammo. | [codemp/game/g_team.c:1181](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/codemp/game/g_team.c#L1181) |
-| `3` | Rabbit where the carrier scores a point for every five seconds they hold the flag. | [codemp/game/g_active.c:1783](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/codemp/game/g_active.c#L1783) |
-| `4` | One-flag CTF: score by holding the neutral flag inside your own team's capture zone for `g_neutralFlagTimer`. | [codemp/game/g_trigger.c:212](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/codemp/game/g_trigger.c#L212) |
-| `5` | One-flag CTF: score by holding the neutral flag inside the other team's capture zone for `g_neutralFlagTimer`. | [codemp/game/g_trigger.c:214](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/codemp/game/g_trigger.c#L214) |
-| `6` | One-flag CTF with capture points: bringing the neutral flag into a team's capture point puts that team's flag at its base, and the team scores when `g_neutralFlagTimer` runs out unless the other team takes that flag first. | [codemp/game/g_trigger.c:234](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/codemp/game/g_trigger.c#L234) |
+| `0` | Off. The map's neutral flag is removed at load, and CTF keeps its red and blue flags. | [codemp/game/g_items.c:3160](https://github.com/taysta/TaystJK/blame/77851b2c2d224004cb476a275fe4e4998f714230/codemp/game/g_items.c#L3160) |
+| `1` | Rabbit, in FFA and team FFA: a neutral flag spawns and players fight to carry it. | [codemp/game/g_cvar.c:472](https://github.com/taysta/TaystJK/blame/77851b2c2d224004cb476a275fe4e4998f714230/codemp/game/g_cvar.c#L472) |
+| `2` | Sniper rabbit: as 1, but picking up the flag leaves the carrier with only a disruptor and 300 ammo. | [codemp/game/g_team.c:1181](https://github.com/taysta/TaystJK/blame/77851b2c2d224004cb476a275fe4e4998f714230/codemp/game/g_team.c#L1181) |
+| `3` | Rabbit where the carrier scores a point for every five seconds they hold the flag. | [codemp/game/g_active.c:1783](https://github.com/taysta/TaystJK/blame/77851b2c2d224004cb476a275fe4e4998f714230/codemp/game/g_active.c#L1783) |
+| `4` | One-flag CTF: score by holding the neutral flag inside your own team's capture zone for `g_neutralFlagTimer`. | [codemp/game/g_trigger.c:212](https://github.com/taysta/TaystJK/blame/77851b2c2d224004cb476a275fe4e4998f714230/codemp/game/g_trigger.c#L212) |
+| `5` | One-flag CTF: score by holding the neutral flag inside the other team's capture zone for `g_neutralFlagTimer`. | [codemp/game/g_trigger.c:214](https://github.com/taysta/TaystJK/blame/77851b2c2d224004cb476a275fe4e4998f714230/codemp/game/g_trigger.c#L214) |
+| `6` | One-flag CTF with capture points: bringing the neutral flag into a team's capture point puts that team's flag at its base, and the team scores when `g_neutralFlagTimer` runs out unless the other team takes that flag first. | [codemp/game/g_trigger.c:234](https://github.com/taysta/TaystJK/blame/77851b2c2d224004cb476a275fe4e4998f714230/codemp/game/g_trigger.c#L234) |
 
 ## Flags
 
@@ -83,11 +83,11 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 ## Evidence
 
-- registration: [codemp/game/g_xcvar.h:189](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/codemp/game/g_xcvar.h#L189) (XCVAR_DEF)
-- behavior: [codemp/game/g_active.c:1783](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/codemp/game/g_active.c#L1783)
-- behavior: [codemp/game/g_active.c:3817](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/codemp/game/g_active.c#L3817)
-- behavior: [codemp/game/g_cmds.c:5750](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/codemp/game/g_cmds.c#L5750)
-- behavior: [codemp/game/g_cmds.c:8451](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/codemp/game/g_cmds.c#L8451)
-- behavior: [codemp/game/g_cmds.c:8596](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/codemp/game/g_cmds.c#L8596)
+- registration: [codemp/game/g_xcvar.h:189](https://github.com/taysta/TaystJK/blame/77851b2c2d224004cb476a275fe4e4998f714230/codemp/game/g_xcvar.h#L189) (XCVAR_DEF)
+- behavior: [codemp/game/g_active.c:1783](https://github.com/taysta/TaystJK/blame/77851b2c2d224004cb476a275fe4e4998f714230/codemp/game/g_active.c#L1783)
+- behavior: [codemp/game/g_active.c:3817](https://github.com/taysta/TaystJK/blame/77851b2c2d224004cb476a275fe4e4998f714230/codemp/game/g_active.c#L3817)
+- behavior: [codemp/game/g_cmds.c:5750](https://github.com/taysta/TaystJK/blame/77851b2c2d224004cb476a275fe4e4998f714230/codemp/game/g_cmds.c#L5750)
+- behavior: [codemp/game/g_cmds.c:8451](https://github.com/taysta/TaystJK/blame/77851b2c2d224004cb476a275fe4e4998f714230/codemp/game/g_cmds.c#L8451)
+- behavior: [codemp/game/g_cmds.c:8596](https://github.com/taysta/TaystJK/blame/77851b2c2d224004cb476a275fe4e4998f714230/codemp/game/g_cmds.c#L8596)
 
-<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/d843fa409b7e269a3775392e569f8f4694a7cb25"><code>d843fa409b7e</code></a> on 2026-11-09. Anything merged after that is not reflected here.</p>
+<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/77851b2c2d224004cb476a275fe4e4998f714230"><code>77851b2c2d22</code></a> on 2026-11-10. Anything merged after that is not reflected here.</p>

@@ -38,12 +38,12 @@ Set dithering mode: 0 - disabled. 1 - ordered. Requires r_fbo 1
 
 | Value | Meaning | Evidence |
 |:--|:--|:--|
-| `0` | Disabled. | [codemp/rd-vulkan/tr_init.cpp:934](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/codemp/rd-vulkan/tr_init.cpp#L934) |
-| `1` | Ordered. Requires r_fbo 1. | [codemp/rd-vulkan/tr_init.cpp:934](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/codemp/rd-vulkan/tr_init.cpp#L934) |
+| `0` | Disabled. | [codemp/rd-vulkan/tr_init.cpp:934](https://github.com/taysta/TaystJK/blame/77851b2c2d224004cb476a275fe4e4998f714230/codemp/rd-vulkan/tr_init.cpp#L934) |
+| `1` | Ordered. Requires r_fbo 1. | [codemp/rd-vulkan/tr_init.cpp:934](https://github.com/taysta/TaystJK/blame/77851b2c2d224004cb476a275fe4e4998f714230/codemp/rd-vulkan/tr_init.cpp#L934) |
 
 ## Enforced ranges
 
-- `0` through `1` (integer; Cvar_CheckRange). Evidence: [codemp/rd-vulkan/tr_init.cpp:935](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/codemp/rd-vulkan/tr_init.cpp#L935)
+- `0` through `1` (integer; Cvar_CheckRange). Evidence: [codemp/rd-vulkan/tr_init.cpp:935](https://github.com/taysta/TaystJK/blame/77851b2c2d224004cb476a275fe4e4998f714230/codemp/rd-vulkan/tr_init.cpp#L935)
 
 ## Flags
 
@@ -80,10 +80,10 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 ## Evidence
 
-- registration: [codemp/rd-vulkan/tr_init.cpp:934](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/codemp/rd-vulkan/tr_init.cpp#L934) (Cvar_Get)
-- behavior: [codemp/rd-vulkan/vk_pipelines.cpp:1526](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/codemp/rd-vulkan/vk_pipelines.cpp#L1526)
-- behavior: [codemp/rd-vulkan/tr_cmds.cpp:381](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/codemp/rd-vulkan/tr_cmds.cpp#L381)
-- behavior: [codemp/rd-vulkan/tr_cmds.cpp:384](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/codemp/rd-vulkan/tr_cmds.cpp#L384)
-- behavior: [codemp/rd-vulkan/tr_init.cpp:935](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/codemp/rd-vulkan/tr_init.cpp#L935)
+- registration: [codemp/rd-vulkan/tr_init.cpp:934](https://github.com/taysta/TaystJK/blame/77851b2c2d224004cb476a275fe4e4998f714230/codemp/rd-vulkan/tr_init.cpp#L934) (Cvar_Get)
+- behavior: [codemp/rd-vulkan/vk_pipelines.cpp:1526](https://github.com/taysta/TaystJK/blame/77851b2c2d224004cb476a275fe4e4998f714230/codemp/rd-vulkan/vk_pipelines.cpp#L1526)
+- behavior: [codemp/rd-vulkan/tr_cmds.cpp:381](https://github.com/taysta/TaystJK/blame/77851b2c2d224004cb476a275fe4e4998f714230/codemp/rd-vulkan/tr_cmds.cpp#L381)
+- behavior: [codemp/rd-vulkan/tr_cmds.cpp:384](https://github.com/taysta/TaystJK/blame/77851b2c2d224004cb476a275fe4e4998f714230/codemp/rd-vulkan/tr_cmds.cpp#L384)
+- behavior: [codemp/rd-vulkan/tr_init.cpp:935](https://github.com/taysta/TaystJK/blame/77851b2c2d224004cb476a275fe4e4998f714230/codemp/rd-vulkan/tr_init.cpp#L935)
 
-<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/d843fa409b7e269a3775392e569f8f4694a7cb25"><code>d843fa409b7e</code></a> on 2026-11-09. Anything merged after that is not reflected here.</p>
+<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/77851b2c2d224004cb476a275fe4e4998f714230"><code>77851b2c2d22</code></a> on 2026-11-10. Anything merged after that is not reflected here.</p>

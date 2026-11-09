@@ -37,8 +37,8 @@ Controls `cm_noCurves` in the engine-shared module. Consult the cited behavior r
 
 | Value | Meaning | Evidence |
 |:--|:--|:--|
-| `0` | Disabled. | [codemp/qcommon/cm_trace.cpp:242](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/codemp/qcommon/cm_trace.cpp#L242) |
-| `1` | Enabled. | [codemp/qcommon/cm_trace.cpp:242](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/codemp/qcommon/cm_trace.cpp#L242) |
+| `0` | Disabled. | [codemp/qcommon/cm_trace.cpp:242](https://github.com/taysta/TaystJK/blame/77851b2c2d224004cb476a275fe4e4998f714230/codemp/qcommon/cm_trace.cpp#L242) |
+| `1` | Enabled. | [codemp/qcommon/cm_trace.cpp:242](https://github.com/taysta/TaystJK/blame/77851b2c2d224004cb476a275fe4e4998f714230/codemp/qcommon/cm_trace.cpp#L242) |
 
 ## Flags
 
@@ -64,9 +64,9 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 ## Evidence
 
-- registration: [codemp/qcommon/cm_load.cpp:635](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/codemp/qcommon/cm_load.cpp#L635) (Cvar_Get); condition `!defined(BSPC)`
-- behavior: [codemp/qcommon/cm_trace.cpp:242](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/codemp/qcommon/cm_trace.cpp#L242)
-- behavior: [codemp/qcommon/cm_trace.cpp:682](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/codemp/qcommon/cm_trace.cpp#L682)
-- behavior: [codemp/qcommon/cm_trace.cpp:1041](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/codemp/qcommon/cm_trace.cpp#L1041)
+- registration: [codemp/qcommon/cm_load.cpp:635](https://github.com/taysta/TaystJK/blame/77851b2c2d224004cb476a275fe4e4998f714230/codemp/qcommon/cm_load.cpp#L635) (Cvar_Get); condition `!defined(BSPC)`
+- behavior: [codemp/qcommon/cm_trace.cpp:242](https://github.com/taysta/TaystJK/blame/77851b2c2d224004cb476a275fe4e4998f714230/codemp/qcommon/cm_trace.cpp#L242)
+- behavior: [codemp/qcommon/cm_trace.cpp:682](https://github.com/taysta/TaystJK/blame/77851b2c2d224004cb476a275fe4e4998f714230/codemp/qcommon/cm_trace.cpp#L682)
+- behavior: [codemp/qcommon/cm_trace.cpp:1041](https://github.com/taysta/TaystJK/blame/77851b2c2d224004cb476a275fe4e4998f714230/codemp/qcommon/cm_trace.cpp#L1041)
 
-<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/d843fa409b7e269a3775392e569f8f4694a7cb25"><code>d843fa409b7e</code></a> on 2026-11-09. Anything merged after that is not reflected here.</p>
+<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/77851b2c2d224004cb476a275fe4e4998f714230"><code>77851b2c2d22</code></a> on 2026-11-10. Anything merged after that is not reflected here.</p>

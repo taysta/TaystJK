@@ -34,7 +34,7 @@ Disable/enable framebuffer MSAA
 | Confidence | `medium` |
 | Added | 2015-02-07 in [`a7c43677a`](https://github.com/taysta/TaystJK/commit/a7c43677a2bbba956ac3c5f14f2bf869ea660230) <span class="status-chip">needs review</span> ([how to compare this against your build](/TaystJK/features/whats-new/#how-to-tell-what-your-build-has)) |
 | In-game xdocs | No |
-| In-game menu | Yes: [ingame_setup.menu:1480](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/assets/japro/ui/jamp/ingame_setup.menu#L1480), [setup.menu:1383](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/assets/japro/ui/jamp/setup.menu#L1383) |
+| In-game menu | Yes: [ingame_setup.menu:1480](https://github.com/taysta/TaystJK/blame/77851b2c2d224004cb476a275fe4e4998f714230/assets/japro/ui/jamp/ingame_setup.menu#L1480), [setup.menu:1383](https://github.com/taysta/TaystJK/blame/77851b2c2d224004cb476a275fe4e4998f714230/assets/japro/ui/jamp/setup.menu#L1383) |
 
 ## Values
 
@@ -42,7 +42,7 @@ No discrete value list is enforced or documented in the inspected source.
 
 ## Enforced ranges
 
-- `0` through `64` (integer; Cvar_CheckRange). Evidence: [codemp/rd-vulkan/tr_init.cpp:921](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/codemp/rd-vulkan/tr_init.cpp#L921)
+- `0` through `64` (integer; Cvar_CheckRange). Evidence: [codemp/rd-vulkan/tr_init.cpp:921](https://github.com/taysta/TaystJK/blame/77851b2c2d224004cb476a275fe4e4998f714230/codemp/rd-vulkan/tr_init.cpp#L921)
 
 ## Flags
 
@@ -98,13 +98,13 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 ## Evidence
 
-- registration: [codemp/rd-rend2/tr_init.cpp:1496](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/codemp/rd-rend2/tr_init.cpp#L1496) (Cvar_Get)
-- registration: [codemp/rd-vulkan/tr_init.cpp:920](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/codemp/rd-vulkan/tr_init.cpp#L920) (Cvar_Get)
-- registration: [shared/sdl/sdl_window.cpp:816](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/shared/sdl/sdl_window.cpp#L816) (Cvar_Get)
-- behavior: [codemp/rd-vulkan/vk_init.cpp:517](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/codemp/rd-vulkan/vk_init.cpp#L517)
-- behavior: [codemp/rd-vulkan/vk_init.cpp:518](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/codemp/rd-vulkan/vk_init.cpp#L518)
-- behavior: [shared/rd-rend2/tr_fbo.cpp:412](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/shared/rd-rend2/tr_fbo.cpp#L412)
-- behavior: [shared/rd-rend2/tr_fbo.cpp:420](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/shared/rd-rend2/tr_fbo.cpp#L420)
-- behavior: [codemp/rd-vulkan/vk_init.cpp:526](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/codemp/rd-vulkan/vk_init.cpp#L526)
+- registration: [codemp/rd-rend2/tr_init.cpp:1496](https://github.com/taysta/TaystJK/blame/77851b2c2d224004cb476a275fe4e4998f714230/codemp/rd-rend2/tr_init.cpp#L1496) (Cvar_Get)
+- registration: [codemp/rd-vulkan/tr_init.cpp:920](https://github.com/taysta/TaystJK/blame/77851b2c2d224004cb476a275fe4e4998f714230/codemp/rd-vulkan/tr_init.cpp#L920) (Cvar_Get)
+- registration: [shared/sdl/sdl_window.cpp:816](https://github.com/taysta/TaystJK/blame/77851b2c2d224004cb476a275fe4e4998f714230/shared/sdl/sdl_window.cpp#L816) (Cvar_Get)
+- behavior: [codemp/rd-vulkan/vk_init.cpp:517](https://github.com/taysta/TaystJK/blame/77851b2c2d224004cb476a275fe4e4998f714230/codemp/rd-vulkan/vk_init.cpp#L517)
+- behavior: [codemp/rd-vulkan/vk_init.cpp:518](https://github.com/taysta/TaystJK/blame/77851b2c2d224004cb476a275fe4e4998f714230/codemp/rd-vulkan/vk_init.cpp#L518)
+- behavior: [shared/rd-rend2/tr_fbo.cpp:412](https://github.com/taysta/TaystJK/blame/77851b2c2d224004cb476a275fe4e4998f714230/shared/rd-rend2/tr_fbo.cpp#L412)
+- behavior: [shared/rd-rend2/tr_fbo.cpp:420](https://github.com/taysta/TaystJK/blame/77851b2c2d224004cb476a275fe4e4998f714230/shared/rd-rend2/tr_fbo.cpp#L420)
+- behavior: [codemp/rd-vulkan/vk_init.cpp:526](https://github.com/taysta/TaystJK/blame/77851b2c2d224004cb476a275fe4e4998f714230/codemp/rd-vulkan/vk_init.cpp#L526)
 
-<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/d843fa409b7e269a3775392e569f8f4694a7cb25"><code>d843fa409b7e</code></a> on 2026-11-09. Anything merged after that is not reflected here.</p>
+<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/77851b2c2d224004cb476a275fe4e4998f714230"><code>77851b2c2d22</code></a> on 2026-11-10. Anything merged after that is not reflected here.</p>

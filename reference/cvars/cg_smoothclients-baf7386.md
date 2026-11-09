@@ -29,16 +29,16 @@ Extrapolate other players when a snapshot is late
 | Derivation | `documented` |
 | Confidence | `high` |
 | Added | 2013-04-08 in [`14cea1563`](https://github.com/taysta/TaystJK/commit/14cea1563762076974bee277afadbd5bf234c494) ([how to compare this against your build](/TaystJK/features/whats-new/#how-to-tell-what-your-build-has)) |
-| In-game xdocs | Yes: [codemp/ui/ui_xdocs.h:454](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/codemp/ui/ui_xdocs.h#L454) |
+| In-game xdocs | Yes: [codemp/ui/ui_xdocs.h:454](https://github.com/taysta/TaystJK/blame/77851b2c2d224004cb476a275fe4e4998f714230/codemp/ui/ui_xdocs.h#L454) |
 | In-game menu | No |
 
 ## Values
 
 | Value | Meaning | Evidence |
 |:--|:--|:--|
-| `0` | Never extrapolate players | [codemp/ui/ui_xdocs.h:455](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/codemp/ui/ui_xdocs.h#L455) |
-| `1` | Extrapolate players, and smooth the ones the server extrapolates (Base behavior) | [codemp/ui/ui_xdocs.h:455](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/codemp/ui/ui_xdocs.h#L455) |
-| `2` | Extrapolate players without smoothing | [codemp/ui/ui_xdocs.h:457](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/codemp/ui/ui_xdocs.h#L457) |
+| `0` | Never extrapolate players | [codemp/ui/ui_xdocs.h:455](https://github.com/taysta/TaystJK/blame/77851b2c2d224004cb476a275fe4e4998f714230/codemp/ui/ui_xdocs.h#L455) |
+| `1` | Extrapolate players, and smooth the ones the server extrapolates (Base behavior) | [codemp/ui/ui_xdocs.h:455](https://github.com/taysta/TaystJK/blame/77851b2c2d224004cb476a275fe4e4998f714230/codemp/ui/ui_xdocs.h#L455) |
+| `2` | Extrapolate players without smoothing | [codemp/ui/ui_xdocs.h:457](https://github.com/taysta/TaystJK/blame/77851b2c2d224004cb476a275fe4e4998f714230/codemp/ui/ui_xdocs.h#L457) |
 
 ## Flags
 
@@ -72,13 +72,13 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 ## Evidence
 
-- registration: [codemp/cgame/cg_xcvar.h:352](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/codemp/cgame/cg_xcvar.h#L352) (XCVAR_DEF)
-- behavior: [codemp/cgame/cg_ents.c:3600](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/codemp/cgame/cg_ents.c#L3600)
-- behavior: [codemp/cgame/cg_ents.c:3937](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/codemp/cgame/cg_ents.c#L3937)
-- behavior: [codemp/cgame/cg_players.c:10409](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/codemp/cgame/cg_players.c#L10409)
-- behavior: [codemp/cgame/cg_ents.c:3527](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/codemp/cgame/cg_ents.c#L3527)
-- behavior: [codemp/cgame/cg_ents.c:3599](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/codemp/cgame/cg_ents.c#L3599)
-- documentation: [codemp/ui/ui_xdocs.h:454](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/codemp/ui/ui_xdocs.h#L454)
-- documentation: [docs/japro_docs.md:525](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/docs/japro_docs.md#L525)
+- registration: [codemp/cgame/cg_xcvar.h:352](https://github.com/taysta/TaystJK/blame/77851b2c2d224004cb476a275fe4e4998f714230/codemp/cgame/cg_xcvar.h#L352) (XCVAR_DEF)
+- behavior: [codemp/cgame/cg_ents.c:3600](https://github.com/taysta/TaystJK/blame/77851b2c2d224004cb476a275fe4e4998f714230/codemp/cgame/cg_ents.c#L3600)
+- behavior: [codemp/cgame/cg_ents.c:3937](https://github.com/taysta/TaystJK/blame/77851b2c2d224004cb476a275fe4e4998f714230/codemp/cgame/cg_ents.c#L3937)
+- behavior: [codemp/cgame/cg_players.c:10409](https://github.com/taysta/TaystJK/blame/77851b2c2d224004cb476a275fe4e4998f714230/codemp/cgame/cg_players.c#L10409)
+- behavior: [codemp/cgame/cg_ents.c:3527](https://github.com/taysta/TaystJK/blame/77851b2c2d224004cb476a275fe4e4998f714230/codemp/cgame/cg_ents.c#L3527)
+- behavior: [codemp/cgame/cg_ents.c:3599](https://github.com/taysta/TaystJK/blame/77851b2c2d224004cb476a275fe4e4998f714230/codemp/cgame/cg_ents.c#L3599)
+- documentation: [codemp/ui/ui_xdocs.h:454](https://github.com/taysta/TaystJK/blame/77851b2c2d224004cb476a275fe4e4998f714230/codemp/ui/ui_xdocs.h#L454)
+- documentation: [docs/japro_docs.md:525](https://github.com/taysta/TaystJK/blame/77851b2c2d224004cb476a275fe4e4998f714230/docs/japro_docs.md#L525)
 
-<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/d843fa409b7e269a3775392e569f8f4694a7cb25"><code>d843fa409b7e</code></a> on 2026-11-09. Anything merged after that is not reflected here.</p>
+<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/77851b2c2d224004cb476a275fe4e4998f714230"><code>77851b2c2d22</code></a> on 2026-11-10. Anything merged after that is not reflected here.</p>

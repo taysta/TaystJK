@@ -31,7 +31,7 @@ Player model
 | Confidence | `high` |
 | Added | 2013-04-08 in [`14cea1563`](https://github.com/taysta/TaystJK/commit/14cea1563762076974bee277afadbd5bf234c494) ([how to compare this against your build](/TaystJK/features/whats-new/#how-to-tell-what-your-build-has)) |
 | In-game xdocs | No |
-| In-game menu | Yes: [ingame_player.menu:194](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/assets/japro/ui/jamp/ingame_player.menu#L194), [ingame_player.menu:388](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/assets/japro/ui/jamp/ingame_player.menu#L388), [ingame_player.menu:490](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/assets/japro/ui/jamp/ingame_player.menu#L490) |
+| In-game menu | Yes: [ingame_player.menu:194](https://github.com/taysta/TaystJK/blame/77851b2c2d224004cb476a275fe4e4998f714230/assets/japro/ui/jamp/ingame_player.menu#L194), [ingame_player.menu:388](https://github.com/taysta/TaystJK/blame/77851b2c2d224004cb476a275fe4e4998f714230/assets/japro/ui/jamp/ingame_player.menu#L388), [ingame_player.menu:490](https://github.com/taysta/TaystJK/blame/77851b2c2d224004cb476a275fe4e4998f714230/assets/japro/ui/jamp/ingame_player.menu#L490) |
 
 ## Values
 
@@ -71,12 +71,12 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 ## Evidence
 
-- registration: [codemp/cgame/cg_xcvar.h:379](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/codemp/cgame/cg_xcvar.h#L379) (XCVAR_DEF)
-- registration: [codemp/client/cl_main.cpp:3429](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/codemp/client/cl_main.cpp#L3429) (Cvar_Get)
-- behavior: [codemp/cgame/cg_ents.c:2623](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/codemp/cgame/cg_ents.c#L2623)
-- behavior: [codemp/botlib/be_aas_reach.cpp:233](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/codemp/botlib/be_aas_reach.cpp#L233)
-- behavior: [codemp/botlib/be_aas_reach.cpp:2963](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/codemp/botlib/be_aas_reach.cpp#L2963)
-- behavior: [codemp/botlib/be_aas_reach.cpp:3298](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/codemp/botlib/be_aas_reach.cpp#L3298)
-- behavior: [codemp/botlib/be_aas_reach.cpp:3530](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/codemp/botlib/be_aas_reach.cpp#L3530)
+- registration: [codemp/cgame/cg_xcvar.h:379](https://github.com/taysta/TaystJK/blame/77851b2c2d224004cb476a275fe4e4998f714230/codemp/cgame/cg_xcvar.h#L379) (XCVAR_DEF)
+- registration: [codemp/client/cl_main.cpp:3429](https://github.com/taysta/TaystJK/blame/77851b2c2d224004cb476a275fe4e4998f714230/codemp/client/cl_main.cpp#L3429) (Cvar_Get)
+- behavior: [codemp/cgame/cg_ents.c:2623](https://github.com/taysta/TaystJK/blame/77851b2c2d224004cb476a275fe4e4998f714230/codemp/cgame/cg_ents.c#L2623)
+- behavior: [codemp/botlib/be_aas_reach.cpp:233](https://github.com/taysta/TaystJK/blame/77851b2c2d224004cb476a275fe4e4998f714230/codemp/botlib/be_aas_reach.cpp#L233)
+- behavior: [codemp/botlib/be_aas_reach.cpp:2963](https://github.com/taysta/TaystJK/blame/77851b2c2d224004cb476a275fe4e4998f714230/codemp/botlib/be_aas_reach.cpp#L2963)
+- behavior: [codemp/botlib/be_aas_reach.cpp:3298](https://github.com/taysta/TaystJK/blame/77851b2c2d224004cb476a275fe4e4998f714230/codemp/botlib/be_aas_reach.cpp#L3298)
+- behavior: [codemp/botlib/be_aas_reach.cpp:3530](https://github.com/taysta/TaystJK/blame/77851b2c2d224004cb476a275fe4e4998f714230/codemp/botlib/be_aas_reach.cpp#L3530)
 
-<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/d843fa409b7e269a3775392e569f8f4694a7cb25"><code>d843fa409b7e</code></a> on 2026-11-09. Anything merged after that is not reflected here.</p>
+<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/77851b2c2d224004cb476a275fe4e4998f714230"><code>77851b2c2d22</code></a> on 2026-11-10. Anything merged after that is not reflected here.</p>
