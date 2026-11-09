@@ -764,7 +764,12 @@ void AS_Init( void )
 	{
 		numSets = 0;
 
-		pMap = new namePrecache_m;
+		// Keep the level's ambient-set precache list across snd_restart.
+		// AS_Free deliberately leaves it intact so the sets can be parsed again.
+		if (!pMap)
+		{
+			pMap = new namePrecache_m;
+		}
 
 		//Setup the structure
 		aSets = new CSetGroup();

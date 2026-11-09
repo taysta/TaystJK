@@ -82,7 +82,10 @@ jobs:
         shell: bash
         working-directory: ${{ github.workspace }}/build
         run: |
-          OPTIONS="-DCMAKE_BUILD_TYPE=${{ matrix.build_type }} -DCMAKE_INSTALL_PREFIX=bin"
+          # OpenAL Soft 1.25.2 requires a C++20 standard library and cannot be
+          # built with the legacy v141_xp toolchain. Keep the software mixer
+          # available for this compatibility-only build.
+          OPTIONS="-DCMAKE_BUILD_TYPE=${{ matrix.build_type }} -DCMAKE_INSTALL_PREFIX=bin -DBuildOpenALSupport=OFF -DBuildEalMan=OFF"
           if [ "${{ matrix.portable }}" == "Portable" ]; then
             OPTIONS+=" -DBuildPortableVersion=ON"
           else

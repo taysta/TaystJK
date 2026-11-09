@@ -1409,6 +1409,14 @@ void CL_Snd_Restart_f( void ) {
 
 	extern void S_RestartMusic( void );
 	S_RestartMusic();
+
+	S_ReloadAllUsedSounds();
+
+	// Ambient sets come from the current level's precache list; outside a
+	// level that list can name sets from server pk3s that are gone.
+	if ( cls.cgameStarted && cls.state >= CA_PRIMED ) {
+		AS_ParseSets();
+	}
 }
 
 

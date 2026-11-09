@@ -187,10 +187,10 @@ jobs:
           if [ ${{ matrix.arch }} == "x86" ]; then
             sudo dpkg --add-architecture i386
             sudo apt-get -qq update
-            sudo apt-get -y install libpcre2-8-0:i386 gcc-multilib g++-multilib libjpeg-dev:i386 libpng-dev:i386 libcurl4-openssl-dev:i386 libglib2.0-dev:i386 libsdl2-dev:i386
+            sudo apt-get -y install libpcre2-8-0:i386 gcc-12 g++-12 gcc-12-multilib g++-12-multilib libjpeg-dev:i386 libpng-dev:i386 libcurl4-openssl-dev:i386 libglib2.0-dev:i386 libsdl2-dev:i386 libasound2-dev:i386 libpulse-dev:i386 libpipewire-0.3-dev:i386
           else
             sudo apt-get -qq update
-            sudo apt-get install libjpeg-dev libpng-dev zlib1g-dev libsdl2-dev
+            sudo apt-get install gcc-12 g++-12 libjpeg-dev libpng-dev zlib1g-dev libsdl2-dev libasound2-dev libpulse-dev libpipewire-0.3-dev
           fi
           cmake -E make_directory ${{ github.workspace }}/build
 
@@ -198,7 +198,7 @@ jobs:
         shell: bash
         working-directory: ${{ github.workspace }}/build
         run: |
-          OPTIONS="-DCMAKE_BUILD_TYPE=${{ matrix.build_type }} -DCMAKE_INSTALL_PREFIX=${{ github.workspace }}/install"
+          OPTIONS="-DCMAKE_BUILD_TYPE=${{ matrix.build_type }} -DCMAKE_INSTALL_PREFIX=${{ github.workspace }}/install -DCMAKE_C_COMPILER=gcc-12 -DCMAKE_CXX_COMPILER=g++-12 -DUseInternalOpenAL=ON"
           if [ "${{ matrix.portable }}" == "Portable" ]; then
             OPTIONS+=" -DBuildPortableVersion=ON -DUseTurboJPEG=ON"
           else
@@ -267,7 +267,7 @@ jobs:
         shell: bash
         working-directory: ${{ github.workspace }}/build
         run: |
-          OPTIONS="-DCMAKE_OSX_ARCHITECTURES=${{ matrix.arch }} -DCMAKE_SYSTEM_PROCESSOR=${{ matrix.arch }} -DCMAKE_BUILD_TYPE=${{ matrix.build_type }} -DCMAKE_INSTALL_PREFIX=${{ github.workspace }}/install"
+          OPTIONS="-DCMAKE_OSX_ARCHITECTURES=${{ matrix.arch }} -DCMAKE_SYSTEM_PROCESSOR=${{ matrix.arch }} -DCMAKE_BUILD_TYPE=${{ matrix.build_type }} -DCMAKE_INSTALL_PREFIX=${{ github.workspace }}/install -DUseInternalOpenAL=ON"
           OPTIONS+=" -DUseTurboJPEG=ON"
           if [ "${{ matrix.portable }}" == "Portable" ]; then
             OPTIONS+=" -DBuildPortableVersion=ON"
@@ -336,7 +336,7 @@ jobs:
         shell: bash
         working-directory: ${{ github.workspace }}/build
         run: |
-          OPTIONS="-DCMAKE_OSX_ARCHITECTURES=${{ matrix.arch }} -DCMAKE_SYSTEM_PROCESSOR=${{ matrix.arch }} -DCMAKE_BUILD_TYPE=${{ matrix.build_type }} -DCMAKE_INSTALL_PREFIX=${{ github.workspace }}/install"
+          OPTIONS="-DCMAKE_OSX_ARCHITECTURES=${{ matrix.arch }} -DCMAKE_SYSTEM_PROCESSOR=${{ matrix.arch }} -DCMAKE_BUILD_TYPE=${{ matrix.build_type }} -DCMAKE_INSTALL_PREFIX=${{ github.workspace }}/install -DUseInternalOpenAL=ON"
           OPTIONS+=" -DUseTurboJPEG=ON -DUseInternalPNGNeon=ON"
           if [ "${{ matrix.portable }}" == "Portable" ]; then
             OPTIONS+=" -DBuildPortableVersion=ON"
@@ -419,6 +419,12 @@ jobs:
           lipo -create -output universal2-app/JediAcademy/taystjkded \
             x86_64-extracted/taystjkded.x86_64 \
             arm64-extracted/taystjkded.arm64
+
+          lipo -create -output universal2-app/JediAcademy/taystjk.app/Contents/Frameworks/libopenal.1.dylib \
+            x86_64-extracted/taystjk.x86_64.app/Contents/Frameworks/libopenal.1.dylib \
+            arm64-extracted/taystjk.arm64.app/Contents/Frameworks/libopenal.1.dylib
+
+          cp -R x86_64-extracted/licenses universal2-app/JediAcademy/
 
           cp -v \
             x86_64-extracted/taystjk.x86_64.app/Contents/Frameworks/libSDL2-2.0.0.dylib \
