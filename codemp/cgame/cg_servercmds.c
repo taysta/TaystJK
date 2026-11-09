@@ -247,6 +247,7 @@ void CG_ParseServerinfo( void ) {
 	cgs.baseGame = qfalse;
 	cgs.jpDuelAlpha = 0;
 	cgs.restricts = 0;
+	cgs.hookpull = 0;
 	cgs.taystJKinfo =  atoi(Info_ValueForKey(info, "taystJKinfo")); // taystjk feature flags
 
 	gamename = Info_ValueForKey(info, "gamename");
@@ -294,6 +295,13 @@ void CG_ParseServerinfo( void ) {
 		{
 			cgs.serverMod = SVMOD_LMD;
 		}
+	}
+
+	if (cgs.serverMod != SVMOD_JAPRO && (cgs.taystJKinfo & TAYSTJK_INFO_GRAPPLE_TARZAN))
+	{//other mods with jaPRO's grapple pull at their g_hookStrength too
+		cgs.hookpull = atoi(Info_ValueForKey(info, "g_hookStrength"));
+		if (cgs.hookpull <= 0)
+			cgs.hookpull = 800;
 	}
 
 	//multiversion "support"

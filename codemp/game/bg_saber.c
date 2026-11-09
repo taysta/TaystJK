@@ -1729,7 +1729,7 @@ saberMoveName_t PM_SaberFlipOverAttackMove(void)
 #ifdef _GAME
 	if (g_tweakSaber.integer & ST_FIXYELLOWDFA)
 #else
-	if ((cgs.cinfo & JAPLUS_CINFO_YELLOWDFA) || (cgs.jcinfo & JAPRO_CINFO_YELLOWDFA))
+	if ((cgs.serverMod == SVMOD_JAPLUS && (cgs.cinfo & JAPLUS_CINFO_YELLOWDFA)) || (cgs.serverMod == SVMOD_JAPRO && (cgs.jcinfo & JAPRO_CINFO_YELLOWDFA)))
 #endif
 		VectorScale( jumpFwd, 50, pm->ps->velocity );
 	else

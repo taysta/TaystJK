@@ -770,7 +770,7 @@ qboolean BG_KickingAnim( int anim )
 int BG_InGrappleMove(int anim)
 {
 #ifdef _CGAME
-	if ( cgs.serverMod == SVMOD_JAPLUS )
+	if ( JAPLUS_GRABS )
 	{//JA+'s melee grabs, force drain grab and new moves
 		switch ( anim )
 		{
@@ -1057,7 +1057,7 @@ qboolean BG_InDeathAnim ( int anim )
 qboolean BG_InKnockDownOnly( int anim )
 {
 #ifdef _CGAME
-	if ( cgs.serverMod == SVMOD_JAPLUS && (anim == BOTH_BACK_FALLING || anim == BOTH_JUMP_BACKFLIP_ATCKEE_FALL) )
+	if ( JAPLUS_GRABS && (anim == BOTH_BACK_FALLING || anim == BOTH_JUMP_BACKFLIP_ATCKEE_FALL) )
 	{
 		return qtrue;
 	}
@@ -1144,7 +1144,7 @@ qboolean PM_InCartwheel( int anim )
 qboolean BG_InKnockDownOnGround( playerState_t *ps )
 {
 #ifdef _CGAME
-	if ( cgs.serverMod == SVMOD_JAPLUS )
+	if ( JAPLUS_GRABS )
 	{
 		switch ( ps->legsAnim )
 		{
@@ -1365,7 +1365,7 @@ qboolean PM_InSaberAnim( int anim )
 qboolean PM_InKnockDown( playerState_t *ps )
 {
 #ifdef _CGAME
-	if ( cgs.serverMod == SVMOD_JAPLUS )
+	if ( JAPLUS_GRABS )
 	{
 		switch ( ps->legsAnim )
 		{
@@ -1514,7 +1514,7 @@ qboolean PM_SpinningAnim( int anim )
 qboolean PM_InOnGroundAnim ( int anim )
 {
 #ifdef _CGAME
-	if ( cgs.serverMod == SVMOD_JAPLUS
+	if ( JAPLUS_GRABS
 		&& (anim == BOTH_BACK_FALLING || anim == BOTH_BACK_FALLING_GETUP || anim == BOTH_JUMP_BACKFLIP_ATCKEE_FALL) )
 	{
 		return qtrue;
