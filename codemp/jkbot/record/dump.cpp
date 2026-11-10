@@ -46,6 +46,17 @@
  *   {"view":[x,y,z,pitch,yaw,roll],"visible":[n,...],"rays":[f,...]}: the third-person camera
  *   (followed snapshot by snapshot, damped as the cgame damps it), the players in the snapshot it
  *   sees (entity numbers, ascending) and the rays' hit fractions from the eye.
+ * - others (`+set jkbot_dumpOthers 1`, off by default so format 2 dumps keep their bytes; the
+ *   header's pov then ends with "others":true): each such snapshot's pov also ends with
+ *   "others":[{"n":N,"view":[...],"visible":[...],"rays":[...]},...], the same three values for
+ *   every other player in the snapshot (ascending), from its entityState as that player's own
+ *   client would have computed them from its playerState: origin and view angles are the
+ *   entity's (pos.trBase, apos.trBase: BG_PlayerStateToEntityStateExtraPolate copies them
+ *   unsnapped at g_smoothClients 1), the camera's clock its pos.trTime (the commandTime), and the
+ *   viewheight what PM_CheckDuck sets for its box: dead -16, a crouch-height box 12, or 36 in a
+ *   roll (by legsAnim; legsTimer isn't sent), standing 36. The standheight is the default 40 and
+ *   a dead player's camera yaw (STAT_DEAD_YAW) isn't known. "visible" there counts the snapshot's
+ *   own player too (its box from its playerState: dead, ducked or rolling, standing).
  * - end: written when the demo ends (CL_DemoCompleted), then the client quits with status 0. Any
  *   Com_Error while the dump cvar is set ends the dump with "error":"<message>" and is made
  *   fatal, so the client exits nonzero.
@@ -74,6 +85,7 @@
 #include "qcommon/cm_public.h"
 #include "../shared/rays.h"
 #include "../shared/vis.h"
+#include "game/anims.h"
 #endif
 
 #ifndef DEMO_DUMP_ENGINE_SHA
@@ -220,6 +232,10 @@ static char				povIgnore[POV_SIGHT_LIST][MAX_QPATH], povOccluders[POV_SIGHT_LIST
 static int				povNumIgnore, povNumOccluders;
 static int				povRays;
 static float			povLength;
+static qboolean			povOthers;  // jkbot_dumpOthers: the other players' views too
+static jkbVisCamera_t	povOtherCam[MAX_CLIENTS];
+static int				povOtherSeen[MAX_CLIENTS];  // the snapshot count each was last in
+static int				povSnapCount;
 
 // The map's jkbot_sight items (clear | mask <contents> | ignore <shader> | occluder <shader>) from
 // jkbot_dumpSightDir/<map>.sight, '/' in the map name as '_'; without one, the defaults.
@@ -278,9 +294,10 @@ static void PovBegin( void ) {
 	if ( povRays < 1 || povRays > POV_MAX_RAYS || !( povLength > 0.0f ) ) {
 		Com_Error( ERR_DROP, "demo dump: bad ray count %d or length %g", povRays, povLength );
 	}
+	povOthers = (qboolean)( Cvar_VariableIntegerValue( "jkbot_dumpOthers" ) != 0 );
 	Putf( ",\"pov\":{\"rays\":%d,\"length\":", povRays );
 	PutFloat( povLength );
-	Put( "}" );
+	Put( povOthers ? ",\"others\":true}" : "}" );
 }
 
 static void PovCameraTrace( trace_t *result, const vec3_t start, const vec3_t mins, const vec3_t maxs,
@@ -298,6 +315,8 @@ static void PovGamestate( const char *serverinfo ) {
 	Q_strncpyz( map, Info_ValueForKey( serverinfo, "mapname" ), sizeof( map ) );
 	JKBVis_CameraReset( &povCam );
 	povCamClient = -1;
+	memset( povOtherSeen, 0, sizeof( povOtherSeen ) );
+	povSnapCount = 0;
 	if ( !povLoaded || Q_stricmp( povSight.map, map ) ) {
 		JKBVis_FreeSight( &povSight );
 		povLoaded = qfalse;
@@ -322,6 +341,142 @@ static void PovGamestate( const char *serverinfo ) {
 	PutString( map );
 	Putf( ",\"loaded\":%s,\"sight\":\"%s\"}", povLoaded ? "true" : "false",
 		povSightMeasured ? "measured" : "default" );
+}
+
+static void PovRays( const playerState_t *ps ) {
+	Put( "\"rays\":[" );
+	float fractions[POV_MAX_RAYS];
+	vec3_t eye;
+	JKBRays_Eye( ps, eye );
+	JKBRays_Cast( eye, ps->viewangles[YAW], povRays, povLength, PovWorldTrace, fractions );
+	for ( int i = 0; i < povRays; i++ ) {
+		if ( i ) {
+			Put( "," );
+		}
+		PutFloat( fractions[i] );
+	}
+	Put( "]" );
+}
+
+// BG_InRoll's animations (bg_panimate.c); its legsTimer > 0 isn't known for an entity.
+static qboolean PovRollAnim( int anim ) {
+	switch ( anim ) {
+	case BOTH_GETUP_BROLL_B:
+	case BOTH_GETUP_BROLL_F:
+	case BOTH_GETUP_BROLL_L:
+	case BOTH_GETUP_BROLL_R:
+	case BOTH_GETUP_FROLL_B:
+	case BOTH_GETUP_FROLL_F:
+	case BOTH_GETUP_FROLL_L:
+	case BOTH_GETUP_FROLL_R:
+	case BOTH_ROLL_F:
+	case BOTH_ROLL_B:
+	case BOTH_ROLL_R:
+	case BOTH_ROLL_L:
+		return qtrue;
+	default:
+		return qfalse;
+	}
+}
+
+// What the camera and the rays read of a playerState, for another player from its entityState
+// (see "others" above). Everything else is zero.
+static void PovOtherState( const entityState_t *es, playerState_t *ps ) {
+	vec3_t mins, maxs;
+	memset( ps, 0, sizeof( *ps ) );
+	ps->clientNum = es->number;
+	ps->commandTime = es->pos.trTime;
+	VectorCopy( es->pos.trBase, ps->origin );
+	VectorCopy( es->apos.trBase, ps->viewangles );
+	ps->standheight = DEFAULT_MAXS_2;
+	ps->crouchheight = CROUCH_MAXS_2;
+	JKBVis_PlayerBox( es->solid, mins, maxs );
+	if ( es->eFlags & EF_DEAD ) {  // PM_CheckDuck
+		ps->stats[STAT_HEALTH] = 0;
+		ps->stats[STAT_DEAD_YAW] = (int)es->apos.trBase[YAW];  // not known: its own yaw
+		ps->viewheight = DEAD_VIEWHEIGHT;
+	} else {
+		ps->stats[STAT_HEALTH] = 1;
+		ps->viewheight = maxs[2] <= CROUCH_MAXS_2 && !PovRollAnim( es->legsAnim )
+			? CROUCH_VIEWHEIGHT : DEFAULT_VIEWHEIGHT;
+	}
+}
+
+// The snapshot's own player as another player's client boxes it (PM_CheckDuck's maxs), or qfalse
+// when it isn't a player entity there (BG_PlayerStateToEntityState: ET_INVISIBLE).
+static qboolean PovOwnBox( const playerState_t *ps, vec3_t mins, vec3_t maxs ) {
+	if ( ps->pm_type == PM_INTERMISSION || ps->pm_type == PM_SPECTATOR
+		|| ps->stats[STAT_HEALTH] <= GIB_HEALTH ) {
+		return qfalse;
+	}
+	VectorSet( mins, -15, -15, DEFAULT_MINS_2 );
+	VectorSet( maxs, 15, 15, ps->standheight ? ps->standheight : DEFAULT_MAXS_2 );
+	if ( ps->stats[STAT_HEALTH] <= 0 ) {
+		maxs[2] = -8;
+	} else if ( ps->pm_flags & ( PMF_DUCKED | PMF_ROLLING ) ) {
+		maxs[2] = ps->crouchheight ? ps->crouchheight : CROUCH_MAXS_2;
+	}
+	return qtrue;
+}
+
+static void PovOthers( const clSnapshot_t &snap ) {
+	const playerState_t *own = &snap.ps;
+	const entityState_t *players[MAX_CLIENTS];
+	int numPlayers = 0;
+	for ( int i = 0; i < snap.numEntities; i++ ) {
+		const entityState_t *es = &cl.parseEntities[( snap.parseEntitiesNum + i ) & ( MAX_PARSE_ENTITIES - 1 )];
+		if ( es->eType == ET_PLAYER && es->number < MAX_CLIENTS && es->number != own->clientNum ) {
+			players[numPlayers++] = es;  // ascending: snapshot entities are sorted
+		}
+	}
+	vec3_t ownMins, ownMaxs;
+	const qboolean ownBox = PovOwnBox( own, ownMins, ownMaxs );
+	povSnapCount++;
+	Put( ",\"others\":[" );
+	for ( int k = 0; k < numPlayers; k++ ) {
+		const entityState_t *es = players[k];
+		playerState_t ps;
+		vec3_t org, ang;
+		PovOtherState( es, &ps );
+		if ( !povOtherSeen[es->number] || povOtherSeen[es->number] != povSnapCount - 1 ) {  // new, or back after a gap
+			JKBVis_CameraReset( &povOtherCam[es->number] );
+		}
+		povOtherSeen[es->number] = povSnapCount;
+		JKBVis_Camera( &povOtherCam[es->number], &povParams, &ps, PovCameraTrace, org, ang );
+		Putf( k ? ",{\"n\":%d,\"view\":[" : "{\"n\":%d,\"view\":[", es->number );
+		for ( int i = 0; i < 6; i++ ) {
+			if ( i ) {
+				Put( "," );
+			}
+			PutFloat( i < 3 ? org[i] : ang[i - 3] );
+		}
+		Put( "],\"visible\":[" );
+		qboolean first = qtrue, ownDone = (qboolean)!ownBox;
+		for ( int j = 0; j <= numPlayers; j++ ) {  // ascending, the own player in its place
+			if ( !ownDone && ( j == numPlayers || players[j]->number > own->clientNum ) ) {
+				ownDone = qtrue;
+				if ( JKBVis_Visible( &povSight, &povParams, org, ang, own->origin, ownMins, ownMaxs,
+					NULL, NULL ) ) {
+					Putf( first ? "%d" : ",%d", own->clientNum );
+					first = qfalse;
+				}
+			}
+			if ( j == numPlayers || j == k ) {
+				continue;
+			}
+			vec3_t mins, maxs;
+			JKBVis_PlayerBox( players[j]->solid, mins, maxs );
+			if ( JKBVis_Visible( &povSight, &povParams, org, ang, players[j]->pos.trBase, mins, maxs,
+				NULL, NULL ) ) {
+				Putf( first ? "%d" : ",%d", players[j]->number );
+				first = qfalse;
+			}
+		}
+		Put( "]," );
+		PovRays( &ps );
+		Put( "}" );
+	}
+	Put( "]" );
 }
 
 static void PovSnapshot( const clSnapshot_t &snap ) {
@@ -365,18 +520,12 @@ static void PovSnapshot( const clSnapshot_t &snap ) {
 	for ( int i = 0; i < numSeen; i++ ) {
 		Putf( i ? ",%d" : "%d", seen[i] );
 	}
-	Put( "],\"rays\":[" );
-	float fractions[POV_MAX_RAYS];
-	vec3_t eye;
-	JKBRays_Eye( ps, eye );
-	JKBRays_Cast( eye, ps->viewangles[YAW], povRays, povLength, PovWorldTrace, fractions );
-	for ( int i = 0; i < povRays; i++ ) {
-		if ( i ) {
-			Put( "," );
-		}
-		PutFloat( fractions[i] );
+	Put( "]," );
+	PovRays( ps );
+	if ( povOthers ) {
+		PovOthers( snap );
 	}
-	Put( "]}" );
+	Put( "}" );
 }
 #endif
 

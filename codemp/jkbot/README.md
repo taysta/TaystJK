@@ -60,7 +60,11 @@ Demo dump POV (`record/dump.cpp`, P2-DM-05): in the agent client build only (the
 `JKBOT_AGENT` define on dump.cpp and the shared sources; the client compiles the server too, so
 the macro isn't target-wide), each full-mode snapshot also gets the POV's camera, the players it
 sees and the rays, from the snapshot's playerState with the shared code above. A release client's
-dump has `"pov":null` in its header.
+dump has `"pov":null` in its header. With `+set jkbot_dumpOthers 1` (off by default: the dump's
+bytes don't change without it) each snapshot's pov also carries `"others"`: the same camera,
+visible players and rays for every other player in the snapshot, from its entityState (origin,
+view angles, box and legs animation), as that player's own client would have had them. They feed
+opponent-side imitation decisions (training `jkbot.data.opponent`); nothing in play reads them.
 
 Throughput timers (`bench.cpp`, P1-BEN-01/02): with `jkbot_bench 1`, each STEP's wall time and
 the game frames run are counted, and so is the time spent in Ghoul2: at load the server points
