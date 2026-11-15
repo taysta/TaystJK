@@ -1297,6 +1297,16 @@ unsigned int AnyLanguage_ReadCharFromString( const char *psText, int *piAdvanceC
 
 		case eThai:
 		{
+			// Thai in UTF-8 (U+0E00-U+0E7F, E0 B8/B9 xx) is read as UTF-8 below, and the
+			// TIS-620 codes only mean something when the game's Thai glyph data is installed
+			//
+			int iUTF8Advance = 1;
+			const unsigned int uiUTF8 = Q_UTF8_ReadCharFromString( (const char *)psString, &iUTF8Advance );
+			if ( (iUTF8Advance == 3 && uiUTF8 >= 0x0E00 && uiUTF8 <= 0x0E7F) || g_ThaiCodes.m_mapValidCodes.empty() )
+			{
+				break;
+			}
+
 			int iThaiBytes;
 			uiLetter = Thai_ValidTISCode( psString, iThaiBytes );
 			if ( uiLetter )
@@ -2667,10 +2677,17 @@ void CFontInfo::UpdateAsianIfNeeded( bool bForceReEval /* = false */ )
 							}
 							else
 							{
-								// failed to load a needed file, reset to English...
+								// no Thai glyph data: Thai text is UTF-8 then, drawn by
+								// the TTF fonts and r_fontFallbacks instead of glyph pages
+								// (this runs on every font lookup while there are no pages)
 								//
-								ri.Cvar_Set("se_language", "english");
-								Com_Error( ERR_DROP, psFailureReason );
+								static bool bReported = false;
+								if (!bReported)
+								{
+									ri.Printf( PRINT_DEVELOPER, "%s", psFailureReason );
+									bReported = true;
+								}
+								iGlyphTPs = 0;
 							}
 						}
 					}
