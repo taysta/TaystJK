@@ -1924,3 +1924,8 @@ typedef int( *cmpFunc_t )(const void *a, const void *b);
 
 void *Q_LinearSearch( const void *key, const void *ptr, size_t count,
 	size_t size, cmpFunc_t cmp );
+
+unsigned int Q_UTF8_ReadCharFromString( const char *psText, int *piAdvanceCount );
+int Q_UTF8_Encode( unsigned int uiCodepoint, char *psOutput );	// psOutput: at least 4 bytes, returns bytes written
+int Q_UTF8_Strlen( const char *psText );	// length in characters, not bytes
+qboolean Q_UTF8_IsContinuationByte( byte b );
