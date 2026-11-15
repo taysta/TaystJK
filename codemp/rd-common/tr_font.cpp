@@ -663,6 +663,35 @@ static int Korean_CollapseKSC5601HangulCode(unsigned int uiCode)
 	return 0;
 }
 
+#include "tr_font_ksc.h"
+
+// Korean text is handed around as Unicode like everything else, so that an
+// outline font can draw it; these convert at the edges. (0 = no such character)
+//
+static unsigned int Korean_KSCToUnicode( unsigned int uiCode )
+{
+	const int iIndex = Korean_CollapseKSC5601HangulCode( uiCode );
+	return (iIndex > 0 && iIndex < KSC_TABLE_SIZE) ? g_kscToUnicode[iIndex] : 0;
+}
+
+// ...and back to a glyph index in the game's own Korean glyph pages
+//
+static int Korean_CollapseUnicode( unsigned int uiLetter )
+{
+	static unsigned short pReverse[0x10000];
+	static bool bBuilt = false;
+	if (!bBuilt)
+	{
+		bBuilt = true;
+		for (int i = KSC_TABLE_SIZE - 1; i > 0; i--)	// backwards: of duplicates, keep the first
+		{
+			pReverse[g_kscToUnicode[i]] = (unsigned short)i;
+		}
+		pReverse[0] = 0;
+	}
+	return (uiLetter >= 0x80 && uiLetter <= 0xFFFF) ? pReverse[uiLetter] : 0;
+}
+
 static int Korean_InitFields(int &iGlyphTPs, const char *&psLang)
 {
 	psLang		= "kor";
@@ -1217,7 +1246,9 @@ unsigned int AnyLanguage_ReadCharFromString( const char *psText, int *piAdvanceC
 	{
 		case eKorean:
 		{
-			if ( Korean_ValidKSC5601Hangul( psString[0], psString[1] ))
+			// (chat and names from updated clients are UTF-8 whatever the language)
+			//
+			if ( !Font_UTF8RunAhead( psString ) && Korean_ValidKSC5601Hangul( psString[0], psString[1] ))
 			{
 				uiLetter = (psString[0] * 256) + psString[1];
 				*piAdvanceCount = 2;
@@ -1230,7 +1261,8 @@ unsigned int AnyLanguage_ReadCharFromString( const char *psText, int *piAdvanceC
 					*pbIsTrailingPunctuation = qfalse;
 				}
 
-				return uiLetter;
+				uiLetter = Korean_KSCToUnicode( uiLetter );
+				return uiLetter ? uiLetter : 0x3000;	// unassigned code: a blank, as the glyph pages have
 			}
 		}
 		break;
@@ -2828,12 +2860,12 @@ const glyphInfo_t *CFontInfo::GetLetter(const unsigned int uiLetter, int *piShad
 	}
 
 #ifdef USE_FREETYPE
-	// (Japanese arrives as Unicode, so the font or a fallback can draw it; the
-	// other Asian languages are still in their own encodings, and anything
-	// the fonts lack is left to the game's glyph pages)
+	// (Japanese and Korean arrive as Unicode, so the font or a fallback can draw
+	// them; the other Asian languages are still in their own encodings, and
+	// anything the fonts lack is left to the game's glyph pages)
 	//
 	if (m_bTTF && (!(AsianGlyphsAvailable() && GetCollapsedAsianCode(uiLetter))
-				|| (GetLanguageEnum() == eJapanese && TTF_CacheGlyph(uiLetter))))
+				|| ((GetLanguageEnum() == eJapanese || GetLanguageEnum() == eKorean) && TTF_CacheGlyph(uiLetter))))
 	{
 		return TTF_GetLetter(uiLetter, piShader);
 	}
@@ -2974,7 +3006,7 @@ const int CFontInfo::GetCollapsedAsianCode(ulong uiLetter) const
 	{
 		switch ( GetLanguageEnum() )
 		{
-			case eKorean:		iCollapsedAsianCode = Korean_CollapseKSC5601HangulCode( uiLetter );	break;
+			case eKorean:		iCollapsedAsianCode = Korean_CollapseUnicode( uiLetter );			break;
 			case eTaiwanese:	iCollapsedAsianCode = Taiwanese_CollapseBig5Code( uiLetter );		break;
 			case eJapanese:		iCollapsedAsianCode = Japanese_CollapseUnicode( uiLetter );			break;
 			case eChinese:		iCollapsedAsianCode = Chinese_CollapseGBCode( uiLetter );			break;
