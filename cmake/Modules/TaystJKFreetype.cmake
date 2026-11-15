@@ -35,6 +35,10 @@ function(taystjk_target_use_freetype target)
 		# package configuration.
 		set(CPACK_OUTPUT_CONFIG_FILE "${CMAKE_BINARY_DIR}/_deps/freetype-CPackConfig.cmake")
 		set(CPACK_SOURCE_OUTPUT_CONFIG_FILE "${CMAKE_BINARY_DIR}/_deps/freetype-CPackSourceConfig.cmake")
+		# ...and from warning that we included it first, or that its minimum
+		# CMake version is an old one.
+		unset(CPack_CMake_INCLUDED)
+		set(CMAKE_WARN_DEPRECATED OFF)
 		set(BUILD_SHARED_LIBS   OFF)
 		# The static library is linked into the renderer shared objects.
 		set(CMAKE_POSITION_INDEPENDENT_CODE ON)
