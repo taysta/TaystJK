@@ -656,6 +656,7 @@ void	SCR_DrawStringExt2(float x, float y, float charWidth, float charHeight, con
 void	SCR_DrawBigStringColor( int x, int y, const char *s, vec4_t color, qboolean noColorEscape );	// ignores embedded color control characters
 void	SCR_DrawSmallStringExt( int x, int y, const char *string, float *setColor, qboolean forceColor, qboolean noColorEscape );
 void	SCR_DrawSmallChar( int x, int y, int ch );
+void	SCR_DrawFontString( float x, float y, const char *text, const float *rgba, int font, int iCharLimit, float scale );	// virtual 640x480 units, fractions kept
 
 
 //

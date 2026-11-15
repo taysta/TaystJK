@@ -417,7 +417,7 @@ static void Field_DrawGridded( const char *str, int cursorBytes, int x, int y, q
 	const int	iFont = cls.consoleFont;
 	const int	iTenChars = re->Font_StrLenPixels("aaaaaaaaaa", iFont, 1.0f);
 	const float	fCellW = small ? con.charWidth * con.xadjust : BIGCHAR_WIDTH * cls.widthRatioCoef;	// virtual units
-	const float	fScale = (iTenChars > 0) ? (small ? con.charWidth * con.yadjust : (float)BIGCHAR_WIDTH) * 10.0f / (float)iTenChars : 1.0f;
+	const float	fScale = (iTenChars > 0) ? (small ? con.charWidth * con.xadjust : (float)BIGCHAR_WIDTH) * 10.0f / (float)iTenChars : 1.0f;	// (see Con_FontScale)
 	const char	*p = str;
 	int			column = 0;
 	int			cursorColumn = -1;
@@ -451,9 +451,9 @@ static void Field_DrawGridded( const char *str, int cursorBytes, int x, int y, q
 			int columns;
 
 			if ( small ) {
-				re->Font_DrawString( (int)(con.xadjust * (x + column * con.charWidth)), (int)(con.yadjust * y), seq, colorWhite, iFont, -1, fScale );
+				SCR_DrawFontString( con.xadjust * (x + column * con.charWidth), con.yadjust * y, seq, colorWhite, iFont, -1, fScale );
 			} else {
-				re->Font_DrawString( (int)((x + column*BIGCHAR_WIDTH)*cls.widthRatioCoef), y, seq, chatColour, iFont, -1, fScale );
+				SCR_DrawFontString( (x + column*BIGCHAR_WIDTH)*cls.widthRatioCoef, y, seq, chatColour, iFont, -1, fScale );
 			}
 			columns = (int)(re->Font_StrLenPixels( seq, iFont, fScale ) / fCellW + 0.5f);
 			column += (columns < 1) ? 1 : columns;
@@ -555,12 +555,12 @@ void Field_VariableSizeDraw( field_t *edit, int x, int y, int size, qboolean sho
 			const float fVirtualX = (size == con.charWidth) ? con.xadjust * x : x * cls.widthRatioCoef;
 			const float fVirtualY = (size == con.charWidth) ? con.yadjust * y : (float)y;
 			// (the chat field passes its width in pixels as "size", not a cell width)
-			const float fCellW = (size == con.charWidth) ? (float)size * con.yadjust : (float)BIGCHAR_WIDTH;
+			const float fCellW = (size == con.charWidth) ? (float)size * con.xadjust : (float)BIGCHAR_WIDTH;	// (see Con_FontScale)
 
 			// match ten glyph cells of the grid, same normalisation Raven used...
 			const float fScale = fCellW * 10.0f / (float)iTenChars;
 
-			re->Font_DrawString((int)fVirtualX, (int)fVirtualY, str, size == con.charWidth ? colorWhite : chatColour, iFont, -1, fScale);
+			SCR_DrawFontString(fVirtualX, fVirtualY, str, size == con.charWidth ? colorWhite : chatColour, iFont, -1, fScale);
 
 			// draw the cursor at the measured width of the text before it...
 			if (showCursor && !((int)(cls.realtime >> 8) & 1)) {
@@ -671,7 +671,7 @@ void Field_FontDraw( field_t *edit, float x, float y, float scale, int font, con
 	Com_Memcpy( str, edit->buffer + prestep, drawLen );
 	str[drawLen] = 0;
 
-	re->Font_DrawString( (int)x, (int)y, str, color, font, -1, scale );
+	SCR_DrawFontString( x, y, str, color, font, -1, scale );
 
 	if ( showCursor && !((int)( cls.realtime >> 8 ) & 1) ) {
 		int prefix = edit->cursor - prestep;

@@ -878,10 +878,13 @@ qboolean Con_UseFontSystem(void)
 
 float Con_FontScale(int iFontIndex)
 {
-	// match ten glyph cells of the grid, same normalisation Raven used...
+	// match ten glyph cells of the grid, same normalisation Raven used. The
+	// cells are spaced in horizontal virtual units, and the measured width
+	// already carries the renderer's aspect correction, so scale by xadjust:
+	// yadjust only agrees with it while cl_ratioFix corrects the aspect fully
 	const int iTenChars = re->Font_StrLenPixels("aaaaaaaaaa", iFontIndex, 1.0f);
 
-	return (iTenChars > 0) ? con.charWidth * 10.0f / iTenChars * con.yadjust : 1.0f;
+	return (iTenChars > 0) ? con.charWidth * 10.0f / iTenChars * con.xadjust : 1.0f;
 }
 
 static qboolean Con_RowHasUTF8(const conChar_t* rowText, int iNumCells)
@@ -957,9 +960,9 @@ static void Con_DrawFontRowGridded(const conChar_t* rowText, int iNumCells, int 
 			continue;
 		}
 
-		re->Font_DrawString(
-			(int)(con.xadjust * (float)(iCellZeroX + iColumn * con.charWidth)),
-			(int)(con.yadjust * fY),
+		SCR_DrawFontString(
+			con.xadjust * (float)(iCellZeroX + iColumn * con.charWidth),
+			con.yadjust * fY,
 			sSeq, g_color_table[rowText[x].f.color], iFontIndex, -1, fFontScale);
 		iGridColor = -1;	// the font system leaves its own colour set
 
@@ -1058,9 +1061,7 @@ void Con_DrawNotify (void)
 	int iPixelHeightToAdvance = 0;
 	if (Con_UseFontSystem())
 	{
-		fFontScale = con.charWidth * 10.0f /
-			re->Font_StrLenPixels("aaaaaaaaaa", iFontIndex, 1.0f);
-		fFontScale *= con.yadjust;
+		fFontScale = Con_FontScale(iFontIndex);
 		iPixelHeightToAdvance = 2+(1.3/con.yadjust) * re->Font_HeightPixels(iFontIndex, fFontScale);
 	}
 
@@ -1302,9 +1303,7 @@ void Con_DrawSolidConsole( float frac ) {
 	int iPixelHeightToAdvance = con.charHeight;
 	if (Con_UseFontSystem())
 	{
-		fFontScale = con.charWidth * 10.0f /
-			re->Font_StrLenPixels("aaaaaaaaaa", iFontIndex, 1.0f);
-		fFontScale *= con.yadjust;
+		fFontScale = Con_FontScale(iFontIndex);
 		iPixelHeightToAdvance = 2+(1.3/con.yadjust) * re->Font_HeightPixels(iFontIndex, fFontScale);
 	}
 

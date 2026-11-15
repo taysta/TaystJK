@@ -191,6 +191,20 @@ void SCR_DrawSmallChar( int x, int y, int ch ) {
 					   cls.charSetShader );
 }
 
+/*
+** SCR_DrawFontString
+** re->Font_DrawString at a fractional virtual-screen position: text laid out
+** one cell at a time is evenly spaced only if positions keep their fractions.
+** Falls back to whole units with a renderer that doesn't offer it.
+*/
+void SCR_DrawFontString( float x, float y, const char *text, const float *rgba, int font, int iCharLimit, float scale ) {
+	if ( re->ext.Font_DrawString ) {
+		re->ext.Font_DrawString( x, y, text, rgba, font, iCharLimit, scale );
+	} else {
+		re->Font_DrawString( (int)x, (int)y, text, rgba, font, iCharLimit, scale );
+	}
+}
+
 
 /*
 ==================

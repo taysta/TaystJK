@@ -3221,6 +3221,15 @@ int RE_Font_HeightPixels(const int iFontHandle, const float fScaleIn)
 cvar_t *cl_coloredTextShadows;
 void RE_Font_DrawString(int ox, int oy, const char *psText, const float *rgba, const int iFontHandleIn, int iMaxPixelWidth, const float fScaleIn)
 {
+	RE_Font_DrawStringF( (float)ox, (float)oy, psText, rgba, iFontHandleIn, iMaxPixelWidth, fScaleIn );
+}
+
+// The position is in 640x480 virtual units, which are several real pixels
+// apiece at high resolutions: text laid out one cell at a time (the console)
+// needs the fractions, or its spacing comes out uneven.
+//
+void RE_Font_DrawStringF(float ox, float oy, const char *psText, const float *rgba, const int iFontHandleIn, int iMaxPixelWidth, const float fScaleIn)
+{
 	static qboolean gbInShadow = qfalse;	// MUST default to this
 	float				fox, foy, fx, fy;
 	int					colour, offset;
@@ -3340,7 +3349,7 @@ void RE_Font_DrawString(int ox, int oy, const char *psText, const float *rgba, c
 #ifdef USE_FREETYPE
 			g_bFontShadowPass = true;
 #endif
-			RE_Font_DrawString(ox + offset, oy + offset, dropShadowText, v4DKGREY2, iFontHandle & SET_MASK, iMaxPixelWidth, fScale);
+			RE_Font_DrawStringF(ox + offset, oy + offset, dropShadowText, v4DKGREY2, iFontHandle & SET_MASK, iMaxPixelWidth, fScale);
 #ifdef USE_FREETYPE
 			g_bFontShadowPass = false;
 #endif
@@ -3355,7 +3364,7 @@ void RE_Font_DrawString(int ox, int oy, const char *psText, const float *rgba, c
 #ifdef USE_FREETYPE
 			g_bFontShadowPass = true;
 #endif
-			RE_Font_DrawString(ox + offset, oy + offset, psText, v4DKGREY2, iFontHandle & SET_MASK, iMaxPixelWidth, fScale);
+			RE_Font_DrawStringF(ox + offset, oy + offset, psText, v4DKGREY2, iFontHandle & SET_MASK, iMaxPixelWidth, fScale);
 #ifdef USE_FREETYPE
 			g_bFontShadowPass = false;
 #endif
