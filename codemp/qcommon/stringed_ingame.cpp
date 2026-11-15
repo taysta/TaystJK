@@ -488,6 +488,29 @@ void CStringEdPackage::AddFlagReference( const char *psLocalReference, const cha
 	}
 }
 
+// true if the text has non-ASCII characters and they are all well-formed UTF-8
+//
+static qboolean SE_IsUTF8( const char *psText )
+{
+	qboolean bMultiByte = qfalse;
+
+	while (*psText)
+	{
+		int iAdvance = 1;
+		Q_UTF8_ReadCharFromString( psText, &iAdvance );
+		if ((byte)*psText >= 0x80)
+		{
+			if (iAdvance == 1)
+			{
+				return qfalse;	// a codepage byte
+			}
+			bMultiByte = qtrue;
+		}
+		psText += iAdvance;
+	}
+	return bMultiByte;
+}
+
 // this copes with both foreigners using hi-char values (eg the french using 0x92 instead of 0x27
 //  for a "'" char), as well as the fact that our buggy fontgen program writes out zeroed glyph info for
 //	some fonts anyway (though not all, just as a gotcha).
@@ -500,6 +523,11 @@ static char *CopeWithDumbStringData( const char *psSentence, const char *psThisL
 	const int iBufferSize = strlen(psSentence)*3;	// *3 to allow for expansion of anything even stupid string consisting entirely of elipsis chars
 	char *psNewString = (char *) Z_Malloc(iBufferSize, TAG_TEMP_WORKSPACE, qfalse);
 	Q_strncpyz(psNewString, psSentence, iBufferSize);
+
+	// the byte fixes below are for codepage text: in UTF-8 those bytes are
+	// parts of letters (most of Cyrillic, Polish a-ogonek...) and must be left alone
+	//
+	const qboolean bUTF8 = SE_IsUTF8( psNewString );
 
 	// this is annoying, I have to just guess at which languages to do it for (ie NOT ASIAN/MBCS!!!) since the
 	//	string system was deliberately (and correctly) designed to not know or care whether it was doing SBCS
@@ -518,55 +546,58 @@ static char *CopeWithDumbStringData( const char *psSentence, const char *psThisL
 	{
 		char *p;
 
-	//	strXLS_Speech.Replace(va("%c",0x92),va("%c",0x27));	// "'"
-		while ((p=strchr(psNewString,0x92))!=NULL)  // "rich" (and illegal) apostrophe
+		if (!bUTF8)
 		{
-			*p = 0x27;
-		}
+		//	strXLS_Speech.Replace(va("%c",0x92),va("%c",0x27));	// "'"
+			while ((p=strchr(psNewString,0x92))!=NULL)  // "rich" (and illegal) apostrophe
+			{
+				*p = 0x27;
+			}
 
-	//	strXLS_Speech.Replace(va("%c",0x93),"\"");			// smart quotes -> '"'
-		while ((p=strchr(psNewString,0x93))!=NULL)
-		{
-			*p = '"';
-		}
+		//	strXLS_Speech.Replace(va("%c",0x93),"\"");			// smart quotes -> '"'
+			while ((p=strchr(psNewString,0x93))!=NULL)
+			{
+				*p = '"';
+			}
 
-	//	strXLS_Speech.Replace(va("%c",0x94),"\"");			// smart quotes -> '"'
-		while ((p=strchr(psNewString,0x94))!=NULL)
-		{
-			*p = '"';
-		}
+		//	strXLS_Speech.Replace(va("%c",0x94),"\"");			// smart quotes -> '"'
+			while ((p=strchr(psNewString,0x94))!=NULL)
+			{
+				*p = '"';
+			}
 
-	//	strXLS_Speech.Replace(va("%c",0x0B),".");			// full stop
-		while ((p=strchr(psNewString,0x0B))!=NULL)
-		{
-			*p = '.';
-		}
+		//	strXLS_Speech.Replace(va("%c",0x0B),".");			// full stop
+			while ((p=strchr(psNewString,0x0B))!=NULL)
+			{
+				*p = '.';
+			}
 
-	//	strXLS_Speech.Replace(va("%c",0x85),"...");			// "..."-char ->  3-char "..."
-		while ((p=strchr(psNewString,0x85))!=NULL)  // "rich" (and illegal) apostrophe
-		{
-			memmove(p+2,p,strlen(p));
-			*p++ = '.';
-			*p++ = '.';
-			*p   = '.';
-		}
+		//	strXLS_Speech.Replace(va("%c",0x85),"...");			// "..."-char ->  3-char "..."
+			while ((p=strchr(psNewString,0x85))!=NULL)  // "rich" (and illegal) apostrophe
+			{
+				memmove(p+2,p,strlen(p));
+				*p++ = '.';
+				*p++ = '.';
+				*p   = '.';
+			}
 
-	//	strXLS_Speech.Replace(va("%c",0x91),va("%c",0x27));	// "'"
-		while ((p=strchr(psNewString,0x91))!=NULL)
-		{
-			*p = 0x27;
-		}
+		//	strXLS_Speech.Replace(va("%c",0x91),va("%c",0x27));	// "'"
+			while ((p=strchr(psNewString,0x91))!=NULL)
+			{
+				*p = 0x27;
+			}
 
-	//	strXLS_Speech.Replace(va("%c",0x96),va("%c",0x2D));	// "-"
-		while ((p=strchr(psNewString,0x96))!=NULL)
-		{
-			*p = 0x2D;
-		}
+		//	strXLS_Speech.Replace(va("%c",0x96),va("%c",0x2D));	// "-"
+			while ((p=strchr(psNewString,0x96))!=NULL)
+			{
+				*p = 0x2D;
+			}
 
-	//	strXLS_Speech.Replace(va("%c",0x97),va("%c",0x2D));	// "-"
-		while ((p=strchr(psNewString,0x97))!=NULL)
-		{
-			*p = 0x2D;
+		//	strXLS_Speech.Replace(va("%c",0x97),va("%c",0x2D));	// "-"
+			while ((p=strchr(psNewString,0x97))!=NULL)
+			{
+				*p = 0x2D;
+			}
 		}
 
 		// bug fix for picky grammatical errors, replace "?." with "? "
