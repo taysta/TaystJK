@@ -283,3 +283,85 @@ float	R_FogFactor( float s, float t ) {
 
 	return d;
 }
+
+// TTF font atlas glue (used by rd-common/tr_font.cpp, see rd-common/tr_font.h)
+#ifdef USE_FREETYPE
+void* R_Font_CreateAtlasImage(int iWidth, int iHeight, qhandle_t* phShader, qboolean bIdentityColor, qhandle_t* phShadowShader)
+{
+	static int iFontAtlasCount = 0;
+	char sName[MAX_QPATH];
+
+	Com_sprintf(sName, sizeof(sName), "*fontatlas%d", iFontAtlasCount++);
+
+	byte* pBlank = new byte[iWidth * iHeight * 4];
+	memset(pBlank, 0, iWidth * iHeight * 4);
+
+	image_t* pImage = R_CreateImage(sName, pBlank, iWidth, iHeight,
+		IMGFLAG_CLAMPTOEDGE | IMGFLAG_NO_COMPRESSION | IMGFLAG_NOLIGHTSCALE | IMGFLAG_NOSCALE);
+	delete[] pBlank;
+
+	*phShader = 0;
+	if (phShadowShader)
+	{
+		*phShadowShader = 0;
+	}
+
+	if (!pImage)
+	{
+		return NULL;
+	}
+
+	// the colour generators are baked into the pipeline by FinishShader, so
+	// they are set on the bundle up front rather than patched afterwards.
+	// text pages follow the text colour; colour emoji pages keep their own
+	// colours, only alpha still follows the text...
+	textureBundle_t bundle = {};
+	bundle.image[0] = pImage;
+	bundle.tcGen = TCGEN_TEXTURE;
+	bundle.rgbGen = bIdentityColor ? CGEN_IDENTITY_LIGHTING : CGEN_VERTEX;
+	bundle.alphaGen = AGEN_VERTEX;
+
+	shader_t* pShader = R_CreateShaderFromTextureBundle(sName, &bundle,
+		GLS_DEPTHTEST_DISABLE | GLS_SRCBLEND_SRC_ALPHA | GLS_DSTBLEND_ONE_MINUS_SRC_ALPHA);
+
+	if (!pShader)
+	{
+		return (void*)pImage;
+	}
+
+	*phShader = pShader->index;
+
+	// optional dropshadow companion: same texture, but vertex-tinted, so the
+	// dark shadow colour multiplies a colour glyph down to a silhouette...
+	if (phShadowShader)
+	{
+		*phShadowShader = pShader->index;
+		if (bIdentityColor)
+		{
+			char sShadowName[MAX_QPATH];
+			Com_sprintf(sShadowName, sizeof(sShadowName), "%sshadow", sName);
+			bundle.rgbGen = CGEN_VERTEX;
+			shader_t* pShadowShader = R_CreateShaderFromTextureBundle(sShadowName, &bundle,
+				GLS_DEPTHTEST_DISABLE | GLS_SRCBLEND_SRC_ALPHA | GLS_DSTBLEND_ONE_MINUS_SRC_ALPHA);
+			if (pShadowShader)
+			{
+				*phShadowShader = pShadowShader->index;
+			}
+		}
+	}
+
+	return (void*)pImage;
+}
+
+void R_Font_UpdateAtlasImage(void* pAtlasImage, int iX, int iY, int iWidth, int iHeight, const byte* pRGBA)
+{
+	image_t* pImage = (image_t*)pAtlasImage;
+
+	if (!pImage)
+	{
+		return;
+	}
+
+	vk_upload_image_data(pImage, iX, iY, iWidth, iHeight, 1, (byte*)pRGBA, iWidth * iHeight * 4, qtrue);
+}
+#endif // USE_FREETYPE

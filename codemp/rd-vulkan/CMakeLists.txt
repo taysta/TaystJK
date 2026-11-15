@@ -223,3 +223,6 @@ set_property(TARGET ${MPVulkanRenderer} APPEND PROPERTY COMPILE_OPTIONS ${OPENJK
 set_target_properties(${MPVulkanRenderer} PROPERTIES INCLUDE_DIRECTORIES "${MPVulkanRendererIncludeDirectories}")
 set_target_properties(${MPVulkanRenderer} PROPERTIES PROJECT_LABEL "MP Vulkan Renderer")
 target_link_libraries(${MPVulkanRenderer} ${MPVulkanRendererLibraries})
+
+include(TaystJKFreetype)
+taystjk_target_use_freetype(${MPVulkanRenderer})
