@@ -561,7 +561,15 @@ void Field_VariableSizeDraw( field_t *edit, int x, int y, int size, qboolean sho
 			// match ten glyph cells of the grid, same normalisation Raven used...
 			const float fScale = fCellW * 10.0f / (float)iTenChars;
 
-			SCR_DrawFontString(fVirtualX, fVirtualY, str, size == con.charWidth ? colorWhite : chatColour, iFont, -1, fScale);
+			// the chat field (big) keeps the black shadow the grid drew it with
+			const qboolean	shadowed = (qboolean)(size != con.charWidth);
+			const float		*textColour = shadowed ? chatColour : colorWhite;
+
+			if (shadowed) {
+				SCR_DrawFontStringShadowed(fVirtualX, fVirtualY, str, textColour, iFont, -1, fScale);
+			} else {
+				SCR_DrawFontString(fVirtualX, fVirtualY, str, textColour, iFont, -1, fScale);
+			}
 
 			// draw the cursor at the measured width of the text before it...
 			if (showCursor && !((int)(cls.realtime >> 8) & 1)) {
@@ -584,12 +592,14 @@ void Field_VariableSizeDraw( field_t *edit, int x, int y, int size, qboolean sho
 				const float fCursorW = (float)re->Font_StrLenPixels("a", iFont, fScale);
 				const float fCellH = (float)re->Font_HeightPixels(iFont, fScale);
 
-				if (kg.key_overstrikeMode) {
-					SCR_FillRect(fCursorX, fVirtualY, fCursorW, fCellH, colorWhite);			// full block
+				const float fCursorY = kg.key_overstrikeMode ? fVirtualY : fVirtualY + fCellH;
+				const float fCursorH = kg.key_overstrikeMode ? fCellH : 2.0f;	// full block, or a bar right below the line
+
+				if (shadowed) {
+					const vec4_t black = { 0.0f, 0.0f, 0.0f, textColour[3] };
+					SCR_FillRect(fCursorX + 2, fCursorY + 2, fCursorW, fCursorH, black);
 				}
-				else {
-					SCR_FillRect(fCursorX, fVirtualY + fCellH, fCursorW, 2.0f, colorWhite);	// bar right below the line
-				}
+				SCR_FillRect(fCursorX, fCursorY, fCursorW, fCursorH, textColour);
 			}
 			return;
 		}
