@@ -1145,26 +1145,25 @@ void Con_DrawNotify (void)
 			chattext = SE_GetString("MP_SVGAME", "SAY");
 		}
 
-		// con_chatFont: draw the chat prompt and input with the font system
-		// instead of the stretched charset grid. 2 = when TTF fonts are
-		// preferred (r_useFreeType 2), which is when it pays off the most.
+		// con_chatFont: draw the chat prompt and input with the outline font
+		// fonts/charsgrid_med.ttf (when there is one) instead of the stretched
+		// charset grid, which keeps the typeface and gains the resolution.
 		static cvar_t *con_chatFont = NULL;
 		if ( !con_chatFont ) {
-			con_chatFont = Cvar_Get( "con_chatFont", "2", CVAR_ARCHIVE, "Chat input line: 0 = charset grid, 1 = font system, 2 = font system when r_useFreeType is 2" );
+			con_chatFont = Cvar_Get( "con_chatFont", "1", CVAR_ARCHIVE, "Chat input line: 0 = charset grid, 1 = fonts/charsgrid_med.ttf when present" );
 		}
-		const int iChatFontHeight = re->Font_HeightPixels( cls.consoleFont, 1.0f );
+		const int iChatFontHeight = cls.chatFont ? re->Font_HeightPixels( cls.chatFont, 1.0f ) : 0;
 
-		if ( iChatFontHeight > 0 && ( con_chatFont->integer == 1 ||
-			( con_chatFont->integer >= 2 && Cvar_VariableIntegerValue( "r_useFreeType" ) >= 2 ) ) )
+		if ( con_chatFont->integer && iChatFontHeight > 0 )
 		{
 			// as tall as the grid's characters
 			const float fChatScale = (float)BIGCHAR_HEIGHT / (float)iChatFontHeight;
 			const float fChatX = 8 * cls.widthRatioCoef;
 
-			re->Font_DrawString( (int)fChatX, v, chattext, chatColour, cls.consoleFont | STYLE_DROPSHADOW, -1, fChatScale );
+			re->Font_DrawString( (int)fChatX, v, chattext, chatColour, cls.chatFont | STYLE_DROPSHADOW, -1, fChatScale );
 			Field_FontDraw( &chatField,
-				fChatX + re->Font_StrLenPixels( chattext, cls.consoleFont, fChatScale ) + re->Font_StrLenPixels( "a", cls.consoleFont, fChatScale ),
-				v, fChatScale, cls.consoleFont, chatColour, qtrue );
+				fChatX + re->Font_StrLenPixels( chattext, cls.chatFont, fChatScale ) + re->Font_StrLenPixels( "a", cls.chatFont, fChatScale ),
+				v, fChatScale, cls.chatFont, chatColour, qtrue );
 		}
 		else
 		{
