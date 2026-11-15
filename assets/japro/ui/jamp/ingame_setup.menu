@@ -4721,7 +4721,9 @@
 				English  			english
 				@MENUS_LANG_FRENCH  francais
 				Deutsch				deutsch
-				"Espa�ol" 			espanol
+				"Українська"		ukrainian
+				"Čeština"			czech
+				"Español" 			espanol
 			}
 			rect				220 283 300 20
 				textalign			ITEM_ALIGN_RIGHT

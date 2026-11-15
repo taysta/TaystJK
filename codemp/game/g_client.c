@@ -1428,6 +1428,27 @@ static void ClientCleanName( const char *in, char *out, int outSize )
 
 	for(; *in && outpos < outSize - 1; in++)
 	{
+		// multi-byte UTF-8 sequences are copied whole: the byte blacklist below
+		// must never fire on continuation bytes of legitimate characters
+		// (0x81/0x8D/0x8F/0x90/0x9D/0xA0/0xAD occur inside cyrillic letters!),
+		// and truncation must never cut a sequence in half...
+		{
+			int seqLen = 1;
+			Q_UTF8_ReadCharFromString(in, &seqLen);
+			if (seqLen > 1)
+			{
+				if (outpos + seqLen > outSize - 1)
+					break;	// doesn't fit: stop cleanly on a character boundary
+
+				memcpy(out + outpos, in, seqLen);
+				outpos += seqLen;
+				in += seqLen - 1;	// the loop's in++ steps past the last byte
+				spaces = ats = 0;
+				colorlessLen++;
+				continue;
+			}
+		}
+
 		out[outpos] = *in;
 
 		if ( *in == ' ' )

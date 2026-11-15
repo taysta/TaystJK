@@ -26,6 +26,7 @@ along with this program; if not, see <http://www.gnu.org/licenses/>.
 #include "sys/sys_local.h"
 
 static cvar_t *in_keyboardDebug = NULL;
+static cvar_t *in_utf8 = NULL;
 
 static SDL_Joystick *stick = NULL;
 
@@ -637,6 +638,7 @@ void IN_Init( void *windowData )
 
 	// joystick variables
 	in_keyboardDebug = Cvar_Get( "in_keyboardDebug", "0", CVAR_ARCHIVE_ND );
+	in_utf8 = Cvar_Get( "in_utf8", "1", CVAR_ARCHIVE, "Typed and pasted non-ASCII characters: 0 = always a legacy codepage byte, 1 = legacy byte when there is one and UTF-8 otherwise, 2 = always UTF-8" );
 
 	in_joystick = Cvar_Get( "in_joystick", "0", CVAR_ARCHIVE_ND|CVAR_LATCH );
 
@@ -829,6 +831,39 @@ uint8_t ConvertUTF32ToExpectedCharset( uint32_t utf32 )
 
 /*
 ===============
+Sys_EncodeInputChar
+
+How a typed or pasted character goes into text (chat, names, cvars).
+
+Other clients, and older builds of this one, only understand one byte per
+character in a Windows codepage (see ConvertUTF32ToExpectedCharset), so by
+default a character that has such a byte is still sent that way, and only
+the ones that never could be sent before (emoji, greek, CJK...) go out as
+UTF-8. in_utf8 0 never uses UTF-8, in_utf8 2 always does.
+===============
+*/
+int Sys_EncodeInputChar( uint32_t utf32, char *out )
+{
+	const int mode = in_utf8 ? in_utf8->integer : 1;
+
+	if ( utf32 >= 128 && mode < 2 )
+	{
+		const uint8_t legacy = ConvertUTF32ToExpectedCharset( utf32 );
+		// (no codepage byte: the conversion just returns the low byte)
+		const bool hasLegacy = ( utf32 <= 0xFF || legacy != (uint8_t)utf32 );
+
+		if ( hasLegacy || mode <= 0 )
+		{
+			out[0] = (char)legacy;
+			return 1;
+		}
+	}
+
+	return Q_UTF8_Encode( utf32, out );
+}
+
+/*
+===============
 IN_ProcessEvents
 ===============
 */
@@ -892,8 +927,14 @@ static void IN_ProcessEvents( int eventTime )
 							}
 							else
 							{
-								uint8_t encoded = ConvertUTF32ToExpectedCharset( utf32 );
-								Sys_QueEvent( eventTime, SE_CHAR, encoded, 0, 0, NULL );
+								// one char event per byte, so both engine fields and VM
+								// fields receive the text as it will be stored...
+								char encoded[4];
+								const int bytes = Sys_EncodeInputChar( utf32, encoded );
+								for ( int i = 0; i < bytes; i++ )
+								{
+									Sys_QueEvent( eventTime, SE_CHAR, (int)(unsigned char)encoded[i], 0, 0, NULL );
+								}
 							}
 						}
 					}

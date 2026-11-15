@@ -2667,7 +2667,22 @@ void CL_InitRenderer( void ) {
 
 	// load character sets
 	cls.charSetShader = re->RegisterShaderNoMip("gfx/2d/charsgrid_med");
-	cls.consoleFont = re->RegisterFont( "ocr_a" );
+	cvar_t* con_fontName = Cvar_Get("con_fontName", "ocr_a", CVAR_ARCHIVE | CVAR_LATCH, "Console font: name or name@size");
+	cls.consoleFont = re->RegisterFont(con_fontName->string);
+	if (!cls.consoleFont) {
+		cls.consoleFont = re->RegisterFont("ocr_a");	// safety net: never leave the console fontless
+	}
+	// the console and the chat input line are drawn from the charset grid
+	// image; outline fonts of the same name let them be drawn in the same
+	// typeface at full resolution (the chat line stretches the grid to
+	// double width, hence the second font)
+	cls.gridFont = cls.chatFont = 0;
+	if ( FS_ReadFile( "fonts/charsgrid_med.ttf", NULL ) > 0 || FS_ReadFile( "fonts/charsgrid_med.otf", NULL ) > 0 ) {
+		cls.gridFont = re->RegisterFont( "charsgrid_med" );
+	}
+	if ( FS_ReadFile( "fonts/charsgrid_med_wide.ttf", NULL ) > 0 || FS_ReadFile( "fonts/charsgrid_med_wide.otf", NULL ) > 0 ) {
+		cls.chatFont = re->RegisterFont( "charsgrid_med_wide" );
+	}
 
 	cls.whiteShader = re->RegisterShader( "white" );
 	cls.consoleShader = re->RegisterShader("console");

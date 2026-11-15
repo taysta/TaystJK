@@ -191,6 +191,37 @@ void SCR_DrawSmallChar( int x, int y, int ch ) {
 					   cls.charSetShader );
 }
 
+/*
+** SCR_DrawFontString
+** re->Font_DrawString at a fractional virtual-screen position: text laid out
+** one cell at a time is evenly spaced only if positions keep their fractions.
+** Falls back to whole units with a renderer that doesn't offer it.
+*/
+void SCR_DrawFontString( float x, float y, const char *text, const float *rgba, int font, int iCharLimit, float scale ) {
+	if ( re->ext.Font_DrawString ) {
+		re->ext.Font_DrawString( x, y, text, rgba, font, iCharLimit, scale );
+	} else {
+		re->Font_DrawString( (int)x, (int)y, text, rgba, font, iCharLimit, scale );
+	}
+}
+
+/*
+** SCR_DrawFontStringShadowed
+** Font text with the shadow the charset grid strings have (SCR_DrawStringExt2):
+** black, two units down and right. The font system's own STYLE_DROPSHADOW is
+** dark grey and offset by 7.5% of the text size, which at chat size is one
+** unit and all but hidden behind the letters.
+*/
+void SCR_DrawFontStringShadowed( float x, float y, const char *text, const float *rgba, int font, int iCharLimit, float scale ) {
+	char	shadowText[MAX_STRING_CHARS];
+	vec4_t	black = { 0.0f, 0.0f, 0.0f, rgba ? rgba[3] : 1.0f };
+
+	Q_strncpyz( shadowText, text, sizeof( shadowText ) );
+	Q_StripColor( shadowText );	// colour codes take no room, and would tint the shadow
+	SCR_DrawFontString( x + 2, y + 2, shadowText, black, font, iCharLimit, scale );
+	SCR_DrawFontString( x, y, text, rgba, font, iCharLimit, scale );
+}
+
 
 /*
 ==================

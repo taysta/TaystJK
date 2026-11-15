@@ -359,6 +359,8 @@ typedef struct clientStatic_s {
 	qhandle_t	whiteShader;
 	qhandle_t	consoleShader;
 	int			consoleFont;
+	int			gridFont;			// outline remake of the charset grid's typeface, 0 if there is none
+	int			chatFont;			// the same at double width, as the chat input line stretches the grid
 
 	// Cursor
 	qboolean	cursorActive;
@@ -654,6 +656,8 @@ void	SCR_DrawStringExt2(float x, float y, float charWidth, float charHeight, con
 void	SCR_DrawBigStringColor( int x, int y, const char *s, vec4_t color, qboolean noColorEscape );	// ignores embedded color control characters
 void	SCR_DrawSmallStringExt( int x, int y, const char *string, float *setColor, qboolean forceColor, qboolean noColorEscape );
 void	SCR_DrawSmallChar( int x, int y, int ch );
+void	SCR_DrawFontString( float x, float y, const char *text, const float *rgba, int font, int iCharLimit, float scale );	// virtual 640x480 units, fractions kept
+void	SCR_DrawFontStringShadowed( float x, float y, const char *text, const float *rgba, int font, int iCharLimit, float scale );	// with the charset strings' black shadow
 
 
 //

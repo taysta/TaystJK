@@ -1354,3 +1354,105 @@ int Q_parseColor( const char *p, const vec3_t *numberColors, float *color ) {
 	}*/
     return -1;
 }
+
+// The decoder is intentionally forgiving: any invalid/truncated sequence
+// is returned as a single raw byte with advance=1. This keeps backwards
+// compatibility: legacy SBCS strings won't break rendering, they
+// are simply processed byte-by-byte as before.
+unsigned int Q_UTF8_ReadCharFromString(const char* psText, int* piAdvanceCount)
+{
+	const byte* s = (const byte*)psText;
+	const byte b0 = s[0];
+	unsigned int uiCodepoint;
+	int iLen, i;
+
+	*piAdvanceCount = 1;
+
+	if (b0 < 0x80)	// plain ASCII, most common case
+	{
+		return b0;
+	}
+
+	if ((b0 & 0xE0) == 0xC0) { uiCodepoint = b0 & 0x1F; iLen = 2; }
+	else if ((b0 & 0xF0) == 0xE0) { uiCodepoint = b0 & 0x0F; iLen = 3; }
+	else if ((b0 & 0xF8) == 0xF0) { uiCodepoint = b0 & 0x07; iLen = 4; }
+	else
+	{
+		return b0;	// invalid lead byte -> raw byte (legacy string)
+	}
+
+	for (i = 1; i < iLen; i++)
+	{
+		if ((s[i] & 0xC0) != 0x80)
+		{
+			return b0;	// truncated sequence -> raw byte
+		}
+		uiCodepoint = (uiCodepoint << 6) | (s[i] & 0x3F);
+	}
+
+	// reject overlong encodings, surrogates and out-of-range codepoints
+	if ((iLen == 2 && uiCodepoint < 0x80) ||
+		(iLen == 3 && uiCodepoint < 0x800) ||
+		(iLen == 4 && uiCodepoint < 0x10000) ||
+		(uiCodepoint > 0x10FFFF) ||
+		(uiCodepoint >= 0xD800 && uiCodepoint <= 0xDFFF))
+	{
+		return b0;
+	}
+
+	*piAdvanceCount = iLen;
+	return uiCodepoint;
+}
+
+qboolean Q_UTF8_IsContinuationByte(byte b)
+{
+	return (qboolean)((b & 0xC0) == 0x80);
+}
+
+int Q_UTF8_Encode(unsigned int uiCodepoint, char* psOutput)
+{
+	byte* out = (byte*)psOutput;
+
+	if (uiCodepoint > 0x10FFFF || (uiCodepoint >= 0xD800 && uiCodepoint <= 0xDFFF))
+	{
+		uiCodepoint = 0xFFFD;	// not encodable: replacement character
+	}
+
+	if (uiCodepoint < 0x80)
+	{
+		out[0] = (byte)uiCodepoint;
+		return 1;
+	}
+	if (uiCodepoint < 0x800)
+	{
+		out[0] = (byte)(0xC0 | (uiCodepoint >> 6));
+		out[1] = (byte)(0x80 | (uiCodepoint & 0x3F));
+		return 2;
+	}
+	if (uiCodepoint < 0x10000)
+	{
+		out[0] = (byte)(0xE0 | (uiCodepoint >> 12));
+		out[1] = (byte)(0x80 | ((uiCodepoint >> 6) & 0x3F));
+		out[2] = (byte)(0x80 | (uiCodepoint & 0x3F));
+		return 3;
+	}
+	out[0] = (byte)(0xF0 | (uiCodepoint >> 18));
+	out[1] = (byte)(0x80 | ((uiCodepoint >> 12) & 0x3F));
+	out[2] = (byte)(0x80 | ((uiCodepoint >> 6) & 0x3F));
+	out[3] = (byte)(0x80 | (uiCodepoint & 0x3F));
+	return 4;
+}
+
+int Q_UTF8_Strlen(const char* psText)
+{
+	int iChars = 0;
+	int iAdvance;
+
+	while (*psText)
+	{
+		Q_UTF8_ReadCharFromString(psText, &iAdvance);
+		psText += iAdvance;
+		iChars++;
+	}
+	return iChars;
+}

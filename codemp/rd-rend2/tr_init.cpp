@@ -2550,6 +2550,7 @@ Q_EXPORT refexport_t* QDECL GetRefAPI ( int apiVersion, refimport_t *rimp ) {
 	*/
 
 	re.ext.Font_StrLenPixels = RE_Font_StrLenPixelsNew;
+	re.ext.Font_DrawString = RE_Font_DrawStringF;
 
 	return &re;
 }

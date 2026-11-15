@@ -2131,6 +2131,27 @@ void Cmd_FollowPrev_f( gentity_t *ent ) {
 
 /*
 ==================
+G_TruncateUTF8
+
+Cuts a string down to maxBytes (including the terminator) without ever
+leaving a dangling partial UTF-8 sequence at the end.
+==================
+*/
+static void G_TruncateUTF8(char* text, int maxBytes)
+{
+	int len = strlen(text);
+
+	if (len >= maxBytes)
+	{
+		len = maxBytes - 1;
+		while (len > 0 && Q_UTF8_IsContinuationByte((byte)text[len]))
+			len--;
+		text[len] = '\0';
+	}
+}
+
+/*
+==================
 G_Say
 ==================
 */
@@ -2328,7 +2349,7 @@ static void Cmd_Say_f( gentity_t *ent ) {
 	p = ConcatArgs( 1 );
 
 	if ( strlen( p ) >= MAX_SAY_TEXT ) {
-		p[MAX_SAY_TEXT-1] = '\0';
+		G_TruncateUTF8(p, MAX_SAY_TEXT);
 		G_SecurityLogPrintf( "Cmd_Say_f from %d (%s) has been truncated: %s\n", ent->s.number, ent->client->pers.netname, p );
 	}
 
@@ -2385,7 +2406,7 @@ static void Cmd_SayTeam_f( gentity_t *ent ) {
 	p = ConcatArgs( 1 );
 
 	if ( strlen( p ) >= MAX_SAY_TEXT ) {
-		p[MAX_SAY_TEXT-1] = '\0';
+		G_TruncateUTF8(p, MAX_SAY_TEXT);
 		G_SecurityLogPrintf( "Cmd_SayTeam_f from %d (%s) has been truncated: %s\n", ent->s.number, ent->client->pers.netname, p );
 	}
 
@@ -2423,7 +2444,7 @@ static void Cmd_Tell_f( gentity_t *ent ) {
 	p = ConcatArgs( 2 );
 
 	if ( strlen( p ) >= MAX_SAY_TEXT ) {
-		p[MAX_SAY_TEXT-1] = '\0';
+		G_TruncateUTF8(p, MAX_SAY_TEXT);
 		G_SecurityLogPrintf( "Cmd_Tell_f from %d (%s) has been truncated: %s\n", ent->s.number, ent->client->pers.netname, p );
 	}
 

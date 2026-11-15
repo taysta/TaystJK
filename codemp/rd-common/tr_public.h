@@ -243,6 +243,7 @@ typedef struct refexport_s {
 
 	struct {
 		float				(*Font_StrLenPixels)					( const char *text, const int iFontIndex, const float scale );
+		void				(*Font_DrawString)						( float ox, float oy, const char *text, const float *rgba, const int setIndex, int iCharLimit, const float scale );
 	} ext;
 
 } refexport_t;

@@ -856,16 +856,12 @@ static void Text_Paint_Limit(float *maxX, float x, float y, float scale, vec4_t 
 			psOutLastGood = psOut;
 
 			uiLetter = trap->R_AnyLanguage_ReadCharFromString(psText, &iAdvanceCount, NULL);
-			psText += iAdvanceCount;
 
-			if (uiLetter > 255)
+			// (copy the character's own bytes: they can't be rebuilt from the
+			// letter, which is Unicode whatever the encoding of the string)
+			while (iAdvanceCount-- > 0 && psOut < &sTemp[sizeof(sTemp)-1])
 			{
-				*psOut++ = uiLetter>>8;
-				*psOut++ = uiLetter&0xFF;
-			}
-			else
-			{
-				*psOut++ = uiLetter&0xFF;
+				*psOut++ = *psText++;
 			}
 		}
 		*psOutLastGood = '\0';
@@ -1178,7 +1174,7 @@ qboolean Asset_Parse(int handle) {
 				return qfalse;
 			}
 			//trap->R_RegisterFont(tempStr, pointSize, &uiInfo.uiDC.Assets.textFont);
-			uiInfo.uiDC.Assets.qhMediumFont = trap->R_RegisterFont(token.string);
+			uiInfo.uiDC.Assets.qhMediumFont = trap->R_RegisterFont(va("%s@%d", token.string, pointSize));
 			uiInfo.uiDC.Assets.fontRegistered = qtrue;
 			continue;
 		}
@@ -1189,7 +1185,7 @@ qboolean Asset_Parse(int handle) {
 				return qfalse;
 			}
 			//trap->R_RegisterFont(token, pointSize, &uiInfo.uiDC.Assets.smallFont);
-			uiInfo.uiDC.Assets.qhSmallFont = trap->R_RegisterFont(token.string);
+			uiInfo.uiDC.Assets.qhSmallFont = trap->R_RegisterFont(va("%s@%d", token.string, pointSize));
 			continue;
 		}
 
@@ -1199,7 +1195,7 @@ qboolean Asset_Parse(int handle) {
 				return qfalse;
 			}
 			//trap->R_RegisterFont(token, pointSize, &uiInfo.uiDC.Assets.smallFont);
-			uiInfo.uiDC.Assets.qhSmall2Font = trap->R_RegisterFont(token.string);
+			uiInfo.uiDC.Assets.qhSmall2Font = trap->R_RegisterFont(va("%s@%d", token.string, pointSize));
 			continue;
 		}
 
@@ -1209,7 +1205,7 @@ qboolean Asset_Parse(int handle) {
 				return qfalse;
 			}
 			//trap->R_RegisterFont(token, pointSize, &uiInfo.uiDC.Assets.bigFont);
-			uiInfo.uiDC.Assets.qhBigFont = trap->R_RegisterFont(token.string);
+			uiInfo.uiDC.Assets.qhBigFont = trap->R_RegisterFont(va("%s@%d", token.string, pointSize));
 			continue;
 		}
 

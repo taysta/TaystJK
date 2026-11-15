@@ -3776,3 +3776,98 @@ void R_DeleteTextures( void ) {
 	GL_SelectTexture( 0 );
 	qglBindTexture( GL_TEXTURE_2D, 0 );
 }
+
+// TTF font atlas glue (used by rd-common/tr_font.cpp, see rd-common/tr_font.h)
+#ifdef USE_FREETYPE
+void* R_Font_CreateAtlasImage(int iWidth, int iHeight, qhandle_t* phShader, qboolean bIdentityColor, qhandle_t* phShadowShader)
+{
+	static int iFontAtlasCount = 0;
+	char sName[MAX_QPATH];
+
+	Com_sprintf(sName, sizeof(sName), "*fontatlas%d", iFontAtlasCount++);
+
+	byte* pBlank = new byte[iWidth * iHeight * 4];
+	memset(pBlank, 0, iWidth * iHeight * 4);
+
+	image_t* pImage = R_CreateImage(sName, pBlank, iWidth, iHeight, IMGTYPE_COLORALPHA,
+		IMGFLAG_CLAMPTOEDGE | IMGFLAG_NO_COMPRESSION | IMGFLAG_NOLIGHTSCALE, 0);
+	delete[] pBlank;
+
+	if (!pImage)
+	{
+		*phShader = 0;
+		if (phShadowShader)
+		{
+			*phShadowShader = 0;
+		}
+		return NULL;
+	}
+
+	textureBundle_t bundle = {};
+	bundle.image[0] = pImage;
+	bundle.numImageAnimations = 0;
+	bundle.tcGen = TCGEN_TEXTURE;
+
+	shader_t* pShader = R_CreateShaderFromTextureBundle(sName, &bundle,
+		GLS_DEPTHTEST_DISABLE | GLS_SRCBLEND_SRC_ALPHA | GLS_DSTBLEND_ONE_MINUS_SRC_ALPHA);
+
+	if (!pShader)
+	{
+		*phShader = 0;
+		if (phShadowShader)
+		{
+			*phShadowShader = 0;
+		}
+		return (void*)pImage;
+	}
+
+	if (pShader->stages[0])
+	{
+		// text pages follow the text colour; colour emoji / emote pages keep
+		// their own colours, only alpha still follows the text...
+		pShader->stages[0]->rgbGen = bIdentityColor ? CGEN_IDENTITY_LIGHTING : CGEN_VERTEX;
+		pShader->stages[0]->alphaGen = AGEN_VERTEX;
+	}
+
+	*phShader = pShader->index;
+
+	// optional dropshadow companion: same texture, but vertex-tinted, so the
+	// dark shadow colour multiplies a colour glyph down to a silhouette...
+	if (phShadowShader)
+	{
+		*phShadowShader = pShader->index;
+		if (bIdentityColor)
+		{
+			char sShadowName[MAX_QPATH];
+			Com_sprintf(sShadowName, sizeof(sShadowName), "%sshadow", sName);
+			shader_t* pShadowShader = R_CreateShaderFromTextureBundle(sShadowName, &bundle,
+				GLS_DEPTHTEST_DISABLE | GLS_SRCBLEND_SRC_ALPHA | GLS_DSTBLEND_ONE_MINUS_SRC_ALPHA);
+			if (pShadowShader && pShadowShader->stages[0])
+			{
+				pShadowShader->stages[0]->rgbGen = CGEN_VERTEX;
+				pShadowShader->stages[0]->alphaGen = AGEN_VERTEX;
+				*phShadowShader = pShadowShader->index;
+			}
+		}
+	}
+
+	return (void*)pImage;
+}
+
+void R_Font_UpdateAtlasImage(void* pAtlasImage, int iX, int iY, int iWidth, int iHeight, const byte* pRGBA)
+{
+	image_t* pImage = (image_t*)pAtlasImage;
+
+	if (!pImage)
+	{
+		return;
+	}
+
+	// the atlas is a plain unscaled RGBA8 texture without mipmaps, so skip the
+	// resampling, light scaling and temp allocations of R_UpdateSubImage...
+	GL_SelectTexture(pImage->TMU);
+	GL_Bind(pImage);
+	qglTexSubImage2D(GL_TEXTURE_2D, 0, iX, iY, iWidth, iHeight, GL_RGBA, GL_UNSIGNED_BYTE, pRGBA);
+	GL_SelectTexture(0);
+}
+#endif // USE_FREETYPE

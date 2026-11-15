@@ -49,6 +49,7 @@ option(BuildDiscordRichPresence "Whether to build with Discord Rich Presence int
 option(BuildTests "Whether to build automatic unit tests (requires Boost)" OFF)
 option(BuildEalMan "Build the portable EAL Manager library" ON)
 option(BuildOpenALSupport "Build the optional OpenAL sound backend" ON)
+option(BuildFreeTypeSupport "Build the renderers with TTF/OTF font support via FreeType" ON)
 option(UseAddressSanitizer "Whether to enable runtime address sanitizer" OFF)
 option(UseUndefinedSanitizer "Whether to enable runtime Undefined Behavior sanitizer" OFF)
 
@@ -96,6 +97,7 @@ option(UseInternalZlib   "If set, use bundled zlib."    ${UseInternalZlibDefault
 option(UseInternalPNG    "If set, use bundled libpng."  ${UseInternalPNGDefault})
 option(UseInternalJPEG   "If set, use bundled libjpeg." ${UseInternalJPEGDefault})
 option(UseInternalSDL2   "If set, use bundled SDL2."    ${UseInternalSDL2Default})
+option(UseInternalFreeType "If set, build a pinned FreeType from source instead of using the system one." ${UseInternalPNGDefault})
 
 if(UseInternalJPEG)
 	set(UseTurboJPEGDefault   	 OFF)

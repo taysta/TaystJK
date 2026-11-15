@@ -2001,7 +2001,7 @@ qboolean CG_Asset_Parse(int handle) {
 			}
 
 //			cgDC.registerFont(token.string, pointSize, &cgDC.Assets.textFont);
-			cgDC.Assets.qhMediumFont = cgDC.RegisterFont(token.string);
+			cgDC.Assets.qhMediumFont = cgDC.RegisterFont(va("%s@%d",token.string, pointSize));
 			continue;
 		}
 
@@ -2012,7 +2012,7 @@ qboolean CG_Asset_Parse(int handle) {
 				return qfalse;
 			}
 //			cgDC.registerFont(token.string, pointSize, &cgDC.Assets.smallFont);
-			cgDC.Assets.qhSmallFont = cgDC.RegisterFont(token.string);
+			cgDC.Assets.qhSmallFont = cgDC.RegisterFont(va("%s@%d",token.string, pointSize));
 			continue;
 		}
 
@@ -2023,7 +2023,7 @@ qboolean CG_Asset_Parse(int handle) {
 				return qfalse;
 			}
 //			cgDC.registerFont(token.string, pointSize, &cgDC.Assets.smallFont);
-			cgDC.Assets.qhSmall2Font = cgDC.RegisterFont(token.string);
+			cgDC.Assets.qhSmall2Font = cgDC.RegisterFont(va("%s@%d",token.string, pointSize));
 			continue;
 		}
 
@@ -2034,7 +2034,7 @@ qboolean CG_Asset_Parse(int handle) {
 				return qfalse;
 			}
 //			cgDC.registerFont(token.string, pointSize, &cgDC.Assets.bigFont);
-			cgDC.Assets.qhBigFont = cgDC.RegisterFont(token.string);
+			cgDC.Assets.qhBigFont = cgDC.RegisterFont(va("%s@%d",token.string, pointSize));
 			continue;
 		}
 

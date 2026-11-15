@@ -197,19 +197,28 @@ static void CL_GetGlconfig( glconfig_t *config ) {
 }
 
 static void GetClipboardData( char *buf, int buflen ) {
-	char	*cbd, *c;
+	char* cbd;
 
-	c = cbd = Sys_GetClipboardData();
+	cbd = Sys_GetClipboardData();
 	if ( !cbd ) {
 		*buf = 0;
 		return;
 	}
 
-	for ( int i = 0, end = buflen - 1; *c && i < end; i++ )
+	// encoded the same way as typed text (see Sys_EncodeInputChar), never
+	// leaving a partial character at the end of the buffer...
+	char *c = cbd;
+	int len = 0;
+	while ( *c )
 	{
-		uint32_t utf32 = ConvertUTF8ToUTF32( c, &c );
-		buf[i] = ConvertUTF32ToExpectedCharset( utf32 );
+		char encoded[4];
+		const int bytes = Sys_EncodeInputChar( ConvertUTF8ToUTF32( c, &c ), encoded );
+		if ( len + bytes > buflen - 1 )
+			break;
+		Com_Memcpy( buf + len, encoded, bytes );
+		len += bytes;
 	}
+	buf[len] = 0;
 
 	Z_Free( cbd );
 }

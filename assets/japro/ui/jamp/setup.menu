@@ -3029,6 +3029,8 @@
 				English	english
 				@MENUS_LANG_FRENCH  francais
 				Deutsch	deutsch
+				"Українська"	ukrainian
+				"Čeština"	czech
 				"Espa�ol"	espanol
 			}
 			rect				260 342 340 14

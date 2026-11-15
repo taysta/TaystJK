@@ -224,3 +224,6 @@ add_custom_command(
 	DEPENDS
 		compact_glsl ${MPRend2GLSLFiles})
 endif()
+
+include(TaystJKFreetype)
+taystjk_target_use_freetype(${MPRend2})

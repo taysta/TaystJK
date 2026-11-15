@@ -1574,3 +1574,81 @@ void R_DeleteTextures( void ) {
 	GL_ResetBinds();
 }
 
+// TTF font atlas glue (used by rd-common/tr_font.cpp, see rd-common/tr_font.h)
+#ifdef USE_FREETYPE
+void* R_Font_CreateAtlasImage(int iWidth, int iHeight, qhandle_t* phShader, qboolean bIdentityColor, qhandle_t* phShadowShader)
+{
+	static int iFontAtlasCount = 0;
+	char sName[MAX_QPATH];
+
+	Com_sprintf(sName, sizeof(sName), "*fontatlas%d", iFontAtlasCount++);
+
+	byte* pBlank = new byte[iWidth * iHeight * 4];
+	memset(pBlank, 0, iWidth * iHeight * 4);
+
+	image_t* pImage = R_CreateImage(sName, pBlank, iWidth, iHeight, GL_RGBA,
+		qfalse /*mipmap*/, qfalse /*allowPicmip*/, qfalse /*allowTC*/, GL_CLAMP);
+	delete[] pBlank;
+
+	if (!pImage)
+	{
+		*phShader = 0;
+		if (phShadowShader)
+		{
+			*phShadowShader = 0;
+		}
+		return NULL;
+	}
+
+	// lightmaps2d gives us the standard GUI shader treatment:
+	// alpha-blended, depth test off, rgb/alpha from vertex colour (RE_SetColor)...
+	*phShader = RE_RegisterShaderFromImage(sName, (int*)lightmaps2d, (byte*)stylesDefault, pImage, qfalse);
+
+	// text pages are vertex-tinted already: their shadow twin is themselves...
+	if (phShadowShader)
+	{
+		*phShadowShader = *phShader;
+	}
+
+	if (bIdentityColor && *phShader)
+	{
+		// dropshadow companion: register a SECOND shader over the same image
+		// and leave it vertex-tinted, so the dark shadow colour multiplies a
+		// colour glyph down to a silhouette. Must happen before the identity
+		// patch below (each registered shader owns its own stages)...
+		if (phShadowShader)
+		{
+			char sShadowName[MAX_QPATH];
+			Com_sprintf(sShadowName, sizeof(sShadowName), "%sshadow", sName);
+			const qhandle_t hShadow = RE_RegisterShaderFromImage(sShadowName, (int*)lightmaps2d, (byte*)stylesDefault, pImage, qfalse);
+			if (hShadow)
+			{
+				*phShadowShader = hShadow;
+			}
+		}
+
+		// colour emoji / emote pages: keep the image's own colours, only the
+		// alpha still follows the text (so fading chat lines fade these too)...
+		shader_t* pShader = R_GetShaderByHandle(*phShader);
+		if (pShader && pShader->stages && pShader->stages[0].active)
+		{
+			pShader->stages[0].rgbGen = CGEN_IDENTITY_LIGHTING;
+		}
+	}
+
+	return (void*)pImage;
+}
+
+void R_Font_UpdateAtlasImage(void* pAtlasImage, int iX, int iY, int iWidth, int iHeight, const byte* pRGBA)
+{
+	image_t* pImage = (image_t*)pAtlasImage;
+
+	if (!pImage)
+	{
+		return;
+	}
+
+	GL_Bind(pImage);
+	qglTexSubImage2D(GL_TEXTURE_2D, 0, iX, iY, iWidth, iHeight, GL_RGBA, GL_UNSIGNED_BYTE, pRGBA);
+}
+#endif // USE_FREETYPE
