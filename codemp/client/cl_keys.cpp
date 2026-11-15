@@ -406,6 +406,7 @@ x, y, amd width are in pixels
 extern console_t con;
 qboolean Con_UseFontSystem(void);	// cl_console.cpp
 int Con_FontMode(void);
+float Con_FontScale(int iFontIndex);
 
 // con_useFont 1: the charset grid keeps drawing single-byte characters exactly
 // as before, multi-byte UTF-8 characters go through the font system. Each
@@ -527,6 +528,12 @@ void Field_VariableSizeDraw( field_t *edit, int x, int y, int size, qboolean sho
 
 	Com_Memcpy( str, edit->buffer + prestep, drawLen );
 	str[ drawLen ] = 0;
+
+	if (fontMode == 1 && noColorEscape && cls.gridFont && size == con.charWidth) {
+		// the console's input line, in the grid's typeface as an outline font
+		Field_FontDraw( edit, con.xadjust * x, con.yadjust * y, Con_FontScale( cls.gridFont ), cls.gridFont, colorWhite, showCursor );
+		return;
+	}
 
 	if (fontMode == 1 && noColorEscape) {
 		for (i = 0; i < drawLen; i++) {
@@ -664,7 +671,7 @@ void Field_FontDraw( field_t *edit, float x, float y, float scale, int font, con
 	Com_Memcpy( str, edit->buffer + prestep, drawLen );
 	str[drawLen] = 0;
 
-	re->Font_DrawString( (int)x, (int)y, str, color, font | STYLE_DROPSHADOW, -1, scale );
+	re->Font_DrawString( (int)x, (int)y, str, color, font, -1, scale );
 
 	if ( showCursor && !((int)( cls.realtime >> 8 ) & 1) ) {
 		int prefix = edit->cursor - prestep;

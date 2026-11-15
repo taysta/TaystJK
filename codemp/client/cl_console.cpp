@@ -847,10 +847,12 @@ DRAWING
 Con_FontMode
 
 How console text is drawn (con_useFont):
-0 - the charset grid only, as always
+0 - the charset grid image only, as always
 1 - the charset grid, plus the font system for the multi-byte UTF-8
-    characters the grid has no glyphs for
-2 - everything through the font system (what asian languages always did)
+    characters the grid has no glyphs for. With fonts/charsgrid_med.ttf
+    installed the grid itself is drawn from that font: same cells and
+    typeface, at the display's resolution
+2 - everything in the console font (what asian languages always did)
 ================
 */
 int Con_FontMode(void)
@@ -859,7 +861,7 @@ int Con_FontMode(void)
 
 	if (!con_useFont)
 	{
-		con_useFont = Cvar_Get("con_useFont", "1", CVAR_ARCHIVE, "Console text: 0 = charset grid only, 1 = grid plus font system for UTF-8 characters, 2 = font system for everything");
+		con_useFont = Cvar_Get("con_useFont", "1", CVAR_ARCHIVE, "Console text: 0 = charset grid image only, 1 = the grid (as the outline font fonts/charsgrid_med.ttf when present) plus fonts for characters it lacks, 2 = the console font for everything");
 	}
 
 	if (re->Language_IsAsian() || con_useFont->integer >= 2)
@@ -874,7 +876,7 @@ qboolean Con_UseFontSystem(void)
 	return (qboolean)(Con_FontMode() == 2);
 }
 
-static float Con_FontScale(int iFontIndex)
+float Con_FontScale(int iFontIndex)
 {
 	// match ten glyph cells of the grid, same normalisation Raven used...
 	const int iTenChars = re->Font_StrLenPixels("aaaaaaaaaa", iFontIndex, 1.0f);
@@ -1098,6 +1100,14 @@ void Con_DrawNotify (void)
 
 			v +=  iPixelHeightToAdvance;
 		}
+		else if (Con_FontMode() == 1 && cls.gridFont)
+		{
+			// the grid's own typeface as an outline font: same cells, full resolution
+			Con_DrawFontRowGridded(text, lineLimit, cl_conXOffset->integer + con.charWidth, (float)v, cls.gridFont, Con_FontScale(cls.gridFont), qfalse);
+			currentColor = -1;
+
+			v += con.charHeight;
+		}
 		else if (Con_FontMode() == 1 && Con_RowHasUTF8(text, lineLimit))
 		{
 			Con_DrawFontRowGridded(text, lineLimit, cl_conXOffset->integer + con.charWidth, (float)v, iFontIndex, Con_FontScale(iFontIndex), qtrue);
@@ -1150,7 +1160,7 @@ void Con_DrawNotify (void)
 		// charset grid, which keeps the typeface and gains the resolution.
 		static cvar_t *con_chatFont = NULL;
 		if ( !con_chatFont ) {
-			con_chatFont = Cvar_Get( "con_chatFont", "1", CVAR_ARCHIVE, "Chat input line: 0 = charset grid, 1 = fonts/charsgrid_med.ttf when present" );
+			con_chatFont = Cvar_Get( "con_chatFont", "1", CVAR_ARCHIVE, "Chat input line: 0 = charset grid, 1 = fonts/charsgrid_med_wide.ttf when present" );
 		}
 		const int iChatFontHeight = cls.chatFont ? re->Font_HeightPixels( cls.chatFont, 1.0f ) : 0;
 
@@ -1163,7 +1173,7 @@ void Con_DrawNotify (void)
 			re->Font_DrawString( (int)fChatX, v, chattext, chatColour, cls.chatFont | STYLE_DROPSHADOW, -1, fChatScale );
 			Field_FontDraw( &chatField,
 				fChatX + re->Font_StrLenPixels( chattext, cls.chatFont, fChatScale ) + re->Font_StrLenPixels( "a", cls.chatFont, fChatScale ),
-				v, fChatScale, cls.chatFont, chatColour, qtrue );
+				v, fChatScale, cls.chatFont | STYLE_DROPSHADOW, chatColour, qtrue );
 		}
 		else
 		{
@@ -1317,6 +1327,11 @@ void Con_DrawSolidConsole( float frac ) {
 		{
 			Con_DrawFontRowGridded (text, con.linewidth + 1, con.charWidth, (float) y,
 				iFontIndex, fFontScale, qfalse);
+		}
+		else if (Con_FontMode() == 1 && cls.gridFont)
+		{
+			Con_DrawFontRowGridded(text, con.linewidth + 1, con.charWidth, (float)y, cls.gridFont, Con_FontScale(cls.gridFont), qfalse);
+			currentColor = -1;
 		}
 		else if (Con_FontMode() == 1 && Con_RowHasUTF8(text, con.linewidth + 1))
 		{

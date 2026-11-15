@@ -359,7 +359,8 @@ typedef struct clientStatic_s {
 	qhandle_t	whiteShader;
 	qhandle_t	consoleShader;
 	int			consoleFont;
-	int			chatFont;			// outline remake of the charset grid's typeface, 0 if there is none
+	int			gridFont;			// outline remake of the charset grid's typeface, 0 if there is none
+	int			chatFont;			// the same at double width, as the chat input line stretches the grid
 
 	// Cursor
 	qboolean	cursorActive;
