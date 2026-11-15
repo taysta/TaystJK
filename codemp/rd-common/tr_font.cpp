@@ -3493,7 +3493,7 @@ void R_InitFonts(void)
 #endif
 
 #ifdef USE_FREETYPE
-	r_useFreeType = ri.Cvar_Get("r_useFreeType", "1", CVAR_ARCHIVE_ND | CVAR_LATCH, "Enable TTF/OTF font loading via FreeType");
+	r_useFreeType = ri.Cvar_Get("r_useFreeType", "2", CVAR_ARCHIVE_ND | CVAR_LATCH, "TTF/OTF fonts: 0 = off, 1 = only for fonts that have no .fontdat, 2 = preferred over a .fontdat of the same name");
 	r_fontProfile = ri.Cvar_Get("r_fontProfile", "0", CVAR_NONE, "Time font drawing, rasterizing and uploads; \"fontlist\" prints and resets the numbers");
 
 	if (!g_FTLibrary)
