@@ -1171,7 +1171,7 @@ void Con_DrawNotify (void)
 			const float fChatScale = (float)BIGCHAR_HEIGHT / (float)iChatFontHeight;
 			const float fChatX = 8 * cls.widthRatioCoef;
 
-			re->Font_DrawString( (int)fChatX, v, chattext, chatColour, cls.chatFont | STYLE_DROPSHADOW, -1, fChatScale );
+			SCR_DrawFontStringShadowed( fChatX, v, chattext, chatColour, cls.chatFont, -1, fChatScale );
 			Field_FontDraw( &chatField,
 				fChatX + re->Font_StrLenPixels( chattext, cls.chatFont, fChatScale ) + re->Font_StrLenPixels( "a", cls.chatFont, fChatScale ),
 				v, fChatScale, cls.chatFont | STYLE_DROPSHADOW, chatColour, qtrue );

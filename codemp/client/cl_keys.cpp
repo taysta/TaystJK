@@ -453,7 +453,8 @@ static void Field_DrawGridded( const char *str, int cursorBytes, int x, int y, q
 			if ( small ) {
 				SCR_DrawFontString( con.xadjust * (x + column * con.charWidth), con.yadjust * y, seq, colorWhite, iFont, -1, fScale );
 			} else {
-				SCR_DrawFontString( (x + column*BIGCHAR_WIDTH)*cls.widthRatioCoef, y, seq, chatColour, iFont, -1, fScale );
+				// (shadowed like the grid characters either side of it)
+				SCR_DrawFontStringShadowed( (x + column*BIGCHAR_WIDTH)*cls.widthRatioCoef, y, seq, chatColour, iFont, -1, fScale );
 			}
 			columns = (int)(re->Font_StrLenPixels( seq, iFont, fScale ) / fCellW + 0.5f);
 			column += (columns < 1) ? 1 : columns;
@@ -671,7 +672,16 @@ void Field_FontDraw( field_t *edit, float x, float y, float scale, int font, con
 	Com_Memcpy( str, edit->buffer + prestep, drawLen );
 	str[drawLen] = 0;
 
-	SCR_DrawFontString( x, y, str, color, font, -1, scale );
+	// STYLE_DROPSHADOW here means the black shadow the charset grid drew
+	// (see SCR_DrawFontStringShadowed), not the font system's fainter one
+	const qboolean shadowed = (qboolean)( ( font & STYLE_DROPSHADOW ) != 0 );
+	font &= ~STYLE_DROPSHADOW;
+
+	if ( shadowed ) {
+		SCR_DrawFontStringShadowed( x, y, str, color, font, -1, scale );
+	} else {
+		SCR_DrawFontString( x, y, str, color, font, -1, scale );
+	}
 
 	if ( showCursor && !((int)( cls.realtime >> 8 ) & 1) ) {
 		int prefix = edit->cursor - prestep;
@@ -688,11 +698,14 @@ void Field_FontDraw( field_t *edit, float x, float y, float scale, int font, con
 		const float cursorW = re->Font_StrLenPixels( "a", font, scale );
 		const float cellH = re->Font_HeightPixels( font, scale );
 
-		if ( kg.key_overstrikeMode ) {
-			SCR_FillRect( cursorX, y, cursorW, cellH, color );			// full block
-		} else {
-			SCR_FillRect( cursorX, y + cellH, cursorW, 2.0f, color );	// bar right below the line
+		const float cursorY = kg.key_overstrikeMode ? y : y + cellH;
+		const float cursorH = kg.key_overstrikeMode ? cellH : 2.0f;	// full block, or a bar right below the line
+
+		if ( shadowed ) {
+			const vec4_t black = { 0.0f, 0.0f, 0.0f, color ? color[3] : 1.0f };
+			SCR_FillRect( cursorX + 2, cursorY + 2, cursorW, cursorH, black );
 		}
+		SCR_FillRect( cursorX, cursorY, cursorW, cursorH, color );
 	}
 }
 
