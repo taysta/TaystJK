@@ -1130,8 +1130,16 @@ static Language_e Font_LegacyLanguage( void )
 		case 1250:	return ePolish;
 		case 1251:	return eRussian;
 		case 1252:	return eWestern;
-		default:	return GetLanguageEnum();
+		default:	break;
 	}
+	// (Russian localisations that replace the base fonts rather than use the
+	// engine's "russian" override name their language "Rus")
+	//
+	if (se_language && !Q_stricmpn( se_language->string, "rus", 3 ))
+	{
+		return eRussian;
+	}
+	return GetLanguageEnum();
 }
 
 static unsigned int Font_LegacyByteToUnicode( unsigned int uiByte )
@@ -1310,7 +1318,12 @@ unsigned int AnyLanguage_ReadCharFromString( const char *psText, int *piAdvanceC
 	// try UTF-8 before falling back to a raw single byte. Invalid/truncated
 	// sequences decode as raw bytes, so legacy cp1251/SBCS text keeps working...
 	//
-	if (psString[0] & 0x80)
+	// (...except straight after a legacy byte: a capital and a symbol in the
+	// middle of a codepage word can pass for one UTF-8 character)
+	//
+	static const byte *psLegacyRunNext = NULL;
+
+	if ((psString[0] & 0x80) && psString != psLegacyRunNext)
 	{
 		int iUTF8Advance = 1;
 		unsigned int uiCode = Q_UTF8_ReadCharFromString((const char*)psString, &iUTF8Advance);
@@ -1327,6 +1340,7 @@ unsigned int AnyLanguage_ReadCharFromString( const char *psText, int *piAdvanceC
 
 	uiLetter = Font_LegacyByteToUnicode( psString[0] );
 	*piAdvanceCount = 1;
+	psLegacyRunNext = (psString[0] & 0x80) ? psString + 1 : NULL;
 
 	if (pbIsTrailingPunctuation)
 	{
