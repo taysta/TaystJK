@@ -717,21 +717,10 @@ void Field_Paste( field_t *edit ) {
 	while( *c )
 	{
 		uint32_t utf32 = ConvertUTF8ToUTF32( c, &c );
-		if (utf32 < 128)
-		{
-			Field_CharEvent(edit, (int)utf32);
-		}
-		else if (!Cvar_VariableIntegerValue("in_utf8"))
-		{
-			Field_CharEvent( edit, ConvertUTF32ToExpectedCharset( utf32 ) );
-		}
-		else
-		{
-			char sUTF8[4];
-			int iBytes = Q_UTF8_Encode(utf32, sUTF8);
-			for (int i = 0; i < iBytes; i++)
-				Field_CharEvent(edit, (int)(unsigned char)sUTF8[i]);
-		}
+		char encoded[4];
+		const int bytes = Sys_EncodeInputChar( utf32, encoded );
+		for ( int i = 0; i < bytes; i++ )
+			Field_CharEvent( edit, (int)(unsigned char)encoded[i] );
 	}
 
 	Z_Free( cbd );

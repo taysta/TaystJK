@@ -205,44 +205,20 @@ static void GetClipboardData( char *buf, int buflen ) {
 		return;
 	}
 
-	if ( !Cvar_VariableIntegerValue( "in_utf8" ) ) {
-		// legacy single-byte charset
-		char *c = cbd;
-		int i = 0;
-		for ( int end = buflen - 1; *c && i < end; i++ )
-		{
-			uint32_t utf32 = ConvertUTF8ToUTF32( c, &c );
-			buf[i] = ConvertUTF32ToExpectedCharset( utf32 );
-		}
-		buf[i] = 0;
-		Z_Free( cbd );
-		return;
-	}
-
-	// the clipboard already arrives as UTF-8 (straight from SDL): pass it
-	// through instead of squeezing every codepoint into one charset byte...
-	Q_strncpyz(buf, cbd, buflen);
-
-	// if the copy got truncated, don't leave a dangling partial UTF-8 sequence...
+	// encoded the same way as typed text (see Sys_EncodeInputChar), never
+	// leaving a partial character at the end of the buffer...
+	char *c = cbd;
+	int len = 0;
+	while ( *c )
 	{
-		const int iLen = (int)strlen(buf);
-		int iLead = iLen;
-
-		while (iLead > 0 && Q_UTF8_IsContinuationByte((byte)buf[iLead - 1]))
-		{
-			iLead--;
-		}
-		if (iLead > 0 && ((byte)buf[iLead - 1] & 0xC0) == 0xC0)
-		{
-			const byte b = (byte)buf[iLead - 1];
-			const int iNeed = ((b & 0xF8) == 0xF0) ? 4 : ((b & 0xF0) == 0xE0) ? 3 : 2;
-
-			if (iLead - 1 + iNeed > iLen)
-			{
-				buf[iLead - 1] = '\0';
-			}
-		}
+		char encoded[4];
+		const int bytes = Sys_EncodeInputChar( ConvertUTF8ToUTF32( c, &c ), encoded );
+		if ( len + bytes > buflen - 1 )
+			break;
+		Com_Memcpy( buf + len, encoded, bytes );
+		len += bytes;
 	}
+	buf[len] = 0;
 
 	Z_Free( cbd );
 }

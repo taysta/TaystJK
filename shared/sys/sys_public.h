@@ -216,6 +216,7 @@ void *		WIN_GL_GetProcAddress( const char *proc );
 qboolean	WIN_GL_ExtensionSupported( const char *extension );
 
 uint8_t ConvertUTF32ToExpectedCharset( uint32_t utf32 );
+int Sys_EncodeInputChar( uint32_t utf32, char *out );	// out: at least 4 bytes, returns bytes written (see in_utf8)
 
 // Vulkan
 void		*WIN_VK_GetInstanceProcAddress(void);

@@ -1053,13 +1053,27 @@ static const unsigned short g_cp1251[64] =
 // Characters are passed around as Unicode, so a raw high byte is translated
 // here, on the way in...
 //
+static cvar_t *r_fontCodepage;
+
+// which codepage that is: r_fontCodepage, or the game's language when it is 0
+static Language_e Font_LegacyLanguage( void )
+{
+	switch ( r_fontCodepage ? r_fontCodepage->integer : 0 )
+	{
+		case 1250:	return ePolish;
+		case 1251:	return eRussian;
+		case 1252:	return eWestern;
+		default:	return GetLanguageEnum();
+	}
+}
+
 static unsigned int Font_LegacyByteToUnicode( unsigned int uiByte )
 {
 	if (uiByte < 0x80 || uiByte > 0xFF)
 	{
 		return uiByte;
 	}
-	switch ( GetLanguageEnum() )
+	switch ( Font_LegacyLanguage() )
 	{
 		case eRussian:	return (uiByte >= 0xC0) ? uiByte - 0xC0 + 0x0410 : g_cp1251[uiByte - 0x80];
 		case ePolish:	return g_cp1250[uiByte - 0x80];
@@ -1077,7 +1091,7 @@ static unsigned int Font_UnicodeToLegacyByte( unsigned int uiLetter )
 	{
 		return uiLetter;
 	}
-	switch ( GetLanguageEnum() )
+	switch ( Font_LegacyLanguage() )
 	{
 		case eRussian:
 			if (uiLetter >= 0x0410 && uiLetter <= 0x044F)
@@ -3473,6 +3487,7 @@ void R_InitFonts(void)
 	r_fontSharpness = ri.Cvar_Get( "r_fontSharpness", "1", CVAR_ARCHIVE_ND, "" );
 
 	cl_coloredTextShadows = ri.Cvar_Get("cl_coloredTextShadows", "0", CVAR_ARCHIVE, "Toggle JK2 1.02-style colored text shadows");
+	r_fontCodepage = ri.Cvar_Get("r_fontCodepage", "0", CVAR_ARCHIVE_ND, "Windows codepage of text that is not UTF-8 (chat and names from other clients, old string files): 1250, 1251 or 1252; 0 = by se_language");
 #ifdef USE_FREETYPE
 	r_fontFallbacks = ri.Cvar_Get("r_fontFallbacks", "arialnb;twemoji", CVAR_ARCHIVE_ND | CVAR_LATCH, "Fonts searched for glyphs a TTF font lacks, in order, eg \"arialnb;twemoji\"");
 #endif
