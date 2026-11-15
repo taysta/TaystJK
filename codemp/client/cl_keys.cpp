@@ -405,6 +405,73 @@ x, y, amd width are in pixels
 */
 extern console_t con;
 qboolean Con_UseFontSystem(void);	// cl_console.cpp
+int Con_FontMode(void);
+
+// con_useFont 1: the charset grid keeps drawing single-byte characters exactly
+// as before, multi-byte UTF-8 characters go through the font system. Each
+// character sits on the grid column that follows the one before it.
+// x/y are what the grid drawing takes: real pixels for the console field,
+// virtual 640x480 units for the chat field.
+static void Field_DrawGridded( const char *str, int cursorBytes, int x, int y, qboolean small, qboolean showCursor ) {
+	const int	iFont = cls.consoleFont;
+	const int	iTenChars = re->Font_StrLenPixels("aaaaaaaaaa", iFont, 1.0f);
+	const float	fCellW = small ? con.charWidth * con.xadjust : BIGCHAR_WIDTH * cls.widthRatioCoef;	// virtual units
+	const float	fScale = (iTenChars > 0) ? (small ? con.charWidth * con.yadjust : (float)BIGCHAR_WIDTH) * 10.0f / (float)iTenChars : 1.0f;
+	const char	*p = str;
+	int			column = 0;
+	int			cursorColumn = -1;
+	char		seq[8];
+
+	for (;;) {
+		int advance = 1;
+
+		if ( cursorColumn < 0 && p - str >= cursorBytes ) {
+			cursorColumn = column;
+		}
+		if ( !*p ) {
+			break;
+		}
+
+		if ( *p & 0x80 ) {
+			Q_UTF8_ReadCharFromString( p, &advance );
+		}
+		Com_Memcpy( seq, p, advance );
+		seq[advance] = 0;
+
+		if ( advance == 1 ) {
+			if ( small ) {
+				re->SetColor( colorWhite );
+				SCR_DrawSmallChar( x + column * con.charWidth, y, (unsigned char)*p );
+			} else {
+				SCR_DrawStringExt2((x + column*BIGCHAR_WIDTH)*cls.widthRatioCoef, y, BIGCHAR_WIDTH*cls.widthRatioCoef, BIGCHAR_HEIGHT, seq, chatColour, qfalse, qtrue);
+			}
+			column++;
+		} else {
+			int columns;
+
+			if ( small ) {
+				re->Font_DrawString( (int)(con.xadjust * (x + column * con.charWidth)), (int)(con.yadjust * y), seq, colorWhite, iFont, -1, fScale );
+			} else {
+				re->Font_DrawString( (int)((x + column*BIGCHAR_WIDTH)*cls.widthRatioCoef), y, seq, chatColour, iFont, -1, fScale );
+			}
+			columns = (int)(re->Font_StrLenPixels( seq, iFont, fScale ) / fCellW + 0.5f);
+			column += (columns < 1) ? 1 : columns;
+		}
+		p += advance;
+	}
+
+	if ( showCursor && !((int)( cls.realtime >> 8 ) & 1) ) {
+		seq[0] = kg.key_overstrikeMode ? 11 : 10;
+		seq[1] = 0;
+		if ( small ) {
+			re->SetColor( colorWhite );
+			SCR_DrawSmallChar( x + cursorColumn * con.charWidth, y, seq[0] );
+		} else {
+			SCR_DrawStringExt2((x + cursorColumn*BIGCHAR_WIDTH)*cls.widthRatioCoef, y, BIGCHAR_WIDTH*cls.widthRatioCoef, BIGCHAR_HEIGHT, seq, chatColour, qfalse, qfalse);
+		}
+	}
+	re->SetColor( NULL );
+}
 
 void Field_VariableSizeDraw( field_t *edit, int x, int y, int size, qboolean showCursor, qboolean noColorEscape ) {
 	int		len;
@@ -414,6 +481,7 @@ void Field_VariableSizeDraw( field_t *edit, int x, int y, int size, qboolean sho
 	char	str[MAX_STRING_CHARS];
 	int		i;
 	qboolean	useFont = Con_UseFontSystem();
+	const int	fontMode = Con_FontMode();
 
 	drawLen = edit->widthInChars - 1; // - 1 so there is always a space for the cursor
 	len = strlen( edit->buffer );
@@ -431,7 +499,7 @@ void Field_VariableSizeDraw( field_t *edit, int x, int y, int size, qboolean sho
 		prestep = edit->scroll;
 	}
 
-	if (useFont) {
+	if (fontMode) {
 		// never slice inside a UTF-8 sequence: snap the window start to a lead byte...
 		while (prestep > 0 && Q_UTF8_IsContinuationByte((byte)edit->buffer[prestep])) {
 			prestep--;
@@ -450,7 +518,7 @@ void Field_VariableSizeDraw( field_t *edit, int x, int y, int size, qboolean sho
 		Com_Error( ERR_DROP, "drawLen >= MAX_STRING_CHARS" );
 	}
 
-	if (useFont) {
+	if (fontMode) {
 		// ...and never cut a sequence at the tail either
 		while (drawLen > 0 && Q_UTF8_IsContinuationByte((byte)edit->buffer[prestep + drawLen])) {
 			drawLen--;
@@ -460,6 +528,15 @@ void Field_VariableSizeDraw( field_t *edit, int x, int y, int size, qboolean sho
 	Com_Memcpy( str, edit->buffer + prestep, drawLen );
 	str[ drawLen ] = 0;
 
+	if (fontMode == 1 && noColorEscape) {
+		for (i = 0; i < drawLen; i++) {
+			if (str[i] & 0x80) {
+				Field_DrawGridded( str, edit->cursor - prestep, x, y, (qboolean)(size == con.charWidth), showCursor );
+				return;
+			}
+		}
+	}
+
 	if (useFont) {
 		// font system path: UTF-8 capable, proportional, TTF-friendly...
 		const int	iFont = cls.consoleFont;
@@ -468,9 +545,10 @@ void Field_VariableSizeDraw( field_t *edit, int x, int y, int size, qboolean sho
 		if (iTenChars > 0) {
 			// legacy quirk: the console field (small) is positioned in real pixels,
 			// while the chat field (big) is positioned in virtual 640x480 units...
-			const float fVirtualX = (size == con.charWidth) ? con.xadjust * x : (float)x;
+			const float fVirtualX = (size == con.charWidth) ? con.xadjust * x : x * cls.widthRatioCoef;
 			const float fVirtualY = (size == con.charWidth) ? con.yadjust * y : (float)y;
-			const float fCellW = (size == con.charWidth) ? (float)size * con.yadjust : (float)size;
+			// (the chat field passes its width in pixels as "size", not a cell width)
+			const float fCellW = (size == con.charWidth) ? (float)size * con.yadjust : (float)BIGCHAR_WIDTH;
 
 			// match ten glyph cells of the grid, same normalisation Raven used...
 			const float fScale = fCellW * 10.0f / (float)iTenChars;

@@ -844,23 +844,54 @@ DRAWING
 
 /*
 ================
-Con_UseFontSystem
+Con_FontMode
 
-Should console text go through the font system (UTF-8 capable, TTF capable)
-instead of the legacy charset grid? Asian languages always did; con_useFont
-extends this to everyone and is on by default.
+How console text is drawn (con_useFont):
+0 - the charset grid only, as always
+1 - the charset grid, plus the font system for the multi-byte UTF-8
+    characters the grid has no glyphs for
+2 - everything through the font system (what asian languages always did)
 ================
 */
-qboolean Con_UseFontSystem(void)
+int Con_FontMode(void)
 {
 	static cvar_t* con_useFont = NULL;
 
 	if (!con_useFont)
 	{
-		con_useFont = Cvar_Get("con_useFont", "1", CVAR_ARCHIVE, "Draw console text with the font system (UTF-8 capable) instead of the charset grid");
+		con_useFont = Cvar_Get("con_useFont", "1", CVAR_ARCHIVE, "Console text: 0 = charset grid only, 1 = grid plus font system for UTF-8 characters, 2 = font system for everything");
 	}
 
-	return (qboolean)(con_useFont->integer || re->Language_IsAsian());
+	if (re->Language_IsAsian() || con_useFont->integer >= 2)
+	{
+		return 2;
+	}
+	return con_useFont->integer > 0 ? 1 : 0;
+}
+
+qboolean Con_UseFontSystem(void)
+{
+	return (qboolean)(Con_FontMode() == 2);
+}
+
+static float Con_FontScale(int iFontIndex)
+{
+	// match ten glyph cells of the grid, same normalisation Raven used...
+	const int iTenChars = re->Font_StrLenPixels("aaaaaaaaaa", iFontIndex, 1.0f);
+
+	return (iTenChars > 0) ? con.charWidth * 10.0f / iTenChars * con.yadjust : 1.0f;
+}
+
+static qboolean Con_RowHasUTF8(const conChar_t* rowText, int iNumCells)
+{
+	for (int x = 0; x < iNumCells; x++)
+	{
+		if (rowText[x].f.character & 0x80)
+		{
+			return qtrue;
+		}
+	}
+	return qfalse;
 }
 
 /*
@@ -871,17 +902,19 @@ Draws one console row through the font system while preserving the legacy
 byte grid: every buffer cell is one fixed-width column, so mods' sprintf-
 padded tables stay aligned with ANY font (monospace not required).
 Multi-byte UTF-8 sequences render at their first cell and advance by their
-byte count; ":emote:" tokens are gathered so they still render as images.
+measured width. With bGridASCII, single-byte characters are still drawn from
+the charset grid and only multi-byte ones use the font.
 iCellZeroX = real-pixel x of column 0.
 ================
 */
-static void Con_DrawFontRowGridded(const conChar_t* rowText, int iNumCells, int iCellZeroX, float fY, int iFontIndex, float fFontScale)
+static void Con_DrawFontRowGridded(const conChar_t* rowText, int iNumCells, int iCellZeroX, float fY, int iFontIndex, float fFontScale, qboolean bGridASCII)
 {
-	char	sSeq[40];
+	char	sSeq[8];
 	int		x = 0;			// byte cell being read from the buffer
-	int		iColumn = 0;	// visual column being drawn: ASCII always advances
-	// exactly 1 (mod tables stay aligned), wider things
-	// (CJK, emoji, emotes) advance by measured width
+	int		iColumn = 0;	// visual column being drawn: single bytes always
+							// advance exactly 1 (mod tables stay aligned), wider
+							// things (CJK, emoji) advance by measured width
+	int		iGridColor = -1;
 
 	while (x < iNumCells)
 	{
@@ -906,40 +939,27 @@ static void Con_DrawFontRowGridded(const conChar_t* rowText, int iNumCells, int 
 			sSeq[available] = '\0';
 			re->AnyLanguage_ReadCharFromString(sSeq, &iSeqLen, NULL);
 		}
-		else if (sSeq[0] == ':')
-		{
-			// gather a potential ":emote:" token so it still renders as an
-			// image; the grid advances by its byte length either way...
-			int j = 1;
-			while (x + j < iNumCells && j < (int)sizeof(sSeq) - 2)
-			{
-				const char c = rowText[x + j].f.character;
-
-				if (c == ':')
-				{
-					if (j >= 2 && !(sSeq[1] >= '0' && sSeq[1] <= '9'))	// mirror the decoder: no numeric-leading names (timestamps!)
-					{
-						sSeq[j] = ':';
-						iSeqLen = j + 1;
-					}
-					break;
-				}
-				if ((c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z') ||
-					(c >= '0' && c <= '9') || c == '_')
-				{
-					sSeq[j++] = c;
-					continue;
-				}
-				break;
-			}
-		}
 
 		sSeq[iSeqLen] = '\0';
+
+		if (bGridASCII && iSeqLen == 1)
+		{
+			if ((int)rowText[x].f.color != iGridColor)
+			{
+				iGridColor = rowText[x].f.color;
+				re->SetColor(g_color_table[iGridColor]);
+			}
+			SCR_DrawSmallChar(iCellZeroX + iColumn * con.charWidth, (int)fY, rowText[x].f.character);
+			x++;
+			iColumn++;
+			continue;
+		}
 
 		re->Font_DrawString(
 			(int)(con.xadjust * (float)(iCellZeroX + iColumn * con.charWidth)),
 			(int)(con.yadjust * fY),
 			sSeq, g_color_table[rowText[x].f.color], iFontIndex, -1, fFontScale);
+		iGridColor = -1;	// the font system leaves its own colour set
 
 		if (iSeqLen == 1)
 		{
@@ -947,8 +967,8 @@ static void Con_DrawFontRowGridded(const conChar_t* rowText, int iNumCells, int 
 		}
 		else
 		{
-			// multi-byte char or emote: advance by its measured width so
-			// cyrillic stays compact while CJK/emoji/emotes get their room...
+			// multi-byte char: advance by its measured width so cyrillic
+			// stays compact while CJK/emoji get their room...
 			const float fCellVirtual = (float)con.charWidth * con.xadjust;
 			const float fGlyphVirtual = (float)re->Font_StrLenPixels(sSeq, iFontIndex, fFontScale);
 			int iCols = (int)((fGlyphVirtual / fCellVirtual) + 0.5f);
@@ -1074,9 +1094,16 @@ void Con_DrawNotify (void)
 		//
 		if (Con_UseFontSystem())
 		{
-			Con_DrawFontRowGridded ( text, lineLimit,cl_conXOffset->integer + con.charWidth, (float) v, iFontIndex, fFontScale);
+			Con_DrawFontRowGridded ( text, lineLimit,cl_conXOffset->integer + con.charWidth, (float) v, iFontIndex, fFontScale, qfalse);
 
 			v +=  iPixelHeightToAdvance;
+		}
+		else if (Con_FontMode() == 1 && Con_RowHasUTF8(text, lineLimit))
+		{
+			Con_DrawFontRowGridded(text, lineLimit, cl_conXOffset->integer + con.charWidth, (float)v, iFontIndex, Con_FontScale(iFontIndex), qtrue);
+			currentColor = -1;
+
+			v += con.charHeight;
 		}
 		else
 		{
@@ -1266,7 +1293,12 @@ void Con_DrawSolidConsole( float frac ) {
 		if (Con_UseFontSystem())
 		{
 			Con_DrawFontRowGridded (text, con.linewidth + 1, con.charWidth, (float) y,
-				iFontIndex, fFontScale);
+				iFontIndex, fFontScale, qfalse);
+		}
+		else if (Con_FontMode() == 1 && Con_RowHasUTF8(text, con.linewidth + 1))
+		{
+			Con_DrawFontRowGridded(text, con.linewidth + 1, con.charWidth, (float)y, iFontIndex, Con_FontScale(iFontIndex), qtrue);
+			currentColor = -1;
 		}
 		else
 		{
