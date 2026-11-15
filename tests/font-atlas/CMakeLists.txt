@@ -1,0 +1,6 @@
+cmake_minimum_required(VERSION 3.14)
+project(TaystJKFontAtlasTests CXX)
+enable_testing()
+add_executable(font-atlas-tests test.cpp)
+target_compile_features(font-atlas-tests PRIVATE cxx_std_11)
+add_test(NAME font-atlas COMMAND font-atlas-tests)
