@@ -10769,7 +10769,8 @@ void CG_ChatBox_AddString(char *chatStr)
 		{ //we have to break it into segments...
 			int i = 0;
 			int lastLinePt = 0;
-			char s[2];
+			char s[5];
+			int advance;
 
 			chatLen = 0;
 			while (chat->string[i])
@@ -10788,8 +10789,9 @@ void CG_ChatBox_AddString(char *chatStr)
 					continue; // duo: fix for messages with lots of colors being broken up too early
 				}
 
-				s[0] = chat->string[i];
-				s[1] = 0;
+				Q_UTF8_ReadCharFromString( chat->string +i, &advance);
+				memcpy(s, chat->string + i, advance);
+				s[advance] = 0;
 				chatLen += CG_Text_Width(s, 0.65f, FONT_SMALL);
 
 				if (chatLen >= cg_chatBoxCutOffLength.value)
@@ -10806,6 +10808,7 @@ void CG_ChatBox_AddString(char *chatStr)
 					if (chat->string[j] == ' ')
 					{
 						i = j;
+						advance = 1;
 					}
 
 					chat->lines++;
@@ -10813,7 +10816,7 @@ void CG_ChatBox_AddString(char *chatStr)
 					chatLen = 0;
 					lastLinePt = i + 1;
 				}
-				i++;
+				i+= advance;
 			}
 		}
 	} else {//if (cg_chatBoxEmojis.integer) { //Sunny
@@ -10823,7 +10826,7 @@ void CG_ChatBox_AddString(char *chatStr)
 		// * put together a list of usable emoji's and pick a style. Discord maybe?
 
 		char emojiStr[MAX_STRING_CHARS] = { 0 };
-		char replaceChar[8] = "       ", s[2];
+		char replaceChar[8] = "       ", s[5];
 		int  replaceLen, fonti = (cg_newFont.integer == 1 ? FONT_MEDIUM : (cg_newFont.integer == 2 ? FONT_SMALL2 : FONT_SMALL));
 		int bpoint = 0, emojiIndex = 0;
 		float fontScale = 0.65f * cg_chatBoxFontSize.value;
@@ -10916,11 +10919,17 @@ void CG_ChatBox_AddString(char *chatStr)
 			}
 
 			if (!draw) {//if we are just a character, copy the character to the new chat string
-				emojiStr[w++] = chat->string[r++];
+				int advance;
+				Q_UTF8_ReadCharFromString( chat->string +r, &advance);
+				memcpy(emojiStr+ w, chat->string +r, advance);
+				w += advance;
+				r += advance;
 			}
 
-			s[0] = chat->string[r];
-			s[1] = 0;
+			int advance;
+			Q_UTF8_ReadCharFromString(chat->string + r, &advance);
+			memcpy(s, chat->string + r, advance);
+			s[advance] = 0;
 			chatLen += CG_Text_Width(s, 0.65f, fonti);
 			if (chatLen >= cg_chatBoxCutOffLength.value) {
 				int q = w;

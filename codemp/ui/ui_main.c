@@ -1178,7 +1178,7 @@ qboolean Asset_Parse(int handle) {
 				return qfalse;
 			}
 			//trap->R_RegisterFont(tempStr, pointSize, &uiInfo.uiDC.Assets.textFont);
-			uiInfo.uiDC.Assets.qhMediumFont = trap->R_RegisterFont(token.string);
+			uiInfo.uiDC.Assets.qhMediumFont = trap->R_RegisterFont(va("%s@%d", token.string, pointSize));
 			uiInfo.uiDC.Assets.fontRegistered = qtrue;
 			continue;
 		}
@@ -1189,7 +1189,7 @@ qboolean Asset_Parse(int handle) {
 				return qfalse;
 			}
 			//trap->R_RegisterFont(token, pointSize, &uiInfo.uiDC.Assets.smallFont);
-			uiInfo.uiDC.Assets.qhSmallFont = trap->R_RegisterFont(token.string);
+			uiInfo.uiDC.Assets.qhSmallFont = trap->R_RegisterFont(va("%s@%d", token.string, pointSize));
 			continue;
 		}
 
@@ -1199,7 +1199,7 @@ qboolean Asset_Parse(int handle) {
 				return qfalse;
 			}
 			//trap->R_RegisterFont(token, pointSize, &uiInfo.uiDC.Assets.smallFont);
-			uiInfo.uiDC.Assets.qhSmall2Font = trap->R_RegisterFont(token.string);
+			uiInfo.uiDC.Assets.qhSmall2Font = trap->R_RegisterFont(va("%s@%d", token.string, pointSize));
 			continue;
 		}
 
@@ -1209,7 +1209,7 @@ qboolean Asset_Parse(int handle) {
 				return qfalse;
 			}
 			//trap->R_RegisterFont(token, pointSize, &uiInfo.uiDC.Assets.bigFont);
-			uiInfo.uiDC.Assets.qhBigFont = trap->R_RegisterFont(token.string);
+			uiInfo.uiDC.Assets.qhBigFont = trap->R_RegisterFont(va("%s@%d", token.string, pointSize));
 			continue;
 		}
 

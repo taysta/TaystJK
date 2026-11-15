@@ -3526,7 +3526,7 @@ void Item_TextField_Paste( itemDef_t *item ) {
 	// send as if typed, so insert / overstrike works properly
 	pasteLen = strlen( buff );
 	for ( i = 0; i < pasteLen; i++ ) {
-		Item_TextField_HandleKey( item, buff[i]|K_CHAR_FLAG );
+		Item_TextField_HandleKey(item, ((unsigned char*)buff)[i] | K_CHAR_FLAG);
 	}
 }
 #endif
@@ -3558,10 +3558,14 @@ qboolean Item_TextField_HandleKey(itemDef_t *item, int key) {
 
 			if (key == 'h' - 'a' + 1 )	{	// ctrl-h is backspace
 				if ( item->cursorPos > 0 ) {
-					memmove( &buff[item->cursorPos - 1], &buff[item->cursorPos], len + 1 - item->cursorPos);
-					item->cursorPos--;
+					int iStart = item->cursorPos - 1;
+					while (iStart > 0 && Q_UTF8_IsContinuationByte((byte)buff[iStart])) {
+						iStart--;
+					}
+					memmove(&buff[iStart], &buff[item->cursorPos], len + 1 - item->cursorPos);
+					item->cursorPos = iStart;
 					if (item->cursorPos < editPtr->paintOffset) {
-						editPtr->paintOffset--;
+						editPtr->paintOffset = item->cursorPos;
 					}
 				}
 				DC->setCVar(item->cvar, buff);
@@ -3569,7 +3573,7 @@ qboolean Item_TextField_HandleKey(itemDef_t *item, int key) {
 			}
 
 			//
-			// ignore any non printable chars
+			// ignore any non printable chars (UTF-8 bytes >= 0x80 are welcome)
 			//
 			if ( key < 32 || !item->cvar) {
 			    return qtrue;
@@ -3581,35 +3585,53 @@ qboolean Item_TextField_HandleKey(itemDef_t *item, int key) {
 				}
 			}
 
+			{
+				char	seq[4];
+				int		seqLen = 1;
+
+				if (key > 0xFF) {
+					// a full unicode codepoint (eg from clipboard paste):
+					// store it as UTF-8 like everything else in the game...
+					seqLen = Q_UTF8_Encode((unsigned int)key, seq);
+				}
+				else {
+					seq[0] = (char)key;
+				}
+
+				if (len + seqLen > MAX_EDITFIELD - 1) {
+					return qtrue;	// hard capacity cap
+				}
+
 			if (!DC->getOverstrikeMode()) {
-				if (( len == MAX_EDITFIELD - 1 ) || (editPtr->maxChars && len >= editPtr->maxChars)) {
+					// soft maxChars may only be exceeded by continuation bytes,
+					// so multi-byte characters are never cut in half...
+					if (editPtr->maxChars && len + seqLen > editPtr->maxChars &&
+						!(seqLen == 1 && Q_UTF8_IsContinuationByte((byte)seq[0]))) {
 					return qtrue;
 				}
-				memmove( &buff[item->cursorPos + 1], &buff[item->cursorPos], len + 1 - item->cursorPos );
 			} else {
 				if (editPtr->maxChars && item->cursorPos >= editPtr->maxChars) {
 					return qtrue;
 				}
+					// UTF-8 aware overstrike: a lead byte or whole codepoint consumes
+					// the codepoint under the cursor, continuation bytes just insert...
+					if (buff[item->cursorPos] &&
+						!(seqLen == 1 && Q_UTF8_IsContinuationByte((byte)seq[0]))) {
+						int oldLen = 1;
+						Q_UTF8_ReadCharFromString(&buff[item->cursorPos], &oldLen);
+						memmove(&buff[item->cursorPos], &buff[item->cursorPos + oldLen], len - item->cursorPos - oldLen + 1);
+						len -= oldLen;
+					}
 			}
 
-			buff[item->cursorPos] = key;
-
-			//rww - nul-terminate!
-			if (item->cursorPos+1 < 2048)
-			{
-				buff[item->cursorPos+1] = 0;
-			}
-			else
-			{
-				buff[item->cursorPos] = 0;
-			}
+				memmove(&buff[item->cursorPos + seqLen], &buff[item->cursorPos], len + 1 - item->cursorPos);
+				memcpy(&buff[item->cursorPos], seq, seqLen);
 
 			DC->setCVar(item->cvar, buff);
 
-			if (item->cursorPos < len + 1) {
-				item->cursorPos++;
+				item->cursorPos += seqLen;
 				if (editPtr->maxPaintChars && item->cursorPos > editPtr->maxPaintChars) {
-					editPtr->paintOffset++;
+					editPtr->paintOffset += seqLen;
 				}
 			}
 
@@ -3617,7 +3639,9 @@ qboolean Item_TextField_HandleKey(itemDef_t *item, int key) {
 
 			if ( key == A_DELETE || key == A_KP_PERIOD ) {
 				if ( item->cursorPos < len ) {
-					memmove( buff + item->cursorPos, buff + item->cursorPos + 1, len - item->cursorPos);
+					int seqLen = 1;
+					Q_UTF8_ReadCharFromString(&buff[item->cursorPos], &seqLen);
+					memmove(buff + item->cursorPos, buff + item->cursorPos + seqLen, len - item->cursorPos - seqLen + 1);
 					DC->setCVar(item->cvar, buff);
 				}
 				return qtrue;
@@ -3625,13 +3649,13 @@ qboolean Item_TextField_HandleKey(itemDef_t *item, int key) {
 
 			if ( key == A_CURSOR_RIGHT || key == A_KP_6 )
 			{
-				if (editPtr->maxPaintChars && item->cursorPos >= editPtr->maxPaintChars && item->cursorPos < len) {
-					item->cursorPos++;
-					editPtr->paintOffset++;
-					return qtrue;
-				}
 				if (item->cursorPos < len) {
-					item->cursorPos++;
+					int seqLen = 1;
+					Q_UTF8_ReadCharFromString(&buff[item->cursorPos], &seqLen);
+					if (editPtr->maxPaintChars && item->cursorPos >= editPtr->maxPaintChars) {
+						editPtr->paintOffset += seqLen;
+				}
+					item->cursorPos += seqLen;
 				}
 				return qtrue;
 			}
@@ -3640,9 +3664,12 @@ qboolean Item_TextField_HandleKey(itemDef_t *item, int key) {
 			{
 				if ( item->cursorPos > 0 ) {
 					item->cursorPos--;
+					while (item->cursorPos > 0 && Q_UTF8_IsContinuationByte((byte)buff[item->cursorPos])) {
+						item->cursorPos--;
+					}
 				}
 				if (item->cursorPos < editPtr->paintOffset) {
-					editPtr->paintOffset--;
+					editPtr->paintOffset = item->cursorPos;
 				}
 				return qtrue;
 			}
