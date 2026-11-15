@@ -703,11 +703,60 @@ char *Sys_StripAppBundle( char *dir )
 #	endif
 #endif
 
+#if defined(_WIN32)
+#include <windows.h>
+
+/*
+SDL2's WinMain hands us argv converted to UTF-8, but the engine's
+filesystem layer on Windows still talks to ANSI APIs (fopen, mkdir,
+FindFirstFileA, ...). Re-encode non-ASCII arguments to the ANSI codepage
+so paths like  +set fs_homepath with a non-ASCII folder  reach the filesystem intact.
+Arguments that are pure ASCII or already ANSI (= invalid UTF-8) are left
+untouched, so this is safe no matter how the process was started.
+*/
+static void Sys_NormalizeArgvToANSI(int argc, char** argv)
+{
+	int i;
+
+	for (i = 0; i < argc; i++) {
+		const char* p;
+		wchar_t wide[4096];
+		char* ansi;
+		qboolean hasHighByte = qfalse;
+
+		for (p = argv[i]; *p; p++) {
+			if ((unsigned char)*p >= 0x80) {
+				hasHighByte = qtrue;
+				break;
+			}
+		}
+		if (!hasHighByte)
+			continue; // pure ASCII, nothing to do
+
+		// MB_ERR_INVALID_CHARS: if it is NOT valid UTF-8 it is already ANSI, leave it
+		if (!MultiByteToWideChar(CP_UTF8, MB_ERR_INVALID_CHARS, argv[i], -1, wide, sizeof(wide) / sizeof(wide[0])))
+			continue;
+
+		ansi = (char*)malloc(4096);
+		if (!ansi)
+			continue;
+
+		if (WideCharToMultiByte(CP_ACP, 0, wide, -1, ansi, 4096, NULL, NULL))
+			argv[i] = ansi; // tiny one-time leak until process exit, by design
+		else
+			free(ansi);
+	}
+}
+#endif
+
 int main ( int argc, char* argv[] )
 {
 	int		i;
 	char	commandLine[ MAX_STRING_CHARS ] = { 0 };
 
+#if defined(_WIN32)
+	Sys_NormalizeArgvToANSI( argc, argv );
+#endif
 	Sys_PlatformInit( argc, argv );
 #if defined(_DEBUG) && !defined(DEDICATED) && defined(WIN32)
 	CON_CreateConsoleWindow();

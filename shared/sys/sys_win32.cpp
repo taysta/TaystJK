@@ -801,3 +801,74 @@ void Sys_SteamShutdown()
 	Sys_UnloadLibrary(gp_steamLibrary);
 	gp_steamLibrary = nullptr;
 }
+/*
+========================================================================
+Unicode-safe LoadLibrary
+
+Engine file paths on Windows come from ANSI APIs (GetTempPath, argv, ...)
+while the rest of this fork speaks UTF-8. Detect which encoding the path
+is in, convert to UTF-16 and use LoadLibraryW. Error text is returned in
+UTF-8 so it prints correctly in our console/log.
+
+Fixes VM dll unpacking failing for users with non-ASCII (e.g. Cyrillic)
+Windows user names: SDL_LoadObject assumes UTF-8 and mangled such paths.
+========================================================================
+*/
+
+static char sys_libraryError[1024];
+
+extern "C" void* Sys_Win32_LoadLibrary(const char* name)
+{
+	wchar_t widePath[4096];
+	HMODULE handle;
+	UINT codePage;
+
+	sys_libraryError[0] = '\0';
+
+	if (!name || !*name)
+		return NULL;
+
+	// our own strings are UTF-8, but paths built from ANSI WinAPI results
+	// (e.g. GetTempPath with a Cyrillic user name) arrive in the ANSI codepage
+	codePage = MultiByteToWideChar(CP_UTF8, MB_ERR_INVALID_CHARS, name, -1, NULL, 0) ? CP_UTF8 : CP_ACP;
+
+	if (!MultiByteToWideChar(codePage, 0, name, -1, widePath, ARRAY_LEN(widePath))) {
+		Com_sprintf(sys_libraryError, sizeof(sys_libraryError),
+			"Failed loading %s: path to UTF-16 conversion failed", name);
+		return NULL;
+	}
+
+	handle = LoadLibraryW(widePath);
+
+	if (!handle) {
+		DWORD lastError = GetLastError();
+		wchar_t wideMsg[512];
+		char msg[768];
+
+		Q_strncpyz(msg, "unknown error", sizeof(msg));
+		if (FormatMessageW(FORMAT_MESSAGE_FROM_SYSTEM | FORMAT_MESSAGE_IGNORE_INSERTS,
+			NULL, lastError, MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT),
+			wideMsg, ARRAY_LEN(wideMsg), NULL))
+		{
+			int len;
+
+			WideCharToMultiByte(CP_UTF8, 0, wideMsg, -1, msg, sizeof(msg), NULL, NULL);
+			msg[sizeof(msg) - 1] = '\0';
+
+			// strip trailing newline that FormatMessage appends
+			len = (int)strlen(msg);
+			while (len > 0 && (msg[len - 1] == '\n' || msg[len - 1] == '\r'))
+				msg[--len] = '\0';
+		}
+
+		Com_sprintf(sys_libraryError, sizeof(sys_libraryError),
+			"Failed loading %s: %s (error %lu)", name, msg, (unsigned long)lastError);
+	}
+
+	return (void*)handle;
+}
+
+extern "C" const char* Sys_Win32_LibraryError(void)
+{
+	return sys_libraryError;
+}

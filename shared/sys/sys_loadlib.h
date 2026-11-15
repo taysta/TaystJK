@@ -44,4 +44,25 @@ along with this program; if not, see <http://www.gnu.org/licenses/>.
 #	define Sys_LibraryError() SDL_GetError()
 #endif
 
+#if defined(_WIN32)
+// Unicode-safe replacements (implemented in sys_win32.cpp).
+// SDL_LoadObject expects UTF-8 paths, but engine paths on Windows are ANSI
+// (GetTempPath & co) - a Cyrillic user name in %TEMP% used to break VM dll
+// loading with "module not found". Convert to UTF-16 ourselves instead.
+#undef Sys_LoadLibrary
+#undef Sys_LibraryError
+
+#ifdef __cplusplus
+extern "C" {
+#endif
+	void* Sys_Win32_LoadLibrary(const char* name);
+	const char* Sys_Win32_LibraryError(void);
+#ifdef __cplusplus
+}
+#endif
+
+#define Sys_LoadLibrary(f)  Sys_Win32_LoadLibrary(f)
+#define Sys_LibraryError()  Sys_Win32_LibraryError()
+#endif // _WIN32
+
 void * QDECL Sys_LoadDll(const char *name, qboolean useSystemLib);
