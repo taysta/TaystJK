@@ -42,6 +42,38 @@ cvar_t* r_useFreeType;
 
 static FT_Library g_FTLibrary = NULL;
 
+// ---- r_fontProfile: counters and timings, printed (and reset) by "fontlist" ----
+//
+#include <chrono>
+
+static cvar_t* r_fontProfile;
+
+static struct fontStats_t
+{
+	unsigned int	draws, quads, pageSwitches;
+	unsigned int	rasterized, colorLayers, uploads;
+	unsigned int	uploadKB;
+	double			drawMs, rasterMs, uploadMs;
+} g_fontStats;
+
+static inline double Font_ProfileClock(void)
+{
+	if (!r_fontProfile || !r_fontProfile->integer)
+	{
+		return 0.0;
+	}
+	return std::chrono::duration<double, std::milli>(std::chrono::steady_clock::now().time_since_epoch()).count();
+}
+
+struct FontProfileScope_t
+{
+	double* pTotal;
+	double	start;
+
+	explicit FontProfileScope_t(double* pTotalMs) : pTotal(pTotalMs), start(Font_ProfileClock()) {}
+	~FontProfileScope_t() { if (start) { *pTotal += Font_ProfileClock() - start; } }
+};
+
 // ---- per-glyph fallback fonts (r_fontFallbacks) ----
 //
 // When the main font has no glyph for a codepoint, these faces are searched
@@ -117,7 +149,6 @@ static void Font_LoadFallbacks(void)
 #define TTF_DIRECT_GLYPHS		256		// codepoints below this are looked up through a flat table
 #define TTF_PRECACHE_LIMIT		0x2000	// alphabetic scripts live below this: rasterized a 128 codepoint block at a time
 #define TTF_GLYPH_PADDING		2
-#define TTF_DEFAULT_POINTSIZE	16
 
 struct TTFGlyph_t
 {
@@ -167,62 +198,110 @@ static void TTF_QueueUpload(void* pImage, int iX, int iY, int iW, int iH, std::v
 	upload.rgba.swap(rgba);
 }
 
+// one upload: a run of neighbours on a shelf, or several whole shelves...
+//
+struct TTFUploadRun_t
+{
+	size_t	iFirst, iEnd;	// [iFirst, iEnd) in g_TTFPendingUploads
+	int		iX, iY, iW, iH;
+};
+
 static void TTF_FlushUploads(void)
 {
 	const size_t iNumUploads = g_TTFPendingUploads.size();
-	std::vector<byte> merged;
+	if (!iNumUploads)
+	{
+		return;
+	}
 
+	FontProfileScope_t profile(&g_fontStats.uploadMs);
+	std::vector<TTFUploadRun_t> runs;
+
+	// the shelf packer hands out space left to right, so glyphs queued one
+	// after another on the same shelf are neighbours with nothing but padding
+	// (and the unused space below shorter glyphs) between them...
 	for (size_t i = 0; i < iNumUploads; )
 	{
 		const TTFPendingUpload_t& first = g_TTFPendingUploads[i];
+		TTFUploadRun_t run;
 
-		// the shelf packer hands out space left to right, so glyphs queued one
-		// after another on the same shelf are neighbours with nothing but
-		// padding (and the unused space below shorter glyphs) between them...
-		size_t j = i + 1;
-		int iH = first.iH;
-		while (j < iNumUploads
-			&& g_TTFPendingUploads[j].pImage == first.pImage
-			&& g_TTFPendingUploads[j].iY == first.iY
-			&& g_TTFPendingUploads[j].iX > g_TTFPendingUploads[j - 1].iX)
+		run.iFirst = i;
+		run.iX = first.iX;
+		run.iY = first.iY;
+		run.iH = first.iH;
+		for (i++; i < iNumUploads
+			&& g_TTFPendingUploads[i].pImage == first.pImage
+			&& g_TTFPendingUploads[i].iY == first.iY
+			&& g_TTFPendingUploads[i].iX > g_TTFPendingUploads[i - 1].iX; i++)
 		{
-			if (g_TTFPendingUploads[j].iH > iH)
+			if (g_TTFPendingUploads[i].iH > run.iH)
 			{
-				iH = g_TTFPendingUploads[j].iH;
+				run.iH = g_TTFPendingUploads[i].iH;
 			}
-			j++;
 		}
+		run.iEnd = i;
+		run.iW = (g_TTFPendingUploads[i - 1].iX + g_TTFPendingUploads[i - 1].iW) - run.iX;
 
-		if (j == i + 1)
+		// ...and a shelf that was filled from its left edge holds nothing but
+		// this run, so it can join the run of the shelf right above it when
+		// that one started at the left edge too: whole blocks of new glyphs
+		// then go up as one rectangle instead of one per shelf
+		if (!runs.empty())
+		{
+			TTFUploadRun_t& prev = runs.back();
+			if (run.iX == 0 && prev.iX == 0 && run.iY > prev.iY
+				&& g_TTFPendingUploads[prev.iFirst].pImage == first.pImage)
+			{
+				prev.iEnd = run.iEnd;
+				prev.iH = (run.iY + run.iH) - prev.iY;
+				if (run.iW > prev.iW)
+				{
+					prev.iW = run.iW;
+				}
+				continue;
+			}
+		}
+		runs.push_back(run);
+	}
+
+	std::vector<byte> merged;
+	for (size_t r = 0; r < runs.size(); r++)
+	{
+		const TTFUploadRun_t& run = runs[r];
+		const TTFPendingUpload_t& first = g_TTFPendingUploads[run.iFirst];
+
+		if (run.iEnd == run.iFirst + 1)
 		{
 			R_Font_UpdateAtlasImage(first.pImage, first.iX, first.iY, first.iW, first.iH, &first.rgba[0]);
 		}
 		else
 		{
-			const TTFPendingUpload_t& last = g_TTFPendingUploads[j - 1];
-			const int iW = (last.iX + last.iW) - first.iX;
-
-			merged.assign((size_t)iW * iH * 4, 0);
-			for (size_t k = i; k < j; k++)
+			merged.assign((size_t)run.iW * run.iH * 4, 0);
+			for (size_t k = run.iFirst; k < run.iEnd; k++)
 			{
 				const TTFPendingUpload_t& upload = g_TTFPendingUploads[k];
 				for (int iRow = 0; iRow < upload.iH; iRow++)
 				{
-					memcpy(&merged[((size_t)iRow * iW + (upload.iX - first.iX)) * 4],
+					memcpy(&merged[((size_t)(upload.iY - run.iY + iRow) * run.iW + (upload.iX - run.iX)) * 4],
 						&upload.rgba[(size_t)iRow * upload.iW * 4],
 						(size_t)upload.iW * 4);
 				}
 			}
-			R_Font_UpdateAtlasImage(first.pImage, first.iX, first.iY, iW, iH, &merged[0]);
+			R_Font_UpdateAtlasImage(first.pImage, run.iX, run.iY, run.iW, run.iH, &merged[0]);
 		}
-
-		i = j;
+		g_fontStats.uploads++;
+		g_fontStats.uploadKB += (unsigned int)(((size_t)run.iW * run.iH * 4) >> 10);
 	}
 
 	g_TTFPendingUploads.clear();
 }
 
+#endif // USE_FREETYPE
+
+#define TTF_DEFAULT_POINTSIZE	16
+
 // font name may carry an "@NN" point size suffix, eg "myfont@24"...
+// (needed without FreeType as well: cgame and ui always register sized names)
 //
 static void Font_SplitSizedName(const char* psName, char* psBaseName, int iBaseNameSize, int* piPointSize)
 {
@@ -238,7 +317,6 @@ static void Font_SplitSizedName(const char* psName, char* psBaseName, int iBaseN
 		*psAt = '\0';
 	}
 }
-#endif // USE_FREETYPE
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
 //
@@ -473,6 +551,7 @@ public:
 	const glyphInfo_t* TTF_GetLetter(const unsigned int uiLetter, int* piShader);
 	const glyphInfo_t* GetSequenceGlyph(unsigned int uiFirst, const char** ppsText, int* piShader = NULL);
 	bool IsTTF(void) const { return m_bTTF; }
+	void TTF_Warm(void) { TTF_CacheGlyph('a'); }	// rasterizes the whole ASCII block
 #else
 	const glyphInfo_t* GetSequenceGlyph(unsigned int, const char**, int* = NULL) { return NULL; }
 	bool IsTTF(void) const { return false; }
@@ -1542,7 +1621,7 @@ static bool GSUB_LigatureLonger(const GSUBLigature_t& a, const GSUBLigature_t& b
 // LigatureSubstFormat1 (GSUB LookupType 4)...
 static void GSUB_ParseLigSubtable(const byte* pTable, FT_ULong iLen, FT_ULong iOffset, GSUBData_t& data)
 {
-	if (iOffset + 6 > iLen)
+	if (iOffset > iLen || iLen - iOffset < 6)
 	{
 		return;
 	}
@@ -1697,7 +1776,11 @@ static GSUBData_t* Font_GetGSUB(FT_Face pFace)
 						}
 						if (GSUB_U16(pTable + subOff + 2) == 4)
 						{
-							GSUB_ParseLigSubtable(pTable, iLen, subOff + GSUB_U32(pTable + subOff + 4), data);
+							const FT_ULong extOff = GSUB_U32(pTable + subOff + 4);
+							if (extOff <= iLen - subOff)
+							{
+								GSUB_ParseLigSubtable(pTable, iLen, subOff + extOff, data);
+							}
 						}
 					}
 				}
@@ -2079,6 +2162,9 @@ TTFGlyph_t* CFontInfo::TTF_RenderGlyphIndex(FT_Face pFace, FT_UInt uiGlyphIndex,
 	TTFGlyph_t entry;
 	memset(&entry, 0, sizeof(entry));
 
+	FontProfileScope_t profile(&g_fontStats.rasterMs);
+	g_fontStats.rasterized++;
+
 	// ---- colour path: COLRv0 layered glyphs (Segoe UI Emoji, Twemoji...) ----
 	//
 	// each layer is a monochrome glyph tinted by a palette colour; composite
@@ -2115,10 +2201,11 @@ TTFGlyph_t* CFontInfo::TTF_RenderGlyphIndex(FT_Face pFace, FT_UInt uiGlyphIndex,
 					continue;
 				}
 				const FT_GlyphSlot s = pFace->glyph;
-				if (!s->bitmap.width || !s->bitmap.rows)
+				if (!s->bitmap.width || !s->bitmap.rows || s->bitmap.pixel_mode != FT_PIXEL_MODE_GRAY)
 				{
 					continue;
 				}
+				g_fontStats.colorLayers++;
 				if (s->bitmap_left < iXMin) { iXMin = s->bitmap_left; }
 				if (s->bitmap_left + (int)s->bitmap.width > iXMax) { iXMax = s->bitmap_left + (int)s->bitmap.width; }
 				if (s->bitmap_top > iYMax) { iYMax = s->bitmap_top; }
@@ -2227,6 +2314,12 @@ TTFGlyph_t* CFontInfo::TTF_RenderGlyphIndex(FT_Face pFace, FT_UInt uiGlyphIndex,
 
 	const int iW = (int)pBitmap->width;
 	const int iH = (int)pBitmap->rows;
+	const bool bMono = (pBitmap->pixel_mode == FT_PIXEL_MODE_MONO);	// 1 bit per pixel (embedded bitmap strikes)
+
+	if (iW > 0 && iH > 0 && !bMono && pBitmap->pixel_mode != FT_PIXEL_MODE_GRAY)
+	{
+		return NULL;	// (BGRA / LCD bitmaps: not something we can expand below)
+	}
 
 	if (iW > 0 && iH > 0)
 	{
@@ -2250,7 +2343,7 @@ TTFGlyph_t* CFontInfo::TTF_RenderGlyphIndex(FT_Face pFace, FT_UInt uiGlyphIndex,
 				pDst[iCol * 4 + 0] = 255;
 				pDst[iCol * 4 + 1] = 255;
 				pDst[iCol * 4 + 2] = 255;
-				pDst[iCol * 4 + 3] = pSrc[iCol];
+				pDst[iCol * 4 + 3] = bMono ? ((pSrc[iCol >> 3] & (0x80 >> (iCol & 7))) ? 255 : 0) : pSrc[iCol];
 			}
 		}
 		TTF_QueueUpload(pPage->pImage, iX, iY, iW, iH, rgba);
@@ -2925,6 +3018,18 @@ void RE_Font_DrawString(int ox, int oy, const char *psText, const float *rgba, c
 
 	assert (psText);
 
+#ifdef USE_FREETYPE
+	static int iDrawDepth = 0;	// the dropshadow pass recurses: time the outermost call only
+	struct DrawProfile_t
+	{
+		int& iDepth;
+		double start;
+		explicit DrawProfile_t(int& iDepthRef) : iDepth(iDepthRef), start(iDepthRef++ == 0 ? Font_ProfileClock() : 0.0) {}
+		~DrawProfile_t() { iDepth--; if (start) { g_fontStats.drawMs += Font_ProfileClock() - start; } }
+	} drawProfile(iDrawDepth);
+	g_fontStats.draws++;
+#endif
+
 	if(iFontHandle & STYLE_BLINK)
 	{
 		if((ri.Milliseconds() >> 7) & 1)
@@ -3138,6 +3243,17 @@ void RE_Font_DrawString(int ox, int oy, const char *psText, const float *rgba, c
 					fy += 3.0f; // I'm sick and tired of going round in circles trying to do this legally, so bollocks to it
 				}
 
+#ifdef USE_FREETYPE
+				{
+					static qhandle_t hLastShader = 0;
+					g_fontStats.quads++;
+					if (hShader != hLastShader)
+					{
+						hLastShader = hShader;
+						g_fontStats.pageSwitches++;
+					}
+				}
+#endif
 				RE_StretchPic(curfont->mbRoundCalcs ? fx + Round(pLetter->horizOffset * fThisScale) : fx + pLetter->horizOffset * fThisScale, // float x
 								(uiLetter > (unsigned)g_iNonScaledCharRange) ? fy - fAsianYAdjust : fy,	// float y
 								curfont->mbRoundCalcs ? Round(pLetter->width * fThisScale) : pLetter->width * fThisScale * tr.widthRatioCoef,	// float w
@@ -3225,6 +3341,11 @@ int RE_RegisterFont(const char *psName) {
 						}
 					}
 				}
+				// rasterize ASCII now, while things are loading anyway, rather
+				// than on the first frame that draws text with this font. Only
+				// the size that ordinary text is drawn with gets this...
+				(oriFont->GetNumVariants() ? oriFont->GetVariant(0) : oriFont)->TTF_Warm();
+				TTF_FlushUploads();
 			}
 			return oriFontHandle;	// skip the "_sharp" fontdat probing below for TTF fonts
 		}
@@ -3248,8 +3369,7 @@ int RE_RegisterFont(const char *psName) {
 			}
 		}
 	} else {
-#ifdef USE_FREETYPE
-		// "name@size" but no TTF/OTF on disk (or r_useFreeType 0):
+		// "name@size" but no TTF/OTF on disk (or no FreeType / r_useFreeType 0):
 		// quietly fall back to the plain bitmap font so menus keep working...
 		char sBaseName[MAX_QPATH];
 		int iDummy;
@@ -3258,7 +3378,6 @@ int RE_RegisterFont(const char *psName) {
 		{
 			return RE_RegisterFont(sBaseName);
 		}
-#endif
 		ri.Printf( PRINT_WARNING, "RE_RegisterFont: Couldn't find font %s\n", psName );
 	}
 
@@ -3279,6 +3398,7 @@ void R_InitFonts(void)
 
 #ifdef USE_FREETYPE
 	r_useFreeType = ri.Cvar_Get("r_useFreeType", "1", CVAR_ARCHIVE_ND | CVAR_LATCH, "Enable TTF/OTF font loading via FreeType");
+	r_fontProfile = ri.Cvar_Get("r_fontProfile", "0", CVAR_NONE, "Time font drawing, rasterizing and uploads; \"fontlist\" prints and resets the numbers");
 
 	if (!g_FTLibrary)
 	{
@@ -3316,6 +3436,22 @@ void R_FontList_f( void ) {
 		}
 	}
 	Com_Printf ("------------------------------------\n");
+#ifdef USE_FREETYPE
+	Com_Printf("Since the last fontlist: %u strings, %u glyph quads, %u shader switches\n",
+		g_fontStats.draws, g_fontStats.quads, g_fontStats.pageSwitches);
+	Com_Printf("  %u glyphs rasterized (%u colour layers), %u atlas uploads (%u KB)\n",
+		g_fontStats.rasterized, g_fontStats.colorLayers, g_fontStats.uploads, g_fontStats.uploadKB);
+	if (r_fontProfile && r_fontProfile->integer)
+	{
+		Com_Printf("  time: drawing %.3f ms (of which rasterizing %.3f ms, uploading %.3f ms)\n",
+			g_fontStats.drawMs, g_fontStats.rasterMs, g_fontStats.uploadMs);
+	}
+	else
+	{
+		Com_Printf("  (set r_fontProfile 1 for timings)\n");
+	}
+	memset(&g_fontStats, 0, sizeof(g_fontStats));
+#endif
 }
 
 void R_ShutdownFonts(void)
