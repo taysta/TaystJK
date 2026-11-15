@@ -444,7 +444,7 @@ QINLINE int PM_GetMovePhysics(void)
 #if _GAME
 	if (pm->ps->stats[STAT_RACEMODE])
 		return (pm->ps->stats[STAT_MOVEMENTSTYLE]);
-	else if ((g_movementStyle.integer >= MV_SIEGE && g_movementStyle.integer <= MV_WSW) || (g_movementStyle.integer == MV_SP || g_movementStyle.integer == MV_SLICK || g_movementStyle.integer == MV_OCPM || g_movementStyle.integer == MV_TRIBES))
+	else if ((g_movementStyle.integer >= MV_SIEGE && g_movementStyle.integer <= MV_WSW) || (g_movementStyle.integer == MV_SP || g_movementStyle.integer == MV_SLICK || g_movementStyle.integer == MV_OCPM || g_movementStyle.integer == MV_TRIBES || g_movementStyle.integer == MV_SURF))
 		return (g_movementStyle.integer);
 	else if (g_movementStyle.integer < MV_SIEGE)
 		return MV_SIEGE;
@@ -703,6 +703,7 @@ static void PM_SetVehicleAngles( vec3_t normal )
 	//float	curVehicleBankingSpeed;
 	vehicleBankingSpeed = (pVeh->m_pVehicleInfo->bankingSpeed*32.0f)*pml.frametime;//0.25f
 
+
 	if ( vehicleBankingSpeed <= 0
 		|| ( pVeh->m_pVehicleInfo->pitchLimit == 0 && pVeh->m_pVehicleInfo->rollLimit == 0 ) )
 	{//don't bother, this vehicle doesn't bank
@@ -745,11 +746,25 @@ static void PM_SetVehicleAngles( vec3_t normal )
 		//FIXME: take center of gravity into account
 		vAngles[PITCH] = pm->ps->viewangles[PITCH]*0.5f + pitchBias;
 		//don't bank so fast when in the air
-		vehicleBankingSpeed *= (0.125f*pml.frametime);
+		// NOTE: for pods do NOT crush the banking speed here - a hovering pod is frequently in
+		// this "air" branch, and *0.125*frametime makes vehicleBankingSpeed ~0 so the roll never
+		// eases in (this was "bank roll always 0"). Pods keep their (scaled) banking speed. -TaystJK
+		if ( !BG_PodRacerPhysics( pVeh ) )
+		{
+			vehicleBankingSpeed *= (0.125f*pml.frametime);
+		}
 	}
 	//NOTE: if angles are flat and we're moving through air (not on ground),
 	//		then pitch/bank?
-	if ( pVeh->m_pVehicleInfo->rollLimit > 0 )
+	if ( BG_PodRacerPhysics( pVeh ) )
+	{
+		// PODRACER BANKING is handled in ProcessOrientCommands (SpeederNPC.c), NOT here. This
+		// function is buried in hover/pmove state and the roll it wrote was being lost ("bank
+		// roll always 0"). ProcessOrientCommands runs every vehicle update and owns m_vOrientation,
+		// so roll set there sticks. We leave vAngles[ROLL] at 0 here and skip the roll ease-in
+		// for pods in the apply loop below so we don't fight ProcessOrientCommands. -TaystJK
+	}
+	else if ( pVeh->m_pVehicleInfo->rollLimit > 0 )
 	{
 		//roll when banking
 		vec3_t	velocity;
@@ -793,13 +808,22 @@ static void PM_SetVehicleAngles( vec3_t normal )
 		}
 	}
 
-	if ( vAngles[ROLL] > pVeh->m_pVehicleInfo->rollLimit )
 	{
-		vAngles[ROLL] = pVeh->m_pVehicleInfo->rollLimit;
-	}
-	else if ( vAngles[ROLL] < -pVeh->m_pVehicleInfo->rollLimit )
-	{
-		vAngles[ROLL] = -pVeh->m_pVehicleInfo->rollLimit;
+		// pods roll more extremely than the .veh rollLimit (45) allows
+		float rollCap = pVeh->m_pVehicleInfo->rollLimit;
+		if ( BG_PodRacerPhysics( pVeh )
+			&& POD_ROLL_LIMIT > rollCap )
+		{
+			rollCap = POD_ROLL_LIMIT;
+		}
+		if ( vAngles[ROLL] > rollCap )
+		{
+			vAngles[ROLL] = rollCap;
+		}
+		else if ( vAngles[ROLL] < -rollCap )
+		{
+			vAngles[ROLL] = -rollCap;
+		}
 	}
 
 	//do it
@@ -807,6 +831,10 @@ static void PM_SetVehicleAngles( vec3_t normal )
 	{
 		if ( i == YAW )
 		{//yawing done elsewhere
+			continue;
+		}
+		if ( i == ROLL && BG_PodRacerPhysics( pVeh ) )
+		{//pod roll is owned by ProcessOrientCommands - don't ease it back to 0 here
 			continue;
 		}
 		//bank faster the higher the difference is
@@ -900,6 +928,17 @@ void PM_HoverTrace( void )
 	hoverHeight = pVeh->m_pVehicleInfo->hoverHeight;
 	trace = &pml.groundTrace;
 
+	// Pod physics: the swoop.veh hoverHeight (30) leaves the box bottom only ~6 units above
+	// ground. Raise ride height enough to clear small bumps without making the pod float too high.
+	if ( BG_PodRacerPhysics( pVeh ) )
+	{
+		hoverHeight *= POD_HOVER_HEIGHT_SCALE * BG_VehicleInstanceScale( pVeh, pm->ps->iModelScale );
+	}
+	else
+	{
+		hoverHeight *= BG_VehicleInstanceScale( pVeh, pm->ps->iModelScale );
+	}
+
 	pml.groundPlane = qfalse;
 
 	//relativeWaterLevel = (pm->ps->waterheight - (pm->ps->origin[2]+pm->mins[2]));
@@ -915,6 +954,20 @@ void PM_HoverTrace( void )
 			if ( relativeWaterLevel > floatHeight )
 			{//too low, should rise up
 				pm->ps->velocity[2] += (relativeWaterLevel - floatHeight) * pVeh->m_fTimeModifier;
+			}
+			if ( BG_PodRacerPhysics( pVeh ) && pm->waterlevel >= 2
+				&& (pm->watertype & CONTENTS_WATER) )
+			{
+				// The stock buoyancy calculation only knows the 1-3 waterlevel samples,
+				// not the actual depth.  On a scaled pod that can yield no lift at all.
+				// Nudge a submerged pod back to the surface, where the normal hover
+				// spring takes over.  It is deliberately weaker than the surface spring.
+				float recoveryLift = pVeh->m_pVehicleInfo->hoverStrength
+					* POD_HOVER_FORCE_SCALE * 0.5f;
+				if ( pm->ps->velocity[2] < 160.0f )
+				{
+					pm->ps->velocity[2] += recoveryLift * pVeh->m_fTimeModifier;
+				}
 			}
 		}
 		//if ( pm->ps->waterheight < pm->ps->origin[2]+pm->maxs[2] )
@@ -969,6 +1022,11 @@ void PM_HoverTrace( void )
 			//Before, any slope that you could climb up, you could also hovor boost up..?
 			//now you can only hovor boost up slopes that you could already climb before? and you can now climb steeper slopes than before?
 		}
+		if ( BG_PodRacerPhysics( pVeh ) )
+		{
+			minNormal = POD_MAX_SLOPE;
+			realMinNormal = POD_MAX_SLOPE_SIDE_NORMAL;
+		}
 
 		point[0] = pm->ps->origin[0];
 		point[1] = pm->ps->origin[1];
@@ -983,6 +1041,11 @@ void PM_HoverTrace( void )
 		if ( pVeh->m_pVehicleInfo->bouyancy >= 2.0f )
 		{//sit on water
 			traceContents |= (CONTENTS_WATER|CONTENTS_SLIME|CONTENTS_LAVA);
+		}
+		else if ( BG_PodRacerPhysics( pVeh ) )
+		{
+			// Pods hover at the water surface, but retain their normal buoyancy once submerged.
+			traceContents |= CONTENTS_WATER;
 		}
 		pm->trace( trace, pm->ps->origin, pm->mins, pm->maxs, point, pm->ps->clientNum, traceContents );
 		if ((trace->plane.normal[0] > realMinNormal || trace->plane.normal[0] < -realMinNormal ||
@@ -1000,7 +1063,13 @@ void PM_HoverTrace( void )
 		{//not a steep slope, so push us up
 			if ( trace->fraction < 1.0f )
 			{//push up off ground
-				float hoverForce = pVeh->m_pVehicleInfo->hoverStrength;
+				float hoverForce = pVeh->m_pVehicleInfo->hoverStrength
+					* BG_VehicleInstanceScale( pVeh, pm->ps->iModelScale );
+				// Keep pod lift close to stock; too much spring force launches off bumps.
+				if ( BG_PodRacerPhysics( pVeh ) )
+				{
+					hoverForce *= POD_HOVER_FORCE_SCALE;
+				}
 				if ( trace->fraction > 0.5f )
 				{
 					pm->ps->velocity[2] += (1.0f-trace->fraction)*hoverForce*pVeh->m_fTimeModifier;
@@ -1075,6 +1144,14 @@ void PM_HoverTrace( void )
 				pVeh->m_vAngularVelocity = 0.0f;
 			}
 		}
+	}
+	// ProcessMoveCommands runs after this initial hover trace, so publish the
+	// exact contacted pod surface for the speed model and traction pass. A pod
+	// only receives these effects while it is in its hover-contact range.
+	if ( BG_PodRacerPhysics( pVeh ) )
+	{
+		pVeh->m_ulPodSurfaceFlags = pml.groundPlane ?
+			( (uint32_t)pml.groundTrace.surfaceFlags & SURF_POD_MASK ) : 0;
 	}
 	PM_GroundTraceMissed();
 }
@@ -1213,7 +1290,29 @@ static void PM_Friction( void ) {
 		realfriction = pm_vq3_friction;
 
 	// apply ground friction, even if on ladder
-	if (pm_flying != FLY_VEHICLE &&
+	// Pod physics owns its own speed model (coast/brake are handled in
+	// PodRacer_ProcessMoveCommands); the stock vehicle ground friction here fights the target
+	// speed and was capping top speed well below speedMax*mapScale. Skip it for pod speeders.
+	if ( pEnt && pEnt->s.NPC_class == CLASS_VEHICLE
+		&& BG_PodRacerPhysics( pEnt->m_pVehicle ) )
+	{
+		// Pod speed is horizontal-only and owned by PodRacer_ProcessMoveCommands /
+		// PM_PodRacerTraction. Keep stock friction off x/y. Only damp upward z energy so
+		// hover bumps stop bouncing; damping falling z creates a very low terminal velocity.
+		// Ground pod vehicles (hoverHeight 0, e.g. the wheelchair) have no hover spring
+		// to bounce them - keep their jump arcs ballistic, no upward damping.
+		if ( pEnt->m_pVehicle->m_pVehicleInfo->hoverHeight > 0 && vel[2] > 0.0f )
+		{
+			float zDamp = 1.0f - POD_VERTICAL_DAMPING * pml.frametime;
+			if ( zDamp < 0.0f )
+			{
+				zDamp = 0.0f;
+			}
+			vel[2] *= zDamp;
+		}
+		return;
+	}
+	else if (pm_flying != FLY_VEHICLE &&
 		pEnt &&
 		pEnt->s.NPC_class == CLASS_VEHICLE &&
 		pEnt->m_pVehicle &&
@@ -4762,6 +4861,271 @@ static void PM_WaterMove( void ) {
 	PM_SlideMove( qfalse );
 }
 
+static float PM_PodGroundProximityScale( float airScale, float hoverScale, float closeScale )
+{
+	float proximity;
+
+	if ( !pml.groundPlane || pml.groundTrace.fraction >= 1.0f )
+	{
+		return airScale;
+	}
+
+	proximity = 1.0f - pml.groundTrace.fraction;
+	if ( proximity < 0.0f ) proximity = 0.0f;
+	if ( proximity > 1.0f ) proximity = 1.0f;
+
+	return hoverScale + ( closeScale - hoverScale ) * proximity;
+}
+
+/*
+===================
+PM_PodRacerTraction
+
+SWE1R-style traction/grip for pod-physics speeders (ported from swe1r-decomp
+CalculateTraction 478A70). Replaces the stock PM_Accelerate for these vehicles:
+instead of nudging velocity toward moveDir*speed, it blends the CURRENT velocity
+direction toward the forward vector by the slide factor, then renormalises to the
+target speed magnitude. Low slide factor = drifty (velocity keeps its heading);
+high = grippy (snaps to the nose). Operates on the horizontal plane only; vertical
+(hover) velocity is left untouched. The slide factor is derived from the current
+command instead of being authoritative Vehicle_t state; otherwise cgame prediction
+can replay from a different hidden slide value than the server had at the snapshot.
+-TaystJK
+===================
+*/
+static void PM_PodRacerTraction( Vehicle_t *pVeh, vec3_t wishdir, float wishspeed )
+{
+	vec3_t	fwd, vel, desired, blend, dir;
+	float	curSpeed, slide, targetSlide;
+	float	grip, skid, keepDesired, proximityGrip;
+	float	rawAlign, align, slipLoad, steerLoad, turnLoad, wrongRollLoad, load;
+	float	targetMag, newMag, accelRate, speedFrac, topSpeed;
+	float	maxTurnRate = BG_PodRacerMaxTurnRate( pVeh->m_pVehicleInfo );
+	qboolean drifting;
+
+	// forward heading on the flat plane (wishdir is moveDir here)
+	VectorCopy( wishdir, fwd );
+	fwd[2] = 0.0f;
+	if ( VectorNormalize( fwd ) < 0.001f )
+	{	// no heading - fall back to stock behaviour
+		PM_Accelerate( wishdir, wishspeed, pVeh->m_pVehicleInfo->traction );
+		return;
+	}
+
+	// current horizontal velocity + its magnitude
+	vel[0] = pm->ps->velocity[0];
+	vel[1] = pm->ps->velocity[1];
+	vel[2] = 0.0f;
+	curSpeed = VectorLength( vel );
+
+	drifting = BG_PodRacerDrifting( pVeh, curSpeed );
+
+	// SWE1R slide2: 1.0 under power, 0.8 off-throttle, lower while deliberately drifting.
+	targetSlide = 1.0f;
+	if ( pVeh->m_ucmd.forwardmove <= 0 )
+	{
+		targetSlide = POD_SLIDE_COAST_TARGET;
+	}
+	if ( drifting )
+	{
+		targetSlide = POD_DRIFT_SLIDE_TARGET;
+	}
+
+	slide = pVeh->m_fPodTraction;
+	if ( slide <= 0.0f || slide > 1.0f )
+	{
+		slide = targetSlide;
+	}
+	if ( targetSlide < slide )
+	{
+		slide = targetSlide;
+	}
+	else if ( targetSlide > slide )
+	{
+		float recoverStep = pml.frametime * ( 1.0f - POD_DRIFT_SLIDE_TARGET ) / POD_DRIFT_TRACTION_RELEASE_TIME;
+		if ( recoverStep < 0.0f )
+		{
+			recoverStep = 0.0f;
+		}
+		slide += recoverStep;
+		if ( slide > targetSlide )
+		{
+			slide = targetSlide;
+		}
+	}
+	pVeh->m_fPodTraction = slide;
+	if ( slide < 0.0f ) slide = 0.0f;
+	if ( slide > 1.0f ) slide = 1.0f;
+
+	proximityGrip = PM_PodGroundProximityScale( POD_AIR_GRIP_SCALE, POD_HOVER_GRIP_SCALE, POD_CLOSE_GRIP_SCALE );
+	grip = POD_ANTI_SKID * ( pVeh->m_pVehicleInfo->traction / 12.0f ) * slide * proximityGrip;
+	if ( pVeh->m_ulPodSurfaceFlags & SURF_POD_SLIP )
+	{
+		// SWE1R's slip surface reduces the anti-skid/grip term to 20%,
+		// with the transition already smoothed by ProcessMoveCommands.
+		grip *= pVeh->m_fPodSurfaceSkidModifier;
+	}
+	if ( grip < 0.0f ) grip = 0.0f;
+	if ( grip > 0.995f ) grip = 0.995f;
+
+	// SWE1R: traction is the amount of old velocity kept. Higher antiSkid means less skid.
+	skid = ( 1.0f - grip * grip ) * 0.99666601f;
+	if ( skid < 0.0f ) skid = 0.0f;
+	if ( skid > 1.0f ) skid = 1.0f;
+	keepDesired = 1.0f - skid;
+
+	rawAlign = 1.0f;
+	if ( curSpeed > 1.0f )
+	{
+		rawAlign = (vel[0] / curSpeed) * fwd[0] + (vel[1] / curSpeed) * fwd[1];
+	}
+	align = rawAlign;
+	if ( align < 0.0f ) align = 0.0f;
+	if ( align > 1.0f ) align = 1.0f;
+
+	topSpeed = BG_PodRacerTopSpeedForVehicle( pVeh, pm->ps->iModelScale );
+	speedFrac = ( topSpeed > 1.0f ) ? ( curSpeed / topSpeed ) : 0.0f;
+	if ( speedFrac > 1.0f ) speedFrac = 1.0f;
+	if ( speedFrac < 0.0f ) speedFrac = 0.0f;
+
+	slipLoad = 1.0f - align;
+	steerLoad = ( maxTurnRate > 0.0f ) ? fabs( pVeh->m_fPodTargetTurnRate ) / maxTurnRate : 0.0f;
+	if ( steerLoad > 1.0f ) steerLoad = 1.0f;
+	turnLoad = ( maxTurnRate > 0.0f ) ? fabs( pVeh->m_fPodTurnRate ) / maxTurnRate : 0.0f;
+	if ( turnLoad > 1.0f ) turnLoad = 1.0f;
+	if ( steerLoad > turnLoad ) turnLoad = steerLoad;
+	wrongRollLoad = 0.0f;
+	if ( pVeh->m_fPodTargetTurnRate != 0.0f && ( pVeh->m_vOrientation[ROLL] * pVeh->m_fPodTargetTurnRate ) > 0.0f )
+	{
+		float rollCap = ( POD_ROLL_LIMIT > 0.0f ) ? POD_ROLL_LIMIT : pVeh->m_pVehicleInfo->rollLimit;
+		if ( rollCap < 1.0f )
+		{
+			rollCap = 1.0f;
+		}
+		wrongRollLoad = fabs( pVeh->m_vOrientation[ROLL] ) / rollCap;
+		if ( wrongRollLoad <= POD_WRONG_ROLL_START )
+		{
+			wrongRollLoad = 0.0f;
+		}
+		else
+		{
+			wrongRollLoad = ( wrongRollLoad - POD_WRONG_ROLL_START ) / ( 1.0f - POD_WRONG_ROLL_START );
+			if ( wrongRollLoad > 1.0f ) wrongRollLoad = 1.0f;
+		}
+	}
+	if ( pVeh->m_fPodTargetTurnRate != 0.0f )
+	{
+		float manual = pVeh->m_ucmd.rightmove / 127.0f;
+		manual = ( manual < -1.0f ) ? -1.0f : ( manual > 1.0f ) ? 1.0f : manual;
+		if ( ( manual * pVeh->m_fPodTargetTurnRate ) > 0.0f )
+		{
+			float manualLoad = fabs( manual );
+			if ( manualLoad <= POD_WRONG_ROLL_START )
+			{
+				manualLoad = 0.0f;
+			}
+			else
+			{
+				manualLoad = ( manualLoad - POD_WRONG_ROLL_START ) / ( 1.0f - POD_WRONG_ROLL_START );
+				if ( manualLoad > 1.0f ) manualLoad = 1.0f;
+			}
+			if ( manualLoad > wrongRollLoad )
+			{
+				wrongRollLoad = manualLoad;
+			}
+		}
+	}
+	if ( wrongRollLoad > 0.0f )
+	{
+		turnLoad += wrongRollLoad * POD_WRONG_ROLL_TURNLOAD_BONUS;
+		if ( turnLoad > 1.0f ) turnLoad = 1.0f;
+	}
+	if ( drifting )
+	{
+		turnLoad += POD_DRIFT_TURNLOAD_BONUS;
+		if ( turnLoad > 1.0f ) turnLoad = 1.0f;
+	}
+	load = ( slipLoad > turnLoad ) ? slipLoad : turnLoad;
+
+	targetMag = fabs( wishspeed );
+	if ( !drifting && load > POD_TURN_LOAD_START )
+	{
+		float excess = ( load - POD_TURN_LOAD_START ) / ( 1.0f - POD_TURN_LOAD_START );
+		float scrub;
+		if ( excess > 1.0f ) excess = 1.0f;
+		scrub = POD_TURN_LOAD_SCRUB * excess * speedFrac;
+		if ( scrub > 0.75f ) scrub = 0.75f;
+		targetMag *= ( 1.0f - scrub );
+	}
+	if ( !drifting && rawAlign < 0.0f && targetMag > fabs( wishspeed ) * 0.45f )
+	{
+		targetMag = fabs( wishspeed ) * 0.45f;
+	}
+	if ( drifting )
+	{
+		targetMag = curSpeed;
+		if ( load > POD_TURN_LOAD_START )
+		{
+			float excess = ( load - POD_TURN_LOAD_START ) / ( 1.0f - POD_TURN_LOAD_START );
+			float scrub;
+			if ( excess > 1.0f ) excess = 1.0f;
+			scrub = POD_TURN_LOAD_SCRUB * POD_DRIFT_SCRUB_SCALE * excess * speedFrac;
+			if ( scrub > 0.75f ) scrub = 0.75f;
+			targetMag *= ( 1.0f - scrub );
+		}
+	}
+
+	accelRate = POD_MAG_CONVERGE * pml.frametime;
+	if ( accelRate > 1.0f ) accelRate = 1.0f;
+	if ( targetMag > curSpeed )
+	{
+		accelRate *= PM_PodGroundProximityScale( POD_AIR_ACCEL_SCALE, POD_HOVER_ACCEL_SCALE, POD_CLOSE_ACCEL_SCALE );
+		if ( drifting )
+		{
+			accelRate *= POD_DRIFT_ACCEL_SCALE;
+		}
+		if ( accelRate > 1.0f ) accelRate = 1.0f;
+	}
+	newMag = curSpeed + ( targetMag - curSpeed ) * accelRate;
+	if ( drifting && load > POD_TURN_LOAD_START )
+	{
+		float excess = ( load - POD_TURN_LOAD_START ) / ( 1.0f - POD_TURN_LOAD_START );
+		if ( excess > 1.0f ) excess = 1.0f;
+		newMag -= BG_PodRacerDriftBleedRateForVehicle( pVeh, pm->ps->iModelScale ) * excess * speedFrac * pml.frametime;
+	}
+	if ( newMag < 0.0f ) newMag = 0.0f;
+	if ( drifting )
+	{
+		pm->ps->speed = newMag;
+	}
+
+	// Remove the component that points opposite the desired travel direction, matching SWE1R's
+	// anti-spinout pre-pass before blending current velocity with desired velocity.
+	if ( !drifting && curSpeed > 0.001f )
+	{
+		float backDot = DotProduct( vel, fwd );
+		if ( backDot < 0.0f )
+		{
+			vel[0] += fwd[0] * -backDot;
+			vel[1] += fwd[1] * -backDot;
+		}
+	}
+
+	VectorScale( fwd, targetMag, desired );
+	blend[0] = desired[0] * keepDesired + vel[0] * skid;
+	blend[1] = desired[1] * keepDesired + vel[1] * skid;
+	blend[2] = 0.0f;
+
+	VectorCopy( blend, dir );
+	if ( VectorNormalize( dir ) < 0.001f )
+	{
+		VectorCopy( fwd, dir );
+	}
+
+	pm->ps->velocity[0] = dir[0] * newMag;
+	pm->ps->velocity[1] = dir[1] * newMag;
+}
+
 /*
 ===================
 PM_FlyVehicleMove
@@ -4777,6 +5141,16 @@ static void PM_FlyVehicleMove( void )
 	float	scale;
 	float	zVel;
 	float	fmove = 0.0f, smove = 0.0f;
+
+	if ( pm_entSelf && pm_entSelf->m_pVehicle
+		&& BG_ShrikePhysicsActive( pm_entSelf->m_pVehicle, pm->ps, pm->cmd.serverTime )
+		&& pm->ps->gravity == 0	//piloted (BG_FighterUpdate zeroes gravity); empty ships use the stock path
+		&& !( pm->ps->hyperSpaceTime && (pm->cmd.serverTime - pm->ps->hyperSpaceTime) < HYPERSPACE_TIME ) )
+	{//Tribes 2 physics: velocity was fully simulated in FighterShrikeMoveCommands,
+	 //including gravity and drag — just collide and slide
+		PM_StepSlideMove( qfalse );
+		return;
+	}
 
 	// We don't use these here because we pre-calculate the movedir in the vehicle update anyways, and if
 	// you leave this, you get strange motion during boarding (the player can move the vehicle).
@@ -4957,6 +5331,10 @@ static void PM_AirMove( void ) {
 
 	fmove = pm->cmd.forwardmove;
 	smove = pm->cmd.rightmove;
+	if ( BG_PodRacerPhysics( pVeh ) )
+	{
+		smove = 0.0f;
+	}
 
 	if (moveStyle == MV_SURF) {
 		if (pm->cmd.forwardmove != 0 && pm->cmd.rightmove != 0)	{
@@ -4967,6 +5345,10 @@ static void PM_AirMove( void ) {
 	}
 
 	cmd = pm->cmd;
+	if ( BG_PodRacerPhysics( pVeh ) )
+	{
+		cmd.rightmove = 0;
+	}
 	scale = PM_CmdScale( &cmd );
 
 	// set the movementDir so clients can rotate the legs for strafing
@@ -5179,6 +5561,14 @@ static void PM_AirMove( void ) {
 		{//on a slope of some kind, shouldn't have much control and should slide a lot
 			accelerate *= 0.5f;
 		}
+
+		// Pod-physics: replace the stock accelerate with the SWE1R traction/grip blend
+		// (drift/skid). Skip the normal accelerate chain below.
+		if ( BG_PodRacerPhysics( pVeh ) )
+		{
+			PM_PodRacerTraction( pVeh, wishdir, wishspeed );
+			goto podTractionDone;
+		}
 	}
 	// not on ground, so little effect on velocity
 	if (moveStyle == MV_QW) {
@@ -5226,6 +5616,7 @@ static void PM_AirMove( void ) {
 		PM_Accelerate(wishdir, wishspeed, accelerate);
 	}
 
+podTractionDone:
 	// we may have a ground plane that is very steep, even
 	// though we don't have a groundentity
 	// slide along the steep plane
@@ -6056,7 +6447,18 @@ static void PM_WalkMove( void ) {
 		accelerate = realaccelerate;
 	}
 
-	if (moveStyle == MV_TRIBES && pm->cmd.buttons & BUTTON_DASH) { //Truly a terrible way to do this but let us use the old way of accel because it lets us change direction as we expect at speed, but past a point don't let us gain any magnitute of speed from it, just the turns
+	// Pod-physics ground vehicle (hoverHeight 0, e.g. the wheelchair): grounded frames
+	// run PM_WalkMove instead of PM_AirMove, so route speed through the SWE1R
+	// traction/grip blend here too - the stock accelerate chain fights the pod speed
+	// model. (Hovering pods never ground, so they only ever hit the PM_AirMove hook.)
+	if ( pm_entSelf && pm_entSelf->s.NPC_class == CLASS_VEHICLE
+		&& pm_entSelf->m_pVehicle
+		&& pm_entSelf->m_pVehicle->m_pVehicleInfo->type == VH_SPEEDER
+		&& BG_PodRacerPhysics( pm_entSelf->m_pVehicle ) )
+	{
+		PM_PodRacerTraction( pm_entSelf->m_pVehicle, wishdir, wishspeed );
+	}
+	else if (moveStyle == MV_TRIBES && pm->cmd.buttons & BUTTON_DASH) { //Truly a terrible way to do this but let us use the old way of accel because it lets us change direction as we expect at speed, but past a point don't let us gain any magnitute of speed from it, just the turns
 		accelerate = pm_tribes_groundaccelerate;
 		PM_GroundAccelerateTribes(wishdir, wishspeed, accelerate);
 		/*
@@ -6895,10 +7297,16 @@ static void PM_GroundTrace( void ) {
 	{
 		bgEntity_t *pEnt = pm_entSelf;
 
-		if (pEnt && pEnt->s.NPC_class == CLASS_VEHICLE)
+		if (pEnt && pEnt->s.NPC_class == CLASS_VEHICLE
+			&& pEnt->m_pVehicle
+			&& pEnt->m_pVehicle->m_pVehicleInfo)
 		{
 			minNormal = pEnt->m_pVehicle->m_pVehicleInfo->maxSlope;
-			if (IsRacemode(pm->ps)) {//Its a vehicle in racemode, RACESWOOP
+			if ( BG_PodRacerPhysics( pEnt->m_pVehicle ) )
+			{
+				minNormal = POD_MAX_SLOPE;
+			}
+			else if (IsRacemode(pm->ps)) {//Its a vehicle in racemode, RACESWOOP
 				minNormal = 0.5f; //Max slope steepness before it stops hovoring you up, used to be 0.65
 			}
 		}
@@ -10062,6 +10470,15 @@ static void PM_Weapon( void )
 			}
 #endif
 		}
+		else if ( (veh = pm_entVeh) && veh->m_pVehicle
+			&& veh->m_pVehicle->m_pVehicleInfo->hideRider )
+		{//rider is hidden (e.g. tie/pod): there's no visible player, so a personal
+			//saber swing is always wrong.  Force the saber all-the-way-off so the
+			//entire saber-attack pipeline (swing sound, saber moves, attack anim) is
+			//bypassed at the source.  Do NOT clear the attack buttons - the rider
+			//still fires their personal gun weapons normally.
+			pm->ps->saberHolstered = 2;
+		}
 	}
 
 	if (pm->ps->weapon != WP_DISRUPTOR //not using disruptor
@@ -11488,12 +11905,12 @@ static void PM_DropTimers( void ) {
 extern	vmCvar_t	bg_fighterAltControl;
 qboolean BG_UnrestrainedPitchRoll( playerState_t *ps, Vehicle_t *pVeh )
 {
-	if ( bg_fighterAltControl.integer
-		&& ps->clientNum < MAX_CLIENTS //real client
+	if ( ps->clientNum < MAX_CLIENTS //real client
 		&& ps->m_iVehicleNum//in a vehicle
 		&& pVeh //valid vehicle data pointer
 		&& pVeh->m_pVehicleInfo//valid vehicle info
-		&& pVeh->m_pVehicleInfo->type == VH_FIGHTER )//fighter
+		&& pVeh->m_pVehicleInfo->type == VH_FIGHTER //fighter
+		&& ( bg_fighterAltControl.integer || BG_ShrikePhysics( pVeh ) ) )//shrike mode needs loops/inverted flight (via cvar or per-veh flag)
 		//FIXME: specify per vehicle instead of assuming true for all fighters
 		//FIXME: map/server setting?
 	{//can roll and pitch without limitation!
@@ -11511,6 +11928,30 @@ This can be used as another entry point when only the viewangles
 are being updated isntead of a full move
 ================
 */
+static void PM_ShrikeViewFwdToAnglesStable( const vec3_t viewFwd, const vec3_t prevAngles, vec3_t outAngles )
+{
+	float xyLen = sqrtf( viewFwd[0] * viewFwd[0] + viewFwd[1] * viewFwd[1] );
+	float pitch = -atan2f( viewFwd[2], xyLen ) * ( 180.0f / M_PI );
+	float liveYaw = atan2f( viewFwd[1], viewFwd[0] ) * ( 180.0f / M_PI );
+	float yawTrust = xyLen * 10.0f;
+
+	yawTrust *= yawTrust;
+	if ( yawTrust > 1.0f )
+	{
+		yawTrust = 1.0f;
+	}
+
+	if ( fabsf( AngleSubtract( liveYaw, prevAngles[YAW] ) ) > 90.0f )
+	{
+		pitch = AngleNormalize180( -180.0f - pitch );
+		liveYaw = AngleNormalize180( liveYaw + 180.0f );
+	}
+
+	outAngles[PITCH] = pitch;
+	outAngles[YAW] = AngleNormalize180( prevAngles[YAW] + yawTrust * AngleSubtract( liveYaw, prevAngles[YAW] ) );
+	outAngles[ROLL] = 0.0f;
+}
+
 void PM_UpdateViewAngles( playerState_t *ps, const usercmd_t *cmd ) {
 	short		temp;
 	int		i;
@@ -11521,6 +11962,79 @@ void PM_UpdateViewAngles( playerState_t *ps, const usercmd_t *cmd ) {
 
 	if ( ps->pm_type != PM_SPECTATOR && ps->stats[STAT_HEALTH] <= 0 ) {
 		return;		// no view changes at all
+	}
+
+	if ( pm_entVeh && pm_entVeh->m_pVehicle && pm_entVeh->playerState
+		&& BG_ShrikePhysics( pm_entVeh->m_pVehicle )
+		&& BG_UnrestrainedPitchRoll( ps, pm_entVeh->m_pVehicle ) )
+	{//Tribes 2 steering: the camera is bolted to the hull, so the mouse moves the
+	 //steering cursor in SHIP frame. Apply this command's pitch/yaw delta as exact
+	 //rotations around the ship's right/up axes — correct at ANY attitude, including
+	 //pointed straight up (v3-v5 rotated the component deltas by the ship's Euler
+	 //ROLL value instead, which is meaningless near vertical and scrambled the
+	 //input there) — then clamp the cursor to the on-screen steering cone.
+		float rawPitch, rawYaw, dP, dY;
+		float fx, fy, fz, sYaw, sPitch, steerLen, cp;
+		float maxDeflect = pm_entVeh->m_pVehicle->m_pVehicleInfo->shrikeMaxSteeringAngle;
+		vec3_t shipFwd, shipRight, shipUp, viewFwd, tmp, newAngles;
+
+		if ( maxDeflect > SHRIKE_STEERING_CONE )
+		{//same cone as the torque normalization; must stay on screen (see bg_vehicles.h)
+			maxDeflect = SHRIKE_STEERING_CONE;
+		}
+
+		//dP/dY reduce to this command's raw mouse movement: delta_angles are
+		//re-anchored to the stored viewangles every command, so the stored Euler
+		//representation cancels out of the subtraction
+		temp = cmd->angles[PITCH] + ps->delta_angles[PITCH];
+		rawPitch = SHORT2ANGLE( temp );
+		temp = cmd->angles[YAW] + ps->delta_angles[YAW];
+		rawYaw = SHORT2ANGLE( temp );
+		dP = AngleSubtract( rawPitch, ps->viewangles[PITCH] );
+		dY = AngleSubtract( rawYaw, ps->viewangles[YAW] );
+
+		AngleVectors( pm_entVeh->playerState->vehOrientation, shipFwd, shipRight, shipUp );
+		AngleVectors( ps->viewangles, viewFwd, NULL, NULL );
+
+		//mouse up (negative quake pitch) rotates the cursor screen-up around the
+		//ship's right axis; mouse left (positive yaw) screen-left around ship up
+		RotatePointAroundVector( tmp, shipRight, viewFwd, -dP );
+		VectorCopy( tmp, viewFwd );
+		RotatePointAroundVector( tmp, shipUp, viewFwd, dY );
+		VectorCopy( tmp, viewFwd );
+
+		//decompose against the ship and clamp into the visible steering cone
+		fy = DotProduct( viewFwd, shipFwd );
+		fx = DotProduct( viewFwd, shipRight );
+		fz = DotProduct( viewFwd, shipUp );
+		sYaw = atan2f( fx, fy );
+		sPitch = atan2f( fz, sqrtf( fx*fx + fy*fy ) );
+		steerLen = sqrtf( sYaw * sYaw + sPitch * sPitch );
+		if ( steerLen > maxDeflect && steerLen > 0.0f )
+		{//Clamp the cursor as one screen-space deflection. Clamping each axis
+		 //independently let fast diagonal pulls exceed the visible cone.
+			float s = maxDeflect / steerLen;
+			sYaw *= s;
+			sPitch *= s;
+		}
+		cp = cosf( sPitch );
+		VectorScale( shipFwd, cp * cosf( sYaw ), viewFwd );
+		VectorMA( viewFwd, cp * sinf( sYaw ), shipRight, viewFwd );
+		VectorMA( viewFwd, sinf( sPitch ), shipUp, viewFwd );
+
+		//Store the equivalent pitch/yaw branch closest to the previous command.
+		//A raw vectoangles branch flip at straight up turns the next command into
+		//a fake 180-degree yaw input before the re-anchor can cancel it.
+		PM_ShrikeViewFwdToAnglesStable( viewFwd, ps->viewangles, newAngles );
+		ps->viewangles[PITCH] = newAngles[PITCH];
+		ps->viewangles[YAW] = newAngles[YAW];
+		ps->viewangles[ROLL] = 0.0f;
+
+		//re-anchor delta_angles so the next command's mouse delta is measured from here
+		ps->delta_angles[PITCH] = ANGLE2SHORT( ps->viewangles[PITCH] ) - cmd->angles[PITCH];
+		ps->delta_angles[YAW] = ANGLE2SHORT( ps->viewangles[YAW] ) - cmd->angles[YAW];
+		ps->delta_angles[ROLL] = ANGLE2SHORT( 0 ) - cmd->angles[ROLL];
+		return;
 	}
 
 	// circularly clamp the angles with deltas
@@ -11575,6 +12089,14 @@ void PM_UpdateViewAngles( playerState_t *ps, const usercmd_t *cmd ) {
 
 			}
 			*/
+		}
+		else if ( pm_entSelf && pm_entSelf->s.NPC_class == CLASS_VEHICLE
+			&& pm_entSelf->m_pVehicle
+			&& BG_ShrikePhysics( pm_entSelf->m_pVehicle ) )
+		{//the shrike-physics fighter itself: its viewangles mirror the ship orientation,
+		 //which pitches through vertical during loops — clamping them here would freeze
+		 //the (ship-locked) camera at ±90 while the ship keeps rotating, making the
+		 //view snap 180 and controls feel inverted once over the top
 		}
 #endif // VEH_CONTROL_SCHEME_4
 		else
@@ -13893,10 +14415,15 @@ void PM_VehFaceHyperspacePoint(bgEntity_t *veh)
 
 #endif //VEH_CONTROL_SCHEME_4
 
-void BG_VehicleAdjustBBoxForOrientation( Vehicle_t *veh, vec3_t origin, vec3_t mins, vec3_t maxs,
+void BG_VehicleAdjustBBoxForOrientation( Vehicle_t *veh, int scalePercent, vec3_t origin, vec3_t mins, vec3_t maxs,
 										int clientNum, int tracemask,
 										void (*localTrace)(trace_t *results, const vec3_t start, const vec3_t mins, const vec3_t maxs, const vec3_t end, int passEntityNum, int contentMask))
 {
+	float modelScale;
+	float length;
+	float width;
+	float height;
+
 	if ( !veh
 		|| !veh->m_pVehicleInfo->length
 		|| !veh->m_pVehicleInfo->width
@@ -13905,12 +14432,17 @@ void BG_VehicleAdjustBBoxForOrientation( Vehicle_t *veh, vec3_t origin, vec3_t m
 	{
 		return;
 	}
-	else if ( veh->m_pVehicleInfo->type != VH_FIGHTER
+	modelScale = BG_VehicleInstanceScale( veh, scalePercent );
+	length = veh->m_pVehicleInfo->length * modelScale;
+	width = veh->m_pVehicleInfo->width * modelScale;
+	height = veh->m_pVehicleInfo->height * modelScale;
+
+	if ( veh->m_pVehicleInfo->type != VH_FIGHTER
 		//&& veh->m_pVehicleInfo->type != VH_SPEEDER
 		&& veh->m_pVehicleInfo->type != VH_FLIER )
 	{//only those types of vehicles have dynamic bboxes, the rest just use a static bbox
-		VectorSet( maxs, veh->m_pVehicleInfo->width/2.0f, veh->m_pVehicleInfo->width/2.0f, veh->m_pVehicleInfo->height+DEFAULT_MINS_2 );
-		VectorSet( mins, veh->m_pVehicleInfo->width/-2.0f, veh->m_pVehicleInfo->width/-2.0f, DEFAULT_MINS_2 );
+		VectorSet( maxs, width/2.0f, width/2.0f, (veh->m_pVehicleInfo->height+DEFAULT_MINS_2)*modelScale );
+		VectorSet( mins, width/-2.0f, width/-2.0f, DEFAULT_MINS_2*modelScale );
 		return;
 	}
 	else
@@ -13921,21 +14453,21 @@ void BG_VehicleAdjustBBoxForOrientation( Vehicle_t *veh, vec3_t origin, vec3_t m
 		trace_t		trace;
 
 		AnglesToAxis( veh->m_vOrientation, axis );
-		VectorMA( origin, veh->m_pVehicleInfo->length/2.0f, axis[0], point[0] );
-		VectorMA( origin, -veh->m_pVehicleInfo->length/2.0f, axis[0], point[1] );
+		VectorMA( origin, length/2.0f, axis[0], point[0] );
+		VectorMA( origin, -length/2.0f, axis[0], point[1] );
 		//extrapolate each side up and down
-		VectorMA( point[0], veh->m_pVehicleInfo->height/2.0f, axis[2], point[0] );
-		VectorMA( point[0], -veh->m_pVehicleInfo->height, axis[2], point[2] );
-		VectorMA( point[1], veh->m_pVehicleInfo->height/2.0f, axis[2], point[1] );
-		VectorMA( point[1], -veh->m_pVehicleInfo->height, axis[2], point[3] );
+		VectorMA( point[0], height/2.0f, axis[2], point[0] );
+		VectorMA( point[0], -height, axis[2], point[2] );
+		VectorMA( point[1], height/2.0f, axis[2], point[1] );
+		VectorMA( point[1], -height, axis[2], point[3] );
 
-		VectorMA( origin, veh->m_pVehicleInfo->width/2.0f, axis[1], point[4] );
-		VectorMA( origin, -veh->m_pVehicleInfo->width/2.0f, axis[1], point[5] );
+		VectorMA( origin, width/2.0f, axis[1], point[4] );
+		VectorMA( origin, -width/2.0f, axis[1], point[5] );
 		//extrapolate each side up and down
-		VectorMA( point[4], veh->m_pVehicleInfo->height/2.0f, axis[2], point[4] );
-		VectorMA( point[4], -veh->m_pVehicleInfo->height, axis[2], point[6] );
-		VectorMA( point[5], veh->m_pVehicleInfo->height/2.0f, axis[2], point[5] );
-		VectorMA( point[5], -veh->m_pVehicleInfo->height, axis[2], point[7] );
+		VectorMA( point[4], height/2.0f, axis[2], point[4] );
+		VectorMA( point[4], -height, axis[2], point[6] );
+		VectorMA( point[5], height/2.0f, axis[2], point[5] );
+		VectorMA( point[5], -height, axis[2], point[7] );
 		/*
 		VectorMA( origin, veh->m_pVehicleInfo->height/2.0f, axis[2], point[4] );
 		VectorMA( origin, -veh->m_pVehicleInfo->height/2.0f, axis[2], point[5] );
@@ -15248,7 +15780,8 @@ void PmoveSingle (pmove_t *pmove) {
 	if (pm->ps->clientNum >= MAX_CLIENTS &&
 		pm_entSelf && pm_entSelf->m_pVehicle)
 	{ //Now update our mins/maxs to match our m_vOrientation based on our length, width & height
-		BG_VehicleAdjustBBoxForOrientation( pm_entSelf->m_pVehicle, pm->ps->origin, pm->mins, pm->maxs, pm->ps->clientNum, pm->tracemask, pm->trace );
+		BG_VehicleAdjustBBoxForOrientation( pm_entSelf->m_pVehicle, pm->ps->iModelScale,
+			pm->ps->origin, pm->mins, pm->maxs, pm->ps->clientNum, pm->tracemask, pm->trace );
 	}
 
 	// set groundentity
@@ -15429,7 +15962,11 @@ void PmoveSingle (pmove_t *pmove) {
 					PM_SetPMViewAngle(self->playerState, vRollAng, &pm->cmd);
 
 					// Setup the move direction.
-					if ( veh->m_pVehicle->m_pVehicleInfo->type == VH_FIGHTER )
+					if ( BG_ShrikePhysics( veh->m_pVehicle ) )
+					{//Tribes 2 physics doesn't use moveDir for movement: it carries
+					 //world-space angular velocity, so don't stomp it here
+					}
+					else if ( veh->m_pVehicle->m_pVehicleInfo->type == VH_FIGHTER )
 					{
 						AngleVectors( veh->m_pVehicle->m_vOrientation, veh->playerState->moveDir, NULL, NULL );
 					}

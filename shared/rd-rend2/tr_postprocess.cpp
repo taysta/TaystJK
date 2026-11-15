@@ -78,7 +78,10 @@ void RB_ToneMap(FBO_t *hdrFbo, vec4i_t hdrBox, FBO_t *ldrFbo, vec4i_t ldrBox, in
 	color[0] =
 	color[1] =
 	color[2] = powf(2.0f, r_cameraExposure->value + tr.overbrightBits); //exp2(r_cameraExposure->value);
-	color[3] = 1.0f;
+	// u_Color.a carries the final display-gamma exponent. Mode 2 keeps
+	// r_gamma inside rend2's existing tonemap pass instead of changing the
+	// display-wide hardware ramp. UI is rendered later and stays unchanged.
+	color[3] = R_UseTonemapGamma() ? 1.0f / r_gamma->value : 1.0f;
 
 	if (autoExposure)
 		GL_BindToTMU(tr.calcLevelsImage,  TB_LEVELSMAP);

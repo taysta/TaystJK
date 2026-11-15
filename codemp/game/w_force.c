@@ -655,6 +655,18 @@ int ForcePowerUsableOn(gentity_t *attacker, gentity_t *other, forcePowers_t forc
 	return 1;
 }
 
+static qboolean WP_ForceTargetInPVS( gentity_t *self, gentity_t *target, const vec3_t targetOrigin, const vec3_t sourceOrigin )
+{
+	if ( self && target
+		&& self->runtimeBSPInstance >= 0
+		&& target->runtimeBSPInstance == self->runtimeBSPInstance )
+	{
+		return qtrue;
+	}
+
+	return trap->InPVS( targetOrigin, sourceOrigin );
+}
+
 qboolean WP_ForcePowerAvailable( gentity_t *self, forcePowers_t forcePower, int overrideAmt )
 {
 	int drain = overrideAmt ? overrideAmt :
@@ -1323,7 +1335,7 @@ void ForceTeamHeal( gentity_t *self )
 		ent = &g_entities[i];
 
 		if (ent && ent->client && self != ent && OnSameTeam(self, ent) && ent->client->ps.stats[STAT_HEALTH] < ent->client->ps.stats[STAT_MAX_HEALTH] && ent->client->ps.stats[STAT_HEALTH] > 0 && ForcePowerUsableOn(self, ent, FP_TEAM_HEAL) &&
-			trap->InPVS(self->client->ps.origin, ent->client->ps.origin))
+			WP_ForceTargetInPVS( self, ent, ent->client->ps.origin, self->client->ps.origin ))
 		{
 			VectorSubtract(self->client->ps.origin, ent->client->ps.origin, a);
 
@@ -1375,6 +1387,7 @@ void ForceTeamHeal( gentity_t *self )
 			if (!te)
 			{
 				te = G_TempEntity( self->client->ps.origin, EV_TEAM_POWER);
+				G_SetRuntimeBSPInstance( te, self->runtimeBSPInstance );
 				te->s.eventParm = 1; //eventParm 1 is heal, eventParm 2 is force regen
 
 				//since we had an extra check above, do the drain now because we got at least one guy
@@ -1430,7 +1443,7 @@ void ForceTeamForceReplenish( gentity_t *self )
 		ent = &g_entities[i];
 
 		if (ent && ent->client && self != ent && OnSameTeam(self, ent) && ent->client->ps.fd.forcePower < 100 && ForcePowerUsableOn(self, ent, FP_TEAM_FORCE) &&
-			trap->InPVS(self->client->ps.origin, ent->client->ps.origin))
+			WP_ForceTargetInPVS( self, ent, ent->client->ps.origin, self->client->ps.origin ))
 		{
 			VectorSubtract(self->client->ps.origin, ent->client->ps.origin, a);
 
@@ -1479,6 +1492,7 @@ void ForceTeamForceReplenish( gentity_t *self )
 		if (!te)
 		{
 			te = G_TempEntity( self->client->ps.origin, EV_TEAM_POWER);
+			G_SetRuntimeBSPInstance( te, self->runtimeBSPInstance );
 			te->s.eventParm = 2; //eventParm 1 is heal, eventParm 2 is force regen
 		}
 
@@ -1836,6 +1850,11 @@ void ForceLightning( gentity_t *self )
 
 void ForceLightningDamage( gentity_t *self, gentity_t *traceEnt, vec3_t dir, vec3_t impactPoint )
 {
+	if ( !G_DimensionCanInteract( self, traceEnt, SVISO_DAMAGE ) )
+	{
+		return;
+	}
+
 	self->client->dangerTime = level.time;
 	self->client->ps.eFlags &= ~EF_INVULNERABLE;
 	self->client->invulnerableTimer = 0;
@@ -2025,7 +2044,7 @@ void ForceShootLightning( gentity_t *self )
 			}
 
 			//in PVS?
-			if ( !traceEnt->r.bmodel && !trap->InPVS( ent_org, self->client->ps.origin ) )
+			if ( !traceEnt->r.bmodel && !WP_ForceTargetInPVS( self, traceEnt, ent_org, self->client->ps.origin ) )
 			{//must be in PVS
 				continue;
 			}
@@ -2095,6 +2114,11 @@ void ForceDrain( gentity_t *self )
 void ForceDrainDamage( gentity_t *self, gentity_t *traceEnt, vec3_t dir, vec3_t impactPoint )
 {
 	gentity_t *tent;
+
+	if ( !G_DimensionCanInteract( self, traceEnt, SVISO_DAMAGE ) )
+	{
+		return;
+	}
 
 	self->client->dangerTime = level.time;
 	self->client->ps.eFlags &= ~EF_INVULNERABLE;
@@ -2253,6 +2277,7 @@ void ForceDrainDamage( gentity_t *self, gentity_t *traceEnt, vec3_t dir, vec3_t 
 				if (traceEnt->client->forcePowerSoundDebounce < level.time)
 				{
 					tent = G_TempEntity( impactPoint, EV_FORCE_DRAINED);
+					G_SetRuntimeBSPInstance( tent, self->runtimeBSPInstance );
 					tent->s.eventParm = DirToByte(dir);
 					tent->s.owner = traceEnt->s.number;
 
@@ -2378,7 +2403,7 @@ int ForceShootDrain( gentity_t *self )
 			}
 
 			//in PVS?
-			if ( !traceEnt->r.bmodel && !trap->InPVS( ent_org, self->client->ps.origin ) )
+			if ( !traceEnt->r.bmodel && !WP_ForceTargetInPVS( self, traceEnt, ent_org, self->client->ps.origin ) )
 			{//must be in PVS
 				continue;
 			}
@@ -2493,6 +2518,7 @@ int ForceShootDrain( gentity_t *self )
 				ForceDrainDamage(self, traceEnt2, dir, endFX);
 
 				tent = G_TempEntity(startFX, EV_DISRUPTOR_MAIN_SHOT);
+				G_SetRuntimeBSPInstance( tent, self->runtimeBSPInstance );
 				VectorCopy(endFX, tent->s.origin2);
 				tent->s.eventParm = traceEnt->s.number;
 			}
@@ -3596,6 +3622,8 @@ void ForceThrow( gentity_t *self, qboolean pull )
 			continue;
 		if (ent == self)
 			continue;
+		if ( !G_DimensionCanInteract( self, ent, SVISO_DAMAGE ) )
+			continue;
 		if (ent->client && OnSameTeam(ent, self) && (!g_friendlyFire.value && !(g_tweakWeapons.integer & WT_TRIBES)))//JAPRO - Allow push/pull teammates when friendlyfire is on
 		{
 			continue;
@@ -3696,7 +3724,7 @@ void ForceThrow( gentity_t *self, qboolean pull )
 		}
 
 		//in PVS?
-		if ( !ent->r.bmodel && !trap->InPVS( ent_org, self->client->ps.origin ) )
+		if ( !ent->r.bmodel && !WP_ForceTargetInPVS( self, ent, ent_org, self->client->ps.origin ) )
 		{//must be in PVS
 			continue;
 		}
@@ -4656,7 +4684,7 @@ static void WP_UpdateMindtrickEnts(gentity_t *self)
 			}
 			else if ((level.time - self->client->dangerTime) < g_TimeSinceLastFrame*4)
 			{ //Untrick this entity if the tricker (self) fires while in his fov
-				if (trap->InPVS(ent->client->ps.origin, self->client->ps.origin) && OrgVisible(ent->client->ps.origin, self->client->ps.origin, ent->s.number))
+				if (WP_ForceTargetInPVS( self, ent, ent->client->ps.origin, self->client->ps.origin ) && OrgVisible(ent->client->ps.origin, self->client->ps.origin, ent->s.number))
 				{
 					if (g_tweakForce.integer & FT_BUFFMINDTRICK) {
 						vec3_t a, tto;

@@ -565,6 +565,10 @@ typedef struct centity_s {
 	vec3_t			frame_minus1;
 	vec3_t			frame_minus2;
 
+	vec3_t			podRiderOfs;	// render-only seat offset while riding a rigged podracer (cockpit lag)
+	qboolean		podRiderLegsHidden;
+	char			podRiderLegSurf[2][16];	// only surfaces this cgame actually hid
+
 	int				frame_minus1_refreshed;
 	int				frame_minus2_refreshed;
 
@@ -1422,7 +1426,7 @@ Ghoul2 Insert End
 	vec3_t				predictKnockbackLastBaseVel; // last authoritative base velocity before the server knockback reaches the snapshot base
 	int					predictKnockbackLastBaseCommandTime;
 	qboolean			predictKnockbackHasLastBaseVel;
-	qboolean			predictKnockbackExploded;	// set by EV_MISSILE_MISS for our own rocket — the authoritative "stop predicting" signal
+	qboolean			predictKnockbackExploded;	// set by EV_MISSILE_MISS for our own rocket
 	int					predictKnockbackPmTime;		// mirrors server's PMF_TIME_KNOCKBACK window (knockback*2, clamped 50..200) so friction doesn't eat the slide
 	int					pkDebugFrames;				// TEMP debug: frames left to keep logging after a knockback (covers post-clear)
 	vec3_t				predictKnockbackPredictedImpact; // TEMP debug: our predicted explosion point, compared vs server's EV_MISSILE_MISS
@@ -2534,6 +2538,7 @@ void CG_ReattachLimb(centity_t *source);
 
 void CG_S_AddLoopingSound(int entityNum, const vec3_t origin, const vec3_t velocity, sfxHandle_t sfx);
 void CG_S_AddRealLoopingSound(int entityNum, const vec3_t origin, const vec3_t velocity, sfxHandle_t sfx);
+void CG_PodPitchListenerUpdate(const vec3_t vieworg);
 void CG_S_StopLoopingSound(int entityNum, sfxHandle_t sfx);
 void CG_S_UpdateLoopingSounds(int entityNum);
 

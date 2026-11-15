@@ -115,6 +115,38 @@ static int G_FindConfigstringIndex( const char *name, int start, int max, qboole
 	return i;
 }
 
+static int G_FindConfigstringIndexNoOverflow( const char *name, int start, int max, qboolean create ) {
+	int		i;
+	char	s[MAX_STRING_CHARS];
+
+	if ( !VALIDSTRING( name ) ) {
+		return 0;
+	}
+
+	for ( i=1 ; i<max ; i++ ) {
+		trap->GetConfigstring( start + i, s, sizeof( s ) );
+		if ( !s[0] ) {
+			break;
+		}
+		if ( !strcmp( s, name ) ) {
+			return i;
+		}
+	}
+
+	if ( !create ) {
+		return 0;
+	}
+
+	if ( i == max ) {
+		Com_Printf( "WARNING: G_FindConfigstringIndex overflow for '%s'\n", name );
+		return 0;
+	}
+
+	trap->SetConfigstring( start + i, name );
+
+	return i;
+}
+
 /*
 Ghoul2 Insert Start
 */
@@ -163,7 +195,7 @@ int G_SoundIndex( const char *name ) {
 
 int G_SoundSetIndex(const char *name)
 {
-	return G_FindConfigstringIndex (name, CS_AMBIENT_SET, MAX_AMBIENT_SETS, qtrue);
+	return G_FindConfigstringIndexNoOverflow( name, CS_AMBIENT_SET, MAX_AMBIENT_SETS, qtrue );
 }
 
 int G_EffectIndex( const char *name )
@@ -574,6 +606,84 @@ gentity_t *G_PickTarget (char *targetname)
 	return choice[rand() % num_choices];
 }
 
+qboolean G_DimensionIsolationActive( void )
+{
+	return g_engineDimensions.integer && g_gameImportHasDimensionIsolation ? qtrue : qfalse;
+}
+
+void G_DetectGameImportExtensions( void )
+{
+	const char *extensions;
+
+	g_gameImportHasDimensionIsolation = qfalse;
+	g_gameImportHasRuntimeBSP = qfalse;
+
+	if ( !trap || !trap->SetActiveSubBSP ) {
+		return;
+	}
+
+	extensions = trap->SetActiveSubBSP( GAME_IMPORT_EXTENSIONS_SUBBSP_QUERY );
+	if ( !extensions ) {
+		return;
+	}
+
+	g_gameImportHasDimensionIsolation = strstr( extensions, GAME_IMPORT_EXTENSION_DIMENSIONS ) ? qtrue : qfalse;
+	g_gameImportHasRuntimeBSP = strstr( extensions, GAME_IMPORT_EXTENSION_RUNTIME_BSP ) ? qtrue : qfalse;
+}
+
+qboolean G_DimensionCanInteract( gentity_t *source, gentity_t *target, svIsolationPurpose_t purpose )
+{
+	if ( !G_DimensionIsolationActive() ) {
+		return qtrue;
+	}
+
+	if ( !source || !target || !source->inuse || !target->inuse ) {
+		return qtrue;
+	}
+
+	if ( source == target || source->s.number == ENTITYNUM_WORLD || target->s.number == ENTITYNUM_WORLD ) {
+		return qtrue;
+	}
+
+	return trap->CanEntitiesInteract( source->s.number, target->s.number, purpose );
+}
+
+qboolean G_SetClientMap( int clientNum, const char *mapName )
+{
+	if ( !g_gameImportHasRuntimeBSP ) {
+		return qfalse;
+	}
+
+	return trap->SetClientMap( clientNum, mapName );
+}
+
+int G_GetClientRuntimeBSPInstance( int clientNum )
+{
+	if ( !g_gameImportHasRuntimeBSP ) {
+		return -1;
+	}
+
+	return trap->GetClientRuntimeBSPInstance( clientNum );
+}
+
+qboolean G_BeginAsyncBSPFileRead( const char *mapName )
+{
+	if ( !g_gameImportHasRuntimeBSP ) {
+		return qfalse;
+	}
+
+	return trap->BeginAsyncBSPFileRead( mapName );
+}
+
+int G_AsyncBSPFileReadStatus( const char *mapName )
+{
+	if ( !g_gameImportHasRuntimeBSP ) {
+		return -1;
+	}
+
+	return trap->AsyncBSPFileReadStatus( mapName );
+}
+
 void GlobalUse(gentity_t *self, gentity_t *other, gentity_t *activator)
 {
 	if (!self || (self->flags & FL_INACTIVE))
@@ -727,10 +837,22 @@ void G_InitGentity( gentity_t *e ) {
 		e->isLogical = qtrue;
 	}
 	e->r.ownerNum = ENTITYNUM_NONE;
+	e->runtimeBSPInstance = -1;
 	e->s.modelGhoul2 = 0; //assume not
 
 	if (!e->isLogical)
 		trap->ICARUS_FreeEnt( (sharedEntity_t *)e );	//ICARUS information must be added after this point
+}
+
+void G_SetRuntimeBSPInstance( gentity_t *ent, int runtimeBSPInstance ) {
+	if ( !ent ) {
+		return;
+	}
+
+	ent->runtimeBSPInstance = runtimeBSPInstance;
+	if ( g_gameImportHasRuntimeBSP && !ent->isLogical ) {
+		trap->SetEntityRuntimeBSPInstance( ent->s.number, runtimeBSPInstance );
+	}
 }
 
 //give us some decent info on all the active ents -rww
@@ -1499,6 +1621,41 @@ void G_MuteSound( int entnum, int channel )
 G_Sound
 =============
 */
+static int G_EventRuntimeBSPInstanceForSource( gentity_t *source ) {
+	int clientNum;
+	int runtimeBSPInstance;
+
+	if ( !source ) {
+		return -1;
+	}
+
+	clientNum = source - g_entities;
+	if ( clientNum >= 0 && clientNum < MAX_CLIENTS ) {
+		runtimeBSPInstance = G_GetClientRuntimeBSPInstance( clientNum );
+		if ( runtimeBSPInstance >= 0 ) {
+			return runtimeBSPInstance;
+		}
+	}
+
+	return source->runtimeBSPInstance;
+}
+
+static void G_InheritSoundEventRuntime( gentity_t *eventEnt, gentity_t *source ) {
+	int runtimeBSPInstance;
+
+	if ( !eventEnt || !source ) {
+		return;
+	}
+
+	runtimeBSPInstance = G_EventRuntimeBSPInstanceForSource( source );
+	if ( runtimeBSPInstance < 0 || eventEnt->runtimeBSPInstance == runtimeBSPInstance ) {
+		return;
+	}
+
+	G_SetRuntimeBSPInstance( eventEnt, runtimeBSPInstance );
+	trap->LinkEntity( (sharedEntity_t *)eventEnt );
+}
+
 void G_Sound( gentity_t *ent, int channel, int soundIndex ) {
 	gentity_t	*te;
 
@@ -1507,6 +1664,8 @@ void G_Sound( gentity_t *ent, int channel, int soundIndex ) {
 	te = G_SoundTempEntity( ent->r.currentOrigin, EV_GENERAL_SOUND, channel );
 	te->s.eventParm = soundIndex;
 	te->s.saberEntityNum = channel;
+	te->r.ownerNum = ent->s.number;
+	G_InheritSoundEventRuntime( te, ent );
 
 	if (ent && ent->client && channel > TRACK_CHANNEL_NONE)
 	{ //let the client remember the index of the player entity so he can kill the most recent sound on request
@@ -1540,6 +1699,8 @@ void G_RaceSound( gentity_t *ent, int channel, int soundIndex, int racesound ) {
 	te->s.eventParm = soundIndex;
 	te->s.saberEntityNum = channel;
 	te->s.eFlags2 = racesound;
+	te->r.ownerNum = ent->s.number;
+	G_InheritSoundEventRuntime( te, ent );
 
 	if (ent && ent->client && channel > TRACK_CHANNEL_NONE)
 	{ //let the client remember the index of the player entity so he can kill the most recent sound on request
@@ -1624,6 +1785,7 @@ void G_EntitySound( gentity_t *ent, int channel, int soundIndex ) {
 	te->s.eventParm = soundIndex;
 	te->s.clientNum = ent->s.number;
 	te->s.trickedentindex = channel;
+	G_InheritSoundEventRuntime( te, ent );
 }
 
 //To make porting from SP easier.
@@ -1635,6 +1797,7 @@ void G_SoundOnEnt( gentity_t *ent, int channel, const char *soundPath )
 	te->s.eventParm = G_SoundIndex((char *)soundPath);
 	te->s.clientNum = ent->s.number;
 	te->s.trickedentindex = channel;
+	G_InheritSoundEventRuntime( te, ent );
 
 }
 
@@ -1855,6 +2018,18 @@ void TryUse( gentity_t *ent )
 	if (ent->client->jetPackOn)
 	{ //can't use anything else to jp is off
 		goto tryJetPack;
+	}
+
+	if ( ent->client->runtimeWarpTarget
+		&& ent->client->runtimeWarpTouchTime >= level.time
+		&& ent->client->runtimeWarpTarget->inuse
+		&& ent->client->runtimeWarpTarget->classname
+		&& !Q_stricmp( ent->client->runtimeWarpTarget->classname, "target_runtimewarp" )
+		&& ent->client->runtimeWarpTarget->use )
+	{
+		ent->client->runtimeWarpTarget->use( ent->client->runtimeWarpTarget, ent, ent );
+		ent->client->pers.cmd.buttons &= ~BUTTON_USE;
+		return;
 	}
 
 	if (ent->client->sess.raceMode && ent->client->sess.movementStyle == MV_SWOOP && !ent->client->noclip) { //Swoop movement style	

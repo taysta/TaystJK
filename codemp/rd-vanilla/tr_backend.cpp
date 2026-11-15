@@ -1845,18 +1845,23 @@ void RB_ShowImages( void ) {
 
 static void RB_GammaCorrectRender()
 {
-	qglPushAttrib(GL_CLIENT_ALL_ATTRIB_BITS);
-
+	/* This is an end-of-frame fullscreen replacement.  Do not wrap it in
+	 * glPushAttrib/glPopAttrib: RB_SetGL2D and GL_State update the renderer's
+	 * state cache, and restoring only the driver state leaves the two out of
+	 * sync.  In particular, a final depthFunc equal material (ocean foam)
+	 * would make the following frame render with GL_EQUAL unexpectedly. */
 	RB_SetGL2D();
+	GL_State( GLS_DEPTHTEST_DISABLE );
 
-	// All this fixed-function texture type enabling/disabling is ludicrous :(
-	qglEnable(GL_TEXTURE_RECTANGLE_ARB);
 	GL_SelectTexture(0);
+	qglDisable(GL_TEXTURE_2D);
+	qglEnable(GL_TEXTURE_RECTANGLE_ARB);
 	qglBindTexture(GL_TEXTURE_RECTANGLE_ARB, tr.sceneImage);
 	qglCopyTexImage2D(GL_TEXTURE_RECTANGLE_ARB, 0, GL_RGBA, 0, 0, glConfig.vidWidth, glConfig.vidHeight, 0);
 
-	qglEnable(GL_TEXTURE_3D);
 	GL_SelectTexture(1);
+	qglDisable(GL_TEXTURE_2D);
+	qglEnable(GL_TEXTURE_3D);
 	qglBindTexture(GL_TEXTURE_3D, tr.gammaCorrectLUTImage);
 
 	qglBindProgramARB(GL_VERTEX_PROGRAM_ARB, tr.gammaCorrectVtxShader);
@@ -1882,10 +1887,12 @@ static void RB_GammaCorrectRender()
 	qglDisable(GL_VERTEX_PROGRAM_ARB);
 	qglDisable(GL_FRAGMENT_PROGRAM_ARB);
 
+	GL_SelectTexture(1);
 	qglDisable(GL_TEXTURE_3D);
-	GL_SelectTexture(0);
 
-	qglPopAttrib();
+	GL_SelectTexture(0);
+	qglDisable(GL_TEXTURE_RECTANGLE_ARB);
+	qglEnable(GL_TEXTURE_2D);
 }
 
 

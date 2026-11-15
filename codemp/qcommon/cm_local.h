@@ -154,6 +154,9 @@ typedef struct clipMap_s {
 #define	SURFACE_CLIP_EPSILON	(0.125)
 
 extern	clipMap_t	cmg; //rwwRMG - changed from cm
+extern	clipMap_t	SubBSP[MAX_SUB_BSP];
+extern	int			NumSubBSP;
+extern	int			TotalSubModels;
 extern	int			c_pointcontents;
 extern	int			c_traces, c_brush_traces, c_patch_traces;
 extern	cvar_t		*cm_noAreas;

@@ -1252,11 +1252,20 @@ Scale up the pixel values in a texture to increase the
 lighting range
 ================
 */
+qboolean R_UseTonemapGamma( void )
+{
+	return (qboolean)(
+		r_ignorehwgamma
+		&& r_ignorehwgamma->integer == 2
+		&& r_hdr->integer
+		&& (r_toneMap->integer || r_forceToneMap->integer));
+}
+
 void R_LightScaleTexture (byte *in, int inwidth, int inheight, qboolean only_gamma )
 {
 	if ( only_gamma )
 	{
-		if ( !glConfig.deviceSupportsGamma )
+		if ( !glConfig.deviceSupportsGamma && !R_UseTonemapGamma() )
 		{
 			int		i, c;
 			byte	*p;
@@ -1281,7 +1290,7 @@ void R_LightScaleTexture (byte *in, int inwidth, int inheight, qboolean only_gam
 
 		c = inwidth*inheight;
 
-		if ( glConfig.deviceSupportsGamma )
+		if ( glConfig.deviceSupportsGamma || R_UseTonemapGamma() )
 		{
 			for (i=0 ; i<c ; i++, p+=4)
 			{

@@ -26,6 +26,9 @@ along with this program; if not, see <http://www.gnu.org/licenses/>.
 #include "qcommon/stringed_ingame.h"
 #include "qcommon/game_version.h"
 #include "server/sv_gameapi.h"
+#include "server/sv_dynbsp.h"
+#include "server/sv_dimension.h"
+#include "qcommon/cm_public.h"
 
 #include <sstream>
 #include <ctime>
@@ -1249,6 +1252,719 @@ static void SV_ConSay_f(void) {
 	SV_SendServerCommand(NULL, "chat \"" SVSAY_PREFIX "%s\"\n", text);
 }
 
+static void SV_ResendGameState_f( void ) {
+	int i;
+	int count = 0;
+	static cvar_t *sv_debugBSPInstances = NULL;
+
+	if ( sv.state != SS_GAME ) {
+		Com_Printf( "Server is not running a game.\n" );
+		return;
+	}
+
+	if ( !sv_debugBSPInstances ) {
+		sv_debugBSPInstances = Cvar_Get( "sv_debugBSPInstances", "1", 0 );
+	}
+
+	for ( i = 0; i < sv_maxclients->integer; i++ ) {
+		client_t *client = &svs.clients[i];
+		clientState_t oldState;
+
+		if ( client->state < CS_CONNECTED ) {
+			continue;
+		}
+		if ( client->netchan.remoteAddress.type == NA_BOT ) {
+			continue;
+		}
+
+		if ( sv_debugBSPInstances->integer ) {
+			Com_Printf( "BSPDEBUG server force gamestate reload begin client=%i name='%s' state=%i serverId=%i gamestateMessageNum=%i lastClientCommand=%i\n",
+				i, client->name, client->state, sv.serverId, client->gamestateMessageNum, client->lastClientCommand );
+		}
+
+		oldState = client->state;
+		client->state = CS_CONNECTED;
+		client->deltaMessage = -1;
+		SV_SendClientGameState( client );
+		if ( sv_debugBSPInstances->integer ) {
+			Com_Printf( "BSPDEBUG server force gamestate reload sent client=%i name='%s' oldState=%i newState=%i gamestateMessageNum=%i netchanOutgoingSequence=%i\n",
+				i, client->name, oldState, client->state, client->gamestateMessageNum, client->netchan.outgoingSequence );
+		}
+		count++;
+	}
+
+	Com_Printf( "Resent gamestate to %i client%s.\n", count, count == 1 ? "" : "s" );
+}
+
+static qboolean SV_ClientMapClassIsSpawn( const char *classname ) {
+	return !Q_stricmp( classname, "info_player_deathmatch" )
+		|| !Q_stricmp( classname, "info_player_start" )
+		|| !Q_stricmp( classname, "info_player_duel" )
+		|| !Q_stricmp( classname, "info_player_duel1" )
+		|| !Q_stricmp( classname, "info_player_duel2" )
+		|| !Q_stricmp( classname, "team_CTF_redplayer" )
+		|| !Q_stricmp( classname, "team_CTF_blueplayer" ) ? qtrue : qfalse;
+}
+
+static int SV_ClientMapSpawnRank( const char *classname, int spawnflags ) {
+	if ( !Q_stricmp( classname, "info_player_deathmatch" ) ) {
+		return ( spawnflags & 1 ) ? 0 : 2;
+	}
+	if ( !Q_stricmp( classname, "info_player_start" ) ) {
+		return ( spawnflags & 1 ) ? 1 : 3;
+	}
+	if ( !Q_stricmp( classname, "info_player_duel" ) ) {
+		return 4;
+	}
+	if ( !Q_stricmp( classname, "info_player_duel1" ) || !Q_stricmp( classname, "info_player_duel2" ) ) {
+		return 5;
+	}
+	if ( !Q_stricmp( classname, "team_CTF_redplayer" ) || !Q_stricmp( classname, "team_CTF_blueplayer" ) ) {
+		return 6;
+	}
+
+	return 999;
+}
+
+static qboolean SV_ClientMapFindSpawn( int bspIndex, vec3_t origin, vec3_t angles ) {
+	const char *data = bspIndex >= 0 ? CM_SubBSPEntityString( bspIndex ) : CM_EntityString();
+	char classname[MAX_TOKEN_CHARS];
+	vec3_t entOrigin;
+	vec3_t entAngles;
+	qboolean haveOrigin;
+	int spawnflags;
+	int bestRank = 999;
+	int entityIndex = -1;
+	int bestEntityIndex = -1;
+	qboolean debug = SV_DynBSPDebugEnabled();
+
+	VectorClear( origin );
+	VectorClear( angles );
+
+	if ( !data ) {
+		if ( debug ) {
+			Com_Printf( "BSPDEBUG clientMap spawn bsp=%i no entity string\n", bspIndex );
+		}
+		return qfalse;
+	}
+
+	while ( 1 ) {
+		char *token = COM_Parse( &data );
+		if ( !token[0] ) {
+			break;
+		}
+		if ( token[0] != '{' ) {
+			break;
+		}
+		entityIndex++;
+
+		classname[0] = 0;
+		VectorClear( entOrigin );
+		VectorClear( entAngles );
+		haveOrigin = qfalse;
+		spawnflags = 0;
+
+		while ( 1 ) {
+			char key[MAX_TOKEN_CHARS];
+			char value[MAX_TOKEN_CHARS];
+
+			token = COM_Parse( &data );
+			if ( !token[0] || token[0] == '}' ) {
+				break;
+			}
+			Q_strncpyz( key, token, sizeof( key ) );
+
+			token = COM_Parse( &data );
+			if ( !token[0] ) {
+				break;
+			}
+			Q_strncpyz( value, token, sizeof( value ) );
+
+			if ( !Q_stricmp( key, "classname" ) ) {
+				Q_strncpyz( classname, value, sizeof( classname ) );
+			}
+			else if ( !Q_stricmp( key, "origin" ) ) {
+				if ( sscanf( value, "%f %f %f", &entOrigin[0], &entOrigin[1], &entOrigin[2] ) == 3 ) {
+					haveOrigin = qtrue;
+				}
+			}
+			else if ( !Q_stricmp( key, "angle" ) ) {
+				entAngles[YAW] = atof( value );
+			}
+			else if ( !Q_stricmp( key, "angles" ) ) {
+				sscanf( value, "%f %f %f", &entAngles[0], &entAngles[1], &entAngles[2] );
+			}
+			else if ( !Q_stricmp( key, "spawnflags" ) ) {
+				spawnflags = atoi( value );
+			}
+		}
+
+		if ( haveOrigin && SV_ClientMapClassIsSpawn( classname ) ) {
+			int rank = SV_ClientMapSpawnRank( classname, spawnflags );
+			if ( debug ) {
+				Com_Printf( "BSPDEBUG clientMap spawn candidate bsp=%i ent=%i class='%s' rank=%i spawnflags=0x%x origin=(%.1f %.1f %.1f) angles=(%.1f %.1f %.1f)\n",
+					bspIndex, entityIndex, classname, rank, spawnflags,
+					entOrigin[0], entOrigin[1], entOrigin[2],
+					entAngles[0], entAngles[1], entAngles[2] );
+			}
+			if ( rank < bestRank ) {
+				bestRank = rank;
+				bestEntityIndex = entityIndex;
+				VectorCopy( entOrigin, origin );
+				VectorCopy( entAngles, angles );
+				if ( bestRank == 0 ) {
+					break;
+				}
+			}
+		}
+	}
+
+	if ( bestRank == 999 ) {
+		if ( debug ) {
+			Com_Printf( "BSPDEBUG clientMap spawn bsp=%i no usable spawn found\n", bspIndex );
+		}
+		return qfalse;
+	}
+
+	origin[2] += 9;
+	if ( debug ) {
+		Com_Printf( "BSPDEBUG clientMap spawn selected bsp=%i ent=%i rank=%i finalOrigin=(%.1f %.1f %.1f) angles=(%.1f %.1f %.1f)\n",
+			bspIndex, bestEntityIndex, bestRank,
+			origin[0], origin[1], origin[2],
+			angles[0], angles[1], angles[2] );
+	}
+	return qtrue;
+}
+
+void SV_ClientMapMoveClientToSpawn( client_t *client, int bspIndex ) {
+	vec3_t spawnOrigin;
+	vec3_t spawnAngles;
+	playerState_t *ps;
+	qboolean debug = SV_DynBSPDebugEnabled();
+
+	if ( !client || !client->gentity || !SV_ClientMapFindSpawn( bspIndex, spawnOrigin, spawnAngles ) ) {
+		if ( debug ) {
+			Com_Printf( "BSPDEBUG clientMap move failed client=%li bsp=%i hasClient=%i hasGentity=%i\n",
+				client ? (long)( client - svs.clients ) : -1L, bspIndex,
+				client ? 1 : 0, client && client->gentity ? 1 : 0 );
+		}
+		return;
+	}
+
+	ps = client->gentity->playerState;
+	if ( debug ) {
+		Com_Printf( "BSPDEBUG clientMap move begin client=%li name='%s' bsp=%i oldPs=(%.1f %.1f %.1f) oldEnt=(%.1f %.1f %.1f) spawn=(%.1f %.1f %.1f) angles=(%.1f %.1f %.1f)\n",
+			(long)( client - svs.clients ), client->name, bspIndex,
+			ps ? ps->origin[0] : 0.0f, ps ? ps->origin[1] : 0.0f, ps ? ps->origin[2] : 0.0f,
+			client->gentity->r.currentOrigin[0], client->gentity->r.currentOrigin[1], client->gentity->r.currentOrigin[2],
+			spawnOrigin[0], spawnOrigin[1], spawnOrigin[2],
+			spawnAngles[0], spawnAngles[1], spawnAngles[2] );
+	}
+	if ( ps ) {
+		VectorCopy( spawnOrigin, ps->origin );
+		VectorCopy( spawnAngles, ps->viewangles );
+		ps->delta_angles[0] = 0;
+		ps->delta_angles[1] = 0;
+		ps->delta_angles[2] = 0;
+	}
+
+	VectorCopy( spawnOrigin, client->gentity->s.origin );
+	VectorCopy( spawnOrigin, client->gentity->r.currentOrigin );
+	VectorCopy( spawnAngles, client->gentity->s.angles );
+	VectorCopy( spawnAngles, client->gentity->r.currentAngles );
+	SV_LinkEntity( client->gentity );
+	if ( debug ) {
+		Com_Printf( "BSPDEBUG clientMap move linked client=%li ps=(%.1f %.1f %.1f) ent=(%.1f %.1f %.1f) absmin=(%.1f %.1f %.1f) absmax=(%.1f %.1f %.1f) runtime=%i\n",
+			(long)( client - svs.clients ),
+			ps ? ps->origin[0] : 0.0f, ps ? ps->origin[1] : 0.0f, ps ? ps->origin[2] : 0.0f,
+			client->gentity->r.currentOrigin[0], client->gentity->r.currentOrigin[1], client->gentity->r.currentOrigin[2],
+			client->gentity->r.absmin[0], client->gentity->r.absmin[1], client->gentity->r.absmin[2],
+			client->gentity->r.absmax[0], client->gentity->r.absmax[1], client->gentity->r.absmax[2],
+			SV_RuntimeBSPInstanceForGentity( client->gentity ) );
+	}
+}
+
+qboolean SV_SetClientMap( client_t *client, const char *mapName ) {
+	char expanded[MAX_QPATH];
+	int modelIndex;
+	int bspIndex;
+	qboolean sendGameState = qfalse;
+	sharedEntity_t *holder = NULL;
+	int totalStartTime = Sys_Milliseconds();
+	int phaseStartTime;
+
+	if ( !client || !mapName || !mapName[0] ) {
+		return qfalse;
+	}
+
+	if ( !Q_stricmp( mapName, "clear" ) ) {
+		if ( !client->runtimeMapName[0] ) {
+			client->spectatorRuntimeMapName[0] = 0;
+			return qtrue;
+		}
+		if ( client->gentity ) {
+			SV_SetRuntimeBSPInstanceForGentity( client->gentity, -1 );
+		}
+		SV_ClientMapMoveClientToSpawn( client, -1 );
+		SV_DynBSPClearClientMap( client );
+		client->loadedBSPModelsGeneration = -1;
+		client->sendBSPModelsGeneration = -1;
+		sendGameState = qtrue;
+	}
+	else {
+		if ( client->runtimeMapName[0] && !Q_stricmp( client->runtimeMapName, mapName ) ) {
+			holder = SV_DynBSPInstanceForMap( mapName );
+			if ( SV_DynBSPDebugEnabled() ) {
+				Com_Printf( "BSPDEBUG clientMap set ignored same map client=%li name='%s' map='%s'\n",
+					(long)( client - svs.clients ), client->name, mapName );
+			}
+			if ( client->gentity ) {
+				SV_SetRuntimeBSPInstanceForGentity( client->gentity, holder ? SV_RuntimeBSPInstanceForGentity( holder ) : -1 );
+			}
+			SV_ClientMapMoveClientToSpawn( client, client->runtimeMapBSPIndex );
+			return qtrue;
+		}
+
+		if ( strchr( mapName, '\\' ) || strchr( mapName, ';' ) || strstr( mapName, ".." ) ) {
+			Com_Printf( "Invalid map name '%s'.\n", mapName );
+			return qfalse;
+		}
+
+		Com_sprintf( expanded, sizeof( expanded ), "maps/%s.bsp", mapName );
+		phaseStartTime = Sys_Milliseconds();
+		if ( FS_ReadFile( expanded, NULL ) == -1 ) {
+			Com_Printf( "Can't find map %s\n", expanded );
+			return qfalse;
+		}
+		if ( SV_DynBSPDebugEnabled() ) {
+			Com_Printf( "BSPTIME server clientMap FS_ReadFileCheck client=%li map='%s' path='%s' ms=%i total=%i\n",
+				(long)( client - svs.clients ), mapName, expanded,
+				Sys_Milliseconds() - phaseStartTime, Sys_Milliseconds() - totalStartTime );
+		}
+
+		phaseStartTime = Sys_Milliseconds();
+		modelIndex = CM_LoadSubBSP( expanded, qfalse );
+		if ( SV_DynBSPDebugEnabled() ) {
+			Com_Printf( "BSPTIME server clientMap CM_LoadSubBSP client=%li map='%s' model=%i ms=%i total=%i\n",
+				(long)( client - svs.clients ), mapName, modelIndex,
+				Sys_Milliseconds() - phaseStartTime, Sys_Milliseconds() - totalStartTime );
+		}
+		phaseStartTime = Sys_Milliseconds();
+		bspIndex = CM_FindSubBSP( modelIndex );
+		if ( SV_DynBSPDebugEnabled() ) {
+			Com_Printf( "BSPTIME server clientMap CM_FindSubBSP client=%li map='%s' bsp=%i ms=%i total=%i\n",
+				(long)( client - svs.clients ), mapName, bspIndex,
+				Sys_Milliseconds() - phaseStartTime, Sys_Milliseconds() - totalStartTime );
+		}
+		if ( bspIndex < 0 ) {
+			Com_Printf( "Failed to load runtime client map collision for %s\n", expanded );
+			return qfalse;
+		}
+		phaseStartTime = Sys_Milliseconds();
+		holder = SV_DynBSPInstanceForMap( mapName );
+		if ( SV_DynBSPDebugEnabled() ) {
+			Com_Printf( "BSPTIME server clientMap InstanceForMap client=%li map='%s' holder=%i ms=%i total=%i\n",
+				(long)( client - svs.clients ), mapName, holder ? SV_NumForGentity( holder ) : -1,
+				Sys_Milliseconds() - phaseStartTime, Sys_Milliseconds() - totalStartTime );
+		}
+		if ( SV_DynBSPDebugEnabled() ) {
+			Com_Printf( "BSPDEBUG clientMap set client=%li name='%s' map='%s' model=%i bsp=%i holder=%i holderOrigin=(%.1f %.1f %.1f)\n",
+				(long)( client - svs.clients ), client->name, mapName, modelIndex, bspIndex,
+				holder ? SV_NumForGentity( holder ) : -1,
+				holder ? holder->r.currentOrigin[0] : 0.0f,
+				holder ? holder->r.currentOrigin[1] : 0.0f,
+				holder ? holder->r.currentOrigin[2] : 0.0f );
+		}
+
+		SV_DynBSPSetClientMap( client, mapName, bspIndex );
+		if ( client->gentity ) {
+			SV_SetRuntimeBSPInstanceForGentity( client->gentity, holder ? SV_RuntimeBSPInstanceForGentity( holder ) : -1 );
+		}
+		phaseStartTime = Sys_Milliseconds();
+		SV_ClientMapMoveClientToSpawn( client, bspIndex );
+		if ( SV_DynBSPDebugEnabled() ) {
+			Com_Printf( "BSPTIME server clientMap MoveClientToSpawn client=%li map='%s' bsp=%i ms=%i total=%i\n",
+				(long)( client - svs.clients ), mapName, bspIndex,
+				Sys_Milliseconds() - phaseStartTime, Sys_Milliseconds() - totalStartTime );
+		}
+		client->loadedBSPModelsGeneration = -1;
+		client->sendBSPModelsGeneration = -1;
+		sendGameState = qtrue;
+	}
+
+	if ( client->netchan.remoteAddress.type != NA_BOT && sendGameState ) {
+		clientState_t oldState = client->state;
+		if ( SV_DynBSPDebugEnabled() ) {
+			Com_Printf( "BSPDEBUG clientMap transition begin client=%li name='%s' map='%s' state=%i serverId=%i runtimeServerId=%i outgoing=%i lastClientCommand=%i\n",
+				(long)( client - svs.clients ), client->name,
+				client->runtimeMapName[0] ? client->runtimeMapName : sv_mapname->string,
+				client->state, sv.serverId, SV_DynBSPClientServerId( client ),
+				client->netchan.outgoingSequence, client->lastClientCommand );
+		}
+
+		client->state = CS_CONNECTED;
+		client->deltaMessage = -1;
+		client->skipClientBeginForRuntimeMap = qtrue;
+		client->reliableSequence = client->reliableAcknowledge;
+		client->reliableSent = client->reliableSequence;
+		phaseStartTime = Sys_Milliseconds();
+		SV_SendClientGameState( client );
+		if ( SV_DynBSPDebugEnabled() ) {
+			Com_Printf( "BSPTIME server clientMap SendClientGameState client=%li map='%s' ms=%i total=%i\n",
+				(long)( client - svs.clients ),
+				client->runtimeMapName[0] ? client->runtimeMapName : sv_mapname->string,
+				Sys_Milliseconds() - phaseStartTime, Sys_Milliseconds() - totalStartTime );
+		}
+		if ( SV_DynBSPDebugEnabled() ) {
+			Com_Printf( "BSPDEBUG clientMap transition gamestate sent client=%li oldState=%i newState=%i outgoing=%i gamestateMessageNum=%i sendGen=%i currentGen=%i\n",
+				(long)( client - svs.clients ), oldState, client->state,
+				client->netchan.outgoingSequence, client->gamestateMessageNum,
+				client->sendBSPModelsGeneration, sv.bspModelsGeneration );
+		}
+	}
+	else if ( SV_DynBSPDebugEnabled() ) {
+		Com_Printf( "BSPDEBUG clientMap transition no gamestate client=%li name='%s' map='%s' state=%i loadedGen=%i currentGen=%i bot=%i\n",
+			(long)( client - svs.clients ), client->name,
+			client->runtimeMapName[0] ? client->runtimeMapName : sv_mapname->string,
+			client->state, client->loadedBSPModelsGeneration, sv.bspModelsGeneration,
+			client->netchan.remoteAddress.type == NA_BOT );
+	}
+
+	if ( SV_DynBSPDebugEnabled() ) {
+		Com_Printf( "BSPTIME server clientMap total client=%li map='%s' sendGameState=%i total=%i\n",
+			(long)( client - svs.clients ),
+			client->runtimeMapName[0] ? client->runtimeMapName : sv_mapname->string,
+			sendGameState, Sys_Milliseconds() - totalStartTime );
+	}
+
+	return qtrue;
+}
+
+static void SV_ClientMap_f( void ) {
+	client_t *client;
+	clientState_t oldState;
+	char mapName[MAX_QPATH];
+	int clientNum;
+
+	if ( sv.state != SS_GAME ) {
+		Com_Printf( "Server is not running a game.\n" );
+		return;
+	}
+
+	if ( Cmd_Argc() != 3 ) {
+		Com_Printf( "Usage: clientMap <clientNum> <map|clear>\n" );
+		return;
+	}
+
+	client = SV_GetPlayerByNum();
+	if ( !client ) {
+		return;
+	}
+
+	clientNum = client - svs.clients;
+	oldState = client->state;
+	Q_strncpyz( mapName, Cmd_Argv( 2 ), sizeof( mapName ) );
+	if ( Q_stricmp( mapName, "clear" ) ) {
+		GVM_ClientRuntimeMapChanged( clientNum, mapName );
+	}
+	if ( !SV_SetClientMap( client, mapName ) ) {
+		return;
+	}
+	if ( !Q_stricmp( mapName, "clear" ) ) {
+		GVM_ClientRuntimeMapChanged( clientNum, mapName );
+	}
+
+	Com_Printf( "clientMap set client=%i name='%s' map='%s' bot=%i oldState=%i newState=%i serverId=%i\n",
+		clientNum, client->name, client->runtimeMapName[0] ? client->runtimeMapName : sv_mapname->string,
+		client->netchan.remoteAddress.type == NA_BOT, oldState, client->state, SV_DynBSPClientServerId( client ) );
+}
+
+static void SV_ClientBSPState_f( void ) {
+	client_t *client;
+	playerState_t *ps;
+	client_t *targetClient = NULL;
+	sharedEntity_t *holder = NULL;
+	const char *targetMap = "";
+	int clientNum;
+	int targetNum = -1;
+	qboolean forceSend = qfalse;
+
+	if ( sv.state != SS_GAME ) {
+		Com_Printf( "Server is not running a game.\n" );
+		return;
+	}
+
+	if ( Cmd_Argc() < 2 || Cmd_Argc() > 3 ) {
+		Com_Printf( "Usage: clientBSPState <clientNum> [send]\n" );
+		return;
+	}
+
+	client = SV_GetPlayerByNum();
+	if ( !client ) {
+		return;
+	}
+
+	clientNum = client - svs.clients;
+	ps = SV_GameClientNum( clientNum );
+	if ( ps && ( ps->pm_flags & PMF_FOLLOW ) && ps->clientNum >= 0 && ps->clientNum < sv_maxclients->integer ) {
+		targetNum = ps->clientNum;
+		targetClient = &svs.clients[targetNum];
+		targetMap = targetClient->runtimeMapName;
+		holder = SV_DynBSPInstanceForMap( targetMap );
+	}
+
+	Com_Printf( "clientBSPState client=%i name='%s' bot=%i state=%i pmType=%i runtimeMap='%s' spectatorMap='%s' loadedGen=%i sendGen=%i currentGen=%i follow=%i target=%i targetMap='%s' holder=%i holderModel=%i holderOrigin=(%.1f %.1f %.1f)\n",
+		clientNum, client->name, client->netchan.remoteAddress.type == NA_BOT, client->state,
+		ps ? ps->pm_type : -1,
+		client->runtimeMapName, client->spectatorRuntimeMapName, client->loadedBSPModelsGeneration, client->sendBSPModelsGeneration, sv.bspModelsGeneration,
+		ps && ( ps->pm_flags & PMF_FOLLOW ), targetNum, targetMap && targetMap[0] ? targetMap : "",
+		holder ? holder->s.number : -1, holder ? holder->s.modelindex : -1,
+		holder ? holder->r.currentOrigin[0] : 0.0f, holder ? holder->r.currentOrigin[1] : 0.0f, holder ? holder->r.currentOrigin[2] : 0.0f );
+
+	forceSend = ( Cmd_Argc() == 3 && !Q_stricmp( Cmd_Argv( 2 ), "send" ) ) ? qtrue : qfalse;
+	if ( forceSend ) {
+		clientState_t oldState;
+
+		if ( client->netchan.remoteAddress.type == NA_BOT ) {
+			Com_Printf( "clientBSPState send does not support bots.\n" );
+			return;
+		}
+
+		oldState = client->state;
+		SV_DynBSPPrepareClientGameState( client );
+		client->state = CS_CONNECTED;
+		client->deltaMessage = -1;
+		SV_SendClientGameState( client );
+		Com_Printf( "clientBSPState sent BSP-model gamestate client=%i oldState=%i newState=%i sendGen=%i currentGen=%i\n",
+			clientNum, oldState, client->state, client->sendBSPModelsGeneration, sv.bspModelsGeneration );
+	}
+}
+
+static void SV_ClearBSPs_f( void ) {
+	int i;
+	int firstRuntimeBSPModelConfigstring;
+
+	if ( sv.state != SS_GAME ) {
+		Com_Printf( "Server is not running a game.\n" );
+		return;
+	}
+
+	if ( !GVM_ConsoleCommand() ) {
+		Com_Printf( "Game did not handle clearBSPs.\n" );
+	}
+
+	firstRuntimeBSPModelConfigstring = sv.firstRuntimeBSPModelConfigstring;
+	if ( firstRuntimeBSPModelConfigstring > 0 ) {
+		for ( i = firstRuntimeBSPModelConfigstring; i < CS_BSP_MODELS + MAX_SUB_BSP; i++ ) {
+			SV_SetConfigstring( i, "" );
+		}
+	}
+	for ( i = 0; i < MAX_RUNTIME_BSP_INSTANCES; i++ ) {
+		SV_SetConfigstring( CS_RUNTIME_BSP_META + i, "" );
+	}
+
+	sv.firstRuntimeBSPModelConfigstring = 0;
+	sv.bspModelsGeneration++;
+
+	for ( i = 0; i < sv_maxclients->integer; i++ ) {
+		client_t *client = &svs.clients[i];
+
+		if ( client->state < CS_CONNECTED ) {
+			continue;
+		}
+
+		SV_DynBSPClearClientMap( client );
+		client->spectatorRuntimeMapName[0] = 0;
+		client->loadedBSPModelsGeneration = -1;
+		client->sendBSPModelsGeneration = -1;
+	}
+
+	Com_Printf( "Cleared runtime BSP configstrings from %i and reset runtime BSP state for connected clients. generation=%i\n",
+		firstRuntimeBSPModelConfigstring, sv.bspModelsGeneration );
+}
+
+static sharedEntity_t *SV_DimensionEntityForArg( int argIndex, const char *label ) {
+	int entNum;
+
+	if ( Cmd_Argc() <= argIndex ) {
+		return NULL;
+	}
+
+	entNum = atoi( Cmd_Argv( argIndex ) );
+	if ( entNum < 0 || entNum >= sv.num_entities ) {
+		Com_Printf( "Invalid %s entity %i; valid range is 0-%i.\n", label, entNum, sv.num_entities - 1 );
+		return NULL;
+	}
+
+	return SV_GentityNum( entNum );
+}
+
+static void SV_PrintWorldContext( const char *label, const svWorldContext_t *world ) {
+	Com_Printf( "%s world=%i bsp=%i model=%i runtime=%i projected=%i origin=(%.1f %.1f %.1f)\n",
+		label, world->worldId, world->bspIndex, world->bspModelIndex,
+		world->runtimeBSPInstance, world->projected,
+		world->origin[0], world->origin[1], world->origin[2] );
+}
+
+static void SV_PrintInteractionContext( const char *label, const svInteractionContext_t *interaction ) {
+	Com_Printf( "%s group=%i owner=%i partner=%i team=%i flags=0x%x\n",
+		label, interaction->groupId, interaction->ownerClientNum,
+		interaction->partnerClientNum, interaction->team, interaction->flags );
+}
+
+static void SV_PrintDimensionEntity( const char *label, sharedEntity_t *ent ) {
+	svWorldContext_t world;
+	svInteractionContext_t interaction;
+	int entNum = SV_NumForGentity( ent );
+
+	Com_Printf( "%s entity=%i type=%i class='%s' linked=%i runtime=%i owner=%i solid=0x%x contents=0x%x\n",
+		label, entNum, ent->s.eType, ent->classname ? ent->classname : "",
+		ent->r.linked, SV_RuntimeBSPInstanceForGentity( ent ), ent->r.ownerNum, ent->s.solid, ent->r.contents );
+
+	if ( SV_GetEntityWorldContext( ent, &world ) ) {
+		SV_PrintWorldContext( "  entityWorld", &world );
+	}
+	if ( SV_GetEntityInteractionContext( ent, &interaction ) ) {
+		SV_PrintInteractionContext( "  interaction", &interaction );
+	}
+
+	if ( entNum >= 0 && entNum < sv_maxclients->integer ) {
+		client_t *client = &svs.clients[entNum];
+		svWorldContext_t viewWorld;
+
+		if ( SV_GetClientViewWorldContext( client, &viewWorld ) ) {
+			SV_PrintWorldContext( "  clientView", &viewWorld );
+		}
+		Com_Printf( "  client state=%i name='%s' runtimeMap='%s' spectatorMap='%s' runtimeBSP=%i\n",
+			client->state, client->name, client->runtimeMapName,
+			client->spectatorRuntimeMapName, client->runtimeMapName[0] ? client->runtimeMapBSPIndex : -1 );
+	}
+}
+
+static void SV_DimensionInfo_f( void ) {
+	sharedEntity_t *ent;
+	sharedEntity_t *target;
+
+	if ( sv.state != SS_GAME ) {
+		Com_Printf( "Server is not running a game.\n" );
+		return;
+	}
+
+	if ( Cmd_Argc() < 2 || Cmd_Argc() > 3 ) {
+		Com_Printf( "Usage: dimensionInfo <entityNum> [targetEntityNum]\n" );
+		return;
+	}
+
+	ent = SV_DimensionEntityForArg( 1, "source" );
+	if ( !ent ) {
+		return;
+	}
+
+	if ( !SV_DimensionIsolationEnabled() ) {
+		Com_Printf( "note: sv_engineDimensions is 0; policy shown below is not being enforced.\n" );
+	}
+
+	SV_PrintDimensionEntity( "source", ent );
+
+	if ( Cmd_Argc() != 3 ) {
+		return;
+	}
+
+	target = SV_DimensionEntityForArg( 2, "target" );
+	if ( !target ) {
+		return;
+	}
+
+	SV_PrintDimensionEntity( "target", target );
+	Com_Printf( "  canInteract trace=%i pointContents=%i snapshot=%i damage=%i event=%i sound=%i use=%i\n",
+		SV_CanEntitiesInteract( ent, target, SVISO_TRACE ),
+		SV_CanEntitiesInteract( ent, target, SVISO_POINT_CONTENTS ),
+		SV_CanEntitiesInteract( ent, target, SVISO_SNAPSHOT ),
+		SV_CanEntitiesInteract( ent, target, SVISO_DAMAGE ),
+		SV_CanEntitiesInteract( ent, target, SVISO_EVENT ),
+		SV_CanEntitiesInteract( ent, target, SVISO_SOUND ),
+		SV_CanEntitiesInteract( ent, target, SVISO_USE ) );
+}
+
+static void SV_RuntimeBModelInfo_f( void ) {
+	client_t *client;
+	sharedEntity_t *holder;
+	playerState_t *ps;
+	int clientNum;
+	int bspIndex;
+	int modelBase;
+	int runtimeBSPInstance;
+	int printed = 0;
+	int limit = 64;
+	int e;
+
+	if ( sv.state != SS_GAME ) {
+		Com_Printf( "Server is not running a game.\n" );
+		return;
+	}
+
+	if ( Cmd_Argc() < 2 || Cmd_Argc() > 3 ) {
+		Com_Printf( "Usage: runtimeBModelInfo <clientNum> [limit]\n" );
+		return;
+	}
+
+	client = SV_GetPlayerByNum();
+	if ( !client ) {
+		return;
+	}
+
+	clientNum = client - svs.clients;
+	ps = SV_GameClientNum( clientNum );
+	if ( Cmd_Argc() == 3 ) {
+		limit = atoi( Cmd_Argv( 2 ) );
+		if ( limit < 1 ) {
+			limit = 1;
+		}
+	}
+
+	bspIndex = SV_DynBSPClientBSPIndex( client );
+	holder = client->runtimeMapName[0] ? SV_DynBSPInstanceForMap( client->runtimeMapName ) : NULL;
+	runtimeBSPInstance = holder ? SV_RuntimeBSPInstanceForGentity( holder ) : -1;
+	modelBase = bspIndex >= 0 ? CM_SubBSPModelIndex( bspIndex ) : -1;
+
+	Com_Printf( "runtimeBModelInfo client=%i name='%s' runtimeMap='%s' bsp=%i modelBase=%i holder=%i holderModel=%i runtime=%i loadedGen=%i sendGen=%i currentGen=%i psOrigin=(%.1f %.1f %.1f)\n",
+		clientNum, client->name, client->runtimeMapName,
+		bspIndex, modelBase, holder ? holder->s.number : -1, holder ? holder->s.modelindex : -1,
+		runtimeBSPInstance, client->loadedBSPModelsGeneration, client->sendBSPModelsGeneration, sv.bspModelsGeneration,
+		ps ? ps->origin[0] : 0.0f, ps ? ps->origin[1] : 0.0f, ps ? ps->origin[2] : 0.0f );
+
+	if ( runtimeBSPInstance < 0 ) {
+		Com_Printf( "  client is not actively in a runtime map.\n" );
+		return;
+	}
+
+	for ( e = 0; e < sv.num_entities && printed < limit; e++ ) {
+		sharedEntity_t *ent = SV_GentityNum( e );
+		svEntity_t *svEnt;
+		int translatedModel = ent->s.modelindex;
+
+		if ( !ent->r.linked || SV_RuntimeBSPInstanceForGentity( ent ) != runtimeBSPInstance || !ent->r.bmodel ) {
+			continue;
+		}
+
+		svEnt = SV_SvEntityForGentity( ent );
+		if ( modelBase >= 0 && translatedModel >= modelBase ) {
+			translatedModel -= modelBase;
+		}
+
+		Com_Printf( "  ent=%i class='%s' type=%i linked=%i r.bmodel=%i solid=0x%x contents=0x%x model=%i translated=%i area=%i/%i clusters=%i lastCluster=%i origin=(%.1f %.1f %.1f) current=(%.1f %.1f %.1f) mins=(%.1f %.1f %.1f) maxs=(%.1f %.1f %.1f)\n",
+			e, ent->classname ? ent->classname : "", ent->s.eType, ent->r.linked, ent->r.bmodel,
+			ent->s.solid, ent->r.contents, ent->s.modelindex, translatedModel,
+			svEnt->areanum, svEnt->areanum2, svEnt->numClusters, svEnt->lastCluster,
+			ent->s.origin[0], ent->s.origin[1], ent->s.origin[2],
+			ent->r.currentOrigin[0], ent->r.currentOrigin[1], ent->r.currentOrigin[2],
+			ent->r.mins[0], ent->r.mins[1], ent->r.mins[2],
+			ent->r.maxs[0], ent->r.maxs[1], ent->r.maxs[2] );
+		printed++;
+	}
+
+	Com_Printf( "runtimeBModelInfo printed=%i limit=%i\n", printed, limit );
+}
 #define SVTELL_PREFIX "\x19[Server^7\x19]\x19: "
 
 /*
@@ -2336,6 +3052,12 @@ void SV_AddOperatorCommands( void ) {
 	Cmd_SetCommandCompletionFunc( "devmapall", SV_CompleteMapName );
 	Cmd_AddCommand ("killserver", SV_KillServer_f, "Shuts the server down and disconnects all clients" );
 	Cmd_AddCommand ("svsay", SV_ConSay_f, "Broadcast server messages to clients" );
+	Cmd_AddCommand ("clearBSPs", SV_ClearBSPs_f, "Clear all dynamically loaded runtime BSP instances" );
+	Cmd_AddCommand ("resendgamestate", SV_ResendGameState_f, "Force connected clients through a fresh gamestate reload" );
+	Cmd_AddCommand ("clientMap", SV_ClientMap_f, "Diagnostic: send one client a gamestate with a different mapname" );
+	Cmd_AddCommand ("clientBSPState", SV_ClientBSPState_f, "Diagnostic: inspect/send runtime BSP model state for one client" );
+	Cmd_AddCommand ("dimensionInfo", SV_DimensionInfo_f, "Diagnostic: inspect dimension world/group context for one or two entities" );
+	Cmd_AddCommand ("runtimeBModelInfo", SV_RuntimeBModelInfo_f, "Diagnostic: list runtime brush models for one client" );
 	Cmd_AddCommand ("svtell", SV_ConTell_f, "Private message from the server to a user" );
 	Cmd_AddCommand ("forcetoggle", SV_ForceToggle_f, "Toggle g_forcePowerDisable bits" );
 	Cmd_AddCommand ("weapontoggle", SV_WeaponToggle_f, "Toggle g_weaponDisable bits" );

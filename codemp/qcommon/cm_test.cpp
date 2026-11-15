@@ -192,6 +192,88 @@ int	CM_BoxLeafnums( const vec3_t mins, const vec3_t maxs, int *boxList, int list
 	return ll.count;
 }
 
+static clipMap_t *CM_SubBSPForIndex( int bspIndex ) {
+	if ( bspIndex < 0 || bspIndex >= NumSubBSP ) {
+		Com_Error( ERR_DROP, "CM_SubBSPForIndex: bad index %i", bspIndex );
+	}
+
+	return &SubBSP[bspIndex];
+}
+
+int CM_PointLeafnumForBSP( int bspIndex, const vec3_t p ) {
+	clipMap_t *local = CM_SubBSPForIndex( bspIndex );
+
+	if ( !local->numNodes ) {
+		return 0;
+	}
+
+	return CM_PointLeafnum_r( p, 0, local );
+}
+
+static void CM_BoxLeafnumsForMap_r( clipMap_t *local, const vec3_t mins, const vec3_t maxs, int nodenum, int *boxList, int listsize, int *count, int *lastLeaf, qboolean *overflowed ) {
+	cplane_t	*plane;
+	cNode_t		*node;
+	int			s;
+	int			leafNum;
+
+	while ( 1 ) {
+		if ( *overflowed ) {
+			return;
+		}
+
+		if ( nodenum < 0 ) {
+			leafNum = -1 - nodenum;
+			if ( leafNum < 0 || leafNum >= local->numLeafs ) {
+				*overflowed = qtrue;
+				return;
+			}
+			if ( local->leafs[leafNum].cluster != -1 ) {
+				*lastLeaf = leafNum;
+			}
+			if ( *count >= listsize ) {
+				*overflowed = qtrue;
+				return;
+			}
+			boxList[(*count)++] = leafNum;
+			return;
+		}
+
+		node = &local->nodes[nodenum];
+		plane = node->plane;
+
+		s = BoxOnPlaneSide( mins, maxs, plane );
+		if ( s == 1 ) {
+			nodenum = node->children[0];
+		}
+		else if ( s == 2 ) {
+			nodenum = node->children[1];
+		}
+		else {
+			CM_BoxLeafnumsForMap_r( local, mins, maxs, node->children[0], boxList, listsize, count, lastLeaf, overflowed );
+			if ( *overflowed ) {
+				return;
+			}
+			nodenum = node->children[1];
+		}
+	}
+}
+
+int CM_BoxLeafnumsForBSP( int bspIndex, const vec3_t mins, const vec3_t maxs, int *boxList, int listsize, int *lastLeaf ) {
+	clipMap_t *local = CM_SubBSPForIndex( bspIndex );
+	int count = 0;
+	qboolean overflowed = qfalse;
+
+	local->checkcount++;
+	*lastLeaf = 0;
+
+	if ( !local->numNodes ) {
+		return 0;
+	}
+
+	CM_BoxLeafnumsForMap_r( local, mins, maxs, 0, boxList, listsize, &count, lastLeaf, &overflowed );
+	return count;
+}
+
 
 //====================================================================
 
@@ -309,6 +391,36 @@ byte	*CM_ClusterPVS (int cluster) {
 	return cmg.visibility + cluster * cmg.clusterBytes;
 }
 
+byte *CM_ClusterPVSForBSP( int bspIndex, int cluster ) {
+	clipMap_t *local = CM_SubBSPForIndex( bspIndex );
+
+	if ( cluster < 0 || cluster >= local->numClusters || !local->vised ) {
+		return local->visibility;
+	}
+
+	return local->visibility + cluster * local->clusterBytes;
+}
+
+int CM_LeafClusterForBSP( int bspIndex, int leafnum ) {
+	clipMap_t *local = CM_SubBSPForIndex( bspIndex );
+
+	if ( leafnum < 0 || leafnum >= local->numLeafs ) {
+		Com_Error( ERR_DROP, "CM_LeafClusterForBSP: bad number" );
+	}
+
+	return local->leafs[leafnum].cluster;
+}
+
+int CM_LeafAreaForBSP( int bspIndex, int leafnum ) {
+	clipMap_t *local = CM_SubBSPForIndex( bspIndex );
+
+	if ( leafnum < 0 || leafnum >= local->numLeafs ) {
+		Com_Error( ERR_DROP, "CM_LeafAreaForBSP: bad number" );
+	}
+
+	return local->leafs[leafnum].area;
+}
+
 /*
 ===============================================================================
 
@@ -421,6 +533,27 @@ qboolean	CM_AreasConnected( int area1, int area2 ) {
 	return qfalse;
 }
 
+qboolean CM_AreasConnectedForBSP( int bspIndex, int area1, int area2 ) {
+	clipMap_t *local;
+
+#ifndef BSPC
+	if ( cm_noAreas->integer ) {
+		return qtrue;
+	}
+#endif
+
+	if ( area1 < 0 || area2 < 0 ) {
+		return qfalse;
+	}
+
+	local = CM_SubBSPForIndex( bspIndex );
+	if ( area1 >= local->numAreas || area2 >= local->numAreas ) {
+		Com_Error( ERR_DROP, "area >= subBSP.numAreas" );
+	}
+
+	return local->areas[area1].floodnum == local->areas[area2].floodnum ? qtrue : qfalse;
+}
+
 
 /*
 =================
@@ -459,6 +592,38 @@ int CM_WriteAreaBits (byte *buffer, int area)
 		{
 			if (cmg.areas[i].floodnum == floodnum || area == -1)
 				buffer[i>>3] |= 1<<(i&7);
+		}
+	}
+
+	return bytes;
+}
+
+int CM_WriteAreaBitsForBSP( int bspIndex, byte *buffer, int area )
+{
+	clipMap_t *local = CM_SubBSPForIndex( bspIndex );
+	int i;
+	int floodnum;
+	int bytes;
+
+	bytes = ( local->numAreas + 7 ) >> 3;
+
+#ifndef BSPC
+	if ( cm_noAreas->integer || area == -1 )
+#else
+	if ( area == -1 )
+#endif
+	{	// for debugging, send everything
+		Com_Memset( buffer, 255, bytes );
+	}
+	else
+	{
+		floodnum = local->areas[area].floodnum;
+		for ( i = 0; i < local->numAreas; i++ )
+		{
+			if ( local->areas[i].floodnum == floodnum || area == -1 )
+			{
+				buffer[i >> 3] |= 1 << ( i & 7 );
+			}
 		}
 	}
 

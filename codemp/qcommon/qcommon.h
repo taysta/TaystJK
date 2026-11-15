@@ -790,6 +790,7 @@ qboolean FS_ComparePaks( char *neededpaks, int len, qboolean dlstring );
 void FS_Rename( const char *from, const char *to );
 
 qboolean FS_WriteToTemporaryFile( const void *data, size_t dataLength, char **tempFileName );
+qboolean FS_PakInfoForFile( const char *qpath, char *pakName, int pakNameSize, int *checksum );
 const char *FS_MV_VerifyDownloadPath(const char *pk3file);
 
 

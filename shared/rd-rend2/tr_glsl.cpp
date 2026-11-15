@@ -135,6 +135,8 @@ static uniformInfo_t uniformsInfo[] =
 	{ "u_RandomOffset",			GLSL_VEC4, 1 },
 	{ "u_ChunkParticles",		GLSL_INT, 1 },
 	{ "u_BloomStrength",		GLSL_FLOAT, 1 },
+
+	{ "u_ElevationHelper",		GLSL_VEC4, 1 },
 };
 
 static void GLSL_PrintProgramInfoLog(GLuint object, qboolean developerOnly)

@@ -43,6 +43,18 @@ extern qboolean BG_UnrestrainedPitchRoll( playerState_t *ps, Vehicle_t *pVeh );
 extern void BG_SetAnim(playerState_t *ps, animation_t *animations, int setAnimParts,int anim,int setAnimFlags);
 extern int BG_GetTime(void);
 
+static float FighterInstanceScale( const Vehicle_t *pVeh )
+{
+	const playerState_t *parentPS = ( pVeh && pVeh->m_pParentEntity ) ?
+		pVeh->m_pParentEntity->playerState : NULL;
+	return BG_VehicleInstanceScale( pVeh, parentPS ? parentPS->iModelScale : 0 );
+}
+
+static float FighterLandingSpeed( const Vehicle_t *pVeh )
+{
+	return MIN_LANDING_SPEED * FighterInstanceScale( pVeh );
+}
+
 //this stuff has got to be predicted, so..
 qboolean BG_FighterUpdate(Vehicle_t *pVeh, const usercmd_t *pUcmd, vec3_t trMins, vec3_t trMaxs, float gravity, void (*traceFunc)( trace_t *results, const vec3_t start, const vec3_t lmins, const vec3_t lmaxs, const vec3_t end, int passEntityNum, int contentMask ))
 {
@@ -106,7 +118,7 @@ qboolean BG_FighterUpdate(Vehicle_t *pVeh, const usercmd_t *pUcmd, vec3_t trMins
 
 		// Check to see if the fighter has taken off yet (if it's a certain height above ground).
 		VectorCopy( parentPS->origin, bottom );
-		bottom[2] -= pVeh->m_pVehicleInfo->landingHeight;
+		bottom[2] -= pVeh->m_pVehicleInfo->landingHeight * FighterInstanceScale( pVeh );
 
 		traceFunc( &pVeh->m_LandTrace, parentPS->origin, trMins, trMaxs, bottom, pVeh->m_pParentEntity->s.number, (MASK_NPCSOLID&~CONTENTS_BODY) );
 	//}
@@ -243,7 +255,7 @@ qboolean FighterIsLanding( Vehicle_t *pVeh, playerState_t *parentPS )
 		&& pVeh->m_pVehicleInfo->Inhabited( pVeh )//has to have a driver in order to be capable of landing
 #endif
 		&& (pVeh->m_ucmd.forwardmove < 0||pVeh->m_ucmd.upmove<0) //decelerating or holding crouch button
-		&& parentPS->speed <= MIN_LANDING_SPEED )//going slow enough to start landing - was using pVeh->m_pVehicleInfo->speedIdle, but that's still too fast
+		&& parentPS->speed <= FighterLandingSpeed( pVeh ) )//going slow enough to start landing - was using pVeh->m_pVehicleInfo->speedIdle, but that's still too fast
 	{
 		return qtrue;
 	}
@@ -258,7 +270,7 @@ qboolean FighterIsLaunching( Vehicle_t *pVeh, playerState_t *parentPS )
 		&& pVeh->m_pVehicleInfo->Inhabited( pVeh )//has to have a driver in order to be capable of landing
 #endif
 		&& pVeh->m_ucmd.upmove > 0 //trying to take off
-		&& parentPS->speed <= 200.0f )//going slow enough to start landing - was using pVeh->m_pVehicleInfo->speedIdle, but that's still too fast
+		&& parentPS->speed <= 200.0f * FighterInstanceScale( pVeh ) )//going slow enough to start landing - was using pVeh->m_pVehicleInfo->speedIdle, but that's still too fast
 	{
 		return qtrue;
 	}
@@ -282,6 +294,414 @@ qboolean FighterSuspended( Vehicle_t *pVeh, playerState_t *parentPS )
 #endif
 }
 
+//====================================================================================
+// Tribes 2 "Shrike" flying vehicle physics -TaystJK
+// Port of Torque FlyingVehicle::updateForces() (see SHRIKE/flyingVehicle.cc).
+// Linear distances, speeds and forces are stored in JKA units in .veh data. The
+// code runs directly on JKA origin/velocity values; angular steering values remain
+// radians/rad-sec terms.
+//====================================================================================
+#define SHRIKE_GRAVITY			-800.0f	// JKA gravity equivalent of T2's sFlyingVehicleGravity
+
+qboolean BG_ShrikePhysics( Vehicle_t *pVeh )
+{
+	if ( pVeh
+		&& pVeh->m_pVehicleInfo
+		&& pVeh->m_pVehicleInfo->type == VH_FIGHTER
+		&& ( pVeh->m_pVehicleInfo->shrikePhysics || (bg_fighterAltControl.integer == 2) ) )
+	{
+		return qtrue;
+	}
+	return qfalse;
+}
+
+// Whether the T2 force model should be simulating this ship right now. Dead,
+// electrified or surface-destructed ships fall back to the stock out-of-control
+// behavior — move, orient and pmove all have to agree on this or a spiraling
+// ship would float inert.
+qboolean BG_ShrikePhysicsActive( Vehicle_t *pVeh, playerState_t *parentPS, int curTime )
+{
+	if ( !BG_ShrikePhysics( pVeh ) )
+		return qfalse;
+	if ( parentPS->eFlags & EF_DEAD )
+		return qfalse;
+	if ( parentPS->electrifyTime >= curTime )
+		return qfalse;
+	if ( pVeh->m_pVehicleInfo->surfDestruction && pVeh->m_iRemovedSurfaces )
+		return qfalse;
+	return qtrue;
+}
+
+// T2 FlyingVehicle::getHeight(): normalized height above the hover point, in
+// 400-unit bands. <= 0 means below hover height (the ground spring kicks in),
+// >= 1 means 400+ units up (full hover thrust).
+static float FighterShrikeGetHeight( Vehicle_t *pVeh, playerState_t *parentPS )
+{
+	trace_t tr;
+	vec3_t end;
+	const float vehicleScale = FighterInstanceScale( pVeh );
+	const float hoverHeight = pVeh->m_pVehicleInfo->shrikeHoverHeight * vehicleScale;
+	const float heightBand = 400.0f * vehicleScale;
+	float r = heightBand + hoverHeight;
+	float frac;
+
+	VectorSet( end, parentPS->origin[0], parentPS->origin[1],
+		parentPS->origin[2] - r );
+
+	pm->trace( &tr, parentPS->origin, vec3_origin, vec3_origin, end,
+		pVeh->m_pParentEntity->s.number, (MASK_NPCSOLID|CONTENTS_WATER)&~CONTENTS_BODY );
+
+	frac = tr.startsolid ? 0.0f : tr.fraction;
+	return ( r * frac - hoverHeight ) / heightBand;
+}
+
+// The linear half of T2 FlyingVehicle::updateForces(). Velocity is a free vector in
+// parentPS->velocity (networked + predicted); orientation only determines where the
+// jets point. Torque/steering is handled in ProcessOrientCommands.
+static void FighterShrikeMoveCommands( Vehicle_t *pVeh, playerState_t *parentPS )
+{
+	const vehicleInfo_t *veh = pVeh->m_pVehicleInfo;
+	const float vehicleScale = FighterInstanceScale( pVeh );
+	const float inverseVehicleScale = 1.0f / vehicleScale;
+	const float oneOverMass = 1.0f / veh->shrikeMass;
+	const float dt = pVeh->m_fTimeModifier / 60.0f;	// m_fTimeModifier is normalized to 1.0 at 60fps
+	vec3_t xv, yv, zv;					// ship right/forward/up = T2 transform columns 0/1/2
+	vec3_t velocity;					// working copy in JKA units/sec
+	vec3_t accel = {0.0f, 0.0f, 0.0f};	// summed force * oneOverMass, u/s^2
+	float speed, thrustX, thrustY;
+	qboolean jetting;
+
+	// Preserve a uniformly scaled trajectory: distances, velocities and direct
+	// accelerations scale linearly.  Velocity-proportional damping stays as a
+	// coefficient, while the quadratic surface terms use inverse scale.
+
+	AngleVectors( pVeh->m_vOrientation, yv, xv, zv );
+	VectorCopy( parentPS->velocity, velocity );
+	speed = VectorLength( velocity );
+
+	// mThrust / mJetting input mapping: WASD = maneuvering jets, jump = turbo jet
+	thrustY = pVeh->m_ucmd.forwardmove / 127.0f;
+	thrustX = pVeh->m_ucmd.rightmove / 127.0f;
+	jetting = (qboolean)( pVeh->m_ucmd.upmove > 0 );
+
+	// Gravity: BG_FighterUpdate zeroes ps->gravity while piloted, so the force model owns it
+	if ( parentPS->gravity == 0 )
+	{
+		accel[2] += SHRIKE_GRAVITY * vehicleScale;
+	}
+
+	// Drag at any speed
+	VectorMA( accel, -veh->shrikeMinDrag * oneOverMass, velocity, accel );
+
+	// Auto-stop at low speeds: maneuvering jets damp drift so it settles into a stable hover
+	if ( speed < veh->shrikeMaxAutoSpeed * vehicleScale )
+	{
+		float autoScale = 1.0f - speed / ( veh->shrikeMaxAutoSpeed * vehicleScale );
+		float sf = veh->shrikeAutoLinearForce * oneOverMass * autoScale;
+		VectorMA( accel, -sf * DotProduct( yv, velocity ), yv, accel );
+		VectorMA( accel, -sf * DotProduct( xv, velocity ), xv, accel );
+	}
+
+	// Hovering jet: counters gravity along the ship's UP axis (banking sheds lift — this
+	// is intentional), with a ground spring when below hoverHeight
+	{
+		float vf = -SHRIKE_GRAVITY * vehicleScale;
+		float h = FighterShrikeGetHeight( pVeh, parentPS );
+		if ( h <= 1.0f )
+		{
+			if ( h > 0.0f )
+			{
+				vf -= vf * h * 0.1f;
+			}
+			else
+			{
+				vf += veh->shrikeJetForce * vehicleScale * oneOverMass * -h;
+			}
+		}
+		VectorMA( accel, vf, zv, accel );
+	}
+
+	// Damping "surfaces": bleed off velocity that isn't along the nose — this is the carve
+	VectorMA( accel, -speed * DotProduct( xv, velocity ) * veh->shrikeHorizontalSurfaceForce * inverseVehicleScale * oneOverMass, xv, accel );
+	VectorMA( accel, -speed * DotProduct( zv, velocity ) * veh->shrikeVerticalSurfaceForce * inverseVehicleScale * oneOverMass, zv, accel );
+
+	// T2 maxForwardSpeed: forward thrust is no longer applied above this speed — this,
+	// not drag alone, is what caps the Shrike's top speed
+	{
+		const qboolean fwdGated = (qboolean)( DotProduct( yv, velocity ) > veh->shrikeMaxForwardSpeed * vehicleScale );
+
+		// Turbo jet (afterburner): forward, reverse, or straight up when no throttle input
+		if ( jetting )
+		{
+			if ( thrustY > 0.0f )
+			{
+				if ( !fwdGated )
+				{
+					VectorMA( accel, veh->shrikeJetForce * vehicleScale * oneOverMass, yv, accel );
+				}
+			}
+			else if ( thrustY < 0.0f )
+			{
+				VectorMA( accel, -veh->shrikeJetForce * vehicleScale * oneOverMass, yv, accel );
+			}
+			else
+			{
+				VectorMA( accel, veh->shrikeJetForce * vehicleScale * veh->shrikeVertThrustMultiple * oneOverMass, zv, accel );
+			}
+			parentPS->eFlags |= EF_JETPACK_ACTIVE;	// draw the turbo exhaust FX
+		}
+		else
+		{
+			parentPS->eFlags &= ~EF_JETPACK_ACTIVE;
+		}
+
+		// Maneuvering jets: direct thrust along the ship's forward/right axes (air strafing)
+		if ( !( fwdGated && thrustY > 0.0f ) )
+		{
+			VectorMA( accel, thrustY * veh->shrikeManeuveringForce * vehicleScale * oneOverMass, yv, accel );
+		}
+		VectorMA( accel, thrustX * veh->shrikeManeuveringForce * vehicleScale * oneOverMass, xv, accel );
+	}
+
+	// Integrate in JKA units
+	VectorMA( parentPS->velocity, dt, accel, parentPS->velocity );
+
+	// Keep the scalar speed in sync for the HUD/anims/landing checks
+	parentPS->speed = VectorLength( parentPS->velocity );
+}
+
+static void FighterShrikeViewFwdToAnglesStable( const vec3_t viewFwd, const vec3_t prevAngles, vec3_t outAngles )
+{
+	float xyLen = sqrtf( viewFwd[0] * viewFwd[0] + viewFwd[1] * viewFwd[1] );
+	float pitch = -atan2f( viewFwd[2], xyLen ) * ( 180.0f / M_PI );
+	float liveYaw = atan2f( viewFwd[1], viewFwd[0] ) * ( 180.0f / M_PI );
+	float yawTrust = xyLen * 10.0f;
+
+	yawTrust *= yawTrust;
+	if ( yawTrust > 1.0f )
+	{
+		yawTrust = 1.0f;
+	}
+
+	if ( fabsf( AngleSubtract( liveYaw, prevAngles[YAW] ) ) > 90.0f )
+	{
+		pitch = AngleNormalize180( -180.0f - pitch );
+		liveYaw = AngleNormalize180( liveYaw + 180.0f );
+	}
+
+	outAngles[PITCH] = pitch;
+	outAngles[YAW] = AngleNormalize180( prevAngles[YAW] + yawTrust * AngleSubtract( liveYaw, prevAngles[YAW] ) );
+	outAngles[ROLL] = 0.0f;
+}
+
+// Extract JKA Euler angles from an orthonormal ship basis (forward/right), including roll.
+// IN/OUT: angles must hold the previous frame's orientation on entry — the extraction
+// keeps the Euler VALUES continuous frame over frame: pitch runs smoothly past +/-90
+// through verticals and loops (no representation flip), and near the poles — where yaw
+// and roll individually degenerate (only their difference is physical) — yaw trust fades
+// out and the measured roll absorbs the remainder, so neither whips from amplified noise.
+// Non-static: the cgame camera uses this too (CG_OffsetFighterView).
+void BG_ShrikeAxisToAngles( const vec3_t fwd, const vec3_t right, vec3_t angles )
+{
+	vec3_t refAngles, refRight, refUp;
+	float prevYaw = angles[YAW];
+	float xyLen = sqrtf( fwd[0]*fwd[0] + fwd[1]*fwd[1] );
+
+	{
+		//pitch is always well-conditioned; yaw degenerates toward the poles, where
+		//only yaw-minus-roll is physical. Raw vectoangles yaw whipped 120-173 deg
+		//per snapshot while hovering vertical (demo test4), and roll whipped along
+		//with it to compensate, scrambling every consumer of the Euler VALUES (the
+		//physical basis was always fine). Fade out how much of the live yaw we
+		//accept near the pole and let the measured roll below absorb the remainder.
+		float p = -atan2f( fwd[2], xyLen ) * (180.0f / M_PI);		//in [-90, 90], exact
+		float liveYaw = atan2f( fwd[1], fwd[0] ) * (180.0f / M_PI);	//noisy near the pole
+		float w = xyLen * 10.0f;	//yaw trust: full beyond ~5.7 deg from vertical
+		w *= w;					//fade quadratically so pole noise is nearly ignored
+
+		if ( w > 1.0f )
+		{
+			w = 1.0f;
+		}
+
+		if ( fabsf( AngleSubtract( liveYaw, prevYaw ) ) > 90.0f )
+		{//horizontal remainder points away from the yaw we're keeping: the nose is
+		 //past vertical — continue pitch beyond +/-90 instead of flipping the
+		 //representation (this is what lets loops run continuously through the pole;
+		 //the side test only needs one robust bit from the noisy yaw)
+			p = AngleNormalize180( -180.0f - p );
+			liveYaw = AngleNormalize180( liveYaw + 180.0f );
+		}
+
+		angles[PITCH] = p;
+		angles[YAW] = AngleNormalize180( prevYaw + w * AngleSubtract( liveYaw, prevYaw ) );
+	}
+
+	//measure roll as the right axis' rotation away from the zero-roll reference frame
+	//(continuous whenever pitch/yaw are, including past vertical)
+	VectorSet( refAngles, angles[PITCH], angles[YAW], 0.0f );
+	AngleVectors( refAngles, NULL, refRight, refUp );
+	// JKA AngleVectors' positive roll rotates the right axis toward -refUp, so the
+	// extraction sign must be inverted. Without this, a fixed basis at P<-90 bounces
+	// between +R and -R every tick, which is the wtfman.dm_26 roll jitter.
+	angles[ROLL] = -atan2f( DotProduct( right, refUp ), DotProduct( right, refRight ) ) * (180.0f / M_PI);
+}
+
+static void FighterShrikeStoreRiderSteeringView( playerState_t *riderPS, const usercmd_t *cmd,
+	const vec3_t shipFwd, const vec3_t shipRight, const vec3_t shipUp,
+	float steerYaw, float steerPitch )
+{
+	vec3_t viewFwd, newAngles;
+	const float cp = cosf( steerPitch );
+
+	VectorScale( shipFwd, cp * cosf( steerYaw ), viewFwd );
+	VectorMA( viewFwd, cp * sinf( steerYaw ), shipRight, viewFwd );
+	VectorMA( viewFwd, sinf( steerPitch ), shipUp, viewFwd );
+
+	FighterShrikeViewFwdToAnglesStable( viewFwd, riderPS->viewangles, newAngles );
+
+	riderPS->viewangles[PITCH] = newAngles[PITCH];
+	riderPS->viewangles[YAW] = newAngles[YAW];
+	riderPS->viewangles[ROLL] = 0.0f;
+
+	riderPS->delta_angles[PITCH] = ANGLE2SHORT( riderPS->viewangles[PITCH] ) - cmd->angles[PITCH];
+	riderPS->delta_angles[YAW] = ANGLE2SHORT( riderPS->viewangles[YAW] ) - cmd->angles[YAW];
+	riderPS->delta_angles[ROLL] = ANGLE2SHORT( 0 ) - cmd->angles[ROLL];
+}
+
+// The angular half of T2 FlyingVehicle::updateForces(). The crosshair's offset from the
+// nose acts as the T2 steering cursor: deflection -> quadratic torque -> angular velocity
+// with rotational drag, auto-leveling and bank-into-turn coupling, so the nose has real
+// weight and lag instead of snapping to the view.
+//
+// Angular velocity is stored in parentPS->moveDir as a world-space vector. The debug
+// HUD projects it back onto right/up/nose axes. moveDir is networked full-float and
+// only used by the stock throttle model (which shrike mode bypasses), so prediction
+// rewinds and replays it exactly like origin/velocity — no new net fields needed.
+static void FighterShrikeOrientCommands( Vehicle_t *pVeh, playerState_t *parentPS, playerState_t *riderPS )
+{
+	const vehicleInfo_t *veh = pVeh->m_pVehicleInfo;
+	const float vehicleScale = FighterInstanceScale( pVeh );
+	const float oneOverMass = 1.0f / veh->shrikeMass;
+	const float dt = pVeh->m_fTimeModifier / 60.0f;
+	float *angVel = parentPS->moveDir;	//world-space angular velocity, rad/s
+	vec3_t xv, yv, zv;					//ship right/forward/up
+	vec3_t viewFwd, velocity, angAccel, rotAxis, tmp;
+	float speed, fx, fy, fz, steerPitch, steerYaw, torquePitch, torqueYaw, gf, angSpeed;
+
+	AngleVectors( pVeh->m_vOrientation, yv, xv, zv );
+	VectorCopy( parentPS->velocity, velocity );
+	speed = VectorLength( velocity );
+
+	// Steering deflection: where the crosshair sits relative to the nose, measured in
+	// ship-local angles so it stays correct at any roll (pulling "up" while inverted
+	// pitches toward your view, like T2)
+	AngleVectors( riderPS->viewangles, viewFwd, NULL, NULL );
+	fy = DotProduct( viewFwd, yv );
+	fx = DotProduct( viewFwd, xv );
+	fz = DotProduct( viewFwd, zv );
+	steerYaw = atan2f( fx, fy );							// + = crosshair right of nose
+	steerPitch = atan2f( fz, sqrtf( fx*fx + fy*fy ) );		// + = crosshair above nose
+
+	// Normalize against the max deflection, then square for T2's quadratic response.
+	// T2's maxSteeringAngle (ScoutFlyer = 5 radians) bounds a virtual steering wheel the
+	// mouse winds up, but our "wheel" is the crosshair's angular offset from the nose,
+	// which the view clamp in PM_UpdateViewAngles keeps inside the on-screen cone —
+	// cap the divisor to the same cone so full torque is reached at the clamp edge.
+	{
+		float maxDeflect = veh->shrikeMaxSteeringAngle;
+		float steerLen;
+		if ( maxDeflect > SHRIKE_STEERING_CONE )
+		{
+			maxDeflect = SHRIKE_STEERING_CONE;
+		}
+		steerLen = sqrtf( steerYaw * steerYaw + steerPitch * steerPitch );
+		if ( steerLen > maxDeflect && steerLen > 0.0f )
+		{//Keep the combined steering cursor inside the visible cone. Independent
+		 //yaw/pitch clamps allowed fast diagonal pulls to exceed the intended cone.
+			float s = maxDeflect / steerLen;
+			steerYaw *= s;
+			steerPitch *= s;
+		}
+	}
+
+	if ( speed < veh->shrikeMaxAutoSpeed * vehicleScale )
+	{//damp the stored steering wheel while the low-speed autopilot settles the ship
+		steerYaw *= veh->shrikeAutoInputDamping;
+		steerPitch *= veh->shrikeAutoInputDamping;
+	}
+
+	{
+		float maxDeflect = veh->shrikeMaxSteeringAngle;
+		if ( maxDeflect > SHRIKE_STEERING_CONE )
+		{
+			maxDeflect = SHRIKE_STEERING_CONE;
+		}
+
+		torqueYaw = steerYaw / maxDeflect;
+		if ( torqueYaw > 1.0f ) torqueYaw = 1.0f; else if ( torqueYaw < -1.0f ) torqueYaw = -1.0f;
+		torqueYaw *= fabsf( torqueYaw );
+		torquePitch = steerPitch / maxDeflect;
+		if ( torquePitch > 1.0f ) torquePitch = 1.0f; else if ( torquePitch < -1.0f ) torquePitch = -1.0f;
+		torquePitch *= fabsf( torquePitch );
+	}
+
+	// Steering torque: the nose chases the crosshair
+	VectorClear( angAccel );
+	VectorMA( angAccel, torquePitch * veh->shrikeSteeringForce * oneOverMass, xv, angAccel );
+	VectorMA( angAccel, -torqueYaw * veh->shrikeSteeringForce * oneOverMass, zv, angAccel );
+
+	// Roll: exact T2 FlyingVehicle::updateForces equation.
+	// steering.x banks into the turn, autoAngularForce levels against world up, and
+	// rollForce counters lateral slip. Keep this as physical torque only; cgame render
+	// should not add a second visual banking layer on top of it.
+	{
+		float rollForce = torqueYaw * veh->shrikeSteeringRollForce;
+		rollForce += veh->shrikeAutoAngularForce * xv[2];
+		rollForce -= veh->shrikeRollForce * DotProduct( xv, velocity ) / vehicleScale;
+		VectorMA( angAccel, rollForce * oneOverMass, yv, angAccel );
+	}
+
+	// Low-speed gyroscope: pitch back toward level as the ship slows to a hover
+	if ( speed < veh->shrikeMaxAutoSpeed * vehicleScale )
+	{
+		gf = veh->shrikeAutoAngularForce * ( 1.0f - speed / ( veh->shrikeMaxAutoSpeed * vehicleScale ) );
+		VectorMA( angAccel, -gf * yv[2] * oneOverMass, xv, angAccel );
+	}
+
+	// Rotational drag, then integrate the angular velocity
+	VectorMA( angAccel, -veh->shrikeRotationalDrag * oneOverMass, angVel, angAccel );
+	VectorMA( angVel, dt, angAccel, angVel );
+
+	// Rotate the ship basis by the local angular deltas (proper 3D rotation — no
+	// gimbal issues in the integration itself, only in the Euler extraction below)
+	{
+		const float rad2deg = 180.0f / M_PI;
+		angSpeed = VectorNormalize2( angVel, rotAxis );
+		if ( angSpeed > 0.0f )
+		{
+			float rotDeg = angSpeed * dt * rad2deg;
+			RotatePointAroundVector( tmp, rotAxis, yv, rotDeg );	VectorCopy( tmp, yv );
+			RotatePointAroundVector( tmp, rotAxis, xv, rotDeg );	VectorCopy( tmp, xv );
+			RotatePointAroundVector( tmp, rotAxis, zv, rotDeg );	VectorCopy( tmp, zv );
+		}
+
+		// re-orthonormalize so error can't accumulate frame over frame
+		VectorNormalize( yv );
+		CrossProduct( yv, zv, xv );		//right = forward x up
+		VectorNormalize( xv );
+		CrossProduct( xv, yv, zv );		//up = right x forward
+		VectorNormalize( zv );
+	}
+
+	BG_ShrikeAxisToAngles( yv, xv, pVeh->m_vOrientation );
+	pVeh->m_vOrientation[PITCH] = AngleNormalize180( pVeh->m_vOrientation[PITCH] );
+	pVeh->m_vOrientation[YAW] = AngleNormalize180( pVeh->m_vOrientation[YAW] );
+	pVeh->m_vOrientation[ROLL] = AngleNormalize180( pVeh->m_vOrientation[ROLL] );
+	VectorCopy( pVeh->m_vOrientation, parentPS->viewangles );
+	FighterShrikeStoreRiderSteeringView( riderPS, &pVeh->m_ucmd, yv, xv, zv, steerYaw, steerPitch );
+}
+
 //MP RULE - ALL PROCESSMOVECOMMANDS FUNCTIONS MUST BE BG-COMPATIBLE!!!
 //If you really need to violate this rule for SP, then use ifdefs.
 //By BG-compatible, I mean no use of game-specific data - ONLY use
@@ -298,6 +718,8 @@ static void ProcessMoveCommands( Vehicle_t *pVeh )
 
 	//Client sets ucmds and such for speed alterations
 	float speedInc, speedIdleDec, speedIdle, speedIdleAccel, speedMin, speedMax;
+	float landingSpeed;
+	float vehicleScale;
 	bgEntity_t *parent = pVeh->m_pParentEntity;
 	qboolean isLandingOrLaunching = qfalse;
 	//this function should only be called from pmove.. if it gets called elsehwere,
@@ -305,6 +727,8 @@ static void ProcessMoveCommands( Vehicle_t *pVeh )
 	int curTime = pm->cmd.serverTime;
 
 	playerState_t *parentPS = parent->playerState;
+	vehicleScale = FighterInstanceScale( pVeh );
+	landingSpeed = FighterLandingSpeed( pVeh );
 
 	if ( parentPS->hyperSpaceTime
 		&& curTime - parentPS->hyperSpaceTime < HYPERSPACE_TIME )
@@ -352,6 +776,16 @@ static void ProcessMoveCommands( Vehicle_t *pVeh )
 		return;
 	}
 
+	if ( BG_ShrikePhysicsActive( pVeh, parentPS, curTime )
+#ifdef _GAME //empty ships use the stock throttle model so they land/park normally
+		&& pVeh->m_pVehicleInfo->Inhabited( pVeh )
+#endif
+		)
+	{//Tribes 2 force model replaces the entire scalar-throttle block below
+		FighterShrikeMoveCommands( pVeh, parentPS );
+		return;
+	}
+
 	isLandingOrLaunching = (FighterIsLanding( pVeh, parentPS )||FighterIsLaunching( pVeh, parentPS ));
 
 	// If we are hitting the ground, just allow the fighter to go up and down.
@@ -369,17 +803,17 @@ static void ProcessMoveCommands( Vehicle_t *pVeh )
 					G_EntitySound( ((gentity_t *)(pVeh->m_pParentEntity)), CHAN_AUTO, pVeh->m_pVehicleInfo->soundTakeOff );
 				#endif
 			}
-			parentPS->velocity[2] += pVeh->m_pVehicleInfo->acceleration * pVeh->m_fTimeModifier;// * ( /*fInvFrac **/ 1.5f );
+			parentPS->velocity[2] += pVeh->m_pVehicleInfo->acceleration * vehicleScale * pVeh->m_fTimeModifier;// * ( /*fInvFrac **/ 1.5f );
 		}
 		else if ( pVeh->m_ucmd.upmove < 0 )
 		{
-			parentPS->velocity[2] -= pVeh->m_pVehicleInfo->acceleration * pVeh->m_fTimeModifier;// * ( /*fInvFrac **/ 1.8f );
+			parentPS->velocity[2] -= pVeh->m_pVehicleInfo->acceleration * vehicleScale * pVeh->m_fTimeModifier;// * ( /*fInvFrac **/ 1.8f );
 		}
 		else if ( pVeh->m_ucmd.forwardmove < 0 )
 		{
 			if ( pVeh->m_LandTrace.fraction != 0.0f )
 			{
-				parentPS->velocity[2] -= pVeh->m_pVehicleInfo->acceleration * pVeh->m_fTimeModifier;
+				parentPS->velocity[2] -= pVeh->m_pVehicleInfo->acceleration * vehicleScale * pVeh->m_fTimeModifier;
 			}
 
 			if ( pVeh->m_LandTrace.fraction <= FIGHTER_MIN_TAKEOFF_FRACTION )
@@ -419,14 +853,14 @@ static void ProcessMoveCommands( Vehicle_t *pVeh )
 #endif
 		}
 	}
-	speedInc = pVeh->m_pVehicleInfo->acceleration * pVeh->m_fTimeModifier;
+	speedInc = pVeh->m_pVehicleInfo->acceleration * vehicleScale * pVeh->m_fTimeModifier;
 	if ( curTime < pVeh->m_iTurboTime )
 	{//going turbo speed
-		speedMax = pVeh->m_pVehicleInfo->turboSpeed;
+		speedMax = pVeh->m_pVehicleInfo->turboSpeed * vehicleScale;
 		//double our acceleration
 		//speedInc *= 2.0f;
 		//no no no! this would el breako el predictiono! we want the following... -rww
-        speedInc = (pVeh->m_pVehicleInfo->acceleration*2.0f) * pVeh->m_fTimeModifier;
+        speedInc = (pVeh->m_pVehicleInfo->acceleration*2.0f) * vehicleScale * pVeh->m_fTimeModifier;
 
 		//force us to move forward
 		pVeh->m_ucmd.forwardmove = 127;
@@ -437,21 +871,21 @@ static void ProcessMoveCommands( Vehicle_t *pVeh )
 	//FIXME: if turbotime is up and we're waiting for it to recharge, should our max speed drop while we recharge?
 	else if ( (curTime - pVeh->m_iTurboTime)<3000 )
 	{//still waiting for the recharge
-		speedMax = pVeh->m_pVehicleInfo->speedMax*0.75;
+		speedMax = pVeh->m_pVehicleInfo->speedMax * 0.75;
 	}
 	*/
 	else
 	{//normal max speed
-		speedMax = pVeh->m_pVehicleInfo->speedMax;
+		speedMax = pVeh->m_pVehicleInfo->speedMax * vehicleScale;
 		if ( (parentPS->eFlags&EF_JETPACK_ACTIVE) )
 		{//stop cgame from playing the turbo exhaust effect
 			parentPS->eFlags &= ~EF_JETPACK_ACTIVE;
 		}
 	}
-	speedIdleDec = pVeh->m_pVehicleInfo->decelIdle * pVeh->m_fTimeModifier;
-	speedIdle = pVeh->m_pVehicleInfo->speedIdle;
-	speedIdleAccel = pVeh->m_pVehicleInfo->accelIdle * pVeh->m_fTimeModifier;
-	speedMin = pVeh->m_pVehicleInfo->speedMin;
+	speedIdleDec = pVeh->m_pVehicleInfo->decelIdle * vehicleScale * pVeh->m_fTimeModifier;
+	speedIdle = pVeh->m_pVehicleInfo->speedIdle * vehicleScale;
+	speedIdleAccel = pVeh->m_pVehicleInfo->accelIdle * vehicleScale * pVeh->m_fTimeModifier;
+	speedMin = pVeh->m_pVehicleInfo->speedMin * vehicleScale;
 
 	if ( (parentPS->brokenLimbs&(1<<SHIPSURF_DAMAGE_BACK_HEAVY)) )
 	{//engine has taken heavy damage
@@ -497,12 +931,12 @@ static void ProcessMoveCommands( Vehicle_t *pVeh )
 			{//braking (trying to land?), slow down faster
 				if ( pVeh->m_ucmd.forwardmove )
 				{//decelerator + brakes
-					speedInc += pVeh->m_pVehicleInfo->braking;
-					speedIdleDec += pVeh->m_pVehicleInfo->braking;
+					speedInc += pVeh->m_pVehicleInfo->braking * vehicleScale;
+					speedIdleDec += pVeh->m_pVehicleInfo->braking * vehicleScale;
 				}
 				else
 				{//just brakes
-					speedInc = speedIdleDec = pVeh->m_pVehicleInfo->braking;
+					speedInc = speedIdleDec = pVeh->m_pVehicleInfo->braking * vehicleScale;
 				}
 			}
 			if ( parentPS->speed > speedIdle )
@@ -518,9 +952,9 @@ static void ProcessMoveCommands( Vehicle_t *pVeh )
 				else
 				{
 					parentPS->speed -= speedIdleDec;
-					if ( parentPS->speed < MIN_LANDING_SPEED )
+					if ( parentPS->speed < landingSpeed )
 					{//unless you can land, don't drop below the landing speed!!!  This way you can't come to a dead stop in mid-air
-						parentPS->speed = MIN_LANDING_SPEED;
+						parentPS->speed = landingSpeed;
 					}
 				}
 			}
@@ -536,7 +970,7 @@ static void ProcessMoveCommands( Vehicle_t *pVeh )
 		//else not accel, decel or braking
 		else if ( pVeh->m_pVehicleInfo->throttleSticks )
 		{//we're using a throttle that sticks at current speed
-			if ( parentPS->speed <= MIN_LANDING_SPEED )
+			if ( parentPS->speed <= landingSpeed )
 			{//going less than landing speed
 				if ( FighterOverValidLandingSurface( pVeh ) )
 				{//close to ground and not going very fast
@@ -626,7 +1060,7 @@ static void ProcessMoveCommands( Vehicle_t *pVeh )
 		&& parentPS->electrifyTime<curTime
 		&& (pVeh->m_LandTrace.fraction >= 1.0f//no grounf
 			||pVeh->m_LandTrace.plane.normal[2] < MIN_LANDING_SLOPE//can't land here
-			||parentPS->speed>MIN_LANDING_SPEED)//going too fast to land
+			||parentPS->speed>landingSpeed)//going too fast to land
 		&& pVeh->m_ucmd.rightmove )
 	{//strafe
 		vec3_t vAngles, vRight;
@@ -1037,7 +1471,7 @@ void FighterRollAdjust(Vehicle_t *pVeh, playerState_t *riderPS, playerState_t *p
 				{
 					s = -s;
 				}
-				speedFrac = (s/(pVeh->m_pVehicleInfo->speedMax*0.75f));
+				speedFrac = (s/(pVeh->m_pVehicleInfo->speedMax * FighterInstanceScale( pVeh ) * 0.75f));
 				if ( speedFrac < 0.25f )
 				{
 					speedFrac = 0.25f;
@@ -1102,7 +1536,7 @@ void FighterYawAdjust(Vehicle_t *pVeh, playerState_t *riderPS, playerState_t *pa
 				{
 					s = -s;
 				}
-				speedFrac = (s/(pVeh->m_pVehicleInfo->speedMax*0.75f));
+				speedFrac = (s/(pVeh->m_pVehicleInfo->speedMax * FighterInstanceScale( pVeh ) * 0.75f));
 				if ( speedFrac < 0.25f )
 				{
 					speedFrac = 0.25f;
@@ -1168,7 +1602,7 @@ void FighterPitchAdjust(Vehicle_t *pVeh, playerState_t *riderPS, playerState_t *
 				{
 					s = -s;
 				}
-				speedFrac = (s/(pVeh->m_pVehicleInfo->speedMax*0.75f));
+				speedFrac = (s/(pVeh->m_pVehicleInfo->speedMax * FighterInstanceScale( pVeh ) * 0.75f));
 				if ( speedFrac < 0.25f )
 				{
 					speedFrac = 0.25f;
@@ -1208,7 +1642,7 @@ void FighterYawAdjust(Vehicle_t *pVeh, playerState_t *riderPS, playerState_t *pa
 		{
 			s = -s;
 		}
-		angDif *= s/pVeh->m_pVehicleInfo->speedMax;
+		angDif *= s/(pVeh->m_pVehicleInfo->speedMax * FighterInstanceScale( pVeh ));
 		if (angDif > maxDif)
 		{
 			angDif = maxDif;
@@ -1234,7 +1668,7 @@ void FighterPitchAdjust(Vehicle_t *pVeh, playerState_t *riderPS, playerState_t *
 		{
 			s = -s;
 		}
-		angDif *= s/pVeh->m_pVehicleInfo->speedMax;
+		angDif *= s/(pVeh->m_pVehicleInfo->speedMax * FighterInstanceScale( pVeh ));
 		if (angDif > maxDif)
 		{
 			angDif = maxDif;
@@ -1354,6 +1788,12 @@ static void ProcessOrientCommands( Vehicle_t *pVeh )
 		VectorClear( pVeh->m_vPrevRiderViewAngles );
 		pVeh->m_vPrevRiderViewAngles[YAW] = AngleNormalize180(riderPS->viewangles[YAW]);
 #endif// VEH_CONTROL_SCHEME_4
+		return;
+	}
+
+	if ( BG_ShrikePhysicsActive( pVeh, parentPS, curTime ) && rider != parent )
+	{//Tribes 2 mode
+		FighterShrikeOrientCommands( pVeh, parentPS, riderPS );
 		return;
 	}
 
@@ -1504,7 +1944,7 @@ static void ProcessOrientCommands( Vehicle_t *pVeh )
 
 			// If we are not hitting the ground, allow the fighter to pitch up and down.
 			if ( !FighterOverValidLandingSurface( pVeh )
-				|| parentPS->speed > MIN_LANDING_SPEED )
+				|| parentPS->speed > FighterLandingSpeed( pVeh ) )
 			//if ( ( pVeh->m_LandTrace.fraction >= 1.0f || pVeh->m_ucmd.forwardmove != 0 ) && pVeh->m_LandTrace.fraction >= 0.0f )
 			{
 				float fYawDelta;

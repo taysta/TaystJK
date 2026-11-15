@@ -24,6 +24,7 @@ along with this program; if not, see <http://www.gnu.org/licenses/>.
 
 
 #include "g_local.h"
+#include "g_dynbsp.h"
 #include "g_ICARUScb.h"
 #include "g_nav.h"
 #include "bg_saga.h"
@@ -214,6 +215,7 @@ extern void BG_ClearVehicleParseParms(void);
 gentity_t *SelectRandomDeathmatchSpawnPoint( qboolean isbot );
 void SP_info_jedimaster_start( gentity_t *ent );
 static void G_SpawnHoleFixes( void );
+void G_SpawnMapBoxFixes( const char *mapName, int runtimeBSPInstance );
 void G_InitGame( int levelTime, int randomSeed, int restart ) {
 	int					i;
 	vmCvar_t	mapname;
@@ -257,6 +259,7 @@ void G_InitGame( int levelTime, int randomSeed, int restart ) {
 	memset( &level, 0, sizeof( level ) );
 	level.time = levelTime;
 	level.startTime = levelTime;
+	G_RuntimeRoomsInit();
 
 #if _retardedsabertest
 	level.saberUpdateDebounceTime = levelTime; //JAPRO, stop this from started at 0 i guess though just incase
@@ -1441,6 +1444,51 @@ This is also used for spectator spawns
 extern qboolean	gSiegeRoundBegun;
 extern qboolean	gSiegeRoundEnded;
 extern int	gSiegeRoundWinningTeam;
+
+static gentity_t *G_FindMainMapEntity( gentity_t *from, int fieldofs, const char *match )
+{
+	gentity_t *ent = from;
+
+	while ( ( ent = G_Find( ent, fieldofs, match ) ) != NULL )
+	{
+		if ( ent->runtimeBSPInstance < 0 )
+		{
+			return ent;
+		}
+	}
+
+	return NULL;
+}
+
+static gentity_t *G_PickMainMapTarget( char *targetname )
+{
+	enum { MAX_MAIN_MAP_TARGET_CHOICES = 32 };
+	gentity_t	*ent = NULL;
+	int			num_choices = 0;
+	gentity_t	*choice[MAX_MAIN_MAP_TARGET_CHOICES];
+
+	if ( !targetname )
+	{
+		return NULL;
+	}
+
+	while ( ( ent = G_FindMainMapEntity( ent, FOFS( targetname ), targetname ) ) != NULL )
+	{
+		choice[num_choices++] = ent;
+		if ( num_choices == MAX_MAIN_MAP_TARGET_CHOICES )
+		{
+			break;
+		}
+	}
+
+	if ( !num_choices )
+	{
+		return NULL;
+	}
+
+	return choice[rand() % num_choices];
+}
+
 void FindIntermissionPoint( void ) {
 	gentity_t	*ent = NULL;
 	gentity_t	*target;
@@ -1454,7 +1502,7 @@ void FindIntermissionPoint( void ) {
 	{
 	   	if (gSiegeRoundWinningTeam == SIEGETEAM_TEAM1)
 		{
-			ent = G_Find (NULL, FOFS(classname), "info_player_intermission_red");
+			ent = G_FindMainMapEntity( NULL, FOFS(classname), "info_player_intermission_red" );
 			if ( ent && ent->target2 )
 			{
 				G_UseTargets2( ent, ent, ent->target2 );
@@ -1462,7 +1510,7 @@ void FindIntermissionPoint( void ) {
 		}
 	   	else if (gSiegeRoundWinningTeam == SIEGETEAM_TEAM2)
 		{
-			ent = G_Find (NULL, FOFS(classname), "info_player_intermission_blue");
+			ent = G_FindMainMapEntity( NULL, FOFS(classname), "info_player_intermission_blue" );
 			if ( ent && ent->target2 )
 			{
 				G_UseTargets2( ent, ent, ent->target2 );
@@ -1471,7 +1519,7 @@ void FindIntermissionPoint( void ) {
 	}
 	if ( !ent )
 	{
-		ent = G_Find (NULL, FOFS(classname), "info_player_intermission");
+		ent = G_FindMainMapEntity( NULL, FOFS(classname), "info_player_intermission" );
 	}
 	if ( !ent ) {	// the map creator forgot to put in an intermission point...
 		SelectSpawnPoint ( vec3_origin, level.intermission_origin, level.intermission_angle, TEAM_SPECTATOR, qfalse );
@@ -1480,12 +1528,20 @@ void FindIntermissionPoint( void ) {
 		VectorCopy (ent->s.angles, level.intermission_angle);
 		// if it has a target, look towards it
 		if ( ent->target ) {
-			target = G_PickTarget( ent->target );
+			target = G_PickMainMapTarget( ent->target );
 			if ( target ) {
 				VectorSubtract( target->s.origin, level.intermission_origin, dir );
 				vectoangles( dir, level.intermission_angle );
 			}
 		}
+	}
+	if ( g_debugBSPInstances.integer )
+	{
+		trap->Print( va( "BSPDEBUG game intermission point ent=%i class='%s' runtime=%i origin=(%.1f %.1f %.1f) angles=(%.1f %.1f %.1f)\n",
+			ent ? ent->s.number : -1, ent && ent->classname ? ent->classname : "",
+			ent ? ent->runtimeBSPInstance : -1,
+			level.intermission_origin[0], level.intermission_origin[1], level.intermission_origin[2],
+			level.intermission_angle[0], level.intermission_angle[1], level.intermission_angle[2] ) );
 	}
 }
 
@@ -4432,6 +4488,8 @@ void G_RunFrame( int levelTime ) {
 			gQueueScoreMessage = 0;
 		}
 	}
+
+	G_RuntimeWarpProcessPending();
 #ifdef _G_FRAME_PERFANAL
 	iTimer_Queues = trap->PrecisionTimer_End(timer_Queues);
 #endif
@@ -4576,6 +4634,46 @@ GetModuleAPI
 */
 
 gameImport_t *trap = NULL;
+qboolean g_gameImportHasDimensionIsolation = qfalse;
+qboolean g_gameImportHasRuntimeBSP = qfalse;
+
+static void G_ClientRuntimeMapChanged( int clientNum, const char *mapName )
+{
+	gentity_t *ent = NULL;
+	int runtimeBSPInstance;
+
+	if ( !mapName || !mapName[0] || !Q_stricmp( mapName, "clear" ) ) {
+		G_RuntimeWarpClearClientMap( clientNum );
+		if ( clientNum >= 0 && clientNum < MAX_CLIENTS ) {
+			G_SetRuntimeBSPInstance( &g_entities[clientNum], -1 );
+		}
+		return;
+	}
+
+	if ( clientNum >= 0 && clientNum < MAX_CLIENTS ) {
+		ent = &g_entities[clientNum];
+	}
+
+	if ( !G_RuntimeRoomEnsureMap( mapName, vec3_origin, clientNum ) ) {
+		trap->Print( va( "Runtime map sync failed: could not ensure room for '%s'.\n", mapName ) );
+		return;
+	}
+
+	if ( G_RuntimeWarpCanAssign( mapName ) ) {
+		G_RuntimeWarpAssignFirst( mapName, ent );
+	}
+	else {
+		trap->Print( va( "Runtime map sync warning: no matching or unused target_runtimewarp slot for '%s'.\n", mapName ) );
+	}
+
+	G_RuntimeWarpSetClientMap( clientNum, mapName );
+	if ( ent && ent->client ) {
+		runtimeBSPInstance = G_GetClientRuntimeBSPInstance( clientNum );
+		if ( runtimeBSPInstance >= 0 ) {
+			G_SetRuntimeBSPInstance( ent, runtimeBSPInstance );
+		}
+	}
+}
 
 Q_EXPORT gameExport_t* QDECL GetModuleAPI( int apiVersion, gameImport_t *import )
 {
@@ -4592,6 +4690,16 @@ Q_EXPORT gameExport_t* QDECL GetModuleAPI( int apiVersion, gameImport_t *import 
 		trap->Print( "Mismatched GAME_API_VERSION: expected %i, got %i\n", GAME_API_VERSION, apiVersion );
 		return NULL;
 	}
+
+	G_DetectGameImportExtensions();
+	g_gameImportHasDimensionIsolation = g_gameImportHasDimensionIsolation && import->CanEntitiesInteract ? qtrue : qfalse;
+	g_gameImportHasRuntimeBSP =
+		g_gameImportHasRuntimeBSP &&
+		import->SetClientMap &&
+		import->GetClientRuntimeBSPInstance &&
+		import->BeginAsyncBSPFileRead &&
+		import->AsyncBSPFileReadStatus &&
+		import->SetEntityRuntimeBSPInstance ? qtrue : qfalse;
 
 	ge.InitGame							= G_InitGame;
 	ge.ShutdownGame						= G_ShutdownGame;
@@ -4633,6 +4741,7 @@ Q_EXPORT gameExport_t* QDECL GetModuleAPI( int apiVersion, gameImport_t *import 
 	ge.NAV_EntIsRemovableUsable			= G_EntIsRemovableUsable;
 	ge.NAV_FindCombatPointWaypoints		= CP_FindCombatPointWaypoints;
 	ge.BG_GetItemIndexByTag				= BG_GetItemIndexByTag;
+	ge.ClientRuntimeMapChanged			= G_ClientRuntimeMapChanged;
 
 	return &ge;
 }
@@ -4789,13 +4898,18 @@ Q_EXPORT intptr_t vmMain( int command, intptr_t arg0, intptr_t arg1, intptr_t ar
 
 	case GAME_GETITEMINDEXBYTAG:
 		return BG_GetItemIndexByTag(arg0, arg1);
+
+	case GAME_CLIENT_RUNTIME_MAP_CHANGED:
+		G_ClientRuntimeMapChanged( arg0, (const char *)arg1 );
+		return 0;
 	}
 
 	return -1;
 }
 
-static void G_AddSingleBox( vec3_t mins, vec3_t maxs ) {
+static void G_AddSingleBox( vec3_t mins, vec3_t maxs, int runtimeBSPInstance ) {
 	gentity_t *ent = G_Spawn(qtrue);
+	G_SetRuntimeBSPInstance( ent, runtimeBSPInstance );
 	ent->r.contents = CONTENTS_SOLID;
 	VectorAverage( mins, maxs, ent->r.currentOrigin );
 	VectorSubtract( mins, ent->r.currentOrigin, ent->r.mins );
@@ -4837,7 +4951,7 @@ static void G_AddSingleBox( vec3_t mins, vec3_t maxs ) {
 	}
 }
 
-static void G_AddBox( vec3_t mins, vec3_t maxs ) {
+static void G_AddBox( vec3_t mins, vec3_t maxs, int runtimeBSPInstance ) {
 	// restrictions on clientside prediction - x,y must be equal and symmetric, and must be <= 255
 	// z must be between -255 and 223 (corner case if all are at limit, so use 222 to avoid that issue)
 	//fuck, i dont care if its predicted i want to make huge ceilings without entity limit errors
@@ -4850,7 +4964,7 @@ static void G_AddBox( vec3_t mins, vec3_t maxs ) {
 			singleMaxs[1] = singleMins[1] + xylen;
 			for ( singleMins[2] = mins[2]; ; singleMins[2] += Q_min( zlen, Q_max( 0, maxs[2] - zlen - singleMins[2] ) ) ) {
 				singleMaxs[2] = singleMins[2] + zlen;
-				G_AddSingleBox( singleMins, singleMaxs );
+				G_AddSingleBox( singleMins, singleMaxs, runtimeBSPInstance );
 				if ( singleMins[2] + zlen >= maxs[2] ) {
 					break;
 				}
@@ -4865,28 +4979,24 @@ static void G_AddBox( vec3_t mins, vec3_t maxs ) {
 	}
 }
 
-static void G_SpawnHoleFixes( void ) {
-	char mapname[MAX_QPATH], filename[MAX_QPATH];
+static void G_SpawnMapBoxFixFile( const char *filename, int runtimeBSPInstance ) {
 	int len;
 	fileHandle_t f;
-	char info[1024] = {0};
 
-	trap->GetServerinfo(info, sizeof(info));
-	Com_sprintf( mapname, sizeof(mapname), "%s", Info_ValueForKey(info, "mapname") );
-	// note: only / is replaced with _
-	Q_strstrip( mapname, "/\n\r;:.?*<>|\\\"", "_" );
-	Q_strlwr(mapname);
-	Q_CleanStr(mapname);
-	Com_sprintf( filename, sizeof(filename), "%s_holes.cfg", mapname );
 	len = trap->FS_Open( filename, &f, FS_READ );
 	if ( len != -1 ) {
 		// read mins, maxs out of file
 		char **cursor;
-		char *text = (char *) calloc(len + 1, 1);
+		char *textBase = (char *) calloc(len + 1, 1);
+		char *text = textBase;
 		int i;
 		vec3_t mins;
 		vec3_t maxs;
 		qboolean ended = qfalse;
+		if ( !textBase ) {
+			trap->FS_Close( f );
+			return;
+		}
 		cursor = &text;
 		trap->FS_Read( text, len, f );
 		// read contents, parse out values
@@ -4915,16 +5025,42 @@ static void G_SpawnHoleFixes( void ) {
 					mins[i] = Q_min( mins[i], maxs[i] );
 					maxs[i] = temp;
 				}
-				G_AddBox( mins, maxs );
+				G_AddBox( mins, maxs, runtimeBSPInstance );
 				Com_Printf( "Loaded box entity %f %f %f %f %f %f from file %s\n",
 					mins[0], mins[1], mins[2],
 					maxs[0], maxs[1], maxs[2],
 					filename );
 			}
 		}
-		free( text );
+		free( textBase );
 		trap->FS_Close( f );
 	} else {
 		//Com_Printf( "Failed to open file %s\n", filename );
 	}
+}
+
+void G_SpawnMapBoxFixes( const char *mapName, int runtimeBSPInstance ) {
+	char cleanMapName[MAX_QPATH], filename[MAX_QPATH];
+
+	if ( !mapName || !mapName[0] ) {
+		return;
+	}
+
+	Com_sprintf( cleanMapName, sizeof(cleanMapName), "%s", mapName );
+	// note: only / is replaced with _
+	Q_strstrip( cleanMapName, "/\n\r;:.?*<>|\\\"", "_" );
+	Q_strlwr(cleanMapName);
+	Q_CleanStr(cleanMapName);
+
+	Com_sprintf( filename, sizeof(filename), "%s_holes.cfg", cleanMapName );
+	G_SpawnMapBoxFixFile( filename, runtimeBSPInstance );
+}
+
+static void G_SpawnHoleFixes( void ) {
+	char mapname[MAX_QPATH];
+	char info[1024] = {0};
+
+	trap->GetServerinfo(info, sizeof(info));
+	Com_sprintf( mapname, sizeof(mapname), "%s", Info_ValueForKey(info, "mapname") );
+	G_SpawnMapBoxFixes( mapname, -1 );
 }

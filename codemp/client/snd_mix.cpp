@@ -268,6 +268,32 @@ CHANNEL MIXING
 
 ===============================================================================
 */
+
+// Phase anchors for looping doppler channels. The stock path re-derives a
+// loop's position as (paintedtime % length) every block, so any
+// dopplerScale != 1 makes the stretched read skip back at each block
+// boundary - constant scratching on sustained loops (pod/swoop engines,
+// missile loops). Instead the source position is derived from a per-entity
+// phase anchor extrapolated along absolute paint time:
+//
+//     phase(t) = anchorPhase + (t - anchorTime) * rate      (mod length)
+//
+// A pure function of absolute time is required (not a cursor advanced per
+// paint) because S_GetSoundtime rewinds s_paintedtime every update - this
+// mixer repaints the not-yet-played mix-ahead window continually, and
+// repaints must reproduce identical samples. When the doppler rate changes,
+// the anchor is moved to the current block phase-continuously, so a pitch
+// sweep never jumps. Staleness needs no cleanup: a wav change or a painted
+// time reset reseeds the anchor.
+typedef struct loopCursor_s {
+	double		dAnchorPhase;	// source sample position at iAnchorTime
+	int			iAnchorTime;	// absolute painted time the phase is anchored to
+	float		fRate;			// doppler rate the anchor extrapolates with
+	const sfx_t	*sfx;			// reseed if the underlying wav changed
+} loopCursor_t;
+
+static loopCursor_t s_loopCursors[MAX_GENTITIES];
+
 static void S_PaintChannelFrom16( channel_t *ch, const sfx_t *sfx, int count, int sampleOffset, int bufferOffset )
 {
 	portable_samplepair_t	*pSamplesDest;
@@ -279,15 +305,35 @@ static void S_PaintChannelFrom16( channel_t *ch, const sfx_t *sfx, int count, in
 
 	pSamplesDest	= &paintbuffer[ bufferOffset ];
 
-	for ( int i=0 ; i<count ; i++ )
-	{
-		iData = sfx->pSoundData[ (int)ofst ];
+	if ( ch->doppler && ch->dopplerScale > 1 )
+	{	// variable-rate resample. Interpolate between neighboring samples:
+		// with a fractional cursor the nearest-sample zipper is audible on
+		// sustained loops.
+		const float	fStep = ch->dopplerScale;
+		const int	iLastSample = sfx->iSoundLengthInSamples - 1;
 
-		pSamplesDest[i].left  += (iData * iLeftVol )>>8;
-		pSamplesDest[i].right += (iData * iRightVol)>>8;
-		if (ch->doppler && ch->dopplerScale > 1) {
-			ofst += 1 * ch->dopplerScale;
-		} else {
+		for ( int i=0 ; i<count ; i++ )
+		{
+			const int	iBase = (int)ofst;
+			const float	fFrac = ofst - (float)iBase;
+			const int	iNext = (iBase < iLastSample) ? iBase + 1 : iBase;
+
+			iData = sfx->pSoundData[iBase];
+			iData += (int)(fFrac * (float)(sfx->pSoundData[iNext] - iData));
+
+			pSamplesDest[i].left  += (iData * iLeftVol )>>8;
+			pSamplesDest[i].right += (iData * iRightVol)>>8;
+			ofst += fStep;
+		}
+	}
+	else
+	{
+		for ( int i=0 ; i<count ; i++ )
+		{
+			iData = sfx->pSoundData[ (int)ofst ];
+
+			pSamplesDest[i].left  += (iData * iLeftVol )>>8;
+			pSamplesDest[i].right += (iData * iRightVol)>>8;
 			ofst++;
 		}
 	}
@@ -436,8 +482,42 @@ void S_PaintChannels( int endtime ) {
 			//
 			do
 			{
+				loopCursor_t *lc = NULL;
+
 				if (ch->loopSound) {
-					sampleOffset = ltime % sc->iSoundLengthInSamples;
+					if ( ch->doppler && ch->dopplerScale > 1 &&
+						ch->entnum >= 0 && ch->entnum < MAX_GENTITIES ) {
+						// doppler on a looping sound: position from the phase
+						// anchor (see loopCursor_t) instead of ltime % length,
+						// which skips back every block once the read rate isn't 1:1
+						const double dLen = (double)sc->iSoundLengthInSamples;
+						double dPhase;
+
+						lc = &s_loopCursors[ch->entnum];
+						if ( lc->sfx != sc || ltime < lc->iAnchorTime ) {
+							// new loop wav, or painted time was reset: anchor at
+							// the phase the stock path would play, so engaging
+							// doppler is seamless
+							lc->sfx = sc;
+							lc->iAnchorTime = ltime;
+							lc->dAnchorPhase = (double)(ltime % sc->iSoundLengthInSamples);
+							lc->fRate = ch->dopplerScale;
+						}
+						else if ( lc->fRate != ch->dopplerScale || ltime - lc->iAnchorTime > (1<<24) ) {
+							// rate changed (or the anchor is very old): move the
+							// anchor to this block phase-continuously, so a pitch
+							// sweep never jumps
+							lc->dAnchorPhase = fmod( lc->dAnchorPhase +
+								(double)(ltime - lc->iAnchorTime) * (double)lc->fRate, dLen );
+							lc->iAnchorTime = ltime;
+							lc->fRate = ch->dopplerScale;
+						}
+						dPhase = fmod( lc->dAnchorPhase +
+							(double)(ltime - lc->iAnchorTime) * (double)lc->fRate, dLen );
+						sampleOffset = (int)dPhase;
+					} else {
+						sampleOffset = ltime % sc->iSoundLengthInSamples;
+					}
 				} else {
 					sampleOffset = ltime - ch->startSample;
 				}
@@ -450,7 +530,13 @@ void S_PaintChannels( int endtime ) {
 						// avoid infinite loop once length of remaining pSoundData (numerator)
 						//	is smaller than dopplerScale (denominator), resulting in 0.
 						if ( count == 0 ) {
-							break;
+							if ( lc ) {
+								// tail shorter than one doppler step: paint just the
+								// boundary sample; the next block wraps via the anchor
+								count = 1;
+							} else {
+								break;
+							}
 						}
 					}
 				} else {

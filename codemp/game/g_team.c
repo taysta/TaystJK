@@ -774,7 +774,7 @@ void Team_DroppedFlagThink(gentity_t *ent) {
 	Team_ReturnFlagSound( Team_ResetFlag( team ), team );
 	// Reset Flag will delete this entity
 }
-void G_AddSimpleStat(char *username, int type);
+void G_AddSimpleStatForUsername(const char *username, int type);
 int Team_TouchOneFlagBase (gentity_t *ent, gentity_t *other, int team) {
 	// the flag is at home base.  if the player has the enemy
 	// flag, he's just won!
@@ -802,7 +802,7 @@ int Team_TouchOneFlagBase (gentity_t *ent, gentity_t *other, int team) {
 	other->client->rewardTime = level.time + REWARD_SPRITE_TIME;
 	other->client->ps.persistant[PERS_CAPTURES]++;
 	if (other->client->pers.userName[0])
-	G_AddSimpleStat(other->client->pers.userName, 4);
+		G_AddSimpleStatForUsername(other->client->pers.userName, 4);
 
 	// other gets another 10 frag bonus
 	if (g_fixCTFScores.integer)
@@ -931,7 +931,7 @@ int Team_TouchOurFlag( gentity_t *ent, gentity_t *other, int team ) {
 
 		other->client->pers.teamState.flagrecovery++;
 		if (other->client->pers.userName[0])
-			G_AddSimpleStat(other->client->pers.userName, 5);
+			G_AddSimpleStatForUsername(other->client->pers.userName, 5);
 
 
 		other->client->pers.teamState.lastreturnedflag = level.time;
@@ -1026,7 +1026,7 @@ int Team_TouchOurFlag( gentity_t *ent, gentity_t *other, int team ) {
 	other->client->rewardTime = level.time + REWARD_SPRITE_TIME;
 	other->client->ps.persistant[PERS_CAPTURES]++;
 	if (other->client->pers.userName[0])
-			G_AddSimpleStat(other->client->pers.userName, 4);
+		G_AddSimpleStatForUsername(other->client->pers.userName, 4);
 
 	// other gets another 10 frag bonus
 	if (g_fixCTFScores.integer)
@@ -1462,6 +1462,10 @@ gentity_t *SelectRandomTeamSpawnPoint( int teamstate, team_t team, int siegeClas
 	spot = NULL;
 
 	while ((spot = G_Find (spot, FOFS(classname), classname)) != NULL) {
+		if ( spot->runtimeBSPInstance >= 0 ) {
+			continue;
+		}
+
 		if ( SpotWouldTelefrag( spot ) ) {
 			continue;
 		}
@@ -1484,7 +1488,13 @@ gentity_t *SelectRandomTeamSpawnPoint( int teamstate, team_t team, int siegeClas
 	}
 
 	if ( !count ) {	// no spots that won't telefrag
-		return G_Find( NULL, FOFS(classname), classname);
+		spot = NULL;
+		while ((spot = G_Find( spot, FOFS(classname), classname)) != NULL) {
+			if ( spot->runtimeBSPInstance < 0 ) {
+				return spot;
+			}
+		}
+		return NULL;
 	}
 
 	if (level.gametype == GT_SIEGE && siegeClass >= 0 &&

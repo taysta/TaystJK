@@ -1215,7 +1215,17 @@ void G_SetClientSound( gentity_t *ent ) {
 		ent->client->ps.loopSound = level.snd_fry;
 		ent->s.loopIsSoundset = qfalse;
 	} else if (ent->client) {
-		ent->client->ps.loopSound = 0;
+		qboolean podRider = qfalse;
+		if ( ent->client->ps.m_iVehicleNum > 0 && ent->client->ps.m_iVehicleNum < ENTITYNUM_WORLD )
+		{
+			podRider = BG_PodRacerPhysics( g_entities[ent->client->ps.m_iVehicleNum].m_pVehicle );
+		}
+		if ( !podRider )
+		{	// pod audio: a mounted rider carries the layered roll/binder loop set by
+			// G_UpdatePodracerAudio, which owns setting AND clearing it while mounted.
+			// Dismounting drops m_iVehicleNum, so stale loops still clear here.
+			ent->client->ps.loopSound = 0;
+		}
 		ent->s.loopIsSoundset = qfalse;
 	} else {
 		ent->s.loopSound = 0;
@@ -3809,7 +3819,7 @@ void ClientThink_real( gentity_t *ent ) {
 	else if (pmove_fixed.integer || client->pers.pmoveFixed)
 		ucmd->serverTime = ((ucmd->serverTime + pmove_msec.integer-1) / pmove_msec.integer) * pmove_msec.integer;
 
-	if ((client->sess.sessionTeam != TEAM_SPECTATOR) && !client->ps.stats[STAT_RACEMODE] && ((g_movementStyle.integer >= MV_SIEGE && g_movementStyle.integer <= MV_WSW) || g_movementStyle.integer == MV_SP || g_movementStyle.integer == MV_SLICK || g_movementStyle.integer == MV_TRIBES)) { //Ok,, this should be like every frame, right??
+	if ((client->sess.sessionTeam != TEAM_SPECTATOR) && !client->ps.stats[STAT_RACEMODE] && ((g_movementStyle.integer >= MV_SIEGE && g_movementStyle.integer <= MV_WSW) || g_movementStyle.integer == MV_SP || g_movementStyle.integer == MV_SLICK || g_movementStyle.integer == MV_TRIBES || g_movementStyle.integer == MV_SURF)) { //Ok,, this should be like every frame, right??
 		client->sess.movementStyle = g_movementStyle.integer;
 	}
 	client->ps.stats[STAT_MOVEMENTSTYLE] = client->sess.movementStyle;
@@ -5174,6 +5184,12 @@ void ClientThink_real( gentity_t *ent ) {
 	}
 
 	Pmove (&pmove);
+
+	if (client->raceNeedsGroundStop && !client->noclip && client->ps.pm_type != PM_NOCLIP &&
+		client->ps.stats[STAT_HEALTH] > 0 && client->ps.groundEntityNum != ENTITYNUM_NONE &&
+		client->ps.velocity[0] == 0.0f && client->ps.velocity[1] == 0.0f && client->ps.velocity[2] == 0.0f) {
+		client->raceNeedsGroundStop = qfalse;
+	}
 
 	if (ent->client->solidHack)
 	{

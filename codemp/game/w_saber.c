@@ -3729,6 +3729,11 @@ void WP_SaberRadiusDamage( gentity_t *ent, vec3_t point, float radius, int damag
 				continue;
 			}
 
+			if ( !G_DimensionCanInteract( ent, radiusEnt, SVISO_DAMAGE ) )
+			{
+				continue;
+			}
+
 			if ( radiusEnt->client == NULL )
 			{//must be a client
 				if ( G_EntIsBreakable( radiusEnt->s.number ) )
@@ -6257,6 +6262,8 @@ void WP_SaberStartMissileBlockCheck( gentity_t *self, usercmd_t *ucmd  )
 
 void thrownSaberTouch (gentity_t *saberent, gentity_t *other, trace_t *trace);
 
+static qboolean WP_ThrownSaberInPVS( gentity_t *saberent, gentity_t *target, const vec3_t targetOrigin );
+
 static QINLINE qboolean CheckThrownSaberDamaged(gentity_t *saberent, gentity_t *saberOwner, gentity_t *ent, int dist, int returning, qboolean noDCheck)
 {
 	vec3_t vecsub;
@@ -6283,7 +6290,7 @@ static QINLINE qboolean CheckThrownSaberDamaged(gentity_t *saberent, gentity_t *
 
 	if (ent && ent->client && ent->inuse && ent->s.number != saberOwner->s.number &&
 		ent->health > 0 && ent->takedamage &&
-		trap->InPVS(ent->client->ps.origin, saberent->r.currentOrigin) &&
+		WP_ThrownSaberInPVS( saberent, ent, ent->client->ps.origin ) &&
 		ent->client->sess.sessionTeam != TEAM_SPECTATOR &&
 		(ent->client->pers.connected || ent->s.eType == ET_NPC))
 	{ //hit a client
@@ -6319,6 +6326,7 @@ static QINLINE qboolean CheckThrownSaberDamaged(gentity_t *saberent, gentity_t *
 					WP_SaberBlockNonRandom(ent, tr.endpos, qfalse);
 
 					te = G_TempEntity( tr.endpos, EV_SABER_BLOCK );
+					G_SetRuntimeBSPInstance( te, saberent->runtimeBSPInstance );
 					VectorCopy(tr.endpos, te->s.origin);
 					VectorCopy(tr.plane.normal, te->s.angles);
 					if (!te->s.angles[0] && !te->s.angles[1] && !te->s.angles[2])
@@ -6375,6 +6383,7 @@ static QINLINE qboolean CheckThrownSaberDamaged(gentity_t *saberent, gentity_t *
 					}
 
 					te = G_TempEntity( tr.endpos, EV_SABER_HIT );
+					G_SetRuntimeBSPInstance( te, saberent->runtimeBSPInstance );
 					te->s.otherEntityNum = ent->s.number;
 					te->s.otherEntityNum2 = saberOwner->s.number;
 					te->s.weapon = 0;//saberNum
@@ -6399,7 +6408,7 @@ static QINLINE qboolean CheckThrownSaberDamaged(gentity_t *saberent, gentity_t *
 		}
 	}
 	else if (ent && !ent->client && ent->inuse && ent->takedamage && ent->health > 0 && ent->s.number != saberOwner->s.number &&
-		ent->s.number != saberent->s.number && (noDCheck ||trap->InPVS(ent->r.currentOrigin, saberent->r.currentOrigin)))
+		ent->s.number != saberent->s.number && (noDCheck || WP_ThrownSaberInPVS( saberent, ent, ent->r.currentOrigin )))
 	{ //hit a non-client
 
 		if (noDCheck)
@@ -6458,6 +6467,7 @@ static QINLINE qboolean CheckThrownSaberDamaged(gentity_t *saberent, gentity_t *
 				}
 
 				te = G_TempEntity( tr.endpos, EV_SABER_HIT );
+				G_SetRuntimeBSPInstance( te, saberent->runtimeBSPInstance );
 				te->s.otherEntityNum = ENTITYNUM_NONE; //don't do this for throw damage
 				//te->s.otherEntityNum = ent->s.number;
 				te->s.otherEntityNum2 = saberOwner->s.number;//actually, do send this, though - for the overridden per-saber hit effects/sounds
@@ -6482,6 +6492,7 @@ static QINLINE qboolean CheckThrownSaberDamaged(gentity_t *saberent, gentity_t *
 					{
 						//I suppose I could tie this into the saberblock event, but I'm tired of adding flags to that thing.
 						gentity_t *teS = G_TempEntity( te->s.origin, EV_SABER_CLASHFLARE );
+						G_SetRuntimeBSPInstance( teS, saberent->runtimeBSPInstance );
 						VectorCopy(te->s.origin, teS->s.origin);
 
 						te->s.eventParm = 0;
@@ -6650,6 +6661,7 @@ void MakeDeadSaber(gentity_t *ent)
 
 	saberent->r.svFlags = SVF_USE_CURRENT_ORIGIN;
 	saberent->r.ownerNum = ent->s.number;
+	G_SetRuntimeBSPInstance( saberent, ent->runtimeBSPInstance );
 
 	saberent->clipmask = MASK_PLAYERSOLID;
 	saberent->r.contents = CONTENTS_TRIGGER;//0;
@@ -6704,6 +6716,7 @@ void MakeDeadSaber(gentity_t *ent)
 	if (ent->r.ownerNum >= 0 && ent->r.ownerNum < ENTITYNUM_WORLD)
 	{
 		owner = &g_entities[ent->r.ownerNum];
+		G_SetRuntimeBSPInstance( saberent, owner->runtimeBSPInstance );
 
 		if (owner->inuse && owner->client &&
 			owner->client->saber[0].model[0])
@@ -6820,6 +6833,13 @@ void DownedSaberThink(gentity_t *saberent)
 		saberent->nextthink = level.time;
 
 		saberent->r.svFlags |= (SVF_NOCLIENT);
+		if ( g_debugBSPInstances.integer )
+		{
+			trap->Print( va( "BSPDEBUG saber hide ent=%i owner=%i svFlags=0x%x eFlags=0x%x eType=%i runtime=%i origin=(%.1f %.1f %.1f)\n",
+				saberent->s.number, saberent->r.ownerNum, saberent->r.svFlags, saberent->s.eFlags, saberent->s.eType,
+				saberent->runtimeBSPInstance,
+				saberent->r.currentOrigin[0], saberent->r.currentOrigin[1], saberent->r.currentOrigin[2] ) );
+		}
 		//saberent->r.contents = CONTENTS_LIGHTSABER;
 		saberent->s.loopSound = 0;
 		saberent->s.loopIsSoundset = qfalse;
@@ -6886,6 +6906,7 @@ void DownedSaberThink(gentity_t *saberent)
 void saberReactivate(gentity_t *saberent, gentity_t *saberOwner)
 {
 	saberent->s.saberInFlight = qtrue;
+	G_SetRuntimeBSPInstance( saberent, saberOwner->runtimeBSPInstance );
 
 	saberent->s.apos.trType = TR_LINEAR;
 	saberent->s.apos.trDelta[0] = 0;
@@ -6909,6 +6930,13 @@ void saberReactivate(gentity_t *saberent, gentity_t *saberOwner)
 	saberOwner->client->ps.saberEntityState = 1;
 
 	trap->LinkEntity((sharedEntity_t *)saberent);
+	if ( g_debugBSPInstances.integer )
+	{
+		trap->Print( va( "BSPDEBUG saber active ent=%i owner=%i ownerRuntime=%i svFlags=0x%x eFlags=0x%x eType=%i runtime=%i linked=%i origin=(%.1f %.1f %.1f)\n",
+			saberent->s.number, saberent->r.ownerNum, saberOwner->runtimeBSPInstance,
+			saberent->r.svFlags, saberent->s.eFlags, saberent->s.eType, saberent->runtimeBSPInstance, saberent->r.linked,
+			saberent->r.currentOrigin[0], saberent->r.currentOrigin[1], saberent->r.currentOrigin[2] ) );
+	}
 }
 
 #define SABER_RETRIEVE_DELAY 3000 //3 seconds for now. This will leave you nice and open if you lose your saber.
@@ -6919,6 +6947,7 @@ void saberKnockDown(gentity_t *saberent, gentity_t *saberOwner, gentity_t *other
 
 	saberOwner->client->ps.saberEntityNum = 0; //still stored in client->saberStoredIndex
 	saberOwner->client->saberKnockedTime = level.time + SABER_RETRIEVE_DELAY;
+	G_SetRuntimeBSPInstance( saberent, saberOwner->runtimeBSPInstance );
 
 	saberent->clipmask = MASK_SOLID;
 	saberent->r.contents = CONTENTS_TRIGGER;//0;
@@ -7009,6 +7038,18 @@ void saberKnockDown(gentity_t *saberent, gentity_t *saberOwner, gentity_t *other
 
 //sort of a silly macro I guess. But if I change anything in here I'll probably want it to be everywhere.
 #define SABERINVALID (!saberent || !saberOwner || !other || !saberent->inuse || !saberOwner->inuse || !other->inuse || !saberOwner->client || !other->client || !saberOwner->client->ps.saberEntityNum || saberOwner->client->ps.saberLockTime > (level.time-100))
+
+static qboolean WP_ThrownSaberInPVS( gentity_t *saberent, gentity_t *target, const vec3_t targetOrigin )
+{
+	if ( saberent && target
+		&& saberent->runtimeBSPInstance >= 0
+		&& target->runtimeBSPInstance == saberent->runtimeBSPInstance )
+	{
+		return qtrue;
+	}
+
+	return trap->InPVS( targetOrigin, saberent->r.currentOrigin );
+}
 
 void WP_SaberRemoveG2Model( gentity_t *saberent )
 {
@@ -9165,6 +9206,7 @@ nextStep:
 				saberent->s.pos.trType = TR_LINEAR;
 				saberent->s.eType = ET_GENERAL;
 				saberent->s.eFlags = 0;
+				G_SetRuntimeBSPInstance( saberent, self->runtimeBSPInstance );
 
 				WP_SaberAddG2Model( saberent, self->client->saber[0].model, self->client->saber[0].skin );
 

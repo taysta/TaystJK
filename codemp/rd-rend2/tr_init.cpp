@@ -92,6 +92,10 @@ cvar_t	*r_facePlaneCull;
 cvar_t	*r_showcluster;
 cvar_t	*r_nocurves;
 
+cvar_t	*r_elevationHelper;
+cvar_t	*r_elevationHelperZ;
+cvar_t	*r_elevationHelperApexZ;
+
 cvar_t	*r_volumetricFog;
 cvar_t	*r_volumetricFogDefaultScale;
 cvar_t	*r_volumetricFogSamples;
@@ -216,6 +220,7 @@ cvar_t	*r_lodCurveError;
 
 
 cvar_t	*r_overBrightBits;
+cvar_t	*r_ignorehwgamma;
 cvar_t	*r_mapOverBrightBits;
 
 cvar_t	*r_debugSurface;
@@ -1525,6 +1530,11 @@ void R_Register( void )
 	r_detailTextures = ri.Cvar_Get( "r_detailtextures", "1", CVAR_ARCHIVE | CVAR_LATCH, "" );
 	r_texturebits = ri.Cvar_Get( "r_texturebits", "0", CVAR_ARCHIVE | CVAR_LATCH, "" );
 	r_overBrightBits = ri.Cvar_Get ("r_overBrightBits", "0", CVAR_ARCHIVE | CVAR_LATCH, "" );
+	r_ignorehwgamma = ri.Cvar_Get(
+		"r_ignorehwgamma", "0", CVAR_ARCHIVE_ND | CVAR_LATCH,
+		"Gamma mode: 0 hardware ramp, 1 texture-upload fallback, "
+		"2 rend2 tonemap shader" );
+	ri.Cvar_CheckRange( r_ignorehwgamma, 0, 2, qtrue );
 	r_simpleMipMaps = ri.Cvar_Get( "r_simpleMipMaps", "1", CVAR_ARCHIVE | CVAR_LATCH, "" );
 	r_vertexLight = ri.Cvar_Get( "r_vertexLight", "0", CVAR_ARCHIVE | CVAR_LATCH, "" );
 	r_uiFullScreen = ri.Cvar_Get( "r_uifullscreen", "0", 0, "");
@@ -1579,6 +1589,10 @@ void R_Register( void )
 	r_forceSunAmbientScale = ri.Cvar_Get( "r_forceSunAmbientScale", "0.5", CVAR_CHEAT, "" );
 	r_drawSunRays = ri.Cvar_Get( "r_drawSunRays", "0", CVAR_ARCHIVE | CVAR_LATCH, "" );
 	r_sunlightMode = ri.Cvar_Get( "r_sunlightMode", "1", CVAR_ARCHIVE | CVAR_LATCH, "" );
+
+	r_elevationHelper = ri.Cvar_Get("r_elevationHelper", "0", CVAR_ARCHIVE, "Color surfaces by your jump-start height while airborne: green=ideal landing down to red, dim/cool=reachable-but-penalty above (0 off, 1 on)");
+	r_elevationHelperApexZ = ri.Cvar_Get("r_elevationHelperApexZ", "1000000", CVAR_TEMP, "Internal: reachable apex Z fed by cgame (>=999999 disables the above-zone)");
+	r_elevationHelperZ = ri.Cvar_Get("r_elevationHelperZ", "1000000", CVAR_TEMP, "Internal: jump-start Z fed by cgame (>=999999 disables)");
 
 	r_volumetricFog = ri.Cvar_Get("r_volumetricFog", "0", CVAR_ARCHIVE | CVAR_LATCH, "Disable/enable lightgrid lighting on fog volumes");
 	r_volumetricFogDefaultScale = ri.Cvar_Get("r_volumetricFogDefaultScale", "1.0", CVAR_ARCHIVE | CVAR_LATCH, "Scales volumetric fog density unless scale has been explicitly defined");
@@ -1671,7 +1685,7 @@ void R_Register( void )
 	r_logFile = ri.Cvar_Get( "r_logFile", "0", CVAR_CHEAT, "" );
 	r_debugSurface = ri.Cvar_Get ("r_debugSurface", "0", CVAR_CHEAT, "");
 	r_nobind = ri.Cvar_Get ("r_nobind", "0", CVAR_CHEAT, "");
-	r_showtris = ri.Cvar_Get ("r_showtris", "0", CVAR_NONE, "");
+	r_showtris = ri.Cvar_Get ("r_showtris", "0", CVAR_NONE, "Wireframe tris: 1 = all, 2 = world only (skip 2D text)");
 	r_showsky = ri.Cvar_Get ("r_showsky", "0", CVAR_CHEAT, "");
 	r_shownormals = ri.Cvar_Get ("r_shownormals", "0", CVAR_CHEAT, "");
 	r_clear = ri.Cvar_Get ("r_clear", "0", CVAR_CHEAT, "");

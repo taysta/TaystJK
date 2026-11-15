@@ -86,6 +86,7 @@ cvar_t	*sv_demoWriteMeta; // Enables writing metadata to demos, which can be set
 #endif
 
 cvar_t	*sv_snapShotDuelCull;
+cvar_t	*sv_engineDimensions;
 
 cvar_t	*sv_pingFix;
 cvar_t	*sv_hibernateTime;

@@ -30,6 +30,9 @@ along with this program; if not, see <http://www.gnu.org/licenses/>.
 #define Q3_INFINITE			16777216
 
 #define	GAME_API_VERSION	1
+#define	GAME_IMPORT_EXTENSIONS_SUBBSP_QUERY	-2
+#define	GAME_IMPORT_EXTENSION_RUNTIME_BSP	"runtimeBSP"
+#define	GAME_IMPORT_EXTENSION_DIMENSIONS		"dimensionIsolation"
 
 // entity->svFlags
 // the server does not know how to interpret most of the values
@@ -380,6 +383,16 @@ typedef struct T_G_ICARUS_GETSETIDFORSTRING_s {
 	char string[2048];
 } T_G_ICARUS_GETSETIDFORSTRING;
 
+typedef enum svIsolationPurpose_e {
+	SVISO_TRACE,
+	SVISO_POINT_CONTENTS,
+	SVISO_SNAPSHOT,
+	SVISO_DAMAGE,
+	SVISO_EVENT,
+	SVISO_SOUND,
+	SVISO_USE
+} svIsolationPurpose_t;
+
 typedef enum gameImportLegacy_e {
 	G_PRINT,
 	G_ERROR,
@@ -716,7 +729,13 @@ typedef enum gameImportLegacy_e {
 	G_CM_REGISTER_TERRAIN,
 	G_RMG_INIT,
 	G_BOT_UPDATEWAYPOINTS,
-	G_BOT_CALCULATEPATHS
+	G_BOT_CALCULATEPATHS,
+	G_CAN_ENTITIES_INTERACT,
+	G_SET_CLIENT_MAP,
+	G_GET_CLIENT_RUNTIME_BSP_INSTANCE,
+	G_BEGIN_ASYNC_BSP_FILE_READ,
+	G_ASYNC_BSP_FILE_READ_STATUS,
+	G_SET_ENTITY_RUNTIME_BSP_INSTANCE
 } gameImportLegacy_t;
 
 typedef enum gameExportLegacy_e {
@@ -759,7 +778,8 @@ typedef enum gameExportLegacy_e {
 	GAME_NAV_ENTISBREAKABLE,
 	GAME_NAV_ENTISREMOVABLEUSABLE,
 	GAME_NAV_FINDCOMBATPOINTWAYPOINTS,
-	GAME_GETITEMINDEXBYTAG
+	GAME_GETITEMINDEXBYTAG,
+	GAME_CLIENT_RUNTIME_MAP_CHANGED
 } gameExportLegacy_t;
 
 typedef struct gameImport_s {
@@ -1098,6 +1118,12 @@ typedef struct gameImport_s {
 	void		(*G2API_CleanEntAttachments)			( void );
 	qboolean	(*G2API_OverrideServer)					( void *serverInstance );
 	void		(*G2API_GetSurfaceName)					( void *ghoul2, int surfNumber, int modelIndex, char *fillBuf );
+	qboolean	(*CanEntitiesInteract)					( int sourceEntityNum, int targetEntityNum, svIsolationPurpose_t purpose );
+	qboolean	(*SetClientMap)							( int clientNum, const char *mapName );
+	int			(*GetClientRuntimeBSPInstance)			( int clientNum );
+	qboolean	(*BeginAsyncBSPFileRead)				( const char *mapName );
+	int			(*AsyncBSPFileReadStatus)				( const char *mapName );
+	void		(*SetEntityRuntimeBSPInstance)			( int entityNum, int runtimeBSPInstance );
 } gameImport_t;
 
 typedef struct gameExport_s {
@@ -1141,6 +1167,7 @@ typedef struct gameExport_s {
 	qboolean	(*NAV_EntIsRemovableUsable)			( int entNum );
 	void		(*NAV_FindCombatPointWaypoints)		( void );
 	int			(*BG_GetItemIndexByTag)				( int tag, int type );
+	void		(*ClientRuntimeMapChanged)			( int clientNum, const char *mapName );
 } gameExport_t;
 
 

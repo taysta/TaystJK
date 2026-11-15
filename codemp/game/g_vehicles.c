@@ -67,6 +67,74 @@ float G_CanJumpToEnemyVeh(Vehicle_t *pVeh, const usercmd_t *pUcmd ) {
 	return 0.0f;
 }
 
+// Set a vehicle's per-instance scale.  iModelScale is replicated to every
+// client; modelScale is the local Ghoul2/collision representation of that
+// same value.  This is spawn-only: it scales the already-initialized hull.
+void G_VehicleSetScale( gentity_t *vehEnt, float scale )
+{
+	int scalePercent;
+
+	if ( !vehEnt || !vehEnt->m_pVehicle || !vehEnt->client )
+	{
+		return;
+	}
+	if ( scale < 0.01f )
+	{
+		scale = 0.01f;
+	}
+	else if ( scale > 10.23f )
+	{
+		scale = 10.23f;
+	}
+	scalePercent = (int)(scale * 100.0f + 0.5f);
+	if ( scalePercent < 1 )
+	{
+		scalePercent = 1;
+	}
+	else if ( scalePercent > 1023 )
+	{
+		scalePercent = 1023;
+	}
+	scale = scalePercent / 100.0f;
+
+	vehEnt->client->ps.iModelScale = scalePercent;
+	vehEnt->s.iModelScale = scalePercent;
+	VectorSet( vehEnt->modelScale, scale, scale, scale );
+	// NPC_ParseParms establishes the unscaled hull before this is called.  Apply
+	// the chosen spawn scale once; the snapshot solid field carries it to pmove.
+	VectorScale( vehEnt->r.mins, scale, vehEnt->r.mins );
+	VectorScale( vehEnt->r.maxs, scale, vehEnt->r.maxs );
+	trap->LinkEntity( (sharedEntity_t *)vehEnt );
+}
+
+// Manual vehicle spawns choose their origin before their scaled hull exists.
+// Use the final hull to settle only those explicit scale-command spawns.
+void G_VehicleDropToFloor( gentity_t *vehEnt )
+{
+	trace_t trace;
+	vec3_t top, bottom;
+
+	if ( !vehEnt || !vehEnt->client )
+	{
+		return;
+	}
+
+	VectorCopy( vehEnt->r.currentOrigin, top );
+	top[2] += vehEnt->r.maxs[2] - vehEnt->r.mins[2] + 1.0f;
+	VectorCopy( top, bottom );
+	bottom[2] = MIN_WORLD_COORD;
+
+	trap->Trace( &trace, top, vehEnt->r.mins, vehEnt->r.maxs, bottom,
+		vehEnt->s.number, MASK_NPCSOLID, qfalse, 0, 0 );
+	if ( !trace.allsolid && !trace.startsolid && trace.fraction < 1.0f )
+	{
+		G_SetOrigin( vehEnt, trace.endpos );
+		VectorCopy( trace.endpos, vehEnt->client->ps.origin );
+		VectorCopy( trace.endpos, vehEnt->s.origin );
+		trap->LinkEntity( (sharedEntity_t *)vehEnt );
+	}
+}
+
 // Spawn this vehicle into the world.
 void G_VehicleSpawn( gentity_t *self )
 {
@@ -94,6 +162,7 @@ void G_VehicleSpawn( gentity_t *self )
 	}
 
 	vehEnt->s.angles[YAW] = yaw;
+	G_VehicleSetScale( vehEnt, vehEnt->m_pVehicle->m_pVehicleInfo->scale );
 	if ( vehEnt->m_pVehicle->m_pVehicleInfo->type != VH_ANIMAL )
 	{
 		vehEnt->NPC->behaviorState = BS_CINEMATIC;
@@ -316,6 +385,11 @@ qboolean Board( Vehicle_t *pVeh, bgEntity_t *pEnt )
 		if ( !pVeh->m_pPilot )
 		{ //become the pilot, if there isn't one now
 			pVeh->m_pVehicleInfo->SetPilot( pVeh, (bgEntity_t *)ent );
+			if ( BG_ShrikePhysics( pVeh ) && parent->client )
+			{//moveDir carries world-space angular velocity in shrike mode: clear the
+			 //stale direction vector the stock code left in it so we don't spawn spinning
+				VectorClear( parent->client->ps.moveDir );
+			}
 		}
 		// If we're not yet full...
 		else if ( pVeh->m_iNumPassengers < pVeh->m_pVehicleInfo->maxPassengers )
@@ -380,9 +454,17 @@ qboolean Board( Vehicle_t *pVeh, bgEntity_t *pEnt )
 		VectorClear( parent->client->ps.delta_angles );*/
 
 		// Set the looping sound only when there is a pilot (when the vehicle is "on").
-		if ( pVeh->m_pVehicleInfo->soundLoop && !parent->client->sess.raceMode )
+		if ( (pVeh->m_pVehicleInfo->soundLoop || pVeh->m_pVehicleInfo->podSoundLoop) &&
+			(!parent->client->sess.raceMode ||
+			 BG_PodRacerPhysics( pVeh )) )
 		{
-			parent->client->ps.loopSound = parent->s.loopSound = pVeh->m_pVehicleInfo->soundLoop;
+			int loopSound = pVeh->m_pVehicleInfo->soundLoop;
+			if ( BG_PodRacerPhysics( pVeh ) &&
+				pVeh->m_pVehicleInfo->podSoundLoop )
+			{
+				loopSound = pVeh->m_pVehicleInfo->podSoundLoop;
+			}
+			parent->client->ps.loopSound = parent->s.loopSound = loopSound;
 		}
 	}
 	else
@@ -395,9 +477,15 @@ qboolean Board( Vehicle_t *pVeh, bgEntity_t *pEnt )
 			parent->r.ownerNum = ent->s.number;
 			parent->s.owner = parent->r.ownerNum; //for prediction
 			// Set the looping sound only when there is a pilot (when the vehicle is "on").
-			if ( pVeh->m_pVehicleInfo->soundLoop )
+			if ( pVeh->m_pVehicleInfo->soundLoop || pVeh->m_pVehicleInfo->podSoundLoop )
 			{
-				parent->client->ps.loopSound = parent->s.loopSound = pVeh->m_pVehicleInfo->soundLoop;
+				int loopSound = pVeh->m_pVehicleInfo->soundLoop;
+				if ( BG_PodRacerPhysics( pVeh ) &&
+					pVeh->m_pVehicleInfo->podSoundLoop )
+				{
+					loopSound = pVeh->m_pVehicleInfo->podSoundLoop;
+				}
+				parent->client->ps.loopSound = parent->s.loopSound = loopSound;
 			}
 
 			parent->client->ps.speed = 0;
@@ -483,7 +571,7 @@ qboolean VEH_TryEject( Vehicle_t *pVeh,
 	float		fVehDiag;
 	float		fEntDiag;
 	int			oldOwner;
-	vec3_t		vEntMins, vEntMaxs, vVehLeaveDir, vVehAngles;
+	vec3_t		vEntMins, vEntMaxs, vExitStart, vVehLeaveDir, vVehAngles;
 	trace_t		m_ExitTrace;
 
 	// Make sure that the entity is not 'stuck' inside the vehicle (since their bboxes will now intersect).
@@ -536,7 +624,19 @@ qboolean VEH_TryEject( Vehicle_t *pVeh,
 	{ //hacktastic!
 		fBias += 0.2f;
 	}
-	VectorCopy( ent->r.currentOrigin, vExitPos );
+	VectorSet(vEntMins, -15.0f, -15.0f, DEFAULT_MINS_2);
+
+	// A scaled-down vehicle can put its scaled rider tag below the height a
+	// normal player hull needs to clear the floor. Begin the exit trace above
+	// the vehicle top in that case, while leaving legacy-size vehicles unchanged.
+	VectorCopy( ent->r.currentOrigin, vExitStart );
+	if ( parent->client && parent->client->ps.iModelScale > 0
+		&& parent->client->ps.iModelScale < 100
+		&& vExitStart[2] < parent->r.currentOrigin[2] + parent->r.maxs[2] - vEntMins[2] + 1.0f )
+	{
+		vExitStart[2] = parent->r.currentOrigin[2] + parent->r.maxs[2] - vEntMins[2] + 1.0f;
+	}
+	VectorCopy( vExitStart, vExitPos );
 	fVehDiag = sqrtf( ( parent->r.maxs[0] * parent->r.maxs[0] ) + ( parent->r.maxs[1] * parent->r.maxs[1] ) );
 	VectorCopy( ent->r.maxs, vEntMaxs );
 	if ( ent->s.number < MAX_CLIENTS )
@@ -560,7 +660,7 @@ qboolean VEH_TryEject( Vehicle_t *pVeh,
 	oldOwner = parent->r.ownerNum;
 	//ent->r.ownerNum = ENTITYNUM_NONE;
 	parent->r.ownerNum = ent->s.number;
-	G_VehicleTrace(&m_ExitTrace, ent->r.currentOrigin, vEntMins, vEntMaxs, vExitPos, ent->s.number, ent->clipmask);
+	G_VehicleTrace(&m_ExitTrace, vExitStart, vEntMins, vEntMaxs, vExitPos, ent->s.number, ent->clipmask);
 	//ent->r.ownerNum = oldOwner;
 	parent->r.ownerNum = oldOwner;
 
@@ -1202,6 +1302,219 @@ qboolean Initialize( Vehicle_t *pVeh )
 
 // Like a think or move command, this updates various vehicle properties.
 void G_VehicleDamageBoxSizing(Vehicle_t *pVeh); //declared below
+
+#ifdef _GAME
+/*
+===================
+G_UpdatePodracerAudio
+
+The stock vehicle audio is mostly a single loop.  Keep that simple loop, but
+add the useful SWE1R-style transitions while the opt-in pod physics is active.
+This runs only on the server so prediction cannot replay one-shot sounds.
+===================
+*/
+static void G_UpdatePodracerAudio( Vehicle_t *pVeh, gentity_t *parent, float speed )
+{
+	vehicleInfo_t *vInfo = pVeh->m_pVehicleInfo;
+	float speedRatio;
+	qboolean braking;
+	qboolean sliding;
+	qboolean boosting;
+	qboolean rolling;
+	int gear;
+	int band;
+	int rawBand;
+	int loopSound;
+	int shiftSound = 0;
+	const char *shiftName = "podSoundShift";
+	const char *loopName = "podSoundLoop";
+
+	if ( !BG_PodRacerPhysics( pVeh ) || !pVeh->m_pPilot )
+	{
+		pVeh->m_iPodAudioGear = 0;
+		pVeh->m_iPodAudioLoopBand = 0;
+		pVeh->m_bPodAudioReversing = qfalse;
+		pVeh->m_bPodAudioBraking = qfalse;
+		pVeh->m_bPodAudioSliding = qfalse;
+		pVeh->m_bPodAudioBoosting = qfalse;
+		pVeh->m_bPodAudioRolling = qfalse;
+		return;
+	}
+
+	speedRatio = fabs( speed ) / BG_PodRacerTopSpeedForVehicle( pVeh, pVeh->m_pParentEntity->playerState->iModelScale );
+	boosting = (pVeh->m_fPodBoost > 0.0f) ? qtrue : qfalse;
+
+	// Engine loop by speed band: 0 low, 1 mid, 2 high, 3 boost.  The band edges sit
+	// on the gear 2 / gear 4 shift points, with the downward edge 0.06 lower so the
+	// loop doesn't flap while holding a boundary speed.  Any band the .veh doesn't
+	// fill in falls back to the plain podSoundLoop, so this also covers the old
+	// "reassert while mounted" duty (cvar flips, stock boarding paths).
+	if ( speedRatio >= 0.72f )
+		rawBand = 2;
+	else if ( speedRatio >= 0.42f )
+		rawBand = 1;
+	else
+		rawBand = 0;
+
+	band = pVeh->m_iPodAudioLoopBand;
+	if ( band > 2 )
+	{	// was boosting; re-derive from speed
+		band = rawBand;
+	}
+	else if ( rawBand > band )
+	{
+		band = rawBand;
+	}
+	else if ( rawBand < band && speedRatio < ((band == 2) ? 0.66f : 0.36f) )
+	{
+		band = rawBand;
+	}
+	if ( boosting && vInfo->podSoundLoopBoost )
+	{
+		band = 3;
+	}
+	pVeh->m_iPodAudioLoopBand = band;
+
+	// Reverse loop: hysteresis on signed speed (enter at 30% of the scaled
+	// reverse floor, leave at 10%) so shuffling W/S around a standstill doesn't
+	// flap the loop.  ps.speed runs at pod map scale, so compare like with like.
+	if ( vInfo->podSoundLoopReverse && vInfo->speedMin < 0.0f )
+	{
+		const float minSpeed = BG_PodRacerMinSpeedForVehicle( pVeh, pVeh->m_pParentEntity->playerState->iModelScale );
+		if ( !pVeh->m_bPodAudioReversing && speed < minSpeed * 0.3f )
+		{
+			pVeh->m_bPodAudioReversing = qtrue;
+		}
+		else if ( pVeh->m_bPodAudioReversing && speed > minSpeed * 0.1f )
+		{
+			pVeh->m_bPodAudioReversing = qfalse;
+		}
+	}
+	else
+	{
+		pVeh->m_bPodAudioReversing = qfalse;
+	}
+
+	switch ( band )
+	{
+	case 3: loopSound = vInfo->podSoundLoopBoost;	loopName = "podSoundLoopBoost"; break;
+	case 2: loopSound = vInfo->podSoundLoopHigh;	loopName = "podSoundLoopHigh"; break;
+	case 0: loopSound = vInfo->podSoundLoopLow;		loopName = "podSoundLoopLow"; break;
+	default: loopSound = 0; break;
+	}
+	if ( !loopSound )
+	{
+		loopSound = vInfo->podSoundLoop;
+		loopName = "podSoundLoop";
+	}
+	if ( pVeh->m_bPodAudioReversing && band != 3 )
+	{
+		loopSound = vInfo->podSoundLoopReverse;
+		loopName = "podSoundLoopReverse";
+	}
+	if ( loopSound && parent->s.loopSound != loopSound )
+	{
+		parent->client->ps.loopSound = parent->s.loopSound = loopSound;
+	}
+
+	if ( speedRatio >= 0.90f )
+		gear = 5;
+	else if ( speedRatio >= 0.72f )
+		gear = 4;
+	else if ( speedRatio >= 0.60f )
+		gear = 3;
+	else if ( speedRatio >= 0.42f )
+		gear = 2;
+	else if ( speedRatio >= 0.12f )
+		gear = 1;
+	else
+		gear = 0;
+
+	// Downshifts only re-arm a later acceleration sound; they are silent.
+	if ( gear > pVeh->m_iPodAudioGear )
+	{
+		switch ( gear )
+		{
+		case 1: shiftSound = vInfo->podSoundShift1; shiftName = "podSoundShift1"; break;
+		case 2: shiftSound = vInfo->podSoundShift2; shiftName = "podSoundShift2"; break;
+		case 3: shiftSound = vInfo->podSoundShift3; shiftName = "podSoundShift3"; break;
+		case 4: shiftSound = vInfo->podSoundShift4; shiftName = "podSoundShift4"; break;
+		case 5: shiftSound = vInfo->podSoundShift5; shiftName = "podSoundShift5"; break;
+		default: break;
+		}
+		if ( shiftSound )
+		{
+			G_Sound( parent, CHAN_AUTO, shiftSound );
+		}
+	}
+	pVeh->m_iPodAudioGear = gear;
+
+	braking = BG_PodRacerBraking( pVeh );
+	if ( braking != pVeh->m_bPodAudioBraking )
+	{
+		int brakeSound = braking ? vInfo->podSoundBrakeOn : vInfo->podSoundBrakeOff;
+		if ( brakeSound && fabs( speed ) >= 20.0f )
+		{
+			G_Sound( parent, CHAN_AUTO, brakeSound );
+		}
+		pVeh->m_bPodAudioBraking = braking;
+	}
+
+	// Same flood-protected gate the physics uses, so the sounds track the real drift
+	// state.  The debounce covers the remaining fast edge: speed fluttering across
+	// the drift-speed gate while the key is held.
+	sliding = BG_PodRacerDrifting( pVeh, speed );
+	if ( sliding != pVeh->m_bPodAudioSliding )
+	{
+		int slideSound = sliding ? vInfo->podSoundSlideStart : vInfo->podSoundSlideStop;
+		if ( slideSound && level.time >= pVeh->m_iPodAudioSlideDebounce )
+		{
+			G_Sound( parent, CHAN_AUTO, slideSound );
+			pVeh->m_iPodAudioSlideDebounce = level.time + 450;
+		}
+		pVeh->m_bPodAudioSliding = sliding;
+	}
+
+	// Manual roll (A/D): ep1 energy-binder flavor.  One-shot on engage (flood-protected),
+	// then the binder loop rides on the PILOT entity while held, layering over the engine
+	// loop that lives on the vehicle entity.
+	rolling = (BG_PodRacerManualRoll( pVeh ) != 0.0f) ? qtrue : qfalse;
+	if ( rolling != pVeh->m_bPodAudioRolling )
+	{
+		if ( rolling && vInfo->podSoundRollStart && level.time >= pVeh->m_iPodAudioRollDebounce )
+		{
+			G_Sound( parent, CHAN_AUTO, vInfo->podSoundRollStart );
+			pVeh->m_iPodAudioRollDebounce = level.time + 600;
+		}
+		pVeh->m_bPodAudioRolling = rolling;
+	}
+	if ( vInfo->podSoundRollLoop )
+	{
+		gentity_t *pilot = (gentity_t *)pVeh->m_pPilot;
+		if ( pilot && pilot->client )
+		{
+			if ( rolling )
+			{
+				if ( pilot->s.loopSound != vInfo->podSoundRollLoop )
+				{
+					pilot->client->ps.loopSound = pilot->s.loopSound = vInfo->podSoundRollLoop;
+				}
+			}
+			else if ( pilot->s.loopSound == vInfo->podSoundRollLoop )
+			{	// only clear our own loop; don't stomp anything else on the rider
+				pilot->client->ps.loopSound = pilot->s.loopSound = 0;
+			}
+		}
+	}
+
+	if ( boosting && !pVeh->m_bPodAudioBoosting && vInfo->podSoundBoost )
+	{
+		G_Sound( parent, CHAN_AUTO, vInfo->podSoundBoost );
+	}
+	pVeh->m_bPodAudioBoosting = boosting;
+}
+#endif
+
 static qboolean Update( Vehicle_t *pVeh, const usercmd_t *pUmcd )
 {
 	gentity_t *parent = (gentity_t *)pVeh->m_pParentEntity;
@@ -1212,7 +1525,6 @@ static qboolean Update( Vehicle_t *pVeh, const usercmd_t *pUmcd )
 	int	prevSpeed;
 	int	nextSpeed;
 	int	curTime;
-	int halfMaxSpeed;
 	playerState_t *parentPS;
 	qboolean linkHeld = qfalse;
 
@@ -1571,14 +1883,22 @@ maintainSelfDuringBoarding:
 	prevSpeed = parentPS->speed;
 	pVeh->m_pVehicleInfo->ProcessMoveCommands( pVeh );
 	nextSpeed = parentPS->speed;
-	halfMaxSpeed = pVeh->m_pVehicleInfo->speedMax*0.5f;
 
 
 // Shifting Sounds
 //=====================================================================
+	#ifdef _GAME
+	if ( BG_PodRacerPhysics( pVeh ) )
+	{
+		G_UpdatePodracerAudio( pVeh, parent, nextSpeed );
+	}
+	else
+	#endif
 	if (pVeh->m_iTurboTime<curTime &&
 		pVeh->m_iSoundDebounceTimer<curTime &&
-		((nextSpeed>prevSpeed && nextSpeed>halfMaxSpeed &&	prevSpeed<halfMaxSpeed) || (nextSpeed>halfMaxSpeed && !Q_irand(0,1000)))
+		((nextSpeed>prevSpeed && nextSpeed>pVeh->m_pVehicleInfo->speedMax*0.5f &&
+		prevSpeed<pVeh->m_pVehicleInfo->speedMax*0.5f) ||
+		(nextSpeed>pVeh->m_pVehicleInfo->speedMax*0.5f && !Q_irand(0,1000)))
  		)
 	{
 		int	shiftSound = Q_irand(1,4);
@@ -1599,7 +1919,11 @@ maintainSelfDuringBoarding:
 
 
 	// Setup the move direction.
-	if ( pVeh->m_pVehicleInfo->type == VH_FIGHTER )
+	if ( BG_ShrikePhysics( pVeh ) )
+	{//Tribes 2 physics doesn't use moveDir for movement: it carries world-space
+	 //angular velocity, so don't stomp it here
+	}
+	else if ( pVeh->m_pVehicleInfo->type == VH_FIGHTER )
 	{
 		AngleVectors( pVeh->m_vOrientation, parent->client->ps.moveDir, NULL, NULL );
 	}
@@ -1658,12 +1982,14 @@ static qboolean UpdateRider( Vehicle_t *pVeh, bgEntity_t *pRider, usercmd_t *pUm
 {
 	gentity_t *parent;
 	gentity_t *rider;
+	qboolean podPhysicsSpeeder;
 
 	if ( pVeh->m_iBoarding != 0 && pVeh->m_iDieTime==0)
 		return qtrue;
 
 	parent = (gentity_t *)pVeh->m_pParentEntity;
 	rider = (gentity_t *)pRider;
+	podPhysicsSpeeder = BG_PodRacerPhysics( pVeh );
 	//MG FIXME !! Single player needs update!
 	if ( rider && rider->client
 		&& parent && parent->client )
@@ -1673,7 +1999,7 @@ static qboolean UpdateRider( Vehicle_t *pVeh, bgEntity_t *pRider, usercmd_t *pUm
 		rider->client->ps.rocketTargetTime = parent->client->ps.rocketTargetTime;
 	}
 	// Regular exit.
-	if ( pUmcd->buttons & BUTTON_USE && pVeh->m_pVehicleInfo->type!=VH_SPEEDER)
+	if ( pUmcd->buttons & BUTTON_USE && ( pVeh->m_pVehicleInfo->type != VH_SPEEDER || podPhysicsSpeeder ) )
 	{
 		if ( pVeh->m_pVehicleInfo->type == VH_WALKER )
 		{//just get the fuck out
@@ -1769,7 +2095,7 @@ static qboolean UpdateRider( Vehicle_t *pVeh, bgEntity_t *pRider, usercmd_t *pUm
 		&& pVeh->m_pVehicleInfo->type != VH_WALKER  )
 	{
 		// Jump off.
-		if ( pUmcd->upmove > 0 )
+		if ( pUmcd->upmove > 0 && !podPhysicsSpeeder )
 		{
 
 			if ( pVeh->m_pVehicleInfo->Eject( pVeh, pRider, qfalse ) )

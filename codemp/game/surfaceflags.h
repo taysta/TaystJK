@@ -72,6 +72,15 @@ along with this program; if not, see <http://www.gnu.org/licenses/>.
 #define SURF_UNUSED00000008		(0x00000008u) //
 #define SURF_UNUSED00000010		(0x00000010u) //
 #define SURF_UNUSED00000020		(0x00000020u) //
+// Podracer surface effects. These are independent bits: a shader may use more
+// than one pod_* surfaceparm and the hover trace preserves every one of them.
+#define SURF_POD_FAST			SURF_UNUSED00000001
+#define SURF_POD_SLOW			SURF_UNUSED00000002
+#define SURF_POD_SWST			SURF_UNUSED00000004
+#define SURF_POD_SLIP			SURF_UNUSED00000008
+#define SURF_POD_SOFT			SURF_UNUSED00000010
+#define SURF_POD_LAVA			SURF_UNUSED00000020
+#define SURF_POD_MASK			( SURF_POD_FAST | SURF_POD_SLOW | SURF_POD_SWST | SURF_POD_SLIP | SURF_POD_SOFT | SURF_POD_LAVA )
 #define SURF_UNUSED00000040		(0x00000040u) //
 #define SURF_UNUSED00000080		(0x00000080u) //
 #define SURF_UNUSED00000100		(0x00000100u) //

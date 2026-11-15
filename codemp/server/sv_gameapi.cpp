@@ -22,6 +22,8 @@ along with this program; if not, see <http://www.gnu.org/licenses/>.
 //Anything above this #include will be ignored by the compiler
 
 #include "server.h"
+#include "server/sv_dimension.h"
+#include "server/sv_dynbsp.h"
 #include "botlib/botlib.h"
 #include "qcommon/stringed_ingame.h"
 #include "qcommon/RoffSystem.h"
@@ -35,7 +37,109 @@ botlib_export_t	*botlib_export;
 
 // game interface
 static gameExport_t *ge; // game export table
+static qboolean geHasClientRuntimeMapChanged = qfalse;
 static vm_t *gvm; // game vm, valid for legacy and new api
+
+static qboolean SV_GameCanEntitiesInteract( int sourceEntityNum, int targetEntityNum, svIsolationPurpose_t purpose ) {
+	switch ( purpose ) {
+	case SVISO_TRACE:
+	case SVISO_POINT_CONTENTS:
+	case SVISO_SNAPSHOT:
+	case SVISO_DAMAGE:
+	case SVISO_EVENT:
+	case SVISO_SOUND:
+	case SVISO_USE:
+		break;
+	default:
+		return qtrue;
+	}
+
+	if ( sourceEntityNum == targetEntityNum ) {
+		return qtrue;
+	}
+
+	if ( !SV_DimensionIsolationEnabled() ) {
+		return qtrue;
+	}
+
+	if ( sourceEntityNum < 0 || sourceEntityNum >= sv.num_entities
+		|| targetEntityNum < 0 || targetEntityNum >= sv.num_entities ) {
+		return qtrue;
+	}
+
+	return SV_CanEntitiesInteract( SV_GentityNum( sourceEntityNum ), SV_GentityNum( targetEntityNum ), purpose );
+}
+
+static qboolean SV_GameSetClientMap( int clientNum, const char *mapName ) {
+	if ( clientNum < 0 || clientNum >= sv_maxclients->integer || !mapName || !mapName[0] ) {
+		return qfalse;
+	}
+
+	return SV_SetClientMap( &svs.clients[clientNum], mapName );
+}
+
+static int SV_GameGetClientRuntimeBSPInstance( int clientNum ) {
+	sharedEntity_t *holder;
+	client_t *client;
+
+	if ( clientNum < 0 || clientNum >= sv_maxclients->integer ) {
+		return -1;
+	}
+
+	client = &svs.clients[clientNum];
+	if ( !client->runtimeMapName[0] ) {
+		return -1;
+	}
+
+	holder = SV_DynBSPInstanceForMap( client->runtimeMapName );
+	return holder ? SV_RuntimeBSPInstanceForGentity( holder ) : -1;
+}
+
+static void SV_GameSetEntityRuntimeBSPInstance( int entityNum, int runtimeBSPInstance ) {
+	SV_SetRuntimeBSPInstanceForEntityNum( entityNum, runtimeBSPInstance );
+}
+
+static qboolean SV_GameAsyncBSPPath( const char *mapName, char *path, int pathSize ) {
+	if ( !mapName || !mapName[0] || !path || pathSize <= 0 ) {
+		return qfalse;
+	}
+	if ( strchr( mapName, '\\' ) || strchr( mapName, ';' ) || strstr( mapName, ".." ) ) {
+		return qfalse;
+	}
+
+	if ( !Q_stricmpn( mapName, "maps/", 5 ) ) {
+		Q_strncpyz( path, mapName, pathSize );
+	}
+	else {
+		Com_sprintf( path, pathSize, "maps/%s", mapName );
+	}
+
+	if ( strlen( path ) <= 4 || Q_stricmp( path + strlen( path ) - 4, ".bsp" ) ) {
+		Q_strcat( path, pathSize, ".bsp" );
+	}
+
+	return qtrue;
+}
+
+static qboolean SV_GameBeginAsyncBSPFileRead( const char *mapName ) {
+	char path[MAX_QPATH];
+
+	if ( !SV_GameAsyncBSPPath( mapName, path, sizeof( path ) ) ) {
+		return qfalse;
+	}
+
+	return CM_BeginAsyncReadSubBSP( path );
+}
+
+static int SV_GameAsyncBSPFileReadStatus( const char *mapName ) {
+	char path[MAX_QPATH];
+
+	if ( !SV_GameAsyncBSPPath( mapName, path, sizeof( path ) ) ) {
+		return 3;
+	}
+
+	return CM_AsyncReadSubBSPStatus( path );
+}
 
 //
 // game vmMain calls
@@ -115,6 +219,21 @@ void GVM_ClientThink( int clientNum, usercmd_t *ucmd ) {
 	VMSwap v( gvm );
 
 	ge->ClientThink( clientNum, ucmd );
+}
+
+void GVM_ClientRuntimeMapChanged( int clientNum, const char *mapName ) {
+	if ( !gvm ) {
+		return;
+	}
+	if ( gvm->isLegacy ) {
+		VM_Call( gvm, GAME_CLIENT_RUNTIME_MAP_CHANGED, clientNum, reinterpret_cast< intptr_t >( mapName ) );
+		return;
+	}
+	VMSwap v( gvm );
+
+	if ( geHasClientRuntimeMapChanged && ge->ClientRuntimeMapChanged ) {
+		ge->ClientRuntimeMapChanged( clientNum, mapName );
+	}
 }
 
 void GVM_RunFrame( int levelTime ) {
@@ -474,6 +593,8 @@ static qboolean SV_EntityContact( const vec3_t mins, const vec3_t maxs, const sh
 static void SV_SetBrushModel( sharedEntity_t *ent, const char *name ) {
 	clipHandle_t	h;
 	vec3_t			mins, maxs;
+	int				totalStartTime = Sys_Milliseconds();
+	int				phaseStartTime;
 
 	if (!name)
 	{
@@ -500,8 +621,18 @@ static void SV_SetBrushModel( sharedEntity_t *ent, const char *name ) {
 	}
 	else if (name[0] == '#')
 	{
+		phaseStartTime = Sys_Milliseconds();
 		ent->s.modelindex = CM_LoadSubBSP(va("maps/%s.bsp", name + 1), qfalse);
+		if ( SV_DynBSPDebugEnabled() ) {
+			Com_Printf( "BSPTIME server SetBrushModel CM_LoadSubBSP name='%s' model=%i ms=%i total=%i\n",
+				name, ent->s.modelindex, Sys_Milliseconds() - phaseStartTime, Sys_Milliseconds() - totalStartTime );
+		}
+		phaseStartTime = Sys_Milliseconds();
 		CM_ModelBounds( ent->s.modelindex, mins, maxs );
+		if ( SV_DynBSPDebugEnabled() ) {
+			Com_Printf( "BSPTIME server SetBrushModel ModelBounds name='%s' ms=%i total=%i\n",
+				name, Sys_Milliseconds() - phaseStartTime, Sys_Milliseconds() - totalStartTime );
+		}
 
 		VectorCopy (mins, ent->r.mins);
 		VectorCopy (maxs, ent->r.maxs);
@@ -516,6 +647,11 @@ static void SV_SetBrushModel( sharedEntity_t *ent, const char *name ) {
 	else
 	{
 		Com_Error( ERR_DROP, "SV_SetBrushModel: %s isn't a brush model", name );
+	}
+
+	if ( SV_DynBSPDebugEnabled() && name[0] == '#' ) {
+		Com_Printf( "BSPTIME server SetBrushModel total name='%s' model=%i contents=0x%x bmodel=%i total=%i\n",
+			name, ent->s.modelindex, ent->r.contents, ent->r.bmodel, Sys_Milliseconds() - totalStartTime );
 	}
 }
 
@@ -549,10 +685,26 @@ static void SV_GetServerinfo( char *buffer, int bufferSize ) {
 
 static void SV_AdjustAreaPortalState( sharedEntity_t *ent, qboolean open ) {
 	svEntity_t	*svEnt;
+	int			runtimeBSPInstance;
+
+	if ( !ent ) {
+		return;
+	}
+
+	runtimeBSPInstance = SV_RuntimeBSPInstanceForGentity( ent );
+	if ( runtimeBSPInstance >= 0 ) {
+		if ( SV_DynBSPDebugEnabled() ) {
+			Com_Printf( "BSPDEBUG areaportal skip runtime ent=%i class='%s' runtime=%i open=%i\n",
+				SV_NumForGentity( ent ), ent->classname ? ent->classname : "",
+				runtimeBSPInstance, open );
+		}
+		return;
+	}
 
 	svEnt = SV_SvEntityForGentity( ent );
-	if ( svEnt->areanum2 == -1 )
+	if ( svEnt->areanum < 0 || svEnt->areanum2 < 0 ) {
 		return;
+	}
 
 	CM_AdjustAreaPortalState( svEnt->areanum, svEnt->areanum2, open );
 }
@@ -598,6 +750,15 @@ static sharedEntity_t *ConvertedEntity( sharedEntity_t *ent ) { //Return an enti
 }
 
 static const char *SV_SetActiveSubBSP( int index ) {
+	if ( index == GAME_IMPORT_EXTENSIONS_SUBBSP_QUERY ) {
+		// with engine dimensions disabled the game must keep its legacy
+		// BeginHack/EndHack isolation, so don't advertise the extension
+		if ( !SV_DimensionIsolationEnabled() ) {
+			return GAME_IMPORT_EXTENSION_RUNTIME_BSP;
+		}
+		return GAME_IMPORT_EXTENSION_RUNTIME_BSP ";" GAME_IMPORT_EXTENSION_DIMENSIONS;
+	}
+
 	if ( index >= 0 ) {
 		sv.mLocalSubBSPIndex = CM_FindSubBSP( index );
 		sv.mLocalSubBSPModelOffset = index;
@@ -1920,6 +2081,19 @@ intptr_t SV_GameSystemCalls( intptr_t *args ) {
 		return 0;
 	case G_POINT_CONTENTS:
 		return SV_PointContents( (const float *)VMA(1), args[2] );
+	case G_CAN_ENTITIES_INTERACT:
+		return SV_GameCanEntitiesInteract( args[1], args[2], (svIsolationPurpose_t)args[3] );
+	case G_SET_CLIENT_MAP:
+		return SV_GameSetClientMap( args[1], (const char *)VMA(2) );
+	case G_GET_CLIENT_RUNTIME_BSP_INSTANCE:
+		return SV_GameGetClientRuntimeBSPInstance( args[1] );
+	case G_BEGIN_ASYNC_BSP_FILE_READ:
+		return SV_GameBeginAsyncBSPFileRead( (const char *)VMA(1) );
+	case G_ASYNC_BSP_FILE_READ_STATUS:
+		return SV_GameAsyncBSPFileReadStatus( (const char *)VMA(1) );
+	case G_SET_ENTITY_RUNTIME_BSP_INSTANCE:
+		SV_GameSetEntityRuntimeBSPInstance( args[1], args[2] );
+		return 0;
 	case G_SET_SERVER_CULL:
 		SV_SetServerCull( VMF( 1 ) );
 		return 0;
@@ -2764,8 +2938,7 @@ intptr_t SV_GameSystemCalls( intptr_t *args ) {
 		return 0;
 
 	case G_SET_ACTIVE_SUBBSP:
-		SV_SetActiveSubBSP(args[1]);
-		return 0;
+		return (intptr_t)SV_SetActiveSubBSP(args[1]);
 
 	case G_RMG_INIT:
 		return 0;
@@ -2891,6 +3064,12 @@ void SV_BindGame( void ) {
 		gi.GetServerinfo						= SV_GetServerinfo;
 		gi.GetUsercmd							= SV_GetUsercmd;
 		gi.GetUserinfo							= SV_GetUserinfo;
+		gi.CanEntitiesInteract					= SV_GameCanEntitiesInteract;
+		gi.SetClientMap							= SV_GameSetClientMap;
+		gi.GetClientRuntimeBSPInstance			= SV_GameGetClientRuntimeBSPInstance;
+		gi.BeginAsyncBSPFileRead				= SV_GameBeginAsyncBSPFileRead;
+		gi.AsyncBSPFileReadStatus				= SV_GameAsyncBSPFileReadStatus;
+		gi.SetEntityRuntimeBSPInstance			= SV_GameSetEntityRuntimeBSPInstance;
 		gi.InPVS								= SV_inPVS;
 		gi.InPVSIgnorePortals					= SV_inPVSIgnorePortals;
 		gi.LinkEntity							= SV_LinkEntity;
@@ -3169,18 +3348,22 @@ void SV_BindGame( void ) {
 		GetGameAPI = (GetGameAPI_t)gvm->GetModuleAPI;
 		ret = GetGameAPI( GAME_API_VERSION, &gi );
 		if ( !ret ) {
-			//free VM?
-			svs.gameStarted = qfalse;
-			Com_Error( ERR_FATAL, "GetGameAPI failed on %s", dllName );
+			Com_Printf( "GetGameAPI failed on %s, falling back to legacy game API\n", dllName );
+			VM_Free( gvm );
+			gvm = NULL;
+			ge = NULL;
 		}
-		ge = ret;
-
-		svs.gvmIsLegacy = qfalse;
-		return;
+		else {
+			ge = ret;
+			geHasClientRuntimeMapChanged = GAME_API_VERSION >= 2 ? qtrue : qfalse;
+			svs.gvmIsLegacy = qfalse;
+			return;
+		}
 	}
 
 	// fall back to legacy syscall/vm_call api
 	svs.gvmIsLegacy = qtrue;
+	geHasClientRuntimeMapChanged = qfalse;
 	gvm = VM_CreateLegacy( VM_GAME, SV_GameSystemCalls );
 	if ( !gvm ) {
 		svs.gameStarted = qfalse;

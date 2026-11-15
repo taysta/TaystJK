@@ -54,7 +54,6 @@ output: origin, velocity, impacts, stairup boolean
 
 extern qboolean BG_UnrestrainedPitchRoll( playerState_t *ps, Vehicle_t *pVeh );
 
-
 extern bgEntity_t *pm_entSelf;
 extern bgEntity_t *pm_entVeh;
 
@@ -72,6 +71,134 @@ void PM_VehicleImpact(bgEntity_t *pEnt, trace_t *trace)
 	Vehicle_t *pSelfVeh = pEnt->m_pVehicle;
 	float magnitude = VectorLength( pm->ps->velocity ) * pSelfVeh->m_pVehicleInfo->mass / 50.0f;
 	qboolean forceSurfDestruction = qfalse;
+	qboolean podWallRide = qfalse;
+	qboolean podImpactFXPlayed = qfalse;
+	float podImpactSpeed = 0.0f;
+
+	// Pod-physics speeders: crash damage is velocity-based, but pods run at POD_MAP_SCALE (x4)
+	// the authored speed for the scaled map, which inflates every impact ~4x. Undo that, then
+	// apply a tolerance floor so light scrapes/grazes do NO damage - only real crashes hurt.
+	// (Both the G_Damage below and surfDestruction read this magnitude.) -TaystJK
+	if ( BG_PodRacerPhysics( pSelfVeh ) )
+	{
+		float rawMag;
+		podImpactSpeed = VectorLength( pm->ps->velocity );
+		if ( trace && !VectorCompare( trace->plane.normal, vec3_origin ) )
+		{
+			podImpactSpeed = -DotProduct( pm->ps->velocity, trace->plane.normal );
+			if ( podImpactSpeed < 0.0f )
+			{
+				podImpactSpeed = 0.0f;
+			}
+		}
+		magnitude = podImpactSpeed * pSelfVeh->m_pVehicleInfo->mass / 50.0f;
+		magnitude /= POD_MAP_SCALE;
+		rawMag = magnitude;					// keep pre-tolerance magnitude for the wrong-side bonk
+		magnitude -= BG_PodRacerImpactToleranceForVehicle( pSelfVeh, pm->ps->iModelScale );	// grace: ignore the first N of impact
+		if ( magnitude < 0.0f )
+		{
+			magnitude = 0.0f;
+		}
+
+		// WALL-RIDING: if the pod is BANKED TOWARD the wall it just grazed, don't lose speed -
+		// redirect velocity ALONG the wall (drop only the into-wall component, then restore the
+		// original speed magnitude) so you carve along the outside wall of a turn instead of
+		// bumping to a stop. Only for near-vertical surfaces and only when leaning into them.
+		// Runs in shared code (pm->ps->velocity) so it predicts. -TaystJK
+		if ( trace && fabs( trace->plane.normal[2] ) < 0.5f )	// a wall, not floor/ceiling
+		{
+			vec3_t vehRight, wallN;
+			float  rollSide, wallSide;
+
+			VectorCopy( trace->plane.normal, wallN );
+			wallN[2] = 0.0f;
+			if ( VectorNormalize( wallN ) > 0.0f )
+			{
+				vec3_t vehAng;
+				VectorCopy( pSelfVeh->m_vOrientation, vehAng );
+				vehAng[PITCH] = 0.0f; vehAng[ROLL] = 0.0f;
+				AngleVectors( vehAng, NULL, vehRight, NULL );
+
+				// rollSide: +1 banked right, -1 banked left. wallSide: which side the wall is on
+				// (wall normal points away from wall, so -dot(normal,right) > 0 => wall on right).
+				rollSide = pSelfVeh->m_vOrientation[ROLL];			// signed roll degrees
+				wallSide = -DotProduct( wallN, vehRight );			// >0 wall on right, <0 on left
+
+				// leaning into the wall = roll sign matches wall side, past a small threshold.
+				// (rollSide*wallSide sign convention is empirically INVERTED vs first guess, so
+				// ride = <0, bonk = >0. -TaystJK)
+				if ( fabs( rollSide ) > POD_WALLRIDE_MINROLL && ( rollSide * wallSide ) < 0.0f )
+				{	// RIDE: banked toward this wall -> glide along it, keep speed, no damage
+					vec3_t vel;
+					float  keepSpeed, into;
+					VectorCopy( pm->ps->velocity, vel );
+					keepSpeed = VectorLength( vel );				// preserve total speed
+					into = DotProduct( vel, trace->plane.normal );	// component into the wall
+					if ( into < 0.0f )
+						VectorMA( vel, -into, trace->plane.normal, vel );	// remove into-wall part
+					if ( VectorNormalize( vel ) > 0.0f )
+					{
+						VectorScale( vel, keepSpeed, pm->ps->velocity );	// glide along wall, full speed
+						magnitude = 0.0f;								// and take no crash damage
+						podWallRide = qtrue;
+					}
+				}
+				else if ( fabs( rollSide ) > POD_WALLRIDE_MINROLL && ( rollSide * wallSide ) > 0.0f )
+				{	// WRONG SIDE: banked AWAY from the wall you hit (leaning right, smacked the
+					// left wall) -> you committed the wrong way. Take EXTRA crash damage scaled by
+					// lean. Compute from the RAW (pre-tolerance) magnitude and BYPASS the grace,
+					// so a wrong-side hit always bonks even if the tolerance had zeroed it. -TaystJK
+					float leanFrac = fabs( rollSide ) / ( POD_ROLL_LIMIT > 0.0f ? POD_ROLL_LIMIT : 45.0f );
+					if ( leanFrac > 1.0f ) leanFrac = 1.0f;
+					magnitude = rawMag * ( 1.0f + POD_WALLRIDE_PENALTY * leanFrac );
+				}
+			}
+		}
+
+		// Damage has a deliberately high tolerance, but race-time loss must still communicate
+		// a solid non-wallride collision. Scale it from the normal (into-wall) speed rather
+		// than total velocity so a shallow scrape is cheap and an intentional wall-ride remains
+		// lossless. A small cooldown prevents one sustained contact from draining all speed.
+		if ( trace && fabs( trace->plane.normal[2] ) < 0.5f && !podWallRide
+			&& pSelfVeh->m_iPodImpactTime <= pm->cmd.serverTime )
+		{
+			float topSpeed = BG_PodRacerTopSpeedForVehicle( pSelfVeh, pm->ps->iModelScale );
+			float severity = ( topSpeed > 0.0f ) ? ( podImpactSpeed / topSpeed ) : 0.0f;
+
+			if ( severity >= POD_IMPACT_SCRUB_MIN_FRACTION )
+			{
+				float progress = ( severity - POD_IMPACT_SCRUB_MIN_FRACTION ) /
+					( POD_IMPACT_SCRUB_FULL_FRACTION - POD_IMPACT_SCRUB_MIN_FRACTION );
+				float loss;
+
+				if ( progress < 0.0f ) progress = 0.0f;
+				if ( progress > 1.0f ) progress = 1.0f;
+				loss = POD_IMPACT_SCRUB_MIN_LOSS +
+					( POD_IMPACT_SCRUB_MAX_LOSS - POD_IMPACT_SCRUB_MIN_LOSS ) * progress;
+				pm->ps->speed *= 1.0f - loss;
+				if ( pSelfVeh->m_pVehicleInfo->iImpactFX )
+				{
+					vec3_t vehUp;
+
+					AngleVectors( pSelfVeh->m_vOrientation, NULL, NULL, vehUp );
+#ifdef _GAME
+					G_AddEvent( (gentity_t *)pEnt, EV_PLAY_EFFECT_ID, pSelfVeh->m_pVehicleInfo->iImpactFX );
+#else
+					trap->FX_PlayEffectID( pSelfVeh->m_pVehicleInfo->iImpactFX, pm->ps->origin,
+						vehUp, -1, -1, qfalse );
+#endif
+					podImpactFXPlayed = qtrue;
+				}
+				pSelfVeh->m_iPodImpactTime = pm->cmd.serverTime + POD_IMPACT_SCRUB_COOLDOWN_MS;
+			}
+		}
+	}
+
+	// This magnitude feeds the server's crash damage, surface destruction, and
+	// damage dealt to the struck entity.  Scale all three linearly with the
+	// replicated per-instance vehicle size after pod-specific tolerance/bonk
+	// handling has finished.
+	magnitude *= BG_VehicleInstanceScale( pSelfVeh, pm->ps->iModelScale );
 #ifdef _GAME
 	gentity_t *hitEnt = trace!=NULL?&g_entities[trace->entityNum]:NULL;
 
@@ -207,7 +334,15 @@ void PM_VehicleImpact(bgEntity_t *pEnt, trace_t *trace)
 				{ //bounce off in the opposite direction of the impact
 					if (pSelfVeh->m_pVehicleInfo->type == VH_SPEEDER)
 					{
-						pm->ps->speed *= pml.frametime;
+						if ( BG_PodRacerPhysics( pSelfVeh ) )
+						{
+							// Pod speed scrub was applied above from normal impact severity. Do not
+							// stack this legacy fixed loss on top of it.
+						}
+						else
+						{
+							pm->ps->speed *= pml.frametime;
+						}
 						VectorCopy(trace->plane.normal, bounceDir);
 					}
 					else if ( trace->plane.normal[2] >= MIN_LANDING_SLOPE//flat enough to land on
@@ -449,7 +584,7 @@ void PM_VehicleImpact(bgEntity_t *pEnt, trace_t *trace)
 			}
 
 			AngleVectors( pSelfVeh->m_vOrientation, NULL, NULL, vehUp );
-			if ( pSelfVeh->m_pVehicleInfo->iImpactFX )
+			if ( pSelfVeh->m_pVehicleInfo->iImpactFX && !podImpactFXPlayed )
 			{
 				//G_PlayEffectID( pSelfVeh->m_pVehicleInfo->iImpactFX, pm->ps->origin, vehUp );
 				//tempent use bad!
@@ -583,7 +718,10 @@ void PM_VehicleImpact(bgEntity_t *pEnt, trace_t *trace)
 			{ //don't hit your own missiles!
 				AngleVectors( pSelfVeh->m_vOrientation, NULL, NULL, vehUp );
 				pEnt->m_pVehicle->m_iHitDebounce = pm->cmd.serverTime + 200;
-				trap->FX_PlayEffectID( pSelfVeh->m_pVehicleInfo->iImpactFX, pm->ps->origin, vehUp, -1, -1, qfalse );
+				if ( !podImpactFXPlayed )
+				{
+					trap->FX_PlayEffectID( pSelfVeh->m_pVehicleInfo->iImpactFX, pm->ps->origin, vehUp, -1, -1, qfalse );
+				}
 
 				pSelfVeh->m_ulFlags |= VEH_CRASHING;
 			}
@@ -754,7 +892,11 @@ qboolean	PM_SlideMove( qboolean gravity ) {
 			if (pEnt && pEnt->s.eType == ET_NPC && pEnt->s.NPC_class == CLASS_VEHICLE &&
 				pEnt->m_pVehicle)
 			{ //do vehicle impact stuff then
-				if (!IsRacemode(pEnt->playerState))
+				// Racemode normally skips impact entirely (no crash damage). But pod physics needs
+				// PM_VehicleImpact to run for wall-riding + the wrong-side bonk (its own tolerance
+				// keeps grazes damage-free), so let it run in racemode for pod speeders. -TaystJK
+				if ( !IsRacemode(pEnt->playerState)
+					|| BG_PodRacerPhysics( pEnt->m_pVehicle ) )
 					PM_VehicleImpact(pEnt, &trace);
 			}
 		}

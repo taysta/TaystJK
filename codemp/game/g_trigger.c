@@ -23,6 +23,9 @@ along with this program; if not, see <http://www.gnu.org/licenses/>.
 
 #include "g_local.h"
 #include "bg_saga.h"
+#include "g_dynbsp.h"
+
+void ResetPlayerTimers(gentity_t *ent, qboolean print);//extern ?
 
 int gTrigFallSound;
 
@@ -66,7 +69,14 @@ void multi_trigger_run( gentity_t *ent )
 
 	if ( ent->soundSet && ent->soundSet[0] )
 	{
-		trap->SetConfigstring( CS_GLOBAL_AMBIENT_SET, ent->soundSet );
+		if ( ent->runtimeBSPInstance >= 0 )
+		{
+			G_DynBSPSetRuntimeAmbient( ent->runtimeBSPInstance, ent->soundSet );
+		}
+		else
+		{
+			trap->SetConfigstring( CS_GLOBAL_AMBIENT_SET, ent->soundSet );
+		}
 	}
 
 	if (ent->genericValue4)
@@ -1434,10 +1444,21 @@ static QINLINE int GetTimeMS() {
 }
 
 //void G_SoundPrivate( gentity_t *ent, int channel, int soundIndex );
-void G_UpdatePlaytime(int null, char *username, int seconds );
+struct sqlite3;
+void G_UpdatePlaytime(struct sqlite3 *db, char *username, int seconds );
 static void G_ClearRunCheckpoints(gclient_t *client);
+
+static void TimerStartBlockedMessage(gentity_t *player, const char *message) {
+	if (level.time < player->client->raceStartBlockedMessageTime)
+		return;
+
+	player->client->raceStartBlockedMessageTime = level.time + 2000;
+	trap->SendServerCommand(player-g_entities, va("cp \"^3Race start blocked\n^7%s\n\"", message));
+}
+
 void TimerStart(gentity_t *trigger, gentity_t *player, trace_t *trace) {//JAPRO Timers
 	int lessTime;
+	char userinfo[MAX_INFO_STRING];
 
 	if (!player->client)
 		return;
@@ -1458,6 +1479,20 @@ void TimerStart(gentity_t *trigger, gentity_t *player, trace_t *trace) {//JAPRO 
 		return;
 	if (player->client->ps.pm_type != PM_NORMAL && player->client->ps.pm_type != PM_FLOAT && player->client->ps.pm_type != PM_FREEZE && player->client->ps.pm_type != PM_JETPACK) //Allow racemode emotes?
 		return;
+	if (player->client->sess.raceMode) {
+		if (player->client->noclip || player->client->raceNeedsGroundStop) {
+			TimerStartBlockedMessage(player, "Exit noclip and come to a complete stop\non the ground before starting.");
+			return;
+		}
+		if (player->client->ps.duelInProgress && player->client->ps.duelIndex != ENTITYNUM_NONE) {
+			gentity_t *partner = &g_entities[player->client->ps.duelIndex];
+			if (partner->client && partner->client->sess.raceMode &&
+				(partner->client->noclip || partner->client->raceNeedsGroundStop)) {
+				TimerStartBlockedMessage(player, "Your co-op partner must exit noclip\nand stop on the ground before starting.");
+				return;
+			}
+		}
+	}
 	if (player->client->ps.legsAnim == BOTH_JUMPATTACK6) //heh
 		return;
 	if (player->client->sess.raceMode && player->client->sess.movementStyle == MV_SWOOP && !player->client->ps.m_iVehicleNum) //Dont start the timer for swoop racers if they dont have a swoop
@@ -1577,6 +1612,10 @@ void TimerStart(gentity_t *trigger, gentity_t *player, trace_t *trace) {//JAPRO 
 	player->client->pers.stats.checkpoints = 0;
 	player->client->pers.stats.courseID = trigger->courseID;
 	G_ClearRunCheckpoints(player->client);
+
+	// Snapshot plugin state at timer start for mid-run change detection (see ClientUserinfoChanged)
+	trap->GetUserinfo(player - g_entities, userinfo, sizeof(userinfo));
+	player->client->pers.stats.pluginsAtStart = atoi(Info_ValueForKey(userinfo, "cp_pluginDisable"));
 
 	if (player->client->ps.stats[STAT_RESTRICTIONS] & JAPRO_RESTRICT_ALLOWTELES) { //Reset their telemark on map start if this is the case
 		player->client->pers.telemarkOrigin[0] = 0;
@@ -1727,6 +1766,8 @@ void TimerStop(gentity_t *trigger, gentity_t *player, trace_t *trace) {//JAPRO T
 
 	if (1) {
 		char styleStr[32] = { 0 }, timeStr[32] = { 0 }, playerName[MAX_NETNAME] = { 0 };
+		char runtimePrintMessage[MAX_QPATH] = { 0 };
+		char *printMessage = trigger->message;
 		char c[4] = S_COLOR_RED;
 		float time = GetTimeMS() - player->client->pers.stats.startTime;
 		int average;
@@ -1734,8 +1775,14 @@ void TimerStop(gentity_t *trigger, gentity_t *player, trace_t *trace) {//JAPRO T
 		const int endLag = GetTimeMS() - level.frameStartTime + level.time - player->client->pers.cmd.serverTime;
 		const int diffLag = player->client->pers.startLag - endLag;
 		const int lessTime = InterpolateTouchTime(player, trigger);
+		const char *runtimeMapName = G_RuntimeWarpClientMapName(player->client->ps.clientNum);
 		qboolean coopFinished = qfalse;
 		gentity_t* duelAgainst;
+
+		if ((!printMessage || !printMessage[0]) && runtimeMapName[0]) {
+			Q_strncpyz(runtimePrintMessage, runtimeMapName, sizeof(runtimePrintMessage));
+			printMessage = runtimePrintMessage;
+		}
 
 		//Com_Printf("Flag: %i, Objective %i, player objectives %i\n", restrictions, trigger->objective, player->client->pers.stats.checkpoints);
 		//If player has MORe checkpoints than the end trigger requires, that also fails.  Fix this?
@@ -1832,13 +1879,13 @@ void TimerStop(gentity_t *trigger, gentity_t *player, trace_t *trace) {//JAPRO T
 		Q_StripColor(playerName);
 
 		if (!valid) {
-			PrintRaceTime(NULL, playerName, trigger->message, styleStr, (int)(player->client->pers.stats.topSpeed + 0.5f), average, timeStr, player->client->ps.clientNum, qfalse, qfalse, qfalse, qfalse, qfalse, 0, 0, 0, 0, 0);
+			PrintRaceTime(NULL, playerName, printMessage, styleStr, (int)(player->client->pers.stats.topSpeed + 0.5f), average, timeStr, player->client->ps.clientNum, qfalse, qfalse, qfalse, qfalse, qfalse, 0, 0, 0, 0, 0);
 			//How do we tell if we are the 2nd one..unless end timer does not reset for duelers
 			//
 			if (coopFinished) {
 				Q_strncpyz(playerName, duelAgainst->client->pers.netname, sizeof(playerName));
 				Q_StripColor(playerName);
-				PrintRaceTime(NULL, playerName, trigger->message, styleStr, 0, 0, timeStr, duelAgainst->client->ps.clientNum, qfalse, qfalse, qfalse, qfalse, qfalse, 0, 0, 0, 0, 0);
+				PrintRaceTime(NULL, playerName, printMessage, styleStr, 0, 0, timeStr, duelAgainst->client->ps.clientNum, qfalse, qfalse, qfalse, qfalse, qfalse, 0, 0, 0, 0, 0);
 			}
 		}
 		else {
@@ -1855,11 +1902,11 @@ void TimerStop(gentity_t *trigger, gentity_t *player, trace_t *trace) {//JAPRO T
 				}
 			}
 			else {
-				PrintRaceTime(NULL, playerName, trigger->message, styleStr, (int)(player->client->pers.stats.topSpeed + 0.5f), average, timeStr, player->client->ps.clientNum, qfalse, qfalse, qfalse, qfalse, qtrue, 0, 0, 0, 0, 0);
+				PrintRaceTime(NULL, playerName, printMessage, styleStr, (int)(player->client->pers.stats.topSpeed + 0.5f), average, timeStr, player->client->ps.clientNum, qfalse, qfalse, qfalse, qfalse, qtrue, 0, 0, 0, 0, 0);
 				if (coopFinished) {
 					Q_strncpyz(playerName, duelAgainst->client->pers.netname, sizeof(playerName));
 					Q_StripColor(playerName);
-					PrintRaceTime(NULL, playerName, trigger->message, styleStr, 0, 0, timeStr, duelAgainst->client->ps.clientNum, qfalse, qfalse, qfalse, qfalse, qtrue, 0, 0, 0, 0, 0);
+					PrintRaceTime(NULL, playerName, printMessage, styleStr, 0, 0, timeStr, duelAgainst->client->ps.clientNum, qfalse, qfalse, qfalse, qfalse, qtrue, 0, 0, 0, 0, 0);
 				}
 			}
 		}
@@ -1966,7 +2013,7 @@ void TimerCheckpoint(gentity_t *trigger, gentity_t *player, trace_t *trace) {//J
 		G_AppendRunCheckpoint(player->client, time, (int)(player->client->pers.stats.topSpeed + 0.5f), average);
 
 		/*
-		if (trigger && trigger->spawnflags & 1)//Minimalist print loda fixme get rid of target shit 
+		if (trigger && trigger->spawnflags & 1)//Minimalist print loda fixme get rid of target shit
 			trap->SendServerCommand( player-g_entities, va("cp \"^3%.3fs^5, avg ^3%i^5u\n\n\n\n\n\n\n\n\n\n\"", (float)time * 0.001f, average));
 		else
 			trap->SendServerCommand( player-g_entities, va("chat \"^5Checkpoint: ^3%.3f^5, max ^3%i^5, average ^3%i^5 ups\"", (float)time * 0.001f, player->client->pers.stats.topSpeed, average));
@@ -2128,10 +2175,8 @@ void Use_target_restrict_on(gentity_t *trigger, gentity_t *other, gentity_t *pla
 	}
 
 	if (player->client->pers.stats.startTime && trigger->spawnflags & RESTRICT_FLAG_RESET) {
-		player->client->pers.stats.startTime = 0;
-		if (player->client->sess.raceMode)
-			player->client->ps.duelTime = 0;
-		trap->SendServerCommand(player - g_entities, "cp \"Timer reset\n\n\n\n\n\n\n\n\n\n\""); //Send message?`
+		//Have this call ResetPlayerTimers instead?
+		ResetPlayerTimers(player, qtrue);
 	}
 	if (trigger->spawnflags & RESTRICT_FLAG_SUPERJUMP) {
 		player->client->ps.stats[STAT_RESTRICTIONS] |= JAPRO_RESTRICT_SUPERJUMP;

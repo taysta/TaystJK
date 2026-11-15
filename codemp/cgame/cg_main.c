@@ -3017,6 +3017,7 @@ Ghoul2 Insert End
 	memset( &cgs, 0, sizeof( cgs ) );
 	memset( cg_weapons, 0, sizeof(cg_weapons) );
 	memset( cg_dueltypes, 0, sizeof(cg_dueltypes) );//JAPRO - Clientside - Fullforce Duels
+	memset( cosmeticUnlocks, 0, sizeof(cosmeticUnlocks) ); //CG_ParseCosmetics accumulates across commands, so start each connection empty
 
 	cg.clientNum = clientNum;
 

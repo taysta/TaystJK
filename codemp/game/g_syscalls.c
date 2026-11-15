@@ -257,9 +257,14 @@ static QINLINE void EndHack(int entityNum) { //Should be inline?
 }
 
 void JP_Trace( trace_t *results, const vec3_t start, const vec3_t mins, const vec3_t maxs, const vec3_t end, int passEntityNum, int contentmask, int capsule, int traceFlags, int useLod ) {
-	BeginHack(passEntityNum);
+	if ( G_DimensionIsolationActive() ) {
+		trap->Trace( results, start, mins, maxs, end, passEntityNum, contentmask, capsule, traceFlags, useLod );
+		return;
+	}
+
+	BeginHack( passEntityNum );
 	trap->Trace( results, start, mins, maxs, end, passEntityNum, contentmask, capsule, traceFlags, useLod );
-	EndHack(passEntityNum);
+	EndHack( passEntityNum );
 }
 
 void trap_Trace( trace_t *results, const vec3_t start, const vec3_t mins, const vec3_t maxs, const vec3_t end, int passEntityNum, int contentmask ) {
@@ -270,6 +275,24 @@ void trap_G2Trace( trace_t *results, const vec3_t start, const vec3_t mins, cons
 }
 int trap_PointContents( const vec3_t point, int passEntityNum ) {
 	return Q_syscall( G_POINT_CONTENTS, point, passEntityNum );
+}
+qboolean trap_CanEntitiesInteract( int sourceEntityNum, int targetEntityNum, svIsolationPurpose_t purpose ) {
+	return Q_syscall( G_CAN_ENTITIES_INTERACT, sourceEntityNum, targetEntityNum, purpose );
+}
+qboolean trap_SetClientMap( int clientNum, const char *mapName ) {
+	return Q_syscall( G_SET_CLIENT_MAP, clientNum, mapName );
+}
+int trap_GetClientRuntimeBSPInstance( int clientNum ) {
+	return Q_syscall( G_GET_CLIENT_RUNTIME_BSP_INSTANCE, clientNum );
+}
+qboolean trap_BeginAsyncBSPFileRead( const char *mapName ) {
+	return Q_syscall( G_BEGIN_ASYNC_BSP_FILE_READ, mapName );
+}
+int trap_AsyncBSPFileReadStatus( const char *mapName ) {
+	return Q_syscall( G_ASYNC_BSP_FILE_READ_STATUS, mapName );
+}
+void trap_SetEntityRuntimeBSPInstance( int entityNum, int runtimeBSPInstance ) {
+	Q_syscall( G_SET_ENTITY_RUNTIME_BSP_INSTANCE, entityNum, runtimeBSPInstance );
 }
 qboolean trap_InPVS( const vec3_t p1, const vec3_t p2 ) {
 	return Q_syscall( G_IN_PVS, p1, p2 );
@@ -1176,6 +1199,8 @@ static void TranslateSyscalls( void ) {
 
 	memset( &import, 0, sizeof( import ) );
 	trap = &import;
+	g_gameImportHasDimensionIsolation = qfalse;
+	g_gameImportHasRuntimeBSP = qfalse;
 
 	Com_Error								= G_Error;
 	Com_Printf								= G_Printf;
@@ -1220,6 +1245,12 @@ static void TranslateSyscalls( void ) {
 	trap->LinkEntity						= trap_LinkEntity;
 	trap->LocateGameData					= trap_LocateGameData;
 	trap->PointContents						= trap_PointContents;
+	trap->CanEntitiesInteract				= trap_CanEntitiesInteract;
+	trap->SetClientMap						= trap_SetClientMap;
+	trap->GetClientRuntimeBSPInstance		= trap_GetClientRuntimeBSPInstance;
+	trap->BeginAsyncBSPFileRead				= trap_BeginAsyncBSPFileRead;
+	trap->AsyncBSPFileReadStatus			= trap_AsyncBSPFileReadStatus;
+	trap->SetEntityRuntimeBSPInstance		= trap_SetEntityRuntimeBSPInstance;
 	trap->SendConsoleCommand				= trap_SendConsoleCommand;
 	trap->SendServerCommand					= trap_SendServerCommand;
 	trap->SetBrushModel						= trap_SetBrushModel;
@@ -1489,4 +1520,6 @@ static void TranslateSyscalls( void ) {
 	trap->G2API_CleanEntAttachments			= trap_G2API_CleanEntAttachments;
 	trap->G2API_OverrideServer				= trap_G2API_OverrideServer;
 	trap->G2API_GetSurfaceName				= trap_G2API_GetSurfaceName;
+
+	G_DetectGameImportExtensions();
 }
