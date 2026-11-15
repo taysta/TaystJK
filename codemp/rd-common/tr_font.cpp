@@ -37,6 +37,7 @@ cvar_t* r_useFreeType;
 #include FT_TRUETYPE_TABLES_H	// FT_Load_Sfnt_Table (GSUB, for emoji ZWJ ligatures)
 
 #include <vector>
+#include <unordered_map>
 #include <algorithm>	// std::stable_sort (GSUB ligature ordering)
 
 static FT_Library g_FTLibrary = NULL;
@@ -110,8 +111,11 @@ static void Font_LoadFallbacks(void)
 	}
 }
 
-#define TTF_ATLAS_SIZE			512
+#define TTF_ATLAS_SIZE			512		// smallest atlas page, see CFontInfo::TTF_Init
+#define TTF_ATLAS_MAX_SIZE		2048
 #define TTF_ATLAS_MAX_PAGES		16
+#define TTF_DIRECT_GLYPHS		256		// codepoints below this are looked up through a flat table
+#define TTF_PRECACHE_LIMIT		0x2000	// alphabetic scripts live below this: rasterized a 128 codepoint block at a time
 #define TTF_GLYPH_PADDING		2
 #define TTF_DEFAULT_POINTSIZE	16
 
@@ -120,7 +124,10 @@ struct TTFGlyph_t
 	glyphInfo_t	glyph;
 	qhandle_t	hShader;		// atlas page this glyph lives on
 	qhandle_t	hShadowShader;	// vertex-tinted twin, used by the dropshadow pass
+	bool		bMissing;		// rasterization failed: remembered so it isn't retried on every draw
 };
+
+typedef std::unordered_map<unsigned int, TTFGlyph_t> TTFGlyphMap_t;
 
 struct TTFAtlasPage_t
 {
@@ -131,6 +138,89 @@ struct TTFAtlasPage_t
 	int			iCursorY;
 	int			iRowHeight;
 };
+
+// Freshly rasterized glyphs are not sent to the GPU one by one: they queue up
+// here and TTF_FlushUploads() sends each run of neighbours on an atlas shelf as
+// a single texture update...
+//
+struct TTFPendingUpload_t
+{
+	void*				pImage;
+	int					iX, iY, iW, iH;
+	std::vector<byte>	rgba;
+};
+
+static std::vector<TTFPendingUpload_t> g_TTFPendingUploads;
+
+// takes over the contents of rgba...
+//
+static void TTF_QueueUpload(void* pImage, int iX, int iY, int iW, int iH, std::vector<byte>& rgba)
+{
+	g_TTFPendingUploads.push_back(TTFPendingUpload_t());
+
+	TTFPendingUpload_t& upload = g_TTFPendingUploads.back();
+	upload.pImage = pImage;
+	upload.iX = iX;
+	upload.iY = iY;
+	upload.iW = iW;
+	upload.iH = iH;
+	upload.rgba.swap(rgba);
+}
+
+static void TTF_FlushUploads(void)
+{
+	const size_t iNumUploads = g_TTFPendingUploads.size();
+	std::vector<byte> merged;
+
+	for (size_t i = 0; i < iNumUploads; )
+	{
+		const TTFPendingUpload_t& first = g_TTFPendingUploads[i];
+
+		// the shelf packer hands out space left to right, so glyphs queued one
+		// after another on the same shelf are neighbours with nothing but
+		// padding (and the unused space below shorter glyphs) between them...
+		size_t j = i + 1;
+		int iH = first.iH;
+		while (j < iNumUploads
+			&& g_TTFPendingUploads[j].pImage == first.pImage
+			&& g_TTFPendingUploads[j].iY == first.iY
+			&& g_TTFPendingUploads[j].iX > g_TTFPendingUploads[j - 1].iX)
+		{
+			if (g_TTFPendingUploads[j].iH > iH)
+			{
+				iH = g_TTFPendingUploads[j].iH;
+			}
+			j++;
+		}
+
+		if (j == i + 1)
+		{
+			R_Font_UpdateAtlasImage(first.pImage, first.iX, first.iY, first.iW, first.iH, &first.rgba[0]);
+		}
+		else
+		{
+			const TTFPendingUpload_t& last = g_TTFPendingUploads[j - 1];
+			const int iW = (last.iX + last.iW) - first.iX;
+
+			merged.assign((size_t)iW * iH * 4, 0);
+			for (size_t k = i; k < j; k++)
+			{
+				const TTFPendingUpload_t& upload = g_TTFPendingUploads[k];
+				for (int iRow = 0; iRow < upload.iH; iRow++)
+				{
+					memcpy(&merged[((size_t)iRow * iW + (upload.iX - first.iX)) * 4],
+						&upload.rgba[(size_t)iRow * upload.iW * 4],
+						(size_t)upload.iW * 4);
+				}
+			}
+			R_Font_UpdateAtlasImage(first.pImage, first.iX, first.iY, iW, iH, &merged[0]);
+		}
+
+		i = j;
+	}
+
+	g_TTFPendingUploads.clear();
+}
 
 // font name may carry an "@NN" point size suffix, eg "myfont@24"...
 //
@@ -345,7 +435,11 @@ private:
 	int				m_iTTFNumPages;
 	TTFAtlasPage_t	m_TTFColorPages[TTF_ATLAS_MAX_PAGES];	// identity-colour pages for emoji/colour glyphs
 	int				m_iTTFNumColorPages;
-	std::map<unsigned int, TTFGlyph_t>	m_TTFGlyphs;
+	int				m_iTTFAtlasSize;		// width and height of this font's atlas pages
+	bool			m_bTTFAtlasFull;
+	TTFGlyphMap_t	m_TTFGlyphs;
+	TTFGlyph_t*		m_TTFDirect[TTF_DIRECT_GLYPHS];	// m_TTFGlyphs entries of the low codepoints, NULL until cached
+	uint64_t		m_uiTTFPrecachedBlocks;	// one bit per 128 codepoint block below TTF_PRECACHE_LIMIT
 	std::map<std::vector<unsigned int>, unsigned int> m_TTFSeqCache;	// emoji sequence -> synthetic m_TTFGlyphs key (0 = known failure)
 
 	TTFGlyph_t* TTF_CacheGlyph(unsigned int uiLetter);
@@ -1073,6 +1167,10 @@ CFontInfo::CFontInfo(const char *_fontName)
 	memset(m_TTFPages, 0, sizeof(m_TTFPages));
 	m_iTTFNumColorPages = 0;
 	memset(m_TTFColorPages, 0, sizeof(m_TTFColorPages));
+	m_iTTFAtlasSize = TTF_ATLAS_SIZE;
+	m_bTTFAtlasFull = false;
+	memset(m_TTFDirect, 0, sizeof(m_TTFDirect));
+	m_uiTTFPrecachedBlocks = 0;
 #endif
 	memset(mGlyphs, 0, sizeof(mGlyphs));
 	mPointSize = 0;
@@ -1317,6 +1415,20 @@ bool CFontInfo::TTF_Init(const char* psName)
 		mDescender = mHeight - mAscender;
 	}
 
+	// size the atlas pages so that the glyphs of ordinary text end up on one
+	// page: quads are only batched into a single draw while their shader (ie
+	// their page) stays the same. Matters for the hi-res variants, whose
+	// glyphs are several times larger than the base font's...
+	m_iTTFAtlasSize = TTF_ATLAS_SIZE;
+	while (m_iTTFAtlasSize < TTF_ATLAS_MAX_SIZE && iPointSize * 18 > m_iTTFAtlasSize)
+	{
+		m_iTTFAtlasSize <<= 1;
+	}
+	while (m_iTTFAtlasSize > TTF_ATLAS_SIZE && glConfig.maxTextureSize > 0 && m_iTTFAtlasSize > glConfig.maxTextureSize)
+	{
+		m_iTTFAtlasSize >>= 1;
+	}
+
 	mbRoundCalcs = false;
 	m_bIsFakeAlienLanguage = true;	// (ab)used here: disables SBCS/Asian override machinery, meaningless for TTF
 	m_bTTF = true;
@@ -1331,7 +1443,7 @@ TTFAtlasPage_t* CFontInfo::TTF_AllocAtlasSpace(int iWidth, int iHeight, int* piX
 	const int iPaddedW = iWidth + TTF_GLYPH_PADDING;
 	const int iPaddedH = iHeight + TTF_GLYPH_PADDING;
 
-	if (iPaddedW > TTF_ATLAS_SIZE || iPaddedH > TTF_ATLAS_SIZE)
+	if (iPaddedW > m_iTTFAtlasSize || iPaddedH > m_iTTFAtlasSize)
 	{
 		return NULL;	// glyph bigger than a whole page?!
 	}
@@ -1345,14 +1457,14 @@ TTFAtlasPage_t* CFontInfo::TTF_AllocAtlasSpace(int iWidth, int iHeight, int* piX
 
 	if (pPage)
 	{
-		if (pPage->iCursorX + iPaddedW > TTF_ATLAS_SIZE)
+		if (pPage->iCursorX + iPaddedW > m_iTTFAtlasSize)
 		{
 			// start a new shelf...
 			pPage->iCursorX = 0;
 			pPage->iCursorY += pPage->iRowHeight;
 			pPage->iRowHeight = 0;
 		}
-		if (pPage->iCursorY + iPaddedH > TTF_ATLAS_SIZE)
+		if (pPage->iCursorY + iPaddedH > m_iTTFAtlasSize)
 		{
 			pPage = NULL;	// page is full
 		}
@@ -1362,12 +1474,19 @@ TTFAtlasPage_t* CFontInfo::TTF_AllocAtlasSpace(int iWidth, int iHeight, int* piX
 	{
 		if (iNumPages == TTF_ATLAS_MAX_PAGES)
 		{
-			ri.Printf(PRINT_WARNING, "TTF font %s: out of atlas pages\n", m_sFontName);
+			if (!m_bTTFAtlasFull)
+			{
+				m_bTTFAtlasFull = true;
+				ri.Printf(PRINT_WARNING, "TTF font %s: out of atlas pages\n", m_sFontName);
+			}
 			return NULL;
 		}
+		// creating an image can make the renderer issue the draw commands
+		// queued so far, so the glyphs they use must be on the GPU first...
+		TTF_FlushUploads();
 		pPage = &pPageArray[iNumPages++];
 		pPage->iCursorX = pPage->iCursorY = pPage->iRowHeight = 0;
-		pPage->pImage = R_Font_CreateAtlasImage(TTF_ATLAS_SIZE, TTF_ATLAS_SIZE, &pPage->hShader, bColor ? qtrue : qfalse, &pPage->hShadowShader);
+		pPage->pImage = R_Font_CreateAtlasImage(m_iTTFAtlasSize, m_iTTFAtlasSize, &pPage->hShader, bColor ? qtrue : qfalse, &pPage->hShadowShader);
 		if (!pPage->pImage)
 		{
 			iNumPages--;
@@ -1839,7 +1958,7 @@ const glyphInfo_t* CFontInfo::GetSequenceGlyph(unsigned int uiFirst, const char*
 	const unsigned int uiCacheKey = 0x40000000u | ((unsigned int)iFaceId << 16) | (uiLigGlyph & 0xFFFF);
 
 	TTFGlyph_t* pEntry;
-	std::map<unsigned int, TTFGlyph_t>::iterator itGlyph = m_TTFGlyphs.find(uiCacheKey);
+	TTFGlyphMap_t::iterator itGlyph = m_TTFGlyphs.find(uiCacheKey);
 	if (itGlyph != m_TTFGlyphs.end())
 	{
 		pEntry = &(*itGlyph).second;
@@ -1866,15 +1985,47 @@ const glyphInfo_t* CFontInfo::GetSequenceGlyph(unsigned int uiFirst, const char*
 
 TTFGlyph_t* CFontInfo::TTF_CacheGlyph(unsigned int uiLetter)
 {
-	std::map<unsigned int, TTFGlyph_t>::iterator it = m_TTFGlyphs.find(uiLetter);
-	if (it != m_TTFGlyphs.end())
+	if (uiLetter < TTF_DIRECT_GLYPHS)
 	{
-		return &(*it).second;
+		TTFGlyph_t* pDirect = m_TTFDirect[uiLetter];
+		if (pDirect)
+		{
+			return pDirect->bMissing ? NULL : pDirect;
+		}
+	}
+	else
+	{
+		TTFGlyphMap_t::iterator it = m_TTFGlyphs.find(uiLetter);
+		if (it != m_TTFGlyphs.end())
+		{
+			return (*it).second.bMissing ? NULL : &(*it).second;
+		}
 	}
 
 	if (!m_ftFace)
 	{
 		return NULL;
+	}
+
+	// first use of an alphabetic block: rasterize every glyph the font has in
+	// it right away, so they reach the GPU as a few large uploads here rather
+	// than trickling in one at a time as text using them shows up...
+	if (uiLetter < TTF_PRECACHE_LIMIT)
+	{
+		const uint64_t uiBlockBit = (uint64_t)1 << (uiLetter >> 7);
+		if (!(m_uiTTFPrecachedBlocks & uiBlockBit))
+		{
+			m_uiTTFPrecachedBlocks |= uiBlockBit;
+
+			const unsigned int uiBlockStart = uiLetter & ~0x7Fu;
+			for (unsigned int uiOther = uiBlockStart; uiOther < uiBlockStart + 0x80; uiOther++)
+			{
+				if (uiOther != uiLetter && FT_Get_Char_Index(m_ftFace, uiOther))
+				{
+					TTF_CacheGlyph(uiOther);
+				}
+			}
+		}
 	}
 
 	FT_Face pFace = m_ftFace;
@@ -1903,7 +2054,20 @@ TTFGlyph_t* CFontInfo::TTF_CacheGlyph(unsigned int uiLetter)
 		}
 	}
 
-	return TTF_RenderGlyphIndex(pFace, uiGlyphIndex, uiLetter);
+	TTFGlyph_t* pEntry = TTF_RenderGlyphIndex(pFace, uiGlyphIndex, uiLetter);
+	if (!pEntry)
+	{
+		// (broken glyph, atlas full...) cache the failure as well, or every
+		// draw of this character would try to rasterize it all over again
+		pEntry = &m_TTFGlyphs[uiLetter];
+		memset(pEntry, 0, sizeof(*pEntry));
+		pEntry->bMissing = true;
+	}
+	if (uiLetter < TTF_DIRECT_GLYPHS)
+	{
+		m_TTFDirect[uiLetter] = pEntry;
+	}
+	return pEntry->bMissing ? NULL : pEntry;
 }
 
 // rasterize a glyph by its index in pFace and cache it in m_TTFGlyphs under
@@ -1933,7 +2097,16 @@ TTFGlyph_t* CFontInfo::TTF_RenderGlyphIndex(FT_Face pFace, FT_UInt uiGlyphIndex,
 
 			FT_Palette_Select(pFace, 0, &pPalette);
 
-			// pass 1: union bounding box over all layers...
+			// rasterize every layer once, keeping its coverage bitmap for the
+			// compositing below, and gather the union bounding box...
+			struct ColorLayer_t
+			{
+				int					iLeft, iTop, iW, iH;
+				FT_UInt				uiColor;
+				std::vector<byte>	coverage;
+			};
+			std::vector<ColorLayer_t> layers;
+
 			FT_LayerIterator iterBox; iterBox.p = NULL;
 			while (FT_Get_Color_Glyph_Layer(pFace, uiGlyphIndex, &uiLayerGlyph, &uiLayerColor, &iterBox))
 			{
@@ -1950,6 +2123,19 @@ TTFGlyph_t* CFontInfo::TTF_RenderGlyphIndex(FT_Face pFace, FT_UInt uiGlyphIndex,
 				if (s->bitmap_left + (int)s->bitmap.width > iXMax) { iXMax = s->bitmap_left + (int)s->bitmap.width; }
 				if (s->bitmap_top > iYMax) { iYMax = s->bitmap_top; }
 				if (s->bitmap_top - (int)s->bitmap.rows < iYMin) { iYMin = s->bitmap_top - (int)s->bitmap.rows; }
+
+				layers.push_back(ColorLayer_t());
+				ColorLayer_t& layer = layers.back();
+				layer.iLeft = s->bitmap_left;
+				layer.iTop = s->bitmap_top;
+				layer.iW = (int)s->bitmap.width;
+				layer.iH = (int)s->bitmap.rows;
+				layer.uiColor = uiLayerColor;
+				layer.coverage.resize((size_t)layer.iW * layer.iH);
+				for (int iRow = 0; iRow < layer.iH; iRow++)
+				{
+					memcpy(&layer.coverage[(size_t)iRow * layer.iW], s->bitmap.buffer + iRow * s->bitmap.pitch, layer.iW);
+				}
 			}
 
 			if (FT_Load_Glyph(pFace, uiGlyphIndex, FT_LOAD_DEFAULT) == 0)
@@ -1961,35 +2147,30 @@ TTFGlyph_t* CFontInfo::TTF_RenderGlyphIndex(FT_Face pFace, FT_UInt uiGlyphIndex,
 			{
 				const int iW = iXMax - iXMin;
 				const int iH = iYMax - iYMin;
-				byte* pRGBA = new byte[iW * iH * 4];
-				memset(pRGBA, 0, iW * iH * 4);
+				std::vector<byte> rgba((size_t)iW * iH * 4, 0);
+				byte* pRGBA = &rgba[0];
 
-				// pass 2: composite the layers src-over, in layer order...
-				FT_LayerIterator iterComp; iterComp.p = NULL;
-				while (FT_Get_Color_Glyph_Layer(pFace, uiGlyphIndex, &uiLayerGlyph, &uiLayerColor, &iterComp))
+				// composite the layers src-over, in layer order...
+				for (size_t iLayer = 0; iLayer < layers.size(); iLayer++)
 				{
-					if (FT_Load_Glyph(pFace, uiLayerGlyph, FT_LOAD_RENDER) != 0)
-					{
-						continue;
-					}
-					const FT_GlyphSlot s = pFace->glyph;
+					const ColorLayer_t& layer = layers[iLayer];
 
 					byte r = 255, g = 255, b = 255, a = 255;	// 0xFFFF = "text foreground": use white
-					if (uiLayerColor != 0xFFFF)
+					if (layer.uiColor != 0xFFFF)
 					{
-						r = pPalette[uiLayerColor].red;
-						g = pPalette[uiLayerColor].green;
-						b = pPalette[uiLayerColor].blue;
-						a = pPalette[uiLayerColor].alpha;
+						r = pPalette[layer.uiColor].red;
+						g = pPalette[layer.uiColor].green;
+						b = pPalette[layer.uiColor].blue;
+						a = pPalette[layer.uiColor].alpha;
 					}
 
-					for (int iRow = 0; iRow < (int)s->bitmap.rows; iRow++)
+					for (int iRow = 0; iRow < layer.iH; iRow++)
 					{
-						const byte* pSrc = s->bitmap.buffer + iRow * s->bitmap.pitch;
-						const int	iDstY = (iYMax - s->bitmap_top) + iRow;
-						byte* pDstRow = pRGBA + (iDstY * iW + (s->bitmap_left - iXMin)) * 4;
+						const byte* pSrc = &layer.coverage[(size_t)iRow * layer.iW];
+						const int	iDstY = (iYMax - layer.iTop) + iRow;
+						byte* pDstRow = pRGBA + (iDstY * iW + (layer.iLeft - iXMin)) * 4;
 
-						for (int iCol = 0; iCol < (int)s->bitmap.width; iCol++)
+						for (int iCol = 0; iCol < layer.iW; iCol++)
 						{
 							const int iSrcA = (pSrc[iCol] * a) / 255;
 							if (!iSrcA)
@@ -2010,13 +2191,12 @@ TTFGlyph_t* CFontInfo::TTF_RenderGlyphIndex(FT_Face pFace, FT_UInt uiGlyphIndex,
 				TTFAtlasPage_t* pPage = TTF_AllocAtlasSpace(iW, iH, &iX, &iY, true);
 				if (pPage)
 				{
-					R_Font_UpdateAtlasImage(pPage->pImage, iX, iY, iW, iH, pRGBA);
-					delete[] pRGBA;
+					TTF_QueueUpload(pPage->pImage, iX, iY, iW, iH, rgba);
 
-					entry.glyph.s = (float)iX / (float)TTF_ATLAS_SIZE;
-					entry.glyph.t = (float)iY / (float)TTF_ATLAS_SIZE;
-					entry.glyph.s2 = (float)(iX + iW) / (float)TTF_ATLAS_SIZE;
-					entry.glyph.t2 = (float)(iY + iH) / (float)TTF_ATLAS_SIZE;
+					entry.glyph.s = (float)iX / (float)m_iTTFAtlasSize;
+					entry.glyph.t = (float)iY / (float)m_iTTFAtlasSize;
+					entry.glyph.s2 = (float)(iX + iW) / (float)m_iTTFAtlasSize;
+					entry.glyph.t2 = (float)(iY + iH) / (float)m_iTTFAtlasSize;
 					entry.hShader = pPage->hShader;
 					entry.hShadowShader = pPage->hShadowShader;
 
@@ -2029,7 +2209,6 @@ TTFGlyph_t* CFontInfo::TTF_RenderGlyphIndex(FT_Face pFace, FT_UInt uiGlyphIndex,
 					m_TTFGlyphs[uiCacheKey] = entry;
 					return &m_TTFGlyphs[uiCacheKey];
 				}
-				delete[] pRGBA;
 			}
 		}
 	}
@@ -2060,7 +2239,8 @@ TTFGlyph_t* CFontInfo::TTF_RenderGlyphIndex(FT_Face pFace, FT_UInt uiGlyphIndex,
 
 		// expand FreeType's 8-bit coverage bitmap into white RGBA...
 		//
-		byte* pRGBA = new byte[iW * iH * 4];
+		std::vector<byte> rgba((size_t)iW * iH * 4);
+		byte* pRGBA = &rgba[0];
 		for (int iRow = 0; iRow < iH; iRow++)
 		{
 			const byte* pSrc = pBitmap->buffer + iRow * pBitmap->pitch;
@@ -2073,13 +2253,12 @@ TTFGlyph_t* CFontInfo::TTF_RenderGlyphIndex(FT_Face pFace, FT_UInt uiGlyphIndex,
 				pDst[iCol * 4 + 3] = pSrc[iCol];
 			}
 		}
-		R_Font_UpdateAtlasImage(pPage->pImage, iX, iY, iW, iH, pRGBA);
-		delete[] pRGBA;
+		TTF_QueueUpload(pPage->pImage, iX, iY, iW, iH, rgba);
 
-		entry.glyph.s = (float)iX / (float)TTF_ATLAS_SIZE;
-		entry.glyph.t = (float)iY / (float)TTF_ATLAS_SIZE;
-		entry.glyph.s2 = (float)(iX + iW) / (float)TTF_ATLAS_SIZE;
-		entry.glyph.t2 = (float)(iY + iH) / (float)TTF_ATLAS_SIZE;
+		entry.glyph.s = (float)iX / (float)m_iTTFAtlasSize;
+		entry.glyph.t = (float)iY / (float)m_iTTFAtlasSize;
+		entry.glyph.s2 = (float)(iX + iW) / (float)m_iTTFAtlasSize;
+		entry.glyph.t2 = (float)(iY + iH) / (float)m_iTTFAtlasSize;
 		entry.hShader = pPage->hShader;
 		entry.hShadowShader = pPage->hShadowShader;
 	}
@@ -2987,6 +3166,9 @@ void RE_Font_DrawString(int ox, int oy, const char *psText, const float *rgba, c
 		}
 	}
 	//let it remember the old color //RE_SetColor(NULL);
+#ifdef USE_FREETYPE
+	TTF_FlushUploads();	// glyphs this string rasterized must be uploaded before its quads get drawn
+#endif
 }
 
 static int RE_RegisterFont_Real(const char *psName)
@@ -3165,6 +3347,7 @@ void R_ShutdownFonts(void)
 	g_iNumFallbacks = 0;
 	g_bFallbacksLoaded = false;
 	g_GSUBCache.clear();	// keyed by FT_Face pointers which are now gone
+	g_TTFPendingUploads.clear();
 
 	if (g_FTLibrary)
 	{

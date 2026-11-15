@@ -3856,11 +3856,18 @@ void* R_Font_CreateAtlasImage(int iWidth, int iHeight, qhandle_t* phShader, qboo
 
 void R_Font_UpdateAtlasImage(void* pAtlasImage, int iX, int iY, int iWidth, int iHeight, const byte* pRGBA)
 {
-	if (!pAtlasImage)
+	image_t* pImage = (image_t*)pAtlasImage;
+
+	if (!pImage)
 	{
 		return;
 	}
 
-	R_UpdateSubImage((image_t*)pAtlasImage, (byte*)pRGBA, iX, iY, iWidth, iHeight);
+	// the atlas is a plain unscaled RGBA8 texture without mipmaps, so skip the
+	// resampling, light scaling and temp allocations of R_UpdateSubImage...
+	GL_SelectTexture(pImage->TMU);
+	GL_Bind(pImage);
+	qglTexSubImage2D(GL_TEXTURE_2D, 0, iX, iY, iWidth, iHeight, GL_RGBA, GL_UNSIGNED_BYTE, pRGBA);
+	GL_SelectTexture(0);
 }
 #endif // USE_FREETYPE
