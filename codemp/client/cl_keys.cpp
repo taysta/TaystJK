@@ -623,6 +623,72 @@ void Field_VariableSizeDraw( field_t *edit, int x, int y, int size, qboolean sho
 	}
 }
 
+/*
+===================
+Field_FontDraw
+
+Draws an edit field through the font system instead of the charset grid:
+proportional, drawn at the display's resolution, UTF-8 capable.
+x, y are in virtual 640x480 units.
+===================
+*/
+void Field_FontDraw( field_t *edit, float x, float y, float scale, int font, const float *color, qboolean showCursor ) {
+	char	str[MAX_STRING_CHARS];
+	int		len = strlen( edit->buffer );
+	int		drawLen = edit->widthInChars - 1; // - 1 so there is always a space for the cursor
+	int		prestep = 0;
+
+	// same window into the buffer the grid drawing uses...
+	if ( len > drawLen ) {
+		if ( edit->scroll + drawLen > len ) {
+			edit->scroll = len - drawLen;
+			if ( edit->scroll < 0 ) {
+				edit->scroll = 0;
+			}
+		}
+		prestep = edit->scroll;
+	}
+	// ...but never starting or ending inside a UTF-8 sequence
+	while ( prestep > 0 && Q_UTF8_IsContinuationByte( (byte)edit->buffer[prestep] ) ) {
+		prestep--;
+	}
+	if ( prestep + drawLen > len ) {
+		drawLen = len - prestep;
+	}
+	if ( drawLen < 0 || drawLen >= MAX_STRING_CHARS ) {
+		return;
+	}
+	while ( drawLen > 0 && Q_UTF8_IsContinuationByte( (byte)edit->buffer[prestep + drawLen] ) ) {
+		drawLen--;
+	}
+	Com_Memcpy( str, edit->buffer + prestep, drawLen );
+	str[drawLen] = 0;
+
+	re->Font_DrawString( (int)x, (int)y, str, color, font | STYLE_DROPSHADOW, -1, scale );
+
+	if ( showCursor && !((int)( cls.realtime >> 8 ) & 1) ) {
+		int prefix = edit->cursor - prestep;
+
+		if ( prefix < 0 ) {
+			prefix = 0;
+		}
+		if ( prefix > drawLen ) {
+			prefix = drawLen;
+		}
+		str[prefix] = 0;
+
+		const float cursorX = x + re->Font_StrLenPixels( str, font, scale );
+		const float cursorW = re->Font_StrLenPixels( "a", font, scale );
+		const float cellH = re->Font_HeightPixels( font, scale );
+
+		if ( kg.key_overstrikeMode ) {
+			SCR_FillRect( cursorX, y, cursorW, cellH, color );			// full block
+		} else {
+			SCR_FillRect( cursorX, y + cellH, cursorW, 2.0f, color );	// bar right below the line
+		}
+	}
+}
+
 void Field_Draw( field_t *edit, int x, int y, qboolean showCursor, qboolean noColorEscape )
 {
 	Field_VariableSizeDraw( edit, x, y, con.charWidth, showCursor, noColorEscape );

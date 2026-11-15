@@ -1145,10 +1145,34 @@ void Con_DrawNotify (void)
 			chattext = SE_GetString("MP_SVGAME", "SAY");
 		}
 
+		// con_chatFont: draw the chat prompt and input with the font system
+		// instead of the stretched charset grid. 2 = when TTF fonts are
+		// preferred (r_useFreeType 2), which is when it pays off the most.
+		static cvar_t *con_chatFont = NULL;
+		if ( !con_chatFont ) {
+			con_chatFont = Cvar_Get( "con_chatFont", "2", CVAR_ARCHIVE, "Chat input line: 0 = charset grid, 1 = font system, 2 = font system when r_useFreeType is 2" );
+		}
+		const int iChatFontHeight = re->Font_HeightPixels( cls.consoleFont, 1.0f );
+
+		if ( iChatFontHeight > 0 && ( con_chatFont->integer == 1 ||
+			( con_chatFont->integer >= 2 && Cvar_VariableIntegerValue( "r_useFreeType" ) >= 2 ) ) )
+		{
+			// as tall as the grid's characters
+			const float fChatScale = (float)BIGCHAR_HEIGHT / (float)iChatFontHeight;
+			const float fChatX = 8 * cls.widthRatioCoef;
+
+			re->Font_DrawString( (int)fChatX, v, chattext, chatColour, cls.consoleFont | STYLE_DROPSHADOW, -1, fChatScale );
+			Field_FontDraw( &chatField,
+				fChatX + re->Font_StrLenPixels( chattext, cls.consoleFont, fChatScale ) + re->Font_StrLenPixels( "a", cls.consoleFont, fChatScale ),
+				v, fChatScale, cls.consoleFont, chatColour, qtrue );
+		}
+		else
+		{
 		SCR_DrawStringExt2(8 * cls.widthRatioCoef, v, BIGCHAR_WIDTH*cls.widthRatioCoef, BIGCHAR_HEIGHT, chattext, chatColour, qfalse, qfalse);
 		skip = strlen(chattext) + 1;
 		Field_BigDraw( &chatField, skip * BIGCHAR_WIDTH, v,
 			SCREEN_WIDTH - ( skip + 1 ) * BIGCHAR_WIDTH, qtrue, qtrue );
+		}
 
 		v += BIGCHAR_HEIGHT;
 	}

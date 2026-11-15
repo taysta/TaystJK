@@ -72,6 +72,7 @@ void	Field_KeyDownEvent	( field_t *edit, int key );
 void	Field_CharEvent		( field_t *edit, int ch );
 void	Field_Draw			( field_t *edit, int x, int y, qboolean showCursor, qboolean noColorEscape );
 void	Field_BigDraw		( field_t *edit, int x, int y, int width, qboolean showCursor, qboolean noColorEscape );
+void	Field_FontDraw		( field_t *edit, float x, float y, float scale, int font, const float *color, qboolean showCursor );
 
 void		Key_SetBinding			( int keynum, const char *binding );
 char *		Key_GetBinding			( int keynum );
