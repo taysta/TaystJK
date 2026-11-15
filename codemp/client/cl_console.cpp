@@ -842,6 +842,128 @@ DRAWING
 ==============================================================================
 */
 
+/*
+================
+Con_UseFontSystem
+
+Should console text go through the font system (UTF-8 capable, TTF capable)
+instead of the legacy charset grid? Asian languages always did; con_useFont
+extends this to everyone and is on by default.
+================
+*/
+qboolean Con_UseFontSystem(void)
+{
+	static cvar_t* con_useFont = NULL;
+
+	if (!con_useFont)
+	{
+		con_useFont = Cvar_Get("con_useFont", "1", CVAR_ARCHIVE, "Draw console text with the font system (UTF-8 capable) instead of the charset grid");
+	}
+
+	return (qboolean)(con_useFont->integer || re->Language_IsAsian());
+}
+
+/*
+================
+Con_DrawFontRowGridded
+
+Draws one console row through the font system while preserving the legacy
+byte grid: every buffer cell is one fixed-width column, so mods' sprintf-
+padded tables stay aligned with ANY font (monospace not required).
+Multi-byte UTF-8 sequences render at their first cell and advance by their
+byte count; ":emote:" tokens are gathered so they still render as images.
+iCellZeroX = real-pixel x of column 0.
+================
+*/
+static void Con_DrawFontRowGridded(const conChar_t* rowText, int iNumCells, int iCellZeroX, float fY, int iFontIndex, float fFontScale)
+{
+	char	sSeq[40];
+	int		x = 0;			// byte cell being read from the buffer
+	int		iColumn = 0;	// visual column being drawn: ASCII always advances
+	// exactly 1 (mod tables stay aligned), wider things
+	// (CJK, emoji, emotes) advance by measured width
+
+	while (x < iNumCells)
+	{
+		if (rowText[x].f.character == ' ')
+		{
+			x++;
+			iColumn++;
+			continue;
+		}
+
+		int iSeqLen = 1;
+		sSeq[0] = rowText[x].f.character;
+
+		if (sSeq[0] & 0x80)
+		{
+			// Let the renderer distinguish UTF-8 from legacy Asian encodings.
+			int available = 0;
+			while (available < 4 && x + available < iNumCells) {
+				sSeq[available] = rowText[x + available].f.character;
+				available++;
+			}
+			sSeq[available] = '\0';
+			re->AnyLanguage_ReadCharFromString(sSeq, &iSeqLen, NULL);
+		}
+		else if (sSeq[0] == ':')
+		{
+			// gather a potential ":emote:" token so it still renders as an
+			// image; the grid advances by its byte length either way...
+			int j = 1;
+			while (x + j < iNumCells && j < (int)sizeof(sSeq) - 2)
+			{
+				const char c = rowText[x + j].f.character;
+
+				if (c == ':')
+				{
+					if (j >= 2 && !(sSeq[1] >= '0' && sSeq[1] <= '9'))	// mirror the decoder: no numeric-leading names (timestamps!)
+					{
+						sSeq[j] = ':';
+						iSeqLen = j + 1;
+					}
+					break;
+				}
+				if ((c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z') ||
+					(c >= '0' && c <= '9') || c == '_')
+				{
+					sSeq[j++] = c;
+					continue;
+				}
+				break;
+			}
+		}
+
+		sSeq[iSeqLen] = '\0';
+
+		re->Font_DrawString(
+			(int)(con.xadjust * (float)(iCellZeroX + iColumn * con.charWidth)),
+			(int)(con.yadjust * fY),
+			sSeq, g_color_table[rowText[x].f.color], iFontIndex, -1, fFontScale);
+
+		if (iSeqLen == 1)
+		{
+			iColumn++;	// plain ASCII: always exactly one column
+		}
+		else
+		{
+			// multi-byte char or emote: advance by its measured width so
+			// cyrillic stays compact while CJK/emoji/emotes get their room...
+			const float fCellVirtual = (float)con.charWidth * con.xadjust;
+			const float fGlyphVirtual = (float)re->Font_StrLenPixels(sSeq, iFontIndex, fFontScale);
+			int iCols = (int)((fGlyphVirtual / fCellVirtual) + 0.5f);
+
+			if (iCols < 1)
+			{
+				iCols = 1;
+			}
+			iColumn += iCols;
+		}
+
+		x += iSeqLen;
+	}
+}
+
 
 /*
 ================
@@ -912,7 +1034,7 @@ void Con_DrawNotify (void)
 	int iFontIndex = cls.consoleFont;
 	float fFontScale = 1.0f;
 	int iPixelHeightToAdvance = 0;
-	if (re->Language_IsAsian())
+	if (Con_UseFontSystem())
 	{
 		fFontScale = con.charWidth * 10.0f /
 			re->Font_StrLenPixels("aaaaaaaaaa", iFontIndex, 1.0f);
@@ -948,29 +1070,11 @@ void Con_DrawNotify (void)
 			cl_conXOffset = Cvar_Get ("cl_conXOffset", "0", 0);
 		}
 
-		// asian language needs to use the new font system to print glyphs...
+		// UTF-8 and asian languages need the font system to print glyphs...
 		//
-		// (ignore colours since we're going to print the whole thing as one string)
-		//
-		if (re->Language_IsAsian())
+		if (Con_UseFontSystem())
 		{
-			// concat the text to be printed...
-			//
-			char sTemp[4096];	// ott
-			sTemp[0] = '\0';
-			for (x = 0 ; x < lineLimit ; x++)
-			{
-				if ( text[x].f.color != currentColor ) {
-					currentColor = text[x].f.color;
-					strcat(sTemp,va("^%i", currentColor ));
-				}
-				strcat(sTemp,va("%c",text[x].f.character));
-			}
-			//
-			// and print...
-			//
-			re->Font_DrawString(cl_conXOffset->integer + con.xadjust * (con.xadjust + con.charWidth), con.yadjust * v, sTemp,
-				g_color_table[currentColor], iFontIndex, -1, fFontScale);
+			Con_DrawFontRowGridded ( text, lineLimit,cl_conXOffset->integer + con.charWidth, (float) v, iFontIndex, fFontScale);
 
 			v +=  iPixelHeightToAdvance;
 		}
@@ -1136,7 +1240,7 @@ void Con_DrawSolidConsole( float frac ) {
 	int iFontIndex = cls.consoleFont;
 	float fFontScale = 1.0f;
 	int iPixelHeightToAdvance = con.charHeight;
-	if (re->Language_IsAsian())
+	if (Con_UseFontSystem())
 	{
 		fFontScale = con.charWidth * 10.0f /
 			re->Font_StrLenPixels("aaaaaaaaaa", iFontIndex, 1.0f);
@@ -1157,29 +1261,12 @@ void Con_DrawSolidConsole( float frac ) {
 		if (!con_timestamps->integer)
 			text += CON_TIMESTAMP_LEN;
 
-		// asian language needs to use the new font system to print glyphs...
+		// UTF-8 and asian languages need the font system to print glyphs...
 		//
-		// (ignore colours since we're going to print the whole thing as one string)
-		//
-		if (re->Language_IsAsian())
+		if (Con_UseFontSystem())
 		{
-			// concat the text to be printed...
-			//
-			char sTemp[4096];	// ott
-			sTemp[0] = '\0';
-			for (x = 0 ; x < con.linewidth + 1 ; x++)
-			{
-				if ( text[x].f.color != currentColor ) {
-					currentColor = text[x].f.color;
-					strcat(sTemp,va("^%i", currentColor ));
-				}
-				strcat(sTemp,va("%c",text[x].f.character));
-			}
-			//
-			// and print...
-			//
-			re->Font_DrawString(con.xadjust*(con.xadjust + con.charWidth), con.yadjust * y, sTemp, g_color_table[currentColor],
-				iFontIndex, -1, fFontScale);
+			Con_DrawFontRowGridded (text, con.linewidth + 1, con.charWidth, (float) y,
+				iFontIndex, fFontScale);
 		}
 		else
 		{

@@ -26,6 +26,7 @@ along with this program; if not, see <http://www.gnu.org/licenses/>.
 #include "sys/sys_local.h"
 
 static cvar_t *in_keyboardDebug = NULL;
+static cvar_t *in_utf8 = NULL;
 
 static SDL_Joystick *stick = NULL;
 
@@ -637,6 +638,7 @@ void IN_Init( void *windowData )
 
 	// joystick variables
 	in_keyboardDebug = Cvar_Get( "in_keyboardDebug", "0", CVAR_ARCHIVE_ND );
+	in_utf8 = Cvar_Get( "in_utf8", "1", CVAR_ARCHIVE, "Send typed and pasted non-ASCII characters as UTF-8 (0 = legacy single-byte charset)" );
 
 	in_joystick = Cvar_Get( "in_joystick", "0", CVAR_ARCHIVE_ND|CVAR_LATCH );
 
@@ -890,10 +892,21 @@ static void IN_ProcessEvents( int eventTime )
 								Sys_QueEvent( eventTime, SE_KEY, A_CONSOLE, qtrue, 0, NULL );
 								Sys_QueEvent( eventTime, SE_KEY, A_CONSOLE, qfalse, 0, NULL );
 							}
-							else
+							else if ( utf32 < 128 || !in_utf8->integer )
 							{
 								uint8_t encoded = ConvertUTF32ToExpectedCharset( utf32 );
 								Sys_QueEvent( eventTime, SE_CHAR, encoded, 0, 0, NULL );
+							}
+							else
+							{
+								// encode as UTF-8 and queue one char event per byte, so both
+								// engine fields and VM fields receive a valid UTF-8 stream...
+								char sUTF8[4];
+								int iBytes = Q_UTF8_Encode(utf32, sUTF8);
+								for (int i = 0; i < iBytes; i++)
+								{
+									Sys_QueEvent(eventTime, SE_CHAR, (int)(unsigned char)sUTF8[i], 0, 0, NULL);
+								}
 							}
 						}
 					}

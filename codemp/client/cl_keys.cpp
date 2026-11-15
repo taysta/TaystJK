@@ -404,6 +404,8 @@ x, y, amd width are in pixels
 ===================
 */
 extern console_t con;
+qboolean Con_UseFontSystem(void);	// cl_console.cpp
+
 void Field_VariableSizeDraw( field_t *edit, int x, int y, int size, qboolean showCursor, qboolean noColorEscape ) {
 	int		len;
 	int		drawLen;
@@ -411,6 +413,7 @@ void Field_VariableSizeDraw( field_t *edit, int x, int y, int size, qboolean sho
 	int		cursorChar;
 	char	str[MAX_STRING_CHARS];
 	int		i;
+	qboolean	useFont = Con_UseFontSystem();
 
 	drawLen = edit->widthInChars - 1; // - 1 so there is always a space for the cursor
 	len = strlen( edit->buffer );
@@ -428,6 +431,13 @@ void Field_VariableSizeDraw( field_t *edit, int x, int y, int size, qboolean sho
 		prestep = edit->scroll;
 	}
 
+	if (useFont) {
+		// never slice inside a UTF-8 sequence: snap the window start to a lead byte...
+		while (prestep > 0 && Q_UTF8_IsContinuationByte((byte)edit->buffer[prestep])) {
+			prestep--;
+		}
+	}
+
 	if ( prestep + drawLen > len ) {
 		drawLen = len - prestep;
 	}
@@ -440,8 +450,65 @@ void Field_VariableSizeDraw( field_t *edit, int x, int y, int size, qboolean sho
 		Com_Error( ERR_DROP, "drawLen >= MAX_STRING_CHARS" );
 	}
 
+	if (useFont) {
+		// ...and never cut a sequence at the tail either
+		while (drawLen > 0 && Q_UTF8_IsContinuationByte((byte)edit->buffer[prestep + drawLen])) {
+			drawLen--;
+		}
+	}
+
 	Com_Memcpy( str, edit->buffer + prestep, drawLen );
 	str[ drawLen ] = 0;
+
+	if (useFont) {
+		// font system path: UTF-8 capable, proportional, TTF-friendly...
+		const int	iFont = cls.consoleFont;
+		const int	iTenChars = re->Font_StrLenPixels("aaaaaaaaaa", iFont, 1.0f);
+
+		if (iTenChars > 0) {
+			// legacy quirk: the console field (small) is positioned in real pixels,
+			// while the chat field (big) is positioned in virtual 640x480 units...
+			const float fVirtualX = (size == con.charWidth) ? con.xadjust * x : (float)x;
+			const float fVirtualY = (size == con.charWidth) ? con.yadjust * y : (float)y;
+			const float fCellW = (size == con.charWidth) ? (float)size * con.yadjust : (float)size;
+
+			// match ten glyph cells of the grid, same normalisation Raven used...
+			const float fScale = fCellW * 10.0f / (float)iTenChars;
+
+			re->Font_DrawString((int)fVirtualX, (int)fVirtualY, str, size == con.charWidth ? colorWhite : chatColour, iFont, -1, fScale);
+
+			// draw the cursor at the measured width of the text before it...
+			if (showCursor && !((int)(cls.realtime >> 8) & 1)) {
+				char	sToCursor[MAX_STRING_CHARS];
+				int		iPrefixBytes = edit->cursor - prestep;
+
+				if (iPrefixBytes < 0) {
+					iPrefixBytes = 0;
+				}
+				if (iPrefixBytes > drawLen) {
+					iPrefixBytes = drawLen;
+				}
+
+				Com_Memcpy(sToCursor, str, iPrefixBytes);
+				sToCursor[iPrefixBytes] = 0;
+
+				// cursor geometry straight from the font metrics, in the same
+				// virtual 640x480 space Font_DrawString and SCR_FillRect use...
+				const float fCursorX = fVirtualX + (float)re->Font_StrLenPixels(sToCursor, iFont, fScale);
+				const float fCursorW = (float)re->Font_StrLenPixels("a", iFont, fScale);
+				const float fCellH = (float)re->Font_HeightPixels(iFont, fScale);
+
+				if (kg.key_overstrikeMode) {
+					SCR_FillRect(fCursorX, fVirtualY, fCursorW, fCellH, colorWhite);			// full block
+				}
+				else {
+					SCR_FillRect(fCursorX, fVirtualY + fCellH, fCursorW, 2.0f, colorWhite);	// bar right below the line
+				}
+			}
+			return;
+		}
+		// font missing/broken: fall through to the legacy grid below...
+	}
 
 	// draw it
 	if ( size == con.charWidth ) {
@@ -506,7 +573,21 @@ void Field_Paste( field_t *edit ) {
 	while( *c )
 	{
 		uint32_t utf32 = ConvertUTF8ToUTF32( c, &c );
-		Field_CharEvent( edit, ConvertUTF32ToExpectedCharset( utf32 ) );
+		if (utf32 < 128)
+		{
+			Field_CharEvent(edit, (int)utf32);
+		}
+		else if (!Cvar_VariableIntegerValue("in_utf8"))
+		{
+			Field_CharEvent( edit, ConvertUTF32ToExpectedCharset( utf32 ) );
+		}
+		else
+		{
+			char sUTF8[4];
+			int iBytes = Q_UTF8_Encode(utf32, sUTF8);
+			for (int i = 0; i < iBytes; i++)
+				Field_CharEvent(edit, (int)(unsigned char)sUTF8[i]);
+		}
 	}
 
 	Z_Free( cbd );
@@ -522,6 +603,120 @@ in-game talk, and menu fields
 Key events are used for non-printable characters, others are gotten from char events.
 =================
 */
+/*
+==================
+Emoji grapheme clusters
+
+The renderer collapses ZWJ / variation-selector / flag / keycap sequences into
+a single glyph, so editing has to treat those byte runs as one character too:
+backspace, delete and the cursor keys otherwise land inside a sequence and it
+falls apart into components...
+==================
+*/
+static qboolean Field_IsSeqLinker(unsigned int cp) {
+	return (qboolean)(cp == 0x200D							// zero-width joiner
+		|| cp == 0xFE0E || cp == 0xFE0F						// variation selectors 15/16
+		|| (cp >= 0x1F3FB && cp <= 0x1F3FF)					// skin tone modifiers
+		|| cp == 0x20E3										// combining keycap
+		|| (cp >= 0xE0020 && cp <= 0xE007F));				// tag characters
+}
+
+static qboolean Field_IsRegionalIndicator(unsigned int cp) {
+	return (qboolean)(cp >= 0x1F1E6 && cp <= 0x1F1FF);
+}
+
+// start position of the codepoint immediately before iPos...
+static int Field_PrevCharStart(const char* psBuffer, int iPos) {
+	iPos--;
+	while (iPos > 0 && Q_UTF8_IsContinuationByte((byte)psBuffer[iPos])) {
+		iPos--;
+	}
+	return iPos;
+}
+
+// start of the emoji cluster (or single codepoint) that ends at iPos...
+static int Field_ClusterStart(const char* psBuffer, int iPos) {
+	int iAdvance;
+
+	if (iPos <= 0) {
+		return 0;
+	}
+
+	int iStart = Field_PrevCharStart(psBuffer, iPos);
+
+	for (;;) {
+		const unsigned int cp = Q_UTF8_ReadCharFromString(psBuffer + iStart, &iAdvance);
+
+		if (Field_IsSeqLinker(cp)) {
+			// linker glues to whatever precedes it...
+			if (iStart > 0) {
+				iStart = Field_PrevCharStart(psBuffer, iStart);
+				continue;
+			}
+			break;
+		}
+
+		if (iStart > 0) {
+			const int iPrev = Field_PrevCharStart(psBuffer, iStart);
+			const unsigned int cpPrev = Q_UTF8_ReadCharFromString(psBuffer + iPrev, &iAdvance);
+
+			if (cpPrev == 0x200D && iPrev > 0) {
+				iStart = Field_PrevCharStart(psBuffer, iPrev);	// consume "<base> ZWJ" and keep walking
+				continue;
+			}
+			if (Field_IsRegionalIndicator(cp) && Field_IsRegionalIndicator(cpPrev)) {
+				iStart = iPrev;	// flag = exactly two regional indicators
+			}
+		}
+		break;
+	}
+
+	return iStart;
+}
+
+// end position of the emoji cluster (or single codepoint) starting at iPos...
+static int Field_ClusterEnd(const char* psBuffer, int iPos, int iLen) {
+	int iAdvance;
+
+	if (iPos >= iLen) {
+		return iLen;
+	}
+
+	const unsigned int cpFirst = Q_UTF8_ReadCharFromString(psBuffer + iPos, &iAdvance);
+	int iEnd = iPos + iAdvance;
+	qboolean bRIPaired = qfalse;
+
+	while (iEnd < iLen) {
+		const unsigned int cp = Q_UTF8_ReadCharFromString(psBuffer + iEnd, &iAdvance);
+
+		if (cp == 0x200D) {
+			// joiner must be followed by another base codepoint...
+			int iAdvance2;
+			if (iEnd + iAdvance >= iLen) {
+				break;
+			}
+			const unsigned int cpNext = Q_UTF8_ReadCharFromString(psBuffer + iEnd + iAdvance, &iAdvance2);
+			if (!cpNext || Field_IsSeqLinker(cpNext)) {
+				break;
+			}
+			iEnd += iAdvance + iAdvance2;
+			continue;
+		}
+		if (Field_IsSeqLinker(cp)) {
+			iEnd += iAdvance;
+			continue;
+		}
+		if (!bRIPaired && Field_IsRegionalIndicator(cpFirst) && Field_IsRegionalIndicator(cp)) {
+			iEnd += iAdvance;
+			bRIPaired = qtrue;
+			continue;
+		}
+		break;
+	}
+
+	return iEnd;
+}
+
 void Field_KeyDownEvent( field_t *edit, int key ) {
 	int		len;
 
@@ -678,20 +873,21 @@ void Field_KeyDownEvent( field_t *edit, int key ) {
 	switch ( key ) {
 		case A_DELETE:
 			if ( edit->cursor < len ) {
+				const int iSeqLen = Field_ClusterEnd(edit->buffer, edit->cursor, len) - edit->cursor;
 				memmove( edit->buffer + edit->cursor,
-					edit->buffer + edit->cursor + 1, len - edit->cursor );
+					edit->buffer + edit->cursor + iSeqLen, len - edit->cursor - iSeqLen + 1);
 			}
 			break;
 
 		case A_CURSOR_RIGHT:
 			if ( edit->cursor < len ) {
-				edit->cursor++;
+				edit->cursor = Field_ClusterEnd(edit->buffer, edit->cursor, len);
 			}
 			break;
 
 		case A_CURSOR_LEFT:
 			if ( edit->cursor > 0 ) {
-				edit->cursor--;
+				edit->cursor = Field_ClusterStart(edit->buffer, edit->cursor);
 			}
 			break;
 
@@ -759,9 +955,10 @@ void Field_CharEvent( field_t *edit, int ch ) {
 					max += 2;
 			}
 
-			memmove(edit->buffer + edit->cursor - 1,
+			const int iStart = Field_ClusterStart(edit->buffer, edit->cursor);
+			memmove(edit->buffer + iStart,
 				edit->buffer + edit->cursor, len + 1 - edit->cursor);
-			edit->cursor--;
+			edit->cursor = iStart;
 			if (edit->cursor < edit->scroll)
 			{
 				edit->scroll--;
@@ -805,8 +1002,22 @@ void Field_CharEvent( field_t *edit, int ch ) {
 
 	if ( kg.key_overstrikeMode ) {
 		// - 2 to leave room for the leading slash and trailing \0
-		if ( edit->cursor == max - 2 )
+		if (len >= max - 2)
 			return;
+
+		// UTF-8 aware overstrike, fed one byte at a time: a lead byte consumes
+		// the whole codepoint under the cursor, continuation bytes just insert
+		// (they belong to a sequence whose lead byte already did the deletion)...
+		if (!Q_UTF8_IsContinuationByte((byte)ch) && edit->buffer[edit->cursor]) {
+			int iSeqLen = 1;
+			Q_UTF8_ReadCharFromString(edit->buffer + edit->cursor, &iSeqLen);
+			memmove(edit->buffer + edit->cursor,
+				edit->buffer + edit->cursor + iSeqLen, len - edit->cursor - iSeqLen + 1);
+			len -= iSeqLen;
+		}
+
+		memmove(edit->buffer + edit->cursor + 1,
+			edit->buffer + edit->cursor, len + 1 - edit->cursor);
 		edit->buffer[edit->cursor] = ch;
 		edit->cursor++;
 	} else {	// insert mode

@@ -2667,7 +2667,11 @@ void CL_InitRenderer( void ) {
 
 	// load character sets
 	cls.charSetShader = re->RegisterShaderNoMip("gfx/2d/charsgrid_med");
-	cls.consoleFont = re->RegisterFont( "ocr_a" );
+	cvar_t* con_fontName = Cvar_Get("con_fontName", "ocr_a", CVAR_ARCHIVE | CVAR_LATCH, "Console font: name or name@size");
+	cls.consoleFont = re->RegisterFont(con_fontName->string);
+	if (!cls.consoleFont) {
+		cls.consoleFont = re->RegisterFont("ocr_a");	// safety net: never leave the console fontless
+	}
 
 	cls.whiteShader = re->RegisterShader( "white" );
 	cls.consoleShader = re->RegisterShader("console");
