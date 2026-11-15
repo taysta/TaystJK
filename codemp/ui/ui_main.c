@@ -856,16 +856,12 @@ static void Text_Paint_Limit(float *maxX, float x, float y, float scale, vec4_t 
 			psOutLastGood = psOut;
 
 			uiLetter = trap->R_AnyLanguage_ReadCharFromString(psText, &iAdvanceCount, NULL);
-			psText += iAdvanceCount;
 
-			if (uiLetter > 255)
+			// (copy the character's own bytes: they can't be rebuilt from the
+			// letter, which is Unicode whatever the encoding of the string)
+			while (iAdvanceCount-- > 0 && psOut < &sTemp[sizeof(sTemp)-1])
 			{
-				*psOut++ = uiLetter>>8;
-				*psOut++ = uiLetter&0xFF;
-			}
-			else
-			{
-				*psOut++ = uiLetter&0xFF;
+				*psOut++ = *psText++;
 			}
 		}
 		*psOutLastGood = '\0';

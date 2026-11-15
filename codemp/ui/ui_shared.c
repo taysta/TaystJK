@@ -4633,9 +4633,9 @@ void Item_TextColor(itemDef_t *item, vec4_t *newColor) {
 }
 
 void Item_Text_AutoWrapped_Paint(itemDef_t *item) {
-	char text[2048];
+	char text[4096];
 	const char *p, *textPtr, *newLinePtr;
-	char buff[2048];
+	char buff[4096];
 	int height, len, textWidth, newLine, newLineWidth;	//int width;
 	float y;
 	vec4_t color;
@@ -8821,7 +8821,7 @@ qboolean Item_Parse(int handle, itemDef_t *item) {
 
 static void Item_TextScroll_BuildLines ( itemDef_t* item )
 {
-	char text[2048];
+	char text[4096];	// (translations in UTF-8 run to twice or three times the bytes)
 
 #if 1
 
@@ -8882,13 +8882,15 @@ static void Item_TextScroll_BuildLines ( itemDef_t* item )
 				continue;	// unless it's a space at the start of a line, in which case ignore it.
 			}
 
-			if (uiLetter > 255)
+			// (the character's own bytes: they can't be rebuilt from the letter,
+			// which is Unicode whatever the encoding of the string)
 			{
-				Q_strcat(sLineForDisplay, sizeof(sLineForDisplay),va("%c%c",uiLetter >> 8, uiLetter & 0xFF));
-			}
-			else
-			{
-				Q_strcat(sLineForDisplay, sizeof(sLineForDisplay),va("%c",uiLetter & 0xFF));
+				const int iLineLen = strlen(sLineForDisplay);
+				if (iLineLen + iAdvanceCount < (int)sizeof(sLineForDisplay))
+				{
+					memcpy(&sLineForDisplay[iLineLen], psLastGood_s, iAdvanceCount);
+					sLineForDisplay[iLineLen + iAdvanceCount] = '\0';
+				}
 			}
 
 			if (uiLetter == '\n')

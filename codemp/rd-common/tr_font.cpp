@@ -1132,12 +1132,17 @@ static Language_e Font_LegacyLanguage( void )
 		case 1252:	return eWestern;
 		default:	break;
 	}
-	// (Russian localisations that replace the base fonts rather than use the
-	// engine's "russian" override name their language "Rus")
+	// (localisations that replace the base fonts rather than use the engine's
+	// "russian" and "polish" overrides go by other names: "Rus", "polski"...)
 	//
 	if (se_language && !Q_stricmpn( se_language->string, "rus", 3 ))
 	{
 		return eRussian;
+	}
+	if (se_language && (!Q_stricmpn( se_language->string, "pol", 3 ) || !Q_stricmpn( se_language->string, "magyar", 6 )
+						|| !Q_stricmpn( se_language->string, "hun", 3 )))
+	{
+		return ePolish;	// Windows-1250
 	}
 	return GetLanguageEnum();
 }
