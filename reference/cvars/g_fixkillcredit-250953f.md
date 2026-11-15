@@ -38,8 +38,8 @@ description: "1=Award kill credit after target suicides/spectates. 2=Also for di
 
 | Value | Meaning | Evidence |
 |:--|:--|:--|
-| `1` | Award kill credit after target suicides/spectates. | [docs/japro_docs.md:96](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/docs/japro_docs.md#L96) |
-| `2` | Also for disconnects/reconnects. | [docs/japro_docs.md:96](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/docs/japro_docs.md#L96) |
+| `1` | Award kill credit after target suicides/spectates. | [docs/japro_docs.md:96](https://github.com/taysta/TaystJK/blame/77851b2c2d224004cb476a275fe4e4998f714230/docs/japro_docs.md#L96) |
+| `2` | Also for disconnects/reconnects. | [docs/japro_docs.md:96](https://github.com/taysta/TaystJK/blame/77851b2c2d224004cb476a275fe4e4998f714230/docs/japro_docs.md#L96) |
 
 ## Flags
 
@@ -77,12 +77,12 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 ## Evidence
 
-- registration: [codemp/game/g_xcvar.h:283](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/codemp/game/g_xcvar.h#L283) (XCVAR_DEF)
-- behavior: [codemp/game/g_client.c:4859](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/codemp/game/g_client.c#L4859)
-- behavior: [codemp/game/g_cmds.c:8280](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/codemp/game/g_cmds.c#L8280)
-- behavior: [codemp/game/g_cmds.c:8282](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/codemp/game/g_cmds.c#L8282)
-- behavior: [codemp/game/g_combat.c:2569](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/codemp/game/g_combat.c#L2569)
-- behavior: [codemp/game/w_force.c:2213](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/codemp/game/w_force.c#L2213)
-- documentation: [docs/japro_docs.md:96](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/docs/japro_docs.md#L96)
+- registration: [codemp/game/g_xcvar.h:283](https://github.com/taysta/TaystJK/blame/77851b2c2d224004cb476a275fe4e4998f714230/codemp/game/g_xcvar.h#L283) (XCVAR_DEF)
+- behavior: [codemp/game/g_client.c:4859](https://github.com/taysta/TaystJK/blame/77851b2c2d224004cb476a275fe4e4998f714230/codemp/game/g_client.c#L4859)
+- behavior: [codemp/game/g_cmds.c:8280](https://github.com/taysta/TaystJK/blame/77851b2c2d224004cb476a275fe4e4998f714230/codemp/game/g_cmds.c#L8280)
+- behavior: [codemp/game/g_cmds.c:8282](https://github.com/taysta/TaystJK/blame/77851b2c2d224004cb476a275fe4e4998f714230/codemp/game/g_cmds.c#L8282)
+- behavior: [codemp/game/g_combat.c:2569](https://github.com/taysta/TaystJK/blame/77851b2c2d224004cb476a275fe4e4998f714230/codemp/game/g_combat.c#L2569)
+- behavior: [codemp/game/w_force.c:2213](https://github.com/taysta/TaystJK/blame/77851b2c2d224004cb476a275fe4e4998f714230/codemp/game/w_force.c#L2213)
+- documentation: [docs/japro_docs.md:96](https://github.com/taysta/TaystJK/blame/77851b2c2d224004cb476a275fe4e4998f714230/docs/japro_docs.md#L96)
 
-<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/d843fa409b7e269a3775392e569f8f4694a7cb25"><code>d843fa409b7e</code></a> on 2026-11-09. Anything merged after that is not reflected here.</p>
+<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/77851b2c2d224004cb476a275fe4e4998f714230"><code>77851b2c2d22</code></a> on 2026-11-10. Anything merged after that is not reflected here.</p>

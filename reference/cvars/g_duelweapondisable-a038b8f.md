@@ -39,8 +39,8 @@ Controls `g_duelWeaponDisable` in the game module. Consult the cited behavior re
 
 | Value | Meaning | Evidence |
 |:--|:--|:--|
-| `0` | Disabled. | [codemp/cgame/cg_info.c:329](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/codemp/cgame/cg_info.c#L329) |
-| `1` | Enabled. | [codemp/cgame/cg_info.c:329](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/codemp/cgame/cg_info.c#L329) |
+| `0` | Disabled. | [codemp/cgame/cg_info.c:329](https://github.com/taysta/TaystJK/blame/77851b2c2d224004cb476a275fe4e4998f714230/codemp/cgame/cg_info.c#L329) |
+| `1` | Enabled. | [codemp/cgame/cg_info.c:329](https://github.com/taysta/TaystJK/blame/77851b2c2d224004cb476a275fe4e4998f714230/codemp/cgame/cg_info.c#L329) |
 
 ## Flags
 
@@ -76,12 +76,12 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 ## Evidence
 
-- registration: [codemp/game/g_xcvar.h:78](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/codemp/game/g_xcvar.h#L78) (XCVAR_DEF)
-- registration: [codemp/server/sv_init.cpp:974](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/codemp/server/sv_init.cpp#L974) (Cvar_Get)
-- behavior: [codemp/cgame/cg_info.c:329](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/codemp/cgame/cg_info.c#L329)
-- behavior: [codemp/game/g_client.c:4278](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/codemp/game/g_client.c#L4278)
-- behavior: [codemp/game/g_items.c:3414](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/codemp/game/g_items.c#L3414)
-- behavior: [codemp/game/w_saber.c:9959](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/codemp/game/w_saber.c#L9959)
-- behavior: [codemp/server/sv_ccmds.cpp:1389](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/codemp/server/sv_ccmds.cpp#L1389)
+- registration: [codemp/game/g_xcvar.h:78](https://github.com/taysta/TaystJK/blame/77851b2c2d224004cb476a275fe4e4998f714230/codemp/game/g_xcvar.h#L78) (XCVAR_DEF)
+- registration: [codemp/server/sv_init.cpp:974](https://github.com/taysta/TaystJK/blame/77851b2c2d224004cb476a275fe4e4998f714230/codemp/server/sv_init.cpp#L974) (Cvar_Get)
+- behavior: [codemp/cgame/cg_info.c:329](https://github.com/taysta/TaystJK/blame/77851b2c2d224004cb476a275fe4e4998f714230/codemp/cgame/cg_info.c#L329)
+- behavior: [codemp/game/g_client.c:4278](https://github.com/taysta/TaystJK/blame/77851b2c2d224004cb476a275fe4e4998f714230/codemp/game/g_client.c#L4278)
+- behavior: [codemp/game/g_items.c:3414](https://github.com/taysta/TaystJK/blame/77851b2c2d224004cb476a275fe4e4998f714230/codemp/game/g_items.c#L3414)
+- behavior: [codemp/game/w_saber.c:9959](https://github.com/taysta/TaystJK/blame/77851b2c2d224004cb476a275fe4e4998f714230/codemp/game/w_saber.c#L9959)
+- behavior: [codemp/server/sv_ccmds.cpp:1389](https://github.com/taysta/TaystJK/blame/77851b2c2d224004cb476a275fe4e4998f714230/codemp/server/sv_ccmds.cpp#L1389)
 
-<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/d843fa409b7e269a3775392e569f8f4694a7cb25"><code>d843fa409b7e</code></a> on 2026-11-09. Anything merged after that is not reflected here.</p>
+<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/77851b2c2d224004cb476a275fe4e4998f714230"><code>77851b2c2d22</code></a> on 2026-11-10. Anything merged after that is not reflected here.</p>

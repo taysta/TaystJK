@@ -38,7 +38,7 @@ No discrete value list is enforced or documented in the inspected source.
 
 ## Enforced ranges
 
-- `0` through `32` (integer; Cvar_CheckRange). Evidence: [codemp/server/sv_init.cpp:982](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/codemp/server/sv_init.cpp#L982)
+- `0` through `32` (integer; Cvar_CheckRange). Evidence: [codemp/server/sv_init.cpp:982](https://github.com/taysta/TaystJK/blame/77851b2c2d224004cb476a275fe4e4998f714230/codemp/server/sv_init.cpp#L982)
 
 ## Flags
 
@@ -69,11 +69,11 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 ## Evidence
 
-- registration: [codemp/server/sv_init.cpp:981](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/codemp/server/sv_init.cpp#L981) (Cvar_Get)
-- behavior: [codemp/server/sv_ccmds.cpp:1193](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/codemp/server/sv_ccmds.cpp#L1193)
-- behavior: [codemp/server/sv_client.cpp:256](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/codemp/server/sv_client.cpp#L256)
-- behavior: [codemp/server/sv_main.cpp:527](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/codemp/server/sv_main.cpp#L527)
-- behavior: [codemp/server/sv_main.cpp:548](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/codemp/server/sv_main.cpp#L548)
-- behavior: [codemp/server/sv_client.cpp:241](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/codemp/server/sv_client.cpp#L241)
+- registration: [codemp/server/sv_init.cpp:981](https://github.com/taysta/TaystJK/blame/77851b2c2d224004cb476a275fe4e4998f714230/codemp/server/sv_init.cpp#L981) (Cvar_Get)
+- behavior: [codemp/server/sv_ccmds.cpp:1193](https://github.com/taysta/TaystJK/blame/77851b2c2d224004cb476a275fe4e4998f714230/codemp/server/sv_ccmds.cpp#L1193)
+- behavior: [codemp/server/sv_client.cpp:256](https://github.com/taysta/TaystJK/blame/77851b2c2d224004cb476a275fe4e4998f714230/codemp/server/sv_client.cpp#L256)
+- behavior: [codemp/server/sv_main.cpp:527](https://github.com/taysta/TaystJK/blame/77851b2c2d224004cb476a275fe4e4998f714230/codemp/server/sv_main.cpp#L527)
+- behavior: [codemp/server/sv_main.cpp:548](https://github.com/taysta/TaystJK/blame/77851b2c2d224004cb476a275fe4e4998f714230/codemp/server/sv_main.cpp#L548)
+- behavior: [codemp/server/sv_client.cpp:241](https://github.com/taysta/TaystJK/blame/77851b2c2d224004cb476a275fe4e4998f714230/codemp/server/sv_client.cpp#L241)
 
-<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/d843fa409b7e269a3775392e569f8f4694a7cb25"><code>d843fa409b7e</code></a> on 2026-11-09. Anything merged after that is not reflected here.</p>
+<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/77851b2c2d224004cb476a275fe4e4998f714230"><code>77851b2c2d22</code></a> on 2026-11-10. Anything merged after that is not reflected here.</p>

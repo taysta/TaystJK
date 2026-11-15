@@ -37,7 +37,7 @@ Controls `in_mouserepeat` in the engine-shared module. Consult the cited behavio
 
 | Value | Meaning | Evidence |
 |:--|:--|:--|
-| `2` | Selects the code path tested for value 2. | [shared/sdl/sdl_input.cpp:988](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/shared/sdl/sdl_input.cpp#L988) |
+| `2` | Selects the code path tested for value 2. | [shared/sdl/sdl_input.cpp:988](https://github.com/taysta/TaystJK/blame/77851b2c2d224004cb476a275fe4e4998f714230/shared/sdl/sdl_input.cpp#L988) |
 
 ## Flags
 
@@ -76,8 +76,8 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 ## Evidence
 
-- registration: [shared/sdl/sdl_input.cpp:646](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/shared/sdl/sdl_input.cpp#L646) (Cvar_Get)
-- behavior: [shared/sdl/sdl_input.cpp:985](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/shared/sdl/sdl_input.cpp#L985)
-- behavior: [shared/sdl/sdl_input.cpp:988](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/shared/sdl/sdl_input.cpp#L988)
+- registration: [shared/sdl/sdl_input.cpp:646](https://github.com/taysta/TaystJK/blame/77851b2c2d224004cb476a275fe4e4998f714230/shared/sdl/sdl_input.cpp#L646) (Cvar_Get)
+- behavior: [shared/sdl/sdl_input.cpp:985](https://github.com/taysta/TaystJK/blame/77851b2c2d224004cb476a275fe4e4998f714230/shared/sdl/sdl_input.cpp#L985)
+- behavior: [shared/sdl/sdl_input.cpp:988](https://github.com/taysta/TaystJK/blame/77851b2c2d224004cb476a275fe4e4998f714230/shared/sdl/sdl_input.cpp#L988)
 
-<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/d843fa409b7e269a3775392e569f8f4694a7cb25"><code>d843fa409b7e</code></a> on 2026-11-09. Anything merged after that is not reflected here.</p>
+<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/77851b2c2d224004cb476a275fe4e4998f714230"><code>77851b2c2d22</code></a> on 2026-11-10. Anything merged after that is not reflected here.</p>

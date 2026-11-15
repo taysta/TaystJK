@@ -26,12 +26,12 @@
       "label": "jaPRO",
       "count": "481",
       "modules": {
-        "cgame": "277",
+        "cgame": "276",
         "game": "198",
         "engine-client": "3",
+        "ui": "2",
         "renderer": "1",
-        "engine-server": "1",
-        "ui": "1"
+        "engine-server": "1"
       }
     },
     {
@@ -130,12 +130,12 @@
       "label": "jaPRO",
       "count": "481",
       "modules": {
-        "cgame": "277",
+        "cgame": "276",
         "game": "198",
         "engine-client": "3",
+        "ui": "2",
         "renderer": "1",
-        "engine-server": "1",
-        "ui": "1"
+        "engine-server": "1"
       }
     },
     "openjk": {

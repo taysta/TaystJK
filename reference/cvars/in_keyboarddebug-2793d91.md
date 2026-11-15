@@ -37,8 +37,8 @@ Controls `in_keyboardDebug` in the engine-shared module. Consult the cited behav
 
 | Value | Meaning | Evidence |
 |:--|:--|:--|
-| `0` | Disabled. | [shared/sdl/sdl_input.cpp:398](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/shared/sdl/sdl_input.cpp#L398) |
-| `1` | Enabled. | [shared/sdl/sdl_input.cpp:398](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/shared/sdl/sdl_input.cpp#L398) |
+| `0` | Disabled. | [shared/sdl/sdl_input.cpp:398](https://github.com/taysta/TaystJK/blame/77851b2c2d224004cb476a275fe4e4998f714230/shared/sdl/sdl_input.cpp#L398) |
+| `1` | Enabled. | [shared/sdl/sdl_input.cpp:398](https://github.com/taysta/TaystJK/blame/77851b2c2d224004cb476a275fe4e4998f714230/shared/sdl/sdl_input.cpp#L398) |
 
 ## Flags
 
@@ -80,7 +80,7 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 ## Evidence
 
-- registration: [shared/sdl/sdl_input.cpp:639](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/shared/sdl/sdl_input.cpp#L639) (Cvar_Get)
-- behavior: [shared/sdl/sdl_input.cpp:398](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/shared/sdl/sdl_input.cpp#L398)
+- registration: [shared/sdl/sdl_input.cpp:639](https://github.com/taysta/TaystJK/blame/77851b2c2d224004cb476a275fe4e4998f714230/shared/sdl/sdl_input.cpp#L639) (Cvar_Get)
+- behavior: [shared/sdl/sdl_input.cpp:398](https://github.com/taysta/TaystJK/blame/77851b2c2d224004cb476a275fe4e4998f714230/shared/sdl/sdl_input.cpp#L398)
 
-<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/d843fa409b7e269a3775392e569f8f4694a7cb25"><code>d843fa409b7e</code></a> on 2026-11-09. Anything merged after that is not reflected here.</p>
+<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/77851b2c2d224004cb476a275fe4e4998f714230"><code>77851b2c2d22</code></a> on 2026-11-10. Anything merged after that is not reflected here.</p>

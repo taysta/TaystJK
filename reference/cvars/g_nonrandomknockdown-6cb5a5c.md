@@ -38,10 +38,10 @@ description: "1=Nonrandom knockdowns based on forcepoints. 2=Pseudorandom with l
 
 | Value | Meaning | Evidence |
 |:--|:--|:--|
-| `1` | Nonrandom knockdowns based on forcepoints. | [docs/japro_docs.md:49](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/docs/japro_docs.md#L49) |
-| `2` | Pseudorandom with less variance. | [docs/japro_docs.md:49](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/docs/japro_docs.md#L49) |
-| `3` | Nonrandom based on viewangle of target. | [docs/japro_docs.md:49](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/docs/japro_docs.md#L49) |
-| `4` | Random based on viewangle of target. | [docs/japro_docs.md:49](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/docs/japro_docs.md#L49) |
+| `1` | Nonrandom knockdowns based on forcepoints. | [docs/japro_docs.md:49](https://github.com/taysta/TaystJK/blame/77851b2c2d224004cb476a275fe4e4998f714230/docs/japro_docs.md#L49) |
+| `2` | Pseudorandom with less variance. | [docs/japro_docs.md:49](https://github.com/taysta/TaystJK/blame/77851b2c2d224004cb476a275fe4e4998f714230/docs/japro_docs.md#L49) |
+| `3` | Nonrandom based on viewangle of target. | [docs/japro_docs.md:49](https://github.com/taysta/TaystJK/blame/77851b2c2d224004cb476a275fe4e4998f714230/docs/japro_docs.md#L49) |
+| `4` | Random based on viewangle of target. | [docs/japro_docs.md:49](https://github.com/taysta/TaystJK/blame/77851b2c2d224004cb476a275fe4e4998f714230/docs/japro_docs.md#L49) |
 
 ## Flags
 
@@ -78,12 +78,12 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 ## Evidence
 
-- registration: [codemp/game/g_xcvar.h:230](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/codemp/game/g_xcvar.h#L230) (XCVAR_DEF)
-- behavior: [codemp/game/g_active.c:5673](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/codemp/game/g_active.c#L5673)
-- behavior: [codemp/game/g_active.c:5680](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/codemp/game/g_active.c#L5680)
-- behavior: [codemp/game/g_active.c:5687](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/codemp/game/g_active.c#L5687)
-- behavior: [codemp/game/g_active.c:5710](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/codemp/game/g_active.c#L5710)
-- behavior: [codemp/game/g_active.c:5731](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/codemp/game/g_active.c#L5731)
-- documentation: [docs/japro_docs.md:49](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/docs/japro_docs.md#L49)
+- registration: [codemp/game/g_xcvar.h:230](https://github.com/taysta/TaystJK/blame/77851b2c2d224004cb476a275fe4e4998f714230/codemp/game/g_xcvar.h#L230) (XCVAR_DEF)
+- behavior: [codemp/game/g_active.c:5673](https://github.com/taysta/TaystJK/blame/77851b2c2d224004cb476a275fe4e4998f714230/codemp/game/g_active.c#L5673)
+- behavior: [codemp/game/g_active.c:5680](https://github.com/taysta/TaystJK/blame/77851b2c2d224004cb476a275fe4e4998f714230/codemp/game/g_active.c#L5680)
+- behavior: [codemp/game/g_active.c:5687](https://github.com/taysta/TaystJK/blame/77851b2c2d224004cb476a275fe4e4998f714230/codemp/game/g_active.c#L5687)
+- behavior: [codemp/game/g_active.c:5710](https://github.com/taysta/TaystJK/blame/77851b2c2d224004cb476a275fe4e4998f714230/codemp/game/g_active.c#L5710)
+- behavior: [codemp/game/g_active.c:5731](https://github.com/taysta/TaystJK/blame/77851b2c2d224004cb476a275fe4e4998f714230/codemp/game/g_active.c#L5731)
+- documentation: [docs/japro_docs.md:49](https://github.com/taysta/TaystJK/blame/77851b2c2d224004cb476a275fe4e4998f714230/docs/japro_docs.md#L49)
 
-<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/d843fa409b7e269a3775392e569f8f4694a7cb25"><code>d843fa409b7e</code></a> on 2026-11-09. Anything merged after that is not reflected here.</p>
+<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/77851b2c2d224004cb476a275fe4e4998f714230"><code>77851b2c2d22</code></a> on 2026-11-10. Anything merged after that is not reflected here.</p>

@@ -79,10 +79,10 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 ## Evidence
 
-- registration: [codemp/client/cl_main.cpp:3412](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/codemp/client/cl_main.cpp#L3412) (Cvar_Get)
-- behavior: [shared/sdl/sdl_input.cpp:124](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/shared/sdl/sdl_input.cpp#L124)
-- behavior: [shared/sdl/sdl_input.cpp:118](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/shared/sdl/sdl_input.cpp#L118)
-- behavior: [shared/sdl/sdl_input.cpp:123](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/shared/sdl/sdl_input.cpp#L123)
-- behavior: [shared/sdl/sdl_input.cpp:127](https://github.com/taysta/TaystJK/blame/d843fa409b7e269a3775392e569f8f4694a7cb25/shared/sdl/sdl_input.cpp#L127)
+- registration: [codemp/client/cl_main.cpp:3412](https://github.com/taysta/TaystJK/blame/77851b2c2d224004cb476a275fe4e4998f714230/codemp/client/cl_main.cpp#L3412) (Cvar_Get)
+- behavior: [shared/sdl/sdl_input.cpp:124](https://github.com/taysta/TaystJK/blame/77851b2c2d224004cb476a275fe4e4998f714230/shared/sdl/sdl_input.cpp#L124)
+- behavior: [shared/sdl/sdl_input.cpp:118](https://github.com/taysta/TaystJK/blame/77851b2c2d224004cb476a275fe4e4998f714230/shared/sdl/sdl_input.cpp#L118)
+- behavior: [shared/sdl/sdl_input.cpp:123](https://github.com/taysta/TaystJK/blame/77851b2c2d224004cb476a275fe4e4998f714230/shared/sdl/sdl_input.cpp#L123)
+- behavior: [shared/sdl/sdl_input.cpp:127](https://github.com/taysta/TaystJK/blame/77851b2c2d224004cb476a275fe4e4998f714230/shared/sdl/sdl_input.cpp#L127)
 
-<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/d843fa409b7e269a3775392e569f8f4694a7cb25"><code>d843fa409b7e</code></a> on 2026-11-09. Anything merged after that is not reflected here.</p>
+<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/77851b2c2d224004cb476a275fe4e4998f714230"><code>77851b2c2d22</code></a> on 2026-11-10. Anything merged after that is not reflected here.</p>
