@@ -647,6 +647,10 @@ static qboolean S_LoadSound_FileLoadAndNameAdjuster(char *psFilename, byte **pDa
 				strncpy( psVoice, "chr_f", 5 );	// same number of letters as "chars"
 			else if ( !Q_stricmp( "ESPANOL", s_language->string ) )
 				strncpy( psVoice, "chr_e", 5 );	// same number of letters as "chars"
+			else if ( !Q_stricmp( "UKRAINIAN", s_language->string ) )
+				strncpy( psVoice, "chr_u", 5 );	// (community dubs: no slots of their own in the original game)
+			else if ( !Q_stricmp( "CZECH", s_language->string ) )
+				strncpy( psVoice, "chr_c", 5 );
 			else
 				psVoice = NULL;
 		}
