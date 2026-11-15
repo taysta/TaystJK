@@ -3344,6 +3344,8 @@ void RE_Font_DrawString(int ox, int oy, const char *psText, const float *rgba, c
 	foy += curfont->mbRoundCalcs ? Round((curfont->GetHeight() - (curfont->GetDescender() >> 1)) * fScale) : (curfont->GetHeight() - (curfont->GetDescender() >> 1)) * fScale;
 
 	qboolean bNextTextWouldOverflow = qfalse;
+	unsigned int uiPrevLetter = 0;
+	float fPrevHeight = 0.0f;
 	while (*psText && !bNextTextWouldOverflow)
 	{
 		int iAdvanceCount;
@@ -3425,6 +3427,16 @@ void RE_Font_DrawString(int ox, int oy, const char *psText, const float *rgba, c
 				{
 					fy += 3.0f; // I'm sick and tired of going round in circles trying to do this legally, so bollocks to it
 				}
+
+				// Thai: a tone mark sits on top of a vowel written above the consonant
+				//
+				if (uiLetter >= 0x0E48 && uiLetter <= 0x0E4C
+					&& (uiPrevLetter == 0x0E31 || (uiPrevLetter >= 0x0E34 && uiPrevLetter <= 0x0E37)))
+				{
+					fy -= fPrevHeight;
+				}
+				uiPrevLetter = uiLetter;
+				fPrevHeight = pLetter->height * fThisScale;
 
 #ifdef USE_FREETYPE
 				{
@@ -3579,7 +3591,7 @@ void R_InitFonts(void)
 	cl_coloredTextShadows = ri.Cvar_Get("cl_coloredTextShadows", "0", CVAR_ARCHIVE, "Toggle JK2 1.02-style colored text shadows");
 	r_fontCodepage = ri.Cvar_Get("r_fontCodepage", "0", CVAR_ARCHIVE_ND, "Windows codepage of text that is not UTF-8 (chat and names from other clients, old string files): 1250, 1251 or 1252; 0 = by se_language");
 #ifdef USE_FREETYPE
-	r_fontFallbacks = ri.Cvar_Get("r_fontFallbacks", "arialnb;twemoji;dejavusans-bold;wqy-zenhei", CVAR_ARCHIVE_ND | CVAR_LATCH, "Fonts searched, in order, for glyphs a TTF font lacks; ones that are not installed are skipped");
+	r_fontFallbacks = ri.Cvar_Get("r_fontFallbacks", "arialnb;twemoji;dejavusans-bold;wqy-zenhei;notosansthai-bold", CVAR_ARCHIVE_ND | CVAR_LATCH, "Fonts searched, in order, for glyphs a TTF font lacks; ones that are not installed are skipped");
 #endif
 
 #ifdef USE_FREETYPE
