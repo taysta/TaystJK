@@ -121,7 +121,7 @@ static void Font_LoadFallbacks(void)
 
 		if (iLen <= 0)
 		{
-			ri.Printf(PRINT_WARNING, "r_fontFallbacks: fonts/%s.ttf|otf not found\n", psName);
+			ri.Printf(PRINT_DEVELOPER, "r_fontFallbacks: fonts/%s.ttf|otf not found\n", psName);
 			continue;
 		}
 
@@ -1019,6 +1019,94 @@ static int Thai_InitFields(int &iGlyphTPs, const char *&psLang)
 
 // ============================================================================
 
+// Windows-1250 (central european: polish, hungarian, czech...) 0x80-0xFF as Unicode
+static const unsigned short g_cp1250[128] =
+{
+	0x20AC,0x0081,0x201A,0x0083,0x201E,0x2026,0x2020,0x2021,0x0088,0x2030,0x0160,0x2039,0x015A,0x0164,0x017D,0x0179,
+	0x0090,0x2018,0x2019,0x201C,0x201D,0x2022,0x2013,0x2014,0x0098,0x2122,0x0161,0x203A,0x015B,0x0165,0x017E,0x017A,
+	0x00A0,0x02C7,0x02D8,0x0141,0x00A4,0x0104,0x00A6,0x00A7,0x00A8,0x00A9,0x015E,0x00AB,0x00AC,0x00AD,0x00AE,0x017B,
+	0x00B0,0x00B1,0x02DB,0x0142,0x00B4,0x00B5,0x00B6,0x00B7,0x00B8,0x0105,0x015F,0x00BB,0x013D,0x02DD,0x013E,0x017C,
+	0x0154,0x00C1,0x00C2,0x0102,0x00C4,0x0139,0x0106,0x00C7,0x010C,0x00C9,0x0118,0x00CB,0x011A,0x00CD,0x00CE,0x010E,
+	0x0110,0x0143,0x0147,0x00D3,0x00D4,0x0150,0x00D6,0x00D7,0x0158,0x016E,0x00DA,0x0170,0x00DC,0x00DD,0x0162,0x00DF,
+	0x0155,0x00E1,0x00E2,0x0103,0x00E4,0x013A,0x0107,0x00E7,0x010D,0x00E9,0x0119,0x00EB,0x011B,0x00ED,0x00EE,0x010F,
+	0x0111,0x0144,0x0148,0x00F3,0x00F4,0x0151,0x00F6,0x00F7,0x0159,0x016F,0x00FA,0x0171,0x00FC,0x00FD,0x0163,0x02D9
+};
+
+// Windows-1252 (western european) 0x80-0x9F as Unicode; 0xA0-0xFF are the same in both
+static const unsigned short g_cp1252[32] =
+{
+	0x20AC,0x0081,0x201A,0x0192,0x201E,0x2026,0x2020,0x2021,0x02C6,0x2030,0x0160,0x2039,0x0152,0x008D,0x017D,0x008F,
+	0x0090,0x2018,0x2019,0x201C,0x201D,0x2022,0x2013,0x2014,0x02DC,0x2122,0x0161,0x203A,0x0153,0x009D,0x017E,0x0178
+};
+
+// Windows-1251 (cyrillic) 0x80-0xBF as Unicode; 0xC0-0xFF are U+0410..U+044F
+static const unsigned short g_cp1251[64] =
+{
+	0x0402,0x0403,0x201A,0x0453,0x201E,0x2026,0x2020,0x2021,0x20AC,0x2030,0x0409,0x2039,0x040A,0x040C,0x040B,0x040F,
+	0x0452,0x2018,0x2019,0x201C,0x201D,0x2022,0x2013,0x2014,0x0098,0x2122,0x0459,0x203A,0x045A,0x045C,0x045B,0x045F,
+	0x00A0,0x040E,0x045E,0x0408,0x00A4,0x0490,0x00A6,0x00A7,0x0401,0x00A9,0x0404,0x00AB,0x00AC,0x00AD,0x00AE,0x0407,
+	0x00B0,0x00B1,0x0406,0x0456,0x0491,0x00B5,0x00B6,0x00B7,0x0451,0x2116,0x0454,0x00BB,0x0458,0x0405,0x0455,0x0457
+};
+
+// Text that is not valid UTF-8 is in the single-byte codepage of the game's
+// language: stock string files, old translations, chat from other clients.
+// Characters are passed around as Unicode, so a raw high byte is translated
+// here, on the way in...
+//
+static unsigned int Font_LegacyByteToUnicode( unsigned int uiByte )
+{
+	if (uiByte < 0x80 || uiByte > 0xFF)
+	{
+		return uiByte;
+	}
+	switch ( GetLanguageEnum() )
+	{
+		case eRussian:	return (uiByte >= 0xC0) ? uiByte - 0xC0 + 0x0410 : g_cp1251[uiByte - 0x80];
+		case ePolish:	return g_cp1250[uiByte - 0x80];
+		case eWestern:	return (uiByte <= 0x9F) ? g_cp1252[uiByte - 0x80] : uiByte;
+		default:		return uiByte;
+	}
+}
+
+// ...and back again for the bitmap fonts, whose glyphs sit in codepage slots.
+// Returns the character unchanged when the codepage has no slot for it.
+//
+static unsigned int Font_UnicodeToLegacyByte( unsigned int uiLetter )
+{
+	if (uiLetter <= 0xFF)
+	{
+		return uiLetter;
+	}
+	switch ( GetLanguageEnum() )
+	{
+		case eRussian:
+			if (uiLetter >= 0x0410 && uiLetter <= 0x044F)
+			{
+				return uiLetter - 0x0410 + 0xC0;
+			}
+			for (int i = 0; i < 64; i++)
+			{
+				if (g_cp1251[i] == uiLetter) return 0x80 + i;
+			}
+			break;
+		case ePolish:
+			for (int i = 0; i < 128; i++)
+			{
+				if (g_cp1250[i] == uiLetter) return 0x80 + i;
+			}
+			break;
+		case eWestern:
+			for (int i = 0; i < 32; i++)
+			{
+				if (g_cp1252[i] == uiLetter) return 0x80 + i;
+			}
+			break;
+		default:
+			break;
+	}
+	return uiLetter;
+}
+
 // takes char *, returns integer char at that point, and advances char * on by enough bytes to move
 //	past the letter (either western 1 byte or Asian multi-byte)...
 //
@@ -1152,7 +1240,7 @@ unsigned int AnyLanguage_ReadCharFromString( const char *psText, int *piAdvanceC
 		}
 	}
 
-	uiLetter = psString[0];
+	uiLetter = Font_LegacyByteToUnicode( psString[0] );
 	*piAdvanceCount = 1;
 
 	if (pbIsTrailingPunctuation)
@@ -1235,7 +1323,12 @@ CFontInfo::CFontInfo(const char *_fontName)
 	m_iThisFont = -1;
 	m_iOriginalFontWhenSBCSOverriden = -1;
 	m_fAltSBCSFontScaleFactor = -1;
-	m_bIsFakeAlienLanguage = !strcmp(_fontName,"aurabesh");	// dont try and make SBCS or asian overrides for this
+	{
+		char sBaseName[MAX_QPATH];
+		int iDummy;
+		Font_SplitSizedName(_fontName, sBaseName, sizeof(sBaseName), &iDummy);	// (may be "aurabesh@18")
+		m_bIsFakeAlienLanguage = !strcmp(sBaseName,"aurabesh");	// dont try and make SBCS or asian overrides for this
+	}
 	m_isVariant = qfalse;
 
 #ifdef USE_FREETYPE
@@ -1336,12 +1429,7 @@ CFontInfo::CFontInfo(const char *_fontName)
 	}
 
 	FlagNoAsianGlyphs();
-#ifdef USE_FREETYPE
-	if (!m_bTTF)
-#endif
-	{
 	UpdateAsianIfNeeded(true);
-	}
 
 	// finished...
 	g_vFontArray.resize(g_iCurrentFontIndex + 1);
@@ -1530,7 +1618,6 @@ bool CFontInfo::TTF_Init(const char* psName)
 	}
 
 	mbRoundCalcs = false;
-	m_bIsFakeAlienLanguage = true;	// (ab)used here: disables SBCS/Asian override machinery, meaningless for TTF
 	m_bTTF = true;
 
 	return true;
@@ -2396,29 +2483,6 @@ const glyphInfo_t* CFontInfo::TTF_GetLetter(const unsigned int uiLetterIn, int* 
 {
 	unsigned int uiLetter = uiLetterIn;
 
-	// cp1251 compatibility: raw high bytes (invalid as UTF-8) coming from legacy
-	// russian content — old community translations, vanilla clients' chat — map
-	// onto proper Unicode codepoints, exactly like the old bitmap-font hack did...
-	if (uiLetter >= 0x80 && uiLetter <= 0xFF && GetLanguageEnum() == eRussian)
-	{
-		if (uiLetter >= 0xC0)
-		{
-			uiLetter = uiLetter - 0xC0 + 0x0410;	// А..я
-		}
-		else if (uiLetter == 0xA8)
-		{
-			uiLetter = 0x0401;	// Ё
-		}
-		else if (uiLetter == 0xB8)
-		{
-			uiLetter = 0x0451;	// ё
-		}
-		else if (uiLetter == 0xB9)
-		{
-			uiLetter = 0x2116;	// №
-		}
-	}
-
 	TTFGlyph_t* pEntry = TTF_CacheGlyph(uiLetter);
 
 	if (!pEntry)
@@ -2462,13 +2526,9 @@ CFontInfo *CFontInfo::GetVariant(int index) {
 
 void CFontInfo::UpdateAsianIfNeeded( bool bForceReEval /* = false */ )
 {
-#ifdef USE_FREETYPE
-	if (m_bTTF)
-	{
-		return;	// TTF fonts cover any codepoint through FreeType, no asian glyph pages needed
-	}
-#endif
 	// if asian language, then provide an alternative glyph set and fill in relevant fields...
+	// (TTF fonts too: text in those languages arrives in their legacy multi-byte
+	// encodings, which only the game's own glyph pages can draw)
 	//
 	if (mHeight && !m_bIsFakeAlienLanguage)	// western charset exists in first place, and isn't alien rubbish?
 	{
@@ -2648,7 +2708,7 @@ const glyphInfo_t *CFontInfo::GetLetter(const unsigned int uiLetter, int *piShad
 	}
 
 #ifdef USE_FREETYPE
-	if (m_bTTF)
+	if (m_bTTF && !(AsianGlyphsAvailable() && GetCollapsedAsianCode(uiLetter)))
 	{
 		return TTF_GetLetter(uiLetter, piShader);
 	}
@@ -2749,29 +2809,10 @@ const glyphInfo_t *CFontInfo::GetLetter(const unsigned int uiLetter, int *piShad
 		*piShader = GetShader();
 	}
 
-	// UTF-8 decoded cyrillic arriving at a legacy bitmap font: map it back onto
-	// the cp1251 slots the russian SBCS fontdats use (mirror of the TTF-side
-	// compat), instead of blindly masking the codepoint down to garbage...
-	unsigned int uiSlot = uiLetter;
-	if (uiSlot > 0xFF && GetLanguageEnum() == eRussian)
-	{
-		if (uiSlot >= 0x0410 && uiSlot <= 0x044F)
-		{
-			uiSlot = uiSlot - 0x0410 + 0xC0;	// А..я
-		}
-		else if (uiSlot == 0x0401)
-		{
-			uiSlot = 0xA8;	// Ё
-		}
-		else if (uiSlot == 0x0451)
-		{
-			uiSlot = 0xB8;	// ё
-		}
-		else if (uiSlot == 0x2116)
-		{
-			uiSlot = 0xB9;	// №
-		}
-	}
+	// characters arrive as Unicode: map them back onto the codepage slots the
+	// bitmap fonts of this language use, instead of blindly masking the
+	// codepoint down to garbage...
+	const unsigned int uiSlot = Font_UnicodeToLegacyByte( uiLetter );
 
 	const glyphInfo_t* pGlyph = &mGlyphs[uiSlot & 0xff];
 	//
@@ -2844,8 +2885,25 @@ static CFontInfo *GetFont_SBCSOverride(CFontInfo *pFont, Language_e eLanguageSBC
 			{
 				// need to register this alternative SBCS font...
 				//
+#ifdef USE_FREETYPE
+				// an outline version of it (fonts/russian.ttf) is simply loaded at the
+				// size of the font it stands in for; without one this ends up at the
+				// bitmap font, like the plain name below
+				g_bTTFRegisteringVariant = true;
+				int iAltFontIndex = RE_RegisterFont( va("%s/%s@%d",COM_SkipPath(pFont->m_sFontName),psLanguageNameSBCS,pFont->GetPointSize()) );
+				g_bTTFRegisteringVariant = false;
+#else
 				int iAltFontIndex = RE_RegisterFont( va("%s/%s",COM_SkipPath(pFont->m_sFontName),psLanguageNameSBCS) );	// ensure unique name (eg: "lcd/russian")
+#endif
 				CFontInfo *pAltFont = GetFont_Actual( iAltFontIndex );
+				if ( pAltFont && pAltFont->IsTTF() )
+				{
+					pAltFont->mHeight	 = pFont->GetHeight();
+					pAltFont->mAscender	 = pFont->GetAscender();
+					pAltFont->mDescender = pFont->GetDescender();
+					pAltFont->m_iOriginalFontWhenSBCSOverriden = pFont->m_iThisFont;
+				}
+				else
 				if ( pAltFont )
 				{
 					// work out the scaling factor for this font's glyphs...( round it to 1 decimal place to cut down on silly scale factors like 0.53125 )
@@ -3416,7 +3474,7 @@ void R_InitFonts(void)
 
 	cl_coloredTextShadows = ri.Cvar_Get("cl_coloredTextShadows", "0", CVAR_ARCHIVE, "Toggle JK2 1.02-style colored text shadows");
 #ifdef USE_FREETYPE
-	r_fontFallbacks = ri.Cvar_Get("r_fontFallbacks", "", CVAR_ARCHIVE_ND | CVAR_LATCH, "Fallback fonts for missing glyphs, eg \"notoemoji\"");
+	r_fontFallbacks = ri.Cvar_Get("r_fontFallbacks", "arialnb;twemoji", CVAR_ARCHIVE_ND | CVAR_LATCH, "Fonts searched for glyphs a TTF font lacks, in order, eg \"arialnb;twemoji\"");
 #endif
 
 #ifdef USE_FREETYPE
