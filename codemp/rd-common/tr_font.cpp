@@ -3489,7 +3489,7 @@ void R_InitFonts(void)
 	cl_coloredTextShadows = ri.Cvar_Get("cl_coloredTextShadows", "0", CVAR_ARCHIVE, "Toggle JK2 1.02-style colored text shadows");
 	r_fontCodepage = ri.Cvar_Get("r_fontCodepage", "0", CVAR_ARCHIVE_ND, "Windows codepage of text that is not UTF-8 (chat and names from other clients, old string files): 1250, 1251 or 1252; 0 = by se_language");
 #ifdef USE_FREETYPE
-	r_fontFallbacks = ri.Cvar_Get("r_fontFallbacks", "arialnb;twemoji", CVAR_ARCHIVE_ND | CVAR_LATCH, "Fonts searched for glyphs a TTF font lacks, in order, eg \"arialnb;twemoji\"");
+	r_fontFallbacks = ri.Cvar_Get("r_fontFallbacks", "arialnb;twemoji;dejavusans-bold;wqy-zenhei", CVAR_ARCHIVE_ND | CVAR_LATCH, "Fonts searched, in order, for glyphs a TTF font lacks; ones that are not installed are skipped");
 #endif
 
 #ifdef USE_FREETYPE
