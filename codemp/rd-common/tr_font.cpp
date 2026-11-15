@@ -330,6 +330,9 @@ typedef enum
 	eRussian,	//  .. but now I need to care about this, since it uses a different TP
 	ePolish,	// ditto
 	eHungarian,	// Windows-1250 like Polish, but never had a font of its own
+	eCzech,		// ditto
+	eSlovak,	// ditto
+	eUkrainian,	// Windows-1251 like Russian, ditto
 	eKorean,
 	eTaiwanese,	// 15x15 glyphs tucked against BR of 16x16 space
 	eJapanese,	// 15x15 glyphs tucked against TL of 16x16 space
@@ -353,6 +356,9 @@ Language_e GetLanguageEnum()
 				if ( Language_IsRussian()	)	eLanguage = eRussian;
 		else	if ( Language_IsPolish()	)	eLanguage = ePolish;
 		else	if ( Language_IsHungarian() )	eLanguage = eHungarian;
+		else	if ( Language_IsCzech()		)	eLanguage = eCzech;
+		else	if ( Language_IsSlovak()	)	eLanguage = eSlovak;
+		else	if ( Language_IsUkrainian() )	eLanguage = eUkrainian;
 		else	if ( Language_IsKorean()	)	eLanguage = eKorean;
 		else	if ( Language_IsTaiwanese()	)	eLanguage = eTaiwanese;
 		else	if ( Language_IsJapanese()	)	eLanguage = eJapanese;
@@ -1181,9 +1187,12 @@ static unsigned int Font_LegacyByteToUnicode( unsigned int uiByte )
 	}
 	switch ( Font_LegacyLanguage() )
 	{
-		case eRussian:	return (uiByte >= 0xC0) ? uiByte - 0xC0 + 0x0410 : g_cp1251[uiByte - 0x80];
+		case eRussian:
+		case eUkrainian:	return (uiByte >= 0xC0) ? uiByte - 0xC0 + 0x0410 : g_cp1251[uiByte - 0x80];
 		case ePolish:
-		case eHungarian:	return g_cp1250[uiByte - 0x80];
+		case eHungarian:
+		case eCzech:
+		case eSlovak:	return g_cp1250[uiByte - 0x80];
 		case eWestern:	return (uiByte <= 0x9F) ? g_cp1252[uiByte - 0x80] : uiByte;
 		case eJapanese:	return (uiByte >= 0xA1 && uiByte <= 0xDF) ? g_sjisHalfWidth[uiByte - 0xA1] : uiByte;
 		default:		return uiByte;
@@ -1202,6 +1211,7 @@ static unsigned int Font_UnicodeToLegacyByte( unsigned int uiLetter )
 	switch ( Font_LegacyLanguage() )
 	{
 		case eRussian:
+		case eUkrainian:
 			if (uiLetter >= 0x0410 && uiLetter <= 0x044F)
 			{
 				return uiLetter - 0x0410 + 0xC0;
@@ -1213,6 +1223,8 @@ static unsigned int Font_UnicodeToLegacyByte( unsigned int uiLetter )
 			break;
 		case ePolish:
 		case eHungarian:
+		case eCzech:
+		case eSlovak:
 			for (int i = 0; i < 128; i++)
 			{
 				if (g_cp1250[i] == uiLetter) return 0x80 + i;
