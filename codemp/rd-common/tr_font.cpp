@@ -838,6 +838,73 @@ static int Japanese_CollapseShiftJISCode( unsigned int uiCode )
 }
 
 
+#include "tr_font_sjis.h"
+
+// Shift-JIS single bytes 0xA1-0xDF, half-width katakana, as their full-width
+// forms: those are the ones the fonts and the glyph pages have
+//
+static const unsigned short g_sjisHalfWidth[63] = {
+	0x3002,0x300C,0x300D,0x3001,0x30FB,0x30F2,0x30A1,0x30A3,0x30A5,0x30A7,0x30A9,0x30E3,0x30E5,0x30E7,0x30C3,0x30FC,
+	0x30A2,0x30A4,0x30A6,0x30A8,0x30AA,0x30AB,0x30AD,0x30AF,0x30B1,0x30B3,0x30B5,0x30B7,0x30B9,0x30BB,0x30BD,0x30BF,
+	0x30C1,0x30C4,0x30C6,0x30C8,0x30CA,0x30CB,0x30CC,0x30CD,0x30CE,0x30CF,0x30D2,0x30D5,0x30D8,0x30DB,0x30DE,0x30DF,
+	0x30E0,0x30E1,0x30E2,0x30E4,0x30E6,0x30E8,0x30E9,0x30EA,0x30EB,0x30EC,0x30ED,0x30EF,0x30F3,0x309B,0x309C,
+};
+
+// Japanese text is handed around as Unicode like everything else, so that an
+// outline font can draw it; these convert at the edges. (0 = no such character)
+//
+static unsigned int Japanese_ShiftJISToUnicode( unsigned int uiCode )
+{
+	const int iIndex = Japanese_CollapseShiftJISCode( uiCode );
+	return (iIndex > 0 && iIndex < SJIS_TABLE_SIZE) ? g_sjisToUnicode[iIndex] : 0;
+}
+
+// ...and back to a glyph index in the game's own Japanese glyph pages
+//
+static int Japanese_CollapseUnicode( unsigned int uiLetter )
+{
+	static unsigned short pReverse[0x10000];
+	static bool bBuilt = false;
+	if (!bBuilt)
+	{
+		bBuilt = true;
+		for (int i = SJIS_TABLE_SIZE - 1; i > 0; i--)	// backwards: of duplicates, keep the first
+		{
+			pReverse[g_sjisToUnicode[i]] = (unsigned short)i;
+		}
+		pReverse[0] = 0;
+	}
+	return (uiLetter >= 0x80 && uiLetter <= 0xFFFF) ? pReverse[uiLetter] : 0;
+}
+
+// A Shift-JIS character and the start of the next one can also be read as one
+// UTF-8 character, so look a few characters ahead: true if the high bytes
+// from here are well-formed UTF-8 for the kind of text that would be sent
+// that way (kana, kanji, full-width forms, hangul, emoji).
+//
+static bool Font_UTF8RunAhead( const byte *psString )
+{
+	int iSequences = 0;
+	while ((*psString & 0x80) && iSequences < 4)
+	{
+		int iAdvance = 1;
+		const unsigned int uiCode = Q_UTF8_ReadCharFromString( (const char *)psString, &iAdvance );
+		if (iAdvance < 3)
+		{
+			return false;
+		}
+		if (!(	(uiCode >= 0x3000 && uiCode <= 0x30FF) || (uiCode >= 0x4E00 && uiCode <= 0x9FFF) ||
+				(uiCode >= 0xAC00 && uiCode <= 0xD7A3) || (uiCode >= 0xFE00 && uiCode <= 0xFFEF) ||
+				(uiCode >= 0x2000 && uiCode <= 0x2BFF) || uiCode >= 0x10000 ))
+		{
+			return false;
+		}
+		psString += iAdvance;
+		iSequences++;
+	}
+	return iSequences > 0;
+}
+
 static int Japanese_InitFields(int &iGlyphTPs, const char *&psLang)
 {
 	psLang		= "jap";
@@ -1078,6 +1145,7 @@ static unsigned int Font_LegacyByteToUnicode( unsigned int uiByte )
 		case eRussian:	return (uiByte >= 0xC0) ? uiByte - 0xC0 + 0x0410 : g_cp1251[uiByte - 0x80];
 		case ePolish:	return g_cp1250[uiByte - 0x80];
 		case eWestern:	return (uiByte <= 0x9F) ? g_cp1252[uiByte - 0x80] : uiByte;
+		case eJapanese:	return (uiByte >= 0xA1 && uiByte <= 0xDF) ? g_sjisHalfWidth[uiByte - 0xA1] : uiByte;
 		default:		return uiByte;
 	}
 }
@@ -1176,7 +1244,9 @@ unsigned int AnyLanguage_ReadCharFromString( const char *psText, int *piAdvanceC
 
 		case eJapanese:
 		{
-			if ( Japanese_ValidShiftJISCode( psString[0], psString[1] ))
+			// (chat and names from updated clients are UTF-8 whatever the language)
+			//
+			if ( !Font_UTF8RunAhead( psString ) && Japanese_ValidShiftJISCode( psString[0], psString[1] ))
 			{
 				uiLetter = (psString[0] * 256) + psString[1];
 				*piAdvanceCount = 2;
@@ -1188,7 +1258,8 @@ unsigned int AnyLanguage_ReadCharFromString( const char *psText, int *piAdvanceC
 					*pbIsTrailingPunctuation = Japanese_IsTrailingPunctuation( uiLetter ) ? qtrue : qfalse;
 				}
 
-				return uiLetter;
+				uiLetter = Japanese_ShiftJISToUnicode( uiLetter );
+				return uiLetter ? uiLetter : 0x3000;	// unassigned code: a blank, as the glyph pages have
 			}
 		}
 		break;
@@ -2722,7 +2793,12 @@ const glyphInfo_t *CFontInfo::GetLetter(const unsigned int uiLetter, int *piShad
 	}
 
 #ifdef USE_FREETYPE
-	if (m_bTTF && !(AsianGlyphsAvailable() && GetCollapsedAsianCode(uiLetter)))
+	// (Japanese arrives as Unicode, so the font or a fallback can draw it; the
+	// other Asian languages are still in their own encodings, and anything
+	// the fonts lack is left to the game's glyph pages)
+	//
+	if (m_bTTF && (!(AsianGlyphsAvailable() && GetCollapsedAsianCode(uiLetter))
+				|| (GetLanguageEnum() == eJapanese && TTF_CacheGlyph(uiLetter))))
 	{
 		return TTF_GetLetter(uiLetter, piShader);
 	}
@@ -2865,7 +2941,7 @@ const int CFontInfo::GetCollapsedAsianCode(ulong uiLetter) const
 		{
 			case eKorean:		iCollapsedAsianCode = Korean_CollapseKSC5601HangulCode( uiLetter );	break;
 			case eTaiwanese:	iCollapsedAsianCode = Taiwanese_CollapseBig5Code( uiLetter );		break;
-			case eJapanese:		iCollapsedAsianCode = Japanese_CollapseShiftJISCode( uiLetter );	break;
+			case eJapanese:		iCollapsedAsianCode = Japanese_CollapseUnicode( uiLetter );			break;
 			case eChinese:		iCollapsedAsianCode = Chinese_CollapseGBCode( uiLetter );			break;
 			case eThai:			iCollapsedAsianCode = Thai_CollapseTISCode( uiLetter );				break;
 			default:			assert(0);	/* unhandled asian language */							break;
