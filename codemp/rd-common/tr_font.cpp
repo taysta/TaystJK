@@ -1427,6 +1427,8 @@ CFontInfo::CFontInfo(const char *_fontName)
 // Fonts are rasterized at exactly mPointSize pixels; high-res crispness is
 // achieved through the existing font-variant system (see RE_RegisterFont).
 //
+static bool g_bTTFRegisteringVariant = false;	// see CFontInfo::TTF_Init
+
 bool CFontInfo::TTF_Init(const char* psName)
 {
 	char			sBaseName[MAX_QPATH];
@@ -1442,6 +1444,25 @@ bool CFontInfo::TTF_Init(const char* psName)
 	}
 
 	Font_SplitSizedName(psName, sBaseName, sizeof(sBaseName), &iPointSize);
+
+	// a TTF standing in for a bitmap font keeps that font's point size, whatever
+	// size was asked for: menus and HUD were laid out against the bitmap font's
+	// glyph metrics, and text scales are relative to its size. (the hi-res
+	// variants ask for a multiple of that size, and have to get it)
+	if (!g_bTTFRegisteringVariant)
+	{
+		Com_sprintf(sPath, sizeof(sPath), "fonts/%s.fontdat", COM_SkipPath(sBaseName));
+		if (ri.FS_ReadFile(sPath, NULL) == sizeof(dfontdat_t))
+		{
+			ri.FS_ReadFile(sPath, &buff.v);
+			const int iBitmapPointSize = LittleShort(((dfontdat_t*)buff.v)->mPointSize);
+			ri.FS_FreeFile(buff.v);
+			if (iBitmapPointSize > 0)
+			{
+				iPointSize = iBitmapPointSize;
+			}
+		}
+	}
 
 	for (size_t i = 0; i < ARRAY_LEN(psExtensions); i++)
 	{
@@ -3332,7 +3353,9 @@ int RE_RegisterFont(const char *psName) {
 					char sBaseName[MAX_QPATH];
 					int iDummy;
 					Font_SplitSizedName(psName, sBaseName, sizeof(sBaseName), &iDummy);
+					g_bTTFRegisteringVariant = true;
 					int replacerFontHandle = RE_RegisterFont_Real(va("%s@%i", sBaseName, iIdealSize));
+					g_bTTFRegisteringVariant = false;
 					if (replacerFontHandle) {
 						CFontInfo* replacerFont = GetFont_Actual(replacerFontHandle);
 						if (replacerFont->IsTTF()) {
