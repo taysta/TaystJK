@@ -98,6 +98,11 @@ inline SE_BOOL Language_IsPolish(void)
 	return (se_language && !Q_stricmp(se_language->string, "polish")) ? SE_TRUE : SE_FALSE;
 }
 
+inline SE_BOOL Language_IsHungarian(void)
+{
+	return (se_language && !Q_stricmp(se_language->string, "hungarian")) ? SE_TRUE : SE_FALSE;
+}
+
 inline SE_BOOL Language_IsKorean(void)
 {
 	return (se_language && !Q_stricmp(se_language->string, "korean")) ? SE_TRUE : SE_FALSE;
