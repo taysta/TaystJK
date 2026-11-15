@@ -2985,6 +2985,15 @@ const int CFontInfo::GetLetterHorizAdvance(unsigned int uiLetter)
 //
 static CFontInfo *GetFont_SBCSOverride(CFontInfo *pFont, Language_e eLanguageSBCS, const char *psLanguageNameSBCS )
 {
+	// the override exists because the bitmap fonts have no Cyrillic or Polish
+	// letters; TTF fonts carry them (or find them in r_fontFallbacks), so they
+	// keep their own typeface
+	//
+	if ( pFont->IsTTF() )
+	{
+		return NULL;
+	}
+
 	if ( !pFont->m_bIsFakeAlienLanguage )
 	{
 		if ( GetLanguageEnum() == eLanguageSBCS )
